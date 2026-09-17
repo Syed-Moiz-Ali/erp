@@ -216,7 +216,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get looksGood => 'مناسب';
 
   @override
-  String get consistencyNotice => 'تصميم متسق. تستخدم جميع الوحدات المستقبلية هذه الأسس.';
+  String get consistencyNotice =>
+      'تصميم متسق. تستخدم جميع الوحدات المستقبلية هذه الأسس.';
 
   @override
   String get designLanguage => 'اللغة البصرية';
@@ -336,7 +337,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formControls => 'عناصر النموذج';
 
   @override
-  String get formControlsSubtitle => 'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
+  String get formControlsSubtitle =>
+      'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
 
   @override
   String get fullName => 'الاسم الكامل';
@@ -366,7 +368,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get informationCard => 'بطاقة معلومات';
 
   @override
-  String get informationCardMessage => 'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
+  String get informationCardMessage =>
+      'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
 
   @override
   String get statusAndFeedback => 'الحالة والملاحظات';
@@ -396,7 +399,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filtersAndTable => 'الفلاتر والجدول';
 
   @override
-  String get illustrativeRecords => 'سجلات توضيحية / لا تتضمن بيانات موظفين فعلية';
+  String get illustrativeRecords =>
+      'سجلات توضيحية / لا تتضمن بيانات موظفين فعلية';
 
   @override
   String get activeOnly => 'النشط فقط';
@@ -474,7 +478,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get workspaceInfoTitle => 'نظام ERP يبدأ هنا';
 
   @override
-  String get workspaceInfoMessage => 'البنية التي تعتمد التخزين المحلي أولًا ونظام التصميم الموحد جاهزان. ستُضاف وحدات الأعمال في المراحل القادمة.';
+  String get workspaceInfoMessage =>
+      'البنية التي تعتمد التخزين المحلي أولًا ونظام التصميم الموحد جاهزان. ستُضاف وحدات الأعمال في المراحل القادمة.';
 
   @override
   String get phaseReady => 'المرحلة صفر / الأساس جاهز';
@@ -522,7 +527,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureTimeout => 'انتهت مهلة الطلب. يرجى إعادة المحاولة.';
 
   @override
-  String get failureOffline => 'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
+  String get failureOffline =>
+      'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
 
   @override
   String get failureCancelled => 'تم إلغاء الطلب.';
@@ -540,7 +546,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureLocationDisabled => 'فعّل خدمات الموقع للمتابعة.';
 
   @override
-  String get failureLocationPermission => 'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
+  String get failureLocationPermission =>
+      'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
 
   @override
   String get failureLocationUnavailable => 'تعذر تحديد موقعك.';
@@ -555,7 +562,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureSync => 'تعذرت مزامنة بعض التغييرات.';
 
   @override
-  String get failurePreferencesWrite => 'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
+  String get failurePreferencesWrite =>
+      'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
 
   @override
   String get failurePreferencesRead => 'تعذر استعادة اللغة المحفوظة.';
@@ -621,13 +629,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authIdentifierRequired => 'البريد الإلكتروني أو رقم الهاتف مطلوب';
 
   @override
-  String get authIdentifierInvalid => 'أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا';
+  String get authIdentifierInvalid =>
+      'أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا';
 
   @override
   String get authPasswordRequired => 'كلمة المرور مطلوبة';
 
   @override
-  String get authInvalidCredentials => 'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.';
+  String get authInvalidCredentials =>
+      'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.';
 
   @override
   String get authLoggingIn => 'جارٍ تسجيل الدخول…';
@@ -636,13 +646,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authBrandStatement => 'مساحة عمل مترابطة.\nويوم عمل أكثر وضوحًا.';
 
   @override
-  String get authBrandDescription => 'مكان واحد لفريقك وعملياتك والأعمال القادمة.';
+  String get authBrandDescription =>
+      'مكان واحد لفريقك وعملياتك والأعمال القادمة.';
 
   @override
   String get authWorkspaceLabel => 'مساحة عمل الشركة';
 
   @override
-  String get authSessionNote => 'تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.';
+  String get authSessionNote =>
+      'تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.';
 
   @override
   String get authInitializing => 'جارٍ تجهيز مساحة عملك…';
@@ -654,28 +666,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authDemoNotice => 'عرض تجريبي محلي فقط. لا يوجد اتصال بخادم.';
 
   @override
-  String get authDemoDisabled => 'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
+  String get authDemoDisabled =>
+      'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
 
   @override
   String get authDemoPassword => 'كلمة المرور التجريبية';
 
   @override
-  String get authSessionStorageError => 'تعذّر الوصول إلى الجلسة الآمنة. يُرجى المحاولة مجددًا.';
+  String get authSessionStorageError =>
+      'تعذّر الوصول إلى الجلسة الآمنة. يُرجى المحاولة مجددًا.';
 
   @override
-  String get authServerError => 'خدمة تسجيل الدخول غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.';
+  String get authServerError =>
+      'خدمة تسجيل الدخول غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.';
 
   @override
   String get authForgotTitle => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get authForgotSubtitle => 'أدخل البريد الإلكتروني أو رقم الهاتف المرتبط بحسابك.';
+  String get authForgotSubtitle =>
+      'أدخل البريد الإلكتروني أو رقم الهاتف المرتبط بحسابك.';
 
   @override
-  String get authResetInformation => 'إذا كان هناك حساب يطابق هذه البيانات، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور.';
+  String get authResetInformation =>
+      'إذا كان هناك حساب يطابق هذه البيانات، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور.';
 
   @override
-  String get authResetDemoNote => 'لا يتم إرسال بريد إلكتروني أو رسالة نصية في هذا العرض التجريبي.';
+  String get authResetDemoNote =>
+      'لا يتم إرسال بريد إلكتروني أو رسالة نصية في هذا العرض التجريبي.';
 
   @override
   String get authResetTitle => 'تم استلام الطلب';
@@ -702,22 +720,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authConfirmPassword => 'تأكيد كلمة المرور الجديدة';
 
   @override
-  String get authPasswordConstraints => 'استخدم ٨ أحرف على الأقل، تتضمن حرفًا ورقمًا.';
+  String get authPasswordConstraints =>
+      'استخدم ٨ أحرف على الأقل، تتضمن حرفًا ورقمًا.';
 
   @override
   String get authPasswordsMismatch => 'كلمتا المرور غير متطابقتين';
 
   @override
-  String get authPasswordMustDiffer => 'اختر كلمة مرور مختلفة عن كلمة مرورك الحالية';
+  String get authPasswordMustDiffer =>
+      'اختر كلمة مرور مختلفة عن كلمة مرورك الحالية';
 
   @override
   String get authCurrentPasswordInvalid => 'كلمة المرور الحالية غير صحيحة.';
 
   @override
-  String get authPasswordChanged => 'تم تحديث كلمة المرور لهذه الجلسة التجريبية.';
+  String get authPasswordChanged =>
+      'تم تحديث كلمة المرور لهذه الجلسة التجريبية.';
 
   @override
-  String get authPasswordDemoNote => 'تستمر تغييرات كلمة المرور التجريبية حتى إعادة تشغيل التطبيق. لا تُحفظ أي كلمة مرور على هذا الجهاز.';
+  String get authPasswordDemoNote =>
+      'تستمر تغييرات كلمة المرور التجريبية حتى إعادة تشغيل التطبيق. لا تُحفظ أي كلمة مرور على هذا الجهاز.';
 
   @override
   String get authBackToWorkspace => 'العودة إلى مساحة العمل';
@@ -732,7 +754,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authHomeTitle => 'مساحة عملك جاهزة';
 
   @override
-  String get authHomeSubtitle => 'لقد سجّلت الدخول. ستُضاف وحدات الأعمال في المراحل القادمة.';
+  String get authHomeSubtitle =>
+      'لقد سجّلت الدخول. ستُضاف وحدات الأعمال في المراحل القادمة.';
 
   @override
   String get authAccount => 'الحساب';
@@ -913,28 +936,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shellFinance => 'الشؤون المالية';
 
   @override
-  String get shellDashboardDescription => 'ستُضاف نظرة عامة على مساحة عملك في مرحلة لاحقة.';
+  String get shellDashboardDescription =>
+      'ستُضاف نظرة عامة على مساحة عملك في مرحلة لاحقة.';
 
   @override
-  String get shellEmployeesDescription => 'ستُضاف إدارة الموظفين في مرحلة لاحقة.';
+  String get shellEmployeesDescription =>
+      'ستُضاف إدارة الموظفين في مرحلة لاحقة.';
 
   @override
-  String get shellAttendanceDescription => 'ستُضاف إجراءات الحضور في مرحلة لاحقة.';
+  String get shellAttendanceDescription =>
+      'ستُضاف إجراءات الحضور في مرحلة لاحقة.';
 
   @override
   String get shellReportsDescription => 'ستُضاف التقارير في مرحلة لاحقة.';
 
   @override
-  String get shellSettingsDescription => 'ستُضاف إعدادات الشركة في مرحلة لاحقة.';
+  String get shellSettingsDescription =>
+      'ستُضاف إعدادات الشركة في مرحلة لاحقة.';
 
   @override
-  String get shellProfileDescription => 'ستُضاف إمكانية تعديل الملف الشخصي في مرحلة لاحقة.';
+  String get shellProfileDescription =>
+      'ستُضاف إمكانية تعديل الملف الشخصي في مرحلة لاحقة.';
 
   @override
   String get shellPlaceholderTitle => 'جاهز للمرحلة القادمة';
 
   @override
-  String get shellPlaceholderMessage => 'هذه المساحة مخصّصة لوحدة أعمال مستقبلية. لا تتوفر بيانات أعمال بعد.';
+  String get shellPlaceholderMessage =>
+      'هذه المساحة مخصّصة لوحدة أعمال مستقبلية. لا تتوفر بيانات أعمال بعد.';
 
   @override
   String get shellMoreDescription => 'استكشف المساحات الأخرى المتاحة لحسابك.';
@@ -943,7 +972,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shellSearchTitle => 'البحث الشامل';
 
   @override
-  String get shellSearchMessage => 'سيتوفر البحث الشامل عند إضافة وحدات الأعمال.';
+  String get shellSearchMessage =>
+      'سيتوفر البحث الشامل عند إضافة وحدات الأعمال.';
 
   @override
   String get shellNotifications => 'الإشعارات';
@@ -1003,7 +1033,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shellNoDestinations => 'لا توجد وجهات متاحة';
 
   @override
-  String get shellNoDestinationsMessage => 'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
+  String get shellNoDestinationsMessage =>
+      'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
 
   @override
   String dashboardMorning(String name) {
@@ -1153,13 +1184,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dashboardEmptyTitle => 'لا توجد بيانات للقوى العاملة بعد';
 
   @override
-  String get dashboardEmptyMessage => 'ستظهر معلومات القوى العاملة هنا عندما تتوفر البيانات والصلاحيات.';
+  String get dashboardEmptyMessage =>
+      'ستظهر معلومات القوى العاملة هنا عندما تتوفر البيانات والصلاحيات.';
 
   @override
   String get dashboardError => 'تعذّر تحميل لوحة التحكم. يرجى المحاولة مجددًا.';
 
   @override
-  String get dashboardRefreshError => 'تعذّر التحديث. لا يزال الملخص السابق متاحًا.';
+  String get dashboardRefreshError =>
+      'تعذّر التحديث. لا يزال الملخص السابق متاحًا.';
 
   @override
   String get dashboardRefresh => 'تحديث';
@@ -1238,7 +1271,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empUnassigned => 'غير معيّن';
 
   @override
-  String get empLoginNotice => 'إعداد محلي للحساب. لا تُصدر بيانات دخول جديدة أو دعوات في هذه المرحلة.';
+  String get empLoginNotice =>
+      'إعداد محلي للحساب. لا تُصدر بيانات دخول جديدة أو دعوات في هذه المرحلة.';
 
   @override
   String get empCredentialPending => 'إعداد بيانات الدخول معلّق';
@@ -1328,7 +1362,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empStatusConfirm => 'تغيير حالة الموظف؟';
 
   @override
-  String get empStatusMessage => 'سيؤدي ذلك إلى تغيير حالة الموظف وإمكانية دخول الحساب المرتبط. ويمكن التراجع عن ذلك.';
+  String get empStatusMessage =>
+      'سيؤدي ذلك إلى تغيير حالة الموظف وإمكانية دخول الحساب المرتبط. ويمكن التراجع عن ذلك.';
 
   @override
   String get empCreated => 'تم إنشاء الموظف بنجاح';
@@ -1346,7 +1381,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empDiscard => 'تجاهل التغييرات؟';
 
   @override
-  String get empDiscardMessage => 'لديك تغييرات غير محفوظة. هل تريد تجاهلها ومغادرة النموذج؟';
+  String get empDiscardMessage =>
+      'لديك تغييرات غير محفوظة. هل تريد تجاهلها ومغادرة النموذج؟';
 
   @override
   String get empDiscardAction => 'تجاهل';
@@ -1367,7 +1403,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empDuplicatePhone => 'رقم الهاتف هذا مرتبط بموظف آخر.';
 
   @override
-  String get empInvalidManager => 'اختر مديرًا نشطًا دون إنشاء علاقة إدارية دائرية.';
+  String get empInvalidManager =>
+      'اختر مديرًا نشطًا دون إنشاء علاقة إدارية دائرية.';
 
   @override
   String get empInvalidReference => 'اختر قسمًا ومسمى وظيفيًا نشطين.';
@@ -1376,7 +1413,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empAccountRoleError => 'لا يمكنك إنشاء هذا الدور أو منح صلاحياته.';
 
   @override
-  String get empStorageError => 'تعذّر إكمال هذه العملية المحلية. يرجى المحاولة مجددًا.';
+  String get empStorageError =>
+      'تعذّر إكمال هذه العملية المحلية. يرجى المحاولة مجددًا.';
 
   @override
   String get empPending => 'المزامنة معلّقة';
