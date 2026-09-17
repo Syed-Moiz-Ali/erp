@@ -1,0 +1,912 @@
+{
+  "@@locale": "en",
+  "appName": "Bitlogix ERP",
+  "@appName": {
+    "description": "Common/Phase 0 UI: appName."
+  },
+  "brandName": "bitlogix",
+  "@brandName": {
+    "description": "Common/Phase 0 UI: brandName."
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Common/Phase 0 UI: save."
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Common/Phase 0 UI: cancel."
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Common/Phase 0 UI: close."
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Common/Phase 0 UI: confirm."
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Common/Phase 0 UI: delete."
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Common/Phase 0 UI: edit."
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Common/Phase 0 UI: add."
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Common/Phase 0 UI: search."
+  },
+  "filter": "Filter",
+  "@filter": {
+    "description": "Common/Phase 0 UI: filter."
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Common/Phase 0 UI: clear."
+  },
+  "retry": "Try again",
+  "@retry": {
+    "description": "Common/Phase 0 UI: retry."
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Common/Phase 0 UI: refresh."
+  },
+  "continueAction": "Continue",
+  "@continueAction": {
+    "description": "Common/Phase 0 UI: continueAction."
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Common/Phase 0 UI: back."
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Common/Phase 0 UI: next."
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Common/Phase 0 UI: done."
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Common/Phase 0 UI: yes."
+  },
+  "no": "No",
+  "@no": {
+    "description": "Common/Phase 0 UI: no."
+  },
+  "loading": "Loading",
+  "@loading": {
+    "description": "Common/Phase 0 UI: loading."
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Common/Phase 0 UI: error."
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Common/Phase 0 UI: success."
+  },
+  "warning": "Warning",
+  "@warning": {
+    "description": "Common/Phase 0 UI: warning."
+  },
+  "noData": "No data",
+  "@noData": {
+    "description": "Common/Phase 0 UI: noData."
+  },
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Common/Phase 0 UI: somethingWentWrong."
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Common/Phase 0 UI: home."
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Common/Phase 0 UI: dashboard."
+  },
+  "employees": "Employees",
+  "@employees": {
+    "description": "Common/Phase 0 UI: employees."
+  },
+  "attendance": "Attendance",
+  "@attendance": {
+    "description": "Common/Phase 0 UI: attendance."
+  },
+  "requests": "Requests",
+  "@requests": {
+    "description": "Common/Phase 0 UI: requests."
+  },
+  "reports": "Reports",
+  "@reports": {
+    "description": "Common/Phase 0 UI: reports."
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Common/Phase 0 UI: settings."
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Common/Phase 0 UI: profile."
+  },
+  "more": "More",
+  "@more": {
+    "description": "Common/Phase 0 UI: more."
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Common/Phase 0 UI: login."
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Common/Phase 0 UI: logout."
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Common/Phase 0 UI: email."
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Common/Phase 0 UI: phone."
+  },
+  "emailOrPhone": "Email or phone",
+  "@emailOrPhone": {
+    "description": "Common/Phase 0 UI: emailOrPhone."
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Common/Phase 0 UI: password."
+  },
+  "forgotPassword": "Forgot password",
+  "@forgotPassword": {
+    "description": "Common/Phase 0 UI: forgotPassword."
+  },
+  "changePassword": "Change password",
+  "@changePassword": {
+    "description": "Common/Phase 0 UI: changePassword."
+  },
+  "welcomeBack": "Welcome back",
+  "@welcomeBack": {
+    "description": "Common/Phase 0 UI: welcomeBack."
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Common/Phase 0 UI: language."
+  },
+  "english": "English",
+  "@english": {
+    "description": "Common/Phase 0 UI: english."
+  },
+  "arabic": "Arabic",
+  "@arabic": {
+    "description": "Common/Phase 0 UI: arabic."
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Common/Phase 0 UI: active."
+  },
+  "inactive": "Inactive",
+  "@inactive": {
+    "description": "Common/Phase 0 UI: inactive."
+  },
+  "pending": "Pending",
+  "@pending": {
+    "description": "Common/Phase 0 UI: pending."
+  },
+  "approved": "Approved",
+  "@approved": {
+    "description": "Common/Phase 0 UI: approved."
+  },
+  "rejected": "Rejected",
+  "@rejected": {
+    "description": "Common/Phase 0 UI: rejected."
+  },
+  "failed": "Failed",
+  "@failed": {
+    "description": "Common/Phase 0 UI: failed."
+  },
+  "synced": "Synced",
+  "@synced": {
+    "description": "Common/Phase 0 UI: synced."
+  },
+  "draft": "Draft",
+  "@draft": {
+    "description": "Common/Phase 0 UI: draft."
+  },
+  "scheduled": "Scheduled",
+  "@scheduled": {
+    "description": "Common/Phase 0 UI: scheduled."
+  },
+  "workspace": "Workspace",
+  "@workspace": {
+    "description": "Common/Phase 0 UI: workspace."
+  },
+  "overview": "Overview",
+  "@overview": {
+    "description": "Common/Phase 0 UI: overview."
+  },
+  "internal": "Internal",
+  "@internal": {
+    "description": "Common/Phase 0 UI: internal."
+  },
+  "designSystem": "Design system",
+  "@designSystem": {
+    "description": "Common/Phase 0 UI: designSystem."
+  },
+  "erpWorkspace": "ERP workspace",
+  "@erpWorkspace": {
+    "description": "Common/Phase 0 UI: erpWorkspace."
+  },
+  "foundationPhase": "Foundation / Phase 0",
+  "@foundationPhase": {
+    "description": "Common/Phase 0 UI: foundationPhase."
+  },
+  "designPreview": "Design preview",
+  "@designPreview": {
+    "description": "Common/Phase 0 UI: designPreview."
+  },
+  "designSystemSubtitle": "The shared language of your ERP workspace.",
+  "@designSystemSubtitle": {
+    "description": "Common/Phase 0 UI: designSystemSubtitle."
+  },
+  "internalPreview": "Internal preview",
+  "@internalPreview": {
+    "description": "Common/Phase 0 UI: internalPreview."
+  },
+  "openDialog": "Open dialog",
+  "@openDialog": {
+    "description": "Common/Phase 0 UI: openDialog."
+  },
+  "reviewChanges": "Review changes",
+  "@reviewChanges": {
+    "description": "Common/Phase 0 UI: reviewChanges."
+  },
+  "confirmationPreview": "This is a preview of the shared confirmation dialog.",
+  "@confirmationPreview": {
+    "description": "Common/Phase 0 UI: confirmationPreview."
+  },
+  "looksGood": "Looks good",
+  "@looksGood": {
+    "description": "Common/Phase 0 UI: looksGood."
+  },
+  "consistencyNotice": "Consistent by design. Every future module uses these foundations.",
+  "@consistencyNotice": {
+    "description": "Common/Phase 0 UI: consistencyNotice."
+  },
+  "designLanguage": "Design language",
+  "@designLanguage": {
+    "description": "Common/Phase 0 UI: designLanguage."
+  },
+  "oneSystem": "One system",
+  "@oneSystem": {
+    "description": "Common/Phase 0 UI: oneSystem."
+  },
+  "sharedAcrossModules": "Shared across every module",
+  "@sharedAcrossModules": {
+    "description": "Common/Phase 0 UI: sharedAcrossModules."
+  },
+  "dataStrategy": "Data strategy",
+  "@dataStrategy": {
+    "description": "Common/Phase 0 UI: dataStrategy."
+  },
+  "localFirst": "Local first",
+  "@localFirst": {
+    "description": "Common/Phase 0 UI: localFirst."
+  },
+  "repositorySourceOfTruth": "Repositories own the source of truth",
+  "@repositorySourceOfTruth": {
+    "description": "Common/Phase 0 UI: repositorySourceOfTruth."
+  },
+  "layout": "Layout",
+  "@layout": {
+    "description": "Common/Phase 0 UI: layout."
+  },
+  "adaptive": "Adaptive",
+  "@adaptive": {
+    "description": "Common/Phase 0 UI: adaptive."
+  },
+  "adaptiveDetail": "Compact through large workspaces",
+  "@adaptiveDetail": {
+    "description": "Common/Phase 0 UI: adaptiveDetail."
+  },
+  "typography": "Typography",
+  "@typography": {
+    "description": "Common/Phase 0 UI: typography."
+  },
+  "typographySubtitle": "Inter / locally bundled / clear at every density",
+  "@typographySubtitle": {
+    "description": "Common/Phase 0 UI: typographySubtitle."
+  },
+  "typographyDisplay": "Display",
+  "@typographyDisplay": {
+    "description": "Common/Phase 0 UI: typographyDisplay."
+  },
+  "typographyPageTitle": "Page title",
+  "@typographyPageTitle": {
+    "description": "Common/Phase 0 UI: typographyPageTitle."
+  },
+  "typographySectionTitle": "Section title",
+  "@typographySectionTitle": {
+    "description": "Common/Phase 0 UI: typographySectionTitle."
+  },
+  "typographyCardTitle": "Card title",
+  "@typographyCardTitle": {
+    "description": "Common/Phase 0 UI: typographyCardTitle."
+  },
+  "typographyBodyLarge": "Body large",
+  "@typographyBodyLarge": {
+    "description": "Common/Phase 0 UI: typographyBodyLarge."
+  },
+  "typographyBody": "Body",
+  "@typographyBody": {
+    "description": "Common/Phase 0 UI: typographyBody."
+  },
+  "typographyBodySmall": "Body small",
+  "@typographyBodySmall": {
+    "description": "Common/Phase 0 UI: typographyBodySmall."
+  },
+  "typographyLabel": "Label",
+  "@typographyLabel": {
+    "description": "Common/Phase 0 UI: typographyLabel."
+  },
+  "typographyCaption": "Caption",
+  "@typographyCaption": {
+    "description": "Common/Phase 0 UI: typographyCaption."
+  },
+  "semanticPalette": "Semantic palette",
+  "@semanticPalette": {
+    "description": "Common/Phase 0 UI: semanticPalette."
+  },
+  "colorBrand": "Brand",
+  "@colorBrand": {
+    "description": "Common/Phase 0 UI: colorBrand."
+  },
+  "colorSurface": "Surface",
+  "@colorSurface": {
+    "description": "Common/Phase 0 UI: colorSurface."
+  },
+  "colorBackground": "Background",
+  "@colorBackground": {
+    "description": "Common/Phase 0 UI: colorBackground."
+  },
+  "colorBorder": "Border",
+  "@colorBorder": {
+    "description": "Common/Phase 0 UI: colorBorder."
+  },
+  "colorTextPrimary": "Text primary",
+  "@colorTextPrimary": {
+    "description": "Common/Phase 0 UI: colorTextPrimary."
+  },
+  "colorTextSecondary": "Text secondary",
+  "@colorTextSecondary": {
+    "description": "Common/Phase 0 UI: colorTextSecondary."
+  },
+  "colorTextMuted": "Text muted",
+  "@colorTextMuted": {
+    "description": "Common/Phase 0 UI: colorTextMuted."
+  },
+  "colorDanger": "Danger",
+  "@colorDanger": {
+    "description": "Common/Phase 0 UI: colorDanger."
+  },
+  "colorInfo": "Info",
+  "@colorInfo": {
+    "description": "Common/Phase 0 UI: colorInfo."
+  },
+  "actions": "Actions",
+  "@actions": {
+    "description": "Common/Phase 0 UI: actions."
+  },
+  "primaryAction": "Primary action",
+  "@primaryAction": {
+    "description": "Common/Phase 0 UI: primaryAction."
+  },
+  "previewActionComplete": "Preview action complete",
+  "@previewActionComplete": {
+    "description": "Common/Phase 0 UI: previewActionComplete."
+  },
+  "secondaryAction": "Secondary",
+  "@secondaryAction": {
+    "description": "Common/Phase 0 UI: secondaryAction."
+  },
+  "textAction": "Text action",
+  "@textAction": {
+    "description": "Common/Phase 0 UI: textAction."
+  },
+  "moreOptions": "More options",
+  "@moreOptions": {
+    "description": "Common/Phase 0 UI: moreOptions."
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Common/Phase 0 UI: disabled."
+  },
+  "saving": "Saving",
+  "@saving": {
+    "description": "Common/Phase 0 UI: saving."
+  },
+  "formControls": "Form controls",
+  "@formControls": {
+    "description": "Common/Phase 0 UI: formControls."
+  },
+  "formControlsSubtitle": "Shared field styling, validation and accessible labels.",
+  "@formControlsSubtitle": {
+    "description": "Common/Phase 0 UI: formControlsSubtitle."
+  },
+  "fullName": "Full name",
+  "@fullName": {
+    "description": "Common/Phase 0 UI: fullName."
+  },
+  "enterName": "Enter a name",
+  "@enterName": {
+    "description": "Common/Phase 0 UI: enterName."
+  },
+  "workLocation": "Work location",
+  "@workLocation": {
+    "description": "Common/Phase 0 UI: workLocation."
+  },
+  "office": "Office",
+  "@office": {
+    "description": "Common/Phase 0 UI: office."
+  },
+  "remote": "Remote",
+  "@remote": {
+    "description": "Common/Phase 0 UI: remote."
+  },
+  "effectiveDate": "Effective date",
+  "@effectiveDate": {
+    "description": "Common/Phase 0 UI: effectiveDate."
+  },
+  "startTime": "Start time",
+  "@startTime": {
+    "description": "Common/Phase 0 UI: startTime."
+  },
+  "validationExample": "Validation example",
+  "@validationExample": {
+    "description": "Common/Phase 0 UI: validationExample."
+  },
+  "informationCard": "Information card",
+  "@informationCard": {
+    "description": "Common/Phase 0 UI: informationCard."
+  },
+  "informationCardMessage": "Use a concise explanation to help people make a decision.",
+  "@informationCardMessage": {
+    "description": "Common/Phase 0 UI: informationCardMessage."
+  },
+  "statusAndFeedback": "Status & feedback",
+  "@statusAndFeedback": {
+    "description": "Common/Phase 0 UI: statusAndFeedback."
+  },
+  "localChangesAvailable": "Your changes are available on this device.",
+  "@localChangesAvailable": {
+    "description": "Common/Phase 0 UI: localChangesAvailable."
+  },
+  "recordsNeedAttention": "Some records need your attention.",
+  "@recordsNeedAttention": {
+    "description": "Common/Phase 0 UI: recordsNeedAttention."
+  },
+  "actionFailed": "Unable to complete this action.",
+  "@actionFailed": {
+    "description": "Common/Phase 0 UI: actionFailed."
+  },
+  "loadingRecords": "Loading records...",
+  "@loadingRecords": {
+    "description": "Common/Phase 0 UI: loadingRecords."
+  },
+  "noRecordsYet": "No records yet",
+  "@noRecordsYet": {
+    "description": "Common/Phase 0 UI: noRecordsYet."
+  },
+  "noRecordsMessage": "Records will appear here when your team gets started.",
+  "@noRecordsMessage": {
+    "description": "Common/Phase 0 UI: noRecordsMessage."
+  },
+  "retryWhenConnected": "Please try again when a connection is available.",
+  "@retryWhenConnected": {
+    "description": "Common/Phase 0 UI: retryWhenConnected."
+  },
+  "filtersAndTable": "Filters & table",
+  "@filtersAndTable": {
+    "description": "Common/Phase 0 UI: filtersAndTable."
+  },
+  "illustrativeRecords": "Illustrative records / no operational employee data",
+  "@illustrativeRecords": {
+    "description": "Common/Phase 0 UI: illustrativeRecords."
+  },
+  "activeOnly": "Active only",
+  "@activeOnly": {
+    "description": "Common/Phase 0 UI: activeOnly."
+  },
+  "clearFilters": "Clear filters",
+  "@clearFilters": {
+    "description": "Common/Phase 0 UI: clearFilters."
+  },
+  "employee": "Employee",
+  "@employee": {
+    "description": "Common/Phase 0 UI: employee."
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Common/Phase 0 UI: location."
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Common/Phase 0 UI: status."
+  },
+  "sampleAlex": "Alex Morgan",
+  "@sampleAlex": {
+    "description": "Common/Phase 0 UI: sampleAlex."
+  },
+  "sampleSam": "Sam Taylor",
+  "@sampleSam": {
+    "description": "Common/Phase 0 UI: sampleSam."
+  },
+  "dialogsAndSheets": "Dialogs & sheets",
+  "@dialogsAndSheets": {
+    "description": "Common/Phase 0 UI: dialogsAndSheets."
+  },
+  "previewDialog": "Preview dialog",
+  "@previewDialog": {
+    "description": "Common/Phase 0 UI: previewDialog."
+  },
+  "sharedDialog": "Shared dialog",
+  "@sharedDialog": {
+    "description": "Common/Phase 0 UI: sharedDialog."
+  },
+  "sharedDialogMessage": "Focused content for a clear decision.",
+  "@sharedDialogMessage": {
+    "description": "Common/Phase 0 UI: sharedDialogMessage."
+  },
+  "previewBottomSheet": "Preview bottom sheet",
+  "@previewBottomSheet": {
+    "description": "Common/Phase 0 UI: previewBottomSheet."
+  },
+  "quickDetails": "Quick details",
+  "@quickDetails": {
+    "description": "Common/Phase 0 UI: quickDetails."
+  },
+  "quickDetailsSubtitle": "A shared mobile presentation pattern.",
+  "@quickDetailsSubtitle": {
+    "description": "Common/Phase 0 UI: quickDetailsSubtitle."
+  },
+  "foundationDetails": "Foundation details",
+  "@foundationDetails": {
+    "description": "Common/Phase 0 UI: foundationDetails."
+  },
+  "architecture": "Architecture",
+  "@architecture": {
+    "description": "Common/Phase 0 UI: architecture."
+  },
+  "featureFirst": "Feature first",
+  "@featureFirst": {
+    "description": "Common/Phase 0 UI: featureFirst."
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Common/Phase 0 UI: theme."
+  },
+  "lightSemanticTokens": "Light / semantic tokens",
+  "@lightSemanticTokens": {
+    "description": "Common/Phase 0 UI: lightSemanticTokens."
+  },
+  "persistence": "Persistence",
+  "@persistence": {
+    "description": "Common/Phase 0 UI: persistence."
+  },
+  "persistenceDetail": "Drift + secure session storage",
+  "@persistenceDetail": {
+    "description": "Common/Phase 0 UI: persistenceDetail."
+  },
+  "internalPreviewPhase": "Internal preview / Phase 0",
+  "@internalPreviewPhase": {
+    "description": "Common/Phase 0 UI: internalPreviewPhase."
+  },
+  "workspaceTitle": "A foundation for what is next",
+  "@workspaceTitle": {
+    "description": "Common/Phase 0 UI: workspaceTitle."
+  },
+  "workspaceSubtitle": "One workspace. Every ERP module.",
+  "@workspaceSubtitle": {
+    "description": "Common/Phase 0 UI: workspaceSubtitle."
+  },
+  "workspaceInfoTitle": "Your ERP starts here",
+  "@workspaceInfoTitle": {
+    "description": "Common/Phase 0 UI: workspaceInfoTitle."
+  },
+  "workspaceInfoMessage": "The local-first architecture and shared design system are ready. Business modules will be introduced in future phases.",
+  "@workspaceInfoMessage": {
+    "description": "Common/Phase 0 UI: workspaceInfoMessage."
+  },
+  "phaseReady": "Phase 0 / Foundation ready",
+  "@phaseReady": {
+    "description": "Common/Phase 0 UI: phaseReady."
+  },
+  "pageNotFound": "This page could not be found.",
+  "@pageNotFound": {
+    "description": "Common/Phase 0 UI: pageNotFound."
+  },
+  "showPassword": "Show password",
+  "@showPassword": {
+    "description": "Common/Phase 0 UI: showPassword."
+  },
+  "hidePassword": "Hide password",
+  "@hidePassword": {
+    "description": "Common/Phase 0 UI: hidePassword."
+  },
+  "searchRecords": "Search records",
+  "@searchRecords": {
+    "description": "Common/Phase 0 UI: searchRecords."
+  },
+  "selectDate": "Select date",
+  "@selectDate": {
+    "description": "Common/Phase 0 UI: selectDate."
+  },
+  "selectTime": "Select time",
+  "@selectTime": {
+    "description": "Common/Phase 0 UI: selectTime."
+  },
+  "unableToLoadRecords": "Unable to load records",
+  "@unableToLoadRecords": {
+    "description": "Common/Phase 0 UI: unableToLoadRecords."
+  },
+  "noRecords": "No records",
+  "@noRecords": {
+    "description": "Common/Phase 0 UI: noRecords."
+  },
+  "previousPage": "Previous page",
+  "@previousPage": {
+    "description": "Common/Phase 0 UI: previousPage."
+  },
+  "nextPage": "Next page",
+  "@nextPage": {
+    "description": "Common/Phase 0 UI: nextPage."
+  },
+  "fieldRequired": "This field is required",
+  "@fieldRequired": {
+    "description": "Common/Phase 0 UI: fieldRequired."
+  },
+  "emailRequired": "Email is required",
+  "@emailRequired": {
+    "description": "Common/Phase 0 UI: emailRequired."
+  },
+  "emailInvalid": "Enter a valid email address",
+  "@emailInvalid": {
+    "description": "Common/Phase 0 UI: emailInvalid."
+  },
+  "failureTimeout": "The request timed out. Please try again.",
+  "@failureTimeout": {
+    "description": "Common/Phase 0 UI: failureTimeout."
+  },
+  "failureOffline": "Connection unavailable. Your local data is still available.",
+  "@failureOffline": {
+    "description": "Common/Phase 0 UI: failureOffline."
+  },
+  "failureCancelled": "Request cancelled.",
+  "@failureCancelled": {
+    "description": "Common/Phase 0 UI: failureCancelled."
+  },
+  "failureSessionExpired": "Your session has expired.",
+  "@failureSessionExpired": {
+    "description": "Common/Phase 0 UI: failureSessionExpired."
+  },
+  "failureRequest": "Unable to complete the request.",
+  "@failureRequest": {
+    "description": "Common/Phase 0 UI: failureRequest."
+  },
+  "failureInvalidData": "The response could not be read.",
+  "@failureInvalidData": {
+    "description": "Common/Phase 0 UI: failureInvalidData."
+  },
+  "failureLocationDisabled": "Enable location services to continue.",
+  "@failureLocationDisabled": {
+    "description": "Common/Phase 0 UI: failureLocationDisabled."
+  },
+  "failureLocationPermission": "Location permission is required for this action.",
+  "@failureLocationPermission": {
+    "description": "Common/Phase 0 UI: failureLocationPermission."
+  },
+  "failureLocationUnavailable": "Unable to determine your location.",
+  "@failureLocationUnavailable": {
+    "description": "Common/Phase 0 UI: failureLocationUnavailable."
+  },
+  "failureStorageWrite": "Unable to save changes on this device.",
+  "@failureStorageWrite": {
+    "description": "Common/Phase 0 UI: failureStorageWrite."
+  },
+  "failureStorageUpdate": "Unable to update local changes.",
+  "@failureStorageUpdate": {
+    "description": "Common/Phase 0 UI: failureStorageUpdate."
+  },
+  "failureSync": "Some changes could not be synchronized.",
+  "@failureSync": {
+    "description": "Common/Phase 0 UI: failureSync."
+  },
+  "failurePreferencesWrite": "Language changed for this session, but could not be saved.",
+  "@failurePreferencesWrite": {
+    "description": "Common/Phase 0 UI: failurePreferencesWrite."
+  },
+  "failurePreferencesRead": "Saved language could not be restored.",
+  "@failurePreferencesRead": {
+    "description": "Common/Phase 0 UI: failurePreferencesRead."
+  },
+  "formattingTitle": "Locale-aware formatting",
+  "@formattingTitle": {
+    "description": "Common/Phase 0 UI: formattingTitle."
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Common/Phase 0 UI: date."
+  },
+  "time": "Time",
+  "@time": {
+    "description": "Common/Phase 0 UI: time."
+  },
+  "duration": "Duration",
+  "@duration": {
+    "description": "Common/Phase 0 UI: duration."
+  },
+  "number": "Number",
+  "@number": {
+    "description": "Common/Phase 0 UI: number."
+  },
+  "percentage": "Percentage",
+  "@percentage": {
+    "description": "Common/Phase 0 UI: percentage."
+  },
+  "currency": "Currency",
+  "@currency": {
+    "description": "Common/Phase 0 UI: currency."
+  },
+  "month": "Month",
+  "@month": {
+    "description": "Common/Phase 0 UI: month."
+  },
+  "languageSubtitle": "Language and layout update immediately.",
+  "@languageSubtitle": {
+    "description": "Common/Phase 0 UI: languageSubtitle."
+  },
+  "englishNativeName": "English",
+  "arabicNativeName": "العربية",
+  "typographySample": "{level} / Built for clarity",
+  "@typographySample": {
+    "description": "typographySample",
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "paginationSummary": "{start}–{end} of {total}",
+  "@paginationSummary": {
+    "description": "paginationSummary",
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours}h {minutes}m",
+  "@durationHoursMinutes": {
+    "description": "durationHoursMinutes",
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "authWelcomeBack": "Welcome back",
+  "authSignInSubtitle": "Sign in to your company workspace.",
+  "authIdentifier": "Email or phone number",
+  "authIdentifierRequired": "Email or phone number is required",
+  "authIdentifierInvalid": "Enter a valid email or phone number",
+  "authPasswordRequired": "Password is required",
+  "authInvalidCredentials": "Incorrect email, phone number, or password.",
+  "authLoggingIn": "Signing in…",
+  "authBrandStatement": "A connected workspace.\nA clearer working day.",
+  "authBrandDescription": "One place for your people, operations, and the work ahead.",
+  "authWorkspaceLabel": "Company workspace",
+  "authSessionNote": "Your session stays signed in on this device until you sign out or it expires.",
+  "authInitializing": "Preparing your workspace…",
+  "authDemoAccounts": "Demo accounts",
+  "authDemoNotice": "Local demonstration only. No backend is connected.",
+  "authDemoDisabled": "Demo authentication is disabled in this configuration. A backend has not been connected yet.",
+  "authDemoPassword": "Demo password",
+  "authSessionStorageError": "We could not access the secure session. Please try again.",
+  "authServerError": "The sign-in service is temporarily unavailable. Please try again.",
+  "authForgotTitle": "Reset your password",
+  "authForgotSubtitle": "Enter the email or phone number associated with your account.",
+  "authResetInformation": "If an account matches these details, password reset instructions will be sent.",
+  "authResetDemoNote": "In this demo, no email or SMS is sent.",
+  "authResetTitle": "Request received",
+  "authBackToLogin": "Back to sign in",
+  "authSubmitting": "Please wait…",
+  "authChangePassword": "Change password",
+  "authChangeSubtitle": "Choose a strong password for your account.",
+  "authCurrentPassword": "Current password",
+  "authNewPassword": "New password",
+  "authConfirmPassword": "Confirm new password",
+  "authPasswordConstraints": "Use at least 8 characters, including a letter and a number.",
+  "authPasswordsMismatch": "Passwords do not match",
+  "authPasswordMustDiffer": "Choose a password different from your current password",
+  "authCurrentPasswordInvalid": "The current password is incorrect.",
+  "authPasswordChanged": "Password updated for this demo session.",
+  "authPasswordDemoNote": "Demo password changes last until the app restarts. No password is stored on this device.",
+  "authBackToWorkspace": "Back to workspace",
+  "authConfirmLogout": "Sign out of your workspace?",
+  "authLogoutMessage": "Your secure session will be removed from this device.",
+  "authHomeTitle": "Your workspace is ready",
+  "authHomeSubtitle": "You are signed in. Business modules will be added in the next phases.",
+  "authAccount": "Account",
+  "authCompany": "Company",
+  "authRole": "Role",
+  "authPermissions": "Permissions",
+  "authAccountStatus": "Account status",
+  "authStatusActive": "Active",
+  "authStatusSuspended": "Suspended",
+  "authStatusInactive": "Inactive",
+  "authRoleSuperAdmin": "Super administrator",
+  "authRoleCompanyAdmin": "Company administrator",
+  "authRoleHr": "Human resources",
+  "authRoleManager": "Manager",
+  "authRoleEmployee": "Employee",
+  "authPermissionViewer": "Assigned permissions",
+  "authEmployeeLinked": "Linked employee record",
+  "authEmployeeUnlinked": "No employee record linked",
+  "authPermissionCount": "{count} permissions assigned",
+  "@authPermissionCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "authGreeting": "Welcome, {name}",
+  "@authGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "permissionEmployeeViewSelf": "View own employee record",
+  "permissionEmployeeViewTeam": "View team employees",
+  "permissionEmployeeViewAll": "View all employees",
+  "permissionEmployeeCreate": "Create employees",
+  "permissionEmployeeUpdate": "Update employees",
+  "permissionEmployeeDeactivate": "Deactivate employees",
+  "permissionAttendanceViewSelf": "View own attendance",
+  "permissionAttendanceViewTeam": "View team attendance",
+  "permissionAttendanceViewAll": "View all attendance",
+  "permissionAttendancePunchIn": "Punch in",
+  "permissionAttendancePunchOut": "Punch out",
+  "permissionAttendanceBreak": "Manage own breaks",
+  "permissionAttendanceRequestCorrection": "Request attendance corrections",
+  "permissionAttendanceCorrect": "Correct attendance",
+  "permissionAttendanceApprove": "Approve attendance",
+  "permissionShiftView": "View shifts",
+  "permissionShiftManage": "Manage shifts",
+  "permissionWorkLocationView": "View work locations",
+  "permissionWorkLocationManage": "Manage work locations",
+  "permissionAttendancePolicyView": "View attendance policies",
+  "permissionAttendancePolicyManage": "Manage attendance policies",
+  "permissionCompanyManage": "Manage company",
+  "permissionUserManage": "Manage user accounts",
+  "permissionRoleManage": "Manage roles",
+  "permissionAttendanceReportView": "View attendance reports"
+}
