@@ -1,3 +1,4 @@
+import 'employee_attendance_catalog.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
@@ -185,8 +186,17 @@ class LocalEmployeeRepository implements EmployeeRepository {
             variables: [Variable(context.company.id), ...scope.variables],
           )
           .get();
+      final attendance = await EmployeeAttendanceCatalog(db).load(
+        context,
+        existing: excludingId == null
+            ? null
+            : await dao.get(context, excludingId),
+      );
       return Success(
         EmployeeReferences(
+          shifts: attendance.shifts,
+          workLocations: attendance.locations,
+          attendancePolicies: attendance.policies,
           managerLabels: relatedManagers
               .map(
                 (m) => WorkforceReference(
@@ -309,6 +319,11 @@ class LocalEmployeeRepository implements EmployeeRepository {
               cursor = (await dao.raw(context.company.id, cursor))?.managerId;
             }
           }
+          if (!await EmployeeAttendanceCatalog(
+            db,
+          ).valid(context, d, previous)) {
+            throw const EmployeeWriteException('assignment');
+          }
           final next =
               (await db
                       .customSelect(
@@ -351,9 +366,9 @@ class LocalEmployeeRepository implements EmployeeRepository {
             createdAt: previous?.createdAt ?? now,
             updatedAt: now,
             avatarUrl: previous?.avatarUrl,
-            shiftId: previous?.shiftId,
-            workLocationId: previous?.workLocationId,
-            attendancePolicyId: previous?.attendancePolicyId,
+            shiftId: d.shiftId,
+            workLocationId: d.workLocationId,
+            attendancePolicyId: d.attendancePolicyId,
           );
           await dao.put(employee);
           await enqueue(employee, id == null ? 'create' : 'update');

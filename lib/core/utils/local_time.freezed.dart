@@ -1,0 +1,280 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'local_time.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$LocalTime {
+
+ int get hour; int get minute;
+/// Create a copy of LocalTime
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LocalTimeCopyWith<LocalTime> get copyWith => _$LocalTimeCopyWithImpl<LocalTime>(this as LocalTime, _$identity);
+
+  /// Serializes this LocalTime to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LocalTime&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,hour,minute);
+
+@override
+String toString() {
+  return 'LocalTime(hour: $hour, minute: $minute)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LocalTimeCopyWith<$Res>  {
+  factory $LocalTimeCopyWith(LocalTime value, $Res Function(LocalTime) _then) = _$LocalTimeCopyWithImpl;
+@useResult
+$Res call({
+ int hour, int minute
+});
+
+
+
+
+}
+/// @nodoc
+class _$LocalTimeCopyWithImpl<$Res>
+    implements $LocalTimeCopyWith<$Res> {
+  _$LocalTimeCopyWithImpl(this._self, this._then);
+
+  final LocalTime _self;
+  final $Res Function(LocalTime) _then;
+
+/// Create a copy of LocalTime
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? hour = null,Object? minute = null,}) {
+  return _then(_self.copyWith(
+hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [LocalTime].
+extension LocalTimePatterns on LocalTime {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _LocalTime value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _LocalTime() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _LocalTime value)  $default,){
+final _that = this;
+switch (_that) {
+case _LocalTime():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _LocalTime value)?  $default,){
+final _that = this;
+switch (_that) {
+case _LocalTime() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int hour,  int minute)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _LocalTime() when $default != null:
+return $default(_that.hour,_that.minute);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int hour,  int minute)  $default,) {final _that = this;
+switch (_that) {
+case _LocalTime():
+return $default(_that.hour,_that.minute);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int hour,  int minute)?  $default,) {final _that = this;
+switch (_that) {
+case _LocalTime() when $default != null:
+return $default(_that.hour,_that.minute);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _LocalTime extends LocalTime {
+  const _LocalTime({required this.hour, required this.minute}): super._();
+  factory _LocalTime.fromJson(Map<String, dynamic> json) => _$LocalTimeFromJson(json);
+
+@override final  int hour;
+@override final  int minute;
+
+/// Create a copy of LocalTime
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LocalTimeCopyWith<_LocalTime> get copyWith => __$LocalTimeCopyWithImpl<_LocalTime>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$LocalTimeToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LocalTime&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,hour,minute);
+
+@override
+String toString() {
+  return 'LocalTime(hour: $hour, minute: $minute)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LocalTimeCopyWith<$Res> implements $LocalTimeCopyWith<$Res> {
+  factory _$LocalTimeCopyWith(_LocalTime value, $Res Function(_LocalTime) _then) = __$LocalTimeCopyWithImpl;
+@override @useResult
+$Res call({
+ int hour, int minute
+});
+
+
+
+
+}
+/// @nodoc
+class __$LocalTimeCopyWithImpl<$Res>
+    implements _$LocalTimeCopyWith<$Res> {
+  __$LocalTimeCopyWithImpl(this._self, this._then);
+
+  final _LocalTime _self;
+  final $Res Function(_LocalTime) _then;
+
+/// Create a copy of LocalTime
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? hour = null,Object? minute = null,}) {
+  return _then(_LocalTime(
+hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+// dart format on

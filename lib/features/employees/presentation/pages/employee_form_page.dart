@@ -1,3 +1,5 @@
+import '../../../../core/models/configuration_record.dart';
+import '../../../../shared/presentation/configuration_localization.dart';
 import '../../../../app/shell/pages/route_status_pages.dart';
 import '../../../../core/errors/result.dart';
 import 'package:flutter/material.dart';
@@ -314,17 +316,58 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
             const SizedBox(height: AppSpacing.xxl),
             AppFormSection(
               title: l.empAttendanceConfig,
-              child: AppDetailsGrid(
-                fields: [
-                  AppDetailField(
+              child: AppFormGrid(
+                children: [
+                  AppSelectField<String>(
                     label: l.dashboardShift,
-                    value: l.empUnassigned,
+                    value: d.shiftId,
+                    enabled: !state.saving,
+                    errorText: fieldError('shiftId'),
+                    options: [
+                      for (final item in refs!.shifts)
+                        AppSelectOption(
+                          item.id,
+                          item.name,
+                          subtitle: configurationStatusLabel(item.status, l),
+                          enabled: item.status == ConfigurationStatus.active,
+                        ),
+                    ],
+                    onChanged: (v) => change((d) => d.copyWith(shiftId: v)),
                   ),
-                  AppDetailField(
+                  AppSelectField<String>(
                     label: l.dashboardLocation,
-                    value: l.empUnassigned,
+                    value: d.workLocationId,
+                    enabled: !state.saving,
+                    errorText: fieldError('workLocationId'),
+                    options: [
+                      for (final item in refs.workLocations)
+                        AppSelectOption(
+                          item.id,
+                          item.name,
+                          subtitle: configurationStatusLabel(item.status, l),
+                          enabled: item.status == ConfigurationStatus.active,
+                        ),
+                    ],
+                    onChanged: (v) =>
+                        change((d) => d.copyWith(workLocationId: v)),
                   ),
-                  AppDetailField(label: l.empPolicy, value: l.empUnassigned),
+                  AppSelectField<String>(
+                    label: l.empPolicy,
+                    value: d.attendancePolicyId,
+                    enabled: !state.saving,
+                    errorText: fieldError('attendancePolicyId'),
+                    options: [
+                      for (final item in refs.attendancePolicies)
+                        AppSelectOption(
+                          item.id,
+                          item.name,
+                          subtitle: configurationStatusLabel(item.status, l),
+                          enabled: item.status == ConfigurationStatus.active,
+                        ),
+                    ],
+                    onChanged: (v) =>
+                        change((d) => d.copyWith(attendancePolicyId: v)),
+                  ),
                 ],
               ),
             ),

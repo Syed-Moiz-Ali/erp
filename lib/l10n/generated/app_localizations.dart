@@ -2839,6 +2839,750 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not assigned'**
   String get noSelection;
+
+  /// No description provided for @cfgConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration'**
+  String get cfgConfiguration;
+
+  /// No description provided for @cfgShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifts'**
+  String get cfgShifts;
+
+  /// No description provided for @cfgLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'Work locations'**
+  String get cfgLocations;
+
+  /// No description provided for @cfgPolicies.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance policies'**
+  String get cfgPolicies;
+
+  /// No description provided for @cfgIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Define when, where, and under which rules employees work.'**
+  String get cfgIntro;
+
+  /// No description provided for @cfgShiftIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours, weekdays, and planned breaks.'**
+  String get cfgShiftIntro;
+
+  /// No description provided for @cfgLocationIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Work addresses and location validation settings.'**
+  String get cfgLocationIntro;
+
+  /// No description provided for @cfgPolicyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules prepared for future attendance workflows.'**
+  String get cfgPolicyIntro;
+
+  /// No description provided for @cfgNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create record'**
+  String get cfgNew;
+
+  /// No description provided for @cfgEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit record'**
+  String get cfgEdit;
+
+  /// No description provided for @cfgSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration saved locally.'**
+  String get cfgSaved;
+
+  /// No description provided for @cfgStatusSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Status updated locally.'**
+  String get cfgStatusSaved;
+
+  /// No description provided for @cfgName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get cfgName;
+
+  /// No description provided for @cfgCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code (optional)'**
+  String get cfgCode;
+
+  /// No description provided for @cfgDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get cfgDescription;
+
+  /// No description provided for @cfgAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get cfgAll;
+
+  /// No description provided for @cfgActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get cfgActive;
+
+  /// No description provided for @cfgInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get cfgInactive;
+
+  /// No description provided for @cfgActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get cfgActivate;
+
+  /// No description provided for @cfgDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get cfgDeactivate;
+
+  /// No description provided for @cfgStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get cfgStatus;
+
+  /// No description provided for @cfgAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned employees'**
+  String get cfgAssigned;
+
+  /// No description provided for @cfgDeactivateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing assignments are retained. This record will no longer be available for new assignments.'**
+  String get cfgDeactivateMessage;
+
+  /// No description provided for @cfgActivateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this record available for new employee assignments.'**
+  String get cfgActivateMessage;
+
+  /// No description provided for @cfgEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No configuration records yet'**
+  String get cfgEmpty;
+
+  /// No description provided for @cfgEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a record to prepare employee attendance assignments.'**
+  String get cfgEmptyMessage;
+
+  /// No description provided for @cfgNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching records'**
+  String get cfgNoResults;
+
+  /// No description provided for @cfgNoResultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another search or status filter.'**
+  String get cfgNoResultsMessage;
+
+  /// No description provided for @cfgNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Record not found'**
+  String get cfgNotFound;
+
+  /// No description provided for @cfgNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This record is unavailable in the current company.'**
+  String get cfgNotFoundMessage;
+
+  /// No description provided for @cfgRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get cfgRequired;
+
+  /// No description provided for @cfgDuplicateName.
+  ///
+  /// In en, this message translates to:
+  /// **'An active record with this name already exists.'**
+  String get cfgDuplicateName;
+
+  /// No description provided for @cfgInvalidTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose different valid start and end times.'**
+  String get cfgInvalidTime;
+
+  /// No description provided for @cfgWorkingDaysError.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one working day.'**
+  String get cfgWorkingDaysError;
+
+  /// No description provided for @cfgInvalidGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Grace must be non-negative and shorter than the shift.'**
+  String get cfgInvalidGrace;
+
+  /// No description provided for @cfgInvalidBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed break must be shorter than the shift.'**
+  String get cfgInvalidBreak;
+
+  /// No description provided for @cfgInvalidMinimum.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum work must fit within expected working time.'**
+  String get cfgInvalidMinimum;
+
+  /// No description provided for @cfgInvalidCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter coordinates within valid latitude and longitude ranges.'**
+  String get cfgInvalidCoordinates;
+
+  /// No description provided for @cfgInvalidRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a positive, finite radius.'**
+  String get cfgInvalidRadius;
+
+  /// No description provided for @cfgInvalidAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a positive, finite accuracy limit.'**
+  String get cfgInvalidAccuracy;
+
+  /// No description provided for @cfgCountryError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a two-letter country code.'**
+  String get cfgCountryError;
+
+  /// No description provided for @cfgPolicyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Require location for at least one attendance event.'**
+  String get cfgPolicyError;
+
+  /// No description provided for @cfgEarlyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an early arrival limit from 0 to 1440 minutes.'**
+  String get cfgEarlyError;
+
+  /// No description provided for @cfgAssignmentError.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an active record from the current company.'**
+  String get cfgAssignmentError;
+
+  /// No description provided for @cfgStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to read or save local configuration. Please retry.'**
+  String get cfgStorageError;
+
+  /// No description provided for @cfgStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get cfgStart;
+
+  /// No description provided for @cfgEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End time'**
+  String get cfgEnd;
+
+  /// No description provided for @cfgDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get cfgDays;
+
+  /// No description provided for @cfgGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Grace period'**
+  String get cfgGrace;
+
+  /// No description provided for @cfgBreakMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Break mode'**
+  String get cfgBreakMode;
+
+  /// No description provided for @cfgManualBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual breaks'**
+  String get cfgManualBreak;
+
+  /// No description provided for @cfgFixedBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed planned break'**
+  String get cfgFixedBreak;
+
+  /// No description provided for @cfgNoBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'No breaks'**
+  String get cfgNoBreak;
+
+  /// No description provided for @cfgBreakMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned break duration'**
+  String get cfgBreakMinutes;
+
+  /// No description provided for @cfgMinimumWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum work duration (optional)'**
+  String get cfgMinimumWork;
+
+  /// No description provided for @cfgDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift duration'**
+  String get cfgDuration;
+
+  /// No description provided for @cfgExpectedWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected working time'**
+  String get cfgExpectedWork;
+
+  /// No description provided for @cfgOvernight.
+  ///
+  /// In en, this message translates to:
+  /// **'Overnight shift'**
+  String get cfgOvernight;
+
+  /// No description provided for @cfgSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get cfgSchedule;
+
+  /// No description provided for @cfgMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get cfgMinutes;
+
+  /// No description provided for @cfgMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'meters'**
+  String get cfgMeters;
+
+  /// No description provided for @cfgAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get cfgAddress;
+
+  /// No description provided for @cfgAddress1.
+  ///
+  /// In en, this message translates to:
+  /// **'Address line 1'**
+  String get cfgAddress1;
+
+  /// No description provided for @cfgAddress2.
+  ///
+  /// In en, this message translates to:
+  /// **'Address line 2 (optional)'**
+  String get cfgAddress2;
+
+  /// No description provided for @cfgCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get cfgCity;
+
+  /// No description provided for @cfgState.
+  ///
+  /// In en, this message translates to:
+  /// **'State / region'**
+  String get cfgState;
+
+  /// No description provided for @cfgPostal.
+  ///
+  /// In en, this message translates to:
+  /// **'Postal code'**
+  String get cfgPostal;
+
+  /// No description provided for @cfgCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country code'**
+  String get cfgCountry;
+
+  /// No description provided for @cfgLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get cfgLatitude;
+
+  /// No description provided for @cfgLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get cfgLongitude;
+
+  /// No description provided for @cfgRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed radius'**
+  String get cfgRadius;
+
+  /// No description provided for @cfgAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum accepted accuracy'**
+  String get cfgAccuracy;
+
+  /// No description provided for @cfgValidationMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Location validation'**
+  String get cfgValidationMode;
+
+  /// No description provided for @cfgGeofenceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Geofence required'**
+  String get cfgGeofenceRequired;
+
+  /// No description provided for @cfgGeofencePreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Geofence preferred'**
+  String get cfgGeofencePreferred;
+
+  /// No description provided for @cfgCaptureOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture location only'**
+  String get cfgCaptureOnly;
+
+  /// No description provided for @cfgNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'No location validation'**
+  String get cfgNoLocation;
+
+  /// No description provided for @cfgPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Location preview'**
+  String get cfgPreview;
+
+  /// No description provided for @cfgPreviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates and radius preview. A map provider can be added later.'**
+  String get cfgPreviewNote;
+
+  /// No description provided for @cfgCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use current location'**
+  String get cfgCurrentLocation;
+
+  /// No description provided for @cfgLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding location…'**
+  String get cfgLocating;
+
+  /// No description provided for @cfgOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get cfgOpenSettings;
+
+  /// No description provided for @cfgLocationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission was denied. You can enter coordinates manually.'**
+  String get cfgLocationDenied;
+
+  /// No description provided for @cfgLocationPermanent.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is blocked. Enable it in app settings.'**
+  String get cfgLocationPermanent;
+
+  /// No description provided for @cfgLocationDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are off. Enable them in device settings.'**
+  String get cfgLocationDisabled;
+
+  /// No description provided for @cfgLocationTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Location request timed out. Retry or enter coordinates manually.'**
+  String get cfgLocationTimeout;
+
+  /// No description provided for @cfgLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location is unavailable. You can enter coordinates manually.'**
+  String get cfgLocationUnavailable;
+
+  /// No description provided for @cfgPoorAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'The captured position has poor accuracy. Review these coordinates before saving.'**
+  String get cfgPoorAccuracy;
+
+  /// No description provided for @cfgCapturedAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Captured accuracy'**
+  String get cfgCapturedAccuracy;
+
+  /// No description provided for @cfgLocationRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Location rules'**
+  String get cfgLocationRules;
+
+  /// No description provided for @cfgBreakRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Break rules'**
+  String get cfgBreakRules;
+
+  /// No description provided for @cfgTimingRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Timing rules'**
+  String get cfgTimingRules;
+
+  /// No description provided for @cfgOfflineRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline behavior'**
+  String get cfgOfflineRules;
+
+  /// No description provided for @cfgGeneralRules.
+  ///
+  /// In en, this message translates to:
+  /// **'General rules'**
+  String get cfgGeneralRules;
+
+  /// No description provided for @cfgRequireLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Require location'**
+  String get cfgRequireLocation;
+
+  /// No description provided for @cfgOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow attendance outside the assigned location'**
+  String get cfgOutside;
+
+  /// No description provided for @cfgRemote.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow remote attendance'**
+  String get cfgRemote;
+
+  /// No description provided for @cfgLocationIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Require location on punch in'**
+  String get cfgLocationIn;
+
+  /// No description provided for @cfgLocationOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Require location on punch out'**
+  String get cfgLocationOut;
+
+  /// No description provided for @cfgLocationBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Require location for breaks'**
+  String get cfgLocationBreak;
+
+  /// No description provided for @cfgRequireAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Require acceptable location accuracy'**
+  String get cfgRequireAccuracy;
+
+  /// No description provided for @cfgTrackBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Track breaks'**
+  String get cfgTrackBreaks;
+
+  /// No description provided for @cfgMultipleBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow multiple breaks'**
+  String get cfgMultipleBreaks;
+
+  /// No description provided for @cfgOutDuringBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow punch out during a break'**
+  String get cfgOutDuringBreak;
+
+  /// No description provided for @cfgCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow employee correction requests'**
+  String get cfgCorrections;
+
+  /// No description provided for @cfgEarlyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow early punch in'**
+  String get cfgEarlyIn;
+
+  /// No description provided for @cfgEarlyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Early arrival limit'**
+  String get cfgEarlyLimit;
+
+  /// No description provided for @cfgLateIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow late punch in'**
+  String get cfgLateIn;
+
+  /// No description provided for @cfgEarlyOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow early punch out'**
+  String get cfgEarlyOut;
+
+  /// No description provided for @cfgOfflineMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline attendance mode'**
+  String get cfgOfflineMode;
+
+  /// No description provided for @cfgOfflineNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed'**
+  String get cfgOfflineNo;
+
+  /// No description provided for @cfgOfflinePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow pending validation'**
+  String get cfgOfflinePending;
+
+  /// No description provided for @cfgOfflineWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow with a warning'**
+  String get cfgOfflineWarning;
+
+  /// No description provided for @cfgYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get cfgYes;
+
+  /// No description provided for @cfgNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed'**
+  String get cfgNo;
+
+  /// No description provided for @cfgFoundationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration only. Attendance actions and rule evaluation will be implemented in Phase 6.'**
+  String get cfgFoundationNote;
+
+  /// No description provided for @cfgInactiveAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive • current assignment retained'**
+  String get cfgInactiveAssignment;
+
+  /// No description provided for @cfgMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get cfgMon;
+
+  /// No description provided for @cfgTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get cfgTue;
+
+  /// No description provided for @cfgWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get cfgWed;
+
+  /// No description provided for @cfgThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get cfgThu;
+
+  /// No description provided for @cfgFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get cfgFri;
+
+  /// No description provided for @cfgSat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get cfgSat;
+
+  /// No description provided for @cfgSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get cfgSun;
 }
 
 class _AppLocalizationsDelegate

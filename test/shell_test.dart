@@ -59,7 +59,7 @@ void main() {
       'settings',
       'account',
     });
-    expect(registry.registrations.length, 6);
+    expect(registry.registrations.length, 9);
     expect(
       () => ModuleRegistry.fromModules([
         ...registry.modules,
@@ -103,6 +103,7 @@ void main() {
         'employees',
         'attendance',
         'reports',
+        'settings', 'shifts','work-locations','attendance-policies',
         'profile',
       ],
       AppRole.companyAdmin: [
@@ -111,6 +112,7 @@ void main() {
         'attendance',
         'reports',
         'settings',
+        'shifts', 'work-locations', 'attendance-policies',
         'profile',
       ],
       AppRole.superAdmin: [
@@ -119,6 +121,7 @@ void main() {
         'attendance',
         'reports',
         'settings',
+        'shifts', 'work-locations', 'attendance-policies',
         'profile',
       ],
     };
@@ -209,11 +212,12 @@ void main() {
       expect(nav.mobileMore.map((d) => d.id), [
         'reports',
         'settings',
+        'shifts', 'work-locations', 'attendance-policies',
         'profile',
       ]);
       expect(nav.groupsFor(nav.mobileMore).keys, [
         NavigationGroup.insights,
-        NavigationGroup.administration,
+        NavigationGroup.configuration,
         NavigationGroup.account,
       ]);
       expect(() => nav.mobileMore.clear(), throwsUnsupportedError);
@@ -384,7 +388,7 @@ void main() {
                 .map((m) => m.id)
                 .toList();
             expect(items.contains('employees'), username != 'employee');
-            expect(items.contains('settings'), username == 'admin');
+            expect(items.contains('settings'), username == 'admin'||username=='hr');
             expect(items.contains('reports'), username != 'employee');
           }
           expect(tester.takeException(), isNull);

@@ -1,13 +1,17 @@
+import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import '../errors/result.dart';
 
 abstract interface class LocationService {
-  Future<Result<Position>> currentPosition();
+  Future<Result<Position>> currentPosition({bool requestPermission = false});
+  Future<Result<bool>> openSettings({bool locationSettings = false});
 }
 
 class DeviceLocationService implements LocationService {
   @override
-  Future<Result<Position>> currentPosition() async {
+  Future<Result<Position>> currentPosition({
+    bool requestPermission = false,
+  }) async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
         return const Failed(
@@ -17,9 +21,19 @@ class DeviceLocationService implements LocationService {
           ),
         );
       }
-      final permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied && requestPermission) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.deniedForever) {
+        return const Failed(
+          Failure(
+            code: 'location_permanent',
+            kind: FailureKind.locationPermission,
+          ),
+        );
+      }
+      if (permission == LocationPermission.denied) {
         return const Failed(
           Failure(
             code: 'location_permission',
@@ -35,6 +49,14 @@ class DeviceLocationService implements LocationService {
           ),
         ),
       );
+    } on TimeoutException {
+      return const Failed(
+        Failure(
+          code: 'location_timeout',
+          kind: FailureKind.timeout,
+          retryable: true,
+        ),
+      );
     } catch (_) {
       return const Failed(
         Failure(
@@ -46,5 +68,22 @@ class DeviceLocationService implements LocationService {
     }
   }
 
-  // Permission requests must follow a user action in the future attendance flow.
+  @override
+  Future<Result<bool>> openSettings({bool locationSettings = false}) async {
+    try {
+      return Success(
+        await (locationSettings
+            ? Geolocator.openLocationSettings()
+            : Geolocator.openAppSettings()),
+      );
+    } catch (_) {
+      return const Failed(
+        Failure(
+          code: 'location_unavailable',
+          kind: FailureKind.locationUnavailable,
+          retryable: true,
+        ),
+      );
+    }
+  }
 }

@@ -1,3 +1,9 @@
+import '../features/shifts/domain/shift_repository.dart';
+import '../features/shifts/data/local_shift_repository.dart';
+import '../features/work_locations/domain/work_location_repository.dart';
+import '../features/work_locations/data/local_work_location_repository.dart';
+import '../features/attendance_policies/domain/attendance_policy_repository.dart';
+import '../features/attendance_policies/data/local_attendance_policy_repository.dart';
 import '../features/auth/domain/repositories/account_access_guard.dart';
 import '../features/employees/data/local_account_access_guard.dart';
 import '../features/employees/domain/employee_repository.dart';
@@ -73,11 +79,24 @@ void configureDependencies() {
   services.registerLazySingleton<EmployeeRepository>(
     () => LocalEmployeeRepository(services(), services()),
   );
+  services.registerLazySingleton<ShiftRepository>(
+    () => LocalShiftRepository(services()),
+  );
+  services.registerLazySingleton<WorkLocationRepository>(
+    () => LocalWorkLocationRepository(services()),
+  );
+  services.registerLazySingleton<AttendancePolicyRepository>(
+    () => LocalAttendancePolicyRepository(services()),
+  );
   services.registerLazySingleton<ModuleRegistry>(
     () => createErpRegistry(
       services(),
       dashboardRepository: services(),
       employeeRepository: services(),
+      shiftRepository: services(),
+      workLocationRepository: services(),
+      attendancePolicyRepository: services(),
+      locationService: services(),
     ),
   );
   services.registerSingleton(AppLogger());

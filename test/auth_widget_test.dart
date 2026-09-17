@@ -1,3 +1,7 @@
+import 'package:modular_erp/bootstrap/demo_configuration_seed.dart';
+import 'package:modular_erp/features/shifts/data/local_shift_repository.dart';
+import 'package:modular_erp/features/work_locations/data/local_work_location_repository.dart';
+import 'package:modular_erp/features/attendance_policies/data/local_attendance_policy_repository.dart';
 import 'package:drift/native.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/features/employees/data/employee_seed.dart';
@@ -77,9 +81,10 @@ Future<Harness> mount(
   ModuleRegistry? registry;
   if (registryFactory == null) {
     database = AppDatabase(NativeDatabase.memory());
-    await tester.runAsync(() => seedEmployees(database!));
+    await tester.runAsync(() async { await seedEmployees(database!); await seedAttendanceConfiguration(database); });
     registry = createErpRegistry(
       repo,
+      shiftRepository:LocalShiftRepository(database),workLocationRepository:LocalWorkLocationRepository(database),attendancePolicyRepository:LocalAttendancePolicyRepository(database),
       employeeRepository: LocalEmployeeRepository(
         EmployeeDao(database),
         LocalAccountProvisioningRepository(database),

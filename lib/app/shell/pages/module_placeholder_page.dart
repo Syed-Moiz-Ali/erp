@@ -47,12 +47,3 @@ class ReportsPlaceholderPage extends StatelessWidget {
   );
 }
 
-class SettingsPlaceholderPage extends StatelessWidget {
-  const SettingsPlaceholderPage({super.key});
-  @override
-  Widget build(BuildContext context) => ModulePlaceholderPage(
-    title: (l) => l.shellSettings,
-    description: (l) => l.shellSettingsDescription,
-    icon: Icons.settings_outlined,
-  );
-}

@@ -1452,4 +1452,390 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noSelection => 'غير محدد';
+
+  @override
+  String get cfgConfiguration => 'الإعدادات';
+
+  @override
+  String get cfgShifts => 'الورديات';
+
+  @override
+  String get cfgLocations => 'مواقع العمل';
+
+  @override
+  String get cfgPolicies => 'سياسات الحضور';
+
+  @override
+  String get cfgIntro => 'حدد أوقات عمل الموظفين ومواقعهم وقواعد الحضور.';
+
+  @override
+  String get cfgShiftIntro => 'ساعات العمل وأيامه والاستراحات المخططة.';
+
+  @override
+  String get cfgLocationIntro => 'عناوين العمل وإعدادات التحقق من الموقع.';
+
+  @override
+  String get cfgPolicyIntro => 'قواعد جاهزة لإجراءات الحضور المستقبلية.';
+
+  @override
+  String get cfgNew => 'إنشاء سجل';
+
+  @override
+  String get cfgEdit => 'تعديل السجل';
+
+  @override
+  String get cfgSaved => 'تم حفظ الإعدادات محليًا.';
+
+  @override
+  String get cfgStatusSaved => 'تم تحديث الحالة محليًا.';
+
+  @override
+  String get cfgName => 'الاسم';
+
+  @override
+  String get cfgCode => 'الرمز (اختياري)';
+
+  @override
+  String get cfgDescription => 'الوصف';
+
+  @override
+  String get cfgAll => 'جميع الحالات';
+
+  @override
+  String get cfgActive => 'نشط';
+
+  @override
+  String get cfgInactive => 'غير نشط';
+
+  @override
+  String get cfgActivate => 'تفعيل';
+
+  @override
+  String get cfgDeactivate => 'إلغاء التفعيل';
+
+  @override
+  String get cfgStatus => 'الحالة';
+
+  @override
+  String get cfgAssigned => 'الموظفون المعيّنون';
+
+  @override
+  String get cfgDeactivateMessage =>
+      'ستبقى التعيينات الحالية محفوظة، ولن يتاح هذا السجل للتعيينات الجديدة.';
+
+  @override
+  String get cfgActivateMessage => 'إتاحة هذا السجل لتعيينات الموظفين الجديدة.';
+
+  @override
+  String get cfgEmpty => 'لا توجد سجلات إعدادات بعد';
+
+  @override
+  String get cfgEmptyMessage => 'أنشئ سجلًا لتجهيز تعيينات حضور الموظفين.';
+
+  @override
+  String get cfgNoResults => 'لا توجد سجلات مطابقة';
+
+  @override
+  String get cfgNoResultsMessage => 'جرّب بحثًا آخر أو غيّر فلتر الحالة.';
+
+  @override
+  String get cfgNotFound => 'لم يتم العثور على السجل';
+
+  @override
+  String get cfgNotFoundMessage => 'هذا السجل غير متاح في الشركة الحالية.';
+
+  @override
+  String get cfgRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get cfgDuplicateName => 'يوجد بالفعل سجل نشط بهذا الاسم.';
+
+  @override
+  String get cfgInvalidTime => 'اختر وقت بداية ونهاية صحيحين ومختلفين.';
+
+  @override
+  String get cfgWorkingDaysError => 'اختر يوم عمل واحدًا على الأقل.';
+
+  @override
+  String get cfgInvalidGrace =>
+      'يجب ألا تكون فترة السماح سالبة وأن تكون أقصر من الوردية.';
+
+  @override
+  String get cfgInvalidBreak =>
+      'يجب أن تكون الاستراحة الثابتة أقصر من الوردية.';
+
+  @override
+  String get cfgInvalidMinimum =>
+      'يجب ألا يتجاوز الحد الأدنى للعمل الوقت المتوقع.';
+
+  @override
+  String get cfgInvalidCoordinates =>
+      'أدخل إحداثيات ضمن نطاقات خط العرض والطول الصحيحة.';
+
+  @override
+  String get cfgInvalidRadius => 'أدخل نصف قطر موجبًا ومحدودًا.';
+
+  @override
+  String get cfgInvalidAccuracy => 'أدخل حد دقة موجبًا ومحدودًا.';
+
+  @override
+  String get cfgCountryError => 'أدخل رمز البلد المكوّن من حرفين.';
+
+  @override
+  String get cfgPolicyError => 'اشترط الموقع لإجراء حضور واحد على الأقل.';
+
+  @override
+  String get cfgEarlyError => 'أدخل حد الحضور المبكر من ٠ إلى ١٤٤٠ دقيقة.';
+
+  @override
+  String get cfgAssignmentError => 'اختر سجلًا نشطًا من الشركة الحالية.';
+
+  @override
+  String get cfgStorageError =>
+      'تعذرت قراءة الإعدادات المحلية أو حفظها. حاول مجددًا.';
+
+  @override
+  String get cfgStart => 'وقت البداية';
+
+  @override
+  String get cfgEnd => 'وقت النهاية';
+
+  @override
+  String get cfgDays => 'أيام العمل';
+
+  @override
+  String get cfgGrace => 'فترة السماح';
+
+  @override
+  String get cfgBreakMode => 'نوع الاستراحة';
+
+  @override
+  String get cfgManualBreak => 'استراحات يدوية';
+
+  @override
+  String get cfgFixedBreak => 'استراحة مخططة ثابتة';
+
+  @override
+  String get cfgNoBreak => 'بدون استراحات';
+
+  @override
+  String get cfgBreakMinutes => 'مدة الاستراحة المخططة';
+
+  @override
+  String get cfgMinimumWork => 'الحد الأدنى لمدة العمل (اختياري)';
+
+  @override
+  String get cfgDuration => 'مدة الوردية';
+
+  @override
+  String get cfgExpectedWork => 'وقت العمل المتوقع';
+
+  @override
+  String get cfgOvernight => 'وردية ليلية تمتد لليوم التالي';
+
+  @override
+  String get cfgSchedule => 'جدول العمل';
+
+  @override
+  String get cfgMinutes => 'دقيقة';
+
+  @override
+  String get cfgMeters => 'متر';
+
+  @override
+  String get cfgAddress => 'العنوان';
+
+  @override
+  String get cfgAddress1 => 'سطر العنوان الأول';
+
+  @override
+  String get cfgAddress2 => 'سطر العنوان الثاني (اختياري)';
+
+  @override
+  String get cfgCity => 'المدينة';
+
+  @override
+  String get cfgState => 'الولاية / المنطقة';
+
+  @override
+  String get cfgPostal => 'الرمز البريدي';
+
+  @override
+  String get cfgCountry => 'رمز البلد';
+
+  @override
+  String get cfgLatitude => 'خط العرض';
+
+  @override
+  String get cfgLongitude => 'خط الطول';
+
+  @override
+  String get cfgRadius => 'نصف القطر المسموح';
+
+  @override
+  String get cfgAccuracy => 'أقصى هامش خطأ مقبول';
+
+  @override
+  String get cfgValidationMode => 'التحقق من الموقع';
+
+  @override
+  String get cfgGeofenceRequired => 'النطاق الجغرافي إلزامي';
+
+  @override
+  String get cfgGeofencePreferred => 'النطاق الجغرافي مفضّل';
+
+  @override
+  String get cfgCaptureOnly => 'تسجيل الموقع فقط';
+
+  @override
+  String get cfgNoLocation => 'بدون تحقق من الموقع';
+
+  @override
+  String get cfgPreview => 'معاينة الموقع';
+
+  @override
+  String get cfgPreviewNote =>
+      'معاينة الإحداثيات ونصف القطر. يمكن إضافة مزوّد خرائط لاحقًا.';
+
+  @override
+  String get cfgCurrentLocation => 'استخدام الموقع الحالي';
+
+  @override
+  String get cfgLocating => 'جارٍ تحديد الموقع…';
+
+  @override
+  String get cfgOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get cfgLocationDenied =>
+      'تم رفض إذن الموقع. يمكنك إدخال الإحداثيات يدويًا.';
+
+  @override
+  String get cfgLocationPermanent =>
+      'إذن الموقع محظور. فعّله في إعدادات التطبيق.';
+
+  @override
+  String get cfgLocationDisabled =>
+      'خدمات الموقع متوقفة. فعّلها في إعدادات الجهاز.';
+
+  @override
+  String get cfgLocationTimeout =>
+      'انتهت مهلة طلب الموقع. حاول مجددًا أو أدخل الإحداثيات يدويًا.';
+
+  @override
+  String get cfgLocationUnavailable =>
+      'الموقع الحالي غير متاح. يمكنك إدخال الإحداثيات يدويًا.';
+
+  @override
+  String get cfgPoorAccuracy =>
+      'دقة الموقع المسجّل منخفضة. راجع الإحداثيات قبل الحفظ.';
+
+  @override
+  String get cfgCapturedAccuracy => 'دقة الموقع المسجّل';
+
+  @override
+  String get cfgLocationRules => 'قواعد الموقع';
+
+  @override
+  String get cfgBreakRules => 'قواعد الاستراحات';
+
+  @override
+  String get cfgTimingRules => 'قواعد التوقيت';
+
+  @override
+  String get cfgOfflineRules => 'السلوك دون اتصال';
+
+  @override
+  String get cfgGeneralRules => 'القواعد العامة';
+
+  @override
+  String get cfgRequireLocation => 'اشتراط الموقع';
+
+  @override
+  String get cfgOutside => 'السماح بالحضور خارج الموقع المعيّن';
+
+  @override
+  String get cfgRemote => 'السماح بالحضور عن بُعد';
+
+  @override
+  String get cfgLocationIn => 'اشتراط الموقع عند بدء العمل';
+
+  @override
+  String get cfgLocationOut => 'اشتراط الموقع عند إنهاء العمل';
+
+  @override
+  String get cfgLocationBreak => 'اشتراط الموقع للاستراحات';
+
+  @override
+  String get cfgRequireAccuracy => 'اشتراط دقة موقع مقبولة';
+
+  @override
+  String get cfgTrackBreaks => 'تسجيل الاستراحات';
+
+  @override
+  String get cfgMultipleBreaks => 'السماح باستراحات متعددة';
+
+  @override
+  String get cfgOutDuringBreak => 'السماح بإنهاء العمل أثناء الاستراحة';
+
+  @override
+  String get cfgCorrections => 'السماح بطلبات تصحيح الموظفين';
+
+  @override
+  String get cfgEarlyIn => 'السماح ببدء العمل مبكرًا';
+
+  @override
+  String get cfgEarlyLimit => 'حد الحضور المبكر';
+
+  @override
+  String get cfgLateIn => 'السماح ببدء العمل متأخرًا';
+
+  @override
+  String get cfgEarlyOut => 'السماح بإنهاء العمل مبكرًا';
+
+  @override
+  String get cfgOfflineMode => 'وضع الحضور دون اتصال';
+
+  @override
+  String get cfgOfflineNo => 'غير مسموح';
+
+  @override
+  String get cfgOfflinePending => 'السماح بانتظار التحقق';
+
+  @override
+  String get cfgOfflineWarning => 'السماح مع تنبيه';
+
+  @override
+  String get cfgYes => 'مسموح';
+
+  @override
+  String get cfgNo => 'غير مسموح';
+
+  @override
+  String get cfgFoundationNote =>
+      'هذه إعدادات فقط. ستُنفّذ إجراءات الحضور وتقييم القواعد في المرحلة السادسة.';
+
+  @override
+  String get cfgInactiveAssignment => 'غير نشط • التعيين الحالي محفوظ';
+
+  @override
+  String get cfgMon => 'الاثنين';
+
+  @override
+  String get cfgTue => 'الثلاثاء';
+
+  @override
+  String get cfgWed => 'الأربعاء';
+
+  @override
+  String get cfgThu => 'الخميس';
+
+  @override
+  String get cfgFri => 'الجمعة';
+
+  @override
+  String get cfgSat => 'السبت';
+
+  @override
+  String get cfgSun => 'الأحد';
 }

@@ -1,3 +1,29 @@
+import '../../core/location/location_service.dart';
+import '../../shared/presentation/configuration_landing_page.dart';
+import '../../features/shifts/domain/shift_repository.dart';
+import '../../features/shifts/presentation/bloc/shift_list_bloc.dart';
+import '../../features/shifts/presentation/pages/shift_list_page.dart';
+import '../../features/shifts/presentation/bloc/shift_details_bloc.dart';
+import '../../features/shifts/presentation/pages/shift_details_page.dart';
+import '../../features/shifts/presentation/bloc/shift_form_bloc.dart';
+import '../../features/shifts/presentation/pages/shift_form_page.dart';
+import '../../features/shifts/domain/shift.dart';
+import '../../features/work_locations/domain/work_location_repository.dart';
+import '../../features/work_locations/presentation/bloc/work_location_list_bloc.dart';
+import '../../features/work_locations/presentation/pages/work_location_list_page.dart';
+import '../../features/work_locations/presentation/bloc/work_location_details_bloc.dart';
+import '../../features/work_locations/presentation/pages/work_location_details_page.dart';
+import '../../features/work_locations/presentation/bloc/work_location_form_bloc.dart';
+import '../../features/work_locations/presentation/pages/work_location_form_page.dart';
+import '../../features/work_locations/domain/work_location.dart';
+import '../../features/attendance_policies/domain/attendance_policy_repository.dart';
+import '../../features/attendance_policies/presentation/bloc/attendance_policy_list_bloc.dart';
+import '../../features/attendance_policies/presentation/pages/attendance_policy_list_page.dart';
+import '../../features/attendance_policies/presentation/bloc/attendance_policy_details_bloc.dart';
+import '../../features/attendance_policies/presentation/pages/attendance_policy_details_page.dart';
+import '../../features/attendance_policies/presentation/bloc/attendance_policy_form_bloc.dart';
+import '../../features/attendance_policies/presentation/pages/attendance_policy_form_page.dart';
+import '../../features/attendance_policies/domain/attendance_policy.dart';
 import '../../features/employees/domain/employee_repository.dart';
 import '../../features/employees/presentation/bloc/employee_list_bloc.dart';
 import '../../features/employees/presentation/bloc/employee_details_bloc.dart';
@@ -31,6 +57,10 @@ ModuleRegistry createErpRegistry(
   AuthRepository authRepository, {
   DashboardRepository? dashboardRepository,
   EmployeeRepository? employeeRepository,
+  ShiftRepository? shiftRepository,
+  WorkLocationRepository? workLocationRepository,
+  AttendancePolicyRepository? attendancePolicyRepository,
+  LocationService? locationService,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -51,6 +81,278 @@ ModuleRegistry createErpRegistry(
       ),
     ],
   );
+  RegisteredDestination shiftsDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'shifts',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgShifts,
+        icon: Icons.schedule_outlined,
+        route: AppRoutes.shifts,
+        requiredPermissions: {AppPermission.shiftView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 41,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (shiftRepository == null)
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        ShiftListBloc(shiftRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.shifts,
+              name: 'shifts',
+              builder: (c, s) => const ShiftListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    create: (_) => ShiftFormBloc(
+                      shiftRepository!,
+                      c.read<ShiftListBloc>().context,
+                      id: null,
+                    )..add(const RecordFormInitialized<ShiftDraft>()),
+                    child: ShiftFormPage(guard: guard),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    create: (_) => ShiftDetailsBloc(
+                      shiftRepository!,
+                      c.read<ShiftListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const ShiftDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        create: (_) => ShiftFormBloc(
+                          shiftRepository!,
+                          c.read<ShiftListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<ShiftDraft>()),
+                        child: ShiftFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination workLocationsDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'work-locations',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgLocations,
+        icon: Icons.location_on_outlined,
+        route: AppRoutes.workLocations,
+        requiredPermissions: {AppPermission.workLocationView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 42,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (workLocationRepository == null)
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        WorkLocationListBloc(workLocationRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.workLocations,
+              name: 'work-locations',
+              builder: (c, s) => const WorkLocationListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    create: (_) => WorkLocationFormBloc(
+                      workLocationRepository!,
+                      c.read<WorkLocationListBloc>().context,
+                      locationService ?? DeviceLocationService(),
+                      id: null,
+                    )..add(const RecordFormInitialized<WorkLocationDraft>()),
+                    child: WorkLocationFormPage(guard: guard),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    create: (_) => WorkLocationDetailsBloc(
+                      workLocationRepository!,
+                      c.read<WorkLocationListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const WorkLocationDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        create: (_) =>
+                            WorkLocationFormBloc(
+                              workLocationRepository!,
+                              c.read<WorkLocationListBloc>().context,
+                              locationService ?? DeviceLocationService(),
+                              id: s.pathParameters['id'],
+                            )..add(
+                              const RecordFormInitialized<WorkLocationDraft>(),
+                            ),
+                        child: WorkLocationFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination attendancePoliciesDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'attendance-policies',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgPolicies,
+        icon: Icons.rule_outlined,
+        route: AppRoutes.attendancePolicies,
+        requiredPermissions: {AppPermission.attendancePolicyView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 43,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (attendancePolicyRepository == null)
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) => AttendancePolicyListBloc(
+                      attendancePolicyRepository,
+                      auth,
+                    )..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.attendancePolicies,
+              name: 'attendance-policies',
+              builder: (c, s) => const AttendancePolicyListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    create: (_) =>
+                        AttendancePolicyFormBloc(
+                          attendancePolicyRepository!,
+                          c.read<AttendancePolicyListBloc>().context,
+                          id: null,
+                        )..add(
+                          const RecordFormInitialized<AttendancePolicyDraft>(),
+                        ),
+                    child: AttendancePolicyFormPage(guard: guard),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    create: (_) => AttendancePolicyDetailsBloc(
+                      attendancePolicyRepository!,
+                      c.read<AttendancePolicyListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const AttendancePolicyDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        create: (_) =>
+                            AttendancePolicyFormBloc(
+                              attendancePolicyRepository!,
+                              c.read<AttendancePolicyListBloc>().context,
+                              id: s.pathParameters['id'],
+                            )..add(
+                              const RecordFormInitialized<
+                                AttendancePolicyDraft
+                              >(),
+                            ),
+                        child: AttendancePolicyFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   registry = ModuleRegistry.fromModules([
     AppModule(
       id: AppModuleIds.dashboard,
@@ -216,20 +518,30 @@ ModuleRegistry createErpRegistry(
           ErpModule(
             id: 'settings',
             moduleId: AppModuleIds.settings,
-            name: (l) => l.shellSettings,
+            name: (l) => l.cfgConfiguration,
             icon: Icons.settings_outlined,
             selectedIcon: Icons.settings,
             route: AppRoutes.settings,
-            navigationGroup: NavigationGroup.administration,
+            navigationGroup: NavigationGroup.configuration,
             order: 40,
             anyPermissions: {
+              AppPermission.shiftView,
+              AppPermission.workLocationView,
+              AppPermission.attendancePolicyView,
               AppPermission.companyManage,
               AppPermission.userManage,
               AppPermission.roleManage,
             },
           ),
-          (_) => const SettingsPlaceholderPage(),
+          (_) => ConfigurationLandingPage(
+            shiftRepository: shiftRepository,
+            workLocationRepository: workLocationRepository,
+            attendancePolicyRepository: attendancePolicyRepository,
+          ),
         ),
+        shiftsDestination(),
+        workLocationsDestination(),
+        attendancePoliciesDestination(),
       ],
     ),
     AppModule(

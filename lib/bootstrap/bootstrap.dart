@@ -1,3 +1,4 @@
+import 'demo_configuration_seed.dart';
 import '../features/employees/data/employee_seed.dart';
 import '../app/shell/app_shell_cubit.dart';
 import '../app/module_registry/module_registry.dart';
@@ -32,7 +33,10 @@ Future<void> bootstrap() async {
   await initializeDateFormatting();
   // Force Drift to open and run migrations before session restoration.
   await services<AppDatabase>().customSelect('SELECT 1').get();
-  if (AppConfig.demoAuthEnabled) await seedEmployees(services<AppDatabase>());
+  if (AppConfig.demoAuthEnabled) {
+    await seedEmployees(services<AppDatabase>());
+    await seedAttendanceConfiguration(services<AppDatabase>());
+  }
   final localeCubit = services<LocaleCubit>();
   await localeCubit.restore(WidgetsBinding.instance.platformDispatcher.locales);
   final shellCubit = services<AppShellCubit>();

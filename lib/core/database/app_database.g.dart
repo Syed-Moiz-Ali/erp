@@ -3171,6 +3171,3694 @@ class WorkforceSeedsCompanion extends UpdateCompanion<WorkforceSeed> {
   }
 }
 
+class $ShiftRecordsTable extends ShiftRecords
+    with TableInfo<$ShiftRecordsTable, ShiftRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShiftRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _normalizedNameMeta = const VerificationMeta(
+    'normalizedName',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedName = GeneratedColumn<String>(
+    'normalized_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startMinutesMeta = const VerificationMeta(
+    'startMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> startMinutes = GeneratedColumn<int>(
+    'start_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endMinutesMeta = const VerificationMeta(
+    'endMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> endMinutes = GeneratedColumn<int>(
+    'end_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _workingDayMaskMeta = const VerificationMeta(
+    'workingDayMask',
+  );
+  @override
+  late final GeneratedColumn<int> workingDayMask = GeneratedColumn<int>(
+    'working_day_mask',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _gracePeriodMinutesMeta =
+      const VerificationMeta('gracePeriodMinutes');
+  @override
+  late final GeneratedColumn<int> gracePeriodMinutes = GeneratedColumn<int>(
+    'grace_period_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _breakModeMeta = const VerificationMeta(
+    'breakMode',
+  );
+  @override
+  late final GeneratedColumn<String> breakMode = GeneratedColumn<String>(
+    'break_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _defaultBreakMinutesMeta =
+      const VerificationMeta('defaultBreakMinutes');
+  @override
+  late final GeneratedColumn<int> defaultBreakMinutes = GeneratedColumn<int>(
+    'default_break_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _minimumWorkMinutesMeta =
+      const VerificationMeta('minimumWorkMinutes');
+  @override
+  late final GeneratedColumn<int> minimumWorkMinutes = GeneratedColumn<int>(
+    'minimum_work_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    code,
+    startMinutes,
+    endMinutes,
+    workingDayMask,
+    gracePeriodMinutes,
+    breakMode,
+    defaultBreakMinutes,
+    minimumWorkMinutes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shift_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ShiftRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('normalized_name')) {
+      context.handle(
+        _normalizedNameMeta,
+        normalizedName.isAcceptableOrUnknown(
+          data['normalized_name']!,
+          _normalizedNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedNameMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    }
+    if (data.containsKey('start_minutes')) {
+      context.handle(
+        _startMinutesMeta,
+        startMinutes.isAcceptableOrUnknown(
+          data['start_minutes']!,
+          _startMinutesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_startMinutesMeta);
+    }
+    if (data.containsKey('end_minutes')) {
+      context.handle(
+        _endMinutesMeta,
+        endMinutes.isAcceptableOrUnknown(data['end_minutes']!, _endMinutesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endMinutesMeta);
+    }
+    if (data.containsKey('working_day_mask')) {
+      context.handle(
+        _workingDayMaskMeta,
+        workingDayMask.isAcceptableOrUnknown(
+          data['working_day_mask']!,
+          _workingDayMaskMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_workingDayMaskMeta);
+    }
+    if (data.containsKey('grace_period_minutes')) {
+      context.handle(
+        _gracePeriodMinutesMeta,
+        gracePeriodMinutes.isAcceptableOrUnknown(
+          data['grace_period_minutes']!,
+          _gracePeriodMinutesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_gracePeriodMinutesMeta);
+    }
+    if (data.containsKey('break_mode')) {
+      context.handle(
+        _breakModeMeta,
+        breakMode.isAcceptableOrUnknown(data['break_mode']!, _breakModeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_breakModeMeta);
+    }
+    if (data.containsKey('default_break_minutes')) {
+      context.handle(
+        _defaultBreakMinutesMeta,
+        defaultBreakMinutes.isAcceptableOrUnknown(
+          data['default_break_minutes']!,
+          _defaultBreakMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('minimum_work_minutes')) {
+      context.handle(
+        _minimumWorkMinutesMeta,
+        minimumWorkMinutes.isAcceptableOrUnknown(
+          data['minimum_work_minutes']!,
+          _minimumWorkMinutesMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ShiftRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShiftRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      normalizedName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      ),
+      startMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_minutes'],
+      )!,
+      endMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_minutes'],
+      )!,
+      workingDayMask: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}working_day_mask'],
+      )!,
+      gracePeriodMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}grace_period_minutes'],
+      )!,
+      breakMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}break_mode'],
+      )!,
+      defaultBreakMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}default_break_minutes'],
+      ),
+      minimumWorkMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}minimum_work_minutes'],
+      ),
+    );
+  }
+
+  @override
+  $ShiftRecordsTable createAlias(String alias) {
+    return $ShiftRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String normalizedName;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  final String? code;
+  final int startMinutes;
+  final int endMinutes;
+  final int workingDayMask;
+  final int gracePeriodMinutes;
+  final String breakMode;
+  final int? defaultBreakMinutes;
+  final int? minimumWorkMinutes;
+  const ShiftRecord({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.normalizedName,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+    this.code,
+    required this.startMinutes,
+    required this.endMinutes,
+    required this.workingDayMask,
+    required this.gracePeriodMinutes,
+    required this.breakMode,
+    this.defaultBreakMinutes,
+    this.minimumWorkMinutes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['normalized_name'] = Variable<String>(normalizedName);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || code != null) {
+      map['code'] = Variable<String>(code);
+    }
+    map['start_minutes'] = Variable<int>(startMinutes);
+    map['end_minutes'] = Variable<int>(endMinutes);
+    map['working_day_mask'] = Variable<int>(workingDayMask);
+    map['grace_period_minutes'] = Variable<int>(gracePeriodMinutes);
+    map['break_mode'] = Variable<String>(breakMode);
+    if (!nullToAbsent || defaultBreakMinutes != null) {
+      map['default_break_minutes'] = Variable<int>(defaultBreakMinutes);
+    }
+    if (!nullToAbsent || minimumWorkMinutes != null) {
+      map['minimum_work_minutes'] = Variable<int>(minimumWorkMinutes);
+    }
+    return map;
+  }
+
+  ShiftRecordsCompanion toCompanion(bool nullToAbsent) {
+    return ShiftRecordsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      normalizedName: Value(normalizedName),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+      code: code == null && nullToAbsent ? const Value.absent() : Value(code),
+      startMinutes: Value(startMinutes),
+      endMinutes: Value(endMinutes),
+      workingDayMask: Value(workingDayMask),
+      gracePeriodMinutes: Value(gracePeriodMinutes),
+      breakMode: Value(breakMode),
+      defaultBreakMinutes: defaultBreakMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(defaultBreakMinutes),
+      minimumWorkMinutes: minimumWorkMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minimumWorkMinutes),
+    );
+  }
+
+  factory ShiftRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShiftRecord(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      normalizedName: serializer.fromJson<String>(json['normalizedName']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      code: serializer.fromJson<String?>(json['code']),
+      startMinutes: serializer.fromJson<int>(json['startMinutes']),
+      endMinutes: serializer.fromJson<int>(json['endMinutes']),
+      workingDayMask: serializer.fromJson<int>(json['workingDayMask']),
+      gracePeriodMinutes: serializer.fromJson<int>(json['gracePeriodMinutes']),
+      breakMode: serializer.fromJson<String>(json['breakMode']),
+      defaultBreakMinutes: serializer.fromJson<int?>(
+        json['defaultBreakMinutes'],
+      ),
+      minimumWorkMinutes: serializer.fromJson<int?>(json['minimumWorkMinutes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'normalizedName': serializer.toJson<String>(normalizedName),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'code': serializer.toJson<String?>(code),
+      'startMinutes': serializer.toJson<int>(startMinutes),
+      'endMinutes': serializer.toJson<int>(endMinutes),
+      'workingDayMask': serializer.toJson<int>(workingDayMask),
+      'gracePeriodMinutes': serializer.toJson<int>(gracePeriodMinutes),
+      'breakMode': serializer.toJson<String>(breakMode),
+      'defaultBreakMinutes': serializer.toJson<int?>(defaultBreakMinutes),
+      'minimumWorkMinutes': serializer.toJson<int?>(minimumWorkMinutes),
+    };
+  }
+
+  ShiftRecord copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? normalizedName,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+    Value<String?> code = const Value.absent(),
+    int? startMinutes,
+    int? endMinutes,
+    int? workingDayMask,
+    int? gracePeriodMinutes,
+    String? breakMode,
+    Value<int?> defaultBreakMinutes = const Value.absent(),
+    Value<int?> minimumWorkMinutes = const Value.absent(),
+  }) => ShiftRecord(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    normalizedName: normalizedName ?? this.normalizedName,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    code: code.present ? code.value : this.code,
+    startMinutes: startMinutes ?? this.startMinutes,
+    endMinutes: endMinutes ?? this.endMinutes,
+    workingDayMask: workingDayMask ?? this.workingDayMask,
+    gracePeriodMinutes: gracePeriodMinutes ?? this.gracePeriodMinutes,
+    breakMode: breakMode ?? this.breakMode,
+    defaultBreakMinutes: defaultBreakMinutes.present
+        ? defaultBreakMinutes.value
+        : this.defaultBreakMinutes,
+    minimumWorkMinutes: minimumWorkMinutes.present
+        ? minimumWorkMinutes.value
+        : this.minimumWorkMinutes,
+  );
+  ShiftRecord copyWithCompanion(ShiftRecordsCompanion data) {
+    return ShiftRecord(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      normalizedName: data.normalizedName.present
+          ? data.normalizedName.value
+          : this.normalizedName,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      code: data.code.present ? data.code.value : this.code,
+      startMinutes: data.startMinutes.present
+          ? data.startMinutes.value
+          : this.startMinutes,
+      endMinutes: data.endMinutes.present
+          ? data.endMinutes.value
+          : this.endMinutes,
+      workingDayMask: data.workingDayMask.present
+          ? data.workingDayMask.value
+          : this.workingDayMask,
+      gracePeriodMinutes: data.gracePeriodMinutes.present
+          ? data.gracePeriodMinutes.value
+          : this.gracePeriodMinutes,
+      breakMode: data.breakMode.present ? data.breakMode.value : this.breakMode,
+      defaultBreakMinutes: data.defaultBreakMinutes.present
+          ? data.defaultBreakMinutes.value
+          : this.defaultBreakMinutes,
+      minimumWorkMinutes: data.minimumWorkMinutes.present
+          ? data.minimumWorkMinutes.value
+          : this.minimumWorkMinutes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShiftRecord(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('code: $code, ')
+          ..write('startMinutes: $startMinutes, ')
+          ..write('endMinutes: $endMinutes, ')
+          ..write('workingDayMask: $workingDayMask, ')
+          ..write('gracePeriodMinutes: $gracePeriodMinutes, ')
+          ..write('breakMode: $breakMode, ')
+          ..write('defaultBreakMinutes: $defaultBreakMinutes, ')
+          ..write('minimumWorkMinutes: $minimumWorkMinutes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    code,
+    startMinutes,
+    endMinutes,
+    workingDayMask,
+    gracePeriodMinutes,
+    breakMode,
+    defaultBreakMinutes,
+    minimumWorkMinutes,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShiftRecord &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.normalizedName == this.normalizedName &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.code == this.code &&
+          other.startMinutes == this.startMinutes &&
+          other.endMinutes == this.endMinutes &&
+          other.workingDayMask == this.workingDayMask &&
+          other.gracePeriodMinutes == this.gracePeriodMinutes &&
+          other.breakMode == this.breakMode &&
+          other.defaultBreakMinutes == this.defaultBreakMinutes &&
+          other.minimumWorkMinutes == this.minimumWorkMinutes);
+}
+
+class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> normalizedName;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<String?> code;
+  final Value<int> startMinutes;
+  final Value<int> endMinutes;
+  final Value<int> workingDayMask;
+  final Value<int> gracePeriodMinutes;
+  final Value<String> breakMode;
+  final Value<int?> defaultBreakMinutes;
+  final Value<int?> minimumWorkMinutes;
+  final Value<int> rowid;
+  const ShiftRecordsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.normalizedName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.code = const Value.absent(),
+    this.startMinutes = const Value.absent(),
+    this.endMinutes = const Value.absent(),
+    this.workingDayMask = const Value.absent(),
+    this.gracePeriodMinutes = const Value.absent(),
+    this.breakMode = const Value.absent(),
+    this.defaultBreakMinutes = const Value.absent(),
+    this.minimumWorkMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShiftRecordsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String normalizedName,
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.code = const Value.absent(),
+    required int startMinutes,
+    required int endMinutes,
+    required int workingDayMask,
+    required int gracePeriodMinutes,
+    required String breakMode,
+    this.defaultBreakMinutes = const Value.absent(),
+    this.minimumWorkMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       normalizedName = Value(normalizedName),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       startMinutes = Value(startMinutes),
+       endMinutes = Value(endMinutes),
+       workingDayMask = Value(workingDayMask),
+       gracePeriodMinutes = Value(gracePeriodMinutes),
+       breakMode = Value(breakMode);
+  static Insertable<ShiftRecord> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? normalizedName,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? code,
+    Expression<int>? startMinutes,
+    Expression<int>? endMinutes,
+    Expression<int>? workingDayMask,
+    Expression<int>? gracePeriodMinutes,
+    Expression<String>? breakMode,
+    Expression<int>? defaultBreakMinutes,
+    Expression<int>? minimumWorkMinutes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (normalizedName != null) 'normalized_name': normalizedName,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (code != null) 'code': code,
+      if (startMinutes != null) 'start_minutes': startMinutes,
+      if (endMinutes != null) 'end_minutes': endMinutes,
+      if (workingDayMask != null) 'working_day_mask': workingDayMask,
+      if (gracePeriodMinutes != null)
+        'grace_period_minutes': gracePeriodMinutes,
+      if (breakMode != null) 'break_mode': breakMode,
+      if (defaultBreakMinutes != null)
+        'default_break_minutes': defaultBreakMinutes,
+      if (minimumWorkMinutes != null)
+        'minimum_work_minutes': minimumWorkMinutes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShiftRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? normalizedName,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<String?>? code,
+    Value<int>? startMinutes,
+    Value<int>? endMinutes,
+    Value<int>? workingDayMask,
+    Value<int>? gracePeriodMinutes,
+    Value<String>? breakMode,
+    Value<int?>? defaultBreakMinutes,
+    Value<int?>? minimumWorkMinutes,
+    Value<int>? rowid,
+  }) {
+    return ShiftRecordsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      normalizedName: normalizedName ?? this.normalizedName,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      code: code ?? this.code,
+      startMinutes: startMinutes ?? this.startMinutes,
+      endMinutes: endMinutes ?? this.endMinutes,
+      workingDayMask: workingDayMask ?? this.workingDayMask,
+      gracePeriodMinutes: gracePeriodMinutes ?? this.gracePeriodMinutes,
+      breakMode: breakMode ?? this.breakMode,
+      defaultBreakMinutes: defaultBreakMinutes ?? this.defaultBreakMinutes,
+      minimumWorkMinutes: minimumWorkMinutes ?? this.minimumWorkMinutes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (normalizedName.present) {
+      map['normalized_name'] = Variable<String>(normalizedName.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (startMinutes.present) {
+      map['start_minutes'] = Variable<int>(startMinutes.value);
+    }
+    if (endMinutes.present) {
+      map['end_minutes'] = Variable<int>(endMinutes.value);
+    }
+    if (workingDayMask.present) {
+      map['working_day_mask'] = Variable<int>(workingDayMask.value);
+    }
+    if (gracePeriodMinutes.present) {
+      map['grace_period_minutes'] = Variable<int>(gracePeriodMinutes.value);
+    }
+    if (breakMode.present) {
+      map['break_mode'] = Variable<String>(breakMode.value);
+    }
+    if (defaultBreakMinutes.present) {
+      map['default_break_minutes'] = Variable<int>(defaultBreakMinutes.value);
+    }
+    if (minimumWorkMinutes.present) {
+      map['minimum_work_minutes'] = Variable<int>(minimumWorkMinutes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShiftRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('code: $code, ')
+          ..write('startMinutes: $startMinutes, ')
+          ..write('endMinutes: $endMinutes, ')
+          ..write('workingDayMask: $workingDayMask, ')
+          ..write('gracePeriodMinutes: $gracePeriodMinutes, ')
+          ..write('breakMode: $breakMode, ')
+          ..write('defaultBreakMinutes: $defaultBreakMinutes, ')
+          ..write('minimumWorkMinutes: $minimumWorkMinutes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WorkLocationRecordsTable extends WorkLocationRecords
+    with TableInfo<$WorkLocationRecordsTable, WorkLocationRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WorkLocationRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _normalizedNameMeta = const VerificationMeta(
+    'normalizedName',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedName = GeneratedColumn<String>(
+    'normalized_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _addressLine1Meta = const VerificationMeta(
+    'addressLine1',
+  );
+  @override
+  late final GeneratedColumn<String> addressLine1 = GeneratedColumn<String>(
+    'address_line1',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _addressLine2Meta = const VerificationMeta(
+    'addressLine2',
+  );
+  @override
+  late final GeneratedColumn<String> addressLine2 = GeneratedColumn<String>(
+    'address_line2',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateRegionMeta = const VerificationMeta(
+    'stateRegion',
+  );
+  @override
+  late final GeneratedColumn<String> stateRegion = GeneratedColumn<String>(
+    'state_region',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _postalCodeMeta = const VerificationMeta(
+    'postalCode',
+  );
+  @override
+  late final GeneratedColumn<String> postalCode = GeneratedColumn<String>(
+    'postal_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _allowedRadiusMetersMeta =
+      const VerificationMeta('allowedRadiusMeters');
+  @override
+  late final GeneratedColumn<double> allowedRadiusMeters =
+      GeneratedColumn<double>(
+        'allowed_radius_meters',
+        aliasedName,
+        false,
+        type: DriftSqlType.double,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _maximumAccuracyMetersMeta =
+      const VerificationMeta('maximumAccuracyMeters');
+  @override
+  late final GeneratedColumn<double> maximumAccuracyMeters =
+      GeneratedColumn<double>(
+        'maximum_accuracy_meters',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _validationModeMeta = const VerificationMeta(
+    'validationMode',
+  );
+  @override
+  late final GeneratedColumn<String> validationMode = GeneratedColumn<String>(
+    'validation_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    code,
+    addressLine1,
+    addressLine2,
+    city,
+    stateRegion,
+    postalCode,
+    countryCode,
+    latitude,
+    longitude,
+    allowedRadiusMeters,
+    maximumAccuracyMeters,
+    validationMode,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'work_location_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WorkLocationRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('normalized_name')) {
+      context.handle(
+        _normalizedNameMeta,
+        normalizedName.isAcceptableOrUnknown(
+          data['normalized_name']!,
+          _normalizedNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedNameMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    }
+    if (data.containsKey('address_line1')) {
+      context.handle(
+        _addressLine1Meta,
+        addressLine1.isAcceptableOrUnknown(
+          data['address_line1']!,
+          _addressLine1Meta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_addressLine1Meta);
+    }
+    if (data.containsKey('address_line2')) {
+      context.handle(
+        _addressLine2Meta,
+        addressLine2.isAcceptableOrUnknown(
+          data['address_line2']!,
+          _addressLine2Meta,
+        ),
+      );
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cityMeta);
+    }
+    if (data.containsKey('state_region')) {
+      context.handle(
+        _stateRegionMeta,
+        stateRegion.isAcceptableOrUnknown(
+          data['state_region']!,
+          _stateRegionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('postal_code')) {
+      context.handle(
+        _postalCodeMeta,
+        postalCode.isAcceptableOrUnknown(data['postal_code']!, _postalCodeMeta),
+      );
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_countryCodeMeta);
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_latitudeMeta);
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_longitudeMeta);
+    }
+    if (data.containsKey('allowed_radius_meters')) {
+      context.handle(
+        _allowedRadiusMetersMeta,
+        allowedRadiusMeters.isAcceptableOrUnknown(
+          data['allowed_radius_meters']!,
+          _allowedRadiusMetersMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowedRadiusMetersMeta);
+    }
+    if (data.containsKey('maximum_accuracy_meters')) {
+      context.handle(
+        _maximumAccuracyMetersMeta,
+        maximumAccuracyMeters.isAcceptableOrUnknown(
+          data['maximum_accuracy_meters']!,
+          _maximumAccuracyMetersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('validation_mode')) {
+      context.handle(
+        _validationModeMeta,
+        validationMode.isAcceptableOrUnknown(
+          data['validation_mode']!,
+          _validationModeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_validationModeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  WorkLocationRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WorkLocationRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      normalizedName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      ),
+      addressLine1: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address_line1'],
+      )!,
+      addressLine2: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address_line2'],
+      )!,
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      )!,
+      stateRegion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state_region'],
+      )!,
+      postalCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}postal_code'],
+      )!,
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      )!,
+      latitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}latitude'],
+      )!,
+      longitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}longitude'],
+      )!,
+      allowedRadiusMeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}allowed_radius_meters'],
+      )!,
+      maximumAccuracyMeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}maximum_accuracy_meters'],
+      ),
+      validationMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}validation_mode'],
+      )!,
+    );
+  }
+
+  @override
+  $WorkLocationRecordsTable createAlias(String alias) {
+    return $WorkLocationRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class WorkLocationRecord extends DataClass
+    implements Insertable<WorkLocationRecord> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String normalizedName;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  final String? code;
+  final String addressLine1;
+  final String addressLine2;
+  final String city;
+  final String stateRegion;
+  final String postalCode;
+  final String countryCode;
+  final double latitude;
+  final double longitude;
+  final double allowedRadiusMeters;
+  final double? maximumAccuracyMeters;
+  final String validationMode;
+  const WorkLocationRecord({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.normalizedName,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+    this.code,
+    required this.addressLine1,
+    required this.addressLine2,
+    required this.city,
+    required this.stateRegion,
+    required this.postalCode,
+    required this.countryCode,
+    required this.latitude,
+    required this.longitude,
+    required this.allowedRadiusMeters,
+    this.maximumAccuracyMeters,
+    required this.validationMode,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['normalized_name'] = Variable<String>(normalizedName);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || code != null) {
+      map['code'] = Variable<String>(code);
+    }
+    map['address_line1'] = Variable<String>(addressLine1);
+    map['address_line2'] = Variable<String>(addressLine2);
+    map['city'] = Variable<String>(city);
+    map['state_region'] = Variable<String>(stateRegion);
+    map['postal_code'] = Variable<String>(postalCode);
+    map['country_code'] = Variable<String>(countryCode);
+    map['latitude'] = Variable<double>(latitude);
+    map['longitude'] = Variable<double>(longitude);
+    map['allowed_radius_meters'] = Variable<double>(allowedRadiusMeters);
+    if (!nullToAbsent || maximumAccuracyMeters != null) {
+      map['maximum_accuracy_meters'] = Variable<double>(maximumAccuracyMeters);
+    }
+    map['validation_mode'] = Variable<String>(validationMode);
+    return map;
+  }
+
+  WorkLocationRecordsCompanion toCompanion(bool nullToAbsent) {
+    return WorkLocationRecordsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      normalizedName: Value(normalizedName),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+      code: code == null && nullToAbsent ? const Value.absent() : Value(code),
+      addressLine1: Value(addressLine1),
+      addressLine2: Value(addressLine2),
+      city: Value(city),
+      stateRegion: Value(stateRegion),
+      postalCode: Value(postalCode),
+      countryCode: Value(countryCode),
+      latitude: Value(latitude),
+      longitude: Value(longitude),
+      allowedRadiusMeters: Value(allowedRadiusMeters),
+      maximumAccuracyMeters: maximumAccuracyMeters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maximumAccuracyMeters),
+      validationMode: Value(validationMode),
+    );
+  }
+
+  factory WorkLocationRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WorkLocationRecord(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      normalizedName: serializer.fromJson<String>(json['normalizedName']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      code: serializer.fromJson<String?>(json['code']),
+      addressLine1: serializer.fromJson<String>(json['addressLine1']),
+      addressLine2: serializer.fromJson<String>(json['addressLine2']),
+      city: serializer.fromJson<String>(json['city']),
+      stateRegion: serializer.fromJson<String>(json['stateRegion']),
+      postalCode: serializer.fromJson<String>(json['postalCode']),
+      countryCode: serializer.fromJson<String>(json['countryCode']),
+      latitude: serializer.fromJson<double>(json['latitude']),
+      longitude: serializer.fromJson<double>(json['longitude']),
+      allowedRadiusMeters: serializer.fromJson<double>(
+        json['allowedRadiusMeters'],
+      ),
+      maximumAccuracyMeters: serializer.fromJson<double?>(
+        json['maximumAccuracyMeters'],
+      ),
+      validationMode: serializer.fromJson<String>(json['validationMode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'normalizedName': serializer.toJson<String>(normalizedName),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'code': serializer.toJson<String?>(code),
+      'addressLine1': serializer.toJson<String>(addressLine1),
+      'addressLine2': serializer.toJson<String>(addressLine2),
+      'city': serializer.toJson<String>(city),
+      'stateRegion': serializer.toJson<String>(stateRegion),
+      'postalCode': serializer.toJson<String>(postalCode),
+      'countryCode': serializer.toJson<String>(countryCode),
+      'latitude': serializer.toJson<double>(latitude),
+      'longitude': serializer.toJson<double>(longitude),
+      'allowedRadiusMeters': serializer.toJson<double>(allowedRadiusMeters),
+      'maximumAccuracyMeters': serializer.toJson<double?>(
+        maximumAccuracyMeters,
+      ),
+      'validationMode': serializer.toJson<String>(validationMode),
+    };
+  }
+
+  WorkLocationRecord copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? normalizedName,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+    Value<String?> code = const Value.absent(),
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? stateRegion,
+    String? postalCode,
+    String? countryCode,
+    double? latitude,
+    double? longitude,
+    double? allowedRadiusMeters,
+    Value<double?> maximumAccuracyMeters = const Value.absent(),
+    String? validationMode,
+  }) => WorkLocationRecord(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    normalizedName: normalizedName ?? this.normalizedName,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    code: code.present ? code.value : this.code,
+    addressLine1: addressLine1 ?? this.addressLine1,
+    addressLine2: addressLine2 ?? this.addressLine2,
+    city: city ?? this.city,
+    stateRegion: stateRegion ?? this.stateRegion,
+    postalCode: postalCode ?? this.postalCode,
+    countryCode: countryCode ?? this.countryCode,
+    latitude: latitude ?? this.latitude,
+    longitude: longitude ?? this.longitude,
+    allowedRadiusMeters: allowedRadiusMeters ?? this.allowedRadiusMeters,
+    maximumAccuracyMeters: maximumAccuracyMeters.present
+        ? maximumAccuracyMeters.value
+        : this.maximumAccuracyMeters,
+    validationMode: validationMode ?? this.validationMode,
+  );
+  WorkLocationRecord copyWithCompanion(WorkLocationRecordsCompanion data) {
+    return WorkLocationRecord(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      normalizedName: data.normalizedName.present
+          ? data.normalizedName.value
+          : this.normalizedName,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      code: data.code.present ? data.code.value : this.code,
+      addressLine1: data.addressLine1.present
+          ? data.addressLine1.value
+          : this.addressLine1,
+      addressLine2: data.addressLine2.present
+          ? data.addressLine2.value
+          : this.addressLine2,
+      city: data.city.present ? data.city.value : this.city,
+      stateRegion: data.stateRegion.present
+          ? data.stateRegion.value
+          : this.stateRegion,
+      postalCode: data.postalCode.present
+          ? data.postalCode.value
+          : this.postalCode,
+      countryCode: data.countryCode.present
+          ? data.countryCode.value
+          : this.countryCode,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      allowedRadiusMeters: data.allowedRadiusMeters.present
+          ? data.allowedRadiusMeters.value
+          : this.allowedRadiusMeters,
+      maximumAccuracyMeters: data.maximumAccuracyMeters.present
+          ? data.maximumAccuracyMeters.value
+          : this.maximumAccuracyMeters,
+      validationMode: data.validationMode.present
+          ? data.validationMode.value
+          : this.validationMode,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WorkLocationRecord(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('code: $code, ')
+          ..write('addressLine1: $addressLine1, ')
+          ..write('addressLine2: $addressLine2, ')
+          ..write('city: $city, ')
+          ..write('stateRegion: $stateRegion, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('allowedRadiusMeters: $allowedRadiusMeters, ')
+          ..write('maximumAccuracyMeters: $maximumAccuracyMeters, ')
+          ..write('validationMode: $validationMode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    code,
+    addressLine1,
+    addressLine2,
+    city,
+    stateRegion,
+    postalCode,
+    countryCode,
+    latitude,
+    longitude,
+    allowedRadiusMeters,
+    maximumAccuracyMeters,
+    validationMode,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WorkLocationRecord &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.normalizedName == this.normalizedName &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.code == this.code &&
+          other.addressLine1 == this.addressLine1 &&
+          other.addressLine2 == this.addressLine2 &&
+          other.city == this.city &&
+          other.stateRegion == this.stateRegion &&
+          other.postalCode == this.postalCode &&
+          other.countryCode == this.countryCode &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.allowedRadiusMeters == this.allowedRadiusMeters &&
+          other.maximumAccuracyMeters == this.maximumAccuracyMeters &&
+          other.validationMode == this.validationMode);
+}
+
+class WorkLocationRecordsCompanion extends UpdateCompanion<WorkLocationRecord> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> normalizedName;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<String?> code;
+  final Value<String> addressLine1;
+  final Value<String> addressLine2;
+  final Value<String> city;
+  final Value<String> stateRegion;
+  final Value<String> postalCode;
+  final Value<String> countryCode;
+  final Value<double> latitude;
+  final Value<double> longitude;
+  final Value<double> allowedRadiusMeters;
+  final Value<double?> maximumAccuracyMeters;
+  final Value<String> validationMode;
+  final Value<int> rowid;
+  const WorkLocationRecordsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.normalizedName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.code = const Value.absent(),
+    this.addressLine1 = const Value.absent(),
+    this.addressLine2 = const Value.absent(),
+    this.city = const Value.absent(),
+    this.stateRegion = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.allowedRadiusMeters = const Value.absent(),
+    this.maximumAccuracyMeters = const Value.absent(),
+    this.validationMode = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WorkLocationRecordsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String normalizedName,
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.code = const Value.absent(),
+    required String addressLine1,
+    this.addressLine2 = const Value.absent(),
+    required String city,
+    this.stateRegion = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    required String countryCode,
+    required double latitude,
+    required double longitude,
+    required double allowedRadiusMeters,
+    this.maximumAccuracyMeters = const Value.absent(),
+    required String validationMode,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       normalizedName = Value(normalizedName),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       addressLine1 = Value(addressLine1),
+       city = Value(city),
+       countryCode = Value(countryCode),
+       latitude = Value(latitude),
+       longitude = Value(longitude),
+       allowedRadiusMeters = Value(allowedRadiusMeters),
+       validationMode = Value(validationMode);
+  static Insertable<WorkLocationRecord> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? normalizedName,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? code,
+    Expression<String>? addressLine1,
+    Expression<String>? addressLine2,
+    Expression<String>? city,
+    Expression<String>? stateRegion,
+    Expression<String>? postalCode,
+    Expression<String>? countryCode,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<double>? allowedRadiusMeters,
+    Expression<double>? maximumAccuracyMeters,
+    Expression<String>? validationMode,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (normalizedName != null) 'normalized_name': normalizedName,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (code != null) 'code': code,
+      if (addressLine1 != null) 'address_line1': addressLine1,
+      if (addressLine2 != null) 'address_line2': addressLine2,
+      if (city != null) 'city': city,
+      if (stateRegion != null) 'state_region': stateRegion,
+      if (postalCode != null) 'postal_code': postalCode,
+      if (countryCode != null) 'country_code': countryCode,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (allowedRadiusMeters != null)
+        'allowed_radius_meters': allowedRadiusMeters,
+      if (maximumAccuracyMeters != null)
+        'maximum_accuracy_meters': maximumAccuracyMeters,
+      if (validationMode != null) 'validation_mode': validationMode,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WorkLocationRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? normalizedName,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<String?>? code,
+    Value<String>? addressLine1,
+    Value<String>? addressLine2,
+    Value<String>? city,
+    Value<String>? stateRegion,
+    Value<String>? postalCode,
+    Value<String>? countryCode,
+    Value<double>? latitude,
+    Value<double>? longitude,
+    Value<double>? allowedRadiusMeters,
+    Value<double?>? maximumAccuracyMeters,
+    Value<String>? validationMode,
+    Value<int>? rowid,
+  }) {
+    return WorkLocationRecordsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      normalizedName: normalizedName ?? this.normalizedName,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      code: code ?? this.code,
+      addressLine1: addressLine1 ?? this.addressLine1,
+      addressLine2: addressLine2 ?? this.addressLine2,
+      city: city ?? this.city,
+      stateRegion: stateRegion ?? this.stateRegion,
+      postalCode: postalCode ?? this.postalCode,
+      countryCode: countryCode ?? this.countryCode,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      allowedRadiusMeters: allowedRadiusMeters ?? this.allowedRadiusMeters,
+      maximumAccuracyMeters:
+          maximumAccuracyMeters ?? this.maximumAccuracyMeters,
+      validationMode: validationMode ?? this.validationMode,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (normalizedName.present) {
+      map['normalized_name'] = Variable<String>(normalizedName.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (addressLine1.present) {
+      map['address_line1'] = Variable<String>(addressLine1.value);
+    }
+    if (addressLine2.present) {
+      map['address_line2'] = Variable<String>(addressLine2.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (stateRegion.present) {
+      map['state_region'] = Variable<String>(stateRegion.value);
+    }
+    if (postalCode.present) {
+      map['postal_code'] = Variable<String>(postalCode.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (allowedRadiusMeters.present) {
+      map['allowed_radius_meters'] = Variable<double>(
+        allowedRadiusMeters.value,
+      );
+    }
+    if (maximumAccuracyMeters.present) {
+      map['maximum_accuracy_meters'] = Variable<double>(
+        maximumAccuracyMeters.value,
+      );
+    }
+    if (validationMode.present) {
+      map['validation_mode'] = Variable<String>(validationMode.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WorkLocationRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('code: $code, ')
+          ..write('addressLine1: $addressLine1, ')
+          ..write('addressLine2: $addressLine2, ')
+          ..write('city: $city, ')
+          ..write('stateRegion: $stateRegion, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('allowedRadiusMeters: $allowedRadiusMeters, ')
+          ..write('maximumAccuracyMeters: $maximumAccuracyMeters, ')
+          ..write('validationMode: $validationMode, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttendancePolicyRecordsTable extends AttendancePolicyRecords
+    with TableInfo<$AttendancePolicyRecordsTable, AttendancePolicyRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendancePolicyRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _normalizedNameMeta = const VerificationMeta(
+    'normalizedName',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedName = GeneratedColumn<String>(
+    'normalized_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _requireLocationMeta = const VerificationMeta(
+    'requireLocation',
+  );
+  @override
+  late final GeneratedColumn<bool> requireLocation = GeneratedColumn<bool>(
+    'require_location',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("require_location" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _allowOutsideLocationMeta =
+      const VerificationMeta('allowOutsideLocation');
+  @override
+  late final GeneratedColumn<bool> allowOutsideLocation = GeneratedColumn<bool>(
+    'allow_outside_location',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_outside_location" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _allowRemoteAttendanceMeta =
+      const VerificationMeta('allowRemoteAttendance');
+  @override
+  late final GeneratedColumn<bool> allowRemoteAttendance =
+      GeneratedColumn<bool>(
+        'allow_remote_attendance',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("allow_remote_attendance" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _requireLocationOnPunchInMeta =
+      const VerificationMeta('requireLocationOnPunchIn');
+  @override
+  late final GeneratedColumn<bool> requireLocationOnPunchIn =
+      GeneratedColumn<bool>(
+        'require_location_on_punch_in',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("require_location_on_punch_in" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _requireLocationOnPunchOutMeta =
+      const VerificationMeta('requireLocationOnPunchOut');
+  @override
+  late final GeneratedColumn<bool> requireLocationOnPunchOut =
+      GeneratedColumn<bool>(
+        'require_location_on_punch_out',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("require_location_on_punch_out" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _requireLocationOnBreakMeta =
+      const VerificationMeta('requireLocationOnBreak');
+  @override
+  late final GeneratedColumn<bool> requireLocationOnBreak =
+      GeneratedColumn<bool>(
+        'require_location_on_break',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("require_location_on_break" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _requireLocationAccuracyMeta =
+      const VerificationMeta('requireLocationAccuracy');
+  @override
+  late final GeneratedColumn<bool> requireLocationAccuracy =
+      GeneratedColumn<bool>(
+        'require_location_accuracy',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("require_location_accuracy" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _maximumAcceptedAccuracyMetersMeta =
+      const VerificationMeta('maximumAcceptedAccuracyMeters');
+  @override
+  late final GeneratedColumn<double> maximumAcceptedAccuracyMeters =
+      GeneratedColumn<double>(
+        'maximum_accepted_accuracy_meters',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _trackBreaksMeta = const VerificationMeta(
+    'trackBreaks',
+  );
+  @override
+  late final GeneratedColumn<bool> trackBreaks = GeneratedColumn<bool>(
+    'track_breaks',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("track_breaks" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _allowMultipleBreaksMeta =
+      const VerificationMeta('allowMultipleBreaks');
+  @override
+  late final GeneratedColumn<bool> allowMultipleBreaks = GeneratedColumn<bool>(
+    'allow_multiple_breaks',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_multiple_breaks" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _allowPunchOutDuringBreakMeta =
+      const VerificationMeta('allowPunchOutDuringBreak');
+  @override
+  late final GeneratedColumn<bool> allowPunchOutDuringBreak =
+      GeneratedColumn<bool>(
+        'allow_punch_out_during_break',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("allow_punch_out_during_break" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _allowEmployeeCorrectionRequestMeta =
+      const VerificationMeta('allowEmployeeCorrectionRequest');
+  @override
+  late final GeneratedColumn<bool> allowEmployeeCorrectionRequest =
+      GeneratedColumn<bool>(
+        'allow_employee_correction_request',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("allow_employee_correction_request" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _allowEarlyPunchInMeta = const VerificationMeta(
+    'allowEarlyPunchIn',
+  );
+  @override
+  late final GeneratedColumn<bool> allowEarlyPunchIn = GeneratedColumn<bool>(
+    'allow_early_punch_in',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_early_punch_in" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _earlyPunchInLimitMinutesMeta =
+      const VerificationMeta('earlyPunchInLimitMinutes');
+  @override
+  late final GeneratedColumn<int> earlyPunchInLimitMinutes =
+      GeneratedColumn<int>(
+        'early_punch_in_limit_minutes',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _allowLatePunchInMeta = const VerificationMeta(
+    'allowLatePunchIn',
+  );
+  @override
+  late final GeneratedColumn<bool> allowLatePunchIn = GeneratedColumn<bool>(
+    'allow_late_punch_in',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_late_punch_in" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _allowEarlyPunchOutMeta =
+      const VerificationMeta('allowEarlyPunchOut');
+  @override
+  late final GeneratedColumn<bool> allowEarlyPunchOut = GeneratedColumn<bool>(
+    'allow_early_punch_out',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_early_punch_out" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _offlineModeMeta = const VerificationMeta(
+    'offlineMode',
+  );
+  @override
+  late final GeneratedColumn<String> offlineMode = GeneratedColumn<String>(
+    'offline_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    description,
+    requireLocation,
+    allowOutsideLocation,
+    allowRemoteAttendance,
+    requireLocationOnPunchIn,
+    requireLocationOnPunchOut,
+    requireLocationOnBreak,
+    requireLocationAccuracy,
+    maximumAcceptedAccuracyMeters,
+    trackBreaks,
+    allowMultipleBreaks,
+    allowPunchOutDuringBreak,
+    allowEmployeeCorrectionRequest,
+    allowEarlyPunchIn,
+    earlyPunchInLimitMinutes,
+    allowLatePunchIn,
+    allowEarlyPunchOut,
+    offlineMode,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance_policy_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendancePolicyRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('normalized_name')) {
+      context.handle(
+        _normalizedNameMeta,
+        normalizedName.isAcceptableOrUnknown(
+          data['normalized_name']!,
+          _normalizedNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedNameMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('require_location')) {
+      context.handle(
+        _requireLocationMeta,
+        requireLocation.isAcceptableOrUnknown(
+          data['require_location']!,
+          _requireLocationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requireLocationMeta);
+    }
+    if (data.containsKey('allow_outside_location')) {
+      context.handle(
+        _allowOutsideLocationMeta,
+        allowOutsideLocation.isAcceptableOrUnknown(
+          data['allow_outside_location']!,
+          _allowOutsideLocationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowOutsideLocationMeta);
+    }
+    if (data.containsKey('allow_remote_attendance')) {
+      context.handle(
+        _allowRemoteAttendanceMeta,
+        allowRemoteAttendance.isAcceptableOrUnknown(
+          data['allow_remote_attendance']!,
+          _allowRemoteAttendanceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowRemoteAttendanceMeta);
+    }
+    if (data.containsKey('require_location_on_punch_in')) {
+      context.handle(
+        _requireLocationOnPunchInMeta,
+        requireLocationOnPunchIn.isAcceptableOrUnknown(
+          data['require_location_on_punch_in']!,
+          _requireLocationOnPunchInMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requireLocationOnPunchInMeta);
+    }
+    if (data.containsKey('require_location_on_punch_out')) {
+      context.handle(
+        _requireLocationOnPunchOutMeta,
+        requireLocationOnPunchOut.isAcceptableOrUnknown(
+          data['require_location_on_punch_out']!,
+          _requireLocationOnPunchOutMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requireLocationOnPunchOutMeta);
+    }
+    if (data.containsKey('require_location_on_break')) {
+      context.handle(
+        _requireLocationOnBreakMeta,
+        requireLocationOnBreak.isAcceptableOrUnknown(
+          data['require_location_on_break']!,
+          _requireLocationOnBreakMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requireLocationOnBreakMeta);
+    }
+    if (data.containsKey('require_location_accuracy')) {
+      context.handle(
+        _requireLocationAccuracyMeta,
+        requireLocationAccuracy.isAcceptableOrUnknown(
+          data['require_location_accuracy']!,
+          _requireLocationAccuracyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requireLocationAccuracyMeta);
+    }
+    if (data.containsKey('maximum_accepted_accuracy_meters')) {
+      context.handle(
+        _maximumAcceptedAccuracyMetersMeta,
+        maximumAcceptedAccuracyMeters.isAcceptableOrUnknown(
+          data['maximum_accepted_accuracy_meters']!,
+          _maximumAcceptedAccuracyMetersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('track_breaks')) {
+      context.handle(
+        _trackBreaksMeta,
+        trackBreaks.isAcceptableOrUnknown(
+          data['track_breaks']!,
+          _trackBreaksMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_trackBreaksMeta);
+    }
+    if (data.containsKey('allow_multiple_breaks')) {
+      context.handle(
+        _allowMultipleBreaksMeta,
+        allowMultipleBreaks.isAcceptableOrUnknown(
+          data['allow_multiple_breaks']!,
+          _allowMultipleBreaksMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowMultipleBreaksMeta);
+    }
+    if (data.containsKey('allow_punch_out_during_break')) {
+      context.handle(
+        _allowPunchOutDuringBreakMeta,
+        allowPunchOutDuringBreak.isAcceptableOrUnknown(
+          data['allow_punch_out_during_break']!,
+          _allowPunchOutDuringBreakMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowPunchOutDuringBreakMeta);
+    }
+    if (data.containsKey('allow_employee_correction_request')) {
+      context.handle(
+        _allowEmployeeCorrectionRequestMeta,
+        allowEmployeeCorrectionRequest.isAcceptableOrUnknown(
+          data['allow_employee_correction_request']!,
+          _allowEmployeeCorrectionRequestMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowEmployeeCorrectionRequestMeta);
+    }
+    if (data.containsKey('allow_early_punch_in')) {
+      context.handle(
+        _allowEarlyPunchInMeta,
+        allowEarlyPunchIn.isAcceptableOrUnknown(
+          data['allow_early_punch_in']!,
+          _allowEarlyPunchInMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowEarlyPunchInMeta);
+    }
+    if (data.containsKey('early_punch_in_limit_minutes')) {
+      context.handle(
+        _earlyPunchInLimitMinutesMeta,
+        earlyPunchInLimitMinutes.isAcceptableOrUnknown(
+          data['early_punch_in_limit_minutes']!,
+          _earlyPunchInLimitMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('allow_late_punch_in')) {
+      context.handle(
+        _allowLatePunchInMeta,
+        allowLatePunchIn.isAcceptableOrUnknown(
+          data['allow_late_punch_in']!,
+          _allowLatePunchInMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowLatePunchInMeta);
+    }
+    if (data.containsKey('allow_early_punch_out')) {
+      context.handle(
+        _allowEarlyPunchOutMeta,
+        allowEarlyPunchOut.isAcceptableOrUnknown(
+          data['allow_early_punch_out']!,
+          _allowEarlyPunchOutMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_allowEarlyPunchOutMeta);
+    }
+    if (data.containsKey('offline_mode')) {
+      context.handle(
+        _offlineModeMeta,
+        offlineMode.isAcceptableOrUnknown(
+          data['offline_mode']!,
+          _offlineModeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_offlineModeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AttendancePolicyRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendancePolicyRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      normalizedName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      requireLocation: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}require_location'],
+      )!,
+      allowOutsideLocation: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_outside_location'],
+      )!,
+      allowRemoteAttendance: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_remote_attendance'],
+      )!,
+      requireLocationOnPunchIn: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}require_location_on_punch_in'],
+      )!,
+      requireLocationOnPunchOut: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}require_location_on_punch_out'],
+      )!,
+      requireLocationOnBreak: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}require_location_on_break'],
+      )!,
+      requireLocationAccuracy: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}require_location_accuracy'],
+      )!,
+      maximumAcceptedAccuracyMeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}maximum_accepted_accuracy_meters'],
+      ),
+      trackBreaks: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}track_breaks'],
+      )!,
+      allowMultipleBreaks: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_multiple_breaks'],
+      )!,
+      allowPunchOutDuringBreak: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_punch_out_during_break'],
+      )!,
+      allowEmployeeCorrectionRequest: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_employee_correction_request'],
+      )!,
+      allowEarlyPunchIn: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_early_punch_in'],
+      )!,
+      earlyPunchInLimitMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}early_punch_in_limit_minutes'],
+      ),
+      allowLatePunchIn: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_late_punch_in'],
+      )!,
+      allowEarlyPunchOut: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_early_punch_out'],
+      )!,
+      offlineMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}offline_mode'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendancePolicyRecordsTable createAlias(String alias) {
+    return $AttendancePolicyRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class AttendancePolicyRecord extends DataClass
+    implements Insertable<AttendancePolicyRecord> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String normalizedName;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  final String description;
+  final bool requireLocation;
+  final bool allowOutsideLocation;
+  final bool allowRemoteAttendance;
+  final bool requireLocationOnPunchIn;
+  final bool requireLocationOnPunchOut;
+  final bool requireLocationOnBreak;
+  final bool requireLocationAccuracy;
+  final double? maximumAcceptedAccuracyMeters;
+  final bool trackBreaks;
+  final bool allowMultipleBreaks;
+  final bool allowPunchOutDuringBreak;
+  final bool allowEmployeeCorrectionRequest;
+  final bool allowEarlyPunchIn;
+  final int? earlyPunchInLimitMinutes;
+  final bool allowLatePunchIn;
+  final bool allowEarlyPunchOut;
+  final String offlineMode;
+  const AttendancePolicyRecord({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.normalizedName,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+    required this.description,
+    required this.requireLocation,
+    required this.allowOutsideLocation,
+    required this.allowRemoteAttendance,
+    required this.requireLocationOnPunchIn,
+    required this.requireLocationOnPunchOut,
+    required this.requireLocationOnBreak,
+    required this.requireLocationAccuracy,
+    this.maximumAcceptedAccuracyMeters,
+    required this.trackBreaks,
+    required this.allowMultipleBreaks,
+    required this.allowPunchOutDuringBreak,
+    required this.allowEmployeeCorrectionRequest,
+    required this.allowEarlyPunchIn,
+    this.earlyPunchInLimitMinutes,
+    required this.allowLatePunchIn,
+    required this.allowEarlyPunchOut,
+    required this.offlineMode,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['normalized_name'] = Variable<String>(normalizedName);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['description'] = Variable<String>(description);
+    map['require_location'] = Variable<bool>(requireLocation);
+    map['allow_outside_location'] = Variable<bool>(allowOutsideLocation);
+    map['allow_remote_attendance'] = Variable<bool>(allowRemoteAttendance);
+    map['require_location_on_punch_in'] = Variable<bool>(
+      requireLocationOnPunchIn,
+    );
+    map['require_location_on_punch_out'] = Variable<bool>(
+      requireLocationOnPunchOut,
+    );
+    map['require_location_on_break'] = Variable<bool>(requireLocationOnBreak);
+    map['require_location_accuracy'] = Variable<bool>(requireLocationAccuracy);
+    if (!nullToAbsent || maximumAcceptedAccuracyMeters != null) {
+      map['maximum_accepted_accuracy_meters'] = Variable<double>(
+        maximumAcceptedAccuracyMeters,
+      );
+    }
+    map['track_breaks'] = Variable<bool>(trackBreaks);
+    map['allow_multiple_breaks'] = Variable<bool>(allowMultipleBreaks);
+    map['allow_punch_out_during_break'] = Variable<bool>(
+      allowPunchOutDuringBreak,
+    );
+    map['allow_employee_correction_request'] = Variable<bool>(
+      allowEmployeeCorrectionRequest,
+    );
+    map['allow_early_punch_in'] = Variable<bool>(allowEarlyPunchIn);
+    if (!nullToAbsent || earlyPunchInLimitMinutes != null) {
+      map['early_punch_in_limit_minutes'] = Variable<int>(
+        earlyPunchInLimitMinutes,
+      );
+    }
+    map['allow_late_punch_in'] = Variable<bool>(allowLatePunchIn);
+    map['allow_early_punch_out'] = Variable<bool>(allowEarlyPunchOut);
+    map['offline_mode'] = Variable<String>(offlineMode);
+    return map;
+  }
+
+  AttendancePolicyRecordsCompanion toCompanion(bool nullToAbsent) {
+    return AttendancePolicyRecordsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      normalizedName: Value(normalizedName),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+      description: Value(description),
+      requireLocation: Value(requireLocation),
+      allowOutsideLocation: Value(allowOutsideLocation),
+      allowRemoteAttendance: Value(allowRemoteAttendance),
+      requireLocationOnPunchIn: Value(requireLocationOnPunchIn),
+      requireLocationOnPunchOut: Value(requireLocationOnPunchOut),
+      requireLocationOnBreak: Value(requireLocationOnBreak),
+      requireLocationAccuracy: Value(requireLocationAccuracy),
+      maximumAcceptedAccuracyMeters:
+          maximumAcceptedAccuracyMeters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maximumAcceptedAccuracyMeters),
+      trackBreaks: Value(trackBreaks),
+      allowMultipleBreaks: Value(allowMultipleBreaks),
+      allowPunchOutDuringBreak: Value(allowPunchOutDuringBreak),
+      allowEmployeeCorrectionRequest: Value(allowEmployeeCorrectionRequest),
+      allowEarlyPunchIn: Value(allowEarlyPunchIn),
+      earlyPunchInLimitMinutes: earlyPunchInLimitMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(earlyPunchInLimitMinutes),
+      allowLatePunchIn: Value(allowLatePunchIn),
+      allowEarlyPunchOut: Value(allowEarlyPunchOut),
+      offlineMode: Value(offlineMode),
+    );
+  }
+
+  factory AttendancePolicyRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendancePolicyRecord(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      normalizedName: serializer.fromJson<String>(json['normalizedName']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      description: serializer.fromJson<String>(json['description']),
+      requireLocation: serializer.fromJson<bool>(json['requireLocation']),
+      allowOutsideLocation: serializer.fromJson<bool>(
+        json['allowOutsideLocation'],
+      ),
+      allowRemoteAttendance: serializer.fromJson<bool>(
+        json['allowRemoteAttendance'],
+      ),
+      requireLocationOnPunchIn: serializer.fromJson<bool>(
+        json['requireLocationOnPunchIn'],
+      ),
+      requireLocationOnPunchOut: serializer.fromJson<bool>(
+        json['requireLocationOnPunchOut'],
+      ),
+      requireLocationOnBreak: serializer.fromJson<bool>(
+        json['requireLocationOnBreak'],
+      ),
+      requireLocationAccuracy: serializer.fromJson<bool>(
+        json['requireLocationAccuracy'],
+      ),
+      maximumAcceptedAccuracyMeters: serializer.fromJson<double?>(
+        json['maximumAcceptedAccuracyMeters'],
+      ),
+      trackBreaks: serializer.fromJson<bool>(json['trackBreaks']),
+      allowMultipleBreaks: serializer.fromJson<bool>(
+        json['allowMultipleBreaks'],
+      ),
+      allowPunchOutDuringBreak: serializer.fromJson<bool>(
+        json['allowPunchOutDuringBreak'],
+      ),
+      allowEmployeeCorrectionRequest: serializer.fromJson<bool>(
+        json['allowEmployeeCorrectionRequest'],
+      ),
+      allowEarlyPunchIn: serializer.fromJson<bool>(json['allowEarlyPunchIn']),
+      earlyPunchInLimitMinutes: serializer.fromJson<int?>(
+        json['earlyPunchInLimitMinutes'],
+      ),
+      allowLatePunchIn: serializer.fromJson<bool>(json['allowLatePunchIn']),
+      allowEarlyPunchOut: serializer.fromJson<bool>(json['allowEarlyPunchOut']),
+      offlineMode: serializer.fromJson<String>(json['offlineMode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'normalizedName': serializer.toJson<String>(normalizedName),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'description': serializer.toJson<String>(description),
+      'requireLocation': serializer.toJson<bool>(requireLocation),
+      'allowOutsideLocation': serializer.toJson<bool>(allowOutsideLocation),
+      'allowRemoteAttendance': serializer.toJson<bool>(allowRemoteAttendance),
+      'requireLocationOnPunchIn': serializer.toJson<bool>(
+        requireLocationOnPunchIn,
+      ),
+      'requireLocationOnPunchOut': serializer.toJson<bool>(
+        requireLocationOnPunchOut,
+      ),
+      'requireLocationOnBreak': serializer.toJson<bool>(requireLocationOnBreak),
+      'requireLocationAccuracy': serializer.toJson<bool>(
+        requireLocationAccuracy,
+      ),
+      'maximumAcceptedAccuracyMeters': serializer.toJson<double?>(
+        maximumAcceptedAccuracyMeters,
+      ),
+      'trackBreaks': serializer.toJson<bool>(trackBreaks),
+      'allowMultipleBreaks': serializer.toJson<bool>(allowMultipleBreaks),
+      'allowPunchOutDuringBreak': serializer.toJson<bool>(
+        allowPunchOutDuringBreak,
+      ),
+      'allowEmployeeCorrectionRequest': serializer.toJson<bool>(
+        allowEmployeeCorrectionRequest,
+      ),
+      'allowEarlyPunchIn': serializer.toJson<bool>(allowEarlyPunchIn),
+      'earlyPunchInLimitMinutes': serializer.toJson<int?>(
+        earlyPunchInLimitMinutes,
+      ),
+      'allowLatePunchIn': serializer.toJson<bool>(allowLatePunchIn),
+      'allowEarlyPunchOut': serializer.toJson<bool>(allowEarlyPunchOut),
+      'offlineMode': serializer.toJson<String>(offlineMode),
+    };
+  }
+
+  AttendancePolicyRecord copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? normalizedName,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+    String? description,
+    bool? requireLocation,
+    bool? allowOutsideLocation,
+    bool? allowRemoteAttendance,
+    bool? requireLocationOnPunchIn,
+    bool? requireLocationOnPunchOut,
+    bool? requireLocationOnBreak,
+    bool? requireLocationAccuracy,
+    Value<double?> maximumAcceptedAccuracyMeters = const Value.absent(),
+    bool? trackBreaks,
+    bool? allowMultipleBreaks,
+    bool? allowPunchOutDuringBreak,
+    bool? allowEmployeeCorrectionRequest,
+    bool? allowEarlyPunchIn,
+    Value<int?> earlyPunchInLimitMinutes = const Value.absent(),
+    bool? allowLatePunchIn,
+    bool? allowEarlyPunchOut,
+    String? offlineMode,
+  }) => AttendancePolicyRecord(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    normalizedName: normalizedName ?? this.normalizedName,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    description: description ?? this.description,
+    requireLocation: requireLocation ?? this.requireLocation,
+    allowOutsideLocation: allowOutsideLocation ?? this.allowOutsideLocation,
+    allowRemoteAttendance: allowRemoteAttendance ?? this.allowRemoteAttendance,
+    requireLocationOnPunchIn:
+        requireLocationOnPunchIn ?? this.requireLocationOnPunchIn,
+    requireLocationOnPunchOut:
+        requireLocationOnPunchOut ?? this.requireLocationOnPunchOut,
+    requireLocationOnBreak:
+        requireLocationOnBreak ?? this.requireLocationOnBreak,
+    requireLocationAccuracy:
+        requireLocationAccuracy ?? this.requireLocationAccuracy,
+    maximumAcceptedAccuracyMeters: maximumAcceptedAccuracyMeters.present
+        ? maximumAcceptedAccuracyMeters.value
+        : this.maximumAcceptedAccuracyMeters,
+    trackBreaks: trackBreaks ?? this.trackBreaks,
+    allowMultipleBreaks: allowMultipleBreaks ?? this.allowMultipleBreaks,
+    allowPunchOutDuringBreak:
+        allowPunchOutDuringBreak ?? this.allowPunchOutDuringBreak,
+    allowEmployeeCorrectionRequest:
+        allowEmployeeCorrectionRequest ?? this.allowEmployeeCorrectionRequest,
+    allowEarlyPunchIn: allowEarlyPunchIn ?? this.allowEarlyPunchIn,
+    earlyPunchInLimitMinutes: earlyPunchInLimitMinutes.present
+        ? earlyPunchInLimitMinutes.value
+        : this.earlyPunchInLimitMinutes,
+    allowLatePunchIn: allowLatePunchIn ?? this.allowLatePunchIn,
+    allowEarlyPunchOut: allowEarlyPunchOut ?? this.allowEarlyPunchOut,
+    offlineMode: offlineMode ?? this.offlineMode,
+  );
+  AttendancePolicyRecord copyWithCompanion(
+    AttendancePolicyRecordsCompanion data,
+  ) {
+    return AttendancePolicyRecord(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      normalizedName: data.normalizedName.present
+          ? data.normalizedName.value
+          : this.normalizedName,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      requireLocation: data.requireLocation.present
+          ? data.requireLocation.value
+          : this.requireLocation,
+      allowOutsideLocation: data.allowOutsideLocation.present
+          ? data.allowOutsideLocation.value
+          : this.allowOutsideLocation,
+      allowRemoteAttendance: data.allowRemoteAttendance.present
+          ? data.allowRemoteAttendance.value
+          : this.allowRemoteAttendance,
+      requireLocationOnPunchIn: data.requireLocationOnPunchIn.present
+          ? data.requireLocationOnPunchIn.value
+          : this.requireLocationOnPunchIn,
+      requireLocationOnPunchOut: data.requireLocationOnPunchOut.present
+          ? data.requireLocationOnPunchOut.value
+          : this.requireLocationOnPunchOut,
+      requireLocationOnBreak: data.requireLocationOnBreak.present
+          ? data.requireLocationOnBreak.value
+          : this.requireLocationOnBreak,
+      requireLocationAccuracy: data.requireLocationAccuracy.present
+          ? data.requireLocationAccuracy.value
+          : this.requireLocationAccuracy,
+      maximumAcceptedAccuracyMeters: data.maximumAcceptedAccuracyMeters.present
+          ? data.maximumAcceptedAccuracyMeters.value
+          : this.maximumAcceptedAccuracyMeters,
+      trackBreaks: data.trackBreaks.present
+          ? data.trackBreaks.value
+          : this.trackBreaks,
+      allowMultipleBreaks: data.allowMultipleBreaks.present
+          ? data.allowMultipleBreaks.value
+          : this.allowMultipleBreaks,
+      allowPunchOutDuringBreak: data.allowPunchOutDuringBreak.present
+          ? data.allowPunchOutDuringBreak.value
+          : this.allowPunchOutDuringBreak,
+      allowEmployeeCorrectionRequest:
+          data.allowEmployeeCorrectionRequest.present
+          ? data.allowEmployeeCorrectionRequest.value
+          : this.allowEmployeeCorrectionRequest,
+      allowEarlyPunchIn: data.allowEarlyPunchIn.present
+          ? data.allowEarlyPunchIn.value
+          : this.allowEarlyPunchIn,
+      earlyPunchInLimitMinutes: data.earlyPunchInLimitMinutes.present
+          ? data.earlyPunchInLimitMinutes.value
+          : this.earlyPunchInLimitMinutes,
+      allowLatePunchIn: data.allowLatePunchIn.present
+          ? data.allowLatePunchIn.value
+          : this.allowLatePunchIn,
+      allowEarlyPunchOut: data.allowEarlyPunchOut.present
+          ? data.allowEarlyPunchOut.value
+          : this.allowEarlyPunchOut,
+      offlineMode: data.offlineMode.present
+          ? data.offlineMode.value
+          : this.offlineMode,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendancePolicyRecord(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('description: $description, ')
+          ..write('requireLocation: $requireLocation, ')
+          ..write('allowOutsideLocation: $allowOutsideLocation, ')
+          ..write('allowRemoteAttendance: $allowRemoteAttendance, ')
+          ..write('requireLocationOnPunchIn: $requireLocationOnPunchIn, ')
+          ..write('requireLocationOnPunchOut: $requireLocationOnPunchOut, ')
+          ..write('requireLocationOnBreak: $requireLocationOnBreak, ')
+          ..write('requireLocationAccuracy: $requireLocationAccuracy, ')
+          ..write(
+            'maximumAcceptedAccuracyMeters: $maximumAcceptedAccuracyMeters, ',
+          )
+          ..write('trackBreaks: $trackBreaks, ')
+          ..write('allowMultipleBreaks: $allowMultipleBreaks, ')
+          ..write('allowPunchOutDuringBreak: $allowPunchOutDuringBreak, ')
+          ..write(
+            'allowEmployeeCorrectionRequest: $allowEmployeeCorrectionRequest, ',
+          )
+          ..write('allowEarlyPunchIn: $allowEarlyPunchIn, ')
+          ..write('earlyPunchInLimitMinutes: $earlyPunchInLimitMinutes, ')
+          ..write('allowLatePunchIn: $allowLatePunchIn, ')
+          ..write('allowEarlyPunchOut: $allowEarlyPunchOut, ')
+          ..write('offlineMode: $offlineMode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    companyId,
+    name,
+    normalizedName,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    description,
+    requireLocation,
+    allowOutsideLocation,
+    allowRemoteAttendance,
+    requireLocationOnPunchIn,
+    requireLocationOnPunchOut,
+    requireLocationOnBreak,
+    requireLocationAccuracy,
+    maximumAcceptedAccuracyMeters,
+    trackBreaks,
+    allowMultipleBreaks,
+    allowPunchOutDuringBreak,
+    allowEmployeeCorrectionRequest,
+    allowEarlyPunchIn,
+    earlyPunchInLimitMinutes,
+    allowLatePunchIn,
+    allowEarlyPunchOut,
+    offlineMode,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendancePolicyRecord &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.normalizedName == this.normalizedName &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.description == this.description &&
+          other.requireLocation == this.requireLocation &&
+          other.allowOutsideLocation == this.allowOutsideLocation &&
+          other.allowRemoteAttendance == this.allowRemoteAttendance &&
+          other.requireLocationOnPunchIn == this.requireLocationOnPunchIn &&
+          other.requireLocationOnPunchOut == this.requireLocationOnPunchOut &&
+          other.requireLocationOnBreak == this.requireLocationOnBreak &&
+          other.requireLocationAccuracy == this.requireLocationAccuracy &&
+          other.maximumAcceptedAccuracyMeters ==
+              this.maximumAcceptedAccuracyMeters &&
+          other.trackBreaks == this.trackBreaks &&
+          other.allowMultipleBreaks == this.allowMultipleBreaks &&
+          other.allowPunchOutDuringBreak == this.allowPunchOutDuringBreak &&
+          other.allowEmployeeCorrectionRequest ==
+              this.allowEmployeeCorrectionRequest &&
+          other.allowEarlyPunchIn == this.allowEarlyPunchIn &&
+          other.earlyPunchInLimitMinutes == this.earlyPunchInLimitMinutes &&
+          other.allowLatePunchIn == this.allowLatePunchIn &&
+          other.allowEarlyPunchOut == this.allowEarlyPunchOut &&
+          other.offlineMode == this.offlineMode);
+}
+
+class AttendancePolicyRecordsCompanion
+    extends UpdateCompanion<AttendancePolicyRecord> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> normalizedName;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<String> description;
+  final Value<bool> requireLocation;
+  final Value<bool> allowOutsideLocation;
+  final Value<bool> allowRemoteAttendance;
+  final Value<bool> requireLocationOnPunchIn;
+  final Value<bool> requireLocationOnPunchOut;
+  final Value<bool> requireLocationOnBreak;
+  final Value<bool> requireLocationAccuracy;
+  final Value<double?> maximumAcceptedAccuracyMeters;
+  final Value<bool> trackBreaks;
+  final Value<bool> allowMultipleBreaks;
+  final Value<bool> allowPunchOutDuringBreak;
+  final Value<bool> allowEmployeeCorrectionRequest;
+  final Value<bool> allowEarlyPunchIn;
+  final Value<int?> earlyPunchInLimitMinutes;
+  final Value<bool> allowLatePunchIn;
+  final Value<bool> allowEarlyPunchOut;
+  final Value<String> offlineMode;
+  final Value<int> rowid;
+  const AttendancePolicyRecordsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.normalizedName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.description = const Value.absent(),
+    this.requireLocation = const Value.absent(),
+    this.allowOutsideLocation = const Value.absent(),
+    this.allowRemoteAttendance = const Value.absent(),
+    this.requireLocationOnPunchIn = const Value.absent(),
+    this.requireLocationOnPunchOut = const Value.absent(),
+    this.requireLocationOnBreak = const Value.absent(),
+    this.requireLocationAccuracy = const Value.absent(),
+    this.maximumAcceptedAccuracyMeters = const Value.absent(),
+    this.trackBreaks = const Value.absent(),
+    this.allowMultipleBreaks = const Value.absent(),
+    this.allowPunchOutDuringBreak = const Value.absent(),
+    this.allowEmployeeCorrectionRequest = const Value.absent(),
+    this.allowEarlyPunchIn = const Value.absent(),
+    this.earlyPunchInLimitMinutes = const Value.absent(),
+    this.allowLatePunchIn = const Value.absent(),
+    this.allowEarlyPunchOut = const Value.absent(),
+    this.offlineMode = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttendancePolicyRecordsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String normalizedName,
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.description = const Value.absent(),
+    required bool requireLocation,
+    required bool allowOutsideLocation,
+    required bool allowRemoteAttendance,
+    required bool requireLocationOnPunchIn,
+    required bool requireLocationOnPunchOut,
+    required bool requireLocationOnBreak,
+    required bool requireLocationAccuracy,
+    this.maximumAcceptedAccuracyMeters = const Value.absent(),
+    required bool trackBreaks,
+    required bool allowMultipleBreaks,
+    required bool allowPunchOutDuringBreak,
+    required bool allowEmployeeCorrectionRequest,
+    required bool allowEarlyPunchIn,
+    this.earlyPunchInLimitMinutes = const Value.absent(),
+    required bool allowLatePunchIn,
+    required bool allowEarlyPunchOut,
+    required String offlineMode,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       normalizedName = Value(normalizedName),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       requireLocation = Value(requireLocation),
+       allowOutsideLocation = Value(allowOutsideLocation),
+       allowRemoteAttendance = Value(allowRemoteAttendance),
+       requireLocationOnPunchIn = Value(requireLocationOnPunchIn),
+       requireLocationOnPunchOut = Value(requireLocationOnPunchOut),
+       requireLocationOnBreak = Value(requireLocationOnBreak),
+       requireLocationAccuracy = Value(requireLocationAccuracy),
+       trackBreaks = Value(trackBreaks),
+       allowMultipleBreaks = Value(allowMultipleBreaks),
+       allowPunchOutDuringBreak = Value(allowPunchOutDuringBreak),
+       allowEmployeeCorrectionRequest = Value(allowEmployeeCorrectionRequest),
+       allowEarlyPunchIn = Value(allowEarlyPunchIn),
+       allowLatePunchIn = Value(allowLatePunchIn),
+       allowEarlyPunchOut = Value(allowEarlyPunchOut),
+       offlineMode = Value(offlineMode);
+  static Insertable<AttendancePolicyRecord> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? normalizedName,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? description,
+    Expression<bool>? requireLocation,
+    Expression<bool>? allowOutsideLocation,
+    Expression<bool>? allowRemoteAttendance,
+    Expression<bool>? requireLocationOnPunchIn,
+    Expression<bool>? requireLocationOnPunchOut,
+    Expression<bool>? requireLocationOnBreak,
+    Expression<bool>? requireLocationAccuracy,
+    Expression<double>? maximumAcceptedAccuracyMeters,
+    Expression<bool>? trackBreaks,
+    Expression<bool>? allowMultipleBreaks,
+    Expression<bool>? allowPunchOutDuringBreak,
+    Expression<bool>? allowEmployeeCorrectionRequest,
+    Expression<bool>? allowEarlyPunchIn,
+    Expression<int>? earlyPunchInLimitMinutes,
+    Expression<bool>? allowLatePunchIn,
+    Expression<bool>? allowEarlyPunchOut,
+    Expression<String>? offlineMode,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (normalizedName != null) 'normalized_name': normalizedName,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (description != null) 'description': description,
+      if (requireLocation != null) 'require_location': requireLocation,
+      if (allowOutsideLocation != null)
+        'allow_outside_location': allowOutsideLocation,
+      if (allowRemoteAttendance != null)
+        'allow_remote_attendance': allowRemoteAttendance,
+      if (requireLocationOnPunchIn != null)
+        'require_location_on_punch_in': requireLocationOnPunchIn,
+      if (requireLocationOnPunchOut != null)
+        'require_location_on_punch_out': requireLocationOnPunchOut,
+      if (requireLocationOnBreak != null)
+        'require_location_on_break': requireLocationOnBreak,
+      if (requireLocationAccuracy != null)
+        'require_location_accuracy': requireLocationAccuracy,
+      if (maximumAcceptedAccuracyMeters != null)
+        'maximum_accepted_accuracy_meters': maximumAcceptedAccuracyMeters,
+      if (trackBreaks != null) 'track_breaks': trackBreaks,
+      if (allowMultipleBreaks != null)
+        'allow_multiple_breaks': allowMultipleBreaks,
+      if (allowPunchOutDuringBreak != null)
+        'allow_punch_out_during_break': allowPunchOutDuringBreak,
+      if (allowEmployeeCorrectionRequest != null)
+        'allow_employee_correction_request': allowEmployeeCorrectionRequest,
+      if (allowEarlyPunchIn != null) 'allow_early_punch_in': allowEarlyPunchIn,
+      if (earlyPunchInLimitMinutes != null)
+        'early_punch_in_limit_minutes': earlyPunchInLimitMinutes,
+      if (allowLatePunchIn != null) 'allow_late_punch_in': allowLatePunchIn,
+      if (allowEarlyPunchOut != null)
+        'allow_early_punch_out': allowEarlyPunchOut,
+      if (offlineMode != null) 'offline_mode': offlineMode,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttendancePolicyRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? normalizedName,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<String>? description,
+    Value<bool>? requireLocation,
+    Value<bool>? allowOutsideLocation,
+    Value<bool>? allowRemoteAttendance,
+    Value<bool>? requireLocationOnPunchIn,
+    Value<bool>? requireLocationOnPunchOut,
+    Value<bool>? requireLocationOnBreak,
+    Value<bool>? requireLocationAccuracy,
+    Value<double?>? maximumAcceptedAccuracyMeters,
+    Value<bool>? trackBreaks,
+    Value<bool>? allowMultipleBreaks,
+    Value<bool>? allowPunchOutDuringBreak,
+    Value<bool>? allowEmployeeCorrectionRequest,
+    Value<bool>? allowEarlyPunchIn,
+    Value<int?>? earlyPunchInLimitMinutes,
+    Value<bool>? allowLatePunchIn,
+    Value<bool>? allowEarlyPunchOut,
+    Value<String>? offlineMode,
+    Value<int>? rowid,
+  }) {
+    return AttendancePolicyRecordsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      normalizedName: normalizedName ?? this.normalizedName,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      description: description ?? this.description,
+      requireLocation: requireLocation ?? this.requireLocation,
+      allowOutsideLocation: allowOutsideLocation ?? this.allowOutsideLocation,
+      allowRemoteAttendance:
+          allowRemoteAttendance ?? this.allowRemoteAttendance,
+      requireLocationOnPunchIn:
+          requireLocationOnPunchIn ?? this.requireLocationOnPunchIn,
+      requireLocationOnPunchOut:
+          requireLocationOnPunchOut ?? this.requireLocationOnPunchOut,
+      requireLocationOnBreak:
+          requireLocationOnBreak ?? this.requireLocationOnBreak,
+      requireLocationAccuracy:
+          requireLocationAccuracy ?? this.requireLocationAccuracy,
+      maximumAcceptedAccuracyMeters:
+          maximumAcceptedAccuracyMeters ?? this.maximumAcceptedAccuracyMeters,
+      trackBreaks: trackBreaks ?? this.trackBreaks,
+      allowMultipleBreaks: allowMultipleBreaks ?? this.allowMultipleBreaks,
+      allowPunchOutDuringBreak:
+          allowPunchOutDuringBreak ?? this.allowPunchOutDuringBreak,
+      allowEmployeeCorrectionRequest:
+          allowEmployeeCorrectionRequest ?? this.allowEmployeeCorrectionRequest,
+      allowEarlyPunchIn: allowEarlyPunchIn ?? this.allowEarlyPunchIn,
+      earlyPunchInLimitMinutes:
+          earlyPunchInLimitMinutes ?? this.earlyPunchInLimitMinutes,
+      allowLatePunchIn: allowLatePunchIn ?? this.allowLatePunchIn,
+      allowEarlyPunchOut: allowEarlyPunchOut ?? this.allowEarlyPunchOut,
+      offlineMode: offlineMode ?? this.offlineMode,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (normalizedName.present) {
+      map['normalized_name'] = Variable<String>(normalizedName.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (requireLocation.present) {
+      map['require_location'] = Variable<bool>(requireLocation.value);
+    }
+    if (allowOutsideLocation.present) {
+      map['allow_outside_location'] = Variable<bool>(
+        allowOutsideLocation.value,
+      );
+    }
+    if (allowRemoteAttendance.present) {
+      map['allow_remote_attendance'] = Variable<bool>(
+        allowRemoteAttendance.value,
+      );
+    }
+    if (requireLocationOnPunchIn.present) {
+      map['require_location_on_punch_in'] = Variable<bool>(
+        requireLocationOnPunchIn.value,
+      );
+    }
+    if (requireLocationOnPunchOut.present) {
+      map['require_location_on_punch_out'] = Variable<bool>(
+        requireLocationOnPunchOut.value,
+      );
+    }
+    if (requireLocationOnBreak.present) {
+      map['require_location_on_break'] = Variable<bool>(
+        requireLocationOnBreak.value,
+      );
+    }
+    if (requireLocationAccuracy.present) {
+      map['require_location_accuracy'] = Variable<bool>(
+        requireLocationAccuracy.value,
+      );
+    }
+    if (maximumAcceptedAccuracyMeters.present) {
+      map['maximum_accepted_accuracy_meters'] = Variable<double>(
+        maximumAcceptedAccuracyMeters.value,
+      );
+    }
+    if (trackBreaks.present) {
+      map['track_breaks'] = Variable<bool>(trackBreaks.value);
+    }
+    if (allowMultipleBreaks.present) {
+      map['allow_multiple_breaks'] = Variable<bool>(allowMultipleBreaks.value);
+    }
+    if (allowPunchOutDuringBreak.present) {
+      map['allow_punch_out_during_break'] = Variable<bool>(
+        allowPunchOutDuringBreak.value,
+      );
+    }
+    if (allowEmployeeCorrectionRequest.present) {
+      map['allow_employee_correction_request'] = Variable<bool>(
+        allowEmployeeCorrectionRequest.value,
+      );
+    }
+    if (allowEarlyPunchIn.present) {
+      map['allow_early_punch_in'] = Variable<bool>(allowEarlyPunchIn.value);
+    }
+    if (earlyPunchInLimitMinutes.present) {
+      map['early_punch_in_limit_minutes'] = Variable<int>(
+        earlyPunchInLimitMinutes.value,
+      );
+    }
+    if (allowLatePunchIn.present) {
+      map['allow_late_punch_in'] = Variable<bool>(allowLatePunchIn.value);
+    }
+    if (allowEarlyPunchOut.present) {
+      map['allow_early_punch_out'] = Variable<bool>(allowEarlyPunchOut.value);
+    }
+    if (offlineMode.present) {
+      map['offline_mode'] = Variable<String>(offlineMode.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendancePolicyRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('description: $description, ')
+          ..write('requireLocation: $requireLocation, ')
+          ..write('allowOutsideLocation: $allowOutsideLocation, ')
+          ..write('allowRemoteAttendance: $allowRemoteAttendance, ')
+          ..write('requireLocationOnPunchIn: $requireLocationOnPunchIn, ')
+          ..write('requireLocationOnPunchOut: $requireLocationOnPunchOut, ')
+          ..write('requireLocationOnBreak: $requireLocationOnBreak, ')
+          ..write('requireLocationAccuracy: $requireLocationAccuracy, ')
+          ..write(
+            'maximumAcceptedAccuracyMeters: $maximumAcceptedAccuracyMeters, ',
+          )
+          ..write('trackBreaks: $trackBreaks, ')
+          ..write('allowMultipleBreaks: $allowMultipleBreaks, ')
+          ..write('allowPunchOutDuringBreak: $allowPunchOutDuringBreak, ')
+          ..write(
+            'allowEmployeeCorrectionRequest: $allowEmployeeCorrectionRequest, ',
+          )
+          ..write('allowEarlyPunchIn: $allowEarlyPunchIn, ')
+          ..write('earlyPunchInLimitMinutes: $earlyPunchInLimitMinutes, ')
+          ..write('allowLatePunchIn: $allowLatePunchIn, ')
+          ..write('allowEarlyPunchOut: $allowEarlyPunchOut, ')
+          ..write('offlineMode: $offlineMode, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3184,6 +6872,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $WorkforceEmployeesTable workforceEmployees =
       $WorkforceEmployeesTable(this);
   late final $WorkforceSeedsTable workforceSeeds = $WorkforceSeedsTable(this);
+  late final $ShiftRecordsTable shiftRecords = $ShiftRecordsTable(this);
+  late final $WorkLocationRecordsTable workLocationRecords =
+      $WorkLocationRecordsTable(this);
+  late final $AttendancePolicyRecordsTable attendancePolicyRecords =
+      $AttendancePolicyRecordsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3195,6 +6888,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     workforceAccounts,
     workforceEmployees,
     workforceSeeds,
+    shiftRecords,
+    workLocationRecords,
+    attendancePolicyRecords,
   ];
 }
 
@@ -5608,6 +9304,1617 @@ typedef $$WorkforceSeedsTableProcessedTableManager =
       WorkforceSeed,
       PrefetchHooks Function()
     >;
+typedef $$ShiftRecordsTableCreateCompanionBuilder =
+    ShiftRecordsCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String normalizedName,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<String?> code,
+      required int startMinutes,
+      required int endMinutes,
+      required int workingDayMask,
+      required int gracePeriodMinutes,
+      required String breakMode,
+      Value<int?> defaultBreakMinutes,
+      Value<int?> minimumWorkMinutes,
+      Value<int> rowid,
+    });
+typedef $$ShiftRecordsTableUpdateCompanionBuilder =
+    ShiftRecordsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> normalizedName,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<String?> code,
+      Value<int> startMinutes,
+      Value<int> endMinutes,
+      Value<int> workingDayMask,
+      Value<int> gracePeriodMinutes,
+      Value<String> breakMode,
+      Value<int?> defaultBreakMinutes,
+      Value<int?> minimumWorkMinutes,
+      Value<int> rowid,
+    });
+
+class $$ShiftRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $ShiftRecordsTable> {
+  $$ShiftRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startMinutes => $composableBuilder(
+    column: $table.startMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endMinutes => $composableBuilder(
+    column: $table.endMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get workingDayMask => $composableBuilder(
+    column: $table.workingDayMask,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get gracePeriodMinutes => $composableBuilder(
+    column: $table.gracePeriodMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get breakMode => $composableBuilder(
+    column: $table.breakMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get defaultBreakMinutes => $composableBuilder(
+    column: $table.defaultBreakMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get minimumWorkMinutes => $composableBuilder(
+    column: $table.minimumWorkMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ShiftRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ShiftRecordsTable> {
+  $$ShiftRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startMinutes => $composableBuilder(
+    column: $table.startMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endMinutes => $composableBuilder(
+    column: $table.endMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get workingDayMask => $composableBuilder(
+    column: $table.workingDayMask,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get gracePeriodMinutes => $composableBuilder(
+    column: $table.gracePeriodMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get breakMode => $composableBuilder(
+    column: $table.breakMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get defaultBreakMinutes => $composableBuilder(
+    column: $table.defaultBreakMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get minimumWorkMinutes => $composableBuilder(
+    column: $table.minimumWorkMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ShiftRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ShiftRecordsTable> {
+  $$ShiftRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<int> get startMinutes => $composableBuilder(
+    column: $table.startMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get endMinutes => $composableBuilder(
+    column: $table.endMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get workingDayMask => $composableBuilder(
+    column: $table.workingDayMask,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get gracePeriodMinutes => $composableBuilder(
+    column: $table.gracePeriodMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get breakMode =>
+      $composableBuilder(column: $table.breakMode, builder: (column) => column);
+
+  GeneratedColumn<int> get defaultBreakMinutes => $composableBuilder(
+    column: $table.defaultBreakMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get minimumWorkMinutes => $composableBuilder(
+    column: $table.minimumWorkMinutes,
+    builder: (column) => column,
+  );
+}
+
+class $$ShiftRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ShiftRecordsTable,
+          ShiftRecord,
+          $$ShiftRecordsTableFilterComposer,
+          $$ShiftRecordsTableOrderingComposer,
+          $$ShiftRecordsTableAnnotationComposer,
+          $$ShiftRecordsTableCreateCompanionBuilder,
+          $$ShiftRecordsTableUpdateCompanionBuilder,
+          (
+            ShiftRecord,
+            BaseReferences<_$AppDatabase, $ShiftRecordsTable, ShiftRecord>,
+          ),
+          ShiftRecord,
+          PrefetchHooks Function()
+        > {
+  $$ShiftRecordsTableTableManager(_$AppDatabase db, $ShiftRecordsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ShiftRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ShiftRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ShiftRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> normalizedName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> code = const Value.absent(),
+                Value<int> startMinutes = const Value.absent(),
+                Value<int> endMinutes = const Value.absent(),
+                Value<int> workingDayMask = const Value.absent(),
+                Value<int> gracePeriodMinutes = const Value.absent(),
+                Value<String> breakMode = const Value.absent(),
+                Value<int?> defaultBreakMinutes = const Value.absent(),
+                Value<int?> minimumWorkMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ShiftRecordsCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                code: code,
+                startMinutes: startMinutes,
+                endMinutes: endMinutes,
+                workingDayMask: workingDayMask,
+                gracePeriodMinutes: gracePeriodMinutes,
+                breakMode: breakMode,
+                defaultBreakMinutes: defaultBreakMinutes,
+                minimumWorkMinutes: minimumWorkMinutes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String normalizedName,
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<String?> code = const Value.absent(),
+                required int startMinutes,
+                required int endMinutes,
+                required int workingDayMask,
+                required int gracePeriodMinutes,
+                required String breakMode,
+                Value<int?> defaultBreakMinutes = const Value.absent(),
+                Value<int?> minimumWorkMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ShiftRecordsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                code: code,
+                startMinutes: startMinutes,
+                endMinutes: endMinutes,
+                workingDayMask: workingDayMask,
+                gracePeriodMinutes: gracePeriodMinutes,
+                breakMode: breakMode,
+                defaultBreakMinutes: defaultBreakMinutes,
+                minimumWorkMinutes: minimumWorkMinutes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ShiftRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ShiftRecordsTable,
+      ShiftRecord,
+      $$ShiftRecordsTableFilterComposer,
+      $$ShiftRecordsTableOrderingComposer,
+      $$ShiftRecordsTableAnnotationComposer,
+      $$ShiftRecordsTableCreateCompanionBuilder,
+      $$ShiftRecordsTableUpdateCompanionBuilder,
+      (
+        ShiftRecord,
+        BaseReferences<_$AppDatabase, $ShiftRecordsTable, ShiftRecord>,
+      ),
+      ShiftRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$WorkLocationRecordsTableCreateCompanionBuilder =
+    WorkLocationRecordsCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String normalizedName,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<String?> code,
+      required String addressLine1,
+      Value<String> addressLine2,
+      required String city,
+      Value<String> stateRegion,
+      Value<String> postalCode,
+      required String countryCode,
+      required double latitude,
+      required double longitude,
+      required double allowedRadiusMeters,
+      Value<double?> maximumAccuracyMeters,
+      required String validationMode,
+      Value<int> rowid,
+    });
+typedef $$WorkLocationRecordsTableUpdateCompanionBuilder =
+    WorkLocationRecordsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> normalizedName,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<String?> code,
+      Value<String> addressLine1,
+      Value<String> addressLine2,
+      Value<String> city,
+      Value<String> stateRegion,
+      Value<String> postalCode,
+      Value<String> countryCode,
+      Value<double> latitude,
+      Value<double> longitude,
+      Value<double> allowedRadiusMeters,
+      Value<double?> maximumAccuracyMeters,
+      Value<String> validationMode,
+      Value<int> rowid,
+    });
+
+class $$WorkLocationRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $WorkLocationRecordsTable> {
+  $$WorkLocationRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stateRegion => $composableBuilder(
+    column: $table.stateRegion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get allowedRadiusMeters => $composableBuilder(
+    column: $table.allowedRadiusMeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get maximumAccuracyMeters => $composableBuilder(
+    column: $table.maximumAccuracyMeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get validationMode => $composableBuilder(
+    column: $table.validationMode,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$WorkLocationRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $WorkLocationRecordsTable> {
+  $$WorkLocationRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stateRegion => $composableBuilder(
+    column: $table.stateRegion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get allowedRadiusMeters => $composableBuilder(
+    column: $table.allowedRadiusMeters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get maximumAccuracyMeters => $composableBuilder(
+    column: $table.maximumAccuracyMeters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get validationMode => $composableBuilder(
+    column: $table.validationMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WorkLocationRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WorkLocationRecordsTable> {
+  $$WorkLocationRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get stateRegion => $composableBuilder(
+    column: $table.stateRegion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<double> get allowedRadiusMeters => $composableBuilder(
+    column: $table.allowedRadiusMeters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get maximumAccuracyMeters => $composableBuilder(
+    column: $table.maximumAccuracyMeters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get validationMode => $composableBuilder(
+    column: $table.validationMode,
+    builder: (column) => column,
+  );
+}
+
+class $$WorkLocationRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WorkLocationRecordsTable,
+          WorkLocationRecord,
+          $$WorkLocationRecordsTableFilterComposer,
+          $$WorkLocationRecordsTableOrderingComposer,
+          $$WorkLocationRecordsTableAnnotationComposer,
+          $$WorkLocationRecordsTableCreateCompanionBuilder,
+          $$WorkLocationRecordsTableUpdateCompanionBuilder,
+          (
+            WorkLocationRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $WorkLocationRecordsTable,
+              WorkLocationRecord
+            >,
+          ),
+          WorkLocationRecord,
+          PrefetchHooks Function()
+        > {
+  $$WorkLocationRecordsTableTableManager(
+    _$AppDatabase db,
+    $WorkLocationRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WorkLocationRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WorkLocationRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$WorkLocationRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> normalizedName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> code = const Value.absent(),
+                Value<String> addressLine1 = const Value.absent(),
+                Value<String> addressLine2 = const Value.absent(),
+                Value<String> city = const Value.absent(),
+                Value<String> stateRegion = const Value.absent(),
+                Value<String> postalCode = const Value.absent(),
+                Value<String> countryCode = const Value.absent(),
+                Value<double> latitude = const Value.absent(),
+                Value<double> longitude = const Value.absent(),
+                Value<double> allowedRadiusMeters = const Value.absent(),
+                Value<double?> maximumAccuracyMeters = const Value.absent(),
+                Value<String> validationMode = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WorkLocationRecordsCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                code: code,
+                addressLine1: addressLine1,
+                addressLine2: addressLine2,
+                city: city,
+                stateRegion: stateRegion,
+                postalCode: postalCode,
+                countryCode: countryCode,
+                latitude: latitude,
+                longitude: longitude,
+                allowedRadiusMeters: allowedRadiusMeters,
+                maximumAccuracyMeters: maximumAccuracyMeters,
+                validationMode: validationMode,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String normalizedName,
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<String?> code = const Value.absent(),
+                required String addressLine1,
+                Value<String> addressLine2 = const Value.absent(),
+                required String city,
+                Value<String> stateRegion = const Value.absent(),
+                Value<String> postalCode = const Value.absent(),
+                required String countryCode,
+                required double latitude,
+                required double longitude,
+                required double allowedRadiusMeters,
+                Value<double?> maximumAccuracyMeters = const Value.absent(),
+                required String validationMode,
+                Value<int> rowid = const Value.absent(),
+              }) => WorkLocationRecordsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                code: code,
+                addressLine1: addressLine1,
+                addressLine2: addressLine2,
+                city: city,
+                stateRegion: stateRegion,
+                postalCode: postalCode,
+                countryCode: countryCode,
+                latitude: latitude,
+                longitude: longitude,
+                allowedRadiusMeters: allowedRadiusMeters,
+                maximumAccuracyMeters: maximumAccuracyMeters,
+                validationMode: validationMode,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$WorkLocationRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WorkLocationRecordsTable,
+      WorkLocationRecord,
+      $$WorkLocationRecordsTableFilterComposer,
+      $$WorkLocationRecordsTableOrderingComposer,
+      $$WorkLocationRecordsTableAnnotationComposer,
+      $$WorkLocationRecordsTableCreateCompanionBuilder,
+      $$WorkLocationRecordsTableUpdateCompanionBuilder,
+      (
+        WorkLocationRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $WorkLocationRecordsTable,
+          WorkLocationRecord
+        >,
+      ),
+      WorkLocationRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$AttendancePolicyRecordsTableCreateCompanionBuilder =
+    AttendancePolicyRecordsCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String normalizedName,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<String> description,
+      required bool requireLocation,
+      required bool allowOutsideLocation,
+      required bool allowRemoteAttendance,
+      required bool requireLocationOnPunchIn,
+      required bool requireLocationOnPunchOut,
+      required bool requireLocationOnBreak,
+      required bool requireLocationAccuracy,
+      Value<double?> maximumAcceptedAccuracyMeters,
+      required bool trackBreaks,
+      required bool allowMultipleBreaks,
+      required bool allowPunchOutDuringBreak,
+      required bool allowEmployeeCorrectionRequest,
+      required bool allowEarlyPunchIn,
+      Value<int?> earlyPunchInLimitMinutes,
+      required bool allowLatePunchIn,
+      required bool allowEarlyPunchOut,
+      required String offlineMode,
+      Value<int> rowid,
+    });
+typedef $$AttendancePolicyRecordsTableUpdateCompanionBuilder =
+    AttendancePolicyRecordsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> normalizedName,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<String> description,
+      Value<bool> requireLocation,
+      Value<bool> allowOutsideLocation,
+      Value<bool> allowRemoteAttendance,
+      Value<bool> requireLocationOnPunchIn,
+      Value<bool> requireLocationOnPunchOut,
+      Value<bool> requireLocationOnBreak,
+      Value<bool> requireLocationAccuracy,
+      Value<double?> maximumAcceptedAccuracyMeters,
+      Value<bool> trackBreaks,
+      Value<bool> allowMultipleBreaks,
+      Value<bool> allowPunchOutDuringBreak,
+      Value<bool> allowEmployeeCorrectionRequest,
+      Value<bool> allowEarlyPunchIn,
+      Value<int?> earlyPunchInLimitMinutes,
+      Value<bool> allowLatePunchIn,
+      Value<bool> allowEarlyPunchOut,
+      Value<String> offlineMode,
+      Value<int> rowid,
+    });
+
+class $$AttendancePolicyRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendancePolicyRecordsTable> {
+  $$AttendancePolicyRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requireLocation => $composableBuilder(
+    column: $table.requireLocation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowOutsideLocation => $composableBuilder(
+    column: $table.allowOutsideLocation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowRemoteAttendance => $composableBuilder(
+    column: $table.allowRemoteAttendance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requireLocationOnPunchIn => $composableBuilder(
+    column: $table.requireLocationOnPunchIn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requireLocationOnPunchOut => $composableBuilder(
+    column: $table.requireLocationOnPunchOut,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requireLocationOnBreak => $composableBuilder(
+    column: $table.requireLocationOnBreak,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requireLocationAccuracy => $composableBuilder(
+    column: $table.requireLocationAccuracy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get maximumAcceptedAccuracyMeters => $composableBuilder(
+    column: $table.maximumAcceptedAccuracyMeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get trackBreaks => $composableBuilder(
+    column: $table.trackBreaks,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowMultipleBreaks => $composableBuilder(
+    column: $table.allowMultipleBreaks,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowPunchOutDuringBreak => $composableBuilder(
+    column: $table.allowPunchOutDuringBreak,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowEmployeeCorrectionRequest => $composableBuilder(
+    column: $table.allowEmployeeCorrectionRequest,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowEarlyPunchIn => $composableBuilder(
+    column: $table.allowEarlyPunchIn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get earlyPunchInLimitMinutes => $composableBuilder(
+    column: $table.earlyPunchInLimitMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowLatePunchIn => $composableBuilder(
+    column: $table.allowLatePunchIn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowEarlyPunchOut => $composableBuilder(
+    column: $table.allowEarlyPunchOut,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get offlineMode => $composableBuilder(
+    column: $table.offlineMode,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AttendancePolicyRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendancePolicyRecordsTable> {
+  $$AttendancePolicyRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requireLocation => $composableBuilder(
+    column: $table.requireLocation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowOutsideLocation => $composableBuilder(
+    column: $table.allowOutsideLocation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowRemoteAttendance => $composableBuilder(
+    column: $table.allowRemoteAttendance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requireLocationOnPunchIn => $composableBuilder(
+    column: $table.requireLocationOnPunchIn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requireLocationOnPunchOut => $composableBuilder(
+    column: $table.requireLocationOnPunchOut,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requireLocationOnBreak => $composableBuilder(
+    column: $table.requireLocationOnBreak,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requireLocationAccuracy => $composableBuilder(
+    column: $table.requireLocationAccuracy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get maximumAcceptedAccuracyMeters =>
+      $composableBuilder(
+        column: $table.maximumAcceptedAccuracyMeters,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<bool> get trackBreaks => $composableBuilder(
+    column: $table.trackBreaks,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowMultipleBreaks => $composableBuilder(
+    column: $table.allowMultipleBreaks,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowPunchOutDuringBreak => $composableBuilder(
+    column: $table.allowPunchOutDuringBreak,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowEmployeeCorrectionRequest =>
+      $composableBuilder(
+        column: $table.allowEmployeeCorrectionRequest,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<bool> get allowEarlyPunchIn => $composableBuilder(
+    column: $table.allowEarlyPunchIn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get earlyPunchInLimitMinutes => $composableBuilder(
+    column: $table.earlyPunchInLimitMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowLatePunchIn => $composableBuilder(
+    column: $table.allowLatePunchIn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowEarlyPunchOut => $composableBuilder(
+    column: $table.allowEarlyPunchOut,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get offlineMode => $composableBuilder(
+    column: $table.offlineMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AttendancePolicyRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendancePolicyRecordsTable> {
+  $$AttendancePolicyRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requireLocation => $composableBuilder(
+    column: $table.requireLocation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowOutsideLocation => $composableBuilder(
+    column: $table.allowOutsideLocation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowRemoteAttendance => $composableBuilder(
+    column: $table.allowRemoteAttendance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requireLocationOnPunchIn => $composableBuilder(
+    column: $table.requireLocationOnPunchIn,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requireLocationOnPunchOut => $composableBuilder(
+    column: $table.requireLocationOnPunchOut,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requireLocationOnBreak => $composableBuilder(
+    column: $table.requireLocationOnBreak,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requireLocationAccuracy => $composableBuilder(
+    column: $table.requireLocationAccuracy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get maximumAcceptedAccuracyMeters =>
+      $composableBuilder(
+        column: $table.maximumAcceptedAccuracyMeters,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get trackBreaks => $composableBuilder(
+    column: $table.trackBreaks,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowMultipleBreaks => $composableBuilder(
+    column: $table.allowMultipleBreaks,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowPunchOutDuringBreak => $composableBuilder(
+    column: $table.allowPunchOutDuringBreak,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowEmployeeCorrectionRequest =>
+      $composableBuilder(
+        column: $table.allowEmployeeCorrectionRequest,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get allowEarlyPunchIn => $composableBuilder(
+    column: $table.allowEarlyPunchIn,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get earlyPunchInLimitMinutes => $composableBuilder(
+    column: $table.earlyPunchInLimitMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowLatePunchIn => $composableBuilder(
+    column: $table.allowLatePunchIn,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowEarlyPunchOut => $composableBuilder(
+    column: $table.allowEarlyPunchOut,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get offlineMode => $composableBuilder(
+    column: $table.offlineMode,
+    builder: (column) => column,
+  );
+}
+
+class $$AttendancePolicyRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendancePolicyRecordsTable,
+          AttendancePolicyRecord,
+          $$AttendancePolicyRecordsTableFilterComposer,
+          $$AttendancePolicyRecordsTableOrderingComposer,
+          $$AttendancePolicyRecordsTableAnnotationComposer,
+          $$AttendancePolicyRecordsTableCreateCompanionBuilder,
+          $$AttendancePolicyRecordsTableUpdateCompanionBuilder,
+          (
+            AttendancePolicyRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $AttendancePolicyRecordsTable,
+              AttendancePolicyRecord
+            >,
+          ),
+          AttendancePolicyRecord,
+          PrefetchHooks Function()
+        > {
+  $$AttendancePolicyRecordsTableTableManager(
+    _$AppDatabase db,
+    $AttendancePolicyRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendancePolicyRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$AttendancePolicyRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$AttendancePolicyRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> normalizedName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<bool> requireLocation = const Value.absent(),
+                Value<bool> allowOutsideLocation = const Value.absent(),
+                Value<bool> allowRemoteAttendance = const Value.absent(),
+                Value<bool> requireLocationOnPunchIn = const Value.absent(),
+                Value<bool> requireLocationOnPunchOut = const Value.absent(),
+                Value<bool> requireLocationOnBreak = const Value.absent(),
+                Value<bool> requireLocationAccuracy = const Value.absent(),
+                Value<double?> maximumAcceptedAccuracyMeters =
+                    const Value.absent(),
+                Value<bool> trackBreaks = const Value.absent(),
+                Value<bool> allowMultipleBreaks = const Value.absent(),
+                Value<bool> allowPunchOutDuringBreak = const Value.absent(),
+                Value<bool> allowEmployeeCorrectionRequest =
+                    const Value.absent(),
+                Value<bool> allowEarlyPunchIn = const Value.absent(),
+                Value<int?> earlyPunchInLimitMinutes = const Value.absent(),
+                Value<bool> allowLatePunchIn = const Value.absent(),
+                Value<bool> allowEarlyPunchOut = const Value.absent(),
+                Value<String> offlineMode = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendancePolicyRecordsCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                description: description,
+                requireLocation: requireLocation,
+                allowOutsideLocation: allowOutsideLocation,
+                allowRemoteAttendance: allowRemoteAttendance,
+                requireLocationOnPunchIn: requireLocationOnPunchIn,
+                requireLocationOnPunchOut: requireLocationOnPunchOut,
+                requireLocationOnBreak: requireLocationOnBreak,
+                requireLocationAccuracy: requireLocationAccuracy,
+                maximumAcceptedAccuracyMeters: maximumAcceptedAccuracyMeters,
+                trackBreaks: trackBreaks,
+                allowMultipleBreaks: allowMultipleBreaks,
+                allowPunchOutDuringBreak: allowPunchOutDuringBreak,
+                allowEmployeeCorrectionRequest: allowEmployeeCorrectionRequest,
+                allowEarlyPunchIn: allowEarlyPunchIn,
+                earlyPunchInLimitMinutes: earlyPunchInLimitMinutes,
+                allowLatePunchIn: allowLatePunchIn,
+                allowEarlyPunchOut: allowEarlyPunchOut,
+                offlineMode: offlineMode,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String normalizedName,
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<String> description = const Value.absent(),
+                required bool requireLocation,
+                required bool allowOutsideLocation,
+                required bool allowRemoteAttendance,
+                required bool requireLocationOnPunchIn,
+                required bool requireLocationOnPunchOut,
+                required bool requireLocationOnBreak,
+                required bool requireLocationAccuracy,
+                Value<double?> maximumAcceptedAccuracyMeters =
+                    const Value.absent(),
+                required bool trackBreaks,
+                required bool allowMultipleBreaks,
+                required bool allowPunchOutDuringBreak,
+                required bool allowEmployeeCorrectionRequest,
+                required bool allowEarlyPunchIn,
+                Value<int?> earlyPunchInLimitMinutes = const Value.absent(),
+                required bool allowLatePunchIn,
+                required bool allowEarlyPunchOut,
+                required String offlineMode,
+                Value<int> rowid = const Value.absent(),
+              }) => AttendancePolicyRecordsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                normalizedName: normalizedName,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                description: description,
+                requireLocation: requireLocation,
+                allowOutsideLocation: allowOutsideLocation,
+                allowRemoteAttendance: allowRemoteAttendance,
+                requireLocationOnPunchIn: requireLocationOnPunchIn,
+                requireLocationOnPunchOut: requireLocationOnPunchOut,
+                requireLocationOnBreak: requireLocationOnBreak,
+                requireLocationAccuracy: requireLocationAccuracy,
+                maximumAcceptedAccuracyMeters: maximumAcceptedAccuracyMeters,
+                trackBreaks: trackBreaks,
+                allowMultipleBreaks: allowMultipleBreaks,
+                allowPunchOutDuringBreak: allowPunchOutDuringBreak,
+                allowEmployeeCorrectionRequest: allowEmployeeCorrectionRequest,
+                allowEarlyPunchIn: allowEarlyPunchIn,
+                earlyPunchInLimitMinutes: earlyPunchInLimitMinutes,
+                allowLatePunchIn: allowLatePunchIn,
+                allowEarlyPunchOut: allowEarlyPunchOut,
+                offlineMode: offlineMode,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AttendancePolicyRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendancePolicyRecordsTable,
+      AttendancePolicyRecord,
+      $$AttendancePolicyRecordsTableFilterComposer,
+      $$AttendancePolicyRecordsTableOrderingComposer,
+      $$AttendancePolicyRecordsTableAnnotationComposer,
+      $$AttendancePolicyRecordsTableCreateCompanionBuilder,
+      $$AttendancePolicyRecordsTableUpdateCompanionBuilder,
+      (
+        AttendancePolicyRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $AttendancePolicyRecordsTable,
+          AttendancePolicyRecord
+        >,
+      ),
+      AttendancePolicyRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5624,4 +10931,13 @@ class $AppDatabaseManager {
       $$WorkforceEmployeesTableTableManager(_db, _db.workforceEmployees);
   $$WorkforceSeedsTableTableManager get workforceSeeds =>
       $$WorkforceSeedsTableTableManager(_db, _db.workforceSeeds);
+  $$ShiftRecordsTableTableManager get shiftRecords =>
+      $$ShiftRecordsTableTableManager(_db, _db.shiftRecords);
+  $$WorkLocationRecordsTableTableManager get workLocationRecords =>
+      $$WorkLocationRecordsTableTableManager(_db, _db.workLocationRecords);
+  $$AttendancePolicyRecordsTableTableManager get attendancePolicyRecords =>
+      $$AttendancePolicyRecordsTableTableManager(
+        _db,
+        _db.attendancePolicyRecords,
+      );
 }

@@ -4,7 +4,14 @@ import '../../theme/app_breakpoints.dart';
 import '../../../l10n/l10n.dart';
 
 class AppSelectOption<T> {
-  const AppSelectOption(this.value, this.label);
+  const AppSelectOption(
+    this.value,
+    this.label, {
+    this.subtitle,
+    this.enabled = true,
+  });
+  final String? subtitle;
+  final bool enabled;
   final T value;
   final String label;
 }
@@ -62,8 +69,15 @@ class AppSelectField<T> extends StatelessWidget {
                                   ListTile(
                                     title: Text(option.label),
                                     selected: option.value == value,
-                                    onTap: () =>
-                                        Navigator.pop(c, <T?>[option.value]),
+                                    enabled: option.enabled,
+                                    subtitle: option.subtitle == null
+                                        ? null
+                                        : Text(option.subtitle!),
+                                    onTap: !option.enabled
+                                        ? null
+                                        : () => Navigator.pop(c, <T?>[
+                                            option.value,
+                                          ]),
                                   ),
                               ],
                             ),

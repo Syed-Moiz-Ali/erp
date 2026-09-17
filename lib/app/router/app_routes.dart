@@ -21,6 +21,23 @@ abstract final class AppRoutes {
   static String employeeDetails(String id) =>
       '$employees/${Uri.encodeComponent(id)}';
   static String employeeEdit(String id) => '${employeeDetails(id)}/edit';
+  static const shifts = '/app/settings/shifts';
+  static const shiftsNew = '$shifts/new';
+  static String shiftsDetails(String id) =>
+      '$shifts/${Uri.encodeComponent(id)}';
+  static String shiftsEdit(String id) => '${shiftsDetails(id)}/edit';
+  static const workLocations = '/app/settings/work-locations';
+  static const workLocationsNew = '$workLocations/new';
+  static String workLocationsDetails(String id) =>
+      '$workLocations/${Uri.encodeComponent(id)}';
+  static String workLocationsEdit(String id) =>
+      '${workLocationsDetails(id)}/edit';
+  static const attendancePolicies = '/app/settings/attendance-policies';
+  static const attendancePoliciesNew = '$attendancePolicies/new';
+  static String attendancePoliciesDetails(String id) =>
+      '$attendancePolicies/${Uri.encodeComponent(id)}';
+  static String attendancePoliciesEdit(String id) =>
+      '${attendancePoliciesDetails(id)}/edit';
   static const utilityPaths = {
     more,
     unauthorized,

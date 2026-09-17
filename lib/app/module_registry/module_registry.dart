@@ -14,6 +14,7 @@ enum NavigationGroup {
   account,
   services,
   finance,
+  configuration,
 }
 
 extension NavigationGroupLocalization on NavigationGroup {
@@ -28,6 +29,7 @@ extension NavigationGroupLocalization on NavigationGroup {
     NavigationGroup.account => l10n.shellAccount,
     NavigationGroup.services => l10n.shellServices,
     NavigationGroup.finance => l10n.shellFinance,
+    NavigationGroup.configuration => l10n.cfgConfiguration,
   };
 }
 

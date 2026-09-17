@@ -73,7 +73,7 @@ class EmployeeDetailsBloc
               },
             );
       case _Updated(:final result):
-        final refs = await repository.getReferences(context),
+        final refs = await repository.getReferences(context, excludingId: id),
             account = await repository.getLinkedAccount(context, id);
         emit(
           EmployeeDetailsState(

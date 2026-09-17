@@ -1472,4 +1472,399 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noSelection => 'Not assigned';
+
+  @override
+  String get cfgConfiguration => 'Configuration';
+
+  @override
+  String get cfgShifts => 'Shifts';
+
+  @override
+  String get cfgLocations => 'Work locations';
+
+  @override
+  String get cfgPolicies => 'Attendance policies';
+
+  @override
+  String get cfgIntro =>
+      'Define when, where, and under which rules employees work.';
+
+  @override
+  String get cfgShiftIntro => 'Working hours, weekdays, and planned breaks.';
+
+  @override
+  String get cfgLocationIntro =>
+      'Work addresses and location validation settings.';
+
+  @override
+  String get cfgPolicyIntro =>
+      'Rules prepared for future attendance workflows.';
+
+  @override
+  String get cfgNew => 'Create record';
+
+  @override
+  String get cfgEdit => 'Edit record';
+
+  @override
+  String get cfgSaved => 'Configuration saved locally.';
+
+  @override
+  String get cfgStatusSaved => 'Status updated locally.';
+
+  @override
+  String get cfgName => 'Name';
+
+  @override
+  String get cfgCode => 'Code (optional)';
+
+  @override
+  String get cfgDescription => 'Description';
+
+  @override
+  String get cfgAll => 'All statuses';
+
+  @override
+  String get cfgActive => 'Active';
+
+  @override
+  String get cfgInactive => 'Inactive';
+
+  @override
+  String get cfgActivate => 'Activate';
+
+  @override
+  String get cfgDeactivate => 'Deactivate';
+
+  @override
+  String get cfgStatus => 'Status';
+
+  @override
+  String get cfgAssigned => 'Assigned employees';
+
+  @override
+  String get cfgDeactivateMessage =>
+      'Existing assignments are retained. This record will no longer be available for new assignments.';
+
+  @override
+  String get cfgActivateMessage =>
+      'Make this record available for new employee assignments.';
+
+  @override
+  String get cfgEmpty => 'No configuration records yet';
+
+  @override
+  String get cfgEmptyMessage =>
+      'Create a record to prepare employee attendance assignments.';
+
+  @override
+  String get cfgNoResults => 'No matching records';
+
+  @override
+  String get cfgNoResultsMessage => 'Try another search or status filter.';
+
+  @override
+  String get cfgNotFound => 'Record not found';
+
+  @override
+  String get cfgNotFoundMessage =>
+      'This record is unavailable in the current company.';
+
+  @override
+  String get cfgRequired => 'This field is required.';
+
+  @override
+  String get cfgDuplicateName =>
+      'An active record with this name already exists.';
+
+  @override
+  String get cfgInvalidTime => 'Choose different valid start and end times.';
+
+  @override
+  String get cfgWorkingDaysError => 'Select at least one working day.';
+
+  @override
+  String get cfgInvalidGrace =>
+      'Grace must be non-negative and shorter than the shift.';
+
+  @override
+  String get cfgInvalidBreak => 'Fixed break must be shorter than the shift.';
+
+  @override
+  String get cfgInvalidMinimum =>
+      'Minimum work must fit within expected working time.';
+
+  @override
+  String get cfgInvalidCoordinates =>
+      'Enter coordinates within valid latitude and longitude ranges.';
+
+  @override
+  String get cfgInvalidRadius => 'Enter a positive, finite radius.';
+
+  @override
+  String get cfgInvalidAccuracy => 'Enter a positive, finite accuracy limit.';
+
+  @override
+  String get cfgCountryError => 'Enter a two-letter country code.';
+
+  @override
+  String get cfgPolicyError =>
+      'Require location for at least one attendance event.';
+
+  @override
+  String get cfgEarlyError =>
+      'Enter an early arrival limit from 0 to 1440 minutes.';
+
+  @override
+  String get cfgAssignmentError =>
+      'Choose an active record from the current company.';
+
+  @override
+  String get cfgStorageError =>
+      'Unable to read or save local configuration. Please retry.';
+
+  @override
+  String get cfgStart => 'Start time';
+
+  @override
+  String get cfgEnd => 'End time';
+
+  @override
+  String get cfgDays => 'Working days';
+
+  @override
+  String get cfgGrace => 'Grace period';
+
+  @override
+  String get cfgBreakMode => 'Break mode';
+
+  @override
+  String get cfgManualBreak => 'Manual breaks';
+
+  @override
+  String get cfgFixedBreak => 'Fixed planned break';
+
+  @override
+  String get cfgNoBreak => 'No breaks';
+
+  @override
+  String get cfgBreakMinutes => 'Planned break duration';
+
+  @override
+  String get cfgMinimumWork => 'Minimum work duration (optional)';
+
+  @override
+  String get cfgDuration => 'Shift duration';
+
+  @override
+  String get cfgExpectedWork => 'Expected working time';
+
+  @override
+  String get cfgOvernight => 'Overnight shift';
+
+  @override
+  String get cfgSchedule => 'Schedule';
+
+  @override
+  String get cfgMinutes => 'minutes';
+
+  @override
+  String get cfgMeters => 'meters';
+
+  @override
+  String get cfgAddress => 'Address';
+
+  @override
+  String get cfgAddress1 => 'Address line 1';
+
+  @override
+  String get cfgAddress2 => 'Address line 2 (optional)';
+
+  @override
+  String get cfgCity => 'City';
+
+  @override
+  String get cfgState => 'State / region';
+
+  @override
+  String get cfgPostal => 'Postal code';
+
+  @override
+  String get cfgCountry => 'Country code';
+
+  @override
+  String get cfgLatitude => 'Latitude';
+
+  @override
+  String get cfgLongitude => 'Longitude';
+
+  @override
+  String get cfgRadius => 'Allowed radius';
+
+  @override
+  String get cfgAccuracy => 'Maximum accepted accuracy';
+
+  @override
+  String get cfgValidationMode => 'Location validation';
+
+  @override
+  String get cfgGeofenceRequired => 'Geofence required';
+
+  @override
+  String get cfgGeofencePreferred => 'Geofence preferred';
+
+  @override
+  String get cfgCaptureOnly => 'Capture location only';
+
+  @override
+  String get cfgNoLocation => 'No location validation';
+
+  @override
+  String get cfgPreview => 'Location preview';
+
+  @override
+  String get cfgPreviewNote =>
+      'Coordinates and radius preview. A map provider can be added later.';
+
+  @override
+  String get cfgCurrentLocation => 'Use current location';
+
+  @override
+  String get cfgLocating => 'Finding location…';
+
+  @override
+  String get cfgOpenSettings => 'Open settings';
+
+  @override
+  String get cfgLocationDenied =>
+      'Location permission was denied. You can enter coordinates manually.';
+
+  @override
+  String get cfgLocationPermanent =>
+      'Location permission is blocked. Enable it in app settings.';
+
+  @override
+  String get cfgLocationDisabled =>
+      'Location services are off. Enable them in device settings.';
+
+  @override
+  String get cfgLocationTimeout =>
+      'Location request timed out. Retry or enter coordinates manually.';
+
+  @override
+  String get cfgLocationUnavailable =>
+      'Current location is unavailable. You can enter coordinates manually.';
+
+  @override
+  String get cfgPoorAccuracy =>
+      'The captured position has poor accuracy. Review these coordinates before saving.';
+
+  @override
+  String get cfgCapturedAccuracy => 'Captured accuracy';
+
+  @override
+  String get cfgLocationRules => 'Location rules';
+
+  @override
+  String get cfgBreakRules => 'Break rules';
+
+  @override
+  String get cfgTimingRules => 'Timing rules';
+
+  @override
+  String get cfgOfflineRules => 'Offline behavior';
+
+  @override
+  String get cfgGeneralRules => 'General rules';
+
+  @override
+  String get cfgRequireLocation => 'Require location';
+
+  @override
+  String get cfgOutside => 'Allow attendance outside the assigned location';
+
+  @override
+  String get cfgRemote => 'Allow remote attendance';
+
+  @override
+  String get cfgLocationIn => 'Require location on punch in';
+
+  @override
+  String get cfgLocationOut => 'Require location on punch out';
+
+  @override
+  String get cfgLocationBreak => 'Require location for breaks';
+
+  @override
+  String get cfgRequireAccuracy => 'Require acceptable location accuracy';
+
+  @override
+  String get cfgTrackBreaks => 'Track breaks';
+
+  @override
+  String get cfgMultipleBreaks => 'Allow multiple breaks';
+
+  @override
+  String get cfgOutDuringBreak => 'Allow punch out during a break';
+
+  @override
+  String get cfgCorrections => 'Allow employee correction requests';
+
+  @override
+  String get cfgEarlyIn => 'Allow early punch in';
+
+  @override
+  String get cfgEarlyLimit => 'Early arrival limit';
+
+  @override
+  String get cfgLateIn => 'Allow late punch in';
+
+  @override
+  String get cfgEarlyOut => 'Allow early punch out';
+
+  @override
+  String get cfgOfflineMode => 'Offline attendance mode';
+
+  @override
+  String get cfgOfflineNo => 'Not allowed';
+
+  @override
+  String get cfgOfflinePending => 'Allow pending validation';
+
+  @override
+  String get cfgOfflineWarning => 'Allow with a warning';
+
+  @override
+  String get cfgYes => 'Allowed';
+
+  @override
+  String get cfgNo => 'Not allowed';
+
+  @override
+  String get cfgFoundationNote =>
+      'Configuration only. Attendance actions and rule evaluation will be implemented in Phase 6.';
+
+  @override
+  String get cfgInactiveAssignment => 'Inactive • current assignment retained';
+
+  @override
+  String get cfgMon => 'Mon';
+
+  @override
+  String get cfgTue => 'Tue';
+
+  @override
+  String get cfgWed => 'Wed';
+
+  @override
+  String get cfgThu => 'Thu';
+
+  @override
+  String get cfgFri => 'Fri';
+
+  @override
+  String get cfgSat => 'Sat';
+
+  @override
+  String get cfgSun => 'Sun';
 }

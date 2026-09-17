@@ -78,6 +78,20 @@ class NavigationResolver {
 
   RouteAccess routeAccess(String path, AuthContext context) {
     final owner = registry.ownerOf(path);
+    final configurationManage = switch (owner?.id) {
+      'shifts' => AppPermission.shiftManage,
+      'work-locations' => AppPermission.workLocationManage,
+      'attendance-policies' => AppPermission.attendancePolicyManage,
+      _ => null,
+    };
+    if (configurationManage != null &&
+        (path.endsWith('/new') || path.endsWith('/edit'))) {
+      final base = access(owner!, context.company, context.user.permissions);
+      if (base == RouteAccess.moduleUnavailable) return base;
+      return context.user.permissions.contains(configurationManage)
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
+    }
     if (owner?.id == 'employees' && path != AppRoutes.employees) {
       final base = access(owner!, context.company, context.user.permissions);
       if (base == RouteAccess.moduleUnavailable) return base;

@@ -1,3 +1,4 @@
+import '../../../../shared/presentation/configuration_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -215,19 +216,114 @@ class EmployeeDetailsPage extends StatelessWidget {
             const SizedBox(height: AppSpacing.xxl),
             AppFormSection(
               title: l.empAttendanceConfig,
-              child: AppDetailsGrid(
-                fields: [
-                  AppDetailField(
-                    label: l.dashboardShift,
-                    value: e.shiftId ?? l.empUnassigned,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AppDetailsGrid(
+                    fields: [
+                      AppDetailField(
+                        label: l.dashboardShift,
+                        value:
+                            refs?.shifts
+                                .where((r) => r.id == e.shiftId)
+                                .firstOrNull
+                                ?.name ??
+                            l.empUnassigned,
+                      ),
+                      AppDetailField(
+                        label: l.dashboardLocation,
+                        value:
+                            refs?.workLocations
+                                .where((r) => r.id == e.workLocationId)
+                                .firstOrNull
+                                ?.name ??
+                            l.empUnassigned,
+                      ),
+                      AppDetailField(
+                        label: l.empPolicy,
+                        value:
+                            refs?.attendancePolicies
+                                .where((r) => r.id == e.attendancePolicyId)
+                                .firstOrNull
+                                ?.name ??
+                            l.empUnassigned,
+                      ),
+                    ],
                   ),
-                  AppDetailField(
-                    label: l.dashboardLocation,
-                    value: e.workLocationId ?? l.empUnassigned,
-                  ),
-                  AppDetailField(
-                    label: l.empPolicy,
-                    value: e.attendancePolicyId ?? l.empUnassigned,
+                  if (refs?.shifts.where((r) => r.id == e.shiftId).firstOrNull
+                      case final shift?)
+                    AppDetailField(
+                      label: l.cfgSchedule,
+                      value: shiftSummary(context, shift),
+                    ),
+                  if (refs?.workLocations
+                          .where((r) => r.id == e.workLocationId)
+                          .firstOrNull
+                      case final location?)
+                    AppDetailField(
+                      label: l.cfgRadius,
+                      value: [
+                        configurationNumber(
+                          context,
+                          location.allowedRadiusMeters,
+                        ),
+                        l.cfgMeters,
+                      ].join(' '),
+                    ),
+                  if (refs?.attendancePolicies
+                          .where((r) => r.id == e.attendancePolicyId)
+                          .firstOrNull
+                      case final policy?)
+                    AppDetailField(
+                      label: l.cfgLocationRules,
+                      value: policyLocationSummary(policy, l),
+                    ),
+                  Wrap(
+                    spacing: AppSpacing.md,
+                    runSpacing: AppSpacing.md,
+                    children: [
+                      if (e.shiftId != null &&
+                          navigation.routeAccess(
+                                AppRoutes.shiftsDetails(e.shiftId!),
+                                bloc.context,
+                              ) ==
+                              RouteAccess.allowed)
+                        AppTextButton(
+                          label: l.cfgShifts,
+                          onPressed: () =>
+                              context.go(AppRoutes.shiftsDetails(e.shiftId!)),
+                        ),
+                      if (e.workLocationId != null &&
+                          navigation.routeAccess(
+                                AppRoutes.workLocationsDetails(
+                                  e.workLocationId!,
+                                ),
+                                bloc.context,
+                              ) ==
+                              RouteAccess.allowed)
+                        AppTextButton(
+                          label: l.cfgLocations,
+                          onPressed: () => context.go(
+                            AppRoutes.workLocationsDetails(e.workLocationId!),
+                          ),
+                        ),
+                      if (e.attendancePolicyId != null &&
+                          navigation.routeAccess(
+                                AppRoutes.attendancePoliciesDetails(
+                                  e.attendancePolicyId!,
+                                ),
+                                bloc.context,
+                              ) ==
+                              RouteAccess.allowed)
+                        AppTextButton(
+                          label: l.cfgPolicies,
+                          onPressed: () => context.go(
+                            AppRoutes.attendancePoliciesDetails(
+                              e.attendancePolicyId!,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),

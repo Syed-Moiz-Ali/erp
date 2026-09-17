@@ -1,3 +1,6 @@
+import '../../shifts/domain/shift.dart';
+import '../../work_locations/domain/work_location.dart';
+import '../../attendance_policies/domain/attendance_policy.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../auth/domain/entities/auth_context.dart';
 part 'employee.freezed.dart';
@@ -64,6 +67,9 @@ abstract class EmployeeDraft with _$EmployeeDraft {
     String? departmentId,
     String? designationId,
     String? managerId,
+    String? shiftId,
+    String? workLocationId,
+    String? attendancePolicyId,
     DateTime? joiningDate,
     @Default(EmploymentType.fullTime) EmploymentType employmentType,
     @Default(EmploymentStatus.active) EmploymentStatus status,
@@ -102,10 +108,16 @@ class EmployeeReferences {
     required List<WorkforceReference> designations,
     required List<WorkforceReference> managers,
     List<WorkforceReference> managerLabels = const [],
+    this.shifts = const [],
+    this.workLocations = const [],
+    this.attendancePolicies = const [],
   }) : departments = List.unmodifiable(departments),
        designations = List.unmodifiable(designations),
        managers = List.unmodifiable(managers),
        managerLabels = List.unmodifiable([...managers, ...managerLabels]);
+  final List<Shift> shifts;
+  final List<WorkLocation> workLocations;
+  final List<AttendancePolicy> attendancePolicies;
   final List<WorkforceReference> departments,
       designations,
       managers,

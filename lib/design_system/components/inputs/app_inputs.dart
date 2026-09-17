@@ -7,6 +7,7 @@ class AppTextField extends StatelessWidget {
     super.key,
     required this.label,
     this.hint,
+    this.initialValue,
     this.errorText,
     this.controller,
     this.validator,
@@ -23,7 +24,7 @@ class AppTextField extends StatelessWidget {
     this.autocorrect = true,
   });
   final String label;
-  final String? hint, errorText;
+  final String? hint, errorText, initialValue;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
@@ -41,6 +42,7 @@ class AppTextField extends StatelessWidget {
     builder: (fieldKey) => TextFormField(
       key: fieldKey,
       controller: controller,
+      initialValue: controller == null ? initialValue : null,
       focusNode: focusNode,
       textInputAction: textInputAction,
       autofillHints: autofillHints,
@@ -220,24 +222,31 @@ class AppTimeField extends StatelessWidget {
     required this.label,
     this.value,
     required this.onChanged,
+    this.enabled = true,
+    this.errorText,
   });
   final String label;
+  final bool enabled;
+  final String? errorText;
   final TimeOfDay? value;
   final ValueChanged<TimeOfDay> onChanged;
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: () async {
-      final time = await showTimePicker(
-        context: context,
-        cancelText: context.l10n.cancel,
-        confirmText: context.l10n.confirm,
-        initialTime: value ?? TimeOfDay.now(),
-      );
-      if (time != null) onChanged(time);
-    },
+    onTap: !enabled
+        ? null
+        : () async {
+            final time = await showTimePicker(
+              context: context,
+              cancelText: context.l10n.cancel,
+              confirmText: context.l10n.confirm,
+              initialTime: value ?? TimeOfDay.now(),
+            );
+            if (time != null) onChanged(time);
+          },
     child: InputDecorator(
       decoration: InputDecoration(
         labelText: label,
+        errorText: errorText,
         suffixIcon: Icon(Icons.schedule, size: 18),
       ),
       child: Text(
