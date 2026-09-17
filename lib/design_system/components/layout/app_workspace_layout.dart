@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import '../../theme/app_dimensions.dart';
+import '../../theme/app_breakpoints.dart';
+import '../../theme/app_spacing.dart';
+
+class AppContentMaxWidth extends StatelessWidget {
+  const AppContentMaxWidth({
+    super.key,
+    required this.child,
+    this.maxWidth = AppDimensions.content,
+  });
+  final Widget child;
+  final double maxWidth;
+  @override
+  Widget build(BuildContext context) => Align(
+    alignment: Alignment.topCenter,
+    child: ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: child,
+    ),
+  );
+}
+
+class AppToolbar extends StatelessWidget {
+  const AppToolbar({
+    super.key,
+    this.search,
+    this.filters = const [],
+    this.actions = const [],
+  });
+  final Widget? search;
+  final List<Widget> filters, actions;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final controls = Wrap(
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.sm,
+        children: [...filters, ...actions],
+      );
+      if (AppBreakpoints.classify(constraints.maxWidth) == AppSize.compact) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (search != null) ...[
+              search!,
+              const SizedBox(height: AppSpacing.md),
+            ],
+            controls,
+          ],
+        );
+      }
+      return Row(
+        children: [
+          if (search != null) ...[
+            Expanded(child: search!),
+            const SizedBox(width: AppSpacing.lg),
+          ],
+          Flexible(child: controls),
+        ],
+      );
+    },
+  );
+}
+
+class AppSplitView extends StatelessWidget {
+  const AppSplitView({
+    super.key,
+    required this.master,
+    required this.detail,
+    this.masterWidth = 320,
+  });
+  final Widget master, detail;
+  final double masterWidth;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final size = AppBreakpoints.classify(constraints.maxWidth);
+      if (size == AppSize.compact || size == AppSize.medium) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            master,
+            const SizedBox(height: AppSpacing.xxl),
+            detail,
+          ],
+        );
+      }
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: masterWidth, child: master),
+          const SizedBox(width: AppSpacing.xxl),
+          Expanded(child: detail),
+        ],
+      );
+    },
+  );
+}

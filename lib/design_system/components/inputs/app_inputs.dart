@@ -7,6 +7,7 @@ class AppTextField extends StatelessWidget {
     super.key,
     required this.label,
     this.hint,
+    this.errorText,
     this.controller,
     this.validator,
     this.onChanged,
@@ -22,7 +23,7 @@ class AppTextField extends StatelessWidget {
     this.autocorrect = true,
   });
   final String label;
-  final String? hint;
+  final String? hint, errorText;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
@@ -50,11 +51,17 @@ class AppTextField extends StatelessWidget {
       validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,
+      textDirection:
+          keyboardType == TextInputType.emailAddress ||
+              keyboardType == TextInputType.phone
+          ? TextDirection.ltr
+          : null,
       readOnly: readOnly,
       onTap: onTap,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        errorText: errorText,
         prefixIcon: prefixIcon == null ? null : Icon(prefixIcon, size: 20),
       ),
     ),
@@ -167,26 +174,35 @@ class AppDateField extends StatelessWidget {
     required this.label,
     this.value,
     required this.onChanged,
+    this.lastDate,
+    this.errorText,
+    this.enabled = true,
   });
+  final DateTime? lastDate;
+  final bool enabled;
   final String label;
+  final String? errorText;
   final DateTime? value;
   final ValueChanged<DateTime> onChanged;
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: () async {
-      final date = await showDatePicker(
-        context: context,
-        cancelText: context.l10n.cancel,
-        confirmText: context.l10n.confirm,
-        initialDate: value ?? DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-      );
-      if (date != null) onChanged(date);
-    },
+    onTap: !enabled
+        ? null
+        : () async {
+            final date = await showDatePicker(
+              context: context,
+              cancelText: context.l10n.cancel,
+              confirmText: context.l10n.confirm,
+              initialDate: value ?? DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: lastDate ?? DateTime(2100),
+            );
+            if (date != null) onChanged(date);
+          },
     child: InputDecorator(
       decoration: InputDecoration(
         labelText: label,
+        errorText: errorText,
         suffixIcon: Icon(Icons.calendar_today_outlined, size: 18),
       ),
       child: Text(
@@ -266,4 +282,23 @@ class _LocalizedValidationFieldState<T>
 
   @override
   Widget build(BuildContext context) => widget.builder(_fieldKey);
+}
+
+class AppSwitchField extends StatelessWidget {
+  const AppSwitchField({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+  final String label;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+  @override
+  Widget build(BuildContext context) => SwitchListTile.adaptive(
+    title: Text(label),
+    value: value,
+    onChanged: onChanged,
+    contentPadding: EdgeInsets.zero,
+  );
 }

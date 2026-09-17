@@ -259,6 +259,22 @@ class _Preview extends StatelessWidget {
                         if (v != null) cubit.location(v);
                       },
                     ),
+                    AppSelectField<PreviewLocation>(
+                      label: context.l10n.workLocation,
+                      value: state.location,
+                      options: [
+                        for (final item in PreviewLocation.values)
+                          AppSelectOption(item, item.label(context.l10n)),
+                      ],
+                      onChanged: (v) {
+                        if (v != null) cubit.location(v);
+                      },
+                    ),
+                    AppSwitchField(
+                      label: context.l10n.active,
+                      value: state.activeOnly,
+                      onChanged: cubit.filter,
+                    ),
                     AppDateField(
                       label: context.l10n.effectiveDate,
                       value: state.date,

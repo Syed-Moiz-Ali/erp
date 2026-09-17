@@ -34,12 +34,23 @@ class AppPrimaryButton extends StatelessWidget {
 }
 
 class AppSecondaryButton extends StatelessWidget {
-  const AppSecondaryButton({super.key, required this.label, this.onPressed});
+  const AppSecondaryButton({
+    super.key,
+    required this.label,
+    this.onPressed,
+    this.icon,
+  });
   final String label;
   final VoidCallback? onPressed;
+  final IconData? icon;
   @override
-  Widget build(BuildContext context) =>
-      OutlinedButton(onPressed: onPressed, child: Text(label));
+  Widget build(BuildContext context) => icon == null
+      ? OutlinedButton(onPressed: onPressed, child: Text(label))
+      : OutlinedButton.icon(
+          onPressed: onPressed,
+          icon: Icon(icon, size: 18),
+          label: Text(label),
+        );
 }
 
 class AppTextButton extends StatelessWidget {

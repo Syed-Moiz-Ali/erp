@@ -1,3 +1,4 @@
+import '../../../../app/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                         label: context.l10n.forgotPassword,
                         onPressed: loading
                             ? null
-                            : () => context.go('/forgot-password'),
+                            : () => context.go(AppRoutes.forgotPassword),
                       ),
                     ),
                   ),

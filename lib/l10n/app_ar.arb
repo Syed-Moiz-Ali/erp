@@ -296,5 +296,276 @@
   "permissionCompanyManage": "إدارة الشركة",
   "permissionUserManage": "إدارة حسابات المستخدمين",
   "permissionRoleManage": "إدارة الأدوار",
-  "permissionAttendanceReportView": "عرض تقارير الحضور"
+  "permissionAttendanceReportView": "عرض تقارير الحضور",
+  "shellDashboard": "لوحة التحكم",
+  "shellEmployees": "الموظفون",
+  "shellAttendance": "الحضور",
+  "shellReports": "التقارير",
+  "shellSettings": "الإعدادات",
+  "shellProfile": "الملف الشخصي",
+  "shellMore": "المزيد",
+  "shellGeneral": "مساحة العمل",
+  "shellPeople": "الأفراد",
+  "shellWorkforce": "القوى العاملة",
+  "shellInsights": "التحليلات",
+  "shellAdministration": "الإدارة",
+  "shellAccount": "الحساب",
+  "shellServices": "الخدمات",
+  "shellFinance": "الشؤون المالية",
+  "shellDashboardDescription": "ستُضاف نظرة عامة على مساحة عملك في مرحلة لاحقة.",
+  "shellEmployeesDescription": "ستُضاف إدارة الموظفين في مرحلة لاحقة.",
+  "shellAttendanceDescription": "ستُضاف إجراءات الحضور في مرحلة لاحقة.",
+  "shellReportsDescription": "ستُضاف التقارير في مرحلة لاحقة.",
+  "shellSettingsDescription": "ستُضاف إعدادات الشركة في مرحلة لاحقة.",
+  "shellProfileDescription": "ستُضاف إمكانية تعديل الملف الشخصي في مرحلة لاحقة.",
+  "shellPlaceholderTitle": "جاهز للمرحلة القادمة",
+  "shellPlaceholderMessage": "هذه المساحة مخصّصة لوحدة أعمال مستقبلية. لا تتوفر بيانات أعمال بعد.",
+  "shellMoreDescription": "استكشف المساحات الأخرى المتاحة لحسابك.",
+  "shellSearchTitle": "البحث الشامل",
+  "shellSearchMessage": "سيتوفر البحث الشامل عند إضافة وحدات الأعمال.",
+  "shellNotifications": "الإشعارات",
+  "shellNoNotifications": "لا توجد إشعارات",
+  "shellNotificationsMessage": "لا توجد إشعارات لعرضها.",
+  "shellAccessRestricted": "الوصول مقيّد",
+  "shellAccessMessage": "ليس لديك صلاحية للوصول إلى هذه المساحة.",
+  "shellModuleUnavailable": "الوحدة غير متاحة",
+  "shellModuleUnavailableMessage": "هذه الوحدة غير مفعّلة لمؤسستك.",
+  "shellNotFound": "الصفحة غير موجودة",
+  "shellNotFoundMessage": "تعذّر العثور على الصفحة التي طلبتها.",
+  "shellReturnToWorkspace": "العودة إلى مساحة العمل",
+  "shellGoBack": "العودة",
+  "shellCollapseSidebar": "طيّ القائمة الجانبية",
+  "shellExpandSidebar": "توسيع القائمة الجانبية",
+  "shellCompanyInformation": "معلومات الشركة",
+  "shellTimezone": "المنطقة الزمنية",
+  "shellCompanyCode": "رمز الشركة",
+  "shellAccountMenu": "فتح قائمة الحساب",
+  "shellBreadcrumbs": "مسار التنقل",
+  "shellNoDestinations": "لا توجد وجهات متاحة",
+  "shellNoDestinationsMessage": "لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.",
+  "dashboardMorning": "صباح الخير، {name}",
+  "@dashboardMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAfternoon": "طاب يومك، {name}",
+  "@dashboardAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardEvening": "مساء الخير، {name}",
+  "@dashboardEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardDemo": "معاينة تجريبية · {date}",
+  "@dashboardDemo": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardSelfContext": "لمحة عن حضورك وعملك",
+  "dashboardTeamContext": "لمحة عن فريقك",
+  "dashboardCompanyContext": "لمحة عن القوى العاملة في شركتك",
+  "dashboardNoScope": "مساحة عملك",
+  "dashboardToday": "اليوم",
+  "dashboardMonth": "هذا الشهر",
+  "dashboardEmployees": "إجمالي الموظفين",
+  "dashboardTeamSize": "عدد أعضاء الفريق",
+  "dashboardPresent": "الحاضرون",
+  "dashboardLate": "المتأخرون",
+  "dashboardAbsent": "الغائبون",
+  "dashboardLeave": "في إجازة",
+  "dashboardWorking": "يعملون الآن",
+  "dashboardBreak": "في استراحة",
+  "dashboardCorrections": "تصحيحات معلّقة",
+  "dashboardHours": "ساعات العمل",
+  "dashboardRate": "نسبة الحضور",
+  "dashboardLocations": "مواقع العمل",
+  "dashboardUsers": "المستخدمون النشطون",
+  "dashboardShift": "الوردية",
+  "dashboardLocation": "موقع العمل",
+  "dashboardOffice": "مكتب حيدر آباد · تجريبي",
+  "dashboardNotStarted": "لم يبدأ · معاينة",
+  "dashboardAttendance": "حالة الحضور",
+  "dashboardAttention": "يحتاج إلى متابعة",
+  "dashboardActivity": "النشاط الأخير",
+  "dashboardQuickActions": "وصول سريع",
+  "dashboardStatus": "ملخص الحضور",
+  "dashboardOnTime": "في الموعد",
+  "dashboardPresentDetail": "يشمل المتأخرين",
+  "dashboardLateAlert": "{count} حالات تأخر للمراجعة",
+  "@dashboardLateAlert": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCorrectionsAlert": "{count} تصحيحات تنتظر المراجعة",
+  "@dashboardCorrectionsAlert": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCheckedIn": "سجّل {name} الحضور",
+  "@dashboardCheckedIn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardBreakStarted": "بدأ {name} استراحة",
+  "@dashboardBreakStarted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCorrectionSubmitted": "قدّم {name} طلب تصحيح",
+  "@dashboardCorrectionSubmitted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardActivityDetail": "نشاط حضور تجريبي",
+  "dashboardNoActivity": "لا يوجد نشاط حديث",
+  "dashboardNoAttention": "لا توجد أمور تحتاج إلى متابعة",
+  "dashboardEmptyTitle": "لا توجد بيانات للقوى العاملة بعد",
+  "dashboardEmptyMessage": "ستظهر معلومات القوى العاملة هنا عندما تتوفر البيانات والصلاحيات.",
+  "dashboardError": "تعذّر تحميل لوحة التحكم. يرجى المحاولة مجددًا.",
+  "dashboardRefreshError": "تعذّر التحديث. لا يزال الملخص السابق متاحًا.",
+  "dashboardRefresh": "تحديث",
+  "dashboardRefreshing": "جارٍ تحديث لوحة التحكم",
+  "dashboardTimeRange": "من {start} إلى {end}",
+  "@dashboardTimeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHoursOnly": "{hours} س",
+  "@durationHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "empAdd": "إضافة موظف",
+  "empEdit": "تعديل الموظف",
+  "empDetails": "تفاصيل الموظف",
+  "empPersonal": "المعلومات الشخصية",
+  "empEmployment": "معلومات التوظيف",
+  "empAttendanceConfig": "إعدادات الحضور",
+  "empAccountAccess": "الوصول إلى الحساب",
+  "empCode": "رمز الموظف",
+  "empFirst": "الاسم الأول *",
+  "empMiddle": "الاسم الأوسط",
+  "empLast": "اسم العائلة (اختياري)",
+  "empDepartment": "القسم",
+  "empDesignation": "المسمى الوظيفي",
+  "empManager": "المدير",
+  "empJoined": "تاريخ الانضمام",
+  "empType": "نوع التوظيف",
+  "empPolicy": "سياسة الحضور",
+  "empLogin": "تمكين تسجيل الدخول للتطبيق",
+  "empGenerated": "يُنشأ تلقائيًا عند الحفظ",
+  "empUnassigned": "غير معيّن",
+  "empLoginNotice": "إعداد محلي للحساب. لا تُصدر بيانات دخول جديدة أو دعوات في هذه المرحلة.",
+  "empCredentialPending": "إعداد بيانات الدخول معلّق",
+  "empNoLogin": "لا يوجد حساب مرتبط",
+  "empActive": "نشط",
+  "empInactive": "غير نشط",
+  "empFullTime": "دوام كامل",
+  "empPartTime": "دوام جزئي",
+  "empContract": "عقد",
+  "empIntern": "متدرّب",
+  "empTemporary": "مؤقت",
+  "empFilters": "عوامل التصفية",
+  "empClear": "مسح التصفية",
+  "empApply": "تطبيق",
+  "empReset": "إعادة تعيين",
+  "empAll": "الكل",
+  "empSort": "ترتيب",
+  "empNameAsc": "الاسم تصاعديًا",
+  "empNameDesc": "الاسم تنازليًا",
+  "empNewest": "الأحدث انضمامًا",
+  "empOldest": "الأقدم انضمامًا",
+  "empEmpty": "لا يوجد موظفون بعد",
+  "empEmptyMessage": "أضف أول موظف لبدء إدارة القوى العاملة.",
+  "empNoResults": "لم يتم العثور على موظفين",
+  "empNoResultsMessage": "جرّب تغيير البحث أو عوامل التصفية.",
+  "empNotFound": "لم يتم العثور على الموظف",
+  "empNotFoundMessage": "هذا الموظف غير متاح.",
+  "empView": "عرض",
+  "empActivate": "تنشيط الموظف",
+  "empDeactivate": "إيقاف الموظف",
+  "empStatusConfirm": "تغيير حالة الموظف؟",
+  "empStatusMessage": "سيؤدي ذلك إلى تغيير حالة الموظف وإمكانية دخول الحساب المرتبط. ويمكن التراجع عن ذلك.",
+  "empCreated": "تم إنشاء الموظف بنجاح",
+  "empUpdated": "تم تحديث الموظف بنجاح",
+  "empStatusSaved": "تم تحديث حالة الموظف",
+  "empSave": "حفظ الموظف",
+  "empDiscard": "تجاهل التغييرات؟",
+  "empDiscardMessage": "لديك تغييرات غير محفوظة. هل تريد تجاهلها ومغادرة النموذج؟",
+  "empDiscardAction": "تجاهل",
+  "empRequired": "أكمل الحقول المطلوبة واختر تاريخ انضمام صالحًا.",
+  "empInvalidEmail": "أدخل عنوان بريد إلكتروني صالحًا.",
+  "empInvalidPhone": "أدخل رقم هاتف يتكون من ٧ إلى ١٥ رقمًا.",
+  "empDuplicateEmail": "هذا البريد الإلكتروني مرتبط بموظف آخر.",
+  "empDuplicatePhone": "رقم الهاتف هذا مرتبط بموظف آخر.",
+  "empInvalidManager": "اختر مديرًا نشطًا دون إنشاء علاقة إدارية دائرية.",
+  "empInvalidReference": "اختر قسمًا ومسمى وظيفيًا نشطين.",
+  "empAccountRoleError": "لا يمكنك إنشاء هذا الدور أو منح صلاحياته.",
+  "empStorageError": "تعذّر إكمال هذه العملية المحلية. يرجى المحاولة مجددًا.",
+  "empPending": "المزامنة معلّقة",
+  "empBack": "العودة إلى الموظفين",
+  "empSelfProfile": "عرض الملف الوظيفي",
+  "empRelated": "السجلات المرتبطة",
+  "empPreview": "معاينة الحضور",
+  "empSelect": "اختر خيارًا",
+  "empActions": "إجراءات الموظف",
+  "empCount": "{filtered} من {total} موظفًا",
+  "@empCount": {
+    "placeholders": {
+      "filtered": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "empFilterCount": "عوامل التصفية ({count})",
+  "@empFilterCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "selectOption": "اختر خيارًا",
+  "noSelection": "غير محدد"
 }

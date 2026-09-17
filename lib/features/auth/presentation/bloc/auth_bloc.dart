@@ -13,6 +13,10 @@ final class AuthBootstrapRequested extends AuthEvent {
   const AuthBootstrapRequested();
 }
 
+final class AuthSessionCheckRequested extends AuthEvent {
+  const AuthSessionCheckRequested();
+}
+
 final class AuthLoginRequested extends AuthEvent {
   const AuthLoginRequested(this.identifier, this.password);
   final String identifier, password;
@@ -102,6 +106,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           case Failed<AuthContext?>(:final failure):
             emit(AuthState(AuthStatus.unauthenticated, failure: failure));
         }
+      case AuthSessionCheckRequested():
+        if (!state.isAuthenticated) return;
+        final result = await repository.checkSession();
+        switch (result) {
+          case Success<AuthContext?>(:final value):
+            emit(
+              value == null
+                  ? const AuthState(
+                      AuthStatus.unauthenticated,
+                      failure: Failure(
+                        code: 'session_expired',
+                        kind: FailureKind.sessionExpired,
+                      ),
+                    )
+                  : AuthState(AuthStatus.authenticated, context: value),
+            );
+          case Failed<AuthContext?>(:final failure):
+            emit(AuthState(AuthStatus.unauthenticated, failure: failure));
+        }
       case AuthLoginRequested(:final identifier, :final password):
         try {
           if (state.isAuthenticated) return;
@@ -162,6 +185,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           ),
         );
+        // Forced invalidation also purges otherwise-unexpired secure tokens.
+        await repository.logout();
       case AuthSessionUpdated(:final context):
         emit(AuthState(AuthStatus.authenticated, context: context));
     }

@@ -1,3 +1,5 @@
+import '../../domain/repositories/account_access_guard.dart';
+import '../../../../core/auth/password_policy.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
@@ -10,14 +12,64 @@ import '../datasources/local/demo_auth_source.dart';
 import '../dto/auth_session_dto.dart';
 
 class DemoAuthRepository implements AuthRepository {
-  DemoAuthRepository(this.storage, {this.source, DateTime Function()? now})
-    : _now = now ?? DateTime.now;
+  DemoAuthRepository(
+    this.storage, {
+    this.source,
+    this.accountGuard,
+    DateTime Function()? now,
+  }) : _now = now ?? DateTime.now {
+    _accountSubscription = accountGuard?.changes.listen((_) {
+      if (_session != null && !_disposed) {
+        unawaited(
+          _serial(() async {
+            try {
+              final current = _session;
+              if (current == null) return;
+              final user = await accountGuard!.effectiveUser(
+                current.context.user.id,
+              );
+              if (user == null) {
+                _session = null;
+                _expiry?.cancel();
+                if (!_disposed) _changes.add(null);
+                await _clearExpired();
+              } else {
+                final updated = _withUser(current, user);
+                if (updated.context != current.context) {
+                  await storage.saveSession(
+                    jsonEncode(AuthSessionMapper.encode(updated).toJson()),
+                  );
+                  _accept(updated);
+                  if (!_disposed) _changes.add(updated.context);
+                }
+              }
+            } catch (_) {
+              _session = null;
+              _expiry?.cancel();
+              if (!_disposed) _changes.add(null);
+              await _clearExpired();
+            }
+          }),
+        );
+      }
+    });
+  }
+  AuthSession _withUser(AuthSession session, UserAccount user) => AuthSession(
+    accessToken: session.accessToken,
+    refreshToken: session.refreshToken,
+    expiresAt: session.expiresAt,
+    context: session.context.copyWith(user: user),
+  );
+
+  final AccountAccessGuard? accountGuard;
+  StreamSubscription<void>? _accountSubscription;
   final SessionStorage storage;
   final DemoAuthSource? source;
   final DateTime Function() _now;
   final _changes = StreamController<AuthContext?>.broadcast();
   AuthSession? _session;
   Timer? _expiry;
+  bool _disposed = false;
   Future<void>? _operations;
   Future<T> _serial<T>(Future<T> Function() operation) {
     final pending = (_operations ?? Future<void>.value()).then(
@@ -33,6 +85,7 @@ class DemoAuthRepository implements AuthRepository {
   @override
   Stream<AuthContext?> get sessionChanges => _changes.stream;
   void _accept(AuthSession session) {
+    if (_disposed) return;
     _session = session;
     _expiry?.cancel();
     _expiry = Timer(session.expiresAt.difference(_now().toUtc()), () {
@@ -53,8 +106,12 @@ class DemoAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Result<AuthContext?>> checkSession() => restoreSession();
+  @override
   Future<Result<AuthContext?>> restoreSession() => _serial(_restoreSession);
   Future<Result<AuthContext?>> _restoreSession() async {
+    _expiry?.cancel();
+    _session = null;
     try {
       final raw = await storage.readSession();
       if (raw == null) return const Success(null);
@@ -65,6 +122,8 @@ class DemoAuthRepository implements AuthRepository {
         );
         final account = source?.findUser(session.context.user.id);
         if (account == null ||
+            accountGuard != null &&
+                !await accountGuard!.enabled(session.context.user.id) ||
             session.context.user.status != AccountStatus.active ||
             !session.expiresAt.isAfter(_now().toUtc()) ||
             session.context.company.id != account.context.company.id ||
@@ -75,6 +134,14 @@ class DemoAuthRepository implements AuthRepository {
       } catch (_) {
         await storage.clearSession();
         return const Success(null);
+      }
+      if (accountGuard != null) {
+        final user = await accountGuard!.effectiveUser(session.context.user.id);
+        if (user == null) {
+          await storage.clearSession();
+          return const Success(null);
+        }
+        session = _withUser(session, user);
       }
       _accept(session);
       return Success(session.context);
@@ -100,7 +167,9 @@ class DemoAuthRepository implements AuthRepository {
       );
     }
     final account = source!.authenticate(identifier, password);
-    if (account == null) {
+    if (account == null ||
+        accountGuard != null &&
+            !await accountGuard!.enabled(account.context.user.id)) {
       return const Failed(
         Failure(
           code: 'invalid_credentials',
@@ -112,7 +181,11 @@ class DemoAuthRepository implements AuthRepository {
       accessToken: 'demo-access-${const Uuid().v4()}',
       refreshToken: 'demo-refresh-${const Uuid().v4()}',
       expiresAt: _now().toUtc().add(const Duration(hours: 8)),
-      context: account.context,
+      context: account.context.copyWith(
+        user: accountGuard == null
+            ? account.context.user
+            : (await accountGuard!.effectiveUser(account.context.user.id))!,
+      ),
     );
     try {
       await storage.saveSession(
@@ -164,9 +237,8 @@ class DemoAuthRepository implements AuthRepository {
         Failure(code: 'session_expired', kind: FailureKind.sessionExpired),
       );
     }
-    if (newPassword.length < 8 ||
-        !RegExp(r'[A-Za-z]').hasMatch(newPassword) ||
-        !RegExp(r'[0-9]').hasMatch(newPassword)) {
+    if (!PasswordPolicy.accepts(newPassword) ||
+        newPassword == currentPassword) {
       return const Failed(
         Failure(code: 'password_policy', kind: FailureKind.passwordPolicy),
       );
@@ -186,8 +258,11 @@ class DemoAuthRepository implements AuthRepository {
 
   @override
   Future<void> dispose() async {
+    _disposed = true;
+    await _accountSubscription?.cancel();
     _expiry?.cancel();
     if (_operations != null) await _operations;
+    _expiry?.cancel();
     await _changes.close();
   }
 }

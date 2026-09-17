@@ -1,3 +1,4 @@
+import '../../../../app/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,8 @@ import '../../../../l10n/l10n.dart';
 import '../bloc/password_bloc.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+  const ChangePasswordPage({super.key, this.embedded = false});
+  final bool embedded;
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordState();
 }
@@ -21,7 +23,8 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
       _confirmation = TextEditingController();
   final _newFocus = FocusNode(), _confirmFocus = FocusNode();
   void _submit() {
-    if (context.read<PasswordBloc>().state.status == PasswordStatus.submitting) {
+    if (context.read<PasswordBloc>().state.status ==
+        PasswordStatus.submitting) {
       return;
     }
     if (_form.currentState!.validate()) {
@@ -45,10 +48,12 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
     super.dispose();
   }
 
+  Widget _layout(Widget form) => widget.embedded
+      ? AppPage(maxWidth: AppDimensions.form, child: form)
+      : AppAuthLayout(showBrandPanel: false, child: form);
   @override
-  Widget build(BuildContext context) => AppAuthLayout(
-    showBrandPanel: false,
-    child: BlocConsumer<PasswordBloc, PasswordState>(
+  Widget build(BuildContext context) => _layout(
+    BlocConsumer<PasswordBloc, PasswordState>(
       listenWhen: (previous, current) =>
           current.status == PasswordStatus.success &&
           previous.status != current.status,
@@ -146,7 +151,7 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                 ),
                 AppTextButton(
                   label: context.l10n.authBackToWorkspace,
-                  onPressed: loading ? null : () => context.go('/app'),
+                  onPressed: loading ? null : () => context.go(AppRoutes.app),
                 ),
               ],
             ),

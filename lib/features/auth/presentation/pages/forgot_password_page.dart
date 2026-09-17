@@ -1,3 +1,4 @@
+import '../../../../app/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +18,8 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   final _form = GlobalKey<FormState>();
   final _identifier = TextEditingController();
   void _submit() {
-    if (context.read<PasswordBloc>().state.status == PasswordStatus.submitting) {
+    if (context.read<PasswordBloc>().state.status ==
+        PasswordStatus.submitting) {
       return;
     }
     if (_form.currentState!.validate()) {
@@ -101,7 +103,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
               const SizedBox(height: AppSpacing.lg),
               AppTextButton(
                 label: context.l10n.authBackToLogin,
-                onPressed: loading ? null : () => context.go('/login'),
+                onPressed: loading ? null : () => context.go(AppRoutes.login),
               ),
             ],
           ),

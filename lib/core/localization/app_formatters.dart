@@ -7,6 +7,8 @@ class AppDateFormatter {
   final Locale locale;
   String date(DateTime value) =>
       DateFormat.yMMMd(locale.toLanguageTag()).format(value);
+  String fullDate(DateTime value) =>
+      DateFormat.yMMMMEEEEd(locale.toLanguageTag()).format(value);
   String month(DateTime value) =>
       DateFormat.yMMMM(locale.toLanguageTag()).format(value);
 }
@@ -25,6 +27,9 @@ class AppTimeFormatter {
   );
   String duration(Duration value, AppLocalizations l10n) {
     final numbers = AppNumberFormatter(locale);
+    if (value.inMinutes.remainder(60) == 0) {
+      return l10n.durationHoursOnly(numbers.integer(value.inHours));
+    }
     return l10n.durationHoursMinutes(
       numbers.integer(value.inHours),
       numbers.integer(value.inMinutes.remainder(60)),

@@ -216,8 +216,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get looksGood => 'مناسب';
 
   @override
-  String get consistencyNotice =>
-      'تصميم متسق. تستخدم جميع الوحدات المستقبلية هذه الأسس.';
+  String get consistencyNotice => 'تصميم متسق. تستخدم جميع الوحدات المستقبلية هذه الأسس.';
 
   @override
   String get designLanguage => 'اللغة البصرية';
@@ -337,8 +336,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formControls => 'عناصر النموذج';
 
   @override
-  String get formControlsSubtitle =>
-      'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
+  String get formControlsSubtitle => 'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
 
   @override
   String get fullName => 'الاسم الكامل';
@@ -368,8 +366,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get informationCard => 'بطاقة معلومات';
 
   @override
-  String get informationCardMessage =>
-      'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
+  String get informationCardMessage => 'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
 
   @override
   String get statusAndFeedback => 'الحالة والملاحظات';
@@ -399,8 +396,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filtersAndTable => 'الفلاتر والجدول';
 
   @override
-  String get illustrativeRecords =>
-      'سجلات توضيحية / لا تتضمن بيانات موظفين فعلية';
+  String get illustrativeRecords => 'سجلات توضيحية / لا تتضمن بيانات موظفين فعلية';
 
   @override
   String get activeOnly => 'النشط فقط';
@@ -478,8 +474,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get workspaceInfoTitle => 'نظام ERP يبدأ هنا';
 
   @override
-  String get workspaceInfoMessage =>
-      'البنية التي تعتمد التخزين المحلي أولًا ونظام التصميم الموحد جاهزان. ستُضاف وحدات الأعمال في المراحل القادمة.';
+  String get workspaceInfoMessage => 'البنية التي تعتمد التخزين المحلي أولًا ونظام التصميم الموحد جاهزان. ستُضاف وحدات الأعمال في المراحل القادمة.';
 
   @override
   String get phaseReady => 'المرحلة صفر / الأساس جاهز';
@@ -527,8 +522,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureTimeout => 'انتهت مهلة الطلب. يرجى إعادة المحاولة.';
 
   @override
-  String get failureOffline =>
-      'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
+  String get failureOffline => 'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
 
   @override
   String get failureCancelled => 'تم إلغاء الطلب.';
@@ -546,8 +540,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureLocationDisabled => 'فعّل خدمات الموقع للمتابعة.';
 
   @override
-  String get failureLocationPermission =>
-      'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
+  String get failureLocationPermission => 'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
 
   @override
   String get failureLocationUnavailable => 'تعذر تحديد موقعك.';
@@ -562,8 +555,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureSync => 'تعذرت مزامنة بعض التغييرات.';
 
   @override
-  String get failurePreferencesWrite =>
-      'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
+  String get failurePreferencesWrite => 'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
 
   @override
   String get failurePreferencesRead => 'تعذر استعادة اللغة المحفوظة.';
@@ -629,15 +621,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authIdentifierRequired => 'البريد الإلكتروني أو رقم الهاتف مطلوب';
 
   @override
-  String get authIdentifierInvalid =>
-      'أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا';
+  String get authIdentifierInvalid => 'أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا';
 
   @override
   String get authPasswordRequired => 'كلمة المرور مطلوبة';
 
   @override
-  String get authInvalidCredentials =>
-      'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.';
+  String get authInvalidCredentials => 'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.';
 
   @override
   String get authLoggingIn => 'جارٍ تسجيل الدخول…';
@@ -646,15 +636,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authBrandStatement => 'مساحة عمل مترابطة.\nويوم عمل أكثر وضوحًا.';
 
   @override
-  String get authBrandDescription =>
-      'مكان واحد لفريقك وعملياتك والأعمال القادمة.';
+  String get authBrandDescription => 'مكان واحد لفريقك وعملياتك والأعمال القادمة.';
 
   @override
   String get authWorkspaceLabel => 'مساحة عمل الشركة';
 
   @override
-  String get authSessionNote =>
-      'تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.';
+  String get authSessionNote => 'تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.';
 
   @override
   String get authInitializing => 'جارٍ تجهيز مساحة عملك…';
@@ -666,34 +654,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authDemoNotice => 'عرض تجريبي محلي فقط. لا يوجد اتصال بخادم.';
 
   @override
-  String get authDemoDisabled =>
-      'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
+  String get authDemoDisabled => 'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
 
   @override
   String get authDemoPassword => 'كلمة المرور التجريبية';
 
   @override
-  String get authSessionStorageError =>
-      'تعذّر الوصول إلى الجلسة الآمنة. يُرجى المحاولة مجددًا.';
+  String get authSessionStorageError => 'تعذّر الوصول إلى الجلسة الآمنة. يُرجى المحاولة مجددًا.';
 
   @override
-  String get authServerError =>
-      'خدمة تسجيل الدخول غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.';
+  String get authServerError => 'خدمة تسجيل الدخول غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.';
 
   @override
   String get authForgotTitle => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get authForgotSubtitle =>
-      'أدخل البريد الإلكتروني أو رقم الهاتف المرتبط بحسابك.';
+  String get authForgotSubtitle => 'أدخل البريد الإلكتروني أو رقم الهاتف المرتبط بحسابك.';
 
   @override
-  String get authResetInformation =>
-      'إذا كان هناك حساب يطابق هذه البيانات، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور.';
+  String get authResetInformation => 'إذا كان هناك حساب يطابق هذه البيانات، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور.';
 
   @override
-  String get authResetDemoNote =>
-      'لا يتم إرسال بريد إلكتروني أو رسالة نصية في هذا العرض التجريبي.';
+  String get authResetDemoNote => 'لا يتم إرسال بريد إلكتروني أو رسالة نصية في هذا العرض التجريبي.';
 
   @override
   String get authResetTitle => 'تم استلام الطلب';
@@ -720,26 +702,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authConfirmPassword => 'تأكيد كلمة المرور الجديدة';
 
   @override
-  String get authPasswordConstraints =>
-      'استخدم ٨ أحرف على الأقل، تتضمن حرفًا ورقمًا.';
+  String get authPasswordConstraints => 'استخدم ٨ أحرف على الأقل، تتضمن حرفًا ورقمًا.';
 
   @override
   String get authPasswordsMismatch => 'كلمتا المرور غير متطابقتين';
 
   @override
-  String get authPasswordMustDiffer =>
-      'اختر كلمة مرور مختلفة عن كلمة مرورك الحالية';
+  String get authPasswordMustDiffer => 'اختر كلمة مرور مختلفة عن كلمة مرورك الحالية';
 
   @override
   String get authCurrentPasswordInvalid => 'كلمة المرور الحالية غير صحيحة.';
 
   @override
-  String get authPasswordChanged =>
-      'تم تحديث كلمة المرور لهذه الجلسة التجريبية.';
+  String get authPasswordChanged => 'تم تحديث كلمة المرور لهذه الجلسة التجريبية.';
 
   @override
-  String get authPasswordDemoNote =>
-      'تستمر تغييرات كلمة المرور التجريبية حتى إعادة تشغيل التطبيق. لا تُحفظ أي كلمة مرور على هذا الجهاز.';
+  String get authPasswordDemoNote => 'تستمر تغييرات كلمة المرور التجريبية حتى إعادة تشغيل التطبيق. لا تُحفظ أي كلمة مرور على هذا الجهاز.';
 
   @override
   String get authBackToWorkspace => 'العودة إلى مساحة العمل';
@@ -754,8 +732,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authHomeTitle => 'مساحة عملك جاهزة';
 
   @override
-  String get authHomeSubtitle =>
-      'لقد سجّلت الدخول. ستُضاف وحدات الأعمال في المراحل القادمة.';
+  String get authHomeSubtitle => 'لقد سجّلت الدخول. ستُضاف وحدات الأعمال في المراحل القادمة.';
 
   @override
   String get authAccount => 'الحساب';
@@ -889,4 +866,552 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get permissionAttendanceReportView => 'عرض تقارير الحضور';
+
+  @override
+  String get shellDashboard => 'لوحة التحكم';
+
+  @override
+  String get shellEmployees => 'الموظفون';
+
+  @override
+  String get shellAttendance => 'الحضور';
+
+  @override
+  String get shellReports => 'التقارير';
+
+  @override
+  String get shellSettings => 'الإعدادات';
+
+  @override
+  String get shellProfile => 'الملف الشخصي';
+
+  @override
+  String get shellMore => 'المزيد';
+
+  @override
+  String get shellGeneral => 'مساحة العمل';
+
+  @override
+  String get shellPeople => 'الأفراد';
+
+  @override
+  String get shellWorkforce => 'القوى العاملة';
+
+  @override
+  String get shellInsights => 'التحليلات';
+
+  @override
+  String get shellAdministration => 'الإدارة';
+
+  @override
+  String get shellAccount => 'الحساب';
+
+  @override
+  String get shellServices => 'الخدمات';
+
+  @override
+  String get shellFinance => 'الشؤون المالية';
+
+  @override
+  String get shellDashboardDescription => 'ستُضاف نظرة عامة على مساحة عملك في مرحلة لاحقة.';
+
+  @override
+  String get shellEmployeesDescription => 'ستُضاف إدارة الموظفين في مرحلة لاحقة.';
+
+  @override
+  String get shellAttendanceDescription => 'ستُضاف إجراءات الحضور في مرحلة لاحقة.';
+
+  @override
+  String get shellReportsDescription => 'ستُضاف التقارير في مرحلة لاحقة.';
+
+  @override
+  String get shellSettingsDescription => 'ستُضاف إعدادات الشركة في مرحلة لاحقة.';
+
+  @override
+  String get shellProfileDescription => 'ستُضاف إمكانية تعديل الملف الشخصي في مرحلة لاحقة.';
+
+  @override
+  String get shellPlaceholderTitle => 'جاهز للمرحلة القادمة';
+
+  @override
+  String get shellPlaceholderMessage => 'هذه المساحة مخصّصة لوحدة أعمال مستقبلية. لا تتوفر بيانات أعمال بعد.';
+
+  @override
+  String get shellMoreDescription => 'استكشف المساحات الأخرى المتاحة لحسابك.';
+
+  @override
+  String get shellSearchTitle => 'البحث الشامل';
+
+  @override
+  String get shellSearchMessage => 'سيتوفر البحث الشامل عند إضافة وحدات الأعمال.';
+
+  @override
+  String get shellNotifications => 'الإشعارات';
+
+  @override
+  String get shellNoNotifications => 'لا توجد إشعارات';
+
+  @override
+  String get shellNotificationsMessage => 'لا توجد إشعارات لعرضها.';
+
+  @override
+  String get shellAccessRestricted => 'الوصول مقيّد';
+
+  @override
+  String get shellAccessMessage => 'ليس لديك صلاحية للوصول إلى هذه المساحة.';
+
+  @override
+  String get shellModuleUnavailable => 'الوحدة غير متاحة';
+
+  @override
+  String get shellModuleUnavailableMessage => 'هذه الوحدة غير مفعّلة لمؤسستك.';
+
+  @override
+  String get shellNotFound => 'الصفحة غير موجودة';
+
+  @override
+  String get shellNotFoundMessage => 'تعذّر العثور على الصفحة التي طلبتها.';
+
+  @override
+  String get shellReturnToWorkspace => 'العودة إلى مساحة العمل';
+
+  @override
+  String get shellGoBack => 'العودة';
+
+  @override
+  String get shellCollapseSidebar => 'طيّ القائمة الجانبية';
+
+  @override
+  String get shellExpandSidebar => 'توسيع القائمة الجانبية';
+
+  @override
+  String get shellCompanyInformation => 'معلومات الشركة';
+
+  @override
+  String get shellTimezone => 'المنطقة الزمنية';
+
+  @override
+  String get shellCompanyCode => 'رمز الشركة';
+
+  @override
+  String get shellAccountMenu => 'فتح قائمة الحساب';
+
+  @override
+  String get shellBreadcrumbs => 'مسار التنقل';
+
+  @override
+  String get shellNoDestinations => 'لا توجد وجهات متاحة';
+
+  @override
+  String get shellNoDestinationsMessage => 'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
+
+  @override
+  String dashboardMorning(String name) {
+    return 'صباح الخير، $name';
+  }
+
+  @override
+  String dashboardAfternoon(String name) {
+    return 'طاب يومك، $name';
+  }
+
+  @override
+  String dashboardEvening(String name) {
+    return 'مساء الخير، $name';
+  }
+
+  @override
+  String dashboardDemo(String date) {
+    return 'معاينة تجريبية · $date';
+  }
+
+  @override
+  String get dashboardSelfContext => 'لمحة عن حضورك وعملك';
+
+  @override
+  String get dashboardTeamContext => 'لمحة عن فريقك';
+
+  @override
+  String get dashboardCompanyContext => 'لمحة عن القوى العاملة في شركتك';
+
+  @override
+  String get dashboardNoScope => 'مساحة عملك';
+
+  @override
+  String get dashboardToday => 'اليوم';
+
+  @override
+  String get dashboardMonth => 'هذا الشهر';
+
+  @override
+  String get dashboardEmployees => 'إجمالي الموظفين';
+
+  @override
+  String get dashboardTeamSize => 'عدد أعضاء الفريق';
+
+  @override
+  String get dashboardPresent => 'الحاضرون';
+
+  @override
+  String get dashboardLate => 'المتأخرون';
+
+  @override
+  String get dashboardAbsent => 'الغائبون';
+
+  @override
+  String get dashboardLeave => 'في إجازة';
+
+  @override
+  String get dashboardWorking => 'يعملون الآن';
+
+  @override
+  String get dashboardBreak => 'في استراحة';
+
+  @override
+  String get dashboardCorrections => 'تصحيحات معلّقة';
+
+  @override
+  String get dashboardHours => 'ساعات العمل';
+
+  @override
+  String get dashboardRate => 'نسبة الحضور';
+
+  @override
+  String get dashboardLocations => 'مواقع العمل';
+
+  @override
+  String get dashboardUsers => 'المستخدمون النشطون';
+
+  @override
+  String get dashboardShift => 'الوردية';
+
+  @override
+  String get dashboardLocation => 'موقع العمل';
+
+  @override
+  String get dashboardOffice => 'مكتب حيدر آباد · تجريبي';
+
+  @override
+  String get dashboardNotStarted => 'لم يبدأ · معاينة';
+
+  @override
+  String get dashboardAttendance => 'حالة الحضور';
+
+  @override
+  String get dashboardAttention => 'يحتاج إلى متابعة';
+
+  @override
+  String get dashboardActivity => 'النشاط الأخير';
+
+  @override
+  String get dashboardQuickActions => 'وصول سريع';
+
+  @override
+  String get dashboardStatus => 'ملخص الحضور';
+
+  @override
+  String get dashboardOnTime => 'في الموعد';
+
+  @override
+  String get dashboardPresentDetail => 'يشمل المتأخرين';
+
+  @override
+  String dashboardLateAlert(String count) {
+    return '$count حالات تأخر للمراجعة';
+  }
+
+  @override
+  String dashboardCorrectionsAlert(String count) {
+    return '$count تصحيحات تنتظر المراجعة';
+  }
+
+  @override
+  String dashboardCheckedIn(String name) {
+    return 'سجّل $name الحضور';
+  }
+
+  @override
+  String dashboardBreakStarted(String name) {
+    return 'بدأ $name استراحة';
+  }
+
+  @override
+  String dashboardCorrectionSubmitted(String name) {
+    return 'قدّم $name طلب تصحيح';
+  }
+
+  @override
+  String get dashboardActivityDetail => 'نشاط حضور تجريبي';
+
+  @override
+  String get dashboardNoActivity => 'لا يوجد نشاط حديث';
+
+  @override
+  String get dashboardNoAttention => 'لا توجد أمور تحتاج إلى متابعة';
+
+  @override
+  String get dashboardEmptyTitle => 'لا توجد بيانات للقوى العاملة بعد';
+
+  @override
+  String get dashboardEmptyMessage => 'ستظهر معلومات القوى العاملة هنا عندما تتوفر البيانات والصلاحيات.';
+
+  @override
+  String get dashboardError => 'تعذّر تحميل لوحة التحكم. يرجى المحاولة مجددًا.';
+
+  @override
+  String get dashboardRefreshError => 'تعذّر التحديث. لا يزال الملخص السابق متاحًا.';
+
+  @override
+  String get dashboardRefresh => 'تحديث';
+
+  @override
+  String get dashboardRefreshing => 'جارٍ تحديث لوحة التحكم';
+
+  @override
+  String dashboardTimeRange(String start, String end) {
+    return 'من $start إلى $end';
+  }
+
+  @override
+  String durationHoursOnly(String hours) {
+    return '$hours س';
+  }
+
+  @override
+  String get empAdd => 'إضافة موظف';
+
+  @override
+  String get empEdit => 'تعديل الموظف';
+
+  @override
+  String get empDetails => 'تفاصيل الموظف';
+
+  @override
+  String get empPersonal => 'المعلومات الشخصية';
+
+  @override
+  String get empEmployment => 'معلومات التوظيف';
+
+  @override
+  String get empAttendanceConfig => 'إعدادات الحضور';
+
+  @override
+  String get empAccountAccess => 'الوصول إلى الحساب';
+
+  @override
+  String get empCode => 'رمز الموظف';
+
+  @override
+  String get empFirst => 'الاسم الأول *';
+
+  @override
+  String get empMiddle => 'الاسم الأوسط';
+
+  @override
+  String get empLast => 'اسم العائلة (اختياري)';
+
+  @override
+  String get empDepartment => 'القسم';
+
+  @override
+  String get empDesignation => 'المسمى الوظيفي';
+
+  @override
+  String get empManager => 'المدير';
+
+  @override
+  String get empJoined => 'تاريخ الانضمام';
+
+  @override
+  String get empType => 'نوع التوظيف';
+
+  @override
+  String get empPolicy => 'سياسة الحضور';
+
+  @override
+  String get empLogin => 'تمكين تسجيل الدخول للتطبيق';
+
+  @override
+  String get empGenerated => 'يُنشأ تلقائيًا عند الحفظ';
+
+  @override
+  String get empUnassigned => 'غير معيّن';
+
+  @override
+  String get empLoginNotice => 'إعداد محلي للحساب. لا تُصدر بيانات دخول جديدة أو دعوات في هذه المرحلة.';
+
+  @override
+  String get empCredentialPending => 'إعداد بيانات الدخول معلّق';
+
+  @override
+  String get empNoLogin => 'لا يوجد حساب مرتبط';
+
+  @override
+  String get empActive => 'نشط';
+
+  @override
+  String get empInactive => 'غير نشط';
+
+  @override
+  String get empFullTime => 'دوام كامل';
+
+  @override
+  String get empPartTime => 'دوام جزئي';
+
+  @override
+  String get empContract => 'عقد';
+
+  @override
+  String get empIntern => 'متدرّب';
+
+  @override
+  String get empTemporary => 'مؤقت';
+
+  @override
+  String get empFilters => 'عوامل التصفية';
+
+  @override
+  String get empClear => 'مسح التصفية';
+
+  @override
+  String get empApply => 'تطبيق';
+
+  @override
+  String get empReset => 'إعادة تعيين';
+
+  @override
+  String get empAll => 'الكل';
+
+  @override
+  String get empSort => 'ترتيب';
+
+  @override
+  String get empNameAsc => 'الاسم تصاعديًا';
+
+  @override
+  String get empNameDesc => 'الاسم تنازليًا';
+
+  @override
+  String get empNewest => 'الأحدث انضمامًا';
+
+  @override
+  String get empOldest => 'الأقدم انضمامًا';
+
+  @override
+  String get empEmpty => 'لا يوجد موظفون بعد';
+
+  @override
+  String get empEmptyMessage => 'أضف أول موظف لبدء إدارة القوى العاملة.';
+
+  @override
+  String get empNoResults => 'لم يتم العثور على موظفين';
+
+  @override
+  String get empNoResultsMessage => 'جرّب تغيير البحث أو عوامل التصفية.';
+
+  @override
+  String get empNotFound => 'لم يتم العثور على الموظف';
+
+  @override
+  String get empNotFoundMessage => 'هذا الموظف غير متاح.';
+
+  @override
+  String get empView => 'عرض';
+
+  @override
+  String get empActivate => 'تنشيط الموظف';
+
+  @override
+  String get empDeactivate => 'إيقاف الموظف';
+
+  @override
+  String get empStatusConfirm => 'تغيير حالة الموظف؟';
+
+  @override
+  String get empStatusMessage => 'سيؤدي ذلك إلى تغيير حالة الموظف وإمكانية دخول الحساب المرتبط. ويمكن التراجع عن ذلك.';
+
+  @override
+  String get empCreated => 'تم إنشاء الموظف بنجاح';
+
+  @override
+  String get empUpdated => 'تم تحديث الموظف بنجاح';
+
+  @override
+  String get empStatusSaved => 'تم تحديث حالة الموظف';
+
+  @override
+  String get empSave => 'حفظ الموظف';
+
+  @override
+  String get empDiscard => 'تجاهل التغييرات؟';
+
+  @override
+  String get empDiscardMessage => 'لديك تغييرات غير محفوظة. هل تريد تجاهلها ومغادرة النموذج؟';
+
+  @override
+  String get empDiscardAction => 'تجاهل';
+
+  @override
+  String get empRequired => 'أكمل الحقول المطلوبة واختر تاريخ انضمام صالحًا.';
+
+  @override
+  String get empInvalidEmail => 'أدخل عنوان بريد إلكتروني صالحًا.';
+
+  @override
+  String get empInvalidPhone => 'أدخل رقم هاتف يتكون من ٧ إلى ١٥ رقمًا.';
+
+  @override
+  String get empDuplicateEmail => 'هذا البريد الإلكتروني مرتبط بموظف آخر.';
+
+  @override
+  String get empDuplicatePhone => 'رقم الهاتف هذا مرتبط بموظف آخر.';
+
+  @override
+  String get empInvalidManager => 'اختر مديرًا نشطًا دون إنشاء علاقة إدارية دائرية.';
+
+  @override
+  String get empInvalidReference => 'اختر قسمًا ومسمى وظيفيًا نشطين.';
+
+  @override
+  String get empAccountRoleError => 'لا يمكنك إنشاء هذا الدور أو منح صلاحياته.';
+
+  @override
+  String get empStorageError => 'تعذّر إكمال هذه العملية المحلية. يرجى المحاولة مجددًا.';
+
+  @override
+  String get empPending => 'المزامنة معلّقة';
+
+  @override
+  String get empBack => 'العودة إلى الموظفين';
+
+  @override
+  String get empSelfProfile => 'عرض الملف الوظيفي';
+
+  @override
+  String get empRelated => 'السجلات المرتبطة';
+
+  @override
+  String get empPreview => 'معاينة الحضور';
+
+  @override
+  String get empSelect => 'اختر خيارًا';
+
+  @override
+  String get empActions => 'إجراءات الموظف';
+
+  @override
+  String empCount(String filtered, String total) {
+    return '$filtered من $total موظفًا';
+  }
+
+  @override
+  String empFilterCount(String count) {
+    return 'عوامل التصفية ($count)';
+  }
+
+  @override
+  String get selectOption => 'اختر خيارًا';
+
+  @override
+  String get noSelection => 'غير محدد';
 }

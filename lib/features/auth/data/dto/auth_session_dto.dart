@@ -31,7 +31,9 @@ class AuthSessionDto {
 
 abstract final class AuthSessionMapper {
   static AuthSession decode(AuthSessionDto dto) {
-    if (dto.version != 1 || dto.accessToken.isEmpty || dto.refreshToken.isEmpty) {
+    if (dto.version != 1 ||
+        dto.accessToken.isEmpty ||
+        dto.refreshToken.isEmpty) {
       throw const FormatException('Invalid session');
     }
     final u = dto.user, c = dto.company, e = dto.employee;
@@ -71,7 +73,8 @@ abstract final class AuthSessionMapper {
             companyId: e['companyId'] as String,
           );
     if (employee != null &&
-        (employee.userAccountId != user.id || employee.companyId != company.id)) {
+        (employee.userAccountId != user.id ||
+            employee.companyId != company.id)) {
       throw const FormatException('Invalid relationship');
     }
     return AuthSession(

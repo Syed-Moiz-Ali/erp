@@ -198,8 +198,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get designPreview => 'Design preview';
 
   @override
-  String get designSystemSubtitle =>
-      'The shared language of your ERP workspace.';
+  String get designSystemSubtitle => 'The shared language of your ERP workspace.';
 
   @override
   String get internalPreview => 'Internal preview';
@@ -211,15 +210,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewChanges => 'Review changes';
 
   @override
-  String get confirmationPreview =>
-      'This is a preview of the shared confirmation dialog.';
+  String get confirmationPreview => 'This is a preview of the shared confirmation dialog.';
 
   @override
   String get looksGood => 'Looks good';
 
   @override
-  String get consistencyNotice =>
-      'Consistent by design. Every future module uses these foundations.';
+  String get consistencyNotice => 'Consistent by design. Every future module uses these foundations.';
 
   @override
   String get designLanguage => 'Design language';
@@ -252,8 +249,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typography => 'Typography';
 
   @override
-  String get typographySubtitle =>
-      'Inter / locally bundled / clear at every density';
+  String get typographySubtitle => 'Inter / locally bundled / clear at every density';
 
   @override
   String get typographyDisplay => 'Display';
@@ -340,8 +336,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formControls => 'Form controls';
 
   @override
-  String get formControlsSubtitle =>
-      'Shared field styling, validation and accessible labels.';
+  String get formControlsSubtitle => 'Shared field styling, validation and accessible labels.';
 
   @override
   String get fullName => 'Full name';
@@ -371,15 +366,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get informationCard => 'Information card';
 
   @override
-  String get informationCardMessage =>
-      'Use a concise explanation to help people make a decision.';
+  String get informationCardMessage => 'Use a concise explanation to help people make a decision.';
 
   @override
   String get statusAndFeedback => 'Status & feedback';
 
   @override
-  String get localChangesAvailable =>
-      'Your changes are available on this device.';
+  String get localChangesAvailable => 'Your changes are available on this device.';
 
   @override
   String get recordsNeedAttention => 'Some records need your attention.';
@@ -394,19 +387,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noRecordsYet => 'No records yet';
 
   @override
-  String get noRecordsMessage =>
-      'Records will appear here when your team gets started.';
+  String get noRecordsMessage => 'Records will appear here when your team gets started.';
 
   @override
-  String get retryWhenConnected =>
-      'Please try again when a connection is available.';
+  String get retryWhenConnected => 'Please try again when a connection is available.';
 
   @override
   String get filtersAndTable => 'Filters & table';
 
   @override
-  String get illustrativeRecords =>
-      'Illustrative records / no operational employee data';
+  String get illustrativeRecords => 'Illustrative records / no operational employee data';
 
   @override
   String get activeOnly => 'Active only';
@@ -484,8 +474,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workspaceInfoTitle => 'Your ERP starts here';
 
   @override
-  String get workspaceInfoMessage =>
-      'The local-first architecture and shared design system are ready. Business modules will be introduced in future phases.';
+  String get workspaceInfoMessage => 'The local-first architecture and shared design system are ready. Business modules will be introduced in future phases.';
 
   @override
   String get phaseReady => 'Phase 0 / Foundation ready';
@@ -533,8 +522,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failureTimeout => 'The request timed out. Please try again.';
 
   @override
-  String get failureOffline =>
-      'Connection unavailable. Your local data is still available.';
+  String get failureOffline => 'Connection unavailable. Your local data is still available.';
 
   @override
   String get failureCancelled => 'Request cancelled.';
@@ -552,8 +540,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failureLocationDisabled => 'Enable location services to continue.';
 
   @override
-  String get failureLocationPermission =>
-      'Location permission is required for this action.';
+  String get failureLocationPermission => 'Location permission is required for this action.';
 
   @override
   String get failureLocationUnavailable => 'Unable to determine your location.';
@@ -568,8 +555,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failureSync => 'Some changes could not be synchronized.';
 
   @override
-  String get failurePreferencesWrite =>
-      'Language changed for this session, but could not be saved.';
+  String get failurePreferencesWrite => 'Language changed for this session, but could not be saved.';
 
   @override
   String get failurePreferencesRead => 'Saved language could not be restored.';
@@ -641,26 +627,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPasswordRequired => 'Password is required';
 
   @override
-  String get authInvalidCredentials =>
-      'Incorrect email, phone number, or password.';
+  String get authInvalidCredentials => 'Incorrect email, phone number, or password.';
 
   @override
   String get authLoggingIn => 'Signing in…';
 
   @override
-  String get authBrandStatement =>
-      'A connected workspace.\nA clearer working day.';
+  String get authBrandStatement => 'A connected workspace.\nA clearer working day.';
 
   @override
-  String get authBrandDescription =>
-      'One place for your people, operations, and the work ahead.';
+  String get authBrandDescription => 'One place for your people, operations, and the work ahead.';
 
   @override
   String get authWorkspaceLabel => 'Company workspace';
 
   @override
-  String get authSessionNote =>
-      'Your session stays signed in on this device until you sign out or it expires.';
+  String get authSessionNote => 'Your session stays signed in on this device until you sign out or it expires.';
 
   @override
   String get authInitializing => 'Preparing your workspace…';
@@ -669,34 +651,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authDemoAccounts => 'Demo accounts';
 
   @override
-  String get authDemoNotice =>
-      'Local demonstration only. No backend is connected.';
+  String get authDemoNotice => 'Local demonstration only. No backend is connected.';
 
   @override
-  String get authDemoDisabled =>
-      'Demo authentication is disabled in this configuration. A backend has not been connected yet.';
+  String get authDemoDisabled => 'Demo authentication is disabled in this configuration. A backend has not been connected yet.';
 
   @override
   String get authDemoPassword => 'Demo password';
 
   @override
-  String get authSessionStorageError =>
-      'We could not access the secure session. Please try again.';
+  String get authSessionStorageError => 'We could not access the secure session. Please try again.';
 
   @override
-  String get authServerError =>
-      'The sign-in service is temporarily unavailable. Please try again.';
+  String get authServerError => 'The sign-in service is temporarily unavailable. Please try again.';
 
   @override
   String get authForgotTitle => 'Reset your password';
 
   @override
-  String get authForgotSubtitle =>
-      'Enter the email or phone number associated with your account.';
+  String get authForgotSubtitle => 'Enter the email or phone number associated with your account.';
 
   @override
-  String get authResetInformation =>
-      'If an account matches these details, password reset instructions will be sent.';
+  String get authResetInformation => 'If an account matches these details, password reset instructions will be sent.';
 
   @override
   String get authResetDemoNote => 'In this demo, no email or SMS is sent.';
@@ -726,15 +702,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authConfirmPassword => 'Confirm new password';
 
   @override
-  String get authPasswordConstraints =>
-      'Use at least 8 characters, including a letter and a number.';
+  String get authPasswordConstraints => 'Use at least 8 characters, including a letter and a number.';
 
   @override
   String get authPasswordsMismatch => 'Passwords do not match';
 
   @override
-  String get authPasswordMustDiffer =>
-      'Choose a password different from your current password';
+  String get authPasswordMustDiffer => 'Choose a password different from your current password';
 
   @override
   String get authCurrentPasswordInvalid => 'The current password is incorrect.';
@@ -743,8 +717,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPasswordChanged => 'Password updated for this demo session.';
 
   @override
-  String get authPasswordDemoNote =>
-      'Demo password changes last until the app restarts. No password is stored on this device.';
+  String get authPasswordDemoNote => 'Demo password changes last until the app restarts. No password is stored on this device.';
 
   @override
   String get authBackToWorkspace => 'Back to workspace';
@@ -753,15 +726,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authConfirmLogout => 'Sign out of your workspace?';
 
   @override
-  String get authLogoutMessage =>
-      'Your secure session will be removed from this device.';
+  String get authLogoutMessage => 'Your secure session will be removed from this device.';
 
   @override
   String get authHomeTitle => 'Your workspace is ready';
 
   @override
-  String get authHomeSubtitle =>
-      'You are signed in. Business modules will be added in the next phases.';
+  String get authHomeSubtitle => 'You are signed in. Business modules will be added in the next phases.';
 
   @override
   String get authAccount => 'Account';
@@ -858,8 +829,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get permissionAttendanceBreak => 'Manage own breaks';
 
   @override
-  String get permissionAttendanceRequestCorrection =>
-      'Request attendance corrections';
+  String get permissionAttendanceRequestCorrection => 'Request attendance corrections';
 
   @override
   String get permissionAttendanceCorrect => 'Correct attendance';
@@ -896,4 +866,552 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionAttendanceReportView => 'View attendance reports';
+
+  @override
+  String get shellDashboard => 'Dashboard';
+
+  @override
+  String get shellEmployees => 'Employees';
+
+  @override
+  String get shellAttendance => 'Attendance';
+
+  @override
+  String get shellReports => 'Reports';
+
+  @override
+  String get shellSettings => 'Settings';
+
+  @override
+  String get shellProfile => 'Profile';
+
+  @override
+  String get shellMore => 'More';
+
+  @override
+  String get shellGeneral => 'Workspace';
+
+  @override
+  String get shellPeople => 'People';
+
+  @override
+  String get shellWorkforce => 'Workforce';
+
+  @override
+  String get shellInsights => 'Insights';
+
+  @override
+  String get shellAdministration => 'Administration';
+
+  @override
+  String get shellAccount => 'Account';
+
+  @override
+  String get shellServices => 'Services';
+
+  @override
+  String get shellFinance => 'Finance';
+
+  @override
+  String get shellDashboardDescription => 'Your workspace overview will be introduced in a later phase.';
+
+  @override
+  String get shellEmployeesDescription => 'Employee management will be implemented in a later phase.';
+
+  @override
+  String get shellAttendanceDescription => 'Attendance workflows will be implemented in a later phase.';
+
+  @override
+  String get shellReportsDescription => 'Reporting will be implemented in a later phase.';
+
+  @override
+  String get shellSettingsDescription => 'Company settings will be implemented in a later phase.';
+
+  @override
+  String get shellProfileDescription => 'Profile editing will be introduced in a later phase.';
+
+  @override
+  String get shellPlaceholderTitle => 'Ready for the next phase';
+
+  @override
+  String get shellPlaceholderMessage => 'This area is reserved for a future ERP module. No business data is available yet.';
+
+  @override
+  String get shellMoreDescription => 'Explore the other areas available to your account.';
+
+  @override
+  String get shellSearchTitle => 'Global search';
+
+  @override
+  String get shellSearchMessage => 'Global search will become available as ERP modules are added.';
+
+  @override
+  String get shellNotifications => 'Notifications';
+
+  @override
+  String get shellNoNotifications => 'No notifications';
+
+  @override
+  String get shellNotificationsMessage => 'There are no notifications to display.';
+
+  @override
+  String get shellAccessRestricted => 'Access restricted';
+
+  @override
+  String get shellAccessMessage => 'You do not have permission to access this area.';
+
+  @override
+  String get shellModuleUnavailable => 'Module unavailable';
+
+  @override
+  String get shellModuleUnavailableMessage => 'This module is not enabled for your organization.';
+
+  @override
+  String get shellNotFound => 'Page not found';
+
+  @override
+  String get shellNotFoundMessage => 'The page you requested could not be found.';
+
+  @override
+  String get shellReturnToWorkspace => 'Return to workspace';
+
+  @override
+  String get shellGoBack => 'Go back';
+
+  @override
+  String get shellCollapseSidebar => 'Collapse sidebar';
+
+  @override
+  String get shellExpandSidebar => 'Expand sidebar';
+
+  @override
+  String get shellCompanyInformation => 'Company information';
+
+  @override
+  String get shellTimezone => 'Time zone';
+
+  @override
+  String get shellCompanyCode => 'Company code';
+
+  @override
+  String get shellAccountMenu => 'Open account menu';
+
+  @override
+  String get shellBreadcrumbs => 'Breadcrumb navigation';
+
+  @override
+  String get shellNoDestinations => 'No available destinations';
+
+  @override
+  String get shellNoDestinationsMessage => 'No workspace areas are available for this account. Contact your administrator.';
+
+  @override
+  String dashboardMorning(String name) {
+    return 'Good morning, $name';
+  }
+
+  @override
+  String dashboardAfternoon(String name) {
+    return 'Good afternoon, $name';
+  }
+
+  @override
+  String dashboardEvening(String name) {
+    return 'Good evening, $name';
+  }
+
+  @override
+  String dashboardDemo(String date) {
+    return 'Demo preview · $date';
+  }
+
+  @override
+  String get dashboardSelfContext => 'Your workforce at a glance';
+
+  @override
+  String get dashboardTeamContext => 'Your team at a glance';
+
+  @override
+  String get dashboardCompanyContext => 'Your company workforce at a glance';
+
+  @override
+  String get dashboardNoScope => 'Your workspace';
+
+  @override
+  String get dashboardToday => 'Today';
+
+  @override
+  String get dashboardMonth => 'This month';
+
+  @override
+  String get dashboardEmployees => 'Total employees';
+
+  @override
+  String get dashboardTeamSize => 'Team size';
+
+  @override
+  String get dashboardPresent => 'Present';
+
+  @override
+  String get dashboardLate => 'Late';
+
+  @override
+  String get dashboardAbsent => 'Absent';
+
+  @override
+  String get dashboardLeave => 'On leave';
+
+  @override
+  String get dashboardWorking => 'Currently working';
+
+  @override
+  String get dashboardBreak => 'On break';
+
+  @override
+  String get dashboardCorrections => 'Pending corrections';
+
+  @override
+  String get dashboardHours => 'Work hours';
+
+  @override
+  String get dashboardRate => 'Attendance rate';
+
+  @override
+  String get dashboardLocations => 'Work locations';
+
+  @override
+  String get dashboardUsers => 'Active users';
+
+  @override
+  String get dashboardShift => 'Shift';
+
+  @override
+  String get dashboardLocation => 'Work location';
+
+  @override
+  String get dashboardOffice => 'Hyderabad office · demo';
+
+  @override
+  String get dashboardNotStarted => 'Not started · preview';
+
+  @override
+  String get dashboardAttendance => 'Attendance status';
+
+  @override
+  String get dashboardAttention => 'Needs attention';
+
+  @override
+  String get dashboardActivity => 'Recent activity';
+
+  @override
+  String get dashboardQuickActions => 'Quick access';
+
+  @override
+  String get dashboardStatus => 'Attendance snapshot';
+
+  @override
+  String get dashboardOnTime => 'On time';
+
+  @override
+  String get dashboardPresentDetail => 'Includes late arrivals';
+
+  @override
+  String dashboardLateAlert(String count) {
+    return '$count late arrivals to review';
+  }
+
+  @override
+  String dashboardCorrectionsAlert(String count) {
+    return '$count corrections awaiting review';
+  }
+
+  @override
+  String dashboardCheckedIn(String name) {
+    return '$name checked in';
+  }
+
+  @override
+  String dashboardBreakStarted(String name) {
+    return '$name started a break';
+  }
+
+  @override
+  String dashboardCorrectionSubmitted(String name) {
+    return '$name submitted a correction';
+  }
+
+  @override
+  String get dashboardActivityDetail => 'Demo attendance activity';
+
+  @override
+  String get dashboardNoActivity => 'No recent activity';
+
+  @override
+  String get dashboardNoAttention => 'Nothing needs attention';
+
+  @override
+  String get dashboardEmptyTitle => 'No workforce data yet';
+
+  @override
+  String get dashboardEmptyMessage => 'Workforce insights appear here when data and access are available.';
+
+  @override
+  String get dashboardError => 'We couldn’t load your dashboard. Please try again.';
+
+  @override
+  String get dashboardRefreshError => 'Refresh failed. Your previous snapshot is still available.';
+
+  @override
+  String get dashboardRefresh => 'Refresh';
+
+  @override
+  String get dashboardRefreshing => 'Refreshing dashboard';
+
+  @override
+  String dashboardTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String durationHoursOnly(String hours) {
+    return '${hours}h';
+  }
+
+  @override
+  String get empAdd => 'Add employee';
+
+  @override
+  String get empEdit => 'Edit employee';
+
+  @override
+  String get empDetails => 'Employee details';
+
+  @override
+  String get empPersonal => 'Personal information';
+
+  @override
+  String get empEmployment => 'Employment information';
+
+  @override
+  String get empAttendanceConfig => 'Attendance configuration';
+
+  @override
+  String get empAccountAccess => 'Account access';
+
+  @override
+  String get empCode => 'Employee code';
+
+  @override
+  String get empFirst => 'First name *';
+
+  @override
+  String get empMiddle => 'Middle name';
+
+  @override
+  String get empLast => 'Last name (optional)';
+
+  @override
+  String get empDepartment => 'Department';
+
+  @override
+  String get empDesignation => 'Designation';
+
+  @override
+  String get empManager => 'Manager';
+
+  @override
+  String get empJoined => 'Joining date';
+
+  @override
+  String get empType => 'Employment type';
+
+  @override
+  String get empPolicy => 'Attendance policy';
+
+  @override
+  String get empLogin => 'Enable app login';
+
+  @override
+  String get empGenerated => 'Automatically generated on save';
+
+  @override
+  String get empUnassigned => 'Not assigned';
+
+  @override
+  String get empLoginNotice => 'Local account configuration. New credentials and invitations are not issued in this phase.';
+
+  @override
+  String get empCredentialPending => 'Credential setup pending';
+
+  @override
+  String get empNoLogin => 'No linked account';
+
+  @override
+  String get empActive => 'Active';
+
+  @override
+  String get empInactive => 'Inactive';
+
+  @override
+  String get empFullTime => 'Full time';
+
+  @override
+  String get empPartTime => 'Part time';
+
+  @override
+  String get empContract => 'Contract';
+
+  @override
+  String get empIntern => 'Intern';
+
+  @override
+  String get empTemporary => 'Temporary';
+
+  @override
+  String get empFilters => 'Filters';
+
+  @override
+  String get empClear => 'Clear filters';
+
+  @override
+  String get empApply => 'Apply';
+
+  @override
+  String get empReset => 'Reset';
+
+  @override
+  String get empAll => 'All';
+
+  @override
+  String get empSort => 'Sort';
+
+  @override
+  String get empNameAsc => 'Name A–Z';
+
+  @override
+  String get empNameDesc => 'Name Z–A';
+
+  @override
+  String get empNewest => 'Newest joined';
+
+  @override
+  String get empOldest => 'Oldest joined';
+
+  @override
+  String get empEmpty => 'No employees yet';
+
+  @override
+  String get empEmptyMessage => 'Add your first employee to start managing your workforce.';
+
+  @override
+  String get empNoResults => 'No employees found';
+
+  @override
+  String get empNoResultsMessage => 'Try changing your search or filters.';
+
+  @override
+  String get empNotFound => 'Employee not found';
+
+  @override
+  String get empNotFoundMessage => 'This employee is unavailable.';
+
+  @override
+  String get empView => 'View';
+
+  @override
+  String get empActivate => 'Activate employee';
+
+  @override
+  String get empDeactivate => 'Deactivate employee';
+
+  @override
+  String get empStatusConfirm => 'Change employee status?';
+
+  @override
+  String get empStatusMessage => 'This changes active workforce status and linked account access. It can be reversed.';
+
+  @override
+  String get empCreated => 'Employee created successfully';
+
+  @override
+  String get empUpdated => 'Employee updated successfully';
+
+  @override
+  String get empStatusSaved => 'Employee status updated';
+
+  @override
+  String get empSave => 'Save employee';
+
+  @override
+  String get empDiscard => 'Discard changes?';
+
+  @override
+  String get empDiscardMessage => 'You have unsaved changes. Discard them and leave this form?';
+
+  @override
+  String get empDiscardAction => 'Discard';
+
+  @override
+  String get empRequired => 'Complete the required fields and choose a valid joining date.';
+
+  @override
+  String get empInvalidEmail => 'Enter a valid email address.';
+
+  @override
+  String get empInvalidPhone => 'Enter a phone number with 7–15 digits.';
+
+  @override
+  String get empDuplicateEmail => 'This email is already assigned to another employee.';
+
+  @override
+  String get empDuplicatePhone => 'This phone is already assigned to another employee.';
+
+  @override
+  String get empInvalidManager => 'Choose an active manager without a circular reporting relationship.';
+
+  @override
+  String get empInvalidReference => 'Choose an active department and designation.';
+
+  @override
+  String get empAccountRoleError => 'You cannot provision this account role or its permissions.';
+
+  @override
+  String get empStorageError => 'We couldn’t complete this local operation. Please try again.';
+
+  @override
+  String get empPending => 'Pending sync';
+
+  @override
+  String get empBack => 'Back to employees';
+
+  @override
+  String get empSelfProfile => 'View employee profile';
+
+  @override
+  String get empRelated => 'Related records';
+
+  @override
+  String get empPreview => 'Attendance preview';
+
+  @override
+  String get empSelect => 'Select an option';
+
+  @override
+  String get empActions => 'Employee actions';
+
+  @override
+  String empCount(String filtered, String total) {
+    return '$filtered of $total employees';
+  }
+
+  @override
+  String empFilterCount(String count) {
+    return 'Filters ($count)';
+  }
+
+  @override
+  String get selectOption => 'Select an option';
+
+  @override
+  String get noSelection => 'Not assigned';
 }

@@ -4,6 +4,19 @@ import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 class MemoryPreferences implements AppPreferencesLocalDataSource {
   MemoryPreferences({this.code});
   String? code;
+  bool? sidebarCollapsed;
+  @override
+  Future<bool?> readSidebarCollapsed() async {
+    if (failReads) throw StateError("read");
+    return sidebarCollapsed;
+  }
+
+  @override
+  Future<void> writeSidebarCollapsed(bool value) async {
+    if (failWrites) throw StateError("write");
+    sidebarCollapsed = value;
+  }
+
   bool failReads = false;
   bool failWrites = false;
   final List<String> writes = [];

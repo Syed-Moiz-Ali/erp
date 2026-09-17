@@ -1,3 +1,4 @@
+import '../../theme/app_spacing.dart';
 import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../buttons/app_buttons.dart';
@@ -10,11 +11,12 @@ class AppDataTable extends StatelessWidget {
     required this.rows,
     this.sortColumnIndex,
     this.sortAscending = true,
+    this.showCheckboxColumn = false,
   });
   final List<DataColumn> columns;
   final List<DataRow> rows;
   final int? sortColumnIndex;
-  final bool sortAscending;
+  final bool sortAscending, showCheckboxColumn;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => SingleChildScrollView(
@@ -22,6 +24,12 @@ class AppDataTable extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(minWidth: constraints.maxWidth),
         child: DataTable(
+          showCheckboxColumn: showCheckboxColumn,
+          columnSpacing: AppSpacing.lg,
+          horizontalMargin: AppSpacing.lg,
+          dataRowMinHeight: 64,
+          dataRowMaxHeight:
+              64 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
           columns: columns,
           rows: rows,
           sortColumnIndex: sortColumnIndex,

@@ -1,3 +1,4 @@
+import '../auth/password_policy.dart';
 import '../auth/auth_identifier.dart';
 import '../../l10n/generated/app_localizations.dart';
 
@@ -27,9 +28,7 @@ abstract final class AppValidation {
       value == null || value.isEmpty ? ValidationIssue.passwordRequired : null;
   static ValidationIssue? newPassword(String? value, String current) {
     if (password(value) != null) return ValidationIssue.passwordRequired;
-    if (value!.length < 8 ||
-        !RegExp(r'[A-Za-z]').hasMatch(value) ||
-        !RegExp(r'[0-9]').hasMatch(value)) {
+    if (!PasswordPolicy.accepts(value!)) {
       return ValidationIssue.passwordWeak;
     }
     if (value == current) return ValidationIssue.passwordUnchanged;

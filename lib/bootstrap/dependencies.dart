@@ -1,3 +1,14 @@
+import '../features/auth/domain/repositories/account_access_guard.dart';
+import '../features/employees/data/local_account_access_guard.dart';
+import '../features/employees/domain/employee_repository.dart';
+import '../features/employees/data/local_employee_repository.dart';
+import '../features/employees/data/employee_dao.dart';
+import '../features/employees/data/account_provisioning_repository.dart';
+import '../features/dashboard/domain/dashboard_repository.dart';
+import '../features/dashboard/data/local_dashboard_repository.dart';
+import '../app/shell/app_shell_cubit.dart';
+import '../app/module_registry/module_registry.dart';
+import '../app/module_registry/registered_modules.dart';
 import '../app/app_config.dart';
 import '../features/auth/data/datasources/local/demo_auth_source.dart';
 import '../features/auth/data/repositories/demo_auth_repository.dart';
@@ -37,12 +48,37 @@ void configureDependencies() {
     () => DemoAuthRepository(
       services(),
       source: AppConfig.demoAuthEnabled ? services<DemoAuthSource>() : null,
+      accountGuard: services(),
     ),
     dispose: (repo) => repo.dispose(),
   );
   services.registerLazySingleton(
     () => AuthBloc(services()),
     dispose: (bloc) => bloc.close(),
+  );
+  services.registerLazySingleton(
+    () => AppShellCubit(services()),
+    dispose: (cubit) => cubit.close(),
+  );
+  services.registerLazySingleton<DashboardRepository>(
+    () => LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled),
+  );
+  services.registerLazySingleton(() => EmployeeDao(services()));
+  services.registerLazySingleton<AccountAccessGuard>(
+    () => LocalAccountAccessGuard(services()),
+  );
+  services.registerLazySingleton<AccountProvisioningRepository>(
+    () => LocalAccountProvisioningRepository(services()),
+  );
+  services.registerLazySingleton<EmployeeRepository>(
+    () => LocalEmployeeRepository(services(), services()),
+  );
+  services.registerLazySingleton<ModuleRegistry>(
+    () => createErpRegistry(
+      services(),
+      dashboardRepository: services(),
+      employeeRepository: services(),
+    ),
   );
   services.registerSingleton(AppLogger());
   services.registerLazySingleton<LocationService>(DeviceLocationService.new);

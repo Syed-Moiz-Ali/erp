@@ -1,3 +1,4 @@
+import '../../../domain/policies/account_role_templates.dart';
 import '../../../domain/entities/demo_credential_info.dart';
 import '../../../../../core/security/app_permission.dart';
 import '../../../domain/entities/auth_context.dart';
@@ -55,7 +56,13 @@ class DemoAuthSource {
             code: 'DEMO',
             timezone: 'Asia/Dubai',
             defaultLocale: 'en',
-            enabledModules: {'employees', 'attendance'},
+            enabledModules: {
+              'dashboard',
+              'employees',
+              'attendance',
+              'reports',
+              'settings',
+            },
           ),
           employeeReference:
               role == AppRole.superAdmin || role == AppRole.companyAdmin
@@ -88,7 +95,8 @@ class DemoAuthSource {
       final user = account.context.user;
       final matches = identifier.type == AuthIdentifierType.email
           ? user.email == identifier.value
-          : user.phone == identifier.value;
+          : user.phone?.replaceFirst('+', '') ==
+                identifier.value.replaceFirst('+', '');
       if (matches &&
           account.password == password &&
           user.status == AccountStatus.active) {
@@ -106,43 +114,4 @@ class DemoAuthSource {
   }
 }
 
-PermissionSet demoPermissions(AppRole role) {
-  if (role == AppRole.superAdmin || role == AppRole.companyAdmin) {
-    return PermissionSet(AppPermission.values);
-  }
-  final self = {
-    AppPermission.employeeViewSelf,
-    AppPermission.attendanceViewSelf,
-    AppPermission.attendancePunchIn,
-    AppPermission.attendancePunchOut,
-    AppPermission.attendanceBreak,
-    AppPermission.attendanceRequestCorrection,
-  };
-  return PermissionSet(switch (role) {
-    AppRole.employee => self,
-    AppRole.manager => {
-      ...self,
-      AppPermission.employeeViewTeam,
-      AppPermission.attendanceViewTeam,
-      AppPermission.attendanceApprove,
-    },
-    AppRole.hr => {
-      ...self,
-      AppPermission.employeeViewAll,
-      AppPermission.employeeCreate,
-      AppPermission.employeeUpdate,
-      AppPermission.employeeDeactivate,
-      AppPermission.attendanceViewAll,
-      AppPermission.attendanceCorrect,
-      AppPermission.attendanceApprove,
-      AppPermission.shiftView,
-      AppPermission.shiftManage,
-      AppPermission.workLocationView,
-      AppPermission.workLocationManage,
-      AppPermission.attendancePolicyView,
-      AppPermission.attendancePolicyManage,
-      AppPermission.attendanceReportView,
-    },
-    _ => <AppPermission>{},
-  });
-}
+PermissionSet demoPermissions(AppRole role) => permissionsForRole(role);

@@ -1,3 +1,4 @@
+import '../../theme/app_dimensions.dart';
 import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../buttons/app_buttons.dart';
@@ -21,10 +22,7 @@ class AppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AlertDialog(
     title: Text(title),
-    content: ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 480),
-      child: child,
-    ),
+    content: SizedBox(width: AppDimensions.dialog, child: child),
     actions: actions,
   );
 }

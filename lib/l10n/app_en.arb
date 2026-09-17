@@ -908,5 +908,276 @@
   "permissionCompanyManage": "Manage company",
   "permissionUserManage": "Manage user accounts",
   "permissionRoleManage": "Manage roles",
-  "permissionAttendanceReportView": "View attendance reports"
+  "permissionAttendanceReportView": "View attendance reports",
+  "shellDashboard": "Dashboard",
+  "shellEmployees": "Employees",
+  "shellAttendance": "Attendance",
+  "shellReports": "Reports",
+  "shellSettings": "Settings",
+  "shellProfile": "Profile",
+  "shellMore": "More",
+  "shellGeneral": "Workspace",
+  "shellPeople": "People",
+  "shellWorkforce": "Workforce",
+  "shellInsights": "Insights",
+  "shellAdministration": "Administration",
+  "shellAccount": "Account",
+  "shellServices": "Services",
+  "shellFinance": "Finance",
+  "shellDashboardDescription": "Your workspace overview will be introduced in a later phase.",
+  "shellEmployeesDescription": "Employee management will be implemented in a later phase.",
+  "shellAttendanceDescription": "Attendance workflows will be implemented in a later phase.",
+  "shellReportsDescription": "Reporting will be implemented in a later phase.",
+  "shellSettingsDescription": "Company settings will be implemented in a later phase.",
+  "shellProfileDescription": "Profile editing will be introduced in a later phase.",
+  "shellPlaceholderTitle": "Ready for the next phase",
+  "shellPlaceholderMessage": "This area is reserved for a future ERP module. No business data is available yet.",
+  "shellMoreDescription": "Explore the other areas available to your account.",
+  "shellSearchTitle": "Global search",
+  "shellSearchMessage": "Global search will become available as ERP modules are added.",
+  "shellNotifications": "Notifications",
+  "shellNoNotifications": "No notifications",
+  "shellNotificationsMessage": "There are no notifications to display.",
+  "shellAccessRestricted": "Access restricted",
+  "shellAccessMessage": "You do not have permission to access this area.",
+  "shellModuleUnavailable": "Module unavailable",
+  "shellModuleUnavailableMessage": "This module is not enabled for your organization.",
+  "shellNotFound": "Page not found",
+  "shellNotFoundMessage": "The page you requested could not be found.",
+  "shellReturnToWorkspace": "Return to workspace",
+  "shellGoBack": "Go back",
+  "shellCollapseSidebar": "Collapse sidebar",
+  "shellExpandSidebar": "Expand sidebar",
+  "shellCompanyInformation": "Company information",
+  "shellTimezone": "Time zone",
+  "shellCompanyCode": "Company code",
+  "shellAccountMenu": "Open account menu",
+  "shellBreadcrumbs": "Breadcrumb navigation",
+  "shellNoDestinations": "No available destinations",
+  "shellNoDestinationsMessage": "No workspace areas are available for this account. Contact your administrator.",
+  "dashboardMorning": "Good morning, {name}",
+  "@dashboardMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardAfternoon": "Good afternoon, {name}",
+  "@dashboardAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardEvening": "Good evening, {name}",
+  "@dashboardEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardDemo": "Demo preview · {date}",
+  "@dashboardDemo": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardSelfContext": "Your workforce at a glance",
+  "dashboardTeamContext": "Your team at a glance",
+  "dashboardCompanyContext": "Your company workforce at a glance",
+  "dashboardNoScope": "Your workspace",
+  "dashboardToday": "Today",
+  "dashboardMonth": "This month",
+  "dashboardEmployees": "Total employees",
+  "dashboardTeamSize": "Team size",
+  "dashboardPresent": "Present",
+  "dashboardLate": "Late",
+  "dashboardAbsent": "Absent",
+  "dashboardLeave": "On leave",
+  "dashboardWorking": "Currently working",
+  "dashboardBreak": "On break",
+  "dashboardCorrections": "Pending corrections",
+  "dashboardHours": "Work hours",
+  "dashboardRate": "Attendance rate",
+  "dashboardLocations": "Work locations",
+  "dashboardUsers": "Active users",
+  "dashboardShift": "Shift",
+  "dashboardLocation": "Work location",
+  "dashboardOffice": "Hyderabad office · demo",
+  "dashboardNotStarted": "Not started · preview",
+  "dashboardAttendance": "Attendance status",
+  "dashboardAttention": "Needs attention",
+  "dashboardActivity": "Recent activity",
+  "dashboardQuickActions": "Quick access",
+  "dashboardStatus": "Attendance snapshot",
+  "dashboardOnTime": "On time",
+  "dashboardPresentDetail": "Includes late arrivals",
+  "dashboardLateAlert": "{count} late arrivals to review",
+  "@dashboardLateAlert": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCorrectionsAlert": "{count} corrections awaiting review",
+  "@dashboardCorrectionsAlert": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCheckedIn": "{name} checked in",
+  "@dashboardCheckedIn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardBreakStarted": "{name} started a break",
+  "@dashboardBreakStarted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCorrectionSubmitted": "{name} submitted a correction",
+  "@dashboardCorrectionSubmitted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardActivityDetail": "Demo attendance activity",
+  "dashboardNoActivity": "No recent activity",
+  "dashboardNoAttention": "Nothing needs attention",
+  "dashboardEmptyTitle": "No workforce data yet",
+  "dashboardEmptyMessage": "Workforce insights appear here when data and access are available.",
+  "dashboardError": "We couldn’t load your dashboard. Please try again.",
+  "dashboardRefreshError": "Refresh failed. Your previous snapshot is still available.",
+  "dashboardRefresh": "Refresh",
+  "dashboardRefreshing": "Refreshing dashboard",
+  "dashboardTimeRange": "{start} – {end}",
+  "@dashboardTimeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHoursOnly": "{hours}h",
+  "@durationHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "empAdd": "Add employee",
+  "empEdit": "Edit employee",
+  "empDetails": "Employee details",
+  "empPersonal": "Personal information",
+  "empEmployment": "Employment information",
+  "empAttendanceConfig": "Attendance configuration",
+  "empAccountAccess": "Account access",
+  "empCode": "Employee code",
+  "empFirst": "First name *",
+  "empMiddle": "Middle name",
+  "empLast": "Last name (optional)",
+  "empDepartment": "Department",
+  "empDesignation": "Designation",
+  "empManager": "Manager",
+  "empJoined": "Joining date",
+  "empType": "Employment type",
+  "empPolicy": "Attendance policy",
+  "empLogin": "Enable app login",
+  "empGenerated": "Automatically generated on save",
+  "empUnassigned": "Not assigned",
+  "empLoginNotice": "Local account configuration. New credentials and invitations are not issued in this phase.",
+  "empCredentialPending": "Credential setup pending",
+  "empNoLogin": "No linked account",
+  "empActive": "Active",
+  "empInactive": "Inactive",
+  "empFullTime": "Full time",
+  "empPartTime": "Part time",
+  "empContract": "Contract",
+  "empIntern": "Intern",
+  "empTemporary": "Temporary",
+  "empFilters": "Filters",
+  "empClear": "Clear filters",
+  "empApply": "Apply",
+  "empReset": "Reset",
+  "empAll": "All",
+  "empSort": "Sort",
+  "empNameAsc": "Name A–Z",
+  "empNameDesc": "Name Z–A",
+  "empNewest": "Newest joined",
+  "empOldest": "Oldest joined",
+  "empEmpty": "No employees yet",
+  "empEmptyMessage": "Add your first employee to start managing your workforce.",
+  "empNoResults": "No employees found",
+  "empNoResultsMessage": "Try changing your search or filters.",
+  "empNotFound": "Employee not found",
+  "empNotFoundMessage": "This employee is unavailable.",
+  "empView": "View",
+  "empActivate": "Activate employee",
+  "empDeactivate": "Deactivate employee",
+  "empStatusConfirm": "Change employee status?",
+  "empStatusMessage": "This changes active workforce status and linked account access. It can be reversed.",
+  "empCreated": "Employee created successfully",
+  "empUpdated": "Employee updated successfully",
+  "empStatusSaved": "Employee status updated",
+  "empSave": "Save employee",
+  "empDiscard": "Discard changes?",
+  "empDiscardMessage": "You have unsaved changes. Discard them and leave this form?",
+  "empDiscardAction": "Discard",
+  "empRequired": "Complete the required fields and choose a valid joining date.",
+  "empInvalidEmail": "Enter a valid email address.",
+  "empInvalidPhone": "Enter a phone number with 7–15 digits.",
+  "empDuplicateEmail": "This email is already assigned to another employee.",
+  "empDuplicatePhone": "This phone is already assigned to another employee.",
+  "empInvalidManager": "Choose an active manager without a circular reporting relationship.",
+  "empInvalidReference": "Choose an active department and designation.",
+  "empAccountRoleError": "You cannot provision this account role or its permissions.",
+  "empStorageError": "We couldn’t complete this local operation. Please try again.",
+  "empPending": "Pending sync",
+  "empBack": "Back to employees",
+  "empSelfProfile": "View employee profile",
+  "empRelated": "Related records",
+  "empPreview": "Attendance preview",
+  "empSelect": "Select an option",
+  "empActions": "Employee actions",
+  "empCount": "{filtered} of {total} employees",
+  "@empCount": {
+    "placeholders": {
+      "filtered": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "empFilterCount": "Filters ({count})",
+  "@empFilterCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "selectOption": "Select an option",
+  "noSelection": "Not assigned"
 }

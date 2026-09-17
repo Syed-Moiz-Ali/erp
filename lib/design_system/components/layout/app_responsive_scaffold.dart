@@ -13,39 +13,58 @@ class AppResponsiveScaffold extends StatelessWidget {
     required this.modules,
     required this.route,
     required this.onNavigate,
+    this.topBar,
+    this.bottomModules,
+    this.bottomSelectedRoute,
+    this.collapsed = false,
+    this.companyName,
+    this.onCompanyPressed,
+    this.onToggleSidebar,
   });
   final Widget child;
   final List<ErpModule> modules;
   final String route;
   final ValueChanged<String> onNavigate;
+  final PreferredSizeWidget? topBar;
+  final List<ErpModule>? bottomModules;
+  final String? bottomSelectedRoute, companyName;
+  final bool collapsed;
+  final VoidCallback? onCompanyPressed, onToggleSidebar;
   @override
   Widget build(BuildContext context) {
     final size = AppBreakpoints.of(context);
-    final index = modules.indexWhere((m) => m.route == route);
+    final index = modules.indexWhere((m) => m.owns(route));
+    final bottomItems = bottomModules ?? modules;
+    final bottomIndex = bottomItems.indexWhere(
+      (m) => m.owns(bottomSelectedRoute ?? route),
+    );
     final selected = index < 0 ? 0 : index;
     final desktop = size == AppSize.expanded || size == AppSize.large;
     final content = Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.workspace),
-        actions: [
-          const AppLanguageSelector(),
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 24),
-            child: AppAvatar(name: context.l10n.designPreview),
+      appBar:
+          topBar ??
+          AppBar(
+            title: Text(context.l10n.workspace),
+            actions: [
+              const AppLanguageSelector(),
+              Padding(
+                padding: EdgeInsetsDirectional.only(end: 24),
+                child: AppAvatar(name: context.l10n.designPreview),
+              ),
+            ],
           ),
-        ],
-      ),
       body: child,
       bottomNavigationBar:
-          size == AppSize.compact && modules.length >= 2 && modules.length <= 5
+          size == AppSize.compact &&
+              bottomItems.isNotEmpty &&
+              bottomItems.length <= 5
           ? AppBottomNavigation(
-              modules: modules,
-              index: selected,
-              onSelected: (i) => onNavigate(modules[i].route),
+              modules: bottomItems,
+              index: bottomIndex < 0 ? 0 : bottomIndex,
+              onSelected: (i) => onNavigate(bottomItems[i].route),
             )
           : null,
-      drawer:
-          size == AppSize.compact && (modules.length > 5 || modules.length < 2)
+      drawer: topBar == null && size == AppSize.compact && modules.length > 5
           ? Drawer(
               child: AppSidebar(
                 modules: modules,
@@ -65,13 +84,20 @@ class AppResponsiveScaffold extends StatelessWidget {
             AppSidebar(
               modules: modules,
               selectedRoute: route,
+              collapsed: collapsed,
+              large: size == AppSize.large,
+              companyName: companyName,
+              onCompanyPressed: onCompanyPressed,
+              onToggle: onToggleSidebar,
               onNavigate: onNavigate,
             ),
-          if (size == AppSize.medium && modules.length >= 2)
+          if (size == AppSize.medium && modules.isNotEmpty)
             SafeArea(
               child: AppNavigationRail(
                 modules: modules,
-                index: selected,
+                index: index < 0 ? null : selected,
+                companyName: companyName,
+                onCompanyPressed: onCompanyPressed,
                 onSelected: (i) => onNavigate(modules[i].route),
               ),
             ),

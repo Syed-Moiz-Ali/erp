@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/app_colors.dart';
+import '../status/app_status_badge.dart';
 
 class AppCard extends StatelessWidget {
   const AppCard({
@@ -25,29 +26,41 @@ class AppMetricCard extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
-    required this.detail,
+    this.detail = '',
     this.icon = Icons.insights_outlined,
+    this.status = AppStatus.neutral,
   });
   final String label, value, detail;
   final IconData icon;
+  final AppStatus status;
   @override
-  Widget build(BuildContext context) => AppCard(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+  Widget build(BuildContext context) => Semantics(
+    label: [label, value, if (detail.isNotEmpty) detail].join(', '),
+    child: ExcludeSemantics(
+      child: AppCard(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Text(label, style: AppTypography.of(context).caption),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(label, style: AppTypography.of(context).label),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Icon(icon, size: 20, color: status.color),
+              ],
             ),
-            Icon(icon, size: 20, color: AppColors.textSecondary),
+            const SizedBox(height: AppSpacing.lg),
+            Text(value, style: AppTypography.of(context).pageTitle),
+            if (detail.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Text(detail, style: AppTypography.of(context).caption),
+            ],
           ],
         ),
-        const SizedBox(height: 12),
-        Text(value, style: AppTypography.of(context).pageTitle),
-        const SizedBox(height: 4),
-        Text(detail, style: AppTypography.of(context).caption),
-      ],
+      ),
     ),
   );
 }

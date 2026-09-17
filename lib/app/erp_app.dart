@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'module_registry/module_registry.dart';
+import 'shell/app_shell_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +20,8 @@ class ErpApp extends StatefulWidget {
     required this.authBloc,
     this.demoAccounts = const [],
     this.routerOverride,
+    this.moduleRegistry,
+    this.shellCubit,
   });
   final LocaleCubit localeCubit;
   final AuthBloc authBloc;
@@ -24,11 +29,27 @@ class ErpApp extends StatefulWidget {
 
   /// Injection for internal Phase 0 visual QA; production always uses auth guards.
   final GoRouter? routerOverride;
+  final ModuleRegistry? moduleRegistry;
+  final AppShellCubit? shellCubit;
   @override
   State<ErpApp> createState() => _ErpAppState();
 }
 
-class _ErpAppState extends State<ErpApp> {
+class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      widget.authBloc.add(const AuthSessionCheckRequested());
+    }
+  }
+
+  late final AppShellCubit shellCubit = widget.shellCubit ?? AppShellCubit();
   late final AuthRouterRefresh refresh = AuthRouterRefresh(widget.authBloc);
   late final GoRouter router =
       widget.routerOverride ??
@@ -38,11 +59,14 @@ class _ErpAppState extends State<ErpApp> {
         refresh: refresh,
         demoAccounts: widget.demoAccounts,
         enablePreview: widget.demoAccounts.isNotEmpty,
+        registry: widget.moduleRegistry,
       );
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     router.dispose();
     refresh.dispose();
+    if (widget.shellCubit == null) unawaited(shellCubit.close());
     super.dispose();
   }
 
@@ -51,6 +75,7 @@ class _ErpAppState extends State<ErpApp> {
     providers: [
       BlocProvider.value(value: widget.localeCubit),
       BlocProvider.value(value: widget.authBloc),
+      BlocProvider.value(value: shellCubit),
     ],
     child: BlocBuilder<LocaleCubit, LocaleState>(
       buildWhen: (previous, current) => previous.language != current.language,

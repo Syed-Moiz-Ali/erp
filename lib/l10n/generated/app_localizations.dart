@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('ar'),
+    Locale('ar')
   ];
 
   /// Common/Phase 0 UI: appName.
@@ -1795,10 +1792,1053 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View attendance reports'**
   String get permissionAttendanceReportView;
+
+  /// No description provided for @shellDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get shellDashboard;
+
+  /// No description provided for @shellEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get shellEmployees;
+
+  /// No description provided for @shellAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get shellAttendance;
+
+  /// No description provided for @shellReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get shellReports;
+
+  /// No description provided for @shellSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get shellSettings;
+
+  /// No description provided for @shellProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get shellProfile;
+
+  /// No description provided for @shellMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get shellMore;
+
+  /// No description provided for @shellGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspace'**
+  String get shellGeneral;
+
+  /// No description provided for @shellPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get shellPeople;
+
+  /// No description provided for @shellWorkforce.
+  ///
+  /// In en, this message translates to:
+  /// **'Workforce'**
+  String get shellWorkforce;
+
+  /// No description provided for @shellInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get shellInsights;
+
+  /// No description provided for @shellAdministration.
+  ///
+  /// In en, this message translates to:
+  /// **'Administration'**
+  String get shellAdministration;
+
+  /// No description provided for @shellAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get shellAccount;
+
+  /// No description provided for @shellServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get shellServices;
+
+  /// No description provided for @shellFinance.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get shellFinance;
+
+  /// No description provided for @shellDashboardDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workspace overview will be introduced in a later phase.'**
+  String get shellDashboardDescription;
+
+  /// No description provided for @shellEmployeesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee management will be implemented in a later phase.'**
+  String get shellEmployeesDescription;
+
+  /// No description provided for @shellAttendanceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance workflows will be implemented in a later phase.'**
+  String get shellAttendanceDescription;
+
+  /// No description provided for @shellReportsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reporting will be implemented in a later phase.'**
+  String get shellReportsDescription;
+
+  /// No description provided for @shellSettingsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Company settings will be implemented in a later phase.'**
+  String get shellSettingsDescription;
+
+  /// No description provided for @shellProfileDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile editing will be introduced in a later phase.'**
+  String get shellProfileDescription;
+
+  /// No description provided for @shellPlaceholderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for the next phase'**
+  String get shellPlaceholderTitle;
+
+  /// No description provided for @shellPlaceholderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This area is reserved for a future ERP module. No business data is available yet.'**
+  String get shellPlaceholderMessage;
+
+  /// No description provided for @shellMoreDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the other areas available to your account.'**
+  String get shellMoreDescription;
+
+  /// No description provided for @shellSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Global search'**
+  String get shellSearchTitle;
+
+  /// No description provided for @shellSearchMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Global search will become available as ERP modules are added.'**
+  String get shellSearchMessage;
+
+  /// No description provided for @shellNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get shellNotifications;
+
+  /// No description provided for @shellNoNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get shellNoNotifications;
+
+  /// No description provided for @shellNotificationsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no notifications to display.'**
+  String get shellNotificationsMessage;
+
+  /// No description provided for @shellAccessRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Access restricted'**
+  String get shellAccessRestricted;
+
+  /// No description provided for @shellAccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to access this area.'**
+  String get shellAccessMessage;
+
+  /// No description provided for @shellModuleUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Module unavailable'**
+  String get shellModuleUnavailable;
+
+  /// No description provided for @shellModuleUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This module is not enabled for your organization.'**
+  String get shellModuleUnavailableMessage;
+
+  /// No description provided for @shellNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Page not found'**
+  String get shellNotFound;
+
+  /// No description provided for @shellNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The page you requested could not be found.'**
+  String get shellNotFoundMessage;
+
+  /// No description provided for @shellReturnToWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to workspace'**
+  String get shellReturnToWorkspace;
+
+  /// No description provided for @shellGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get shellGoBack;
+
+  /// No description provided for @shellCollapseSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse sidebar'**
+  String get shellCollapseSidebar;
+
+  /// No description provided for @shellExpandSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand sidebar'**
+  String get shellExpandSidebar;
+
+  /// No description provided for @shellCompanyInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Company information'**
+  String get shellCompanyInformation;
+
+  /// No description provided for @shellTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get shellTimezone;
+
+  /// No description provided for @shellCompanyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Company code'**
+  String get shellCompanyCode;
+
+  /// No description provided for @shellAccountMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Open account menu'**
+  String get shellAccountMenu;
+
+  /// No description provided for @shellBreadcrumbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Breadcrumb navigation'**
+  String get shellBreadcrumbs;
+
+  /// No description provided for @shellNoDestinations.
+  ///
+  /// In en, this message translates to:
+  /// **'No available destinations'**
+  String get shellNoDestinations;
+
+  /// No description provided for @shellNoDestinationsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No workspace areas are available for this account. Contact your administrator.'**
+  String get shellNoDestinationsMessage;
+
+  /// No description provided for @dashboardMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning, {name}'**
+  String dashboardMorning(String name);
+
+  /// No description provided for @dashboardAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon, {name}'**
+  String dashboardAfternoon(String name);
+
+  /// No description provided for @dashboardEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening, {name}'**
+  String dashboardEvening(String name);
+
+  /// No description provided for @dashboardDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo preview · {date}'**
+  String dashboardDemo(String date);
+
+  /// No description provided for @dashboardSelfContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workforce at a glance'**
+  String get dashboardSelfContext;
+
+  /// No description provided for @dashboardTeamContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Your team at a glance'**
+  String get dashboardTeamContext;
+
+  /// No description provided for @dashboardCompanyContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Your company workforce at a glance'**
+  String get dashboardCompanyContext;
+
+  /// No description provided for @dashboardNoScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workspace'**
+  String get dashboardNoScope;
+
+  /// No description provided for @dashboardToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dashboardToday;
+
+  /// No description provided for @dashboardMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get dashboardMonth;
+
+  /// No description provided for @dashboardEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Total employees'**
+  String get dashboardEmployees;
+
+  /// No description provided for @dashboardTeamSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Team size'**
+  String get dashboardTeamSize;
+
+  /// No description provided for @dashboardPresent.
+  ///
+  /// In en, this message translates to:
+  /// **'Present'**
+  String get dashboardPresent;
+
+  /// No description provided for @dashboardLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get dashboardLate;
+
+  /// No description provided for @dashboardAbsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get dashboardAbsent;
+
+  /// No description provided for @dashboardLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave'**
+  String get dashboardLeave;
+
+  /// No description provided for @dashboardWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently working'**
+  String get dashboardWorking;
+
+  /// No description provided for @dashboardBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'On break'**
+  String get dashboardBreak;
+
+  /// No description provided for @dashboardCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending corrections'**
+  String get dashboardCorrections;
+
+  /// No description provided for @dashboardHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Work hours'**
+  String get dashboardHours;
+
+  /// No description provided for @dashboardRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance rate'**
+  String get dashboardRate;
+
+  /// No description provided for @dashboardLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'Work locations'**
+  String get dashboardLocations;
+
+  /// No description provided for @dashboardUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Active users'**
+  String get dashboardUsers;
+
+  /// No description provided for @dashboardShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get dashboardShift;
+
+  /// No description provided for @dashboardLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work location'**
+  String get dashboardLocation;
+
+  /// No description provided for @dashboardOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Hyderabad office · demo'**
+  String get dashboardOffice;
+
+  /// No description provided for @dashboardNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started · preview'**
+  String get dashboardNotStarted;
+
+  /// No description provided for @dashboardAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance status'**
+  String get dashboardAttendance;
+
+  /// No description provided for @dashboardAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get dashboardAttention;
+
+  /// No description provided for @dashboardActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get dashboardActivity;
+
+  /// No description provided for @dashboardQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick access'**
+  String get dashboardQuickActions;
+
+  /// No description provided for @dashboardStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance snapshot'**
+  String get dashboardStatus;
+
+  /// No description provided for @dashboardOnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'On time'**
+  String get dashboardOnTime;
+
+  /// No description provided for @dashboardPresentDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes late arrivals'**
+  String get dashboardPresentDetail;
+
+  /// No description provided for @dashboardLateAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} late arrivals to review'**
+  String dashboardLateAlert(String count);
+
+  /// No description provided for @dashboardCorrectionsAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} corrections awaiting review'**
+  String dashboardCorrectionsAlert(String count);
+
+  /// No description provided for @dashboardCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} checked in'**
+  String dashboardCheckedIn(String name);
+
+  /// No description provided for @dashboardBreakStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} started a break'**
+  String dashboardBreakStarted(String name);
+
+  /// No description provided for @dashboardCorrectionSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} submitted a correction'**
+  String dashboardCorrectionSubmitted(String name);
+
+  /// No description provided for @dashboardActivityDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo attendance activity'**
+  String get dashboardActivityDetail;
+
+  /// No description provided for @dashboardNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent activity'**
+  String get dashboardNoActivity;
+
+  /// No description provided for @dashboardNoAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention'**
+  String get dashboardNoAttention;
+
+  /// No description provided for @dashboardEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No workforce data yet'**
+  String get dashboardEmptyTitle;
+
+  /// No description provided for @dashboardEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Workforce insights appear here when data and access are available.'**
+  String get dashboardEmptyMessage;
+
+  /// No description provided for @dashboardError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t load your dashboard. Please try again.'**
+  String get dashboardError;
+
+  /// No description provided for @dashboardRefreshError.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh failed. Your previous snapshot is still available.'**
+  String get dashboardRefreshError;
+
+  /// No description provided for @dashboardRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get dashboardRefresh;
+
+  /// No description provided for @dashboardRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing dashboard'**
+  String get dashboardRefreshing;
+
+  /// No description provided for @dashboardTimeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String dashboardTimeRange(String start, String end);
+
+  /// No description provided for @durationHoursOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h'**
+  String durationHoursOnly(String hours);
+
+  /// No description provided for @empAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add employee'**
+  String get empAdd;
+
+  /// No description provided for @empEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit employee'**
+  String get empEdit;
+
+  /// No description provided for @empDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee details'**
+  String get empDetails;
+
+  /// No description provided for @empPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get empPersonal;
+
+  /// No description provided for @empEmployment.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment information'**
+  String get empEmployment;
+
+  /// No description provided for @empAttendanceConfig.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance configuration'**
+  String get empAttendanceConfig;
+
+  /// No description provided for @empAccountAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account access'**
+  String get empAccountAccess;
+
+  /// No description provided for @empCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee code'**
+  String get empCode;
+
+  /// No description provided for @empFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'First name *'**
+  String get empFirst;
+
+  /// No description provided for @empMiddle.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle name'**
+  String get empMiddle;
+
+  /// No description provided for @empLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name (optional)'**
+  String get empLast;
+
+  /// No description provided for @empDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get empDepartment;
+
+  /// No description provided for @empDesignation.
+  ///
+  /// In en, this message translates to:
+  /// **'Designation'**
+  String get empDesignation;
+
+  /// No description provided for @empManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get empManager;
+
+  /// No description provided for @empJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joining date'**
+  String get empJoined;
+
+  /// No description provided for @empType.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment type'**
+  String get empType;
+
+  /// No description provided for @empPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance policy'**
+  String get empPolicy;
+
+  /// No description provided for @empLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable app login'**
+  String get empLogin;
+
+  /// No description provided for @empGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically generated on save'**
+  String get empGenerated;
+
+  /// No description provided for @empUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get empUnassigned;
+
+  /// No description provided for @empLoginNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Local account configuration. New credentials and invitations are not issued in this phase.'**
+  String get empLoginNotice;
+
+  /// No description provided for @empCredentialPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Credential setup pending'**
+  String get empCredentialPending;
+
+  /// No description provided for @empNoLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked account'**
+  String get empNoLogin;
+
+  /// No description provided for @empActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get empActive;
+
+  /// No description provided for @empInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get empInactive;
+
+  /// No description provided for @empFullTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Full time'**
+  String get empFullTime;
+
+  /// No description provided for @empPartTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Part time'**
+  String get empPartTime;
+
+  /// No description provided for @empContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract'**
+  String get empContract;
+
+  /// No description provided for @empIntern.
+  ///
+  /// In en, this message translates to:
+  /// **'Intern'**
+  String get empIntern;
+
+  /// No description provided for @empTemporary.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary'**
+  String get empTemporary;
+
+  /// No description provided for @empFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get empFilters;
+
+  /// No description provided for @empClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get empClear;
+
+  /// No description provided for @empApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get empApply;
+
+  /// No description provided for @empReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get empReset;
+
+  /// No description provided for @empAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get empAll;
+
+  /// No description provided for @empSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get empSort;
+
+  /// No description provided for @empNameAsc.
+  ///
+  /// In en, this message translates to:
+  /// **'Name A–Z'**
+  String get empNameAsc;
+
+  /// No description provided for @empNameDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Name Z–A'**
+  String get empNameDesc;
+
+  /// No description provided for @empNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest joined'**
+  String get empNewest;
+
+  /// No description provided for @empOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest joined'**
+  String get empOldest;
+
+  /// No description provided for @empEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees yet'**
+  String get empEmpty;
+
+  /// No description provided for @empEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first employee to start managing your workforce.'**
+  String get empEmptyMessage;
+
+  /// No description provided for @empNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees found'**
+  String get empNoResults;
+
+  /// No description provided for @empNoResultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try changing your search or filters.'**
+  String get empNoResultsMessage;
+
+  /// No description provided for @empNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee not found'**
+  String get empNotFound;
+
+  /// No description provided for @empNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This employee is unavailable.'**
+  String get empNotFoundMessage;
+
+  /// No description provided for @empView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get empView;
+
+  /// No description provided for @empActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate employee'**
+  String get empActivate;
+
+  /// No description provided for @empDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate employee'**
+  String get empDeactivate;
+
+  /// No description provided for @empStatusConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Change employee status?'**
+  String get empStatusConfirm;
+
+  /// No description provided for @empStatusMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This changes active workforce status and linked account access. It can be reversed.'**
+  String get empStatusMessage;
+
+  /// No description provided for @empCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee created successfully'**
+  String get empCreated;
+
+  /// No description provided for @empUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee updated successfully'**
+  String get empUpdated;
+
+  /// No description provided for @empStatusSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee status updated'**
+  String get empStatusSaved;
+
+  /// No description provided for @empSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save employee'**
+  String get empSave;
+
+  /// No description provided for @empDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get empDiscard;
+
+  /// No description provided for @empDiscardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Discard them and leave this form?'**
+  String get empDiscardMessage;
+
+  /// No description provided for @empDiscardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get empDiscardAction;
+
+  /// No description provided for @empRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the required fields and choose a valid joining date.'**
+  String get empRequired;
+
+  /// No description provided for @empInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get empInvalidEmail;
+
+  /// No description provided for @empInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a phone number with 7–15 digits.'**
+  String get empInvalidPhone;
+
+  /// No description provided for @empDuplicateEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already assigned to another employee.'**
+  String get empDuplicateEmail;
+
+  /// No description provided for @empDuplicatePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone is already assigned to another employee.'**
+  String get empDuplicatePhone;
+
+  /// No description provided for @empInvalidManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an active manager without a circular reporting relationship.'**
+  String get empInvalidManager;
+
+  /// No description provided for @empInvalidReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an active department and designation.'**
+  String get empInvalidReference;
+
+  /// No description provided for @empAccountRoleError.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot provision this account role or its permissions.'**
+  String get empAccountRoleError;
+
+  /// No description provided for @empStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t complete this local operation. Please try again.'**
+  String get empStorageError;
+
+  /// No description provided for @empPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get empPending;
+
+  /// No description provided for @empBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to employees'**
+  String get empBack;
+
+  /// No description provided for @empSelfProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View employee profile'**
+  String get empSelfProfile;
+
+  /// No description provided for @empRelated.
+  ///
+  /// In en, this message translates to:
+  /// **'Related records'**
+  String get empRelated;
+
+  /// No description provided for @empPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance preview'**
+  String get empPreview;
+
+  /// No description provided for @empSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an option'**
+  String get empSelect;
+
+  /// No description provided for @empActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee actions'**
+  String get empActions;
+
+  /// No description provided for @empCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} employees'**
+  String empCount(String filtered, String total);
+
+  /// No description provided for @empFilterCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters ({count})'**
+  String empFilterCount(String count);
+
+  /// No description provided for @selectOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an option'**
+  String get selectOption;
+
+  /// No description provided for @noSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get noSelection;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1807,26 +2847,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'ar': return AppLocalizationsAr();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

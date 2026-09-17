@@ -4,6 +4,7 @@ import '../../../../core/auth/auth_identifier.dart';
 
 abstract interface class AuthRepository {
   Future<Result<AuthContext?>> restoreSession();
+  Future<Result<AuthContext?>> checkSession();
   Future<Result<AuthContext>> login(AuthIdentifier identifier, String password);
   Future<Result<void>> logout();
   Future<Result<void>> requestPasswordReset(AuthIdentifier identifier);
