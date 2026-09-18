@@ -11,9 +11,9 @@ import '../attendance_history_presentation.dart';
 import '../bloc/attendance_bloc.dart';
 import '../bloc/attendance_history_bloc.dart';
 
-/// Employee workday workspace: Today (passed in), then real attendance
-/// history surfaces (This month, This week, Recent attendance) sharing one
-/// [AttendanceHistoryBloc]. Presentation only — no direct data access.
+/// Employee workday workspace: Today (passed in) followed by full-width
+/// attendance surfaces (This month, This week, Recent attendance) sharing a
+/// single [AttendanceHistoryBloc]. Presentation only — no direct data access.
 class EmployeeWorkdayDashboard extends StatelessWidget {
   const EmployeeWorkdayDashboard({
     super.key,
@@ -48,27 +48,11 @@ class EmployeeWorkdayDashboard extends StatelessWidget {
               : null;
           final recent = data != null
               ? _RecentCard(
-                  items: data.items,
+                  items: data.items.where((item) => item.isCompleted).toList(),
                   maxRows: compact ? 3 : 5,
                   compact: compact,
                 )
               : null;
-          if (!compact && month != null) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                AppDashboardTwoColumn(primary: today, secondary: month),
-                if (week != null) ...[
-                  const SizedBox(height: AppSpacing.xxl),
-                  week,
-                ],
-                if (recent != null) ...[
-                  const SizedBox(height: AppSpacing.xxl),
-                  recent,
-                ],
-              ],
-            );
-          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -101,37 +85,31 @@ class _MonthCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n,
         n = AppNumberFormatter(Localizations.localeOf(context));
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppSectionHeader(title: l.dashboardMonth),
-        const SizedBox(height: AppSpacing.md),
-        AppCard(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.md,
-          ),
-          child: AppResponsiveGrid(
-            minItemWidth: 132,
-            maxColumns: 4,
-            children: [
-              AppMetricTile(
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppSectionHeader(title: l.dashboardMonth, upperCase: true),
+          const SizedBox(height: AppSpacing.lg),
+          AppInlineStats(
+            stats: [
+              (
                 label: l.attendanceWorkedTime,
                 value: AppTimeFormatter(
                   Localizations.localeOf(context),
                 ).duration(summary.work, l),
               ),
-              AppMetricTile(
+              (
                 label: l.historyPresent,
                 value: n.integer(
                   summary.counts[AttendanceHistoryStatus.present]!,
                 ),
               ),
-              AppMetricTile(
+              (
                 label: l.historyLate,
                 value: n.integer(summary.counts[AttendanceHistoryStatus.late]!),
               ),
-              AppMetricTile(
+              (
                 label: l.historyNeedsAttention,
                 value: n.integer(
                   summary.counts[AttendanceHistoryStatus.incomplete]!,
@@ -139,8 +117,8 @@ class _MonthCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -154,8 +132,7 @@ class _WeekCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final locale = Localizations.localeOf(context);
-    final formatter = AppDateFormatter(locale);
+    final formatter = AppDateFormatter(Localizations.localeOf(context));
     final today = DateTime.utc(asOf.year, asOf.month, asOf.day);
     final monday = today.subtract(Duration(days: today.weekday - 1));
     final byDate = {
@@ -167,52 +144,42 @@ class _WeekCard extends StatelessWidget {
         ): item,
     };
     final days = [for (var i = 0; i < 7; i++) monday.add(Duration(days: i))];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppSectionHeader(title: l.dashboardThisWeek),
-        const SizedBox(height: AppSpacing.md),
-        AppCard(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.md,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < days.length; i++) ...[
-                if (i > 0)
-                  Container(
-                    width: 1,
-                    height: 62,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppSectionHeader(title: l.dashboardThisWeek, upperCase: true),
+          const SizedBox(height: AppSpacing.lg),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < days.length; i++) ...[
+                  if (i > 0) const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: _DayCell(
+                      day: days[i],
+                      item: byDate[days[i]],
+                      isToday: days[i] == today,
+                      isWorkingDay: workingDays?.any(
+                        (d) => d.isoWeekday == days[i].weekday,
+                      ),
+                      weekdayShort: formatter.weekdayShort(days[i]),
+                      dayNumber: formatter.dayOfMonth(days[i]),
                     ),
-                    color: AppColors.borderSubtle,
                   ),
-                Expanded(
-                  child: _DayColumn(
-                    day: days[i],
-                    item: byDate[days[i]],
-                    isToday: days[i] == today,
-                    isWorkingDay: workingDays?.any(
-                      (d) => d.isoWeekday == days[i].weekday,
-                    ),
-                    weekdayShort: formatter.weekdayShort(days[i]),
-                    dayNumber: formatter.dayOfMonth(days[i]),
-                  ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class _DayColumn extends StatelessWidget {
-  const _DayColumn({
+class _DayCell extends StatelessWidget {
+  const _DayCell({
     required this.day,
     required this.item,
     required this.isToday,
@@ -235,15 +202,18 @@ class _DayColumn extends StatelessWidget {
     final record = item;
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: AppSpacing.sm,
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.lg,
       ),
-      decoration: isToday
-          ? BoxDecoration(
-              color: AppColors.brandSubtle,
-              borderRadius: BorderRadius.circular(AppRadius.radiusMd),
-            )
-          : null,
+      decoration: BoxDecoration(
+        color: isToday ? AppColors.brandSubtle : AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.radiusMd + 2),
+        border: Border.all(
+          color: isToday
+              ? AppColors.brandPrimary.withValues(alpha: 0.35)
+              : AppColors.borderSubtle,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -254,17 +224,20 @@ class _DayColumn extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: theme.caption.copyWith(
               fontWeight: FontWeight.w700,
-              fontSize: 10.5,
-              letterSpacing: 0.4,
+              fontSize: 11,
+              letterSpacing: 0.3,
               color: AppColors.textMuted,
             ),
           ),
           const SizedBox(height: AppSpacing.xxs),
           Text(
             dayNumber,
-            style: theme.caption.copyWith(color: AppColors.textSecondary),
+            style: theme.caption.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.md),
           if (record == null && isWorkingDay == false)
             Text(
               context.l10n.dashboardWeekOff,
@@ -306,7 +279,7 @@ class _DayColumn extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               record.isCompleted
                   ? AppTimeFormatter(
@@ -314,7 +287,7 @@ class _DayColumn extends StatelessWidget {
                     ).duration(record.totalWorkDuration, context.l10n)
                   : context.l10n.historyNotRecorded,
               maxLines: 1,
-              style: theme.caption.copyWith(
+              style: theme.bodySmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
                 fontFeatures: const [FontFeature.tabularFigures()],
@@ -341,58 +314,47 @@ class _RecentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final rows = items.take(maxRows).toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppSectionHeader(
-          title: l.dashboardRecentAttendance,
-          action: AppTextButton(
-            label: l.dashboardViewFullHistory,
-            onPressed: () => context.go(AppRoutes.attendanceHistory),
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppSectionHeader(
+            title: l.dashboardRecentAttendance,
+            upperCase: true,
+            action: AppTextButton(
+              label: l.dashboardViewFullHistory,
+              onPressed: () => context.go(AppRoutes.attendanceHistory),
+            ),
           ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AppCard(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-          child: rows.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l.dashboardNoRecentAttendance,
-                        style: AppTypography.of(context).bodySmall.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        l.dashboardNoRecentAttendanceMessage,
-                        style: AppTypography.of(context).caption,
-                      ),
-                    ],
+          const SizedBox(height: AppSpacing.sm),
+          if (rows.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.dashboardNoRecentAttendance,
+                    style: AppTypography.of(context).bodySmall.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < rows.length; i++) ...[
-                      if (i > 0)
-                        const Padding(
-                          padding: EdgeInsetsDirectional.only(
-                            start: AppSpacing.lg,
-                            end: AppSpacing.lg,
-                          ),
-                          child: Divider(height: 1),
-                        ),
-                      _RecentRow(item: rows[i], compact: compact),
-                    ],
-                  ],
-                ),
-        ),
-      ],
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    l.dashboardNoRecentAttendanceMessage,
+                    style: AppTypography.of(context).caption,
+                  ),
+                ],
+              ),
+            )
+          else
+            for (var i = 0; i < rows.length; i++) ...[
+              if (i > 0) const Divider(height: 1),
+              _RecentRow(item: rows[i], compact: compact),
+            ],
+        ],
+      ),
     );
   }
 }
@@ -430,10 +392,7 @@ class _RecentRow extends StatelessWidget {
     return InkWell(
       onTap: () => context.go(AppRoutes.attendanceDayDetails(item.id)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         child: compact
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,7 +444,7 @@ class _RecentRow extends StatelessWidget {
             : Row(
                 children: [
                   SizedBox(
-                    width: 92,
+                    width: 148,
                     child: Text(
                       formatter.date(item.attendanceDate),
                       maxLines: 1,
@@ -493,19 +452,27 @@ class _RecentRow extends StatelessWidget {
                       style: dateStyle,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  AttendanceHistoryPresentation.badge(context, item.status),
-                  const Spacer(),
-                  Text(
-                    times,
-                    style: theme.caption.copyWith(
-                      color: AppColors.textSecondary,
-                      fontFeatures: const [FontFeature.tabularFigures()],
+                  SizedBox(
+                    width: 120,
+                    child: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: AttendanceHistoryPresentation.badge(
+                        context,
+                        item.status,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.lg),
+                  Expanded(
+                    child: Text(
+                      times,
+                      style: theme.caption.copyWith(
+                        color: AppColors.textSecondary,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ),
                   SizedBox(
-                    width: 76,
+                    width: 96,
                     child: Text(
                       worked,
                       textAlign: TextAlign.end,

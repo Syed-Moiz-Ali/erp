@@ -16,6 +16,7 @@ Widget configurationBadge(BuildContext c, ConfigurationStatus status) =>
           ? AppStatus.success
           : AppStatus.neutral,
     );
+
 Future<bool> confirmConfigurationStatus(
   BuildContext c,
   bool active,
@@ -31,7 +32,7 @@ Future<bool> confirmConfigurationStatus(
   confirmLabel: (l) => active ? l.cfgActivate : l.cfgDeactivate,
 );
 
-/// Pure presentation composition; each feature supplies typed content and actions.
+/// Modern 2026 Enterprise Configuration List Layout with Curved Cards & Hairline Dividers
 class ConfigurationListLayout<T extends ConfigurationRecord>
     extends StatelessWidget {
   const ConfigurationListLayout({
@@ -50,11 +51,12 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
     required this.summary,
     required this.onActive,
     this.summaryLabel,
-    this.summaryWidth = 180,
+    this.summaryWidth = 200,
     this.extraColumns = const [],
     this.extraCells,
     this.mobileDetails,
   });
+
   final String title, subtitle;
   final String? summaryLabel;
   final double summaryWidth;
@@ -70,9 +72,11 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
   final String Function(String) detailRoute, editRoute;
   final String Function(BuildContext, T) summary;
   final void Function(String, bool) onActive;
+
   @override
   Widget build(BuildContext c) {
     final l = c.l10n, data = state.data;
+
     Widget actions(ConfigurationItem<T> item) => AppActionMenu(
       tooltip: l.cfgActions,
       enabled: !state.busy,
@@ -105,45 +109,86 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
           ),
       ],
     );
+
     return AppPage(
       header: AppPageHeader(
         title: title,
         subtitle: subtitle,
         actions: [
           if (manage)
-            AppPrimaryButton(
-              label: l.cfgNew,
-              icon: Icons.add,
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add_rounded, size: 16),
+              label: Text(l.cfgNew),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4E1229), // Brand Deep Plum
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
               onPressed: onCreate,
             ),
         ],
       ),
       filters: Column(
         children: [
-          AppTextField(
-            label: l.search,
-            hint: l.searchRecords,
-            initialValue: state.query,
-            onChanged: onSearch,
-            prefixIcon: Icons.search,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.sm,
-            children: [
-              for (final status in <ConfigurationStatus?>[
-                null,
-                ...ConfigurationStatus.values,
-              ])
-                AppFilterChip(
-                  label: status == null
-                      ? l.cfgAll
-                      : configurationStatusLabel(status, l),
-                  selected: state.status == status,
-                  onSelected: (_) => onStatus(status),
+          AppCard(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            // radius: 14.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppTextField(
+                  label: l.search,
+                  hint: l.searchRecords,
+                  initialValue: state.query,
+                  onChanged: onSearch,
+                  prefixIcon: Icons.search_rounded,
                 ),
-            ],
+                const SizedBox(height: AppSpacing.md),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
+                  children: [
+                    for (final status in <ConfigurationStatus?>[
+                      null,
+                      ...ConfigurationStatus.values,
+                    ])
+                      ChoiceChip(
+                        label: Text(
+                          status == null
+                              ? l.cfgAll
+                              : configurationStatusLabel(status, l),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: state.status == status
+                                ? const Color(0xFF4E1229)
+                                : const Color(0xFF4B5563),
+                          ),
+                        ),
+                        selected: state.status == status,
+                        selectedColor: const Color(0xFFFAF2F5),
+                        backgroundColor: const Color(0xFFF3F4F6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          side: BorderSide(
+                            color: state.status == status
+                                ? const Color(0xFFECD7DF)
+                                : const Color(0xFFE5E7EB),
+                          ),
+                        ),
+                        onSelected: (_) => onStatus(status),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -167,6 +212,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
           else if (data != null)
             LayoutBuilder(
               builder: (c, constraints) {
+                // Mobile compact cards
                 if (AppBreakpoints.classify(constraints.maxWidth) ==
                     AppSize.compact) {
                   return Column(
@@ -175,6 +221,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                         Padding(
                           padding: const EdgeInsets.only(bottom: AppSpacing.md),
                           child: AppCard(
+                            // radius: 14.0,
                             padding: const EdgeInsets.all(AppSpacing.lg),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,32 +229,68 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: AppTextButton(
-                                        label: item.record.name,
-                                        onPressed: () =>
-                                            c.go(detailRoute(item.record.id)),
+                                      child: Text(
+                                        item.record.name,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF111827),
+                                        ),
                                       ),
                                     ),
                                     actions(item),
                                   ],
                                 ),
-                                Text(summary(c, item.record)),
-                                if (mobileDetails != null)
-                                  Text(mobileDetails!(c, item.record)),
+                                const SizedBox(height: 4),
+                                Text(
+                                  summary(c, item.record),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Color(0xFF4B5563),
+                                  ),
+                                ),
+                                if (mobileDetails != null) ...[
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    mobileDetails!(c, item.record),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                  ),
+                                ],
                                 const SizedBox(height: AppSpacing.md),
-                                Wrap(
-                                  spacing: AppSpacing.md,
-                                  runSpacing: AppSpacing.sm,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     configurationBadge(c, item.record.status),
-                                    Text(
-                                      [
-                                        l.cfgAssigned,
-                                        configurationNumber(
-                                          c,
-                                          item.assignedEmployees,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFF3F4F6),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        [
+                                          l.cfgAssigned,
+                                          configurationNumber(
+                                            c,
+                                            item.assignedEmployees,
+                                          ),
+                                        ].join(': '),
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF374151),
+                                          fontFeatures: [
+                                            FontFeature.tabularFigures(),
+                                          ],
                                         ),
-                                      ].join(': '),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -218,55 +301,87 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                     ],
                   );
                 }
+
+                // Desktop Elegant Data Table wrapped inside a Curved Card
                 return AppCard(
                   padding: EdgeInsets.zero,
-                  child: AppDataTable(
-                    columns: [
-                      DataColumn(label: Text(l.cfgName)),
-                      DataColumn(label: Text(summaryLabel ?? l.cfgDescription)),
-                      ...extraColumns,
-                      DataColumn(label: Text(l.cfgStatus)),
-                      DataColumn(label: Text(l.cfgAssigned)),
-                      DataColumn(label: Text(l.cfgActions)),
-                    ],
-                    rows: [
-                      for (final item in data.items)
-                        DataRow(
-                          onSelectChanged: (_) =>
-                              c.go(detailRoute(item.record.id)),
-                          cells: [
-                            DataCell(Text(item.record.name)),
-                            DataCell(
-                              SizedBox(
-                                width: summaryWidth,
-                                child: Text(
-                                  summary(c, item.record),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                  // radius: 16.0,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: AppDataTable(
+                      columns: [
+                        DataColumn(label: Text(l.cfgName)),
+                        DataColumn(
+                          label: Text(summaryLabel ?? l.cfgDescription),
+                        ),
+                        ...extraColumns,
+                        DataColumn(label: Text(l.cfgStatus)),
+                        DataColumn(label: Text(l.cfgAssigned)),
+                        DataColumn(label: Text(l.cfgActions)),
+                      ],
+                      rows: [
+                        for (final item in data.items)
+                          DataRow(
+                            onSelectChanged: (_) =>
+                                c.go(detailRoute(item.record.id)),
+                            cells: [
+                              DataCell(
+                                Text(
+                                  item.record.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF111827),
+                                  ),
                                 ),
                               ),
-                            ),
-                            ...?(extraCells?.call(c, item.record)),
-                            DataCell(configurationBadge(c, item.record.status)),
-                            DataCell(
-                              Text(
-                                configurationNumber(c, item.assignedEmployees),
+                              DataCell(
+                                SizedBox(
+                                  width: summaryWidth,
+                                  child: Text(
+                                    summary(c, item.record),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Color(0xFF4B5563),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            DataCell(actions(item)),
-                          ],
-                        ),
-                    ],
+                              ...?(extraCells?.call(c, item.record)),
+                              DataCell(
+                                configurationBadge(c, item.record.status),
+                              ),
+                              DataCell(
+                                Text(
+                                  configurationNumber(
+                                    c,
+                                    item.assignedEmployees,
+                                  ),
+                                  style: const TextStyle(
+                                    fontFeatures: [
+                                      FontFeature.tabularFigures(),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              DataCell(actions(item)),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
           if (data != null)
-            AppTablePagination(
-              page: state.page,
-              pageSize: 10,
-              total: data.filtered,
-              onPageChanged: onPage,
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: AppTablePagination(
+                page: state.page,
+                pageSize: 10,
+                total: data.filtered,
+                onPageChanged: onPage,
+              ),
             ),
         ],
       ),
@@ -385,14 +500,16 @@ class ConfigurationFormLayout extends StatelessWidget {
     required this.onRetry,
     this.failure,
   });
+
   final String title;
   final bool loading, saving, ready;
   final Failure? failure;
   final Widget content;
   final VoidCallback onSave, onCancel, onRetry;
+
   @override
   Widget build(BuildContext c) => AppPage(
-    maxWidth: 820,
+    maxWidth: 880,
     header: AppPageHeader(title: title),
     child: loading
         ? const AppConfigurationSkeleton()
@@ -400,24 +517,72 @@ class ConfigurationFormLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (failure != null)
-                AppErrorState(
-                  message: configurationFailure(failure!, c.l10n),
-                  onRetry: onRetry,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: AppErrorState(
+                    message: configurationFailure(failure!, c.l10n),
+                    onRetry: onRetry,
+                  ),
                 ),
               if (ready) ...[
-                content,
-                const SizedBox(height: AppSpacing.xxl),
-                Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.md,
+                AppCard(
+                  // radius: 18.0,
+                  padding: const EdgeInsets.all(28.0),
+                  child: content,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    AppPrimaryButton(
-                      label: c.l10n.save,
-                      onPressed: saving ? null : onSave,
-                    ),
-                    AppSecondaryButton(
-                      label: c.l10n.cancel,
+                    OutlinedButton(
                       onPressed: saving ? null : onCancel,
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFFD1D5DB)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: Text(
+                        c.l10n.cancel,
+                        style: const TextStyle(color: Color(0xFF374151)),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: saving ? null : onSave,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4E1229), // Brand Plum
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 22,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: saving
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              c.l10n.save,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
                   ],
                 ),

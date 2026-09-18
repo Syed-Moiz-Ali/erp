@@ -1,5 +1,6 @@
 import '../../attendance/presentation/widgets/attendance_dashboard_history.dart';
 import '../../attendance/presentation/widgets/attendance_dashboard_preview.dart';
+import '../../attendance/presentation/widgets/attendance_header_actions.dart';
 import '../../../design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import '../../auth/domain/entities/auth_context.dart';
 import '../../auth/presentation/bloc/auth_bloc.dart';
 import '../domain/dashboard_models.dart';
 import '../domain/dashboard_repository.dart';
+import '../domain/dashboard_scope_resolver.dart';
 import 'bloc/dashboard_bloc.dart';
 import 'dashboard_presentation.dart';
 
@@ -75,6 +77,8 @@ class DashboardView extends StatelessWidget {
               state.status == DashboardStatus.loading ||
               state.status == DashboardStatus.refreshing;
       final compact = AppBreakpoints.of(context) == AppSize.compact;
+      final isSelf =
+          const DashboardScopeResolver().resolve(auth) == DashboardScope.self;
       final actions = NavigationResolver(registry)
           .resolve(auth.company, auth.user.permissions)
           .destinations
@@ -84,19 +88,21 @@ class DashboardView extends StatelessWidget {
                 d.navigationGroup != NavigationGroup.account,
           )
           .toList();
+      final greeting = DashboardPresentation.greeting(
+        l,
+        now,
+        auth.user.displayName.split(' ').first,
+      );
       final header = AppPageHeader(
-        compactActionsInline: true,
-        title: compact
-            ? DashboardPresentation.greeting(
-                l,
-                now,
-                auth.user.displayName.split(' ').first,
-              )
-            : l.shellDashboard,
-        subtitle: compact
+        compactActionsInline: !isSelf,
+        title: isSelf || compact ? greeting : l.shellDashboard,
+        subtitle: isSelf
+            ? '${AppDateFormatter(locale).fullDate(now)} · ${l.dashboardSelfContext}'
+            : compact
             ? AppDateFormatter(locale).fullDate(now)
-            : '${DashboardPresentation.greeting(l, now, auth.user.displayName.split(' ').first)} · ${AppDateFormatter(locale).fullDate(now)}',
+            : '$greeting · ${AppDateFormatter(locale).fullDate(now)}',
         actions: [
+          if (isSelf) const AttendanceHeaderActions(),
           AppIconButton(
             icon: Icons.refresh,
             tooltip: l.dashboardRefresh,
@@ -304,10 +310,8 @@ class DashboardView extends StatelessWidget {
       );
     },
   );
-  Widget _today(BuildContext context) => AppDashboardSection(
-    title: context.l10n.dashboardToday,
-    child: const AttendanceDashboardPreview(),
-  );
+  Widget _today(BuildContext context) =>
+      const AppCard(child: AttendanceDashboardPreview());
 
   List<Widget> _metricCards(
     BuildContext context,

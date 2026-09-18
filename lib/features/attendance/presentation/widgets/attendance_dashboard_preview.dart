@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/localization/app_formatters.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/attendance_engine.dart';
@@ -9,10 +10,10 @@ import '../../domain/attendance_models.dart';
 import '../attendance_presentation.dart';
 import '../bloc/attendance_bloc.dart';
 
-/// Compact "Today" workday summary for the employee dashboard.
+/// Hero "Today" workday card for the employee dashboard.
 ///
-/// Three levels only: status + action, one context line, and 2-4 compact
-/// metrics. Detailed attendance belongs in the Attendance module.
+/// Structure mirrors the approved reference: status + context + action row,
+/// a divider, then four compact metrics (label / value / supporting).
 class AttendanceDashboardPreview extends StatelessWidget {
   const AttendanceDashboardPreview({super.key});
 
@@ -56,7 +57,7 @@ class _TodayCard extends StatelessWidget {
     final attendance = state.context;
     if (attendance == null) {
       if (state.contextStatus == AttendanceContextStatus.loading) {
-        return const AppSkeleton(height: 44);
+        return const AppSkeleton(height: 64);
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,27 +92,24 @@ class _TodayCard extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            if (workState != null) ...[
+              AppStatusBadge(
+                label: AttendancePresentation.state(context, workState),
+                status: AttendancePresentation.status(workState),
+                icon: workState == AttendanceWorkdayState.completed
+                    ? Icons.check_rounded
+                    : null,
+                showDot: workState != AttendanceWorkdayState.completed,
+              ),
+              const SizedBox(width: AppSpacing.md),
+            ],
             Expanded(
-              child: workState == null
-                  ? Text(
-                      contextLine,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.caption.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    )
-                  : Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: AppStatusBadge(
-                        label: AttendancePresentation.state(context, workState),
-                        status: AttendancePresentation.status(workState),
-                        icon: workState == AttendanceWorkdayState.completed
-                            ? Icons.check_rounded
-                            : null,
-                        showDot: workState != AttendanceWorkdayState.completed,
-                      ),
-                    ),
+              child: Text(
+                contextLine,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.bodySmall.copyWith(color: AppColors.textSecondary),
+              ),
             ),
             const SizedBox(width: AppSpacing.md),
             _action(
@@ -121,12 +119,10 @@ class _TodayCard extends StatelessWidget {
           ],
         ),
         if (summary != null && workState != null) ...[
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            contextLine,
-            style: theme.bodySmall.copyWith(color: AppColors.textSecondary),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+            child: Divider(height: 1),
           ),
-          const SizedBox(height: AppSpacing.lg),
           _TodayMetrics(attendance: attendance, summary: summary),
         ],
       ],
@@ -141,78 +137,162 @@ class _TodayMetrics extends StatelessWidget {
 
   String _time(BuildContext context, DateTime? instant) =>
       AttendancePresentation.time(context, attendance, instant);
-  String _duration(BuildContext context, Duration d) =>
-      AttendancePresentation.duration(context, d);
+  String _duration(BuildContext context, Duration d) => AppTimeFormatter(
+    Localizations.localeOf(context),
+  ).duration(d, context.l10n);
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final rows = switch (summary.currentState) {
-      AttendanceWorkdayState.notStarted => [
-        AppMetricTile(
-          label: l.attendanceStartsAt,
-          value: _time(context, attendance.snapshot.scheduledStart),
-        ),
-      ],
+    final snapshot = attendance.snapshot;
+    final grace = snapshot.shift.gracePeriodMinutes;
+    final target = snapshot.shift.expectedWorkMinutes;
+    final punchIn = summary.punchInTime;
+    final late =
+        punchIn != null &&
+        punchIn.isAfter(snapshot.scheduledStart.add(Duration(minutes: grace)));
+    final punchSupporting = punchIn == null
+        ? null
+        : '${late ? l.historyLate : l.attendanceOnTime} · '
+              '${l.attendanceGrace} ${_duration(context, Duration(minutes: grace))}';
+    final targetSupporting =
+        '${l.attendanceTarget}: ${_duration(context, Duration(minutes: target))}';
+    final remaining = snapshot.scheduledEnd.difference(attendance.currentTime);
+    final remainingSupporting = remaining > Duration.zero
+        ? '${l.attendanceShiftRemaining}: ${_duration(context, remaining)}'
+        : null;
+    final scheduledOut = _time(context, snapshot.scheduledEnd);
+
+    final columns = switch (summary.currentState) {
       AttendanceWorkdayState.working => [
-        AppMetricTile(
+        _Metric(
           label: l.attendancePunchIn,
-          value: _time(context, summary.punchInTime),
+          value: _time(context, punchIn),
+          supporting: punchSupporting,
         ),
-        AppMetricTile(
+        _Metric(
           label: l.attendanceWorked,
           value: _duration(context, summary.workDuration),
+          supporting: targetSupporting,
         ),
-        AppMetricTile(
+        _Metric(
           label: l.attendanceBreak,
           value: _duration(context, summary.breakDuration),
+        ),
+        _Metric(
+          label: l.attendancePunchOut,
+          value: scheduledOut,
+          supporting: remainingSupporting,
         ),
       ],
       AttendanceWorkdayState.onBreak => [
-        AppMetricTile(
+        _Metric(
+          label: l.attendancePunchIn,
+          value: _time(context, punchIn),
+          supporting: punchSupporting,
+        ),
+        _Metric(
           label: l.attendanceWorked,
           value: _duration(context, summary.workDuration),
+          supporting: targetSupporting,
         ),
-        AppMetricTile(
+        _Metric(
           label: l.attendanceCurrentBreak,
           value: _duration(context, summary.openBreakDuration),
         ),
-        AppMetricTile(
-          label: l.attendanceBreak,
-          value: _duration(context, summary.breakDuration),
+        _Metric(
+          label: l.attendancePunchOut,
+          value: scheduledOut,
+          supporting: remainingSupporting,
         ),
       ],
       AttendanceWorkdayState.completed => [
-        AppMetricTile(
+        _Metric(
           label: l.attendancePunchIn,
-          value: _time(context, summary.punchInTime),
+          value: _time(context, punchIn),
+          supporting: punchSupporting,
         ),
-        AppMetricTile(
+        _Metric(
+          label: l.attendanceWorked,
+          value: _duration(context, summary.workDuration),
+          supporting: targetSupporting,
+        ),
+        _Metric(
+          label: l.attendanceBreak,
+          value: _duration(context, summary.breakDuration),
+        ),
+        _Metric(
           label: l.attendancePunchOut,
           value: _time(context, summary.punchOutTime),
         ),
-        AppMetricTile(
-          label: l.attendanceWorked,
-          value: _duration(context, summary.workDuration),
-        ),
-        AppMetricTile(
-          label: l.attendanceBreak,
-          value: _duration(context, summary.breakDuration),
+      ],
+      AttendanceWorkdayState.notStarted => [
+        _Metric(
+          label: l.attendanceStartsAt,
+          value: _time(context, snapshot.scheduledStart),
         ),
       ],
     };
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (var i = 0; i < rows.length; i++) ...[
-          if (i > 0)
-            Container(
-              width: 1,
-              height: 34,
-              margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              color: AppColors.borderSubtle,
+        for (var i = 0; i < columns.length; i++) ...[
+          if (i > 0) const SizedBox(width: AppSpacing.lg),
+          Expanded(child: columns[i]),
+        ],
+      ],
+    );
+  }
+}
+
+class _Metric extends StatelessWidget {
+  const _Metric({required this.label, required this.value, this.supporting});
+  final String label, value;
+  final String? supporting;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label.toUpperCase(),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.caption.copyWith(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.6,
+            color: AppColors.textMuted,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.displaySmall.copyWith(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            height: 1.05,
+            letterSpacing: -0.6,
+            color: AppColors.textPrimary,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
+        ),
+        if (supporting != null) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            supporting!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.caption.copyWith(
+              fontSize: 11.5,
+              color: AppColors.textMuted,
             ),
-          Expanded(child: rows[i]),
+          ),
         ],
       ],
     );

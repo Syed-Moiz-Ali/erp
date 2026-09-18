@@ -4640,6 +4640,24 @@ abstract class AppLocalizations {
   /// **'Grace period'**
   String get attendanceGrace;
 
+  /// No description provided for @attendanceOnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'On-time'**
+  String get attendanceOnTime;
+
+  /// No description provided for @attendanceTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get attendanceTarget;
+
+  /// No description provided for @attendanceShiftRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift remaining'**
+  String get attendanceShiftRemaining;
+
   /// No description provided for @attendanceOpenAttendance.
   ///
   /// In en, this message translates to:

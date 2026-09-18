@@ -103,21 +103,35 @@ class AppSectionHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.action,
+    this.upperCase = false,
   });
   final String title;
   final String? subtitle;
   final Widget? action;
 
+  /// Small uppercase section label (used by the dashboard cards).
+  final bool upperCase;
+
   @override
   Widget build(BuildContext context) {
+    final typography = AppTypography.of(context);
     final textColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(title, style: AppTypography.of(context).sectionTitle),
+        Text(
+          upperCase ? title.toUpperCase() : title,
+          style: upperCase
+              ? typography.caption.copyWith(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                )
+              : typography.sectionTitle,
+        ),
         if (subtitle != null) ...[
           const SizedBox(height: AppSpacing.xxs),
-          Text(subtitle!, style: AppTypography.of(context).caption),
+          Text(subtitle!, style: typography.caption),
         ],
       ],
     );

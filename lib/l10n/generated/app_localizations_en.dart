@@ -2440,6 +2440,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceGrace => 'Grace period';
 
   @override
+  String get attendanceOnTime => 'On-time';
+
+  @override
+  String get attendanceTarget => 'Target';
+
+  @override
+  String get attendanceShiftRemaining => 'Shift remaining';
+
+  @override
   String get attendanceOpenAttendance => 'Open attendance';
 
   @override

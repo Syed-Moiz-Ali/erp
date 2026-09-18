@@ -204,6 +204,31 @@ class AppMetricTile extends StatelessWidget {
   }
 }
 
+/// A single-row set of compact stats separated by subtle vertical dividers.
+class AppInlineStats extends StatelessWidget {
+  const AppInlineStats({super.key, required this.stats});
+  final List<({String label, String value})> stats;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      for (var i = 0; i < stats.length; i++) ...[
+        if (i > 0)
+          Container(
+            width: 1,
+            height: 34,
+            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            color: AppColors.borderSubtle,
+          ),
+        Expanded(
+          child: AppMetricTile(label: stats[i].label, value: stats[i].value),
+        ),
+      ],
+    ],
+  );
+}
+
 /// Secondary statistic: deliberately lighter than [AppMetricCard] so the
 /// dashboard has a clear primary → secondary hierarchy.
 class AppSecondaryStat extends StatelessWidget {

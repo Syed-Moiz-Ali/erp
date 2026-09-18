@@ -2397,6 +2397,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendanceGrace => 'فترة السماح';
 
   @override
+  String get attendanceOnTime => 'في الوقت';
+
+  @override
+  String get attendanceTarget => 'المستهدف';
+
+  @override
+  String get attendanceShiftRemaining => 'المتبقي من الوردية';
+
+  @override
   String get attendanceOpenAttendance => 'فتح الحضور';
 
   @override
