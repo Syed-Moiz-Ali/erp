@@ -49,6 +49,17 @@ class DeviceLocationService implements LocationService {
           ),
         ),
       );
+    } on PermissionDeniedException {
+      return const Failed(
+        Failure(
+          code: 'location_permission',
+          kind: FailureKind.locationPermission,
+        ),
+      );
+    } on LocationServiceDisabledException {
+      return const Failed(
+        Failure(code: 'location_disabled', kind: FailureKind.locationDisabled),
+      );
     } on TimeoutException {
       return const Failed(
         Failure(
@@ -71,11 +82,18 @@ class DeviceLocationService implements LocationService {
   @override
   Future<Result<bool>> openSettings({bool locationSettings = false}) async {
     try {
-      return Success(
-        await (locationSettings
-            ? Geolocator.openLocationSettings()
-            : Geolocator.openAppSettings()),
-      );
+      final opened = await (locationSettings
+          ? Geolocator.openLocationSettings()
+          : Geolocator.openAppSettings());
+      return opened
+          ? const Success(true)
+          : const Failed(
+              Failure(
+                code: 'location_unavailable',
+                kind: FailureKind.locationUnavailable,
+                retryable: true,
+              ),
+            );
     } catch (_) {
       return const Failed(
         Failure(

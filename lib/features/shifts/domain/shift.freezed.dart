@@ -238,8 +238,8 @@ return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Shift extends Shift {
   const _Shift({required this.id, required this.companyId, required this.name, this.code, required this.startTime, required this.endTime, required final  Set<WorkingDay> workingDays, this.gracePeriodMinutes = 0, this.breakMode = ShiftBreakMode.manualBreak, this.defaultBreakMinutes, this.minimumWorkMinutes, this.status = ConfigurationStatus.active, required this.createdAt, required this.updatedAt, this.syncStatus = RecordSyncStatus.pending}): _workingDays = workingDays,super._();
   factory _Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);

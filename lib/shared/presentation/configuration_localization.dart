@@ -16,6 +16,7 @@ String configurationStatusLabel(
 String configurationFailure(Failure failure, AppLocalizations l) =>
     switch (failure.code) {
       'required' => l.cfgRequired,
+      'validation' => l.cfgValidation,
       'duplicateName' => l.cfgDuplicateName,
       'invalidTimeRange' => l.cfgInvalidTime,
       'workingDays' => l.cfgWorkingDaysError,

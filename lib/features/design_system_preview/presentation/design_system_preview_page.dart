@@ -45,6 +45,39 @@ class _Preview extends StatelessWidget {
             SizedBox(height: AppSpacing.xxl),
             AppAlert(message: context.l10n.consistencyNotice),
             SizedBox(height: AppSpacing.xxl),
+            AppFormSection(
+              title: context.l10n.cfgConfiguration,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AppNumberField(
+                    label: context.l10n.cfgRadius,
+                    initialValue: 150,
+                    suffix: context.l10n.cfgMeters,
+                    onChanged: (_) => {},
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  AppWeekdaySelector(value: state.days, onChanged: cubit.days),
+                  const SizedBox(height: AppSpacing.xl),
+                  AppLocationPreview(
+                    latitude: 17.385044,
+                    longitude: 78.486671,
+                    radius: 150,
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  AppSettingsTile(
+                    title: context.l10n.cfgShifts,
+                    description: context.l10n.cfgShiftIntro,
+                    icon: Icons.schedule_outlined,
+                    count: AppNumberFormatter(
+                      Localizations.localeOf(context),
+                    ).integer(4),
+                    onPressed: () => {},
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xxl),
             AppResponsiveGrid(
               children: [
                 AppMetricCard(

@@ -33,9 +33,10 @@ class FormNavigationGuard {
     if (!dirty) return true;
     return AppConfirmationDialog.show(
       context,
-      title: (l) => l.empDiscard,
-      message: (l) => l.empDiscardMessage,
-      confirmLabel: (l) => l.empDiscardAction,
+      title: (l) => l.cfgDiscard,
+      message: (l) => l.cfgDiscardMessage,
+      confirmLabel: (l) => l.cfgDiscardAction,
+      cancelLabel: (l) => l.cfgKeepEditing,
     );
   }
 }

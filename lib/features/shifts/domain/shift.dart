@@ -9,6 +9,9 @@ enum ShiftBreakMode { manualBreak, fixedBreak, noBreak }
 @freezed
 abstract class Shift with _$Shift implements ConfigurationRecord {
   const Shift._();
+  // Freezed forwards this annotation to the generated concrete class.
+  // ignore: invalid_annotation_target
+  @JsonSerializable(explicitToJson: true)
   const factory Shift({
     required String id,
     required String companyId,

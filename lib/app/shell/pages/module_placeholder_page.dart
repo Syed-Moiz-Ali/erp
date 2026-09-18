@@ -46,4 +46,3 @@ class ReportsPlaceholderPage extends StatelessWidget {
     icon: Icons.assessment_outlined,
   );
 }
-

@@ -64,7 +64,13 @@ class EmployeeDao {
   Stream<void> changes() => db
       .customSelect(
         'SELECT COUNT(*) AS n FROM workforce_employees',
-        readsFrom: {db.workforceEmployees, db.workforceAccounts},
+        readsFrom: {
+          db.workforceEmployees,
+          db.workforceAccounts,
+          db.shiftRecords,
+          db.workLocationRecords,
+          db.attendancePolicyRecords,
+        },
       )
       .watch()
       .map((_) {});

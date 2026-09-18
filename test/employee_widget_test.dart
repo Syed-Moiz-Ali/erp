@@ -221,12 +221,12 @@ void main() {
     await h.pump(t);
     router.go(AppRoutes.employees);
     await h.pump(t);
-    expect(find.text(l.empDiscard), findsOneWidget);
+    expect(find.text(l.cfgDiscard), findsOneWidget);
     await h.tapVisible(
       t,
       find.descendant(
         of: find.byType(AppDialog),
-        matching: find.widgetWithText(AppTextButton, l.cancel),
+        matching: find.widgetWithText(AppTextButton, l.cfgKeepEditing),
       ),
     );
     expect(find.byType(EmployeeFormPage), findsOneWidget);
@@ -234,7 +234,7 @@ void main() {
     await h.pump(t);
     await h.tapVisible(
       t,
-      find.widgetWithText(AppPrimaryButton, l.empDiscardAction),
+      find.widgetWithText(AppPrimaryButton, l.cfgDiscardAction),
     );
     await settleDb(t);
     expect(find.byType(EmployeeListPage), findsOneWidget);

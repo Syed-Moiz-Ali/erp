@@ -1838,4 +1838,215 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cfgSun => 'الأحد';
+
+  @override
+  String get cfgActions => 'الإجراءات';
+
+  @override
+  String get cfgValidation => 'راجع الحقول الموضّحة قبل الحفظ.';
+
+  @override
+  String get cfgPending => 'بانتظار المزامنة';
+
+  @override
+  String get cfgView => 'عرض';
+
+  @override
+  String get cfgKeepEditing => 'متابعة التعديل';
+
+  @override
+  String get cfgDiscard => 'تجاهل التغييرات؟';
+
+  @override
+  String get cfgDiscardMessage =>
+      'لديك تغييرات غير محفوظة. هل تريد تجاهلها ومغادرة النموذج؟';
+
+  @override
+  String get cfgDiscardAction => 'تجاهل التغييرات';
+
+  @override
+  String get attendanceNotLinkedToEmployee =>
+      'لا يوجد ملف موظف مرتبط بهذا الحساب';
+
+  @override
+  String get attendanceEmployeeInactive => 'حساب الموظف غير نشط';
+
+  @override
+  String get attendanceAccountInactive => 'حسابك غير نشط أو انتهت جلستك';
+
+  @override
+  String get attendancePermissionDenied =>
+      'ليس لديك إذن لتنفيذ إجراء الحضور هذا';
+
+  @override
+  String get attendanceShiftNotAssigned => 'لم يتم تعيين وردية';
+
+  @override
+  String get attendancePolicyNotAssigned => 'لم يتم تعيين سياسة حضور';
+
+  @override
+  String get attendanceWorkLocationRequiredButMissing =>
+      'لم يتم تعيين موقع عمل';
+
+  @override
+  String get attendanceLocationRequired => 'الموقع مطلوب';
+
+  @override
+  String get attendanceLocationUnavailable => 'موقعك غير متاح';
+
+  @override
+  String get attendanceLocationPermissionDenied =>
+      'يلزم منح إذن الوصول إلى الموقع';
+
+  @override
+  String get attendanceLocationServicesDisabled => 'خدمات الموقع معطلة';
+
+  @override
+  String get attendanceLocationAccuracyTooLow => 'دقة الموقع غير كافية';
+
+  @override
+  String get attendanceOutsideAllowedLocation =>
+      'أنت خارج موقع العمل المسموح به';
+
+  @override
+  String get attendanceAlreadyPunchedIn => 'لقد سجلت الحضور بالفعل';
+
+  @override
+  String get attendanceNotPunchedIn => 'يجب تسجيل الحضور أولاً';
+
+  @override
+  String get attendanceAlreadyOnBreak => 'أنت في استراحة بالفعل';
+
+  @override
+  String get attendanceNotOnBreak => 'لا توجد استراحة نشطة';
+
+  @override
+  String get attendanceBreakTrackingDisabled => 'تتبع الاستراحات معطل';
+
+  @override
+  String get attendanceMultipleBreaksNotAllowed => 'لا يُسمح باستراحات متعددة';
+
+  @override
+  String get attendancePunchOutDuringBreakNotAllowed =>
+      'لا يُسمح بتسجيل الانصراف أثناء الاستراحة';
+
+  @override
+  String get attendanceAlreadyCompleted => 'انتهى يوم عملك بالفعل';
+
+  @override
+  String get attendanceTooEarlyToPunchIn => 'الوقت مبكر جداً لتسجيل الحضور';
+
+  @override
+  String get attendanceLatePunchInNotAllowed =>
+      'لا يُسمح بتسجيل الحضور المتأخر';
+
+  @override
+  String get attendanceEarlyPunchOutNotAllowed =>
+      'لا يُسمح بتسجيل الانصراف المبكر';
+
+  @override
+  String get attendanceUnscheduledDay => 'هذا اليوم غير مدرج ضمن أيام العمل';
+
+  @override
+  String get attendanceOfflineAttendanceNotAllowed =>
+      'لا يُسمح بتسجيل الحضور دون اتصال';
+
+  @override
+  String get attendanceInvalidAttendanceState => 'سجل أحداث الحضور غير متسق';
+
+  @override
+  String get attendancePersistenceFailure =>
+      'تعذر حفظ الحضور. يرجى إعادة المحاولة';
+
+  @override
+  String get attendanceInvalidLocationEvidence =>
+      'بيانات إثبات الموقع غير صالحة';
+
+  @override
+  String get attendanceStaleLocationEvidence => 'يرجى تحديد موقعك مرة أخرى';
+
+  @override
+  String get attendanceRemoteAttendanceNotAllowed =>
+      'لا يُسمح بتسجيل الحضور عن بُعد';
+
+  @override
+  String get attendanceInvalidTimestamp => 'وقت حدث الحضور غير صالح';
+
+  @override
+  String get attendanceDuplicateRequestId => 'تم إرسال طلب الحضور هذا بالفعل';
+
+  @override
+  String get attendanceOperationNotFound => 'لم يتم العثور على عملية الحضور';
+
+  @override
+  String get attendanceSyncUnavailable => 'مزامنة الحضور غير مهيأة';
+
+  @override
+  String get attendanceSynchronizationFailed => 'فشلت مزامنة الحضور';
+
+  @override
+  String get attendanceUnsupportedTimezone =>
+      'المنطقة الزمنية للشركة غير مدعومة بعد';
+
+  @override
+  String get attendanceCompanyUnavailable => 'الحضور غير متاح لهذه الشركة';
+
+  @override
+  String get attendanceWarningOutsideAllowedLocation =>
+      'أنت خارج موقع المكتب؛ يُسمح بتسجيل الحضور';
+
+  @override
+  String get attendanceWarningOfflinePending =>
+      'تم حفظ الحضور بانتظار المزامنة';
+
+  @override
+  String get attendanceWarningLatePunchIn => 'تسجيل حضور متأخر';
+
+  @override
+  String get attendanceWarningEarlyPunchOut => 'تسجيل انصراف مبكر';
+
+  @override
+  String get attendanceWarningUnscheduledDay => 'حضور في يوم غير مجدول';
+
+  @override
+  String get attendanceNotStarted => 'لم يبدأ';
+
+  @override
+  String get attendanceWorking => 'يعمل';
+
+  @override
+  String get attendanceOnBreak => 'في استراحة';
+
+  @override
+  String get attendanceCompleted => 'مكتمل';
+
+  @override
+  String get attendanceLate => 'متأخر';
+
+  @override
+  String get attendancePending => 'بانتظار المزامنة';
+
+  @override
+  String get attendanceSynced => 'تمت المزامنة';
+
+  @override
+  String get attendanceFailed => 'فشلت المزامنة';
+
+  @override
+  String get attendanceRejected => 'مرفوض';
+
+  @override
+  String get attendancePunchIn => 'تسجيل الحضور';
+
+  @override
+  String get attendanceBreakStart => 'بدء الاستراحة';
+
+  @override
+  String get attendanceBreakEnd => 'استئناف العمل';
+
+  @override
+  String get attendancePunchOut => 'تسجيل الانصراف';
+
+  @override
+  String get attendancePunchInNotAllowed => 'لا يُسمح بتسجيل الحضور';
 }

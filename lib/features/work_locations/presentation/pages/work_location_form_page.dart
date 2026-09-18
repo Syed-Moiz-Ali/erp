@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/models/configuration_record.dart';
+import '../../../../core/security/app_permission.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/navigation/form_navigation_guard.dart';
@@ -24,7 +26,13 @@ class WorkLocationFormPage extends StatelessWidget {
         guard.dirty = false;
         guard.saving = false;
         AppFeedback.showMessage(c, message: (l) => l.cfgSaved);
-        c.go(AppRoutes.workLocationsDetails(s.savedId!));
+        c.go(
+          c.read<WorkLocationFormBloc>().context.user.permissions.contains(
+                AppPermission.workLocationView,
+              )
+              ? AppRoutes.workLocationsDetails(s.savedId!)
+              : AppRoutes.dashboard,
+        );
       }
     },
     builder: (c, s) {
@@ -45,12 +53,34 @@ class WorkLocationFormPage extends StatelessWidget {
             bloc.id == null ? l.cfgNew : l.cfgEdit,
           ].join(' · '),
           loading: s.loading,
+          ready: s.ready,
           saving: s.saving,
           failure: s.failure,
-          onSave: () => bloc.add(const RecordSubmitted<WorkLocationDraft>()),
-          onCancel: () => c.go(AppRoutes.workLocations),
-          onRetry: () =>
-              bloc.add(const RecordFormInitialized<WorkLocationDraft>()),
+          onSave: () async {
+            if (bloc.id != null &&
+                s.original.status == ConfigurationStatus.active &&
+                d.status == ConfigurationStatus.inactive &&
+                !await confirmConfigurationStatus(
+                  c,
+                  false,
+                  s.assignedEmployees,
+                )) {
+              return;
+            }
+            if (c.mounted) bloc.add(const RecordSubmitted<WorkLocationDraft>());
+          },
+          onCancel: () => c.go(
+            bloc.context.user.permissions.contains(
+                  AppPermission.workLocationView,
+                )
+                ? AppRoutes.workLocations
+                : AppRoutes.dashboard,
+          ),
+          onRetry: () => bloc.add(
+            s.validationRequested
+                ? const RecordSubmitted<WorkLocationDraft>()
+                : const RecordFormInitialized<WorkLocationDraft>(),
+          ),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -171,7 +201,7 @@ class WorkLocationFormPage extends StatelessWidget {
                     AppFormGrid(
                       children: [
                         AppNumberField(
-                          key: ValueKey(s.capturedAccuracy),
+                          key: ValueKey(s.captureVersion),
                           label: l.cfgLatitude,
                           initialValue: d.latitude,
                           enabled: !s.saving,
@@ -181,7 +211,7 @@ class WorkLocationFormPage extends StatelessWidget {
                               change((d) => d.copyWith(latitude: v.optional)),
                         ),
                         AppNumberField(
-                          key: ValueKey(s.capturedAccuracy),
+                          key: ValueKey(s.captureVersion),
                           label: l.cfgLongitude,
                           initialValue: d.longitude,
                           enabled: !s.saving,
@@ -225,8 +255,9 @@ class WorkLocationFormPage extends StatelessWidget {
                               ),
                           ],
                           onChanged: (v) {
-                            if (v != null)
+                            if (v != null) {
                               change((d) => d.copyWith(validationMode: v));
+                            }
                           },
                         ),
                       ],
@@ -245,6 +276,24 @@ class WorkLocationFormPage extends StatelessWidget {
                   d.countryCode,
                 ].where((v) => v.isNotEmpty).join(', '),
               ),
+              const SizedBox(height: AppSpacing.xxl),
+              AppFormSection(
+                title: l.cfgStatus,
+                child: AppSwitchField(
+                  label: l.cfgActive,
+                  value: d.status == ConfigurationStatus.active,
+                  onChanged: s.saving
+                      ? null
+                      : (value) => change(
+                          (d) => d.copyWith(
+                            status: value
+                                ? ConfigurationStatus.active
+                                : ConfigurationStatus.inactive,
+                          ),
+                        ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xxl),
             ],
           ),
         ),

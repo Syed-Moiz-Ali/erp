@@ -1,3 +1,4 @@
+import '../../features/attendance/data/attendance_tables.dart';
 import '../../features/shifts/data/shifts_table.dart';
 import '../../features/work_locations/data/work_locations_table.dart';
 import '../../features/attendance_policies/data/attendance_policies_table.dart';
@@ -13,6 +14,11 @@ class SyncOutbox extends Table {
   TextColumn get operation => text()();
   TextColumn get payload => text()();
   DateTimeColumn get createdAt => dateTime()();
+  TextColumn get companyId => text().nullable()();
+  TextColumn get requestId => text().nullable()();
+  TextColumn get status => text().withDefault(const Constant('pending'))();
+  DateTimeColumn get lastAttemptAt => dateTime().nullable()();
+  TextColumn get failureCode => text().nullable()();
   IntColumn get attempts => integer().withDefault(const Constant(0))();
   @override
   Set<Column<Object>> get primaryKey => {id};
@@ -21,6 +27,8 @@ class SyncOutbox extends Table {
 @DriftDatabase(
   tables: [
     SyncOutbox,
+    AttendanceDays,
+    AttendanceEvents,
     WorkforceDepartments,
     WorkforceDesignations,
     WorkforceAccounts,
@@ -44,12 +52,12 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 2 || to != 3) {
+      if (from < 1 || from > 3 || to != 4) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -64,9 +72,33 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(workLocationRecords);
         await m.createTable(attendancePolicyRecords);
       }
+      if (from < 4) {
+        await m.createTable(attendanceDays);
+        await m.createTable(attendanceEvents);
+        await m.addColumn(syncOutbox, syncOutbox.companyId);
+        await m.addColumn(syncOutbox, syncOutbox.requestId);
+        await m.addColumn(syncOutbox, syncOutbox.status);
+        await m.addColumn(syncOutbox, syncOutbox.lastAttemptAt);
+        await m.addColumn(syncOutbox, syncOutbox.failureCode);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS outbox_request ON sync_outbox(request_id) WHERE request_id IS NOT NULL',
+      );
+      await customStatement(
+        "CREATE UNIQUE INDEX IF NOT EXISTS attendance_open ON attendance_days(company_id,employee_id) WHERE state != 'completed'",
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS attendance_current ON attendance_days(company_id,employee_id,state,attendance_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS attendance_timeline ON attendance_events(attendance_day_id,effective_milliseconds,sequence)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS attendance_sync ON attendance_events(company_id,sync_status)',
+      );
       for (final table in [
         'shift_records',
         'work_location_records',

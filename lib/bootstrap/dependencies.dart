@@ -1,3 +1,15 @@
+import 'package:flutter/foundation.dart';
+import '../core/utils/app_clock.dart';
+import '../features/attendance/domain/attendance_models.dart';
+import '../features/attendance/domain/attendance_context_resolver.dart';
+import '../features/attendance/domain/attendance_engine.dart';
+import '../features/attendance/domain/attendance_repository.dart';
+import '../features/attendance/domain/shift_workday_resolver.dart';
+import '../features/attendance/data/attendance_local_data_source.dart';
+import '../features/attendance/data/local_attendance_repository.dart';
+import '../features/attendance/data/device_attendance_location_capture.dart';
+import '../features/attendance/application/execute_attendance_action.dart';
+import '../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../features/shifts/domain/shift_repository.dart';
 import '../features/shifts/data/local_shift_repository.dart';
 import '../features/work_locations/domain/work_location_repository.dart';
@@ -37,6 +49,43 @@ import '../core/logging/app_logger.dart';
 
 final services = GetIt.instance;
 void configureDependencies() {
+  services.registerLazySingleton<AppClock>(() => const SystemAppClock());
+  services.registerLazySingleton<CompanyTimeService>(
+    () => const FixedOffsetCompanyTimeService(),
+  );
+  services.registerLazySingleton(() => ShiftWorkdayResolver(services()));
+  services.registerLazySingleton(() => const AttendanceEngine());
+  services.registerLazySingleton(
+    () => AttendanceContextResolver(services(), services()),
+  );
+  services.registerLazySingleton(() => AttendanceLocalDataSource(services()));
+  services.registerLazySingleton<AttendanceRemoteAvailability>(
+    () => const UnconfiguredAttendanceRemote(),
+  );
+  services.registerLazySingleton<AttendanceRepository>(
+    () => LocalAttendanceRepository(
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      authority: AppConfig.demoAuthEnabled
+          ? AttendanceAuthority.demoLocal
+          : AttendanceAuthority.productionPending,
+    ),
+  );
+  services.registerLazySingleton<AttendanceLocationCapture>(
+    () => DeviceAttendanceLocationCapture(services()),
+  );
+  services.registerLazySingleton(
+    () => ExecuteAttendanceAction(
+      services(),
+      services(),
+      services(),
+      kIsWeb ? AttendanceEventSource.web : AttendanceEventSource.mobile,
+    ),
+  );
+  services.registerFactory(() => AttendanceBloc(services(), services()));
   services.registerLazySingleton<AppPreferencesLocalDataSource>(
     () => SharedPreferencesLocalDataSource(SharedPreferencesAsync()),
   );

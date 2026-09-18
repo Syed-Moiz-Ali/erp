@@ -102,6 +102,7 @@ void main() {
       expect(s.durationMinutes, 540);
       expect(s.expectedWorkMinutes, 510);
       expect(s.code, 'CUSTOM');
+      expect(Shift.fromJson(s.toJson()), s);
       expect(
         Shift.fromJson(
           jsonDecode(jsonEncode(s.toJson())) as Map<String, dynamic>,
@@ -447,7 +448,9 @@ void main() {
           );
       expect(refs.shifts.map((s) => s.name), ['General Shift']);
       expect(refs.workLocations.map((s) => s.name), ['Hyderabad HQ']);
-      expect(refs.attendancePolicies.map((s) => s.name), ['Remote Staff Policy']);
+      expect(refs.attendancePolicies.map((s) => s.name), [
+        'Remote Staff Policy',
+      ]);
       final unrelated = unwrap(
         await employees.getReferences(self, excludingId: 'employee-manager'),
       );
@@ -738,7 +741,7 @@ void main() {
     },
   );
   test(
-    'schema 2 to 3 upgrade preserves employees, accounts, assignments and queued operations',
+    'schema 2 to current upgrade preserves employees, accounts, assignments and queued operations',
     () async {
       await db.close();
       final dir = Directory.systemTemp.createTempSync('erp_config_migration_');
@@ -752,6 +755,20 @@ void main() {
       await old.customStatement('DROP TABLE shift_records');
       await old.customStatement('DROP TABLE work_location_records');
       await old.customStatement('DROP TABLE attendance_policy_records');
+      await old.customStatement('DROP TABLE attendance_events');
+      await old.customStatement('DROP TABLE attendance_days');
+      await old.customStatement('DROP INDEX outbox_request');
+      for (final column in [
+        'company_id',
+        'request_id',
+        'status',
+        'last_attempt_at',
+        'failure_code',
+      ]) {
+        await old.customStatement(
+          'ALTER TABLE sync_outbox DROP COLUMN $column',
+        );
+      }
       await old.customStatement('PRAGMA user_version=2');
       await old.close();
       final upgraded = AppDatabase(NativeDatabase(file));
@@ -770,7 +787,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        3,
+        4,
       );
       await seedAttendanceConfiguration(upgraded);
       final sr = LocalShiftRepository(upgraded);

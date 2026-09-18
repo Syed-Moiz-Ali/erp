@@ -60,7 +60,7 @@ class AppNumberField extends StatelessWidget {
     decoration: InputDecoration(
       labelText: label,
       errorText: errorText,
-      suffixText: suffix,
+      suffixText: suffix == null ? null : ' $suffix',
     ),
   );
 }
@@ -147,17 +147,21 @@ class AppLocationPreview extends StatelessWidget {
           fields: [
             AppDetailField(
               label: context.l10n.cfgLatitude,
-              value: latitude?.toStringAsFixed(6) ?? context.l10n.noSelection,
+              value: latitude?.isFinite == true
+                  ? latitude!.toStringAsFixed(6)
+                  : context.l10n.noSelection,
               identifier: true,
             ),
             AppDetailField(
               label: context.l10n.cfgLongitude,
-              value: longitude?.toStringAsFixed(6) ?? context.l10n.noSelection,
+              value: longitude?.isFinite == true
+                  ? longitude!.toStringAsFixed(6)
+                  : context.l10n.noSelection,
               identifier: true,
             ),
             AppDetailField(
               label: context.l10n.cfgRadius,
-              value: radius == null
+              value: radius == null || !radius!.isFinite || radius! <= 0
                   ? context.l10n.noSelection
                   : [radius!.toString(), context.l10n.cfgMeters].join(' '),
             ),

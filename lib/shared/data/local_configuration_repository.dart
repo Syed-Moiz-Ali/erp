@@ -48,6 +48,7 @@ abstract class LocalConfigurationRepository<T extends ConfigurationRecord, D>
   );
   Failure? access(AuthContext context, {bool manage = false}) {
     if (context.user.status != AccountStatus.active ||
+        context.user.companyId != context.company.id ||
         !context.company.enabledModules.contains('settings') ||
         !PermissionChecker(
           context.user.permissions,
@@ -271,7 +272,10 @@ abstract class LocalConfigurationRepository<T extends ConfigurationRecord, D>
               normalized,
               id: id ?? const Uuid().v4(),
               previous: previous,
-              now: DateTime.fromMillisecondsSinceEpoch((DateTime.now().millisecondsSinceEpoch ~/ 1000) * 1000, isUtc:true),
+              now: DateTime.fromMillisecondsSinceEpoch(
+                (DateTime.now().millisecondsSinceEpoch ~/ 1000) * 1000,
+                isUtc: true,
+              ),
             );
             await unique(record);
             await put(record);
@@ -304,7 +308,10 @@ abstract class LocalConfigurationRepository<T extends ConfigurationRecord, D>
             final updated = withStatus(
               previous,
               status,
-              DateTime.fromMillisecondsSinceEpoch((DateTime.now().millisecondsSinceEpoch ~/ 1000) * 1000, isUtc:true),
+              DateTime.fromMillisecondsSinceEpoch(
+                (DateTime.now().millisecondsSinceEpoch ~/ 1000) * 1000,
+                isUtc: true,
+              ),
             );
             await unique(updated);
             await put(updated);

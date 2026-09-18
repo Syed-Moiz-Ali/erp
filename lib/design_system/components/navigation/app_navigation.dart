@@ -158,6 +158,9 @@ class AppSidebar extends StatelessWidget {
   final VoidCallback? onCompanyPressed, onToggle;
   @override
   Widget build(BuildContext context) {
+    final matches = modules.where((m) => m.owns(selectedRoute)).toList()
+      ..sort((a, b) => b.route.length.compareTo(a.route.length));
+    final selectedId = matches.firstOrNull?.id;
     final main = modules
         .where(
           (m) =>
@@ -213,7 +216,7 @@ class AppSidebar extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: AppSpacing.xs),
                           child: AppSidebarItem(
                             item: item,
-                            selected: item.owns(selectedRoute),
+                            selected: item.id == selectedId,
                             collapsed: collapsed,
                             onPressed: () => onNavigate(item.route),
                           ),
@@ -229,7 +232,7 @@ class AppSidebar extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: AppSpacing.xs),
                     child: AppSidebarItem(
                       item: item,
-                      selected: item.owns(selectedRoute),
+                      selected: item.id == selectedId,
                       collapsed: collapsed,
                       onPressed: () => onNavigate(item.route),
                     ),

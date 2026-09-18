@@ -1,6 +1,6 @@
-# Bitlogix ERP - Phase 4
+# Bitlogix ERP - Phase 6
 
-Frontend-only, local-first Flutter ERP. Phase 4 replaces the Employees placeholder with scoped employee management: searchable/filterable lists, responsive tables/cards, details, create/edit, activation and local account linking. UI -> BLoC -> EmployeeRepository -> Drift remains the data boundary. Attendance/Reports/Settings remain placeholders; no backend or attendance workflow exists. See [the Phase 4 completion report](docs/phase_4_employees.md), [dashboard handoff](docs/phase_3_dashboard.md), [shell handoff](docs/phase_2_shell.md) and [authentication handoff](docs/phase_1_authentication.md).
+Frontend-only, local-first Flutter ERP. Phase 6 adds the attendance domain engine, strict transitions, event-derived durations, frozen workday configuration, authenticated self-action workflow, atomic Drift persistence, retry-safe generic outbox and presentation-independent AttendanceBloc. Attendance and Reports UI retain their placeholders. See [the Phase 6 engine completion report and Phase 7 APIs](docs/phase_6_attendance_engine.md), [configuration handoff](docs/phase_5_configuration.md), [employee handoff](docs/phase_4_employees.md), [dashboard handoff](docs/phase_3_dashboard.md), [shell handoff](docs/phase_2_shell.md) and [authentication handoff](docs/phase_1_authentication.md).
 
 ## Run
 
@@ -26,7 +26,7 @@ Debug runs enable demo authentication by default. Release builds disable demo fi
 - `lib/app`: app lifecycle, router, shell and module registry.
 - `lib/core`: API client, safe failures/results, Drift database, secure session storage, connectivity, location, sync and logging.
 - `lib/design_system`: centralized theme tokens and reusable component families; `design_system.dart` is the public component entrypoint.
-- `lib/features`: authentication, dashboard and employee domain/data/presentation plus retained Phase 0 previews. New features add domain, data and presentation layers when needed; no decorative empty folders.
+- `lib/features`: authentication, dashboard, employees, shifts, work locations and attendance policies and attendance engine domain/data/application/presentation plus retained Phase 0 previews. New features add domain, data and presentation layers when needed; no decorative empty folders.
 - `drift_schemas`: generated versioned schema snapshot for migration review.
 - `assets/fonts`: locally bundled Inter (English) and Noto Sans Arabic with SIL licenses. No runtime font downloads.
 - `lib/l10n`: English/Arabic ARB resources and generated typed localizations.
@@ -81,17 +81,17 @@ dart run drift_dev schema dump lib/core/database/app_database.dart drift_schemas
 
 Serve WASM as `application/wasm`. See [Drift's official web setup](https://drift.simonbinder.eu/platforms/web/) for browser persistence modes and optional isolation headers. Private browsing can restrict persistence; native targets are recommended where durable offline storage is essential.
 
-Location is a read-only abstraction; it never asks permission at startup. Platform location purpose strings and runtime permission requests belong to the future attendance implementation. Secure storage on Windows uses platform credential protection; web requires a secure context. Native builds require their respective platform toolchains; iOS builds require macOS.
+Location capture requests permission only after the Work Location form’s “Use current location” action. Android foreground location permissions and iOS purpose text are configured. The repository-backed form supports manual coordinates, localized failures, settings/retry actions and measured accuracy. Location services never request permission at startup. Secure storage on Windows uses platform credential protection; web requires a secure context. Native builds require their respective platform toolchains; iOS builds require macOS.
 
 ## Validation
 
-Verified on 2026-09-17: pub get, localization generation, build_runner, schema v2 dump, web-worker compilation and formatting passed. Analyzer reported no issues. All **356 tests passed**, including 40 employee repository/BLoC tests and 30 employee widget tests. Default and explicit demo release web builds passed. Font-loaded English/Arabic mobile/desktop screenshots were inspected. Native Android/iOS/Windows builds and a live browser storage roundtrip were not executed.
+Verified on 2026-09-18: pub get, localization generation, build_runner, schema v4 dump, worker compilation and formatting passed. Analyzer reported **no issues** and all **543 tests passed** (including **106 attendance tests**). Default and explicit demo release web builds passed. Limitations are recorded in [the completion report](docs/phase_6_attendance_engine.md).
 
 
 Foundation tests cover module visibility/order/duplicate rejection, safe API timeout mapping, JSON roundtrip, actual SQLite outbox deduplication/read/acknowledgment, offline and concurrent sync behavior, and Cubit presentation state. Localization tests cover resource parity, fallback, restoration, ordered persistence, plugin adaptation, validation, failures and formatting. Widget tests walk the preview in English/Arabic at 390, 768, 1280 and 1600 logical pixels, verify RTL and state retention, capture PNGs, and exercise dialogs/sheets/pickers and Arabic at 150% text scale.
 
 See [the localization and RTL contract](docs/localization.md) for language persistence, Arabic typography and adding more languages.
 
-Phase 4 stops here. Punching, breaks, attendance history, corrections and configuration CRUD belong to subsequent explicit phases. Dashboard checks cover all five accounts in English/Arabic at the ten requested widths, permission-scoped data, skeleton/error/empty/refresh states, enlarged text, pull-to-refresh and semantics. Shell tests cover all ten requested widths in both languages, permission/module gates, deep links, persisted sidebar preference, open-menu localization, branch state preservation and logout reset.
+Phase 6 stops here. The engine is implemented; final attendance UI, visual timers, history, corrections and reports remain future work. Demo attendance is locally authoritative; non-demo mutations remain pending until a real sender is configured. Company timezone calculation supports explicit fixed-offset zones; unsupported DST zones fail safely. Dashboard checks cover all five accounts in English/Arabic at the ten requested widths, permission-scoped data, skeleton/error/empty/refresh states, enlarged text, pull-to-refresh and semantics. Shell tests cover all ten requested widths in both languages, permission/module gates, deep links, persisted sidebar preference, open-menu localization, branch state preservation and logout reset.
 
 Auth tests additionally cover five email/phone accounts, secure persistence/corruption/expiry, logout failure handling, explicit permissions, DTO mapping, disabled demo configuration, password workflows, protected deep links and all nine requested widths in both languages. Live browser verification was unavailable because no browser connection was present.

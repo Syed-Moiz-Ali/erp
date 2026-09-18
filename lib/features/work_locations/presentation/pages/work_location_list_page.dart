@@ -16,8 +16,9 @@ class WorkLocationListPage extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocConsumer<WorkLocationListBloc, WorkLocationListState>(
         listener: (c, s) {
-          if (s.statusSaved)
+          if (s.statusSaved) {
             AppFeedback.showMessage(c, message: (l) => l.cfgStatusSaved);
+          }
         },
         builder: (c, s) {
           final bloc = c.read<WorkLocationListBloc>();
@@ -35,11 +36,23 @@ class WorkLocationListPage extends StatelessWidget {
             onRetry: () => bloc.add(const RecordListStarted()),
             detailRoute: AppRoutes.workLocationsDetails,
             editRoute: AppRoutes.workLocationsEdit,
-            summary: (c, record) => [
-              record.city,
+            summary: (c, record) => record.address,
+            summaryLabel: c.l10n.cfgAddress,
+            extraColumns: [DataColumn(label: Text(c.l10n.cfgRadius))],
+            extraCells: (c, record) => [
+              DataCell(
+                Text(
+                  [
+                    configurationNumber(c, record.allowedRadiusMeters),
+                    c.l10n.cfgMeters,
+                  ].join(' '),
+                ),
+              ),
+            ],
+            mobileDetails: (c, record) => [
               configurationNumber(c, record.allowedRadiusMeters),
               c.l10n.cfgMeters,
-            ].join(' · '),
+            ].join(' '),
             onActive: (id, active) =>
                 bloc.add(RecordStatusRequested(id, active)),
           );

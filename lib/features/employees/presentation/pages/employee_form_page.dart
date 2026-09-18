@@ -328,7 +328,9 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                         AppSelectOption(
                           item.id,
                           item.name,
-                          subtitle: configurationStatusLabel(item.status, l),
+                          subtitle: item.status == ConfigurationStatus.inactive
+                              ? l.cfgInactiveAssignment
+                              : configurationStatusLabel(item.status, l),
                           enabled: item.status == ConfigurationStatus.active,
                         ),
                     ],
@@ -344,7 +346,9 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                         AppSelectOption(
                           item.id,
                           item.name,
-                          subtitle: configurationStatusLabel(item.status, l),
+                          subtitle: item.status == ConfigurationStatus.inactive
+                              ? l.cfgInactiveAssignment
+                              : configurationStatusLabel(item.status, l),
                           enabled: item.status == ConfigurationStatus.active,
                         ),
                     ],
@@ -361,7 +365,9 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                         AppSelectOption(
                           item.id,
                           item.name,
-                          subtitle: configurationStatusLabel(item.status, l),
+                          subtitle: item.status == ConfigurationStatus.inactive
+                              ? l.cfgInactiveAssignment
+                              : configurationStatusLabel(item.status, l),
                           enabled: item.status == ConfigurationStatus.active,
                         ),
                     ],

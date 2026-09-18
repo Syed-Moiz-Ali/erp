@@ -1,3 +1,4 @@
+import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/bootstrap/demo_configuration_seed.dart';
 import 'package:modular_erp/features/shifts/data/local_shift_repository.dart';
 import 'package:modular_erp/features/work_locations/data/local_work_location_repository.dart';
@@ -66,6 +67,7 @@ Future<Harness> mount(
   bool bootstrap = true,
   ModuleRegistry Function(AuthRepository)? registryFactory,
   AppShellCubit? shellCubit,
+  LocationService? locationService,
 }) async {
   final locale = LocaleCubit(
     LocalAppPreferencesRepository(
@@ -81,10 +83,16 @@ Future<Harness> mount(
   ModuleRegistry? registry;
   if (registryFactory == null) {
     database = AppDatabase(NativeDatabase.memory());
-    await tester.runAsync(() async { await seedEmployees(database!); await seedAttendanceConfiguration(database); });
+    await tester.runAsync(() async {
+      await seedEmployees(database!);
+      await seedAttendanceConfiguration(database);
+    });
     registry = createErpRegistry(
       repo,
-      shiftRepository:LocalShiftRepository(database),workLocationRepository:LocalWorkLocationRepository(database),attendancePolicyRepository:LocalAttendancePolicyRepository(database),
+      locationService: locationService,
+      shiftRepository: LocalShiftRepository(database),
+      workLocationRepository: LocalWorkLocationRepository(database),
+      attendancePolicyRepository: LocalAttendancePolicyRepository(database),
       employeeRepository: LocalEmployeeRepository(
         EmployeeDao(database),
         LocalAccountProvisioningRepository(database),

@@ -16,8 +16,9 @@ class AttendancePolicyDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocConsumer<AttendancePolicyDetailsBloc, AttendancePolicyDetailsState>(
         listener: (c, s) {
-          if (s.statusSaved)
+          if (s.statusSaved) {
             AppFeedback.showMessage(c, message: (l) => l.cfgStatusSaved);
+          }
         },
         builder: (context, s) {
           final l = context.l10n,

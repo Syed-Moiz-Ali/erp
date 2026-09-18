@@ -101,12 +101,13 @@ ModuleRegistry createErpRegistry(
                 selector: (s) => s.context,
                 builder: (context, auth) {
                   if (auth == null) return const SizedBox.shrink();
-                  if (shiftRepository == null)
+                  if (shiftRepository == null) {
                     return AppPage(
                       child: AppErrorState(
                         message: context.l10n.cfgStorageError,
                       ),
                     );
+                  }
                   return BlocProvider(
                     key: ValueKey(auth),
                     create: (_) =>
@@ -187,12 +188,13 @@ ModuleRegistry createErpRegistry(
                 selector: (s) => s.context,
                 builder: (context, auth) {
                   if (auth == null) return const SizedBox.shrink();
-                  if (workLocationRepository == null)
+                  if (workLocationRepository == null) {
                     return AppPage(
                       child: AppErrorState(
                         message: context.l10n.cfgStorageError,
                       ),
                     );
+                  }
                   return BlocProvider(
                     key: ValueKey(auth),
                     create: (_) =>
@@ -278,12 +280,13 @@ ModuleRegistry createErpRegistry(
                 selector: (s) => s.context,
                 builder: (context, auth) {
                   if (auth == null) return const SizedBox.shrink();
-                  if (attendancePolicyRepository == null)
+                  if (attendancePolicyRepository == null) {
                     return AppPage(
                       child: AppErrorState(
                         message: context.l10n.cfgStorageError,
                       ),
                     );
+                  }
                   return BlocProvider(
                     key: ValueKey(auth),
                     create: (_) => AttendancePolicyListBloc(

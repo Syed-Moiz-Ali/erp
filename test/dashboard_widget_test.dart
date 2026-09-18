@@ -213,7 +213,10 @@ void main() {
           final action = find.byKey(
             const ValueKey('dashboard-action-attendance'),
           );
-          await tester.ensureVisible(action);
+          await Scrollable.ensureVisible(
+            tester.element(action),
+            alignment: 0.5,
+          );
           await ui_test.pump(tester);
           expect(tester.takeException(), isNull);
           await tester.tap(action);

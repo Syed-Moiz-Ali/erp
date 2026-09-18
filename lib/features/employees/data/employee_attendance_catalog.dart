@@ -83,8 +83,9 @@ class EmployeeAttendanceCatalog {
       if (rows.isEmpty ||
           rows.single.read<String>('status') !=
                   ConfigurationStatus.active.name &&
-              reference.value != reference.old)
+              reference.value != reference.old) {
         return false;
+      }
     }
     return true;
   }

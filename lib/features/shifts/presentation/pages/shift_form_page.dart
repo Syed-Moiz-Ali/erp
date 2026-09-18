@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/models/configuration_record.dart';
+import '../../../../core/security/app_permission.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/navigation/form_navigation_guard.dart';
@@ -24,7 +26,13 @@ class ShiftFormPage extends StatelessWidget {
             guard.dirty = false;
             guard.saving = false;
             AppFeedback.showMessage(c, message: (l) => l.cfgSaved);
-            c.go(AppRoutes.shiftsDetails(s.savedId!));
+            c.go(
+              c.read<ShiftFormBloc>().context.user.permissions.contains(
+                    AppPermission.shiftView,
+                  )
+                  ? AppRoutes.shiftsDetails(s.savedId!)
+                  : AppRoutes.dashboard,
+            );
           }
         },
         builder: (c, s) {
@@ -45,12 +53,32 @@ class ShiftFormPage extends StatelessWidget {
                 bloc.id == null ? l.cfgNew : l.cfgEdit,
               ].join(' · '),
               loading: s.loading,
+              ready: s.ready,
               saving: s.saving,
               failure: s.failure,
-              onSave: () => bloc.add(const RecordSubmitted<ShiftDraft>()),
-              onCancel: () => c.go(AppRoutes.shifts),
-              onRetry: () =>
-                  bloc.add(const RecordFormInitialized<ShiftDraft>()),
+              onSave: () async {
+                if (bloc.id != null &&
+                    s.original.status == ConfigurationStatus.active &&
+                    d.status == ConfigurationStatus.inactive &&
+                    !await confirmConfigurationStatus(
+                      c,
+                      false,
+                      s.assignedEmployees,
+                    )) {
+                  return;
+                }
+                if (c.mounted) bloc.add(const RecordSubmitted<ShiftDraft>());
+              },
+              onCancel: () => c.go(
+                bloc.context.user.permissions.contains(AppPermission.shiftView)
+                    ? AppRoutes.shifts
+                    : AppRoutes.dashboard,
+              ),
+              onRetry: () => bloc.add(
+                s.validationRequested
+                    ? const RecordSubmitted<ShiftDraft>()
+                    : const RecordFormInitialized<ShiftDraft>(),
+              ),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -198,8 +226,9 @@ class ShiftFormPage extends StatelessWidget {
                               AppSelectOption(value, shiftBreakLabel(value, l)),
                           ],
                           onChanged: (v) {
-                            if (v != null)
+                            if (v != null) {
                               change((d) => d.copyWith(breakMode: v));
+                            }
                           },
                         ),
                         if (d.breakMode == ShiftBreakMode.fixedBreak)
@@ -219,6 +248,24 @@ class ShiftFormPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  AppFormSection(
+                    title: l.cfgStatus,
+                    child: AppSwitchField(
+                      label: l.cfgActive,
+                      value: d.status == ConfigurationStatus.active,
+                      onChanged: s.saving
+                          ? null
+                          : (value) => change(
+                              (d) => d.copyWith(
+                                status: value
+                                    ? ConfigurationStatus.active
+                                    : ConfigurationStatus.inactive,
+                              ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
                 ],
               ),
             ),

@@ -25,6 +25,8 @@ class WorkLocationFormState extends RecordFormState<WorkLocationDraft> {
     required super.draft,
     required super.original,
     super.loading,
+    super.ready,
+    super.assignedEmployees,
     super.saving,
     super.validationRequested,
     super.failure,
@@ -32,10 +34,12 @@ class WorkLocationFormState extends RecordFormState<WorkLocationDraft> {
     super.fieldErrors,
     this.locating = false,
     this.capturedAccuracy,
+    this.captureVersion = 0,
     this.locationFailure,
   });
   final bool locating;
   final double? capturedAccuracy;
+  final int captureVersion;
   final Failure? locationFailure;
 }
 
@@ -82,6 +86,8 @@ class WorkLocationFormBloc
     WorkLocationDraft? draft,
     WorkLocationDraft? original,
     bool? loading,
+    bool? ready,
+    int? assignedEmployees,
     bool? saving,
     bool? locating,
     bool? validationRequested,
@@ -90,10 +96,13 @@ class WorkLocationFormBloc
     String? savedId,
     Map<String, String>? errors,
     double? accuracy,
+    int? captureVersion,
   }) => WorkLocationFormState(
     draft: draft ?? state.draft,
     original: original ?? state.original,
     loading: loading ?? state.loading,
+    ready: ready ?? state.ready,
+    assignedEmployees: assignedEmployees ?? state.assignedEmployees,
     saving: saving ?? state.saving,
     locating: locating ?? state.locating,
     validationRequested: validationRequested ?? state.validationRequested,
@@ -102,6 +111,7 @@ class WorkLocationFormBloc
     savedId: savedId,
     fieldErrors: errors ?? state.fieldErrors,
     capturedAccuracy: accuracy ?? state.capturedAccuracy,
+    captureVersion: captureVersion ?? state.captureVersion,
   );
   Future<void> _handle(
     RecordFormEvent<WorkLocationDraft> event,
@@ -111,13 +121,26 @@ class WorkLocationFormBloc
       case RecordFormInitialized<WorkLocationDraft>():
         emit(next(loading: true));
         if (id == null) {
-          emit(next(loading: false));
+          emit(next(loading: false, ready: true));
           return;
         }
         final result = await repository.getById(context, id!, forEditing: true);
         if (result is Success<WorkLocation?> && result.value != null) {
+          final count = await repository.assignedEmployeeCount(context, id!);
+          if (count is Failed<int>) {
+            emit(next(loading: false, failure: count.failure));
+            return;
+          }
           final draft = WorkLocationDraft.fromLocation(result.value!);
-          emit(next(draft: draft, original: draft, loading: false));
+          emit(
+            next(
+              draft: draft,
+              original: draft,
+              loading: false,
+              ready: true,
+              assignedEmployees: (count as Success<int>).value,
+            ),
+          );
         } else {
           emit(
             next(
@@ -129,7 +152,7 @@ class WorkLocationFormBloc
           );
         }
       case RecordDraftChanged<WorkLocationDraft>(:final update):
-        if (state.loading || state.saving) return;
+        if (state.loading || state.saving || !state.ready) return;
         final draft = update(state.draft).normalized();
         emit(
           next(
@@ -138,7 +161,7 @@ class WorkLocationFormBloc
           ),
         );
       case RecordSubmitted<WorkLocationDraft>():
-        if (state.loading || state.savedId != null) {
+        if (state.loading || !state.ready || state.savedId != null) {
           _submitQueued = false;
           return;
         }
@@ -154,7 +177,7 @@ class WorkLocationFormBloc
           _submitQueued = false;
           return;
         }
-        emit(next(saving: true));
+        emit(next(saving: true, validationRequested: true));
         final result = await repository.save(context, draft, id: id);
         emit(
           next(
@@ -194,6 +217,7 @@ class WorkLocationFormBloc
               draft: draft,
               locating: false,
               accuracy: result.value.accuracy,
+              captureVersion: state.captureVersion + 1,
               errors: state.validationRequested ? draft.validate() : const {},
             ),
           );

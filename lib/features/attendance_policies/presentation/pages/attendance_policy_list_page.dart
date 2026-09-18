@@ -16,8 +16,9 @@ class AttendancePolicyListPage extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocConsumer<AttendancePolicyListBloc, AttendancePolicyListState>(
         listener: (c, s) {
-          if (s.statusSaved)
+          if (s.statusSaved) {
             AppFeedback.showMessage(c, message: (l) => l.cfgStatusSaved);
+          }
         },
         builder: (c, s) {
           final bloc = c.read<AttendancePolicyListBloc>();
@@ -35,7 +36,37 @@ class AttendancePolicyListPage extends StatelessWidget {
             onRetry: () => bloc.add(const RecordListStarted()),
             detailRoute: AppRoutes.attendancePoliciesDetails,
             editRoute: AppRoutes.attendancePoliciesEdit,
-            summary: (c, record) => policyLocationSummary(record, c.l10n),
+            summary: (c, record) => record.requireLocation
+                ? c.l10n.cfgRequireLocation
+                : c.l10n.cfgNoLocation,
+            summaryLabel: c.l10n.cfgLocationRules,
+            extraColumns: [
+              DataColumn(label: Text(c.l10n.cfgBreakRules)),
+              DataColumn(label: Text(c.l10n.cfgOfflineMode)),
+            ],
+            extraCells: (c, record) => [
+              DataCell(
+                Text(
+                  record.trackBreaks
+                      ? c.l10n.cfgTrackBreaks
+                      : c.l10n.cfgNoBreak,
+                ),
+              ),
+              DataCell(
+                SizedBox(
+                  width: 160,
+                  child: Text(
+                    offlineModeLabel(record.offlineMode, c.l10n),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+            mobileDetails: (c, record) => [
+              record.trackBreaks ? c.l10n.cfgTrackBreaks : c.l10n.cfgNoBreak,
+              offlineModeLabel(record.offlineMode, c.l10n),
+            ].join(' · '),
             onActive: (id, active) =>
                 bloc.add(RecordStatusRequested(id, active)),
           );

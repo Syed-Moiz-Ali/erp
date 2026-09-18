@@ -26,14 +26,17 @@ class RecordFormState<D> {
     required this.draft,
     required this.original,
     this.loading = true,
+    this.ready = false,
+    this.assignedEmployees = 0,
     this.saving = false,
     this.validationRequested = false,
     this.failure,
     this.savedId,
     this.fieldErrors = const {},
   });
+  final int assignedEmployees;
   final D draft, original;
-  final bool loading, saving, validationRequested;
+  final bool loading, saving, validationRequested, ready;
   final Failure? failure;
   final String? savedId;
   final Map<String, String> fieldErrors;
@@ -77,6 +80,8 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
     D? draft,
     D? original,
     bool? loading,
+    bool? ready,
+    int? assignedEmployees,
     bool? saving,
     bool? validationRequested,
     Failure? failure,
@@ -86,6 +91,8 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
     draft: draft ?? state.draft,
     original: original ?? state.original,
     loading: loading ?? state.loading,
+    ready: ready ?? state.ready,
+    assignedEmployees: assignedEmployees ?? state.assignedEmployees,
     saving: saving ?? state.saving,
     validationRequested: validationRequested ?? state.validationRequested,
     failure: failure,
@@ -100,17 +107,24 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
       case RecordFormInitialized<D>():
         emit(next(loading: true));
         if (id == null) {
-          emit(next(loading: false));
+          emit(next(loading: false, ready: true));
           return;
         }
         final result = await repository.getById(context, id!, forEditing: true);
         if (result is Success<T?> && result.value != null) {
+          final count = await repository.assignedEmployeeCount(context, id!);
+          if (count is Failed<int>) {
+            emit(next(loading: false, failure: count.failure));
+            return;
+          }
           final draft = fromRecord(result.value!);
           emit(
             next(
               draft: draft,
               original: draft,
               loading: false,
+              ready: true,
+              assignedEmployees: (count as Success<int>).value,
               errors: const {},
             ),
           );
@@ -125,7 +139,7 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
           );
         }
       case RecordDraftChanged<D>(:final update):
-        if (state.saving || state.loading) return;
+        if (state.saving || state.loading || !state.ready) return;
         final draft = normalize(update(state.draft));
         emit(
           next(
@@ -134,7 +148,7 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
           ),
         );
       case RecordSubmitted<D>():
-        if (state.loading || state.savedId != null) {
+        if (state.loading || !state.ready || state.savedId != null) {
           _submissionQueued = false;
           return;
         }

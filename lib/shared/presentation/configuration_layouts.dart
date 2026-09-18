@@ -49,8 +49,18 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
     required this.editRoute,
     required this.summary,
     required this.onActive,
+    this.summaryLabel,
+    this.summaryWidth = 180,
+    this.extraColumns = const [],
+    this.extraCells,
+    this.mobileDetails,
   });
   final String title, subtitle;
+  final String? summaryLabel;
+  final double summaryWidth;
+  final List<DataColumn> extraColumns;
+  final List<DataCell> Function(BuildContext, T)? extraCells;
+  final String Function(BuildContext, T)? mobileDetails;
   final RecordListState<T> state;
   final bool manage;
   final ValueChanged<String> onSearch;
@@ -64,16 +74,16 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
   Widget build(BuildContext c) {
     final l = c.l10n, data = state.data;
     Widget actions(ConfigurationItem<T> item) => AppActionMenu(
-      tooltip: l.empActions,
+      tooltip: l.cfgActions,
       enabled: !state.busy,
       actions: [
         AppMenuAction(
-          label: (l) => l.empView,
+          label: (l) => l.cfgView,
           onPressed: () => c.go(detailRoute(item.record.id)),
         ),
         if (manage)
           AppMenuAction(
-            label: (l) => l.empEdit,
+            label: (l) => l.cfgEdit,
             onPressed: () => c.go(editRoute(item.record.id)),
           ),
         if (manage)
@@ -88,8 +98,9 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                     active,
                     item.assignedEmployees,
                   ) &&
-                  c.mounted)
+                  c.mounted) {
                 onActive(item.record.id, active);
+              }
             },
           ),
       ],
@@ -109,7 +120,13 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
       ),
       filters: Column(
         children: [
-          AppSearchField(onChanged: onSearch),
+          AppTextField(
+            label: l.search,
+            hint: l.searchRecords,
+            initialValue: state.query,
+            onChanged: onSearch,
+            prefixIcon: Icons.search,
+          ),
           const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.sm,
@@ -139,7 +156,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
               onRetry: onRetry,
             ),
           if (state.loading)
-            const AppLoadingState()
+            const AppConfigurationSkeleton()
           else if (data != null && data.filtered == 0)
             AppEmptyState(
               title: data.total == 0 ? l.cfgEmpty : l.cfgNoResults,
@@ -151,7 +168,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
             LayoutBuilder(
               builder: (c, constraints) {
                 if (AppBreakpoints.classify(constraints.maxWidth) ==
-                    AppSize.compact)
+                    AppSize.compact) {
                   return Column(
                     children: [
                       for (final item in data.items)
@@ -175,6 +192,8 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                   ],
                                 ),
                                 Text(summary(c, item.record)),
+                                if (mobileDetails != null)
+                                  Text(mobileDetails!(c, item.record)),
                                 const SizedBox(height: AppSpacing.md),
                                 Wrap(
                                   spacing: AppSpacing.md,
@@ -198,15 +217,17 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                         ),
                     ],
                   );
+                }
                 return AppCard(
                   padding: EdgeInsets.zero,
                   child: AppDataTable(
                     columns: [
                       DataColumn(label: Text(l.cfgName)),
-                      DataColumn(label: Text(l.cfgDescription)),
+                      DataColumn(label: Text(summaryLabel ?? l.cfgDescription)),
+                      ...extraColumns,
                       DataColumn(label: Text(l.cfgStatus)),
                       DataColumn(label: Text(l.cfgAssigned)),
-                      DataColumn(label: Text(l.empActions)),
+                      DataColumn(label: Text(l.cfgActions)),
                     ],
                     rows: [
                       for (final item in data.items)
@@ -217,7 +238,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                             DataCell(Text(item.record.name)),
                             DataCell(
                               SizedBox(
-                                width: 240,
+                                width: summaryWidth,
                                 child: Text(
                                   summary(c, item.record),
                                   maxLines: 2,
@@ -225,6 +246,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                 ),
                               ),
                             ),
+                            ...?(extraCells?.call(c, item.record)),
                             DataCell(configurationBadge(c, item.record.status)),
                             DataCell(
                               Text(
@@ -274,7 +296,7 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
   Widget build(BuildContext c) {
     final l = c.l10n, item = state.detail;
     if (state.loading) return const AppPage(child: AppLoadingState());
-    if (item == null)
+    if (item == null) {
       return AppPage(
         child: state.failure == null
             ? AppEmptyState(title: l.cfgNotFound, message: l.cfgNotFoundMessage)
@@ -283,6 +305,7 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
                 onRetry: onRetry,
               ),
       );
+    }
     return AppPage(
       header: AppPageHeader(
         title: item.record.name,
@@ -290,7 +313,7 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
         actions: [
           if (manage)
             AppSecondaryButton(
-              label: l.empEdit,
+              label: l.cfgEdit,
               icon: Icons.edit_outlined,
               onPressed: state.busy ? null : onEdit,
             ),
@@ -309,8 +332,9 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
                             active,
                             item.assignedEmployees,
                           ) &&
-                          c.mounted)
+                          c.mounted) {
                         onActive(active);
+                      }
                     },
             ),
         ],
@@ -335,7 +359,7 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
                 ].join(': '),
               ),
               if (item.record.syncStatus == RecordSyncStatus.pending)
-                AppStatusBadge(label: l.empPending, status: AppStatus.warning),
+                AppStatusBadge(label: l.cfgPending, status: AppStatus.warning),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -353,6 +377,7 @@ class ConfigurationFormLayout extends StatelessWidget {
     super.key,
     required this.title,
     required this.loading,
+    required this.ready,
     required this.saving,
     required this.content,
     required this.onSave,
@@ -361,7 +386,7 @@ class ConfigurationFormLayout extends StatelessWidget {
     this.failure,
   });
   final String title;
-  final bool loading, saving;
+  final bool loading, saving, ready;
   final Failure? failure;
   final Widget content;
   final VoidCallback onSave, onCancel, onRetry;
@@ -370,7 +395,7 @@ class ConfigurationFormLayout extends StatelessWidget {
     maxWidth: 820,
     header: AppPageHeader(title: title),
     child: loading
-        ? const AppLoadingState()
+        ? const AppConfigurationSkeleton()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -379,7 +404,7 @@ class ConfigurationFormLayout extends StatelessWidget {
                   message: configurationFailure(failure!, c.l10n),
                   onRetry: onRetry,
                 ),
-              if (failure?.code != 'denied' && failure?.code != 'notFound') ...[
+              if (ready) ...[
                 content,
                 const SizedBox(height: AppSpacing.xxl),
                 Wrap(

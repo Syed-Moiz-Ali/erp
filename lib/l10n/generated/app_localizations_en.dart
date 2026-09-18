@@ -1867,4 +1867,225 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cfgSun => 'Sun';
+
+  @override
+  String get cfgActions => 'Actions';
+
+  @override
+  String get cfgValidation => 'Review the highlighted fields before saving.';
+
+  @override
+  String get cfgPending => 'Pending sync';
+
+  @override
+  String get cfgView => 'View';
+
+  @override
+  String get cfgKeepEditing => 'Keep editing';
+
+  @override
+  String get cfgDiscard => 'Discard changes?';
+
+  @override
+  String get cfgDiscardMessage =>
+      'You have unsaved changes. Discard them and leave this form?';
+
+  @override
+  String get cfgDiscardAction => 'Discard changes';
+
+  @override
+  String get attendanceNotLinkedToEmployee =>
+      'No employee profile is linked to this account';
+
+  @override
+  String get attendanceEmployeeInactive => 'Employee account is inactive';
+
+  @override
+  String get attendanceAccountInactive =>
+      'Your account is inactive or your session has ended';
+
+  @override
+  String get attendancePermissionDenied =>
+      'You do not have permission for this attendance action';
+
+  @override
+  String get attendanceShiftNotAssigned => 'No shift is assigned';
+
+  @override
+  String get attendancePolicyNotAssigned => 'No attendance policy is assigned';
+
+  @override
+  String get attendanceWorkLocationRequiredButMissing =>
+      'No work location is assigned';
+
+  @override
+  String get attendanceLocationRequired => 'Location is required';
+
+  @override
+  String get attendanceLocationUnavailable => 'Your location is unavailable';
+
+  @override
+  String get attendanceLocationPermissionDenied =>
+      'Location permission is required';
+
+  @override
+  String get attendanceLocationServicesDisabled =>
+      'Location services are disabled';
+
+  @override
+  String get attendanceLocationAccuracyTooLow => 'Location accuracy is too low';
+
+  @override
+  String get attendanceOutsideAllowedLocation =>
+      'You are outside the allowed work location';
+
+  @override
+  String get attendanceAlreadyPunchedIn => 'You have already punched in';
+
+  @override
+  String get attendanceNotPunchedIn => 'You need to punch in first';
+
+  @override
+  String get attendanceAlreadyOnBreak => 'You are already on a break';
+
+  @override
+  String get attendanceNotOnBreak => 'No active break was found';
+
+  @override
+  String get attendanceBreakTrackingDisabled => 'Break tracking is disabled';
+
+  @override
+  String get attendanceMultipleBreaksNotAllowed =>
+      'Multiple breaks are not allowed';
+
+  @override
+  String get attendancePunchOutDuringBreakNotAllowed =>
+      'Punch out is not allowed during a break';
+
+  @override
+  String get attendanceAlreadyCompleted => 'Your workday is already complete';
+
+  @override
+  String get attendanceTooEarlyToPunchIn => 'You are too early to punch in';
+
+  @override
+  String get attendanceLatePunchInNotAllowed => 'Late punch in is not allowed';
+
+  @override
+  String get attendanceEarlyPunchOutNotAllowed =>
+      'Early punch out is not allowed';
+
+  @override
+  String get attendanceUnscheduledDay => 'This is not a scheduled working day';
+
+  @override
+  String get attendanceOfflineAttendanceNotAllowed =>
+      'Offline attendance is not allowed';
+
+  @override
+  String get attendanceInvalidAttendanceState =>
+      'The attendance timeline is inconsistent';
+
+  @override
+  String get attendancePersistenceFailure =>
+      'Attendance could not be saved. Please retry';
+
+  @override
+  String get attendanceInvalidLocationEvidence =>
+      'Location evidence is invalid';
+
+  @override
+  String get attendanceStaleLocationEvidence =>
+      'Please capture your location again';
+
+  @override
+  String get attendanceRemoteAttendanceNotAllowed =>
+      'Remote attendance is not allowed';
+
+  @override
+  String get attendanceInvalidTimestamp =>
+      'The attendance timestamp is invalid';
+
+  @override
+  String get attendanceDuplicateRequestId =>
+      'This attendance request has already been submitted';
+
+  @override
+  String get attendanceOperationNotFound =>
+      'The attendance operation was not found';
+
+  @override
+  String get attendanceSyncUnavailable => 'Attendance sync is not configured';
+
+  @override
+  String get attendanceSynchronizationFailed =>
+      'Attendance synchronization failed';
+
+  @override
+  String get attendanceUnsupportedTimezone =>
+      'The company timezone is not supported yet';
+
+  @override
+  String get attendanceCompanyUnavailable =>
+      'Attendance is unavailable for this company';
+
+  @override
+  String get attendanceWarningOutsideAllowedLocation =>
+      'Outside the office location; attendance is permitted';
+
+  @override
+  String get attendanceWarningOfflinePending =>
+      'Attendance saved and waiting to sync';
+
+  @override
+  String get attendanceWarningLatePunchIn => 'Late punch in';
+
+  @override
+  String get attendanceWarningEarlyPunchOut => 'Early punch out';
+
+  @override
+  String get attendanceWarningUnscheduledDay =>
+      'Attendance on an unscheduled day';
+
+  @override
+  String get attendanceNotStarted => 'Not started';
+
+  @override
+  String get attendanceWorking => 'Working';
+
+  @override
+  String get attendanceOnBreak => 'On break';
+
+  @override
+  String get attendanceCompleted => 'Completed';
+
+  @override
+  String get attendanceLate => 'Late';
+
+  @override
+  String get attendancePending => 'Pending sync';
+
+  @override
+  String get attendanceSynced => 'Synced';
+
+  @override
+  String get attendanceFailed => 'Sync failed';
+
+  @override
+  String get attendanceRejected => 'Rejected';
+
+  @override
+  String get attendancePunchIn => 'Punch in';
+
+  @override
+  String get attendanceBreakStart => 'Start break';
+
+  @override
+  String get attendanceBreakEnd => 'Resume work';
+
+  @override
+  String get attendancePunchOut => 'Punch out';
+
+  @override
+  String get attendancePunchInNotAllowed => 'Punch in is not allowed';
 }

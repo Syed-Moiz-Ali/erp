@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/router/app_routes.dart';
 import '../../core/errors/result.dart';
+import '../../core/models/configuration_record.dart';
 import '../../core/security/app_permission.dart';
 import '../../design_system/design_system.dart';
 import '../../features/auth/domain/entities/auth_context.dart';
@@ -44,19 +45,22 @@ class ConfigurationLandingBloc
     this.policies,
   ) : super(const ConfigurationLandingState({}, {})) {
     on<ConfigurationLandingStarted>((event, emit) {
-      void watch(String key, Stream<dynamic> stream) {
+      void watch<T extends ConfigurationRecord>(
+        String key,
+        Stream<Result<ConfigurationPageData<T>>> stream,
+      ) {
         _subscriptions.add(
           stream.listen(
-            (dynamic result) {
+            (result) {
               if (isClosed) return;
-              if (result is Success) {
-                add(_CountUpdated(key, result.value.total as int, null));
-              } else if (result is Failed) {
+              if (result is Success<ConfigurationPageData<T>>) {
+                add(_CountUpdated(key, result.value.total, null));
+              } else if (result is Failed<ConfigurationPageData<T>>) {
                 add(_CountUpdated(key, null, result.failure));
               }
             },
             onError: (Object _) {
-              if (!isClosed)
+              if (!isClosed) {
                 add(
                   _CountUpdated(
                     key,
@@ -64,20 +68,26 @@ class ConfigurationLandingBloc
                     const Failure(code: 'databaseFailure'),
                   ),
                 );
+              }
             },
           ),
         );
       }
 
       if (shifts != null &&
-          account.user.permissions.contains(AppPermission.shiftView))
+          account.user.permissions.contains(AppPermission.shiftView)) {
         watch('shifts', shifts!.watchList(account, pageSize: 1));
+      }
       if (locations != null &&
-          account.user.permissions.contains(AppPermission.workLocationView))
+          account.user.permissions.contains(AppPermission.workLocationView)) {
         watch('locations', locations!.watchList(account, pageSize: 1));
+      }
       if (policies != null &&
-          account.user.permissions.contains(AppPermission.attendancePolicyView))
+          account.user.permissions.contains(
+            AppPermission.attendancePolicyView,
+          )) {
         watch('policies', policies!.watchList(account, pageSize: 1));
+      }
     });
     on<_CountUpdated>((e, emit) {
       final failures = {...state.failures}..remove(e.key);

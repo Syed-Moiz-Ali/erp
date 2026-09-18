@@ -117,6 +117,12 @@ class AppSelectField<T> extends StatelessWidget {
                           context.l10n.selectOption,
                       style: AppTypography.of(context).body,
                     ),
+                    if (options
+                            .where((o) => o.value == value)
+                            .firstOrNull
+                            ?.subtitle
+                        case final subtitle?)
+                      Text(subtitle, style: AppTypography.of(context).caption),
                   ],
                 ),
               ),

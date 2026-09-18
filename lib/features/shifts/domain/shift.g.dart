@@ -37,8 +37,8 @@ Map<String, dynamic> _$ShiftToJson(_Shift instance) => <String, dynamic>{
   'companyId': instance.companyId,
   'name': instance.name,
   'code': instance.code,
-  'startTime': instance.startTime,
-  'endTime': instance.endTime,
+  'startTime': instance.startTime.toJson(),
+  'endTime': instance.endTime.toJson(),
   'workingDays': instance.workingDays
       .map((e) => _$WorkingDayEnumMap[e]!)
       .toList(),

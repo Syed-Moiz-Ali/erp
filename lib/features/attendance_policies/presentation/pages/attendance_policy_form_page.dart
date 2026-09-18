@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/models/configuration_record.dart';
+import '../../../../core/security/app_permission.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/navigation/form_navigation_guard.dart';
@@ -24,7 +26,13 @@ class AttendancePolicyFormPage extends StatelessWidget {
         guard.dirty = false;
         guard.saving = false;
         AppFeedback.showMessage(c, message: (l) => l.cfgSaved);
-        c.go(AppRoutes.attendancePoliciesDetails(s.savedId!));
+        c.go(
+          c.read<AttendancePolicyFormBloc>().context.user.permissions.contains(
+                AppPermission.attendancePolicyView,
+              )
+              ? AppRoutes.attendancePoliciesDetails(s.savedId!)
+              : AppRoutes.dashboard,
+        );
       }
     },
     builder: (c, s) {
@@ -46,13 +54,36 @@ class AttendancePolicyFormPage extends StatelessWidget {
             bloc.id == null ? l.cfgNew : l.cfgEdit,
           ].join(' · '),
           loading: s.loading,
+          ready: s.ready,
           saving: s.saving,
           failure: s.failure,
-          onSave: () =>
-              bloc.add(const RecordSubmitted<AttendancePolicyDraft>()),
-          onCancel: () => c.go(AppRoutes.attendancePolicies),
-          onRetry: () =>
-              bloc.add(const RecordFormInitialized<AttendancePolicyDraft>()),
+          onSave: () async {
+            if (bloc.id != null &&
+                s.original.status == ConfigurationStatus.active &&
+                d.status == ConfigurationStatus.inactive &&
+                !await confirmConfigurationStatus(
+                  c,
+                  false,
+                  s.assignedEmployees,
+                )) {
+              return;
+            }
+            if (c.mounted) {
+              bloc.add(const RecordSubmitted<AttendancePolicyDraft>());
+            }
+          },
+          onCancel: () => c.go(
+            bloc.context.user.permissions.contains(
+                  AppPermission.attendancePolicyView,
+                )
+                ? AppRoutes.attendancePolicies
+                : AppRoutes.dashboard,
+          ),
+          onRetry: () => bloc.add(
+            s.validationRequested
+                ? const RecordSubmitted<AttendancePolicyDraft>()
+                : const RecordFormInitialized<AttendancePolicyDraft>(),
+          ),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -280,6 +311,24 @@ class AttendancePolicyFormPage extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(height: AppSpacing.xxl),
+              AppFormSection(
+                title: l.cfgStatus,
+                child: AppSwitchField(
+                  label: l.cfgActive,
+                  value: d.status == ConfigurationStatus.active,
+                  onChanged: s.saving
+                      ? null
+                      : (value) => change(
+                          (d) => d.copyWith(
+                            status: value
+                                ? ConfigurationStatus.active
+                                : ConfigurationStatus.inactive,
+                          ),
+                        ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xxl),
             ],
           ),
         ),

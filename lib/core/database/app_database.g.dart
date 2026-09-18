@@ -73,6 +73,61 @@ class $SyncOutboxTable extends SyncOutbox
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  static const VerificationMeta _lastAttemptAtMeta = const VerificationMeta(
+    'lastAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastAttemptAt =
+      GeneratedColumn<DateTime>(
+        'last_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _failureCodeMeta = const VerificationMeta(
+    'failureCode',
+  );
+  @override
+  late final GeneratedColumn<String> failureCode = GeneratedColumn<String>(
+    'failure_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _attemptsMeta = const VerificationMeta(
     'attempts',
   );
@@ -93,6 +148,11 @@ class $SyncOutboxTable extends SyncOutbox
     operation,
     payload,
     createdAt,
+    companyId,
+    requestId,
+    status,
+    lastAttemptAt,
+    failureCode,
     attempts,
   ];
   @override
@@ -152,6 +212,42 @@ class $SyncOutboxTable extends SyncOutbox
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('last_attempt_at')) {
+      context.handle(
+        _lastAttemptAtMeta,
+        lastAttemptAt.isAcceptableOrUnknown(
+          data['last_attempt_at']!,
+          _lastAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('failure_code')) {
+      context.handle(
+        _failureCodeMeta,
+        failureCode.isAcceptableOrUnknown(
+          data['failure_code']!,
+          _failureCodeMeta,
+        ),
+      );
+    }
     if (data.containsKey('attempts')) {
       context.handle(
         _attemptsMeta,
@@ -191,6 +287,26 @@ class $SyncOutboxTable extends SyncOutbox
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
       )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      ),
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      lastAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_attempt_at'],
+      ),
+      failureCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}failure_code'],
+      ),
       attempts: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}attempts'],
@@ -211,6 +327,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
   final String operation;
   final String payload;
   final DateTime createdAt;
+  final String? companyId;
+  final String? requestId;
+  final String status;
+  final DateTime? lastAttemptAt;
+  final String? failureCode;
   final int attempts;
   const SyncOutboxData({
     required this.id,
@@ -219,6 +340,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
     required this.operation,
     required this.payload,
     required this.createdAt,
+    this.companyId,
+    this.requestId,
+    required this.status,
+    this.lastAttemptAt,
+    this.failureCode,
     required this.attempts,
   });
   @override
@@ -230,6 +356,19 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
     map['operation'] = Variable<String>(operation);
     map['payload'] = Variable<String>(payload);
     map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || companyId != null) {
+      map['company_id'] = Variable<String>(companyId);
+    }
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || lastAttemptAt != null) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt);
+    }
+    if (!nullToAbsent || failureCode != null) {
+      map['failure_code'] = Variable<String>(failureCode);
+    }
     map['attempts'] = Variable<int>(attempts);
     return map;
   }
@@ -242,6 +381,19 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
       operation: Value(operation),
       payload: Value(payload),
       createdAt: Value(createdAt),
+      companyId: companyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(companyId),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+      status: Value(status),
+      lastAttemptAt: lastAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastAttemptAt),
+      failureCode: failureCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(failureCode),
       attempts: Value(attempts),
     );
   }
@@ -258,6 +410,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
       operation: serializer.fromJson<String>(json['operation']),
       payload: serializer.fromJson<String>(json['payload']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      companyId: serializer.fromJson<String?>(json['companyId']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+      status: serializer.fromJson<String>(json['status']),
+      lastAttemptAt: serializer.fromJson<DateTime?>(json['lastAttemptAt']),
+      failureCode: serializer.fromJson<String?>(json['failureCode']),
       attempts: serializer.fromJson<int>(json['attempts']),
     );
   }
@@ -271,6 +428,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
       'operation': serializer.toJson<String>(operation),
       'payload': serializer.toJson<String>(payload),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'companyId': serializer.toJson<String?>(companyId),
+      'requestId': serializer.toJson<String?>(requestId),
+      'status': serializer.toJson<String>(status),
+      'lastAttemptAt': serializer.toJson<DateTime?>(lastAttemptAt),
+      'failureCode': serializer.toJson<String?>(failureCode),
       'attempts': serializer.toJson<int>(attempts),
     };
   }
@@ -282,6 +444,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
     String? operation,
     String? payload,
     DateTime? createdAt,
+    Value<String?> companyId = const Value.absent(),
+    Value<String?> requestId = const Value.absent(),
+    String? status,
+    Value<DateTime?> lastAttemptAt = const Value.absent(),
+    Value<String?> failureCode = const Value.absent(),
     int? attempts,
   }) => SyncOutboxData(
     id: id ?? this.id,
@@ -290,6 +457,13 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
     operation: operation ?? this.operation,
     payload: payload ?? this.payload,
     createdAt: createdAt ?? this.createdAt,
+    companyId: companyId.present ? companyId.value : this.companyId,
+    requestId: requestId.present ? requestId.value : this.requestId,
+    status: status ?? this.status,
+    lastAttemptAt: lastAttemptAt.present
+        ? lastAttemptAt.value
+        : this.lastAttemptAt,
+    failureCode: failureCode.present ? failureCode.value : this.failureCode,
     attempts: attempts ?? this.attempts,
   );
   SyncOutboxData copyWithCompanion(SyncOutboxCompanion data) {
@@ -300,6 +474,15 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
       operation: data.operation.present ? data.operation.value : this.operation,
       payload: data.payload.present ? data.payload.value : this.payload,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      status: data.status.present ? data.status.value : this.status,
+      lastAttemptAt: data.lastAttemptAt.present
+          ? data.lastAttemptAt.value
+          : this.lastAttemptAt,
+      failureCode: data.failureCode.present
+          ? data.failureCode.value
+          : this.failureCode,
       attempts: data.attempts.present ? data.attempts.value : this.attempts,
     );
   }
@@ -313,6 +496,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
           ..write('operation: $operation, ')
           ..write('payload: $payload, ')
           ..write('createdAt: $createdAt, ')
+          ..write('companyId: $companyId, ')
+          ..write('requestId: $requestId, ')
+          ..write('status: $status, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('failureCode: $failureCode, ')
           ..write('attempts: $attempts')
           ..write(')'))
         .toString();
@@ -326,6 +514,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
     operation,
     payload,
     createdAt,
+    companyId,
+    requestId,
+    status,
+    lastAttemptAt,
+    failureCode,
     attempts,
   );
   @override
@@ -338,6 +531,11 @@ class SyncOutboxData extends DataClass implements Insertable<SyncOutboxData> {
           other.operation == this.operation &&
           other.payload == this.payload &&
           other.createdAt == this.createdAt &&
+          other.companyId == this.companyId &&
+          other.requestId == this.requestId &&
+          other.status == this.status &&
+          other.lastAttemptAt == this.lastAttemptAt &&
+          other.failureCode == this.failureCode &&
           other.attempts == this.attempts);
 }
 
@@ -348,6 +546,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
   final Value<String> operation;
   final Value<String> payload;
   final Value<DateTime> createdAt;
+  final Value<String?> companyId;
+  final Value<String?> requestId;
+  final Value<String> status;
+  final Value<DateTime?> lastAttemptAt;
+  final Value<String?> failureCode;
   final Value<int> attempts;
   final Value<int> rowid;
   const SyncOutboxCompanion({
@@ -357,6 +560,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
     this.operation = const Value.absent(),
     this.payload = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.failureCode = const Value.absent(),
     this.attempts = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -367,6 +575,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
     required String operation,
     required String payload,
     required DateTime createdAt,
+    this.companyId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.failureCode = const Value.absent(),
     this.attempts = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -382,6 +595,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
     Expression<String>? operation,
     Expression<String>? payload,
     Expression<DateTime>? createdAt,
+    Expression<String>? companyId,
+    Expression<String>? requestId,
+    Expression<String>? status,
+    Expression<DateTime>? lastAttemptAt,
+    Expression<String>? failureCode,
     Expression<int>? attempts,
     Expression<int>? rowid,
   }) {
@@ -392,6 +610,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
       if (operation != null) 'operation': operation,
       if (payload != null) 'payload': payload,
       if (createdAt != null) 'created_at': createdAt,
+      if (companyId != null) 'company_id': companyId,
+      if (requestId != null) 'request_id': requestId,
+      if (status != null) 'status': status,
+      if (lastAttemptAt != null) 'last_attempt_at': lastAttemptAt,
+      if (failureCode != null) 'failure_code': failureCode,
       if (attempts != null) 'attempts': attempts,
       if (rowid != null) 'rowid': rowid,
     });
@@ -404,6 +627,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
     Value<String>? operation,
     Value<String>? payload,
     Value<DateTime>? createdAt,
+    Value<String?>? companyId,
+    Value<String?>? requestId,
+    Value<String>? status,
+    Value<DateTime?>? lastAttemptAt,
+    Value<String?>? failureCode,
     Value<int>? attempts,
     Value<int>? rowid,
   }) {
@@ -414,6 +642,11 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
       operation: operation ?? this.operation,
       payload: payload ?? this.payload,
       createdAt: createdAt ?? this.createdAt,
+      companyId: companyId ?? this.companyId,
+      requestId: requestId ?? this.requestId,
+      status: status ?? this.status,
+      lastAttemptAt: lastAttemptAt ?? this.lastAttemptAt,
+      failureCode: failureCode ?? this.failureCode,
       attempts: attempts ?? this.attempts,
       rowid: rowid ?? this.rowid,
     );
@@ -440,6 +673,21 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (lastAttemptAt.present) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt.value);
+    }
+    if (failureCode.present) {
+      map['failure_code'] = Variable<String>(failureCode.value);
+    }
     if (attempts.present) {
       map['attempts'] = Variable<int>(attempts.value);
     }
@@ -458,7 +706,2253 @@ class SyncOutboxCompanion extends UpdateCompanion<SyncOutboxData> {
           ..write('operation: $operation, ')
           ..write('payload: $payload, ')
           ..write('createdAt: $createdAt, ')
+          ..write('companyId: $companyId, ')
+          ..write('requestId: $requestId, ')
+          ..write('status: $status, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('failureCode: $failureCode, ')
           ..write('attempts: $attempts, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttendanceDaysTable extends AttendanceDays
+    with TableInfo<$AttendanceDaysTable, AttendanceDayData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendanceDaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attendanceDateMeta = const VerificationMeta(
+    'attendanceDate',
+  );
+  @override
+  late final GeneratedColumn<String> attendanceDate = GeneratedColumn<String>(
+    'attendance_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shiftIdMeta = const VerificationMeta(
+    'shiftId',
+  );
+  @override
+  late final GeneratedColumn<String> shiftId = GeneratedColumn<String>(
+    'shift_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _policyIdMeta = const VerificationMeta(
+    'policyId',
+  );
+  @override
+  late final GeneratedColumn<String> policyId = GeneratedColumn<String>(
+    'policy_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _workLocationIdMeta = const VerificationMeta(
+    'workLocationId',
+  );
+  @override
+  late final GeneratedColumn<String> workLocationId = GeneratedColumn<String>(
+    'work_location_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _configurationSnapshotMeta =
+      const VerificationMeta('configurationSnapshot');
+  @override
+  late final GeneratedColumn<String> configurationSnapshot =
+      GeneratedColumn<String>(
+        'configuration_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _punchInMillisecondsMeta =
+      const VerificationMeta('punchInMilliseconds');
+  @override
+  late final GeneratedColumn<int> punchInMilliseconds = GeneratedColumn<int>(
+    'punch_in_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _punchOutMillisecondsMeta =
+      const VerificationMeta('punchOutMilliseconds');
+  @override
+  late final GeneratedColumn<int> punchOutMilliseconds = GeneratedColumn<int>(
+    'punch_out_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _elapsedMillisecondsMeta =
+      const VerificationMeta('elapsedMilliseconds');
+  @override
+  late final GeneratedColumn<int> elapsedMilliseconds = GeneratedColumn<int>(
+    'elapsed_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _breakMillisecondsMeta = const VerificationMeta(
+    'breakMilliseconds',
+  );
+  @override
+  late final GeneratedColumn<int> breakMilliseconds = GeneratedColumn<int>(
+    'break_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _workMillisecondsMeta = const VerificationMeta(
+    'workMilliseconds',
+  );
+  @override
+  late final GeneratedColumn<int> workMilliseconds = GeneratedColumn<int>(
+    'work_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    employeeId,
+    attendanceDate,
+    shiftId,
+    policyId,
+    workLocationId,
+    configurationSnapshot,
+    state,
+    punchInMilliseconds,
+    punchOutMilliseconds,
+    elapsedMilliseconds,
+    breakMilliseconds,
+    workMilliseconds,
+    status,
+    syncStatus,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance_days';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendanceDayData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('attendance_date')) {
+      context.handle(
+        _attendanceDateMeta,
+        attendanceDate.isAcceptableOrUnknown(
+          data['attendance_date']!,
+          _attendanceDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_attendanceDateMeta);
+    }
+    if (data.containsKey('shift_id')) {
+      context.handle(
+        _shiftIdMeta,
+        shiftId.isAcceptableOrUnknown(data['shift_id']!, _shiftIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shiftIdMeta);
+    }
+    if (data.containsKey('policy_id')) {
+      context.handle(
+        _policyIdMeta,
+        policyId.isAcceptableOrUnknown(data['policy_id']!, _policyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_policyIdMeta);
+    }
+    if (data.containsKey('work_location_id')) {
+      context.handle(
+        _workLocationIdMeta,
+        workLocationId.isAcceptableOrUnknown(
+          data['work_location_id']!,
+          _workLocationIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('configuration_snapshot')) {
+      context.handle(
+        _configurationSnapshotMeta,
+        configurationSnapshot.isAcceptableOrUnknown(
+          data['configuration_snapshot']!,
+          _configurationSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_configurationSnapshotMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('punch_in_milliseconds')) {
+      context.handle(
+        _punchInMillisecondsMeta,
+        punchInMilliseconds.isAcceptableOrUnknown(
+          data['punch_in_milliseconds']!,
+          _punchInMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('punch_out_milliseconds')) {
+      context.handle(
+        _punchOutMillisecondsMeta,
+        punchOutMilliseconds.isAcceptableOrUnknown(
+          data['punch_out_milliseconds']!,
+          _punchOutMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('elapsed_milliseconds')) {
+      context.handle(
+        _elapsedMillisecondsMeta,
+        elapsedMilliseconds.isAcceptableOrUnknown(
+          data['elapsed_milliseconds']!,
+          _elapsedMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('break_milliseconds')) {
+      context.handle(
+        _breakMillisecondsMeta,
+        breakMilliseconds.isAcceptableOrUnknown(
+          data['break_milliseconds']!,
+          _breakMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('work_milliseconds')) {
+      context.handle(
+        _workMillisecondsMeta,
+        workMilliseconds.isAcceptableOrUnknown(
+          data['work_milliseconds']!,
+          _workMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, employeeId, attendanceDate},
+  ];
+  @override
+  AttendanceDayData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendanceDayData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      attendanceDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attendance_date'],
+      )!,
+      shiftId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shift_id'],
+      )!,
+      policyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}policy_id'],
+      )!,
+      workLocationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work_location_id'],
+      ),
+      configurationSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}configuration_snapshot'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      punchInMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}punch_in_milliseconds'],
+      ),
+      punchOutMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}punch_out_milliseconds'],
+      ),
+      elapsedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}elapsed_milliseconds'],
+      )!,
+      breakMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}break_milliseconds'],
+      )!,
+      workMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}work_milliseconds'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendanceDaysTable createAlias(String alias) {
+    return $AttendanceDaysTable(attachedDatabase, alias);
+  }
+}
+
+class AttendanceDayData extends DataClass
+    implements Insertable<AttendanceDayData> {
+  final String id;
+  final String companyId;
+  final String employeeId;
+  final String attendanceDate;
+  final String shiftId;
+  final String policyId;
+  final String? workLocationId;
+  final String configurationSnapshot;
+  final String state;
+  final int? punchInMilliseconds;
+  final int? punchOutMilliseconds;
+  final int elapsedMilliseconds;
+  final int breakMilliseconds;
+  final int workMilliseconds;
+  final String status;
+  final String syncStatus;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const AttendanceDayData({
+    required this.id,
+    required this.companyId,
+    required this.employeeId,
+    required this.attendanceDate,
+    required this.shiftId,
+    required this.policyId,
+    this.workLocationId,
+    required this.configurationSnapshot,
+    required this.state,
+    this.punchInMilliseconds,
+    this.punchOutMilliseconds,
+    required this.elapsedMilliseconds,
+    required this.breakMilliseconds,
+    required this.workMilliseconds,
+    required this.status,
+    required this.syncStatus,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['attendance_date'] = Variable<String>(attendanceDate);
+    map['shift_id'] = Variable<String>(shiftId);
+    map['policy_id'] = Variable<String>(policyId);
+    if (!nullToAbsent || workLocationId != null) {
+      map['work_location_id'] = Variable<String>(workLocationId);
+    }
+    map['configuration_snapshot'] = Variable<String>(configurationSnapshot);
+    map['state'] = Variable<String>(state);
+    if (!nullToAbsent || punchInMilliseconds != null) {
+      map['punch_in_milliseconds'] = Variable<int>(punchInMilliseconds);
+    }
+    if (!nullToAbsent || punchOutMilliseconds != null) {
+      map['punch_out_milliseconds'] = Variable<int>(punchOutMilliseconds);
+    }
+    map['elapsed_milliseconds'] = Variable<int>(elapsedMilliseconds);
+    map['break_milliseconds'] = Variable<int>(breakMilliseconds);
+    map['work_milliseconds'] = Variable<int>(workMilliseconds);
+    map['status'] = Variable<String>(status);
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  AttendanceDaysCompanion toCompanion(bool nullToAbsent) {
+    return AttendanceDaysCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      attendanceDate: Value(attendanceDate),
+      shiftId: Value(shiftId),
+      policyId: Value(policyId),
+      workLocationId: workLocationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(workLocationId),
+      configurationSnapshot: Value(configurationSnapshot),
+      state: Value(state),
+      punchInMilliseconds: punchInMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(punchInMilliseconds),
+      punchOutMilliseconds: punchOutMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(punchOutMilliseconds),
+      elapsedMilliseconds: Value(elapsedMilliseconds),
+      breakMilliseconds: Value(breakMilliseconds),
+      workMilliseconds: Value(workMilliseconds),
+      status: Value(status),
+      syncStatus: Value(syncStatus),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory AttendanceDayData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendanceDayData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      attendanceDate: serializer.fromJson<String>(json['attendanceDate']),
+      shiftId: serializer.fromJson<String>(json['shiftId']),
+      policyId: serializer.fromJson<String>(json['policyId']),
+      workLocationId: serializer.fromJson<String?>(json['workLocationId']),
+      configurationSnapshot: serializer.fromJson<String>(
+        json['configurationSnapshot'],
+      ),
+      state: serializer.fromJson<String>(json['state']),
+      punchInMilliseconds: serializer.fromJson<int?>(
+        json['punchInMilliseconds'],
+      ),
+      punchOutMilliseconds: serializer.fromJson<int?>(
+        json['punchOutMilliseconds'],
+      ),
+      elapsedMilliseconds: serializer.fromJson<int>(
+        json['elapsedMilliseconds'],
+      ),
+      breakMilliseconds: serializer.fromJson<int>(json['breakMilliseconds']),
+      workMilliseconds: serializer.fromJson<int>(json['workMilliseconds']),
+      status: serializer.fromJson<String>(json['status']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'attendanceDate': serializer.toJson<String>(attendanceDate),
+      'shiftId': serializer.toJson<String>(shiftId),
+      'policyId': serializer.toJson<String>(policyId),
+      'workLocationId': serializer.toJson<String?>(workLocationId),
+      'configurationSnapshot': serializer.toJson<String>(configurationSnapshot),
+      'state': serializer.toJson<String>(state),
+      'punchInMilliseconds': serializer.toJson<int?>(punchInMilliseconds),
+      'punchOutMilliseconds': serializer.toJson<int?>(punchOutMilliseconds),
+      'elapsedMilliseconds': serializer.toJson<int>(elapsedMilliseconds),
+      'breakMilliseconds': serializer.toJson<int>(breakMilliseconds),
+      'workMilliseconds': serializer.toJson<int>(workMilliseconds),
+      'status': serializer.toJson<String>(status),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  AttendanceDayData copyWith({
+    String? id,
+    String? companyId,
+    String? employeeId,
+    String? attendanceDate,
+    String? shiftId,
+    String? policyId,
+    Value<String?> workLocationId = const Value.absent(),
+    String? configurationSnapshot,
+    String? state,
+    Value<int?> punchInMilliseconds = const Value.absent(),
+    Value<int?> punchOutMilliseconds = const Value.absent(),
+    int? elapsedMilliseconds,
+    int? breakMilliseconds,
+    int? workMilliseconds,
+    String? status,
+    String? syncStatus,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => AttendanceDayData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    attendanceDate: attendanceDate ?? this.attendanceDate,
+    shiftId: shiftId ?? this.shiftId,
+    policyId: policyId ?? this.policyId,
+    workLocationId: workLocationId.present
+        ? workLocationId.value
+        : this.workLocationId,
+    configurationSnapshot: configurationSnapshot ?? this.configurationSnapshot,
+    state: state ?? this.state,
+    punchInMilliseconds: punchInMilliseconds.present
+        ? punchInMilliseconds.value
+        : this.punchInMilliseconds,
+    punchOutMilliseconds: punchOutMilliseconds.present
+        ? punchOutMilliseconds.value
+        : this.punchOutMilliseconds,
+    elapsedMilliseconds: elapsedMilliseconds ?? this.elapsedMilliseconds,
+    breakMilliseconds: breakMilliseconds ?? this.breakMilliseconds,
+    workMilliseconds: workMilliseconds ?? this.workMilliseconds,
+    status: status ?? this.status,
+    syncStatus: syncStatus ?? this.syncStatus,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  AttendanceDayData copyWithCompanion(AttendanceDaysCompanion data) {
+    return AttendanceDayData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      attendanceDate: data.attendanceDate.present
+          ? data.attendanceDate.value
+          : this.attendanceDate,
+      shiftId: data.shiftId.present ? data.shiftId.value : this.shiftId,
+      policyId: data.policyId.present ? data.policyId.value : this.policyId,
+      workLocationId: data.workLocationId.present
+          ? data.workLocationId.value
+          : this.workLocationId,
+      configurationSnapshot: data.configurationSnapshot.present
+          ? data.configurationSnapshot.value
+          : this.configurationSnapshot,
+      state: data.state.present ? data.state.value : this.state,
+      punchInMilliseconds: data.punchInMilliseconds.present
+          ? data.punchInMilliseconds.value
+          : this.punchInMilliseconds,
+      punchOutMilliseconds: data.punchOutMilliseconds.present
+          ? data.punchOutMilliseconds.value
+          : this.punchOutMilliseconds,
+      elapsedMilliseconds: data.elapsedMilliseconds.present
+          ? data.elapsedMilliseconds.value
+          : this.elapsedMilliseconds,
+      breakMilliseconds: data.breakMilliseconds.present
+          ? data.breakMilliseconds.value
+          : this.breakMilliseconds,
+      workMilliseconds: data.workMilliseconds.present
+          ? data.workMilliseconds.value
+          : this.workMilliseconds,
+      status: data.status.present ? data.status.value : this.status,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceDayData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('attendanceDate: $attendanceDate, ')
+          ..write('shiftId: $shiftId, ')
+          ..write('policyId: $policyId, ')
+          ..write('workLocationId: $workLocationId, ')
+          ..write('configurationSnapshot: $configurationSnapshot, ')
+          ..write('state: $state, ')
+          ..write('punchInMilliseconds: $punchInMilliseconds, ')
+          ..write('punchOutMilliseconds: $punchOutMilliseconds, ')
+          ..write('elapsedMilliseconds: $elapsedMilliseconds, ')
+          ..write('breakMilliseconds: $breakMilliseconds, ')
+          ..write('workMilliseconds: $workMilliseconds, ')
+          ..write('status: $status, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    employeeId,
+    attendanceDate,
+    shiftId,
+    policyId,
+    workLocationId,
+    configurationSnapshot,
+    state,
+    punchInMilliseconds,
+    punchOutMilliseconds,
+    elapsedMilliseconds,
+    breakMilliseconds,
+    workMilliseconds,
+    status,
+    syncStatus,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendanceDayData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.attendanceDate == this.attendanceDate &&
+          other.shiftId == this.shiftId &&
+          other.policyId == this.policyId &&
+          other.workLocationId == this.workLocationId &&
+          other.configurationSnapshot == this.configurationSnapshot &&
+          other.state == this.state &&
+          other.punchInMilliseconds == this.punchInMilliseconds &&
+          other.punchOutMilliseconds == this.punchOutMilliseconds &&
+          other.elapsedMilliseconds == this.elapsedMilliseconds &&
+          other.breakMilliseconds == this.breakMilliseconds &&
+          other.workMilliseconds == this.workMilliseconds &&
+          other.status == this.status &&
+          other.syncStatus == this.syncStatus &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class AttendanceDaysCompanion extends UpdateCompanion<AttendanceDayData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> attendanceDate;
+  final Value<String> shiftId;
+  final Value<String> policyId;
+  final Value<String?> workLocationId;
+  final Value<String> configurationSnapshot;
+  final Value<String> state;
+  final Value<int?> punchInMilliseconds;
+  final Value<int?> punchOutMilliseconds;
+  final Value<int> elapsedMilliseconds;
+  final Value<int> breakMilliseconds;
+  final Value<int> workMilliseconds;
+  final Value<String> status;
+  final Value<String> syncStatus;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const AttendanceDaysCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.attendanceDate = const Value.absent(),
+    this.shiftId = const Value.absent(),
+    this.policyId = const Value.absent(),
+    this.workLocationId = const Value.absent(),
+    this.configurationSnapshot = const Value.absent(),
+    this.state = const Value.absent(),
+    this.punchInMilliseconds = const Value.absent(),
+    this.punchOutMilliseconds = const Value.absent(),
+    this.elapsedMilliseconds = const Value.absent(),
+    this.breakMilliseconds = const Value.absent(),
+    this.workMilliseconds = const Value.absent(),
+    this.status = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttendanceDaysCompanion.insert({
+    required String id,
+    required String companyId,
+    required String employeeId,
+    required String attendanceDate,
+    required String shiftId,
+    required String policyId,
+    this.workLocationId = const Value.absent(),
+    required String configurationSnapshot,
+    required String state,
+    this.punchInMilliseconds = const Value.absent(),
+    this.punchOutMilliseconds = const Value.absent(),
+    this.elapsedMilliseconds = const Value.absent(),
+    this.breakMilliseconds = const Value.absent(),
+    this.workMilliseconds = const Value.absent(),
+    required String status,
+    required String syncStatus,
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       attendanceDate = Value(attendanceDate),
+       shiftId = Value(shiftId),
+       policyId = Value(policyId),
+       configurationSnapshot = Value(configurationSnapshot),
+       state = Value(state),
+       status = Value(status),
+       syncStatus = Value(syncStatus),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<AttendanceDayData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? attendanceDate,
+    Expression<String>? shiftId,
+    Expression<String>? policyId,
+    Expression<String>? workLocationId,
+    Expression<String>? configurationSnapshot,
+    Expression<String>? state,
+    Expression<int>? punchInMilliseconds,
+    Expression<int>? punchOutMilliseconds,
+    Expression<int>? elapsedMilliseconds,
+    Expression<int>? breakMilliseconds,
+    Expression<int>? workMilliseconds,
+    Expression<String>? status,
+    Expression<String>? syncStatus,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (attendanceDate != null) 'attendance_date': attendanceDate,
+      if (shiftId != null) 'shift_id': shiftId,
+      if (policyId != null) 'policy_id': policyId,
+      if (workLocationId != null) 'work_location_id': workLocationId,
+      if (configurationSnapshot != null)
+        'configuration_snapshot': configurationSnapshot,
+      if (state != null) 'state': state,
+      if (punchInMilliseconds != null)
+        'punch_in_milliseconds': punchInMilliseconds,
+      if (punchOutMilliseconds != null)
+        'punch_out_milliseconds': punchOutMilliseconds,
+      if (elapsedMilliseconds != null)
+        'elapsed_milliseconds': elapsedMilliseconds,
+      if (breakMilliseconds != null) 'break_milliseconds': breakMilliseconds,
+      if (workMilliseconds != null) 'work_milliseconds': workMilliseconds,
+      if (status != null) 'status': status,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttendanceDaysCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? attendanceDate,
+    Value<String>? shiftId,
+    Value<String>? policyId,
+    Value<String?>? workLocationId,
+    Value<String>? configurationSnapshot,
+    Value<String>? state,
+    Value<int?>? punchInMilliseconds,
+    Value<int?>? punchOutMilliseconds,
+    Value<int>? elapsedMilliseconds,
+    Value<int>? breakMilliseconds,
+    Value<int>? workMilliseconds,
+    Value<String>? status,
+    Value<String>? syncStatus,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return AttendanceDaysCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      attendanceDate: attendanceDate ?? this.attendanceDate,
+      shiftId: shiftId ?? this.shiftId,
+      policyId: policyId ?? this.policyId,
+      workLocationId: workLocationId ?? this.workLocationId,
+      configurationSnapshot:
+          configurationSnapshot ?? this.configurationSnapshot,
+      state: state ?? this.state,
+      punchInMilliseconds: punchInMilliseconds ?? this.punchInMilliseconds,
+      punchOutMilliseconds: punchOutMilliseconds ?? this.punchOutMilliseconds,
+      elapsedMilliseconds: elapsedMilliseconds ?? this.elapsedMilliseconds,
+      breakMilliseconds: breakMilliseconds ?? this.breakMilliseconds,
+      workMilliseconds: workMilliseconds ?? this.workMilliseconds,
+      status: status ?? this.status,
+      syncStatus: syncStatus ?? this.syncStatus,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (attendanceDate.present) {
+      map['attendance_date'] = Variable<String>(attendanceDate.value);
+    }
+    if (shiftId.present) {
+      map['shift_id'] = Variable<String>(shiftId.value);
+    }
+    if (policyId.present) {
+      map['policy_id'] = Variable<String>(policyId.value);
+    }
+    if (workLocationId.present) {
+      map['work_location_id'] = Variable<String>(workLocationId.value);
+    }
+    if (configurationSnapshot.present) {
+      map['configuration_snapshot'] = Variable<String>(
+        configurationSnapshot.value,
+      );
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (punchInMilliseconds.present) {
+      map['punch_in_milliseconds'] = Variable<int>(punchInMilliseconds.value);
+    }
+    if (punchOutMilliseconds.present) {
+      map['punch_out_milliseconds'] = Variable<int>(punchOutMilliseconds.value);
+    }
+    if (elapsedMilliseconds.present) {
+      map['elapsed_milliseconds'] = Variable<int>(elapsedMilliseconds.value);
+    }
+    if (breakMilliseconds.present) {
+      map['break_milliseconds'] = Variable<int>(breakMilliseconds.value);
+    }
+    if (workMilliseconds.present) {
+      map['work_milliseconds'] = Variable<int>(workMilliseconds.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceDaysCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('attendanceDate: $attendanceDate, ')
+          ..write('shiftId: $shiftId, ')
+          ..write('policyId: $policyId, ')
+          ..write('workLocationId: $workLocationId, ')
+          ..write('configurationSnapshot: $configurationSnapshot, ')
+          ..write('state: $state, ')
+          ..write('punchInMilliseconds: $punchInMilliseconds, ')
+          ..write('punchOutMilliseconds: $punchOutMilliseconds, ')
+          ..write('elapsedMilliseconds: $elapsedMilliseconds, ')
+          ..write('breakMilliseconds: $breakMilliseconds, ')
+          ..write('workMilliseconds: $workMilliseconds, ')
+          ..write('status: $status, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttendanceEventsTable extends AttendanceEvents
+    with TableInfo<$AttendanceEventsTable, AttendanceEventData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendanceEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attendanceDayIdMeta = const VerificationMeta(
+    'attendanceDayId',
+  );
+  @override
+  late final GeneratedColumn<String> attendanceDayId = GeneratedColumn<String>(
+    'attendance_day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES attendance_days (id)',
+    ),
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _eventTypeMeta = const VerificationMeta(
+    'eventType',
+  );
+  @override
+  late final GeneratedColumn<String> eventType = GeneratedColumn<String>(
+    'event_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deviceMillisecondsMeta =
+      const VerificationMeta('deviceMilliseconds');
+  @override
+  late final GeneratedColumn<int> deviceMilliseconds = GeneratedColumn<int>(
+    'device_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverMillisecondsMeta =
+      const VerificationMeta('serverMilliseconds');
+  @override
+  late final GeneratedColumn<int> serverMilliseconds = GeneratedColumn<int>(
+    'server_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _effectiveMillisecondsMeta =
+      const VerificationMeta('effectiveMilliseconds');
+  @override
+  late final GeneratedColumn<int> effectiveMilliseconds = GeneratedColumn<int>(
+    'effective_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sequenceMeta = const VerificationMeta(
+    'sequence',
+  );
+  @override
+  late final GeneratedColumn<int> sequence = GeneratedColumn<int>(
+    'sequence',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _accuracyMetersMeta = const VerificationMeta(
+    'accuracyMeters',
+  );
+  @override
+  late final GeneratedColumn<double> accuracyMeters = GeneratedColumn<double>(
+    'accuracy_meters',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _capturedMillisecondsMeta =
+      const VerificationMeta('capturedMilliseconds');
+  @override
+  late final GeneratedColumn<int> capturedMilliseconds = GeneratedColumn<int>(
+    'captured_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _permissionStateMeta = const VerificationMeta(
+    'permissionState',
+  );
+  @override
+  late final GeneratedColumn<String> permissionState = GeneratedColumn<String>(
+    'permission_state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _workLocationIdMeta = const VerificationMeta(
+    'workLocationId',
+  );
+  @override
+  late final GeneratedColumn<String> workLocationId = GeneratedColumn<String>(
+    'work_location_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _locationValidationMeta =
+      const VerificationMeta('locationValidation');
+  @override
+  late final GeneratedColumn<String> locationValidation =
+      GeneratedColumn<String>(
+        'location_validation',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    attendanceDayId,
+    companyId,
+    employeeId,
+    eventType,
+    deviceMilliseconds,
+    serverMilliseconds,
+    effectiveMilliseconds,
+    sequence,
+    latitude,
+    longitude,
+    accuracyMeters,
+    capturedMilliseconds,
+    permissionState,
+    workLocationId,
+    locationValidation,
+    requestId,
+    source,
+    syncStatus,
+    createdMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance_events';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendanceEventData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('attendance_day_id')) {
+      context.handle(
+        _attendanceDayIdMeta,
+        attendanceDayId.isAcceptableOrUnknown(
+          data['attendance_day_id']!,
+          _attendanceDayIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_attendanceDayIdMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('event_type')) {
+      context.handle(
+        _eventTypeMeta,
+        eventType.isAcceptableOrUnknown(data['event_type']!, _eventTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_eventTypeMeta);
+    }
+    if (data.containsKey('device_milliseconds')) {
+      context.handle(
+        _deviceMillisecondsMeta,
+        deviceMilliseconds.isAcceptableOrUnknown(
+          data['device_milliseconds']!,
+          _deviceMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceMillisecondsMeta);
+    }
+    if (data.containsKey('server_milliseconds')) {
+      context.handle(
+        _serverMillisecondsMeta,
+        serverMilliseconds.isAcceptableOrUnknown(
+          data['server_milliseconds']!,
+          _serverMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('effective_milliseconds')) {
+      context.handle(
+        _effectiveMillisecondsMeta,
+        effectiveMilliseconds.isAcceptableOrUnknown(
+          data['effective_milliseconds']!,
+          _effectiveMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_effectiveMillisecondsMeta);
+    }
+    if (data.containsKey('sequence')) {
+      context.handle(
+        _sequenceMeta,
+        sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sequenceMeta);
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
+    }
+    if (data.containsKey('accuracy_meters')) {
+      context.handle(
+        _accuracyMetersMeta,
+        accuracyMeters.isAcceptableOrUnknown(
+          data['accuracy_meters']!,
+          _accuracyMetersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('captured_milliseconds')) {
+      context.handle(
+        _capturedMillisecondsMeta,
+        capturedMilliseconds.isAcceptableOrUnknown(
+          data['captured_milliseconds']!,
+          _capturedMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('permission_state')) {
+      context.handle(
+        _permissionStateMeta,
+        permissionState.isAcceptableOrUnknown(
+          data['permission_state']!,
+          _permissionStateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('work_location_id')) {
+      context.handle(
+        _workLocationIdMeta,
+        workLocationId.isAcceptableOrUnknown(
+          data['work_location_id']!,
+          _workLocationIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('location_validation')) {
+      context.handle(
+        _locationValidationMeta,
+        locationValidation.isAcceptableOrUnknown(
+          data['location_validation']!,
+          _locationValidationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_locationValidationMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_requestIdMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {attendanceDayId, sequence},
+  ];
+  @override
+  AttendanceEventData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendanceEventData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      attendanceDayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attendance_day_id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      eventType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}event_type'],
+      )!,
+      deviceMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}device_milliseconds'],
+      )!,
+      serverMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_milliseconds'],
+      ),
+      effectiveMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}effective_milliseconds'],
+      )!,
+      sequence: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sequence'],
+      )!,
+      latitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}latitude'],
+      ),
+      longitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}longitude'],
+      ),
+      accuracyMeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}accuracy_meters'],
+      ),
+      capturedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}captured_milliseconds'],
+      ),
+      permissionState: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}permission_state'],
+      ),
+      workLocationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work_location_id'],
+      ),
+      locationValidation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location_validation'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendanceEventsTable createAlias(String alias) {
+    return $AttendanceEventsTable(attachedDatabase, alias);
+  }
+}
+
+class AttendanceEventData extends DataClass
+    implements Insertable<AttendanceEventData> {
+  final String id;
+  final String attendanceDayId;
+  final String companyId;
+  final String employeeId;
+  final String eventType;
+  final int deviceMilliseconds;
+  final int? serverMilliseconds;
+  final int effectiveMilliseconds;
+  final int sequence;
+  final double? latitude;
+  final double? longitude;
+  final double? accuracyMeters;
+  final int? capturedMilliseconds;
+  final String? permissionState;
+  final String? workLocationId;
+  final String locationValidation;
+  final String requestId;
+  final String source;
+  final String syncStatus;
+  final int createdMilliseconds;
+  const AttendanceEventData({
+    required this.id,
+    required this.attendanceDayId,
+    required this.companyId,
+    required this.employeeId,
+    required this.eventType,
+    required this.deviceMilliseconds,
+    this.serverMilliseconds,
+    required this.effectiveMilliseconds,
+    required this.sequence,
+    this.latitude,
+    this.longitude,
+    this.accuracyMeters,
+    this.capturedMilliseconds,
+    this.permissionState,
+    this.workLocationId,
+    required this.locationValidation,
+    required this.requestId,
+    required this.source,
+    required this.syncStatus,
+    required this.createdMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['attendance_day_id'] = Variable<String>(attendanceDayId);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['event_type'] = Variable<String>(eventType);
+    map['device_milliseconds'] = Variable<int>(deviceMilliseconds);
+    if (!nullToAbsent || serverMilliseconds != null) {
+      map['server_milliseconds'] = Variable<int>(serverMilliseconds);
+    }
+    map['effective_milliseconds'] = Variable<int>(effectiveMilliseconds);
+    map['sequence'] = Variable<int>(sequence);
+    if (!nullToAbsent || latitude != null) {
+      map['latitude'] = Variable<double>(latitude);
+    }
+    if (!nullToAbsent || longitude != null) {
+      map['longitude'] = Variable<double>(longitude);
+    }
+    if (!nullToAbsent || accuracyMeters != null) {
+      map['accuracy_meters'] = Variable<double>(accuracyMeters);
+    }
+    if (!nullToAbsent || capturedMilliseconds != null) {
+      map['captured_milliseconds'] = Variable<int>(capturedMilliseconds);
+    }
+    if (!nullToAbsent || permissionState != null) {
+      map['permission_state'] = Variable<String>(permissionState);
+    }
+    if (!nullToAbsent || workLocationId != null) {
+      map['work_location_id'] = Variable<String>(workLocationId);
+    }
+    map['location_validation'] = Variable<String>(locationValidation);
+    map['request_id'] = Variable<String>(requestId);
+    map['source'] = Variable<String>(source);
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    return map;
+  }
+
+  AttendanceEventsCompanion toCompanion(bool nullToAbsent) {
+    return AttendanceEventsCompanion(
+      id: Value(id),
+      attendanceDayId: Value(attendanceDayId),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      eventType: Value(eventType),
+      deviceMilliseconds: Value(deviceMilliseconds),
+      serverMilliseconds: serverMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverMilliseconds),
+      effectiveMilliseconds: Value(effectiveMilliseconds),
+      sequence: Value(sequence),
+      latitude: latitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latitude),
+      longitude: longitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(longitude),
+      accuracyMeters: accuracyMeters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracyMeters),
+      capturedMilliseconds: capturedMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(capturedMilliseconds),
+      permissionState: permissionState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(permissionState),
+      workLocationId: workLocationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(workLocationId),
+      locationValidation: Value(locationValidation),
+      requestId: Value(requestId),
+      source: Value(source),
+      syncStatus: Value(syncStatus),
+      createdMilliseconds: Value(createdMilliseconds),
+    );
+  }
+
+  factory AttendanceEventData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendanceEventData(
+      id: serializer.fromJson<String>(json['id']),
+      attendanceDayId: serializer.fromJson<String>(json['attendanceDayId']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      eventType: serializer.fromJson<String>(json['eventType']),
+      deviceMilliseconds: serializer.fromJson<int>(json['deviceMilliseconds']),
+      serverMilliseconds: serializer.fromJson<int?>(json['serverMilliseconds']),
+      effectiveMilliseconds: serializer.fromJson<int>(
+        json['effectiveMilliseconds'],
+      ),
+      sequence: serializer.fromJson<int>(json['sequence']),
+      latitude: serializer.fromJson<double?>(json['latitude']),
+      longitude: serializer.fromJson<double?>(json['longitude']),
+      accuracyMeters: serializer.fromJson<double?>(json['accuracyMeters']),
+      capturedMilliseconds: serializer.fromJson<int?>(
+        json['capturedMilliseconds'],
+      ),
+      permissionState: serializer.fromJson<String?>(json['permissionState']),
+      workLocationId: serializer.fromJson<String?>(json['workLocationId']),
+      locationValidation: serializer.fromJson<String>(
+        json['locationValidation'],
+      ),
+      requestId: serializer.fromJson<String>(json['requestId']),
+      source: serializer.fromJson<String>(json['source']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'attendanceDayId': serializer.toJson<String>(attendanceDayId),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'eventType': serializer.toJson<String>(eventType),
+      'deviceMilliseconds': serializer.toJson<int>(deviceMilliseconds),
+      'serverMilliseconds': serializer.toJson<int?>(serverMilliseconds),
+      'effectiveMilliseconds': serializer.toJson<int>(effectiveMilliseconds),
+      'sequence': serializer.toJson<int>(sequence),
+      'latitude': serializer.toJson<double?>(latitude),
+      'longitude': serializer.toJson<double?>(longitude),
+      'accuracyMeters': serializer.toJson<double?>(accuracyMeters),
+      'capturedMilliseconds': serializer.toJson<int?>(capturedMilliseconds),
+      'permissionState': serializer.toJson<String?>(permissionState),
+      'workLocationId': serializer.toJson<String?>(workLocationId),
+      'locationValidation': serializer.toJson<String>(locationValidation),
+      'requestId': serializer.toJson<String>(requestId),
+      'source': serializer.toJson<String>(source),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+    };
+  }
+
+  AttendanceEventData copyWith({
+    String? id,
+    String? attendanceDayId,
+    String? companyId,
+    String? employeeId,
+    String? eventType,
+    int? deviceMilliseconds,
+    Value<int?> serverMilliseconds = const Value.absent(),
+    int? effectiveMilliseconds,
+    int? sequence,
+    Value<double?> latitude = const Value.absent(),
+    Value<double?> longitude = const Value.absent(),
+    Value<double?> accuracyMeters = const Value.absent(),
+    Value<int?> capturedMilliseconds = const Value.absent(),
+    Value<String?> permissionState = const Value.absent(),
+    Value<String?> workLocationId = const Value.absent(),
+    String? locationValidation,
+    String? requestId,
+    String? source,
+    String? syncStatus,
+    int? createdMilliseconds,
+  }) => AttendanceEventData(
+    id: id ?? this.id,
+    attendanceDayId: attendanceDayId ?? this.attendanceDayId,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    eventType: eventType ?? this.eventType,
+    deviceMilliseconds: deviceMilliseconds ?? this.deviceMilliseconds,
+    serverMilliseconds: serverMilliseconds.present
+        ? serverMilliseconds.value
+        : this.serverMilliseconds,
+    effectiveMilliseconds: effectiveMilliseconds ?? this.effectiveMilliseconds,
+    sequence: sequence ?? this.sequence,
+    latitude: latitude.present ? latitude.value : this.latitude,
+    longitude: longitude.present ? longitude.value : this.longitude,
+    accuracyMeters: accuracyMeters.present
+        ? accuracyMeters.value
+        : this.accuracyMeters,
+    capturedMilliseconds: capturedMilliseconds.present
+        ? capturedMilliseconds.value
+        : this.capturedMilliseconds,
+    permissionState: permissionState.present
+        ? permissionState.value
+        : this.permissionState,
+    workLocationId: workLocationId.present
+        ? workLocationId.value
+        : this.workLocationId,
+    locationValidation: locationValidation ?? this.locationValidation,
+    requestId: requestId ?? this.requestId,
+    source: source ?? this.source,
+    syncStatus: syncStatus ?? this.syncStatus,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+  );
+  AttendanceEventData copyWithCompanion(AttendanceEventsCompanion data) {
+    return AttendanceEventData(
+      id: data.id.present ? data.id.value : this.id,
+      attendanceDayId: data.attendanceDayId.present
+          ? data.attendanceDayId.value
+          : this.attendanceDayId,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      eventType: data.eventType.present ? data.eventType.value : this.eventType,
+      deviceMilliseconds: data.deviceMilliseconds.present
+          ? data.deviceMilliseconds.value
+          : this.deviceMilliseconds,
+      serverMilliseconds: data.serverMilliseconds.present
+          ? data.serverMilliseconds.value
+          : this.serverMilliseconds,
+      effectiveMilliseconds: data.effectiveMilliseconds.present
+          ? data.effectiveMilliseconds.value
+          : this.effectiveMilliseconds,
+      sequence: data.sequence.present ? data.sequence.value : this.sequence,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      accuracyMeters: data.accuracyMeters.present
+          ? data.accuracyMeters.value
+          : this.accuracyMeters,
+      capturedMilliseconds: data.capturedMilliseconds.present
+          ? data.capturedMilliseconds.value
+          : this.capturedMilliseconds,
+      permissionState: data.permissionState.present
+          ? data.permissionState.value
+          : this.permissionState,
+      workLocationId: data.workLocationId.present
+          ? data.workLocationId.value
+          : this.workLocationId,
+      locationValidation: data.locationValidation.present
+          ? data.locationValidation.value
+          : this.locationValidation,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      source: data.source.present ? data.source.value : this.source,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceEventData(')
+          ..write('id: $id, ')
+          ..write('attendanceDayId: $attendanceDayId, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('eventType: $eventType, ')
+          ..write('deviceMilliseconds: $deviceMilliseconds, ')
+          ..write('serverMilliseconds: $serverMilliseconds, ')
+          ..write('effectiveMilliseconds: $effectiveMilliseconds, ')
+          ..write('sequence: $sequence, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('accuracyMeters: $accuracyMeters, ')
+          ..write('capturedMilliseconds: $capturedMilliseconds, ')
+          ..write('permissionState: $permissionState, ')
+          ..write('workLocationId: $workLocationId, ')
+          ..write('locationValidation: $locationValidation, ')
+          ..write('requestId: $requestId, ')
+          ..write('source: $source, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    attendanceDayId,
+    companyId,
+    employeeId,
+    eventType,
+    deviceMilliseconds,
+    serverMilliseconds,
+    effectiveMilliseconds,
+    sequence,
+    latitude,
+    longitude,
+    accuracyMeters,
+    capturedMilliseconds,
+    permissionState,
+    workLocationId,
+    locationValidation,
+    requestId,
+    source,
+    syncStatus,
+    createdMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendanceEventData &&
+          other.id == this.id &&
+          other.attendanceDayId == this.attendanceDayId &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.eventType == this.eventType &&
+          other.deviceMilliseconds == this.deviceMilliseconds &&
+          other.serverMilliseconds == this.serverMilliseconds &&
+          other.effectiveMilliseconds == this.effectiveMilliseconds &&
+          other.sequence == this.sequence &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.accuracyMeters == this.accuracyMeters &&
+          other.capturedMilliseconds == this.capturedMilliseconds &&
+          other.permissionState == this.permissionState &&
+          other.workLocationId == this.workLocationId &&
+          other.locationValidation == this.locationValidation &&
+          other.requestId == this.requestId &&
+          other.source == this.source &&
+          other.syncStatus == this.syncStatus &&
+          other.createdMilliseconds == this.createdMilliseconds);
+}
+
+class AttendanceEventsCompanion extends UpdateCompanion<AttendanceEventData> {
+  final Value<String> id;
+  final Value<String> attendanceDayId;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> eventType;
+  final Value<int> deviceMilliseconds;
+  final Value<int?> serverMilliseconds;
+  final Value<int> effectiveMilliseconds;
+  final Value<int> sequence;
+  final Value<double?> latitude;
+  final Value<double?> longitude;
+  final Value<double?> accuracyMeters;
+  final Value<int?> capturedMilliseconds;
+  final Value<String?> permissionState;
+  final Value<String?> workLocationId;
+  final Value<String> locationValidation;
+  final Value<String> requestId;
+  final Value<String> source;
+  final Value<String> syncStatus;
+  final Value<int> createdMilliseconds;
+  final Value<int> rowid;
+  const AttendanceEventsCompanion({
+    this.id = const Value.absent(),
+    this.attendanceDayId = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.eventType = const Value.absent(),
+    this.deviceMilliseconds = const Value.absent(),
+    this.serverMilliseconds = const Value.absent(),
+    this.effectiveMilliseconds = const Value.absent(),
+    this.sequence = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.accuracyMeters = const Value.absent(),
+    this.capturedMilliseconds = const Value.absent(),
+    this.permissionState = const Value.absent(),
+    this.workLocationId = const Value.absent(),
+    this.locationValidation = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttendanceEventsCompanion.insert({
+    required String id,
+    required String attendanceDayId,
+    required String companyId,
+    required String employeeId,
+    required String eventType,
+    required int deviceMilliseconds,
+    this.serverMilliseconds = const Value.absent(),
+    required int effectiveMilliseconds,
+    required int sequence,
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.accuracyMeters = const Value.absent(),
+    this.capturedMilliseconds = const Value.absent(),
+    this.permissionState = const Value.absent(),
+    this.workLocationId = const Value.absent(),
+    required String locationValidation,
+    required String requestId,
+    required String source,
+    required String syncStatus,
+    required int createdMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       attendanceDayId = Value(attendanceDayId),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       eventType = Value(eventType),
+       deviceMilliseconds = Value(deviceMilliseconds),
+       effectiveMilliseconds = Value(effectiveMilliseconds),
+       sequence = Value(sequence),
+       locationValidation = Value(locationValidation),
+       requestId = Value(requestId),
+       source = Value(source),
+       syncStatus = Value(syncStatus),
+       createdMilliseconds = Value(createdMilliseconds);
+  static Insertable<AttendanceEventData> custom({
+    Expression<String>? id,
+    Expression<String>? attendanceDayId,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? eventType,
+    Expression<int>? deviceMilliseconds,
+    Expression<int>? serverMilliseconds,
+    Expression<int>? effectiveMilliseconds,
+    Expression<int>? sequence,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<double>? accuracyMeters,
+    Expression<int>? capturedMilliseconds,
+    Expression<String>? permissionState,
+    Expression<String>? workLocationId,
+    Expression<String>? locationValidation,
+    Expression<String>? requestId,
+    Expression<String>? source,
+    Expression<String>? syncStatus,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (attendanceDayId != null) 'attendance_day_id': attendanceDayId,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (eventType != null) 'event_type': eventType,
+      if (deviceMilliseconds != null) 'device_milliseconds': deviceMilliseconds,
+      if (serverMilliseconds != null) 'server_milliseconds': serverMilliseconds,
+      if (effectiveMilliseconds != null)
+        'effective_milliseconds': effectiveMilliseconds,
+      if (sequence != null) 'sequence': sequence,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (accuracyMeters != null) 'accuracy_meters': accuracyMeters,
+      if (capturedMilliseconds != null)
+        'captured_milliseconds': capturedMilliseconds,
+      if (permissionState != null) 'permission_state': permissionState,
+      if (workLocationId != null) 'work_location_id': workLocationId,
+      if (locationValidation != null) 'location_validation': locationValidation,
+      if (requestId != null) 'request_id': requestId,
+      if (source != null) 'source': source,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttendanceEventsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? attendanceDayId,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? eventType,
+    Value<int>? deviceMilliseconds,
+    Value<int?>? serverMilliseconds,
+    Value<int>? effectiveMilliseconds,
+    Value<int>? sequence,
+    Value<double?>? latitude,
+    Value<double?>? longitude,
+    Value<double?>? accuracyMeters,
+    Value<int?>? capturedMilliseconds,
+    Value<String?>? permissionState,
+    Value<String?>? workLocationId,
+    Value<String>? locationValidation,
+    Value<String>? requestId,
+    Value<String>? source,
+    Value<String>? syncStatus,
+    Value<int>? createdMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return AttendanceEventsCompanion(
+      id: id ?? this.id,
+      attendanceDayId: attendanceDayId ?? this.attendanceDayId,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      eventType: eventType ?? this.eventType,
+      deviceMilliseconds: deviceMilliseconds ?? this.deviceMilliseconds,
+      serverMilliseconds: serverMilliseconds ?? this.serverMilliseconds,
+      effectiveMilliseconds:
+          effectiveMilliseconds ?? this.effectiveMilliseconds,
+      sequence: sequence ?? this.sequence,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      accuracyMeters: accuracyMeters ?? this.accuracyMeters,
+      capturedMilliseconds: capturedMilliseconds ?? this.capturedMilliseconds,
+      permissionState: permissionState ?? this.permissionState,
+      workLocationId: workLocationId ?? this.workLocationId,
+      locationValidation: locationValidation ?? this.locationValidation,
+      requestId: requestId ?? this.requestId,
+      source: source ?? this.source,
+      syncStatus: syncStatus ?? this.syncStatus,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (attendanceDayId.present) {
+      map['attendance_day_id'] = Variable<String>(attendanceDayId.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (eventType.present) {
+      map['event_type'] = Variable<String>(eventType.value);
+    }
+    if (deviceMilliseconds.present) {
+      map['device_milliseconds'] = Variable<int>(deviceMilliseconds.value);
+    }
+    if (serverMilliseconds.present) {
+      map['server_milliseconds'] = Variable<int>(serverMilliseconds.value);
+    }
+    if (effectiveMilliseconds.present) {
+      map['effective_milliseconds'] = Variable<int>(
+        effectiveMilliseconds.value,
+      );
+    }
+    if (sequence.present) {
+      map['sequence'] = Variable<int>(sequence.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (accuracyMeters.present) {
+      map['accuracy_meters'] = Variable<double>(accuracyMeters.value);
+    }
+    if (capturedMilliseconds.present) {
+      map['captured_milliseconds'] = Variable<int>(capturedMilliseconds.value);
+    }
+    if (permissionState.present) {
+      map['permission_state'] = Variable<String>(permissionState.value);
+    }
+    if (workLocationId.present) {
+      map['work_location_id'] = Variable<String>(workLocationId.value);
+    }
+    if (locationValidation.present) {
+      map['location_validation'] = Variable<String>(locationValidation.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('attendanceDayId: $attendanceDayId, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('eventType: $eventType, ')
+          ..write('deviceMilliseconds: $deviceMilliseconds, ')
+          ..write('serverMilliseconds: $serverMilliseconds, ')
+          ..write('effectiveMilliseconds: $effectiveMilliseconds, ')
+          ..write('sequence: $sequence, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('accuracyMeters: $accuracyMeters, ')
+          ..write('capturedMilliseconds: $capturedMilliseconds, ')
+          ..write('permissionState: $permissionState, ')
+          ..write('workLocationId: $workLocationId, ')
+          ..write('locationValidation: $locationValidation, ')
+          ..write('requestId: $requestId, ')
+          ..write('source: $source, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6863,6 +9357,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $SyncOutboxTable syncOutbox = $SyncOutboxTable(this);
+  late final $AttendanceDaysTable attendanceDays = $AttendanceDaysTable(this);
+  late final $AttendanceEventsTable attendanceEvents = $AttendanceEventsTable(
+    this,
+  );
   late final $WorkforceDepartmentsTable workforceDepartments =
       $WorkforceDepartmentsTable(this);
   late final $WorkforceDesignationsTable workforceDesignations =
@@ -6883,6 +9381,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     syncOutbox,
+    attendanceDays,
+    attendanceEvents,
     workforceDepartments,
     workforceDesignations,
     workforceAccounts,
@@ -6902,6 +9402,11 @@ typedef $$SyncOutboxTableCreateCompanionBuilder =
       required String operation,
       required String payload,
       required DateTime createdAt,
+      Value<String?> companyId,
+      Value<String?> requestId,
+      Value<String> status,
+      Value<DateTime?> lastAttemptAt,
+      Value<String?> failureCode,
       Value<int> attempts,
       Value<int> rowid,
     });
@@ -6913,6 +9418,11 @@ typedef $$SyncOutboxTableUpdateCompanionBuilder =
       Value<String> operation,
       Value<String> payload,
       Value<DateTime> createdAt,
+      Value<String?> companyId,
+      Value<String?> requestId,
+      Value<String> status,
+      Value<DateTime?> lastAttemptAt,
+      Value<String?> failureCode,
       Value<int> attempts,
       Value<int> rowid,
     });
@@ -6953,6 +9463,31 @@ class $$SyncOutboxTableFilterComposer
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7001,6 +9536,31 @@ class $$SyncOutboxTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get attempts => $composableBuilder(
     column: $table.attempts,
     builder: (column) => ColumnOrderings(column),
@@ -7033,6 +9593,25 @@ class $$SyncOutboxTableAnnotationComposer
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get attempts =>
       $composableBuilder(column: $table.attempts, builder: (column) => column);
@@ -7075,6 +9654,11 @@ class $$SyncOutboxTableTableManager
                 Value<String> operation = const Value.absent(),
                 Value<String> payload = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<String?> companyId = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime?> lastAttemptAt = const Value.absent(),
+                Value<String?> failureCode = const Value.absent(),
                 Value<int> attempts = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncOutboxCompanion(
@@ -7084,6 +9668,11 @@ class $$SyncOutboxTableTableManager
                 operation: operation,
                 payload: payload,
                 createdAt: createdAt,
+                companyId: companyId,
+                requestId: requestId,
+                status: status,
+                lastAttemptAt: lastAttemptAt,
+                failureCode: failureCode,
                 attempts: attempts,
                 rowid: rowid,
               ),
@@ -7095,6 +9684,11 @@ class $$SyncOutboxTableTableManager
                 required String operation,
                 required String payload,
                 required DateTime createdAt,
+                Value<String?> companyId = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime?> lastAttemptAt = const Value.absent(),
+                Value<String?> failureCode = const Value.absent(),
                 Value<int> attempts = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncOutboxCompanion.insert(
@@ -7104,6 +9698,11 @@ class $$SyncOutboxTableTableManager
                 operation: operation,
                 payload: payload,
                 createdAt: createdAt,
+                companyId: companyId,
+                requestId: requestId,
+                status: status,
+                lastAttemptAt: lastAttemptAt,
+                failureCode: failureCode,
                 attempts: attempts,
                 rowid: rowid,
               ),
@@ -7131,6 +9730,1236 @@ typedef $$SyncOutboxTableProcessedTableManager =
       ),
       SyncOutboxData,
       PrefetchHooks Function()
+    >;
+typedef $$AttendanceDaysTableCreateCompanionBuilder =
+    AttendanceDaysCompanion Function({
+      required String id,
+      required String companyId,
+      required String employeeId,
+      required String attendanceDate,
+      required String shiftId,
+      required String policyId,
+      Value<String?> workLocationId,
+      required String configurationSnapshot,
+      required String state,
+      Value<int?> punchInMilliseconds,
+      Value<int?> punchOutMilliseconds,
+      Value<int> elapsedMilliseconds,
+      Value<int> breakMilliseconds,
+      Value<int> workMilliseconds,
+      required String status,
+      required String syncStatus,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$AttendanceDaysTableUpdateCompanionBuilder =
+    AttendanceDaysCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> attendanceDate,
+      Value<String> shiftId,
+      Value<String> policyId,
+      Value<String?> workLocationId,
+      Value<String> configurationSnapshot,
+      Value<String> state,
+      Value<int?> punchInMilliseconds,
+      Value<int?> punchOutMilliseconds,
+      Value<int> elapsedMilliseconds,
+      Value<int> breakMilliseconds,
+      Value<int> workMilliseconds,
+      Value<String> status,
+      Value<String> syncStatus,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+final class $$AttendanceDaysTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $AttendanceDaysTable, AttendanceDayData> {
+  $$AttendanceDaysTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$AttendanceEventsTable, List<AttendanceEventData>>
+  _attendanceEventsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.attendanceEvents,
+    aliasName: $_aliasNameGenerator(
+      db.attendanceDays.id,
+      db.attendanceEvents.attendanceDayId,
+    ),
+  );
+
+  $$AttendanceEventsTableProcessedTableManager get attendanceEventsRefs {
+    final manager =
+        $$AttendanceEventsTableTableManager($_db, $_db.attendanceEvents).filter(
+          (f) => f.attendanceDayId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _attendanceEventsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$AttendanceDaysTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendanceDaysTable> {
+  $$AttendanceDaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attendanceDate => $composableBuilder(
+    column: $table.attendanceDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get shiftId => $composableBuilder(
+    column: $table.shiftId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get policyId => $composableBuilder(
+    column: $table.policyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get configurationSnapshot => $composableBuilder(
+    column: $table.configurationSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get punchInMilliseconds => $composableBuilder(
+    column: $table.punchInMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get punchOutMilliseconds => $composableBuilder(
+    column: $table.punchOutMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get elapsedMilliseconds => $composableBuilder(
+    column: $table.elapsedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get breakMilliseconds => $composableBuilder(
+    column: $table.breakMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get workMilliseconds => $composableBuilder(
+    column: $table.workMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> attendanceEventsRefs(
+    Expression<bool> Function($$AttendanceEventsTableFilterComposer f) f,
+  ) {
+    final $$AttendanceEventsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.attendanceEvents,
+      getReferencedColumn: (t) => t.attendanceDayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceEventsTableFilterComposer(
+            $db: $db,
+            $table: $db.attendanceEvents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$AttendanceDaysTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendanceDaysTable> {
+  $$AttendanceDaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attendanceDate => $composableBuilder(
+    column: $table.attendanceDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get shiftId => $composableBuilder(
+    column: $table.shiftId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get policyId => $composableBuilder(
+    column: $table.policyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get configurationSnapshot => $composableBuilder(
+    column: $table.configurationSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get punchInMilliseconds => $composableBuilder(
+    column: $table.punchInMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get punchOutMilliseconds => $composableBuilder(
+    column: $table.punchOutMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get elapsedMilliseconds => $composableBuilder(
+    column: $table.elapsedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get breakMilliseconds => $composableBuilder(
+    column: $table.breakMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get workMilliseconds => $composableBuilder(
+    column: $table.workMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AttendanceDaysTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendanceDaysTable> {
+  $$AttendanceDaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get attendanceDate => $composableBuilder(
+    column: $table.attendanceDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get shiftId =>
+      $composableBuilder(column: $table.shiftId, builder: (column) => column);
+
+  GeneratedColumn<String> get policyId =>
+      $composableBuilder(column: $table.policyId, builder: (column) => column);
+
+  GeneratedColumn<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get configurationSnapshot => $composableBuilder(
+    column: $table.configurationSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<int> get punchInMilliseconds => $composableBuilder(
+    column: $table.punchInMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get punchOutMilliseconds => $composableBuilder(
+    column: $table.punchOutMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get elapsedMilliseconds => $composableBuilder(
+    column: $table.elapsedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get breakMilliseconds => $composableBuilder(
+    column: $table.breakMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get workMilliseconds => $composableBuilder(
+    column: $table.workMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+
+  Expression<T> attendanceEventsRefs<T extends Object>(
+    Expression<T> Function($$AttendanceEventsTableAnnotationComposer a) f,
+  ) {
+    final $$AttendanceEventsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.attendanceEvents,
+      getReferencedColumn: (t) => t.attendanceDayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceEventsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.attendanceEvents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$AttendanceDaysTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendanceDaysTable,
+          AttendanceDayData,
+          $$AttendanceDaysTableFilterComposer,
+          $$AttendanceDaysTableOrderingComposer,
+          $$AttendanceDaysTableAnnotationComposer,
+          $$AttendanceDaysTableCreateCompanionBuilder,
+          $$AttendanceDaysTableUpdateCompanionBuilder,
+          (AttendanceDayData, $$AttendanceDaysTableReferences),
+          AttendanceDayData,
+          PrefetchHooks Function({bool attendanceEventsRefs})
+        > {
+  $$AttendanceDaysTableTableManager(
+    _$AppDatabase db,
+    $AttendanceDaysTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendanceDaysTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttendanceDaysTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttendanceDaysTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> attendanceDate = const Value.absent(),
+                Value<String> shiftId = const Value.absent(),
+                Value<String> policyId = const Value.absent(),
+                Value<String?> workLocationId = const Value.absent(),
+                Value<String> configurationSnapshot = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<int?> punchInMilliseconds = const Value.absent(),
+                Value<int?> punchOutMilliseconds = const Value.absent(),
+                Value<int> elapsedMilliseconds = const Value.absent(),
+                Value<int> breakMilliseconds = const Value.absent(),
+                Value<int> workMilliseconds = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceDaysCompanion(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                attendanceDate: attendanceDate,
+                shiftId: shiftId,
+                policyId: policyId,
+                workLocationId: workLocationId,
+                configurationSnapshot: configurationSnapshot,
+                state: state,
+                punchInMilliseconds: punchInMilliseconds,
+                punchOutMilliseconds: punchOutMilliseconds,
+                elapsedMilliseconds: elapsedMilliseconds,
+                breakMilliseconds: breakMilliseconds,
+                workMilliseconds: workMilliseconds,
+                status: status,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String employeeId,
+                required String attendanceDate,
+                required String shiftId,
+                required String policyId,
+                Value<String?> workLocationId = const Value.absent(),
+                required String configurationSnapshot,
+                required String state,
+                Value<int?> punchInMilliseconds = const Value.absent(),
+                Value<int?> punchOutMilliseconds = const Value.absent(),
+                Value<int> elapsedMilliseconds = const Value.absent(),
+                Value<int> breakMilliseconds = const Value.absent(),
+                Value<int> workMilliseconds = const Value.absent(),
+                required String status,
+                required String syncStatus,
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceDaysCompanion.insert(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                attendanceDate: attendanceDate,
+                shiftId: shiftId,
+                policyId: policyId,
+                workLocationId: workLocationId,
+                configurationSnapshot: configurationSnapshot,
+                state: state,
+                punchInMilliseconds: punchInMilliseconds,
+                punchOutMilliseconds: punchOutMilliseconds,
+                elapsedMilliseconds: elapsedMilliseconds,
+                breakMilliseconds: breakMilliseconds,
+                workMilliseconds: workMilliseconds,
+                status: status,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$AttendanceDaysTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({attendanceEventsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (attendanceEventsRefs) db.attendanceEvents,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (attendanceEventsRefs)
+                    await $_getPrefetchedData<
+                      AttendanceDayData,
+                      $AttendanceDaysTable,
+                      AttendanceEventData
+                    >(
+                      currentTable: table,
+                      referencedTable: $$AttendanceDaysTableReferences
+                          ._attendanceEventsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$AttendanceDaysTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).attendanceEventsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.attendanceDayId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$AttendanceDaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendanceDaysTable,
+      AttendanceDayData,
+      $$AttendanceDaysTableFilterComposer,
+      $$AttendanceDaysTableOrderingComposer,
+      $$AttendanceDaysTableAnnotationComposer,
+      $$AttendanceDaysTableCreateCompanionBuilder,
+      $$AttendanceDaysTableUpdateCompanionBuilder,
+      (AttendanceDayData, $$AttendanceDaysTableReferences),
+      AttendanceDayData,
+      PrefetchHooks Function({bool attendanceEventsRefs})
+    >;
+typedef $$AttendanceEventsTableCreateCompanionBuilder =
+    AttendanceEventsCompanion Function({
+      required String id,
+      required String attendanceDayId,
+      required String companyId,
+      required String employeeId,
+      required String eventType,
+      required int deviceMilliseconds,
+      Value<int?> serverMilliseconds,
+      required int effectiveMilliseconds,
+      required int sequence,
+      Value<double?> latitude,
+      Value<double?> longitude,
+      Value<double?> accuracyMeters,
+      Value<int?> capturedMilliseconds,
+      Value<String?> permissionState,
+      Value<String?> workLocationId,
+      required String locationValidation,
+      required String requestId,
+      required String source,
+      required String syncStatus,
+      required int createdMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$AttendanceEventsTableUpdateCompanionBuilder =
+    AttendanceEventsCompanion Function({
+      Value<String> id,
+      Value<String> attendanceDayId,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> eventType,
+      Value<int> deviceMilliseconds,
+      Value<int?> serverMilliseconds,
+      Value<int> effectiveMilliseconds,
+      Value<int> sequence,
+      Value<double?> latitude,
+      Value<double?> longitude,
+      Value<double?> accuracyMeters,
+      Value<int?> capturedMilliseconds,
+      Value<String?> permissionState,
+      Value<String?> workLocationId,
+      Value<String> locationValidation,
+      Value<String> requestId,
+      Value<String> source,
+      Value<String> syncStatus,
+      Value<int> createdMilliseconds,
+      Value<int> rowid,
+    });
+
+final class $$AttendanceEventsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $AttendanceEventsTable,
+          AttendanceEventData
+        > {
+  $$AttendanceEventsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $AttendanceDaysTable _attendanceDayIdTable(_$AppDatabase db) =>
+      db.attendanceDays.createAlias(
+        $_aliasNameGenerator(
+          db.attendanceEvents.attendanceDayId,
+          db.attendanceDays.id,
+        ),
+      );
+
+  $$AttendanceDaysTableProcessedTableManager get attendanceDayId {
+    final $_column = $_itemColumn<String>('attendance_day_id')!;
+
+    final manager = $$AttendanceDaysTableTableManager(
+      $_db,
+      $_db.attendanceDays,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_attendanceDayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$AttendanceEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendanceEventsTable> {
+  $$AttendanceEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get deviceMilliseconds => $composableBuilder(
+    column: $table.deviceMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverMilliseconds => $composableBuilder(
+    column: $table.serverMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get effectiveMilliseconds => $composableBuilder(
+    column: $table.effectiveMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sequence => $composableBuilder(
+    column: $table.sequence,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get accuracyMeters => $composableBuilder(
+    column: $table.accuracyMeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get capturedMilliseconds => $composableBuilder(
+    column: $table.capturedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get permissionState => $composableBuilder(
+    column: $table.permissionState,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get locationValidation => $composableBuilder(
+    column: $table.locationValidation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$AttendanceDaysTableFilterComposer get attendanceDayId {
+    final $$AttendanceDaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.attendanceDayId,
+      referencedTable: $db.attendanceDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceDaysTableFilterComposer(
+            $db: $db,
+            $table: $db.attendanceDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendanceEventsTable> {
+  $$AttendanceEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get deviceMilliseconds => $composableBuilder(
+    column: $table.deviceMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverMilliseconds => $composableBuilder(
+    column: $table.serverMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get effectiveMilliseconds => $composableBuilder(
+    column: $table.effectiveMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sequence => $composableBuilder(
+    column: $table.sequence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get accuracyMeters => $composableBuilder(
+    column: $table.accuracyMeters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get capturedMilliseconds => $composableBuilder(
+    column: $table.capturedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get permissionState => $composableBuilder(
+    column: $table.permissionState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get locationValidation => $composableBuilder(
+    column: $table.locationValidation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$AttendanceDaysTableOrderingComposer get attendanceDayId {
+    final $$AttendanceDaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.attendanceDayId,
+      referencedTable: $db.attendanceDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceDaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.attendanceDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendanceEventsTable> {
+  $$AttendanceEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get eventType =>
+      $composableBuilder(column: $table.eventType, builder: (column) => column);
+
+  GeneratedColumn<int> get deviceMilliseconds => $composableBuilder(
+    column: $table.deviceMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverMilliseconds => $composableBuilder(
+    column: $table.serverMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get effectiveMilliseconds => $composableBuilder(
+    column: $table.effectiveMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sequence =>
+      $composableBuilder(column: $table.sequence, builder: (column) => column);
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracyMeters => $composableBuilder(
+    column: $table.accuracyMeters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get capturedMilliseconds => $composableBuilder(
+    column: $table.capturedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get permissionState => $composableBuilder(
+    column: $table.permissionState,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get workLocationId => $composableBuilder(
+    column: $table.workLocationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get locationValidation => $composableBuilder(
+    column: $table.locationValidation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  $$AttendanceDaysTableAnnotationComposer get attendanceDayId {
+    final $$AttendanceDaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.attendanceDayId,
+      referencedTable: $db.attendanceDays,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AttendanceDaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.attendanceDays,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AttendanceEventsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendanceEventsTable,
+          AttendanceEventData,
+          $$AttendanceEventsTableFilterComposer,
+          $$AttendanceEventsTableOrderingComposer,
+          $$AttendanceEventsTableAnnotationComposer,
+          $$AttendanceEventsTableCreateCompanionBuilder,
+          $$AttendanceEventsTableUpdateCompanionBuilder,
+          (AttendanceEventData, $$AttendanceEventsTableReferences),
+          AttendanceEventData,
+          PrefetchHooks Function({bool attendanceDayId})
+        > {
+  $$AttendanceEventsTableTableManager(
+    _$AppDatabase db,
+    $AttendanceEventsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendanceEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttendanceEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttendanceEventsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> attendanceDayId = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> eventType = const Value.absent(),
+                Value<int> deviceMilliseconds = const Value.absent(),
+                Value<int?> serverMilliseconds = const Value.absent(),
+                Value<int> effectiveMilliseconds = const Value.absent(),
+                Value<int> sequence = const Value.absent(),
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<double?> accuracyMeters = const Value.absent(),
+                Value<int?> capturedMilliseconds = const Value.absent(),
+                Value<String?> permissionState = const Value.absent(),
+                Value<String?> workLocationId = const Value.absent(),
+                Value<String> locationValidation = const Value.absent(),
+                Value<String> requestId = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceEventsCompanion(
+                id: id,
+                attendanceDayId: attendanceDayId,
+                companyId: companyId,
+                employeeId: employeeId,
+                eventType: eventType,
+                deviceMilliseconds: deviceMilliseconds,
+                serverMilliseconds: serverMilliseconds,
+                effectiveMilliseconds: effectiveMilliseconds,
+                sequence: sequence,
+                latitude: latitude,
+                longitude: longitude,
+                accuracyMeters: accuracyMeters,
+                capturedMilliseconds: capturedMilliseconds,
+                permissionState: permissionState,
+                workLocationId: workLocationId,
+                locationValidation: locationValidation,
+                requestId: requestId,
+                source: source,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String attendanceDayId,
+                required String companyId,
+                required String employeeId,
+                required String eventType,
+                required int deviceMilliseconds,
+                Value<int?> serverMilliseconds = const Value.absent(),
+                required int effectiveMilliseconds,
+                required int sequence,
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<double?> accuracyMeters = const Value.absent(),
+                Value<int?> capturedMilliseconds = const Value.absent(),
+                Value<String?> permissionState = const Value.absent(),
+                Value<String?> workLocationId = const Value.absent(),
+                required String locationValidation,
+                required String requestId,
+                required String source,
+                required String syncStatus,
+                required int createdMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceEventsCompanion.insert(
+                id: id,
+                attendanceDayId: attendanceDayId,
+                companyId: companyId,
+                employeeId: employeeId,
+                eventType: eventType,
+                deviceMilliseconds: deviceMilliseconds,
+                serverMilliseconds: serverMilliseconds,
+                effectiveMilliseconds: effectiveMilliseconds,
+                sequence: sequence,
+                latitude: latitude,
+                longitude: longitude,
+                accuracyMeters: accuracyMeters,
+                capturedMilliseconds: capturedMilliseconds,
+                permissionState: permissionState,
+                workLocationId: workLocationId,
+                locationValidation: locationValidation,
+                requestId: requestId,
+                source: source,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$AttendanceEventsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({attendanceDayId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (attendanceDayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.attendanceDayId,
+                                referencedTable:
+                                    $$AttendanceEventsTableReferences
+                                        ._attendanceDayIdTable(db),
+                                referencedColumn:
+                                    $$AttendanceEventsTableReferences
+                                        ._attendanceDayIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$AttendanceEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendanceEventsTable,
+      AttendanceEventData,
+      $$AttendanceEventsTableFilterComposer,
+      $$AttendanceEventsTableOrderingComposer,
+      $$AttendanceEventsTableAnnotationComposer,
+      $$AttendanceEventsTableCreateCompanionBuilder,
+      $$AttendanceEventsTableUpdateCompanionBuilder,
+      (AttendanceEventData, $$AttendanceEventsTableReferences),
+      AttendanceEventData,
+      PrefetchHooks Function({bool attendanceDayId})
     >;
 typedef $$WorkforceDepartmentsTableCreateCompanionBuilder =
     WorkforceDepartmentsCompanion Function({
@@ -10921,6 +14750,10 @@ class $AppDatabaseManager {
   $AppDatabaseManager(this._db);
   $$SyncOutboxTableTableManager get syncOutbox =>
       $$SyncOutboxTableTableManager(_db, _db.syncOutbox);
+  $$AttendanceDaysTableTableManager get attendanceDays =>
+      $$AttendanceDaysTableTableManager(_db, _db.attendanceDays);
+  $$AttendanceEventsTableTableManager get attendanceEvents =>
+      $$AttendanceEventsTableTableManager(_db, _db.attendanceEvents);
   $$WorkforceDepartmentsTableTableManager get workforceDepartments =>
       $$WorkforceDepartmentsTableTableManager(_db, _db.workforceDepartments);
   $$WorkforceDesignationsTableTableManager get workforceDesignations =>

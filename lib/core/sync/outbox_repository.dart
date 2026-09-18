@@ -23,26 +23,40 @@ class OutboxLocalDataSource {
           operation: mutation.operation,
           payload: jsonEncode(mutation.payload),
           createdAt: mutation.createdAt,
+          companyId: Value(mutation.companyId),
+          requestId: Value(mutation.requestId),
+          status: Value(mutation.status.name),
+          attempts: Value(mutation.attemptCount),
+          lastAttemptAt: Value(mutation.lastAttemptAt),
+          failureCode: Value(mutation.failureCode),
         ),
         mode: InsertMode.insertOrIgnore,
       );
   Stream<List<PendingMutation>> watch() =>
-      (database.select(
-        database.syncOutbox,
-      )..orderBy([(t) => OrderingTerm.asc(t.createdAt)])).watch().map(
-        (rows) => rows
-            .map(
-              (r) => PendingMutation(
-                id: r.id,
-                moduleId: r.moduleId,
-                entityId: r.entityId,
-                operation: r.operation,
-                payload: jsonDecode(r.payload) as Map<String, dynamic>,
-                createdAt: r.createdAt.toUtc(),
-              ),
-            )
-            .toList(),
-      );
+      (database.select(database.syncOutbox)
+            ..where((t) => t.status.equals('pending'))
+            ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
+          .watch()
+          .map(
+            (rows) => rows
+                .map(
+                  (r) => PendingMutation(
+                    id: r.id,
+                    moduleId: r.moduleId,
+                    entityId: r.entityId,
+                    operation: r.operation,
+                    payload: jsonDecode(r.payload) as Map<String, dynamic>,
+                    createdAt: r.createdAt.toUtc(),
+                    companyId: r.companyId,
+                    requestId: r.requestId,
+                    status: OutboxOperationStatus.values.byName(r.status),
+                    attemptCount: r.attempts,
+                    lastAttemptAt: r.lastAttemptAt?.toUtc(),
+                    failureCode: r.failureCode,
+                  ),
+                )
+                .toList(),
+          );
   Future<void> delete(String id) async {
     await (database.delete(
       database.syncOutbox,
@@ -70,6 +84,17 @@ class LocalOutboxRepository implements OutboxRepository {
   @override
   Future<Result<void>> acknowledge(String id) async {
     try {
+      final row = await (local.database.select(
+        local.database.syncOutbox,
+      )..where((t) => t.id.equals(id))).getSingleOrNull();
+      if (row?.moduleId == 'attendance') {
+        return const Failed(
+          Failure(
+            code: 'attendanceConfirmationRequired',
+            kind: FailureKind.sync,
+          ),
+        );
+      }
       await local.delete(id);
       return const Success(null);
     } catch (_) {

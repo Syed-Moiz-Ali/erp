@@ -103,7 +103,10 @@ void main() {
         'employees',
         'attendance',
         'reports',
-        'settings', 'shifts','work-locations','attendance-policies',
+        'settings',
+        'shifts',
+        'work-locations',
+        'attendance-policies',
         'profile',
       ],
       AppRole.companyAdmin: [
@@ -112,7 +115,9 @@ void main() {
         'attendance',
         'reports',
         'settings',
-        'shifts', 'work-locations', 'attendance-policies',
+        'shifts',
+        'work-locations',
+        'attendance-policies',
         'profile',
       ],
       AppRole.superAdmin: [
@@ -121,7 +126,9 @@ void main() {
         'attendance',
         'reports',
         'settings',
-        'shifts', 'work-locations', 'attendance-policies',
+        'shifts',
+        'work-locations',
+        'attendance-policies',
         'profile',
       ],
     };
@@ -212,7 +219,9 @@ void main() {
       expect(nav.mobileMore.map((d) => d.id), [
         'reports',
         'settings',
-        'shifts', 'work-locations', 'attendance-policies',
+        'shifts',
+        'work-locations',
+        'attendance-policies',
         'profile',
       ]);
       expect(nav.groupsFor(nav.mobileMore).keys, [
@@ -388,7 +397,10 @@ void main() {
                 .map((m) => m.id)
                 .toList();
             expect(items.contains('employees'), username != 'employee');
-            expect(items.contains('settings'), username == 'admin'||username=='hr');
+            expect(
+              items.contains('settings'),
+              username == 'admin' || username == 'hr',
+            );
             expect(items.contains('reports'), username != 'employee');
           }
           expect(tester.takeException(), isNull);
@@ -422,7 +434,7 @@ void main() {
         await ui_test.pump(tester);
         expect(find.byType(MorePage), findsOneWidget);
         expect(find.text(context.l10n.shellReports), findsOneWidget);
-        expect(find.text(context.l10n.shellSettings), findsNothing);
+        expect(find.text(context.l10n.cfgConfiguration), findsWidgets);
         await ui_test.screenshot(tester, h.key, 'phase2_more_${language.name}');
         await tester.tap(find.byType(AppUserMenu));
         await ui_test.pump(tester);

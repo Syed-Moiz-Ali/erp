@@ -3583,6 +3583,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sun'**
   String get cfgSun;
+
+  /// No description provided for @cfgActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get cfgActions;
+
+  /// No description provided for @cfgValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the highlighted fields before saving.'**
+  String get cfgValidation;
+
+  /// No description provided for @cfgPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get cfgPending;
+
+  /// No description provided for @cfgView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get cfgView;
+
+  /// No description provided for @cfgKeepEditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get cfgKeepEditing;
+
+  /// No description provided for @cfgDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get cfgDiscard;
+
+  /// No description provided for @cfgDiscardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Discard them and leave this form?'**
+  String get cfgDiscardMessage;
+
+  /// No description provided for @cfgDiscardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get cfgDiscardAction;
+
+  /// No description provided for @attendanceNotLinkedToEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'No employee profile is linked to this account'**
+  String get attendanceNotLinkedToEmployee;
+
+  /// No description provided for @attendanceEmployeeInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee account is inactive'**
+  String get attendanceEmployeeInactive;
+
+  /// No description provided for @attendanceAccountInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is inactive or your session has ended'**
+  String get attendanceAccountInactive;
+
+  /// No description provided for @attendancePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission for this attendance action'**
+  String get attendancePermissionDenied;
+
+  /// No description provided for @attendanceShiftNotAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No shift is assigned'**
+  String get attendanceShiftNotAssigned;
+
+  /// No description provided for @attendancePolicyNotAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No attendance policy is assigned'**
+  String get attendancePolicyNotAssigned;
+
+  /// No description provided for @attendanceWorkLocationRequiredButMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'No work location is assigned'**
+  String get attendanceWorkLocationRequiredButMissing;
+
+  /// No description provided for @attendanceLocationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is required'**
+  String get attendanceLocationRequired;
+
+  /// No description provided for @attendanceLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location is unavailable'**
+  String get attendanceLocationUnavailable;
+
+  /// No description provided for @attendanceLocationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required'**
+  String get attendanceLocationPermissionDenied;
+
+  /// No description provided for @attendanceLocationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled'**
+  String get attendanceLocationServicesDisabled;
+
+  /// No description provided for @attendanceLocationAccuracyTooLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Location accuracy is too low'**
+  String get attendanceLocationAccuracyTooLow;
+
+  /// No description provided for @attendanceOutsideAllowedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'You are outside the allowed work location'**
+  String get attendanceOutsideAllowedLocation;
+
+  /// No description provided for @attendanceAlreadyPunchedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already punched in'**
+  String get attendanceAlreadyPunchedIn;
+
+  /// No description provided for @attendanceNotPunchedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to punch in first'**
+  String get attendanceNotPunchedIn;
+
+  /// No description provided for @attendanceAlreadyOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'You are already on a break'**
+  String get attendanceAlreadyOnBreak;
+
+  /// No description provided for @attendanceNotOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'No active break was found'**
+  String get attendanceNotOnBreak;
+
+  /// No description provided for @attendanceBreakTrackingDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Break tracking is disabled'**
+  String get attendanceBreakTrackingDisabled;
+
+  /// No description provided for @attendanceMultipleBreaksNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple breaks are not allowed'**
+  String get attendanceMultipleBreaksNotAllowed;
+
+  /// No description provided for @attendancePunchOutDuringBreakNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out is not allowed during a break'**
+  String get attendancePunchOutDuringBreakNotAllowed;
+
+  /// No description provided for @attendanceAlreadyCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workday is already complete'**
+  String get attendanceAlreadyCompleted;
+
+  /// No description provided for @attendanceTooEarlyToPunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You are too early to punch in'**
+  String get attendanceTooEarlyToPunchIn;
+
+  /// No description provided for @attendanceLatePunchInNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Late punch in is not allowed'**
+  String get attendanceLatePunchInNotAllowed;
+
+  /// No description provided for @attendanceEarlyPunchOutNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Early punch out is not allowed'**
+  String get attendanceEarlyPunchOutNotAllowed;
+
+  /// No description provided for @attendanceUnscheduledDay.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a scheduled working day'**
+  String get attendanceUnscheduledDay;
+
+  /// No description provided for @attendanceOfflineAttendanceNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline attendance is not allowed'**
+  String get attendanceOfflineAttendanceNotAllowed;
+
+  /// No description provided for @attendanceInvalidAttendanceState.
+  ///
+  /// In en, this message translates to:
+  /// **'The attendance timeline is inconsistent'**
+  String get attendanceInvalidAttendanceState;
+
+  /// No description provided for @attendancePersistenceFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance could not be saved. Please retry'**
+  String get attendancePersistenceFailure;
+
+  /// No description provided for @attendanceInvalidLocationEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Location evidence is invalid'**
+  String get attendanceInvalidLocationEvidence;
+
+  /// No description provided for @attendanceStaleLocationEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Please capture your location again'**
+  String get attendanceStaleLocationEvidence;
+
+  /// No description provided for @attendanceRemoteAttendanceNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote attendance is not allowed'**
+  String get attendanceRemoteAttendanceNotAllowed;
+
+  /// No description provided for @attendanceInvalidTimestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'The attendance timestamp is invalid'**
+  String get attendanceInvalidTimestamp;
+
+  /// No description provided for @attendanceDuplicateRequestId.
+  ///
+  /// In en, this message translates to:
+  /// **'This attendance request has already been submitted'**
+  String get attendanceDuplicateRequestId;
+
+  /// No description provided for @attendanceOperationNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The attendance operation was not found'**
+  String get attendanceOperationNotFound;
+
+  /// No description provided for @attendanceSyncUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance sync is not configured'**
+  String get attendanceSyncUnavailable;
+
+  /// No description provided for @attendanceSynchronizationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance synchronization failed'**
+  String get attendanceSynchronizationFailed;
+
+  /// No description provided for @attendanceUnsupportedTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'The company timezone is not supported yet'**
+  String get attendanceUnsupportedTimezone;
+
+  /// No description provided for @attendanceCompanyUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance is unavailable for this company'**
+  String get attendanceCompanyUnavailable;
+
+  /// No description provided for @attendanceWarningOutsideAllowedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside the office location; attendance is permitted'**
+  String get attendanceWarningOutsideAllowedLocation;
+
+  /// No description provided for @attendanceWarningOfflinePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance saved and waiting to sync'**
+  String get attendanceWarningOfflinePending;
+
+  /// No description provided for @attendanceWarningLatePunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Late punch in'**
+  String get attendanceWarningLatePunchIn;
+
+  /// No description provided for @attendanceWarningEarlyPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Early punch out'**
+  String get attendanceWarningEarlyPunchOut;
+
+  /// No description provided for @attendanceWarningUnscheduledDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance on an unscheduled day'**
+  String get attendanceWarningUnscheduledDay;
+
+  /// No description provided for @attendanceNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get attendanceNotStarted;
+
+  /// No description provided for @attendanceWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get attendanceWorking;
+
+  /// No description provided for @attendanceOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'On break'**
+  String get attendanceOnBreak;
+
+  /// No description provided for @attendanceCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get attendanceCompleted;
+
+  /// No description provided for @attendanceLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get attendanceLate;
+
+  /// No description provided for @attendancePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get attendancePending;
+
+  /// No description provided for @attendanceSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get attendanceSynced;
+
+  /// No description provided for @attendanceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed'**
+  String get attendanceFailed;
+
+  /// No description provided for @attendanceRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get attendanceRejected;
+
+  /// No description provided for @attendancePunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in'**
+  String get attendancePunchIn;
+
+  /// No description provided for @attendanceBreakStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start break'**
+  String get attendanceBreakStart;
+
+  /// No description provided for @attendanceBreakEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume work'**
+  String get attendanceBreakEnd;
+
+  /// No description provided for @attendancePunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out'**
+  String get attendancePunchOut;
+
+  /// No description provided for @attendancePunchInNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in is not allowed'**
+  String get attendancePunchInNotAllowed;
 }
 
 class _AppLocalizationsDelegate

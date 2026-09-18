@@ -14,7 +14,7 @@ Future<void> seedAttendancePolicies(AppDatabase db, AuthContext context) async {
         name: 'Office Staff Policy',
         description:
             'Office attendance with location capture and tracked breaks.',
-        requireLocationOnBreak:true,
+        requireLocationOnBreak: true,
         requireLocationAccuracy: true,
         maximumAcceptedAccuracyMeters: 50,
       ),

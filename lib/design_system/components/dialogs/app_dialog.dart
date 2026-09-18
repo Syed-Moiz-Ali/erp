@@ -33,6 +33,7 @@ class AppConfirmationDialog {
     required LocalizedText title,
     required LocalizedText message,
     LocalizedText? confirmLabel,
+    LocalizedText? cancelLabel,
   }) async =>
       await AppDialog.show<bool>(
         context,
@@ -40,7 +41,9 @@ class AppConfirmationDialog {
           title: title(dialogContext.l10n),
           actions: [
             AppTextButton(
-              label: dialogContext.l10n.cancel,
+              label:
+                  cancelLabel?.call(dialogContext.l10n) ??
+                  dialogContext.l10n.cancel,
               onPressed: () => Navigator.pop(dialogContext, false),
             ),
             AppPrimaryButton(
