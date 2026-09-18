@@ -20,7 +20,11 @@ import 'attendance_experience_test.dart' as e;
 import 'auth_widget_test.dart' as h;
 import 'package:flutter/services.dart';
 
-Future<void> seed(WidgetTester t, e.Experience x) async {
+Future<void> seed(
+  WidgetTester t,
+  e.Experience x, {
+  bool currentOpen = false,
+}) async {
   {
     final local = AttendanceLocalDataSource(x.db);
     for (final day in [
@@ -31,7 +35,7 @@ Future<void> seed(WidgetTester t, e.Experience x) async {
       record(3, overnight: true),
       record(4).copyWith(syncStatus: AttendanceSyncStatus.failed),
       record(5).copyWith(syncStatus: AttendanceSyncStatus.rejected),
-      record(16, open: true, onBreak: true),
+      record(currentOpen ? 17 : 16, open: true, onBreak: true),
     ]) {
       await local.putDay(day);
       final start = day.punchInAt!;
@@ -309,4 +313,21 @@ void main() {
     expect(t.takeException(), null);
     await h.unmount(t, x.harness);
   });
+  testWidgets(
+    'current open break is ongoing rather than a historical missing resume',
+    (t) async {
+      final x = await e.mount(t, AppLanguage.english, 390);
+      x.clock.time = DateTime.utc(2026, 9, 17, 12);
+      final seeding = seed(t, x, currentOpen: true);
+      await e.settle(t);
+      await seeding;
+      h.router(t).go(AppRoutes.attendanceDayDetails(record(17).id));
+      await e.settle(t);
+      final l = t.element(find.byType(AttendanceDayDetailsPage)).l10n;
+      expect(find.text(l.attendanceOnBreak), findsOneWidget);
+      expect(find.text(l.historyOpenBreak), findsNothing);
+      expect(t.takeException(), null);
+      await h.unmount(t, x.harness);
+    },
+  );
 }

@@ -1190,6 +1190,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'No shift has been assigned to your employee profile yet. Contact HR to complete your attendance setup.';
 
   @override
+  String get dashboardThisWeek => 'This week';
+
+  @override
+  String get dashboardRecentAttendance => 'Recent attendance';
+
+  @override
+  String get dashboardViewFullHistory => 'View full history';
+
+  @override
+  String get dashboardNoRecentAttendance => 'No previous attendance yet.';
+
+  @override
+  String get dashboardNoRecentAttendanceMessage =>
+      'Your completed workdays will appear here.';
+
+  @override
+  String get dashboardNoWeek => 'No attendance recorded this week.';
+
+  @override
+  String get dashboardWeekOff => 'Week off';
+
+  @override
   String get dashboardTeamContext => 'Your team at a glance';
 
   @override
@@ -2334,7 +2356,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendancePunchInTime => 'Punch-in time';
 
   @override
-  String get attendancePunchOutTime => 'Punch-out time';
+  String get attendancePunchOutTime => 'Punch out';
 
   @override
   String get attendanceCurrentTime => 'Current time';
@@ -2419,6 +2441,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get attendanceOpenAttendance => 'Open attendance';
+
+  @override
+  String get attendanceViewAttendance => 'View attendance';
+
+  @override
+  String get attendanceStartsAt => 'Starts at';
+
+  @override
+  String get attendanceWorked => 'Worked';
+
+  @override
+  String get attendanceBreak => 'Break';
 
   @override
   String get attendanceLastCheck => 'Last location check';

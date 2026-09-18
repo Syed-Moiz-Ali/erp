@@ -26,11 +26,17 @@ class AppDetailField extends StatelessWidget {
 }
 
 class AppDetailsGrid extends StatelessWidget {
-  const AppDetailsGrid({super.key, required this.fields});
+  const AppDetailsGrid({super.key, required this.fields, this.compact = false});
   final List<AppDetailField> fields;
+  final bool compact;
   @override
-  Widget build(BuildContext context) =>
-      AppResponsiveGrid(minItemWidth: 240, maxColumns: 2, children: fields);
+  Widget build(BuildContext context) => AppResponsiveGrid(
+    minItemWidth: compact
+        ? AppDimensions.compactDetailField
+        : AppDimensions.detailField,
+    maxColumns: 2,
+    children: fields,
+  );
 }
 
 class AppFormGrid extends StatelessWidget {

@@ -11,6 +11,10 @@ class AppDateFormatter {
       DateFormat.yMMMMEEEEd(locale.toLanguageTag()).format(value);
   String month(DateTime value) =>
       DateFormat.yMMMM(locale.toLanguageTag()).format(value);
+  String weekdayShort(DateTime value) =>
+      DateFormat.E(locale.toLanguageTag()).format(value);
+  String dayOfMonth(DateTime value) =>
+      DateFormat.d(locale.toLanguageTag()).format(value);
 }
 
 class AppTimeFormatter {

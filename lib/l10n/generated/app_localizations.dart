@@ -2330,6 +2330,48 @@ abstract class AppLocalizations {
   /// **'No shift has been assigned to your employee profile yet. Contact HR to complete your attendance setup.'**
   String get dashboardNoShiftMessage;
 
+  /// No description provided for @dashboardThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get dashboardThisWeek;
+
+  /// No description provided for @dashboardRecentAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent attendance'**
+  String get dashboardRecentAttendance;
+
+  /// No description provided for @dashboardViewFullHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'View full history'**
+  String get dashboardViewFullHistory;
+
+  /// No description provided for @dashboardNoRecentAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'No previous attendance yet.'**
+  String get dashboardNoRecentAttendance;
+
+  /// No description provided for @dashboardNoRecentAttendanceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your completed workdays will appear here.'**
+  String get dashboardNoRecentAttendanceMessage;
+
+  /// No description provided for @dashboardNoWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No attendance recorded this week.'**
+  String get dashboardNoWeek;
+
+  /// No description provided for @dashboardWeekOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Week off'**
+  String get dashboardWeekOff;
+
   /// No description provided for @dashboardTeamContext.
   ///
   /// In en, this message translates to:
@@ -4451,7 +4493,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendancePunchOutTime.
   ///
   /// In en, this message translates to:
-  /// **'Punch-out time'**
+  /// **'Punch out'**
   String get attendancePunchOutTime;
 
   /// No description provided for @attendanceCurrentTime.
@@ -4603,6 +4645,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open attendance'**
   String get attendanceOpenAttendance;
+
+  /// No description provided for @attendanceViewAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance'**
+  String get attendanceViewAttendance;
+
+  /// No description provided for @attendanceStartsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts at'**
+  String get attendanceStartsAt;
+
+  /// No description provided for @attendanceWorked.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked'**
+  String get attendanceWorked;
+
+  /// No description provided for @attendanceBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get attendanceBreak;
 
   /// No description provided for @attendanceLastCheck.
   ///

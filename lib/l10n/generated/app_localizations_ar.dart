@@ -1177,6 +1177,28 @@ class AppLocalizationsAr extends AppLocalizations {
       'لم يتم تعيين دوام لملفك الوظيفي بعد. تواصل مع الموارد البشرية لإكمال إعداد الحضور.';
 
   @override
+  String get dashboardThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get dashboardRecentAttendance => 'الحضور الأخير';
+
+  @override
+  String get dashboardViewFullHistory => 'عرض السجل الكامل';
+
+  @override
+  String get dashboardNoRecentAttendance => 'لا يوجد حضور سابق بعد.';
+
+  @override
+  String get dashboardNoRecentAttendanceMessage =>
+      'ستظهر أيام عملك المكتملة هنا.';
+
+  @override
+  String get dashboardNoWeek => 'لا يوجد حضور مسجّل هذا الأسبوع.';
+
+  @override
+  String get dashboardWeekOff => 'يوم راحة';
+
+  @override
   String get dashboardTeamContext => 'لمحة عن فريقك';
 
   @override
@@ -2293,7 +2315,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendancePunchInTime => 'وقت تسجيل الحضور';
 
   @override
-  String get attendancePunchOutTime => 'وقت تسجيل الانصراف';
+  String get attendancePunchOutTime => 'وقت الخروج';
 
   @override
   String get attendanceCurrentTime => 'الوقت الحالي';
@@ -2376,6 +2398,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get attendanceOpenAttendance => 'فتح الحضور';
+
+  @override
+  String get attendanceViewAttendance => 'عرض الحضور';
+
+  @override
+  String get attendanceStartsAt => 'يبدأ عند';
+
+  @override
+  String get attendanceWorked => 'العمل';
+
+  @override
+  String get attendanceBreak => 'استراحة';
 
   @override
   String get attendanceLastCheck => 'آخر تحقق من الموقع';
@@ -2558,7 +2592,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String timeRange(String start, String end) {
-    return '$start → $end';
+    return '$start ← $end';
   }
 
   @override

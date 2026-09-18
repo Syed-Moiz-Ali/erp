@@ -6,13 +6,13 @@ import '../../theme/app_breakpoints.dart';
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   const AppTopBar({
     super.key,
-    required this.title,
+    this.title,
     required this.accountMenu,
     required this.onSearch,
     required this.onNotifications,
     this.breadcrumbs,
   });
-  final String title;
+  final String? title;
   final Widget accountMenu;
   final Widget? breadcrumbs;
   final VoidCallback onSearch, onNotifications;
@@ -22,18 +22,24 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final size = AppBreakpoints.of(context);
     final desktop = size == AppSize.expanded || size == AppSize.large;
+    // Desktop pages render their own heading; the top bar avoids duplicating
+    // it and only shows a breadcrumb/context when one is explicitly supplied.
+    final Widget titleWidget;
+    if (desktop) {
+      titleWidget = breadcrumbs ?? const SizedBox.shrink();
+    } else {
+      titleWidget = Text(
+        title ?? '',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTypography.of(context).cardTitle,
+      );
+    }
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: AppDimensions.topBar,
       shape: const Border(bottom: BorderSide(color: AppColors.border)),
-      title: desktop && breadcrumbs != null
-          ? breadcrumbs
-          : Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTypography.of(context).cardTitle,
-            ),
+      title: titleWidget,
       actions: [
         AppIconButton(
           icon: Icons.search,

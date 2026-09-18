@@ -163,6 +163,7 @@ class _Record extends StatelessWidget {
               AppFormSection(
                 title: l.historyDailySummary,
                 child: AppDetailsGrid(
+                  compact: true,
                   fields: [
                     AppDetailField(
                       label: l.attendancePunchIn,
@@ -355,8 +356,13 @@ class _Record extends StatelessWidget {
                             const SizedBox(height: AppSpacing.xs),
                             if (b.isOpen)
                               AppNotice(
-                                title: l.historyOpenBreak,
-                                message: l.historyOpenBreakNote,
+                                title: status == AttendanceHistoryStatus.working
+                                    ? l.attendanceOnBreak
+                                    : l.historyOpenBreak,
+                                message:
+                                    status == AttendanceHistoryStatus.working
+                                    ? l.historyActiveNote
+                                    : l.historyOpenBreakNote,
                                 status: AppStatus.warning,
                               )
                             else

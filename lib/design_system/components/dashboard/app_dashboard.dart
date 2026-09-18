@@ -169,6 +169,41 @@ class AppActivityItem extends StatelessWidget {
   }
 }
 
+/// Compact inline metric (muted label above a stronger value) used for the
+/// dashboard "Today" and "This month" quick stats — no card chrome.
+class AppMetricTile extends StatelessWidget {
+  const AppMetricTile({super.key, required this.label, required this.value});
+  final String label, value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.caption.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.body.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// Secondary statistic: deliberately lighter than [AppMetricCard] so the
 /// dashboard has a clear primary → secondary hierarchy.
 class AppSecondaryStat extends StatelessWidget {
@@ -408,9 +443,13 @@ class AppDashboardSkeleton extends StatelessWidget {
       ),
       const SizedBox(height: AppSpacing.xxl),
       const AppDashboardTwoColumn(
-        primary: AppCard(child: AppSkeleton(height: 180)),
-        secondary: AppCard(child: AppSkeleton(height: 180)),
+        primary: AppCard(child: AppSkeleton(height: 140)),
+        secondary: AppCard(child: AppSkeleton(height: 140)),
       ),
+      const SizedBox(height: AppSpacing.xxl),
+      const AppCard(child: AppSkeleton(height: 76)),
+      const SizedBox(height: AppSpacing.xxl),
+      const AppCard(child: AppSkeleton(height: 148)),
     ],
   );
 }

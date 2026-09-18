@@ -53,7 +53,13 @@ void main() {
           'dateTimeValue',
           'labeledValue',
         }.contains(key)) {
-          expect(ar[key], en[key], reason: '$key preserves its neutral format');
+          expect(
+            ar[key],
+            key == 'timeRange'
+                ? (en[key] as String).replaceAll('→', '←')
+                : en[key],
+            reason: '$key preserves its localized format',
+          );
           continue;
         }
         if (key != 'englishNativeName') {

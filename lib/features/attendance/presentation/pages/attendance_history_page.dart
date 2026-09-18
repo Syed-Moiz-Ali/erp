@@ -25,7 +25,10 @@ class AttendanceHistoryPage extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () async {
           bloc.add(const AttendanceHistoryRefreshRequested());
-          await bloc.stream.firstWhere((s) => !s.loading);
+          await bloc.stream.firstWhere(
+            (s) => !s.loading,
+            orElse: () => bloc.state,
+          );
         },
         child: AppPage(
           scrollPhysics: const AlwaysScrollableScrollPhysics(),
@@ -36,8 +39,9 @@ class AttendanceHistoryPage extends StatelessWidget {
               AppIconButton(
                 icon: Icons.refresh,
                 tooltip: l.historyRetry,
-                onPressed: () =>
-                    bloc.add(const AttendanceHistoryRefreshRequested()),
+                onPressed: state.loading
+                    ? null
+                    : () => bloc.add(const AttendanceHistoryRefreshRequested()),
               ),
             ],
           ),

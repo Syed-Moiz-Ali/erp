@@ -104,9 +104,6 @@ class AppShell extends StatelessWidget {
               onNavigate: navigate,
               topBar: AppTopBar(
                 title: title,
-                breadcrumbs: AppBreadcrumbs(
-                  items: [AppBreadcrumbItem(label: title)],
-                ),
                 onSearch: () => AppCommandPalette.show(context),
                 onNotifications: () => AppNotificationPanel.show(context),
                 accountMenu: BlocSelector<AuthBloc, AuthState, bool>(

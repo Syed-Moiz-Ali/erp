@@ -1,4 +1,4 @@
-import '../../attendance/presentation/widgets/attendance_dashboard_month.dart';
+import '../../attendance/presentation/widgets/attendance_dashboard_history.dart';
 import '../../attendance/presentation/widgets/attendance_dashboard_preview.dart';
 import '../../../design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
@@ -234,19 +234,12 @@ class DashboardView extends StatelessWidget {
                 ),
               ),
             if (selfAttendance) ...[
-              // Employee: personal workday workspace (Today + real monthly
-              // attendance summary), then recent activity.
-              if (!compact)
-                AppDashboardTwoColumn(
-                  primary: _today(context),
-                  secondary: const AttendanceDashboardMonth(),
-                )
-              else ...[
-                _today(context),
-                const SizedBox(height: AppSpacing.xxl),
-                const AttendanceDashboardMonth(),
-              ],
-              if (!summary.isEmpty) activity,
+              // Employee: personal workday workspace — Today plus real
+              // attendance history surfaces (month / week / recent).
+              EmployeeWorkdayDashboard(
+                compact: compact,
+                today: _today(context),
+              ),
             ] else ...[
               if (mainMetrics.isNotEmpty) ...[
                 AppDashboardGrid(
@@ -302,6 +295,7 @@ class DashboardView extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () => _refresh(context),
         child: AppPage(
+          maxWidth: AppDimensions.dashboard,
           header: header,
           animateEntrance: false,
           scrollPhysics: const AlwaysScrollableScrollPhysics(),
