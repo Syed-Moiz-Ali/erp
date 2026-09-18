@@ -1,7 +1,9 @@
-import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../buttons/app_buttons.dart';
+import '../../../l10n/l10n.dart';
 
 class AppEmptyState extends StatelessWidget {
   const AppEmptyState({
@@ -16,26 +18,43 @@ class AppEmptyState extends StatelessWidget {
   final IconData icon;
   final String? actionLabel;
   final VoidCallback? onAction;
+
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.all(32),
+    padding: const EdgeInsets.all(AppSpacing.xxl),
     child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(icon, size: 32),
-        SizedBox(height: 16),
+        Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            color: AppColors.surfaceSubtle,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.borderSubtle),
+          ),
+          child: Icon(icon, size: 26, color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.lg),
         Text(
           title,
           style: AppTypography.of(context).cardTitle,
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 8),
-        Text(
-          message,
-          style: AppTypography.of(context).caption,
-          textAlign: TextAlign.center,
+        const SizedBox(height: AppSpacing.xs),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 380),
+          child: Text(
+            message,
+            style: AppTypography.of(
+              context,
+            ).caption.copyWith(color: AppColors.textSecondary),
+            textAlign: TextAlign.center,
+          ),
         ),
         if (actionLabel != null) ...[
-          SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           AppSecondaryButton(label: actionLabel!, onPressed: onAction),
         ],
       ],

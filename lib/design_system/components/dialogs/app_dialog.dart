@@ -34,6 +34,7 @@ class AppConfirmationDialog {
     required LocalizedText message,
     LocalizedText? confirmLabel,
     LocalizedText? cancelLabel,
+    bool destructive = false,
   }) async =>
       await AppDialog.show<bool>(
         context,
@@ -46,12 +47,20 @@ class AppConfirmationDialog {
                   dialogContext.l10n.cancel,
               onPressed: () => Navigator.pop(dialogContext, false),
             ),
-            AppPrimaryButton(
-              label:
-                  confirmLabel?.call(dialogContext.l10n) ??
-                  dialogContext.l10n.confirm,
-              onPressed: () => Navigator.pop(dialogContext, true),
-            ),
+            if (destructive)
+              AppDestructiveButton(
+                label:
+                    confirmLabel?.call(dialogContext.l10n) ??
+                    dialogContext.l10n.confirm,
+                onPressed: () => Navigator.pop(dialogContext, true),
+              )
+            else
+              AppPrimaryButton(
+                label:
+                    confirmLabel?.call(dialogContext.l10n) ??
+                    dialogContext.l10n.confirm,
+                onPressed: () => Navigator.pop(dialogContext, true),
+              ),
           ],
           child: Text(message(dialogContext.l10n)),
         ),

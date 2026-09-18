@@ -59,9 +59,10 @@ class AttendanceStateCard extends StatelessWidget {
                 final duration = onBreak
                     ? live.openBreakDuration
                     : live.workDuration;
+                final liveLabel =
+                    '$label, ${AttendancePresentation.duration(c, duration)}';
                 return Semantics(
-                  label:
-                      '$label, ${AttendancePresentation.duration(c, duration)}',
+                  label: liveLabel,
                   child: ExcludeSemantics(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

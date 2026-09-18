@@ -65,21 +65,28 @@ class AppFormSection extends StatelessWidget {
     required this.title,
     required this.child,
     this.subtitle,
+    this.card = true,
   });
   final String title;
   final String? subtitle;
   final Widget child;
+  final bool card;
+
   @override
-  Widget build(BuildContext context) => AppCard(
-    child: Column(
+  Widget build(BuildContext context) {
+    final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppSectionHeader(title: title, subtitle: subtitle),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
         child,
       ],
-    ),
-  );
+    );
+
+    if (!card) return content;
+
+    return AppCard(child: content);
+  }
 }
 
 class AppDetailsSection extends StatelessWidget {
@@ -97,7 +104,7 @@ class AppDetailsSection extends StatelessWidget {
       children: details.entries
           .map(
             (e) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
               child: Row(
                 children: [
                   Expanded(child: Text(e.key)),

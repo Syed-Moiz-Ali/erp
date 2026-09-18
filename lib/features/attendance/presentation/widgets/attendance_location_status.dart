@@ -90,20 +90,38 @@ class AttendanceLocationStatus extends StatelessWidget {
         ),
         if (preview?.evidence != null) ...[
           const SizedBox(height: AppSpacing.md),
-          Text(
-            '${l.attendanceAccuracy}: ${AttendancePresentation.meters(context, preview!.evidence!.accuracyMeters)}',
-            style: AppTypography.of(context).caption,
+          Builder(
+            builder: (context) {
+              final accuracyText =
+                  '${l.attendanceAccuracy}: ${AttendancePresentation.meters(context, preview!.evidence!.accuracyMeters)}';
+              return Text(
+                accuracyText,
+                style: AppTypography.of(context).caption,
+              );
+            },
           ),
-          if (preview.maximumAccuracyMeters != null)
-            Text(
-              '${l.attendanceAccuracyLimit}: ${AttendancePresentation.meters(context, preview.maximumAccuracyMeters!)}',
-              style: AppTypography.of(context).caption,
+          if (preview?.maximumAccuracyMeters != null)
+            Builder(
+              builder: (context) {
+                final limitText =
+                    '${l.attendanceAccuracyLimit}: ${AttendancePresentation.meters(context, preview!.maximumAccuracyMeters!)}';
+                return Text(
+                  limitText,
+                  style: AppTypography.of(context).caption,
+                );
+              },
             ),
         ],
         if (validation?.distanceMeters != null)
-          Text(
-            '${l.attendanceDistance}: ${AttendancePresentation.meters(context, validation!.distanceMeters!)}',
-            style: AppTypography.of(context).caption,
+          Builder(
+            builder: (context) {
+              final distanceText =
+                  '${l.attendanceDistance}: ${AttendancePresentation.meters(context, validation!.distanceMeters!)}';
+              return Text(
+                distanceText,
+                style: AppTypography.of(context).caption,
+              );
+            },
           ),
         if (required || locationFailure) ...[
           const SizedBox(height: AppSpacing.md),

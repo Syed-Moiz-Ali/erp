@@ -69,6 +69,8 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
       },
       builder: (context, state) {
         final loading = state.status == PasswordStatus.submitting;
+        final typography = AppTypography.of(context);
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         return AutofillGroup(
           child: Form(
             key: _form,
@@ -78,27 +80,40 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
               children: [
                 Text(
                   context.l10n.authChangePassword,
-                  style: AppTypography.of(context).pageTitle,
+                  style: typography.pageTitle.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.3,
+                    color: isDark ? Colors.white : AppColors.textPrimary,
+                  ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(context.l10n.authChangeSubtitle),
-                const SizedBox(height: AppSpacing.section),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  context.l10n.authChangeSubtitle,
+                  style: typography.body.copyWith(
+                    color: isDark
+                        ? const Color(0xFF94A3B8)
+                        : AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
                 AppPasswordField(
                   label: context.l10n.authCurrentPassword,
                   controller: _current,
                   enabled: !loading,
+                  prefixIcon: Icons.lock_outline_rounded,
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.password],
                   onFieldSubmitted: (_) => _newFocus.requestFocus(),
                   validator: (value) =>
                       AppValidation.password(value)?.message(context.l10n),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                const SizedBox(height: AppSpacing.lg),
                 AppPasswordField(
                   label: context.l10n.authNewPassword,
                   controller: _replacement,
                   focusNode: _newFocus,
                   enabled: !loading,
+                  prefixIcon: Icons.lock_reset_rounded,
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.newPassword],
                   onFieldSubmitted: (_) => _confirmFocus.requestFocus(),
@@ -107,17 +122,27 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                     _current.text,
                   )?.message(context.l10n),
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  context.l10n.authPasswordConstraints,
-                  style: AppTypography.of(context).caption,
+                const SizedBox(height: AppSpacing.xs),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: AppSpacing.xs,
+                  ),
+                  child: Text(
+                    context.l10n.authPasswordConstraints,
+                    style: typography.caption.copyWith(
+                      color: isDark
+                          ? const Color(0xFF94A3B8)
+                          : AppColors.textSecondary,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                const SizedBox(height: AppSpacing.lg),
                 AppPasswordField(
                   label: context.l10n.authConfirmPassword,
                   controller: _confirmation,
                   focusNode: _confirmFocus,
                   enabled: !loading,
+                  prefixIcon: Icons.check_circle_outline_rounded,
                   textInputAction: TextInputAction.done,
                   autofillHints: const [AutofillHints.newPassword],
                   onFieldSubmitted: (_) => _submit(),
@@ -126,13 +151,16 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                     _replacement.text,
                   )?.message(context.l10n),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                const SizedBox(height: AppSpacing.xl),
                 if (state.failure != null) ...[
                   Semantics(
                     liveRegion: true,
-                    child: AppAlert(
-                      message: state.failure!.localizedMessage(context.l10n),
-                      status: AppStatus.danger,
+                    child: AppMotion.entrance(
+                      context,
+                      AppAlert(
+                        message: state.failure!.localizedMessage(context.l10n),
+                        status: AppStatus.danger,
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -147,8 +175,12 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   context.l10n.authPasswordDemoNote,
-                  style: AppTypography.of(context).caption,
+                  style: typography.caption.copyWith(
+                    color: AppColors.textMuted,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppSpacing.xs),
                 AppTextButton(
                   label: context.l10n.authBackToWorkspace,
                   onPressed: loading ? null : () => context.go(AppRoutes.app),

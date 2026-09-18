@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_clock.dart';
 import '../../../../core/localization/app_formatters.dart';
 import '../../../../design_system/design_system.dart';
-import '../../../../design_system/theme/app_motion.dart';
 import '../../../../l10n/l10n.dart';
 import '../attendance_presentation.dart';
 import '../attendance_ticker_cubit.dart';
@@ -131,10 +130,13 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
               ),
             );
           } else if (a == null) {
+            final failureDetail = s.failure == null
+                ? l.attendanceUnavailableTitle
+                : AttendancePresentation.failure(context, s.failure!);
+            final noticeMessage = '$failureDetail\n${l.attendanceContactHr}';
             body = AppNotice(
               title: l.attendanceNotConfigured,
-              message:
-                  '${s.failure == null ? l.attendanceUnavailableTitle : AttendancePresentation.failure(context, s.failure!)}\n${l.attendanceContactHr}',
+              message: noticeMessage,
               status: AppStatus.warning,
               action: AppTextButton(
                 label: l.attendanceTryAgain,

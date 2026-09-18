@@ -1,6 +1,8 @@
-import '../../theme/app_spacing.dart';
-import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
+import '../../../l10n/l10n.dart';
 import '../buttons/app_buttons.dart';
 import '../../../core/localization/app_formatters.dart';
 
@@ -12,32 +14,45 @@ class AppDataTable extends StatelessWidget {
     this.sortColumnIndex,
     this.sortAscending = true,
     this.showCheckboxColumn = false,
+    this.dataRowMinHeight = 50.0,
+    this.headingRowHeight = 44.0,
   });
   final List<DataColumn> columns;
   final List<DataRow> rows;
   final int? sortColumnIndex;
   final bool sortAscending, showCheckboxColumn;
+  final double dataRowMinHeight;
+  final double headingRowHeight;
+
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, constraints) => SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: constraints.maxWidth),
-        child: DataTable(
-          showCheckboxColumn: showCheckboxColumn,
-          columnSpacing: AppSpacing.lg,
-          horizontalMargin: AppSpacing.lg,
-          dataRowMinHeight: 64,
-          dataRowMaxHeight:
-              64 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
-          columns: columns,
-          rows: rows,
-          sortColumnIndex: sortColumnIndex,
-          sortAscending: sortAscending,
+  Widget build(BuildContext context) {
+    final scale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 2.0);
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth),
+          child: DataTable(
+            showCheckboxColumn: showCheckboxColumn,
+            columnSpacing: AppSpacing.lg,
+            horizontalMargin: AppSpacing.lg,
+            headingRowHeight: headingRowHeight * scale,
+            dataRowMinHeight: dataRowMinHeight,
+            dataRowMaxHeight: dataRowMinHeight * scale,
+            headingTextStyle: AppTypography.of(context).caption.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+              letterSpacing: 0.5,
+            ),
+            columns: columns,
+            rows: rows,
+            sortColumnIndex: sortColumnIndex,
+            sortAscending: sortAscending,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class AppTablePagination extends StatelessWidget {
@@ -50,38 +65,46 @@ class AppTablePagination extends StatelessWidget {
   });
   final int page, pageSize, total;
   final ValueChanged<int> onPageChanged;
+
   @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      Expanded(
-        child: Text(
-          total == 0
-              ? context.l10n.noRecords
-              : context.l10n.paginationSummary(
-                  AppNumberFormatter(
-                    Localizations.localeOf(context),
-                  ).integer(page * pageSize + 1),
-                  AppNumberFormatter(
-                    Localizations.localeOf(context),
-                  ).integer(((page + 1) * pageSize).clamp(0, total)),
-                  AppNumberFormatter(
-                    Localizations.localeOf(context),
-                  ).integer(total),
-                ),
+  Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            total == 0
+                ? context.l10n.noRecords
+                : context.l10n.paginationSummary(
+                    AppNumberFormatter(
+                      Localizations.localeOf(context),
+                    ).integer(page * pageSize + 1),
+                    AppNumberFormatter(
+                      Localizations.localeOf(context),
+                    ).integer(((page + 1) * pageSize).clamp(0, total)),
+                    AppNumberFormatter(
+                      Localizations.localeOf(context),
+                    ).integer(total),
+                  ),
+            style: AppTypography.of(
+              context,
+            ).caption.copyWith(color: AppColors.textSecondary),
+          ),
         ),
-      ),
-      AppIconButton(
-        icon: Icons.chevron_left,
-        tooltip: context.l10n.previousPage,
-        onPressed: page > 0 ? () => onPageChanged(page - 1) : null,
-      ),
-      AppIconButton(
-        icon: Icons.chevron_right,
-        tooltip: context.l10n.nextPage,
-        onPressed: (page + 1) * pageSize < total
-            ? () => onPageChanged(page + 1)
-            : null,
-      ),
-    ],
-  );
+        AppIconButton(
+          icon: isRtl ? Icons.chevron_right : Icons.chevron_left,
+          tooltip: context.l10n.previousPage,
+          onPressed: page > 0 ? () => onPageChanged(page - 1) : null,
+        ),
+        const SizedBox(width: AppSpacing.xs),
+        AppIconButton(
+          icon: isRtl ? Icons.chevron_left : Icons.chevron_right,
+          tooltip: context.l10n.nextPage,
+          onPressed: (page + 1) * pageSize < total
+              ? () => onPageChanged(page + 1)
+              : null,
+        ),
+      ],
+    );
+  }
 }

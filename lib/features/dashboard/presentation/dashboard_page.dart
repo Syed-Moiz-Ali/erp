@@ -1,5 +1,4 @@
 import '../../attendance/presentation/widgets/attendance_dashboard_preview.dart';
-import '../../../design_system/theme/app_motion.dart';
 import '../../../design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

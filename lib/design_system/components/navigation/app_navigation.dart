@@ -239,17 +239,29 @@ class AppSidebar extends StatelessWidget {
                   ),
               ],
               if (onToggle != null)
-                Align(
-                  alignment: collapsed
-                      ? Alignment.center
-                      : AlignmentDirectional.centerEnd,
-                  child: AppIconButton(
-                    icon: collapsed ? Icons.chevron_right : Icons.chevron_left,
-                    tooltip: collapsed
-                        ? context.l10n.shellExpandSidebar
-                        : context.l10n.shellCollapseSidebar,
-                    onPressed: onToggle,
-                  ),
+                Builder(
+                  builder: (context) {
+                    final isRtl =
+                        Directionality.of(context) == TextDirection.rtl;
+                    final expandIcon = isRtl
+                        ? Icons.chevron_left
+                        : Icons.chevron_right;
+                    final collapseIcon = isRtl
+                        ? Icons.chevron_right
+                        : Icons.chevron_left;
+                    return Align(
+                      alignment: collapsed
+                          ? Alignment.center
+                          : AlignmentDirectional.centerEnd,
+                      child: AppIconButton(
+                        icon: collapsed ? expandIcon : collapseIcon,
+                        tooltip: collapsed
+                            ? context.l10n.shellExpandSidebar
+                            : context.l10n.shellCollapseSidebar,
+                        onPressed: onToggle,
+                      ),
+                    );
+                  },
                 ),
               const SizedBox(height: AppSpacing.md),
             ],

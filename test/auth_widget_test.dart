@@ -70,7 +70,8 @@ Future<Harness> mount(
   ModuleRegistry Function(AuthRepository)? registryFactory,
   AppShellCubit? shellCubit,
   LocationService? locationService,
-  AttendanceBloc Function(AuthRepository,AppDatabase)? createAttendanceBloc,AppClock? attendanceClock,
+  AttendanceBloc Function(AuthRepository, AppDatabase)? createAttendanceBloc,
+  AppClock? attendanceClock,
 }) async {
   final locale = LocaleCubit(
     LocalAppPreferencesRepository(
@@ -125,7 +126,10 @@ Future<Harness> mount(
         authBloc: auth,
         moduleRegistry: registry,
         shellCubit: shellCubit,
-        attendanceClock:attendanceClock,attendanceBlocFactory:createAttendanceBloc==null ? null : ()=>createAttendanceBloc(repo,database!),
+        attendanceClock: attendanceClock,
+        attendanceBlocFactory: createAttendanceBloc == null
+            ? null
+            : () => createAttendanceBloc(repo, database!),
         demoAccounts: source.credentials,
       ),
     ),

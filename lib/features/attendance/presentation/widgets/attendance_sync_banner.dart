@@ -44,15 +44,20 @@ class AttendanceSyncBanner extends StatelessWidget {
                 for (final e in state.context!.events.where(
                   (e) => e.syncStatus == AttendanceSyncStatus.failed,
                 ))
-                  AppTextButton(
-                    key: ValueKey('attendance-retry-${e.requestId}'),
-                    label:
-                        '${l.attendanceRetrySync} · ${AttendancePresentation.event(context, e.eventType)} · ${AttendancePresentation.time(context, state.context!, e.effectiveTimestamp)}',
-                    onPressed: state.busy
-                        ? null
-                        : () => context.read<AttendanceBloc>().add(
-                            PendingOperationRetryRequested(e.requestId),
-                          ),
+                  Builder(
+                    builder: (context) {
+                      final retryLabel =
+                          '${l.attendanceRetrySync} · ${AttendancePresentation.event(context, e.eventType)} · ${AttendancePresentation.time(context, state.context!, e.effectiveTimestamp)}';
+                      return AppTextButton(
+                        key: ValueKey('attendance-retry-${e.requestId}'),
+                        label: retryLabel,
+                        onPressed: state.busy
+                            ? null
+                            : () => context.read<AttendanceBloc>().add(
+                                PendingOperationRetryRequested(e.requestId),
+                              ),
+                      );
+                    },
                   ),
               ],
             )

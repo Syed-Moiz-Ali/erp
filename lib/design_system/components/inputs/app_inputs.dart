@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.keyboardType,
     this.prefixIcon,
+    this.suffixIcon,
     this.readOnly = false,
     this.onTap,
     this.focusNode,
@@ -22,6 +23,7 @@ class AppTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.enabled = true,
     this.autocorrect = true,
+    this.maxLines = 1,
   });
   final String label;
   final String? hint, errorText, initialValue;
@@ -30,6 +32,7 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final IconData? prefixIcon;
+  final Widget? suffixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
   final FocusNode? focusNode;
@@ -37,6 +40,7 @@ class AppTextField extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final ValueChanged<String>? onFieldSubmitted;
   final bool enabled, autocorrect;
+  final int? maxLines;
   @override
   Widget build(BuildContext context) => _LocalizedValidationField<String>(
     builder: (fieldKey) => TextFormField(
@@ -60,11 +64,13 @@ class AppTextField extends StatelessWidget {
           : null,
       readOnly: readOnly,
       onTap: onTap,
+      maxLines: maxLines,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
         errorText: errorText,
         prefixIcon: prefixIcon == null ? null : Icon(prefixIcon, size: 20),
+        suffixIcon: suffixIcon,
       ),
     ),
   );
@@ -76,6 +82,7 @@ class AppPasswordField extends StatefulWidget {
     this.controller,
     this.validator,
     this.label,
+    this.prefixIcon,
     this.focusNode,
     this.textInputAction,
     this.autofillHints,
@@ -85,6 +92,7 @@ class AppPasswordField extends StatefulWidget {
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final String? label;
+  final IconData? prefixIcon;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
@@ -112,6 +120,9 @@ class _PasswordState extends State<AppPasswordField> {
       autocorrect: false,
       decoration: InputDecoration(
         labelText: widget.label ?? context.l10n.password,
+        prefixIcon: widget.prefixIcon == null
+            ? null
+            : Icon(widget.prefixIcon, size: 20),
         suffixIcon: IconButton(
           tooltip: hidden
               ? context.l10n.showPassword
@@ -128,18 +139,82 @@ class _PasswordState extends State<AppPasswordField> {
   );
 }
 
-class AppSearchField extends StatelessWidget {
-  const AppSearchField({super.key, this.controller, this.onChanged});
+class AppSearchField extends StatefulWidget {
+  const AppSearchField({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.hint,
+    this.label,
+    this.onClear,
+    this.enabled = true,
+  });
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
+  final String? hint;
+  final String? label;
+  final VoidCallback? onClear;
+  final bool enabled;
+
   @override
-  Widget build(BuildContext context) => AppTextField(
-    label: context.l10n.search,
-    hint: context.l10n.searchRecords,
-    controller: controller,
-    onChanged: onChanged,
-    prefixIcon: Icons.search,
-  );
+  State<AppSearchField> createState() => _AppSearchFieldState();
+}
+
+class _AppSearchFieldState extends State<AppSearchField> {
+  TextEditingController? _internalController;
+  TextEditingController get _controller =>
+      widget.controller ?? (_internalController ??= TextEditingController());
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_handleControllerChange);
+  }
+
+  @override
+  void didUpdateWidget(AppSearchField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      (oldWidget.controller ?? _internalController)?.removeListener(
+        _handleControllerChange,
+      );
+      _controller.addListener(_handleControllerChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_handleControllerChange);
+    _internalController?.dispose();
+    super.dispose();
+  }
+
+  void _handleControllerChange() {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasText = _controller.text.isNotEmpty;
+    return AppTextField(
+      label: widget.label ?? context.l10n.search,
+      hint: widget.hint ?? context.l10n.searchRecords,
+      controller: _controller,
+      onChanged: widget.onChanged,
+      prefixIcon: Icons.search,
+      enabled: widget.enabled,
+      suffixIcon: hasText && widget.enabled
+          ? IconButton(
+              icon: const Icon(Icons.clear, size: 18),
+              onPressed: () {
+                _controller.clear();
+                widget.onChanged?.call('');
+                widget.onClear?.call();
+              },
+            )
+          : null,
+    );
+  }
 }
 
 class AppDropdown<T> extends StatelessWidget {

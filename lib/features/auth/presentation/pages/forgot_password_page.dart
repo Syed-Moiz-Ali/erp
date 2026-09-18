@@ -40,6 +40,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
     child: BlocBuilder<PasswordBloc, PasswordState>(
       builder: (context, state) {
         final loading = state.status == PasswordStatus.submitting;
+        final typography = AppTypography.of(context);
         return Form(
           key: _form,
           child: Column(
@@ -48,23 +49,35 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
             children: [
               Text(
                 context.l10n.authForgotTitle,
-                style: AppTypography.of(context).pageTitle,
+                style: typography.pageTitle.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.4,
+                  color: AppColors.textPrimary,
+                ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(context.l10n.authForgotSubtitle),
-              const SizedBox(height: AppSpacing.section),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                context.l10n.authForgotSubtitle,
+                style: typography.body.copyWith(color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: AppSpacing.xl),
               if (state.status == PasswordStatus.success) ...[
                 Semantics(
                   liveRegion: true,
-                  child: AppInfoCard(
-                    title: context.l10n.authResetTitle,
-                    message: context.l10n.authResetInformation,
+                  child: AppMotion.entrance(
+                    context,
+                    AppInfoCard(
+                      title: context.l10n.authResetTitle,
+                      message: context.l10n.authResetInformation,
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   context.l10n.authResetDemoNote,
-                  style: AppTypography.of(context).bodySmall,
+                  style: typography.bodySmall.copyWith(
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ] else ...[
                 AutofillGroup(
@@ -75,19 +88,23 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                     autocorrect: false,
                     autofillHints: const [AutofillHints.username],
                     keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icons.alternate_email_outlined,
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) => _submit(),
                     validator: (value) =>
                         AppValidation.identifier(value)?.message(context.l10n),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                const SizedBox(height: AppSpacing.xl),
                 if (state.failure != null) ...[
                   Semantics(
                     liveRegion: true,
-                    child: AppAlert(
-                      message: state.failure!.localizedMessage(context.l10n),
-                      status: AppStatus.danger,
+                    child: AppMotion.entrance(
+                      context,
+                      AppAlert(
+                        message: state.failure!.localizedMessage(context.l10n),
+                        status: AppStatus.danger,
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),

@@ -43,6 +43,119 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  void _showDemoAccountsDialog(BuildContext context) {
+    AppDialog.show<void>(context, (dialogContext) {
+      final isDark = Theme.of(dialogContext).brightness == Brightness.dark;
+      return AppDialog(
+        title: dialogContext.l10n.authDemoAccounts,
+        actions: [
+          AppTextButton(
+            label: dialogContext.l10n.close,
+            onPressed: () => Navigator.pop(dialogContext),
+          ),
+        ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                dialogContext.l10n.authDemoNotice,
+                style: AppTypography.of(dialogContext).bodySmall.copyWith(
+                  color: isDark
+                      ? const Color(0xFF94A3B8)
+                      : AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              for (final account in widget.demoAccounts) ...[
+                InkWell(
+                  onTap: () {
+                    _identifier.text = account.email;
+                    _password.text = account.password;
+                    Navigator.pop(dialogContext);
+                  },
+                  borderRadius: BorderRadius.circular(AppRadius.radiusMd),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? const Color(0xFF141A29)
+                          : AppColors.surfaceSubtle,
+                      borderRadius: BorderRadius.circular(AppRadius.radiusMd),
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0x26FFFFFF)
+                            : AppColors.borderSubtle,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              account.role.label(dialogContext.l10n),
+                              style: AppTypography.of(dialogContext).label
+                                  .copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFF38BDF8)
+                                        : AppColors.brandPrimary,
+                                  ),
+                            ),
+                            Icon(
+                              Icons.touch_app_outlined,
+                              size: 14,
+                              color: isDark
+                                  ? const Color(0xFF94A3B8)
+                                  : AppColors.textMuted,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.xs),
+                        SelectableText(
+                          account.email,
+                          style: AppTypography.of(dialogContext).bodySmall
+                              .copyWith(
+                                color: isDark
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                        ),
+                        SelectableText(
+                          account.phone,
+                          style: AppTypography.of(dialogContext).bodySmall
+                              .copyWith(
+                                color: isDark
+                                    ? const Color(0xFF94A3B8)
+                                    : AppColors.textSecondary,
+                              ),
+                        ),
+                        const SizedBox(height: AppSpacing.xs),
+                        SelectableText(
+                          '${dialogContext.l10n.authDemoPassword}: ${account.password}',
+                          style: AppTypography.of(dialogContext).caption
+                              .copyWith(
+                                color: isDark
+                                    ? const Color(0xFF64748B)
+                                    : AppColors.textSecondary,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) => FocusTraversalGroup(
     policy: OrderedTraversalPolicy(),
@@ -56,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         builder: (context, state) {
           final loading = state.status == AuthStatus.authenticating;
+          final typography = AppTypography.of(context);
           return AutofillGroup(
             child: Form(
               key: _form,
@@ -65,14 +179,20 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     context.l10n.authWelcomeBack,
-                    style: AppTypography.of(context).pageTitle,
+                    style: typography.pageTitle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -0.4,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     context.l10n.authSignInSubtitle,
-                    style: AppTypography.of(context).body,
+                    style: typography.body.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                  const SizedBox(height: AppSpacing.section),
+                  const SizedBox(height: AppSpacing.xl),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(1),
                     child: AppTextField(
@@ -81,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _identifier,
                       focusNode: _identifierFocus,
                       enabled: !loading,
+                      prefixIcon: Icons.alternate_email_outlined,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       autofillHints: const [AutofillHints.username],
@@ -91,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       )?.message(context.l10n),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.lg),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(2),
                     child: AppPasswordField(
@@ -99,6 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _password,
                       focusNode: _passwordFocus,
                       enabled: !loading,
+                      prefixIcon: Icons.lock_outline_rounded,
                       autofillHints: const [AutofillHints.password],
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
@@ -106,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                           AppValidation.password(value)?.message(context.l10n),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  const SizedBox(height: AppSpacing.xs),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(3),
                     child: Align(
@@ -120,17 +242,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   if (state.failure != null) ...[
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                     Semantics(
                       liveRegion: true,
-                      child: AppAlert(
-                        message: state.failure!.localizedMessage(context.l10n),
-                        status: AppStatus.danger,
+                      child: AppMotion.entrance(
+                        context,
+                        AppAlert(
+                          message: state.failure!.localizedMessage(
+                            context.l10n,
+                          ),
+                          status: AppStatus.danger,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                   ],
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(4),
                     child: SizedBox(
@@ -148,64 +275,23 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     context.l10n.authSessionNote,
-                    style: AppTypography.of(context).caption,
+                    style: typography.caption.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                   if (widget.demoAccounts.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.xxl),
-                    const Divider(),
-                    AppTextButton(
-                      label: context.l10n.authDemoAccounts,
-                      onPressed: loading
-                          ? null
-                          : () => AppDialog.show<void>(
-                              context,
-                              (dialogContext) => AppDialog(
-                                title: dialogContext.l10n.authDemoAccounts,
-                                actions: [
-                                  AppTextButton(
-                                    label: dialogContext.l10n.close,
-                                    onPressed: () =>
-                                        Navigator.pop(dialogContext),
-                                  ),
-                                ],
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(dialogContext.l10n.authDemoNotice),
-                                      const SizedBox(height: AppSpacing.lg),
-                                      for (final account in widget.demoAccounts)
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: AppSpacing.sm,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                account.role.label(
-                                                  dialogContext.l10n,
-                                                ),
-                                                style: AppTypography.of(
-                                                  dialogContext,
-                                                ).label,
-                                              ),
-                                              SelectableText(account.email),
-                                              SelectableText(account.phone),
-                                              SelectableText(
-                                                '${dialogContext.l10n.authDemoPassword}: ${account.password}',
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                    const SizedBox(height: AppSpacing.xl),
+                    const Divider(color: AppColors.borderSubtle),
+                    const SizedBox(height: AppSpacing.xs),
+                    Center(
+                      child: AppTextButton(
+                        label: context.l10n.authDemoAccounts,
+                        icon: Icons.auto_awesome_rounded,
+                        onPressed: loading
+                            ? null
+                            : () => _showDemoAccountsDialog(context),
+                      ),
                     ),
                   ],
                 ],

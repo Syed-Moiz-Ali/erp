@@ -24,9 +24,15 @@ class AttendanceContextPanel extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(s.shift.name, style: AppTypography.of(context).cardTitle),
-          Text(
-            '${AttendancePresentation.time(context, a, s.scheduledStart)} – ${AttendancePresentation.time(context, a, s.scheduledEnd)}',
-            style: AppTypography.of(context).body,
+          Builder(
+            builder: (context) {
+              final scheduleWindow =
+                  '${AttendancePresentation.time(context, a, s.scheduledStart)} – ${AttendancePresentation.time(context, a, s.scheduledEnd)}';
+              return Text(
+                scheduleWindow,
+                style: AppTypography.of(context).body,
+              );
+            },
           ),
           const SizedBox(height: AppSpacing.lg),
           Wrap(
@@ -63,9 +69,15 @@ class AttendanceContextPanel extends StatelessWidget {
             style: AppTypography.of(context).cardTitle,
           ),
           if (location != null)
-            Text(
-              '${l.attendanceRadius}: ${AttendancePresentation.meters(context, location.allowedRadiusMeters)}',
-              style: AppTypography.of(context).caption,
+            Builder(
+              builder: (context) {
+                final radiusText =
+                    '${l.attendanceRadius}: ${AttendancePresentation.meters(context, location.allowedRadiusMeters)}';
+                return Text(
+                  radiusText,
+                  style: AppTypography.of(context).caption,
+                );
+              },
             ),
           const SizedBox(height: AppSpacing.lg),
           AttendanceLocationStatus(state: state),
