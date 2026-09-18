@@ -1,3 +1,4 @@
+import '../domain/attendance_history.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:drift/drift.dart';
@@ -36,6 +37,95 @@ class LocalAttendanceRepository implements AttendanceRepository {
   final AttendanceAuthority authority;
   final AttendanceEngine engine;
   AppDatabase get _db => local.db;
+  Future<Result<T>> _historyRead<T>(
+    Future<T> Function(AuthContext) read,
+  ) async {
+    try {
+      final session = await _session();
+      if (session case Failed<AuthContext>(:final failure)) {
+        return Failed(failure);
+      }
+      final actor = (session as Success<AuthContext>).value;
+      if (!actor.user.permissions.contains(AppPermission.attendanceViewSelf)) {
+        return Failed(
+          attendanceFailure(AttendanceFailureCode.permissionDenied),
+        );
+      }
+      final value = await _db.transaction(() => read(actor));
+      final latest = await _session();
+      if (latest case Failed<AuthContext>(:final failure)) {
+        return Failed(failure);
+      }
+      final current = (latest as Success<AuthContext>).value;
+      if (current.user.id != actor.user.id ||
+          current.company.id != actor.company.id ||
+          current.employeeReference?.id != actor.employeeReference?.id ||
+          !current.user.permissions.contains(
+            AppPermission.attendanceViewSelf,
+          )) {
+        return Failed(
+          attendanceFailure(AttendanceFailureCode.permissionDenied),
+        );
+      }
+      return Success(value);
+    } catch (_) {
+      return Failed(
+        attendanceFailure(
+          AttendanceFailureCode.persistenceFailure,
+          retryable: true,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Result<DateTime>> getCompanyAttendanceDate() async {
+    final result = await _historyRead<Result<DateTime>>((a) async {
+      final wall = resolver.workdays.time.localWallTime(
+        clock.now(),
+        a.company.timezone,
+      );
+      if (wall case Failed<DateTime>()) return wall;
+      final value = (wall as Success<DateTime>).value;
+      return Success(DateTime.utc(value.year, value.month, value.day));
+    });
+    return switch (result) {
+      Success<Result<DateTime>>(:final value) => value,
+      Failed<Result<DateTime>>(:final failure) => Failed(failure),
+    };
+  }
+
+  @override
+  Future<Result<AttendanceHistoryPageData>> getAttendanceHistory(
+    AttendanceHistoryQuery query,
+  ) => _historyRead(
+    (a) => local.history(
+      a.company.id,
+      a.employeeReference!.id,
+      query,
+      clock.now().toUtc(),
+    ),
+  );
+  @override
+  Stream<Result<AttendanceHistoryPageData>> watchAttendanceHistory(
+    AttendanceHistoryQuery query,
+  ) => _watchScoped((_) => getAttendanceHistory(query));
+  @override
+  Future<Result<AttendanceDayDetails?>> getAttendanceDayById(
+    String dayId,
+  ) => _historyRead((a) async {
+    final day = await local.byId(a.company.id, a.employeeReference!.id, dayId);
+    return day == null
+        ? null
+        : AttendanceDayDetails(
+            day,
+            await local.events(a.company.id, a.employeeReference!.id, dayId),
+            clock.now().toUtc(),
+          );
+  });
+  @override
+  Stream<Result<AttendanceDayDetails?>> watchAttendanceDayById(String dayId) =>
+      _watchScoped((_) => getAttendanceDayById(dayId));
   Future<Result<AuthContext>> _session() async {
     final result = await auth.checkSession();
     if (result case Failed<AuthContext?>(:final failure)) {

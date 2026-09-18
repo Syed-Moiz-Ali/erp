@@ -1295,7 +1295,7 @@ abstract class AppLocalizations {
   /// No description provided for @authSignInSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Sign in to your company workspace.'**
+  /// **'Sign in to your Bitlogix workspace.'**
   String get authSignInSubtitle;
 
   /// No description provided for @authIdentifier.
@@ -1303,6 +1303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email or phone number'**
   String get authIdentifier;
+
+  /// No description provided for @authIdentifierHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name@company.com'**
+  String get authIdentifierHint;
 
   /// No description provided for @authIdentifierRequired.
   ///
@@ -1351,6 +1357,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Company workspace'**
   String get authWorkspaceLabel;
+
+  /// No description provided for @authSecureSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session stays secure on this device.'**
+  String get authSecureSession;
+
+  /// No description provided for @authSecureSessionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure session'**
+  String get authSecureSessionLabel;
+
+  /// No description provided for @authWorkforce.
+  ///
+  /// In en, this message translates to:
+  /// **'Workforce'**
+  String get authWorkforce;
+
+  /// No description provided for @authActiveEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'active employees'**
+  String get authActiveEmployees;
+
+  /// No description provided for @authWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get authWorking;
+
+  /// No description provided for @authAttendanceActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance active'**
+  String get authAttendanceActive;
+
+  /// No description provided for @authLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get authLive;
+
+  /// No description provided for @authDeveloperAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer access'**
+  String get authDeveloperAccess;
+
+  /// No description provided for @productEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Modular business workspace'**
+  String get productEyebrow;
+
+  /// No description provided for @productHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything your business runs on.\nConnected.'**
+  String get productHeadline;
+
+  /// No description provided for @productWorkspaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bitlogix Workspace'**
+  String get productWorkspaceTitle;
+
+  /// No description provided for @productWorkspaceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unified business system'**
+  String get productWorkspaceSubtitle;
+
+  /// No description provided for @productWorkspaceFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected by one workspace'**
+  String get productWorkspaceFooter;
+
+  /// No description provided for @modulePeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get modulePeople;
+
+  /// No description provided for @moduleOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get moduleOperations;
+
+  /// No description provided for @moduleOperationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflows'**
+  String get moduleOperationsDesc;
+
+  /// No description provided for @moduleCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get moduleCustomers;
+
+  /// No description provided for @moduleCustomersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationships'**
+  String get moduleCustomersDesc;
+
+  /// No description provided for @moduleFinance.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get moduleFinance;
+
+  /// No description provided for @moduleServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get moduleServices;
+
+  /// No description provided for @moduleServicesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Service requests'**
+  String get moduleServicesDesc;
+
+  /// No description provided for @moduleInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get moduleInventory;
+
+  /// No description provided for @moduleInventoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Assets'**
+  String get moduleInventoryDesc;
+
+  /// No description provided for @moduleReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get moduleReports;
+
+  /// No description provided for @moduleReportsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled exports'**
+  String get moduleReportsDesc;
+
+  /// No description provided for @moduleInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get moduleInsights;
+
+  /// No description provided for @moduleInsightsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get moduleInsightsDesc;
+
+  /// No description provided for @authWorkdayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workday,\nall in one place.'**
+  String get authWorkdayTitle;
+
+  /// No description provided for @authWorkingDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Working day'**
+  String get authWorkingDay;
+
+  /// No description provided for @authNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get authNow;
+
+  /// No description provided for @authShiftGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General shift'**
+  String get authShiftGeneral;
+
+  /// No description provided for @authShiftToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get authShiftToday;
+
+  /// No description provided for @authWorkLocationMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main office'**
+  String get authWorkLocationMain;
+
+  /// No description provided for @authEmployeesActiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} employees active'**
+  String authEmployeesActiveCount(int count);
+
+  /// No description provided for @authDemoUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a demo account'**
+  String get authDemoUse;
 
   /// No description provided for @authSessionNote.
   ///
@@ -2099,8 +2315,20 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardSelfContext.
   ///
   /// In en, this message translates to:
-  /// **'Your workforce at a glance'**
+  /// **'Your workday at a glance'**
   String get dashboardSelfContext;
+
+  /// No description provided for @dashboardNoShiftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work schedule not configured'**
+  String get dashboardNoShiftTitle;
+
+  /// No description provided for @dashboardNoShiftMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No shift has been assigned to your employee profile yet. Contact HR to complete your attendance setup.'**
+  String get dashboardNoShiftMessage;
 
   /// No description provided for @dashboardTeamContext.
   ///
@@ -2287,6 +2515,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} corrections awaiting review'**
   String dashboardCorrectionsAlert(String count);
+
+  /// No description provided for @dashboardLateAlertDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Review attendance'**
+  String get dashboardLateAlertDetail;
+
+  /// No description provided for @dashboardCorrectionsAlertDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting review'**
+  String get dashboardCorrectionsAlertDetail;
+
+  /// No description provided for @dashboardSelfCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in'**
+  String get dashboardSelfCheckedIn;
+
+  /// No description provided for @dashboardSelfBreakStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started a break'**
+  String get dashboardSelfBreakStarted;
+
+  /// No description provided for @dashboardSelfCorrectionSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted a correction'**
+  String get dashboardSelfCorrectionSubmitted;
 
   /// No description provided for @dashboardCheckedIn.
   ///
@@ -2851,6 +3109,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shifts'**
   String get cfgShifts;
+
+  /// No description provided for @cfgShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get cfgShift;
+
+  /// No description provided for @cfgPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance policy'**
+  String get cfgPolicy;
 
   /// No description provided for @cfgLocations.
   ///
@@ -4058,6 +4328,12 @@ abstract class AppLocalizations {
   /// **'Worked time'**
   String get attendanceWorkedTime;
 
+  /// No description provided for @attendanceBreakTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Break time'**
+  String get attendanceBreakTime;
+
   /// No description provided for @attendanceTodayShift.
   ///
   /// In en, this message translates to:
@@ -4399,6 +4675,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{value} m'**
   String attendanceMeters(String value);
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance history'**
+  String get historyTitle;
+
+  /// No description provided for @historyNav.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyNav;
+
+  /// No description provided for @historyMonthlySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly summary'**
+  String get historyMonthlySummary;
+
+  /// No description provided for @historyPreviousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get historyPreviousMonth;
+
+  /// No description provided for @historyNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get historyNextMonth;
+
+  /// No description provided for @historyPresent.
+  ///
+  /// In en, this message translates to:
+  /// **'Present'**
+  String get historyPresent;
+
+  /// No description provided for @historyLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get historyLate;
+
+  /// No description provided for @historyIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get historyIncomplete;
+
+  /// No description provided for @historyCompletedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Work and break totals include completed records only.'**
+  String get historyCompletedOnly;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No attendance records'**
+  String get historyEmpty;
+
+  /// No description provided for @historyFilteredEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching attendance records'**
+  String get historyFilteredEmpty;
+
+  /// No description provided for @historyEmptyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity was recorded in this month.'**
+  String get historyEmptyNote;
+
+  /// No description provided for @historyFilteredNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another status or clear your filters.'**
+  String get historyFilteredNote;
+
+  /// No description provided for @historyClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get historyClearFilters;
+
+  /// No description provided for @historyAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get historyAllStatuses;
+
+  /// No description provided for @historyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Status filters'**
+  String get historyFilters;
+
+  /// No description provided for @historyApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get historyApply;
+
+  /// No description provided for @historyReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get historyReset;
+
+  /// No description provided for @historyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance details'**
+  String get historyDetails;
+
+  /// No description provided for @historyDailySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily summary'**
+  String get historyDailySummary;
+
+  /// No description provided for @historyTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get historyTimeline;
+
+  /// No description provided for @historyBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Breaks'**
+  String get historyBreaks;
+
+  /// No description provided for @historyMissingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing punch out'**
+  String get historyMissingOut;
+
+  /// No description provided for @historyOpenBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete break'**
+  String get historyOpenBreak;
+
+  /// No description provided for @historyNotRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not recorded'**
+  String get historyNotRecorded;
+
+  /// No description provided for @historyNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get historyNeedsAttention;
+
+  /// No description provided for @historyIncompleteNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This record has no punch out. Final work and break totals are unavailable.'**
+  String get historyIncompleteNote;
+
+  /// No description provided for @historyOpenBreakNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No resume recorded. This break has no final duration.'**
+  String get historyOpenBreakNote;
+
+  /// No description provided for @historyGoToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Open today’s attendance'**
+  String get historyGoToday;
+
+  /// No description provided for @historyActiveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This record is still open. Use Today for live totals and attendance actions.'**
+  String get historyActiveNote;
+
+  /// No description provided for @historyNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance record unavailable'**
+  String get historyNotFound;
+
+  /// No description provided for @historyNotFoundNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This record was not found in your attendance history.'**
+  String get historyNotFoundNote;
+
+  /// No description provided for @historyOvernight.
+  ///
+  /// In en, this message translates to:
+  /// **'Overnight shift'**
+  String get historyOvernight;
+
+  /// No description provided for @historyExpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected duration'**
+  String get historyExpected;
+
+  /// No description provided for @historyGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Grace period'**
+  String get historyGrace;
+
+  /// No description provided for @historyWithinArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Within assigned area'**
+  String get historyWithinArea;
+
+  /// No description provided for @historyOutsideAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside assigned area · allowed by policy'**
+  String get historyOutsideAllowed;
+
+  /// No description provided for @historyVerificationIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification issue'**
+  String get historyVerificationIssue;
+
+  /// No description provided for @historyContactHr.
+  ///
+  /// In en, this message translates to:
+  /// **'The original record is retained. Contact HR about this verification issue.'**
+  String get historyContactHr;
+
+  /// No description provided for @historyDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get historyDate;
+
+  /// No description provided for @historyStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get historyStatus;
+
+  /// No description provided for @historyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get historyNow;
+
+  /// No description provided for @historyRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get historyRetry;
+
+  /// No description provided for @historyAverageWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Average worked per completed day'**
+  String get historyAverageWork;
+
+  /// No description provided for @historyNoBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'No breaks recorded'**
+  String get historyNoBreaks;
+
+  /// No description provided for @timeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} → {end}'**
+  String timeRange(String start, String end);
+
+  /// No description provided for @dateTimeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {time}'**
+  String dateTimeValue(String date, String time);
+
+  /// No description provided for @labeledValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String labeledValue(String label, String value);
+
+  /// No description provided for @historyFilterCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Status filters ({count})'**
+  String historyFilterCount(String count);
 }
 
 class _AppLocalizationsDelegate

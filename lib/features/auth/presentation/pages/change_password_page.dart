@@ -80,9 +80,7 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
               children: [
                 Text(
                   context.l10n.authChangePassword,
-                  style: typography.pageTitle.copyWith(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.3,
+                  style: typography.authTitle.copyWith(
                     color: isDark ? Colors.white : AppColors.textPrimary,
                   ),
                 ),
@@ -98,9 +96,10 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                 const SizedBox(height: AppSpacing.xl),
                 AppPasswordField(
                   label: context.l10n.authCurrentPassword,
+                  labelAbove: true,
+                  suffixIconSize: 18,
                   controller: _current,
                   enabled: !loading,
-                  prefixIcon: Icons.lock_outline_rounded,
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.password],
                   onFieldSubmitted: (_) => _newFocus.requestFocus(),
@@ -110,10 +109,11 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                 const SizedBox(height: AppSpacing.lg),
                 AppPasswordField(
                   label: context.l10n.authNewPassword,
+                  labelAbove: true,
+                  suffixIconSize: 18,
                   controller: _replacement,
                   focusNode: _newFocus,
                   enabled: !loading,
-                  prefixIcon: Icons.lock_reset_rounded,
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.newPassword],
                   onFieldSubmitted: (_) => _confirmFocus.requestFocus(),
@@ -139,10 +139,11 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
                 const SizedBox(height: AppSpacing.lg),
                 AppPasswordField(
                   label: context.l10n.authConfirmPassword,
+                  labelAbove: true,
+                  suffixIconSize: 18,
                   controller: _confirmation,
                   focusNode: _confirmFocus,
                   enabled: !loading,
-                  prefixIcon: Icons.check_circle_outline_rounded,
                   textInputAction: TextInputAction.done,
                   autofillHints: const [AutofillHints.newPassword],
                   onFieldSubmitted: (_) => _submit(),

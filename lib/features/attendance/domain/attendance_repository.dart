@@ -1,9 +1,19 @@
+import 'attendance_history.dart';
 import '../../../core/connectivity/connectivity_service.dart';
 import '../../../core/errors/result.dart';
 import 'attendance_engine.dart';
 import 'attendance_models.dart';
 
 abstract interface class AttendanceRepository {
+  Future<Result<DateTime>> getCompanyAttendanceDate();
+  Future<Result<AttendanceHistoryPageData>> getAttendanceHistory(
+    AttendanceHistoryQuery query,
+  );
+  Stream<Result<AttendanceHistoryPageData>> watchAttendanceHistory(
+    AttendanceHistoryQuery query,
+  );
+  Future<Result<AttendanceDayDetails?>> getAttendanceDayById(String dayId);
+  Stream<Result<AttendanceDayDetails?>> watchAttendanceDayById(String dayId);
   Future<Result<AttendanceContext>> getCurrentAttendance({
     AttendanceWorkMode workMode = AttendanceWorkMode.office,
     String? expectedUserId,

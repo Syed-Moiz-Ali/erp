@@ -107,16 +107,7 @@ Future<Harness> mount(
   }
   final h = Harness(auth, locale, repo, key, database);
   addTearDown(() async {
-    if (!h.disposed) {
-      await tester.pumpWidget(const SizedBox.shrink());
-      await pump(tester);
-      await tester.runAsync(() async {
-        await repo.dispose();
-        await auth.close();
-        await locale.close();
-        await h.database?.close();
-      });
-    }
+    if (!h.disposed) await unmount(tester, h);
   });
   await tester.pumpWidget(
     RepaintBoundary(
@@ -191,12 +182,28 @@ Future<void> tapVisible(WidgetTester tester, Finder finder) async {
 void main() {
   setUpAll(() async {
     registerFallbackValue(AuthIdentifier.parse('hr@erp.demo')!);
-    for (final font in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
-      'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
-    }.entries) {
-      await (FontLoader(font.key)..addFont(rootBundle.load(font.value))).load();
+    const fontFiles = <String, List<String>>{
+      'Manrope': [
+        'assets/fonts/Manrope-Regular.ttf',
+        'assets/fonts/Manrope-Medium.ttf',
+        'assets/fonts/Manrope-SemiBold.ttf',
+        'assets/fonts/Manrope-Bold.ttf',
+        'assets/fonts/Manrope-ExtraBold.ttf',
+      ],
+      'IBMPlexSansArabic': [
+        'assets/fonts/IBMPlexSansArabic-Regular.ttf',
+        'assets/fonts/IBMPlexSansArabic-Medium.ttf',
+        'assets/fonts/IBMPlexSansArabic-SemiBold.ttf',
+        'assets/fonts/IBMPlexSansArabic-Bold.ttf',
+      ],
+      'MaterialIcons': ['fonts/MaterialIcons-Regular.otf'],
+    };
+    for (final entry in fontFiles.entries) {
+      final loader = FontLoader(entry.key);
+      for (final path in entry.value) {
+        loader.addFont(rootBundle.load(path));
+      }
+      await loader.load();
     }
   });
   for (final language in AppLanguage.values) {

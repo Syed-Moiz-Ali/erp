@@ -17,16 +17,33 @@ abstract final class AppColors {
   static const surfaceHover = Color(0xFFF3F1F7);
   static const surfaceSelected = Color(0xFFF5EFF5);
 
+  // Authentication environment (soft neutral canvas + composed application stage)
+  static const canvas = Color(0xFFE9E8EC);
+  static const frameBody = Color(0xFFF4F3F7);
+  static const surfaceTint = Color(0xFFF7F3F6);
+  static const appSurface = Color(0xFFFCFBFC);
+  static const authSurface = Color(0xFFFCFBFD);
+  static const productTint = Color(0xFFF4EFF6);
+  static const productTintAlt = Color(0xFFEAE3F1);
+  static const inputBackground = Color(0xFFF6F6F8);
+  static const inputHover = Color(0xFFFBFBFD);
+  static const inputBorder = Color(0xFFE1DEE7);
+  static const inputBorderHover = Color(0xFFD3CEDC);
+
+  // Mobile / tablet continuous canvas (extremely low-contrast tonal blend)
+  static const mobileCanvasTop = Color(0xFFEEECF2);
+  static const mobileCanvasBottom = Color(0xFFF6F5F7);
+
   // Borders (Ultra-subtle cool/lavender-gray)
-  static const borderSubtle = Color(0xFFEFECE5);
-  static const borderDefault = Color(0xFFE4E1E8);
-  static const borderStrong = Color(0xFFB5AFBF);
+  static const borderSubtle = Color(0xFFECE9EF);
+  static const borderDefault = Color(0xFFDFDCE4);
+  static const borderStrong = Color(0xFFB0AABA);
 
   // Text (Deep ink & muted charcoal)
   static const textPrimary = Color(0xFF14111E);
-  static const textSecondary = Color(0xFF5E5868);
-  static const textMuted = Color(0xFF918B9C);
-  static const textDisabled = Color(0xFFBDB7C6);
+  static const textSecondary = Color(0xFF544F5E);
+  static const textMuted = Color(0xFF7C7688);
+  static const textDisabled = Color(0xFFB3ADBC);
 
   // Status & Feedback
   static const success = Color(0xFF0D7A53);

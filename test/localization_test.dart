@@ -47,6 +47,15 @@ void main() {
       expect(ar.keys.where((key) => !key.startsWith('@')).toSet(), keys);
       for (final key in keys) {
         expect(ar[key], isNotEmpty, reason: key);
+        // These templates contain only punctuation and localized placeholders.
+        if (const {
+          'timeRange',
+          'dateTimeValue',
+          'labeledValue',
+        }.contains(key)) {
+          expect(ar[key], en[key], reason: '$key preserves its neutral format');
+          continue;
+        }
         if (key != 'englishNativeName') {
           expect(
             RegExp(r'[\u0600-\u06ff]').hasMatch(ar[key] as String),
@@ -199,9 +208,9 @@ void main() {
   test('Arabic typography selects bundled family and appropriate spacing', () {
     final en = AppTypography.forLocale(const Locale('en'));
     final ar = AppTypography.forLocale(const Locale('ar'));
-    expect(en.body.fontFamily, 'Inter');
-    expect(ar.body.fontFamily, 'NotoSansArabic');
-    expect(en.body.fontFamilyFallback, contains('NotoSansArabic'));
+    expect(en.body.fontFamily, 'Manrope');
+    expect(ar.body.fontFamily, 'IBMPlexSansArabic');
+    expect(en.body.fontFamilyFallback, contains('IBMPlexSansArabic'));
     expect(ar.pageTitle.letterSpacing, 0);
     expect(ar.body.height, greaterThanOrEqualTo(en.body.height!));
   });

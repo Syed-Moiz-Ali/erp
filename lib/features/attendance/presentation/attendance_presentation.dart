@@ -10,6 +10,15 @@ import '../domain/shift_workday_resolver.dart';
 import 'attendance_localization.dart';
 
 abstract final class AttendancePresentation {
+  static bool isLocationFailure(Failure? failure) {
+    final code = failure?.code;
+    return code != null &&
+        (code.startsWith('location') ||
+            code == AttendanceFailureCode.outsideAllowedLocation.name ||
+            code == AttendanceFailureCode.staleLocationEvidence.name ||
+            code == AttendanceFailureCode.invalidLocationEvidence.name);
+  }
+
   static String failure(BuildContext c, Failure f) {
     final matches = AttendanceFailureCode.values.where((v) => v.name == f.code);
     return matches.isEmpty

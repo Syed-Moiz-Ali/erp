@@ -49,9 +49,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
             children: [
               Text(
                 context.l10n.authForgotTitle,
-                style: typography.pageTitle.copyWith(
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.4,
+                style: typography.authTitle.copyWith(
                   color: AppColors.textPrimary,
                 ),
               ),
@@ -83,12 +81,13 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 AutofillGroup(
                   child: AppTextField(
                     label: context.l10n.authIdentifier,
+                    hint: context.l10n.authIdentifierHint,
                     controller: _identifier,
                     enabled: !loading,
+                    labelAbove: true,
                     autocorrect: false,
                     autofillHints: const [AutofillHints.username],
                     keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.alternate_email_outlined,
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) => _submit(),
                     validator: (value) =>

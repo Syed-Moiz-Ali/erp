@@ -135,17 +135,10 @@ void main() {
         expect(() => data.metrics.clear(), throwsUnsupportedError);
         if (role == AppRole.employee) {
           expect(data.status, isNull);
-          expect(data.today, isNotNull);
-          expect(data.metrics.map((m) => m.kind), [
-            DashboardMetricKind.present,
-            DashboardMetricKind.late,
-            DashboardMetricKind.leave,
-            DashboardMetricKind.hours,
-          ]);
-          expect(
-            data.activities.every((a) => a.person == context.user.displayName),
-            isTrue,
-          );
+          expect(data.today, isNull);
+          expect(data.metrics, isEmpty);
+          expect(data.activities, isEmpty);
+          expect(data.isDemo, isFalse);
           expect(data.alerts, isEmpty);
         } else {
           final status = data.status!;

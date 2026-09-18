@@ -81,8 +81,8 @@ Future<void> unmountApp(WidgetTester tester, LocaleCubit locale) async {
 void main() {
   setUpAll(() async {
     for (final font in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
+      'Manrope': 'assets/fonts/Manrope-SemiBold.ttf',
+      'IBMPlexSansArabic': 'assets/fonts/IBMPlexSansArabic-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       await (FontLoader(font.key)..addFont(rootBundle.load(font.value))).load();
@@ -208,7 +208,7 @@ void main() {
     await tester.tap(
       find.byWidgetPredicate(
         (widget) =>
-            widget is CheckedPopupMenuItem<AppLanguage> &&
+            widget is PopupMenuItem<AppLanguage> &&
             widget.value == AppLanguage.arabic,
       ),
     );

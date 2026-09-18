@@ -84,12 +84,27 @@ class ShiftWorkdayResolver {
 
 class AttendanceTimingEvaluator {
   const AttendanceTimingEvaluator();
+  DateTime earliestPunchIn(AttendanceConfigurationSnapshot s) =>
+      s.policy.allowEarlyPunchIn
+      ? s.scheduledStart.subtract(
+          Duration(minutes: s.policy.earlyPunchInLimitMinutes ?? 0),
+        )
+      : s.scheduledStart;
+
+  DateTime lateThreshold(AttendanceConfigurationSnapshot s) =>
+      s.scheduledStart.add(Duration(minutes: s.shift.gracePeriodMinutes));
+
+  DateTime? nextPunchInChange(AttendanceConfigurationSnapshot s, DateTime now) {
+    final boundaries = [
+      earliestPunchIn(s),
+      s.scheduledStart,
+      lateThreshold(s).add(const Duration(milliseconds: 1)),
+    ].where((t) => t.isAfter(now)).toList()..sort();
+    return boundaries.isEmpty ? null : boundaries.first;
+  }
+
   bool isLate(AttendanceConfigurationSnapshot snapshot, DateTime punchIn) =>
-      punchIn.isAfter(
-        snapshot.scheduledStart.add(
-          Duration(minutes: snapshot.shift.gracePeriodMinutes),
-        ),
-      );
+      punchIn.isAfter(lateThreshold(snapshot));
   AttendanceFailureCode? validate(
     AttendanceConfigurationSnapshot s,
     AttendanceEventType action,
@@ -97,13 +112,7 @@ class AttendanceTimingEvaluator {
   ) {
     final p = s.policy;
     if (action == AttendanceEventType.punchIn) {
-      if (now.isBefore(s.scheduledStart) &&
-          (!p.allowEarlyPunchIn ||
-              now.isBefore(
-                s.scheduledStart.subtract(
-                  Duration(minutes: p.earlyPunchInLimitMinutes ?? 0),
-                ),
-              ))) {
+      if (now.isBefore(s.scheduledStart) && now.isBefore(earliestPunchIn(s))) {
         return AttendanceFailureCode.tooEarlyToPunchIn;
       }
       if (!p.allowLatePunchIn && isLate(s, now)) {

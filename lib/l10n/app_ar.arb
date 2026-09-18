@@ -199,8 +199,9 @@
   "paginationSummary": "{start}–{end} من {total}",
   "durationHoursMinutes": "{hours} س {minutes} د",
   "authWelcomeBack": "مرحبًا بعودتك",
-  "authSignInSubtitle": "سجّل الدخول إلى مساحة عمل شركتك.",
+  "authSignInSubtitle": "سجّل الدخول إلى مساحة عمل Bitlogix.",
   "authIdentifier": "البريد الإلكتروني أو رقم الهاتف",
+  "authIdentifierHint": "مثال: name@company.com",
   "authIdentifierRequired": "البريد الإلكتروني أو رقم الهاتف مطلوب",
   "authIdentifierInvalid": "أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا",
   "authPasswordRequired": "كلمة المرور مطلوبة",
@@ -209,6 +210,48 @@
   "authBrandStatement": "مساحة عمل مترابطة.\nويوم عمل أكثر وضوحًا.",
   "authBrandDescription": "مكان واحد لفريقك وعملياتك والأعمال القادمة.",
   "authWorkspaceLabel": "مساحة عمل الشركة",
+  "authSecureSession": "تبقى جلستك آمنة على هذا الجهاز.",
+  "authSecureSessionLabel": "جلسة آمنة",
+  "authWorkforce": "القوى العاملة",
+  "authActiveEmployees": "موظف نشط",
+  "authWorking": "العمل",
+  "authAttendanceActive": "الحضور نشط",
+  "authLive": "مباشر",
+  "authDeveloperAccess": "دخول المطوّر",
+  "productEyebrow": "مساحة عمل أعمال معيارية",
+  "productHeadline": "كل ما يديره عملك.\nمتصل في مكان واحد.",
+  "productWorkspaceTitle": "مساحة عمل Bitlogix",
+  "productWorkspaceSubtitle": "نظام أعمال موحّد",
+  "productWorkspaceFooter": "متصل عبر مساحة عمل واحدة",
+  "modulePeople": "الأفراد",
+  "moduleOperations": "العمليات",
+  "moduleOperationsDesc": "سير العمل",
+  "moduleCustomers": "العملاء",
+  "moduleCustomersDesc": "العلاقات",
+  "moduleFinance": "المالية",
+  "moduleServices": "الخدمات",
+  "moduleServicesDesc": "طلبات الخدمة",
+  "moduleInventory": "المخزون",
+  "moduleInventoryDesc": "الأصول",
+  "moduleReports": "التقارير",
+  "moduleReportsDesc": "تصدير مجدول",
+  "moduleInsights": "الرؤى",
+  "moduleInsightsDesc": "نظرة عامة",
+  "authWorkdayTitle": "يوم عملك،\nفي مكان واحد.",
+  "authWorkingDay": "يوم العمل",
+  "authNow": "الآن",
+  "authShiftGeneral": "الدوام العام",
+  "authShiftToday": "اليوم",
+  "authWorkLocationMain": "المكتب الرئيسي",
+  "authEmployeesActiveCount": "{count} موظفًا نشطًا",
+  "@authEmployeesActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "authDemoUse": "استخدام حساب تجريبي",
   "authSessionNote": "تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.",
   "authInitializing": "جارٍ تجهيز مساحة عملك…",
   "authDemoAccounts": "حسابات تجريبية",
@@ -375,7 +418,9 @@
       }
     }
   },
-  "dashboardSelfContext": "لمحة عن حضورك وعملك",
+  "dashboardSelfContext": "نظرة على يوم عملك",
+  "dashboardNoShiftTitle": "جدول العمل غير مُهيأ",
+  "dashboardNoShiftMessage": "لم يتم تعيين دوام لملفك الوظيفي بعد. تواصل مع الموارد البشرية لإكمال إعداد الحضور.",
   "dashboardTeamContext": "لمحة عن فريقك",
   "dashboardCompanyContext": "لمحة عن القوى العاملة في شركتك",
   "dashboardNoScope": "مساحة عملك",
@@ -414,6 +459,11 @@
     }
   },
   "dashboardCorrectionsAlert": "{count} تصحيحات تنتظر المراجعة",
+  "dashboardLateAlertDetail": "مراجعة الحضور",
+  "dashboardCorrectionsAlertDetail": "بانتظار المراجعة",
+  "dashboardSelfCheckedIn": "تسجيل الدخول",
+  "dashboardSelfBreakStarted": "بدء استراحة",
+  "dashboardSelfCorrectionSubmitted": "إرسال تصحيح",
   "@dashboardCorrectionsAlert": {
     "placeholders": {
       "count": {
@@ -570,6 +620,8 @@
   "noSelection": "غير محدد",
   "cfgConfiguration": "الإعدادات",
   "cfgShifts": "الورديات",
+  "cfgShift": "الوردية",
+  "cfgPolicy": "سياسة الحضور",
   "cfgLocations": "مواقع العمل",
   "cfgPolicies": "سياسات الحضور",
   "cfgIntro": "حدد أوقات عمل الموظفين ومواقعهم وقواعد الحضور.",
@@ -771,6 +823,7 @@
   "attendanceTotalBreak": "إجمالي الاستراحات",
   "attendanceElapsedTime": "الوقت المنقضي",
   "attendanceWorkedTime": "وقت العمل",
+  "attendanceBreakTime": "وقت الاستراحة",
   "attendanceTodayShift": "وردية اليوم",
   "attendanceWorkLocation": "موقع العمل",
   "attendanceLocationChecking": "جارٍ التحقق من موقعك…",
@@ -831,6 +884,92 @@
   "@attendanceMeters": {
     "placeholders": {
       "value": {
+        "type": "String"
+      }
+    }
+  },
+  "historyTitle": "سجل الحضور",
+  "historyNav": "السجل",
+  "historyMonthlySummary": "الملخص الشهري",
+  "historyPreviousMonth": "الشهر السابق",
+  "historyNextMonth": "الشهر التالي",
+  "historyPresent": "حاضر",
+  "historyLate": "متأخر",
+  "historyIncomplete": "غير مكتمل",
+  "historyCompletedOnly": "تشمل إجماليات العمل والاستراحة السجلات المكتملة فقط.",
+  "historyEmpty": "لا توجد سجلات حضور",
+  "historyFilteredEmpty": "لا توجد سجلات حضور مطابقة",
+  "historyEmptyNote": "لم يُسجّل أي نشاط في هذا الشهر.",
+  "historyFilteredNote": "جرّب حالة أخرى أو امسح عوامل التصفية.",
+  "historyClearFilters": "مسح عوامل التصفية",
+  "historyAllStatuses": "كل الحالات",
+  "historyFilters": "تصفية الحالات",
+  "historyApply": "تطبيق التصفية",
+  "historyReset": "إعادة تعيين",
+  "historyDetails": "تفاصيل الحضور",
+  "historyDailySummary": "الملخص اليومي",
+  "historyTimeline": "التسلسل الزمني",
+  "historyBreaks": "الاستراحات",
+  "historyMissingOut": "لم يُسجّل الخروج",
+  "historyOpenBreak": "استراحة غير مكتملة",
+  "historyNotRecorded": "غير مسجّل",
+  "historyNeedsAttention": "يحتاج إلى مراجعة",
+  "historyIncompleteNote": "لا يحتوي هذا السجل على خروج. إجماليات العمل والاستراحة النهائية غير متاحة.",
+  "historyOpenBreakNote": "لم تُسجّل العودة للعمل. لا توجد مدة نهائية لهذه الاستراحة.",
+  "historyGoToday": "فتح حضور اليوم",
+  "historyActiveNote": "هذا السجل ما زال مفتوحاً. استخدم اليوم للإجماليات المباشرة وإجراءات الحضور.",
+  "historyNotFound": "سجل الحضور غير متاح",
+  "historyNotFoundNote": "لم يتم العثور على هذا السجل في سجل حضورك.",
+  "historyOvernight": "وردية ليلية",
+  "historyExpected": "المدة المتوقعة",
+  "historyGrace": "فترة السماح",
+  "historyWithinArea": "داخل المنطقة المحددة",
+  "historyOutsideAllowed": "خارج المنطقة المحددة · مسموح وفق السياسة",
+  "historyVerificationIssue": "مشكلة في التحقق",
+  "historyContactHr": "تم الاحتفاظ بالسجل الأصلي. تواصل مع الموارد البشرية بشأن مشكلة التحقق.",
+  "historyDate": "التاريخ",
+  "historyStatus": "الحالة",
+  "historyNow": "الآن",
+  "historyRetry": "تحديث",
+  "historyAverageWork": "متوسط العمل لكل يوم مكتمل",
+  "historyNoBreaks": "لا توجد استراحات مسجّلة",
+  "timeRange": "{start} → {end}",
+  "@timeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "dateTimeValue": "{date} · {time}",
+  "@dateTimeValue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "labeledValue": "{label}: {value}",
+  "@labeledValue": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "historyFilterCount": "تصفية الحالات ({count})",
+  "@historyFilterCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }

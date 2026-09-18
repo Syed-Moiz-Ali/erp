@@ -1,3 +1,4 @@
+import '../../attendance/presentation/widgets/attendance_dashboard_month.dart';
 import '../../attendance/presentation/widgets/attendance_dashboard_preview.dart';
 import '../../../design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
@@ -119,26 +120,30 @@ class DashboardView extends StatelessWidget {
           ),
         );
       } else {
-        final mainMetrics = summary.metrics
-            .where(
-              (m) => !{
-                DashboardMetricKind.working,
-                DashboardMetricKind.onBreak,
-                DashboardMetricKind.corrections,
-              }.contains(m.kind),
-            )
-            .where(
-              (m) =>
-                  !compact ||
-                  !{
-                    DashboardMetricKind.attendanceRate,
-                    DashboardMetricKind.locations,
-                    DashboardMetricKind.users,
-                  }.contains(m.kind),
-            )
+        final selfAttendance = summary.scope == DashboardScope.self;
+        const secondaryKinds = {
+          DashboardMetricKind.attendanceRate,
+          DashboardMetricKind.locations,
+          DashboardMetricKind.users,
+        };
+        final scopedMetrics = summary.metrics.where(
+          (m) => !{
+            DashboardMetricKind.working,
+            DashboardMetricKind.onBreak,
+            DashboardMetricKind.corrections,
+          }.contains(m.kind),
+        );
+        final mainMetrics = scopedMetrics
+            .where((m) => !secondaryKinds.contains(m.kind))
             .toList();
+        final secondaryMetrics = compact
+            ? const <DashboardMetric>[]
+            : scopedMetrics
+                  .where((m) => secondaryKinds.contains(m.kind))
+                  .toList();
         final quick = AppDashboardSection(
           title: l.dashboardQuickActions,
+          card: false,
           child: Wrap(
             spacing: AppSpacing.sm,
             runSpacing: AppSpacing.sm,
@@ -155,6 +160,7 @@ class DashboardView extends StatelessWidget {
         );
         final activity = AppDashboardSection(
           title: l.dashboardActivity,
+          card: false,
           child: summary.activities.isEmpty
               ? Text(
                   l.dashboardNoActivity,
@@ -164,7 +170,11 @@ class DashboardView extends StatelessWidget {
                   children: [
                     for (final a in summary.activities)
                       AppActivityItem(
-                        title: DashboardPresentation.activity(l, a),
+                        title: DashboardPresentation.activity(
+                          l,
+                          a,
+                          self: selfAttendance,
+                        ),
                         description: l.dashboardActivityDetail,
                         timestamp:
                             '${AppDateFormatter(locale).date(a.timestamp)} · ${AppTimeFormatter(locale).time(a.timestamp)}',
@@ -190,7 +200,7 @@ class DashboardView extends StatelessWidget {
               style: AppTypography.of(context).body,
             ),
             const SizedBox(height: AppSpacing.sm),
-            if (summary.isDemo)
+            if (summary.isDemo && !selfAttendance)
               Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: AppStatusBadge(
@@ -216,63 +226,75 @@ class DashboardView extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.lg),
             ],
-            if (summary.isEmpty)
+            if (summary.isEmpty && !selfAttendance)
               AppCard(
                 child: AppEmptyState(
                   title: l.dashboardEmptyTitle,
                   message: l.dashboardEmptyMessage,
                 ),
               ),
-            if (summary.today case final today?) ...[
-              _today(context, today),
-              const SizedBox(height: AppSpacing.xxl),
-              AppSectionHeader(title: l.dashboardMonth),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-            if (mainMetrics.isNotEmpty) ...[
-              AppDashboardGrid(
-                children: [
-                  for (final metric in mainMetrics)
-                    AppMetricCard(
-                      key: ValueKey('metric-${metric.kind.name}'),
-                      label: DashboardPresentation.label(l, metric.kind),
-                      value: DashboardPresentation.value(context, metric),
-                      detail:
-                          metric.kind == DashboardMetricKind.present &&
-                              summary.scope != DashboardScope.self
-                          ? l.dashboardPresentDetail
-                          : '',
-                      icon: DashboardPresentation.icon(metric.kind),
-                      status: DashboardPresentation.status(metric.kind),
-                    ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
-            if (summary.status != null) ...[
-              AppDashboardTwoColumn(
-                primary: compact
-                    ? _attention(context, summary)
-                    : _status(context, summary),
-                secondary: compact
-                    ? _status(context, summary)
-                    : _attention(context, summary),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
-            if (compact) ...[
-              if (actions.isNotEmpty) ...[
-                quick,
+            if (selfAttendance) ...[
+              // Employee: personal workday workspace (Today + real monthly
+              // attendance summary), then recent activity.
+              if (!compact)
+                AppDashboardTwoColumn(
+                  primary: _today(context),
+                  secondary: const AttendanceDashboardMonth(),
+                )
+              else ...[
+                _today(context),
                 const SizedBox(height: AppSpacing.xxl),
+                const AttendanceDashboardMonth(),
               ],
               if (!summary.isEmpty) activity,
-            ] else if (!summary.isEmpty && actions.isNotEmpty)
-              AppDashboardTwoColumn(primary: activity, secondary: quick)
-            else if (!summary.isEmpty)
-              activity
-            else if (actions.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.xxl),
-              quick,
+            ] else ...[
+              if (mainMetrics.isNotEmpty) ...[
+                AppDashboardGrid(
+                  children: _metricCards(context, l, summary, mainMetrics),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (secondaryMetrics.isNotEmpty) ...[
+                AppStatStrip(
+                  stats: [
+                    for (final metric in secondaryMetrics)
+                      AppMetricCard(
+                        key: ValueKey('metric-${metric.kind.name}'),
+                        variant: AppMetricVariant.secondary,
+                        label: DashboardPresentation.label(l, metric.kind),
+                        value: DashboardPresentation.value(context, metric),
+                        icon: DashboardPresentation.icon(metric.kind),
+                        status: DashboardPresentation.status(metric.kind),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (summary.status != null) ...[
+                AppDashboardTwoColumn(
+                  primary: compact
+                      ? _attention(context, summary)
+                      : _status(context, summary),
+                  secondary: compact
+                      ? _status(context, summary)
+                      : _attention(context, summary),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (compact) ...[
+                if (actions.isNotEmpty) ...[
+                  quick,
+                  const SizedBox(height: AppSpacing.xxl),
+                ],
+                if (!summary.isEmpty) activity,
+              ] else if (!summary.isEmpty && actions.isNotEmpty)
+                AppDashboardTwoColumn(primary: activity, secondary: quick)
+              else if (!summary.isEmpty)
+                activity
+              else if (actions.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.xxl),
+                quick,
+              ],
             ],
           ],
         );
@@ -288,11 +310,31 @@ class DashboardView extends StatelessWidget {
       );
     },
   );
-  Widget _today(BuildContext context, DashboardToday today) =>
-      AppDashboardSection(
-        title: context.l10n.dashboardToday,
-        child: const AttendanceDashboardPreview(),
-      );
+  Widget _today(BuildContext context) => AppDashboardSection(
+    title: context.l10n.dashboardToday,
+    child: const AttendanceDashboardPreview(),
+  );
+
+  List<Widget> _metricCards(
+    BuildContext context,
+    AppLocalizations l,
+    DashboardSummary summary,
+    List<DashboardMetric> metrics,
+  ) => [
+    for (final metric in metrics)
+      AppMetricCard(
+        key: ValueKey('metric-${metric.kind.name}'),
+        label: DashboardPresentation.label(l, metric.kind),
+        value: DashboardPresentation.value(context, metric),
+        detail:
+            metric.kind == DashboardMetricKind.present &&
+                summary.scope != DashboardScope.self
+            ? l.dashboardPresentDetail
+            : '',
+        icon: DashboardPresentation.icon(metric.kind),
+        status: DashboardPresentation.status(metric.kind),
+      ),
+  ];
 
   Widget _status(BuildContext context, DashboardSummary summary) {
     final l = context.l10n,
@@ -353,32 +395,36 @@ class DashboardView extends StatelessWidget {
         RouteAccess.allowed;
     return AppDashboardSection(
       title: l.dashboardAttention,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (summary.alerts.isEmpty) Text(l.dashboardNoAttention),
-          for (final alert in summary.alerts)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: AppActivityItem(
-                title: alert.kind == DashboardAlertKind.lateArrivals
-                    ? l.dashboardLateAlert(numbers.integer(alert.count))
-                    : l.dashboardCorrectionsAlert(numbers.integer(alert.count)),
-                description: '',
-                timestamp: '',
-                icon: alert.kind == DashboardAlertKind.lateArrivals
-                    ? Icons.schedule
-                    : Icons.rule_outlined,
-                status: AppStatus.warning,
-              ),
-            ),
-          if (canOpen)
-            AppTextButton(
+      action: canOpen
+          ? AppTextButton(
               label: l.shellAttendance,
               onPressed: () => context.go(AppRoutes.attendance),
+            )
+          : null,
+      child: summary.alerts.isEmpty
+          ? Text(l.dashboardNoAttention)
+          : AppAttentionList(
+              children: [
+                for (final alert in summary.alerts)
+                  AppAttentionItem(
+                    icon: alert.kind == DashboardAlertKind.lateArrivals
+                        ? Icons.schedule
+                        : Icons.rule_outlined,
+                    title: alert.kind == DashboardAlertKind.lateArrivals
+                        ? l.dashboardLateAlert(numbers.integer(alert.count))
+                        : l.dashboardCorrectionsAlert(
+                            numbers.integer(alert.count),
+                          ),
+                    subtitle: alert.kind == DashboardAlertKind.lateArrivals
+                        ? l.dashboardLateAlertDetail
+                        : l.dashboardCorrectionsAlertDetail,
+                    status: AppStatus.warning,
+                    onTap: canOpen
+                        ? () => context.go(AppRoutes.attendance)
+                        : null,
+                  ),
+              ],
             ),
-        ],
-      ),
     );
   }
 }

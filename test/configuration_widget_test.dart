@@ -50,8 +50,8 @@ import 'package:modular_erp/features/attendance_policies/presentation/bloc/atten
 void main() {
   setUpAll(() async {
     for (final f in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
+      'Manrope': 'assets/fonts/Manrope-SemiBold.ttf',
+      'IBMPlexSansArabic': 'assets/fonts/IBMPlexSansArabic-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       await (FontLoader(f.key)..addFont(rootBundle.load(f.value))).load();

@@ -105,8 +105,12 @@ class AppOperationalLayout extends StatelessWidget {
     super.key,
     required this.main,
     required this.supporting,
+    this.trailingMain,
   });
   final Widget main, supporting;
+
+  /// Follows support on compact screens, stays in the main column on desktop.
+  final Widget? trailingMain;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, c) {
@@ -118,13 +122,29 @@ class AppOperationalLayout extends StatelessWidget {
             main,
             const SizedBox(height: AppSpacing.xl),
             supporting,
+            if (trailingMain != null) ...[
+              const SizedBox(height: AppSpacing.xl),
+              trailingMain!,
+            ],
           ],
         );
       }
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(flex: size == AppSize.medium ? 3 : 2, child: main),
+          Expanded(
+            flex: size == AppSize.medium ? 3 : 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                main,
+                if (trailingMain != null) ...[
+                  const SizedBox(height: AppSpacing.xl),
+                  trailingMain!,
+                ],
+              ],
+            ),
+          ),
           const SizedBox(width: AppSpacing.xl),
           Expanded(flex: size == AppSize.medium ? 2 : 1, child: supporting),
         ],

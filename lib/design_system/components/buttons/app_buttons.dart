@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_motion.dart';
 import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 
 enum AppButtonSize { small, medium, large }
 
-class AppPrimaryButton extends StatelessWidget {
+class AppPrimaryButton extends StatefulWidget {
   const AppPrimaryButton({
     super.key,
     required this.label,
@@ -25,57 +26,107 @@ class AppPrimaryButton extends StatelessWidget {
   final bool fullWidth;
 
   @override
+  State<AppPrimaryButton> createState() => _AppPrimaryButtonState();
+}
+
+class _AppPrimaryButtonState extends State<AppPrimaryButton> {
+  bool _hovered = false;
+  bool _pressed = false;
+  bool _focused = false;
+
+  void _setPressed(bool value) {
+    if (_pressed != value) setState(() => _pressed = value);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final (height, padding, iconSize, textStyle) = _buttonSizeProps(
       context,
-      size,
+      widget.size,
     );
-    final isEnabled = onPressed != null && !loading;
-    final borderRadius = BorderRadius.circular(AppRadius.control);
-    final button = Container(
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        color: isEnabled
-            ? AppColors.brandPrimary
-            : AppColors.brandPrimary.withValues(alpha: .5),
-        boxShadow: isEnabled
-            ? const [
-                BoxShadow(
-                  color: Color(0x0F14111E),
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
+    final isEnabled = widget.onPressed != null && !widget.loading;
+    final borderRadius = BorderRadius.circular(AppRadius.field);
+    final background = !isEnabled
+        ? AppColors.brandPrimary.withValues(alpha: .5)
+        : _pressed
+        ? AppColors.brandPressed
+        : _hovered
+        ? AppColors.brandHover
+        : AppColors.brandPrimary;
+    final button = Focus(
+      canRequestFocus: false,
+      onFocusChange: (value) => setState(() => _focused = value),
+      child: MouseRegion(
+        cursor: isEnabled ? SystemMouseCursors.click : MouseCursor.defer,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: Listener(
+          onPointerDown: isEnabled ? (_) => _setPressed(true) : null,
+          onPointerUp: (_) => _setPressed(false),
+          onPointerCancel: (_) => _setPressed(false),
+          child: AnimatedSlide(
+            duration: AppMotion.fast,
+            curve: AppMotion.curveStandard,
+            offset: Offset(0, _hovered && !_pressed && isEnabled ? -0.02 : 0),
+            child: AnimatedContainer(
+              duration: AppMotion.fast,
+              curve: AppMotion.curveStandard,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                color: background,
+                boxShadow: [
+                  if (isEnabled)
+                    BoxShadow(
+                      color: const Color(0x1414111E),
+                      blurRadius: _hovered ? 12 : 8,
+                      offset: Offset(0, _hovered ? 4 : 2),
+                    ),
+                  if (_focused)
+                    BoxShadow(
+                      color: AppColors.brandPrimary.withValues(alpha: 0.35),
+                      blurRadius: 0,
+                      spreadRadius: 2,
+                    ),
+                ],
+              ),
+              child: FilledButton(
+                onPressed: widget.loading ? null : widget.onPressed,
+                style: FilledButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.transparent,
+                  disabledForegroundColor: Colors.white.withValues(alpha: .7),
+                  overlayColor: Colors.transparent,
+                  minimumSize: Size(
+                    widget.fullWidth ? double.infinity : 0,
+                    height,
+                  ),
+                  padding: padding,
+                  shape: RoundedRectangleBorder(borderRadius: borderRadius),
                 ),
-              ]
-            : null,
-      ),
-      child: FilledButton(
-        onPressed: loading ? null : onPressed,
-        style: FilledButton.styleFrom(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: Colors.transparent,
-          disabledForegroundColor: Colors.white.withValues(alpha: .7),
-          minimumSize: Size(fullWidth ? double.infinity : 0, height),
-          padding: padding,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
-        ),
-        child: _ButtonContent(
-          label: label,
-          icon: icon,
-          loading: loading,
-          iconSize: iconSize,
-          textStyle: textStyle.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.1,
+                child: _ButtonContent(
+                  label: widget.label,
+                  icon: widget.icon,
+                  loading: widget.loading,
+                  iconSize: iconSize,
+                  textStyle: textStyle.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.1,
+                  ),
+                  loadingColor: Colors.white,
+                ),
+              ),
+            ),
           ),
-          loadingColor: Colors.white,
         ),
       ),
     );
-    return fullWidth ? SizedBox(width: double.infinity, child: button) : button;
+    return widget.fullWidth
+        ? SizedBox(width: double.infinity, child: button)
+        : button;
   }
 }
 

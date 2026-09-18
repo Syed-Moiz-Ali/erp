@@ -78,38 +78,29 @@ class AttendanceActionSection extends StatelessWidget {
           runSpacing: AppSpacing.md,
           children: buttons,
         ),
-        if (allowed.isEmpty &&
-            state.summary?.currentState !=
-                AttendanceWorkdayState.completed) ...[
+        for (final code in {
+          for (final type in switch (state.summary?.currentState) {
+            AttendanceWorkdayState.notStarted => [AttendanceEventType.punchIn],
+            AttendanceWorkdayState.working => [
+              AttendanceEventType.breakStart,
+              AttendanceEventType.punchOut,
+            ],
+            AttendanceWorkdayState.onBreak => [
+              AttendanceEventType.breakEnd,
+              AttendanceEventType.punchOut,
+            ],
+            _ => <AttendanceEventType>[],
+          })
+            if (actions.decisions[type]?.failure != null &&
+                (allowed.isEmpty ||
+                    actions.decisions[type]!.failure !=
+                        AttendanceFailureCode.permissionDenied) &&
+                actions.decisions[type]!.failure!.name != state.failure?.code)
+              actions.decisions[type]!.failure!,
+        }) ...[
           const SizedBox(height: AppSpacing.sm),
           Text(
-            AttendancePresentation.failure(
-              context,
-              Failure(
-                code:
-                    (actions.decisions[AttendanceEventType.punchIn]!.failure ??
-                            AttendanceFailureCode.invalidAttendanceState)
-                        .name,
-              ),
-            ),
-            style: AppTypography.of(context).bodySmall,
-          ),
-        ],
-        if (state.summary?.currentState == AttendanceWorkdayState.working &&
-            !actions.canStartBreak &&
-            actions.decisions[AttendanceEventType.breakStart]?.failure !=
-                AttendanceFailureCode.permissionDenied) ...[
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            AttendancePresentation.failure(
-              context,
-              Failure(
-                code: actions
-                    .decisions[AttendanceEventType.breakStart]!
-                    .failure!
-                    .name,
-              ),
-            ),
+            AttendancePresentation.failure(context, Failure(code: code.name)),
             style: AppTypography.of(context).caption,
           ),
         ],

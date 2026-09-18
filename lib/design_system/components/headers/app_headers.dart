@@ -25,10 +25,15 @@ class AppPageHeader extends StatelessWidget {
       final heading = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (breadcrumbs != null) breadcrumbs!,
+          if (breadcrumbs != null) ...[
+            breadcrumbs!,
+            const SizedBox(height: AppSpacing.xs),
+          ],
           Text(title, style: AppTypography.of(context).pageTitle),
-          if (subtitle != null)
+          if (subtitle != null) ...[
+            const SizedBox(height: AppSpacing.xs + 2),
             Text(subtitle!, style: AppTypography.of(context).caption),
+          ],
         ],
       );
       final controls = Wrap(

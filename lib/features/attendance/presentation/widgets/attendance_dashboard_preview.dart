@@ -7,72 +7,136 @@ import '../../../../l10n/l10n.dart';
 import '../attendance_presentation.dart';
 import '../bloc/attendance_bloc.dart';
 
+/// "Today" content for the employee dashboard. Presentation only: it reads
+/// the session [AttendanceBloc] and never duplicates attendance logic.
 class AttendanceDashboardPreview extends StatelessWidget {
   const AttendanceDashboardPreview({super.key});
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AttendanceBloc?>();
-    if (bloc == null) {
-      return Text(
-        context.l10n.attendanceUnavailableTitle,
-        style: AppTypography.of(context).bodySmall,
+    final theme = AppTypography.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (bloc == null)
+          Text(
+            context.l10n.attendanceUnavailableTitle,
+            style: theme.bodySmall.copyWith(color: AppColors.textSecondary),
+          )
+        else
+          BlocBuilder<AttendanceBloc, AttendanceBlocState>(
+            builder: (c, s) => _TodayContent(state: s),
+          ),
+        const SizedBox(height: AppSpacing.lg),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: AppSecondaryButton(
+            key: const ValueKey('dashboard-action-attendance'),
+            label: context.l10n.attendanceOpenAttendance,
+            icon: Icons.schedule_outlined,
+            onPressed: () => context.go(AppRoutes.attendance),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TodayContent extends StatelessWidget {
+  const _TodayContent({required this.state});
+  final AttendanceBlocState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final theme = AppTypography.of(context);
+    final attendance = state.context;
+    if (attendance == null) {
+      if (state.contextStatus == AttendanceContextStatus.loading) {
+        return const AppSkeleton(height: 44);
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.dashboardNoShiftTitle,
+            style: theme.bodySmall.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            l.dashboardNoShiftMessage,
+            style: theme.caption.copyWith(color: AppColors.textSecondary),
+          ),
+        ],
       );
     }
-    return BlocBuilder<AttendanceBloc, AttendanceBlocState>(
-      builder: (c, s) {
-        final l = c.l10n;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (s.summary != null) ...[
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: AppStatusBadge(
-                  label: AttendancePresentation.state(
-                    c,
-                    s.summary!.currentState,
-                  ),
-                  status: AttendancePresentation.status(
-                    s.summary!.currentState,
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              if (s.summary!.punchInTime != null)
-                AppDetailField(
-                  label: l.attendancePunchInTime,
-                  value: AttendancePresentation.time(
-                    c,
-                    s.context!,
-                    s.summary!.punchInTime,
-                  ),
-                ),
-              if (s.context != null) ...[
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  s.context!.snapshot.shift.name,
-                  style: AppTypography.of(c).bodySmall,
-                ),
-              ],
-            ] else if (s.failure != null)
-              Text(
-                AttendancePresentation.failure(c, s.failure!),
-                style: AppTypography.of(c).bodySmall,
-              )
-            else
-              const AppSkeleton(height: 40),
-            const SizedBox(height: AppSpacing.lg),
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: AppSecondaryButton(
-                label: l.attendanceOpenAttendance,
-                icon: Icons.schedule_outlined,
-                onPressed: () => c.go(AppRoutes.attendance),
+    final snapshot = attendance.snapshot;
+    final summary = state.summary;
+    final workLocation = snapshot.workLocation;
+    final schedule =
+        '${AttendancePresentation.time(context, attendance, snapshot.scheduledStart)} – ${AttendancePresentation.time(context, attendance, snapshot.scheduledEnd)}';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (summary != null) ...[
+          AppStatusBadge(
+            label: AttendancePresentation.state(context, summary.currentState),
+            status: AttendancePresentation.status(summary.currentState),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+        ],
+        AppDetailField(
+          label: l.attendanceTodayShift,
+          value: snapshot.shift.name,
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(schedule, style: theme.caption),
+        const SizedBox(height: AppSpacing.md),
+        AppDetailField(
+          label: l.attendanceWorkLocation,
+          value: workLocation?.name ?? l.attendanceNoLocation,
+        ),
+        if (summary != null) ...[
+          if (summary.punchInTime != null) ...[
+            const SizedBox(height: AppSpacing.md),
+            AppDetailField(
+              label: l.attendancePunchInTime,
+              value: AttendancePresentation.time(
+                context,
+                attendance,
+                summary.punchInTime,
               ),
             ),
           ],
-        );
-      },
+          const SizedBox(height: AppSpacing.md),
+          Wrap(
+            spacing: AppSpacing.xxl,
+            runSpacing: AppSpacing.sm,
+            children: [
+              AppDetailField(
+                label: l.attendanceWorkedTime,
+                value: AttendancePresentation.duration(
+                  context,
+                  summary.workDuration,
+                ),
+              ),
+              if (summary.breakDuration > Duration.zero ||
+                  summary.openBreakDuration > Duration.zero)
+                AppDetailField(
+                  label: l.attendanceBreakTime,
+                  value: AttendancePresentation.duration(
+                    context,
+                    summary.breakDuration + summary.openBreakDuration,
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ],
     );
   }
 }

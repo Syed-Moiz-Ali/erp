@@ -18,6 +18,12 @@ abstract final class AppElevation {
     BoxShadow(color: Color(0x0414111E), blurRadius: 8, offset: Offset(0, 2)),
   ];
 
+  // Large, almost invisible shadow for the framed application stage.
+  static const List<BoxShadow> applicationFrame = [
+    BoxShadow(color: Color(0x0A14111E), blurRadius: 52, offset: Offset(0, 22)),
+    BoxShadow(color: Color(0x0514111E), blurRadius: 14, offset: Offset(0, 4)),
+  ];
+
   static const List<BoxShadow> dropdown = [
     BoxShadow(color: Color(0x0A14111E), blurRadius: 16, offset: Offset(0, 6)),
     BoxShadow(color: Color(0x0414111E), blurRadius: 4, offset: Offset(0, 2)),

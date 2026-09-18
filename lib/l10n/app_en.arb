@@ -811,8 +811,9 @@
     }
   },
   "authWelcomeBack": "Welcome back",
-  "authSignInSubtitle": "Sign in to your company workspace.",
+  "authSignInSubtitle": "Sign in to your Bitlogix workspace.",
   "authIdentifier": "Email or phone number",
+  "authIdentifierHint": "name@company.com",
   "authIdentifierRequired": "Email or phone number is required",
   "authIdentifierInvalid": "Enter a valid email or phone number",
   "authPasswordRequired": "Password is required",
@@ -821,6 +822,48 @@
   "authBrandStatement": "A connected workspace.\nA clearer working day.",
   "authBrandDescription": "One place for your people, operations, and the work ahead.",
   "authWorkspaceLabel": "Company workspace",
+  "authSecureSession": "Your session stays secure on this device.",
+  "authSecureSessionLabel": "Secure session",
+  "authWorkforce": "Workforce",
+  "authActiveEmployees": "active employees",
+  "authWorking": "Working",
+  "authAttendanceActive": "Attendance active",
+  "authLive": "Live",
+  "authDeveloperAccess": "Developer access",
+  "productEyebrow": "Modular business workspace",
+  "productHeadline": "Everything your business runs on.\nConnected.",
+  "productWorkspaceTitle": "Bitlogix Workspace",
+  "productWorkspaceSubtitle": "Unified business system",
+  "productWorkspaceFooter": "Connected by one workspace",
+  "modulePeople": "People",
+  "moduleOperations": "Operations",
+  "moduleOperationsDesc": "Workflows",
+  "moduleCustomers": "Customers",
+  "moduleCustomersDesc": "Relationships",
+  "moduleFinance": "Finance",
+  "moduleServices": "Services",
+  "moduleServicesDesc": "Service requests",
+  "moduleInventory": "Inventory",
+  "moduleInventoryDesc": "Assets",
+  "moduleReports": "Reports",
+  "moduleReportsDesc": "Scheduled exports",
+  "moduleInsights": "Insights",
+  "moduleInsightsDesc": "Overview",
+  "authWorkdayTitle": "Your workday,\nall in one place.",
+  "authWorkingDay": "Working day",
+  "authNow": "Now",
+  "authShiftGeneral": "General shift",
+  "authShiftToday": "Today",
+  "authWorkLocationMain": "Main office",
+  "authEmployeesActiveCount": "{count} employees active",
+  "@authEmployeesActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "authDemoUse": "Use a demo account",
   "authSessionNote": "Your session stays signed in on this device until you sign out or it expires.",
   "authInitializing": "Preparing your workspace…",
   "authDemoAccounts": "Demo accounts",
@@ -987,7 +1030,9 @@
       }
     }
   },
-  "dashboardSelfContext": "Your workforce at a glance",
+  "dashboardSelfContext": "Your workday at a glance",
+  "dashboardNoShiftTitle": "Work schedule not configured",
+  "dashboardNoShiftMessage": "No shift has been assigned to your employee profile yet. Contact HR to complete your attendance setup.",
   "dashboardTeamContext": "Your team at a glance",
   "dashboardCompanyContext": "Your company workforce at a glance",
   "dashboardNoScope": "Your workspace",
@@ -1026,6 +1071,11 @@
     }
   },
   "dashboardCorrectionsAlert": "{count} corrections awaiting review",
+  "dashboardLateAlertDetail": "Review attendance",
+  "dashboardCorrectionsAlertDetail": "Awaiting review",
+  "dashboardSelfCheckedIn": "Checked in",
+  "dashboardSelfBreakStarted": "Started a break",
+  "dashboardSelfCorrectionSubmitted": "Submitted a correction",
   "@dashboardCorrectionsAlert": {
     "placeholders": {
       "count": {
@@ -1182,6 +1232,8 @@
   "noSelection": "Not assigned",
   "cfgConfiguration": "Configuration",
   "cfgShifts": "Shifts",
+  "cfgShift": "Shift",
+  "cfgPolicy": "Attendance policy",
   "cfgLocations": "Work locations",
   "cfgPolicies": "Attendance policies",
   "cfgIntro": "Define when, where, and under which rules employees work.",
@@ -1383,6 +1435,7 @@
   "attendanceTotalBreak": "Total break",
   "attendanceElapsedTime": "Elapsed time",
   "attendanceWorkedTime": "Worked time",
+  "attendanceBreakTime": "Break time",
   "attendanceTodayShift": "Today's shift",
   "attendanceWorkLocation": "Work location",
   "attendanceLocationChecking": "Checking your location…",
@@ -1443,6 +1496,92 @@
   "@attendanceMeters": {
     "placeholders": {
       "value": {
+        "type": "String"
+      }
+    }
+  },
+  "historyTitle": "Attendance history",
+  "historyNav": "History",
+  "historyMonthlySummary": "Monthly summary",
+  "historyPreviousMonth": "Previous month",
+  "historyNextMonth": "Next month",
+  "historyPresent": "Present",
+  "historyLate": "Late",
+  "historyIncomplete": "Incomplete",
+  "historyCompletedOnly": "Work and break totals include completed records only.",
+  "historyEmpty": "No attendance records",
+  "historyFilteredEmpty": "No matching attendance records",
+  "historyEmptyNote": "No activity was recorded in this month.",
+  "historyFilteredNote": "Try another status or clear your filters.",
+  "historyClearFilters": "Clear filters",
+  "historyAllStatuses": "All statuses",
+  "historyFilters": "Status filters",
+  "historyApply": "Apply filters",
+  "historyReset": "Reset",
+  "historyDetails": "Attendance details",
+  "historyDailySummary": "Daily summary",
+  "historyTimeline": "Timeline",
+  "historyBreaks": "Breaks",
+  "historyMissingOut": "Missing punch out",
+  "historyOpenBreak": "Incomplete break",
+  "historyNotRecorded": "Not recorded",
+  "historyNeedsAttention": "Needs attention",
+  "historyIncompleteNote": "This record has no punch out. Final work and break totals are unavailable.",
+  "historyOpenBreakNote": "No resume recorded. This break has no final duration.",
+  "historyGoToday": "Open today’s attendance",
+  "historyActiveNote": "This record is still open. Use Today for live totals and attendance actions.",
+  "historyNotFound": "Attendance record unavailable",
+  "historyNotFoundNote": "This record was not found in your attendance history.",
+  "historyOvernight": "Overnight shift",
+  "historyExpected": "Expected duration",
+  "historyGrace": "Grace period",
+  "historyWithinArea": "Within assigned area",
+  "historyOutsideAllowed": "Outside assigned area · allowed by policy",
+  "historyVerificationIssue": "Verification issue",
+  "historyContactHr": "The original record is retained. Contact HR about this verification issue.",
+  "historyDate": "Date",
+  "historyStatus": "Status",
+  "historyNow": "Now",
+  "historyRetry": "Refresh",
+  "historyAverageWork": "Average worked per completed day",
+  "historyNoBreaks": "No breaks recorded",
+  "timeRange": "{start} → {end}",
+  "@timeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "dateTimeValue": "{date} · {time}",
+  "@dateTimeValue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "labeledValue": "{label}: {value}",
+  "@labeledValue": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "historyFilterCount": "Status filters ({count})",
+  "@historyFilterCount": {
+    "placeholders": {
+      "count": {
         "type": "String"
       }
     }

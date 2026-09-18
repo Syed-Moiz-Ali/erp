@@ -26,6 +26,7 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
     context.read<AppClock?>() ?? const SystemAppClock(),
   );
   bool foreground = true;
+  bool confirmationOpen = false;
   @override
   void initState() {
     super.initState();
@@ -70,16 +71,23 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
       listener: (context, s) async {
         ticker.bind(s.context);
         if (s.actionStatus == AttendanceActionStatus.awaitingConfirmation &&
-            s.preparedAction != null) {
+            s.preparedAction != null &&
+            !confirmationOpen) {
           final bloc = context.read<AttendanceBloc>();
           if (!TickerMode.of(context)) {
             bloc.add(const AttendanceConfirmationCancelled());
             return;
           }
-          final confirmed = await AttendanceConfirmationSheet.show(
-            context,
-            s.preparedAction!,
-          );
+          confirmationOpen = true;
+          bool? confirmed;
+          try {
+            confirmed = await AttendanceConfirmationSheet.show(
+              context,
+              s.preparedAction!,
+            );
+          } finally {
+            confirmationOpen = false;
+          }
           if (!bloc.isClosed) {
             bloc.add(
               confirmed == true
@@ -149,7 +157,8 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
             final notices = Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (s.failure != null) ...[
+                if (s.failure != null &&
+                    !AttendancePresentation.isLocationFailure(s.failure)) ...[
                   AppNotice(
                     title: AttendancePresentation.failure(context, s.failure!),
                     status: AppStatus.warning,
@@ -174,7 +183,6 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 notices,
-                AttendanceTodayTimeline(state: s),
               ],
             );
             final support = Column(
@@ -189,7 +197,11 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (s.refreshing) const LinearProgressIndicator(),
-                AppOperationalLayout(main: main, supporting: support),
+                AppOperationalLayout(
+                  main: main,
+                  supporting: support,
+                  trailingMain: AttendanceTodayTimeline(state: s),
+                ),
               ],
             );
           }

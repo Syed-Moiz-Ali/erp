@@ -69,6 +69,25 @@ class AttendanceEngine {
         for (final action in AttendanceEventType.values)
           action: decide(c, action, checkEvidence: false),
       });
+
+  /// A single meaningful clock boundary, independent of display ticking.
+  DateTime? nextActionEvaluationAt(AttendanceContext c) {
+    final summary = calculateSummary(c);
+    if (summary is! Success<AttendanceSummary>) return null;
+    return switch (summary.value.currentState) {
+      AttendanceWorkdayState.notStarted =>
+        const AttendanceTimingEvaluator().nextPunchInChange(
+          c.snapshot,
+          c.currentTime,
+        ),
+      AttendanceWorkdayState.working || AttendanceWorkdayState.onBreak =>
+        c.snapshot.scheduledEnd.isAfter(c.currentTime)
+            ? c.snapshot.scheduledEnd
+            : null,
+      AttendanceWorkdayState.completed => null,
+    };
+  }
+
   AttendanceActionDecision decide(
     AttendanceContext c,
     AttendanceEventType action, {

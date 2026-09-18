@@ -1,4 +1,5 @@
 import '../../../../app/router/app_routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -159,18 +160,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) => FocusTraversalGroup(
     policy: OrderedTraversalPolicy(),
-    child: AppAuthLayout(
-      child: BlocConsumer<AuthBloc, AuthState>(
-        listenWhen: (previous, current) =>
-            current.isAuthenticated && !previous.isAuthenticated,
-        listener: (context, state) {
-          TextInput.finishAutofillContext();
-          _password.clear();
-        },
-        builder: (context, state) {
-          final loading = state.status == AuthStatus.authenticating;
-          final typography = AppTypography.of(context);
-          return AutofillGroup(
+    child: BlocConsumer<AuthBloc, AuthState>(
+      listenWhen: (previous, current) =>
+          current.isAuthenticated && !previous.isAuthenticated,
+      listener: (context, state) {
+        TextInput.finishAutofillContext();
+        _password.clear();
+      },
+      builder: (context, state) {
+        final loading = state.status == AuthStatus.authenticating;
+        return AppAuthLayout(
+          developerAccess: !kDebugMode || widget.demoAccounts.isEmpty || loading
+              ? null
+              : _DeveloperAccessButton(
+                  onPressed: () => _showDemoAccountsDialog(context),
+                ),
+          child: AutofillGroup(
             child: Form(
               key: _form,
               child: Column(
@@ -179,29 +184,29 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     context.l10n.authWelcomeBack,
-                    style: typography.pageTitle.copyWith(
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.4,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: AppTypography.of(
+                      context,
+                    ).authTitle.copyWith(color: AppColors.textPrimary),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     context.l10n.authSignInSubtitle,
-                    style: typography.body.copyWith(
+                    style: AppTypography.of(context).bodyLarge.copyWith(
                       color: AppColors.textSecondary,
+                      height: 1.45,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.section),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(1),
                     child: AppTextField(
                       key: const ValueKey('login-identifier'),
                       label: context.l10n.authIdentifier,
+                      hint: context.l10n.authIdentifierHint,
                       controller: _identifier,
                       focusNode: _identifierFocus,
                       enabled: !loading,
-                      prefixIcon: Icons.alternate_email_outlined,
+                      labelAbove: true,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       autofillHints: const [AutofillHints.username],
@@ -212,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                       )?.message(context.l10n),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.xl),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(2),
                     child: AppPasswordField(
@@ -220,7 +225,16 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _password,
                       focusNode: _passwordFocus,
                       enabled: !loading,
-                      prefixIcon: Icons.lock_outline_rounded,
+                      labelAbove: true,
+                      suffixIconSize: 18,
+                      label: context.l10n.password,
+                      labelTrailing: FocusTraversalOrder(
+                        order: const NumericFocusOrder(3),
+                        child: _ForgotPasswordAction(
+                          enabled: !loading,
+                          onPressed: () => context.go(AppRoutes.forgotPassword),
+                        ),
+                      ),
                       autofillHints: const [AutofillHints.password],
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
@@ -228,21 +242,8 @@ class _LoginPageState extends State<LoginPage> {
                           AppValidation.password(value)?.message(context.l10n),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
-                  FocusTraversalOrder(
-                    order: const NumericFocusOrder(3),
-                    child: Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: AppTextButton(
-                        label: context.l10n.forgotPassword,
-                        onPressed: loading
-                            ? null
-                            : () => context.go(AppRoutes.forgotPassword),
-                      ),
-                    ),
-                  ),
                   if (state.failure != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
+                    const SizedBox(height: AppSpacing.xl),
                     Semantics(
                       liveRegion: true,
                       child: AppMotion.entrance(
@@ -255,51 +256,81 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
                   ],
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.xxl),
                   FocusTraversalOrder(
                     order: const NumericFocusOrder(4),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: AppPrimaryButton(
-                        key: const ValueKey('login-submit'),
-                        label: loading
-                            ? context.l10n.authLoggingIn
-                            : context.l10n.login,
-                        loading: loading,
-                        onPressed: _submit,
-                      ),
+                    child: AppPrimaryButton(
+                      key: const ValueKey('login-submit'),
+                      label: loading
+                          ? context.l10n.authLoggingIn
+                          : context.l10n.login,
+                      loading: loading,
+                      onPressed: _submit,
+                      size: AppButtonSize.large,
+                      fullWidth: true,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    context.l10n.authSessionNote,
-                    style: typography.caption.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  if (widget.demoAccounts.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.xl),
-                    const Divider(color: AppColors.borderSubtle),
-                    const SizedBox(height: AppSpacing.xs),
-                    Center(
-                      child: AppTextButton(
-                        label: context.l10n.authDemoAccounts,
-                        icon: Icons.auto_awesome_rounded,
-                        onPressed: loading
-                            ? null
-                            : () => _showDemoAccountsDialog(context),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     ),
+  );
+}
+
+/// Compact, low-weight inline action that sits on the password label row.
+class _ForgotPasswordAction extends StatelessWidget {
+  const _ForgotPasswordAction({required this.enabled, required this.onPressed});
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+    onPressed: enabled ? onPressed : null,
+    style:
+        TextButton.styleFrom(
+          foregroundColor: AppColors.textSecondary,
+          disabledForegroundColor: AppColors.textDisabled,
+          minimumSize: Size.zero,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xs,
+            vertical: 2,
+          ),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          textStyle: AppTypography.of(
+            context,
+          ).caption.copyWith(fontSize: 12.5, fontWeight: FontWeight.w600),
+        ).copyWith(
+          overlayColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.hovered)
+                ? AppColors.brandSubtle
+                : Colors.transparent,
+          ),
+        ),
+    child: Text(context.l10n.forgotPassword),
+  );
+}
+
+/// Development-only entry point. Icon-only and low-emphasis so it never
+/// competes with the primary action; absent entirely in production builds.
+class _DeveloperAccessButton extends StatelessWidget {
+  const _DeveloperAccessButton({required this.onPressed});
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+    tooltip: context.l10n.authDeveloperAccess,
+    onPressed: onPressed,
+    iconSize: 18,
+    visualDensity: VisualDensity.compact,
+    style: IconButton.styleFrom(
+      foregroundColor: AppColors.textMuted,
+      overlayColor: AppColors.brandSubtle,
+      hoverColor: AppColors.brandSubtle,
+    ),
+    icon: const Icon(Icons.more_horiz_rounded),
   );
 }

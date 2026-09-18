@@ -33,10 +33,17 @@ class AppResponsiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = AppBreakpoints.of(context);
-    final index = modules.indexWhere((m) => m.owns(route));
+    int selectedIndex(List<ErpModule> items, String path) {
+      final matches = items.where((m) => m.owns(path)).toList()
+        ..sort((a, b) => b.route.length.compareTo(a.route.length));
+      return matches.isEmpty ? -1 : items.indexOf(matches.first);
+    }
+
+    final index = selectedIndex(modules, route);
     final bottomItems = bottomModules ?? modules;
-    final bottomIndex = bottomItems.indexWhere(
-      (m) => m.owns(bottomSelectedRoute ?? route),
+    final bottomIndex = selectedIndex(
+      bottomItems,
+      bottomSelectedRoute ?? route,
     );
     final selected = index < 0 ? 0 : index;
     final desktop = size == AppSize.expanded || size == AppSize.large;

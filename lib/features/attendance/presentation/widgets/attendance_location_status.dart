@@ -21,11 +21,9 @@ class AttendanceLocationStatus extends StatelessWidget {
         AttendanceEventType.punchIn;
     final required = state.actions?.decisions[type]?.requiresLocation ?? false;
     final code = state.failure?.code;
-    final locationFailure =
-        code != null && code.startsWith('location') ||
-        code == 'outsideAllowedLocation' ||
-        code == 'staleLocationEvidence' ||
-        code == 'invalidLocationEvidence';
+    final locationFailure = AttendancePresentation.isLocationFailure(
+      state.failure,
+    );
     final checking =
         state.actionStatus == AttendanceActionStatus.checkingLocation;
     final validation = preview?.decision.locationValidation;

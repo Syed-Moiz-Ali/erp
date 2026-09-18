@@ -45,7 +45,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
           tooltip: context.l10n.shellNotifications,
           onPressed: onNotifications,
         ),
-        if (desktop) const AppLanguageSelector(),
+        if (desktop) const AppLanguageSelector(compact: true),
         Padding(
           padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),
           child: accountMenu,

@@ -154,6 +154,7 @@ void configureDependencies() {
       workLocationRepository: services(),
       attendancePolicyRepository: services(),
       locationService: services(),
+      attendanceRepository: services(),
     ),
   );
   services.registerSingleton(AppLogger());

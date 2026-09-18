@@ -620,10 +620,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authWelcomeBack => 'مرحبًا بعودتك';
 
   @override
-  String get authSignInSubtitle => 'سجّل الدخول إلى مساحة عمل شركتك.';
+  String get authSignInSubtitle => 'سجّل الدخول إلى مساحة عمل Bitlogix.';
 
   @override
   String get authIdentifier => 'البريد الإلكتروني أو رقم الهاتف';
+
+  @override
+  String get authIdentifierHint => 'مثال: name@company.com';
 
   @override
   String get authIdentifierRequired => 'البريد الإلكتروني أو رقم الهاتف مطلوب';
@@ -651,6 +654,113 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authWorkspaceLabel => 'مساحة عمل الشركة';
+
+  @override
+  String get authSecureSession => 'تبقى جلستك آمنة على هذا الجهاز.';
+
+  @override
+  String get authSecureSessionLabel => 'جلسة آمنة';
+
+  @override
+  String get authWorkforce => 'القوى العاملة';
+
+  @override
+  String get authActiveEmployees => 'موظف نشط';
+
+  @override
+  String get authWorking => 'العمل';
+
+  @override
+  String get authAttendanceActive => 'الحضور نشط';
+
+  @override
+  String get authLive => 'مباشر';
+
+  @override
+  String get authDeveloperAccess => 'دخول المطوّر';
+
+  @override
+  String get productEyebrow => 'مساحة عمل أعمال معيارية';
+
+  @override
+  String get productHeadline => 'كل ما يديره عملك.\nمتصل في مكان واحد.';
+
+  @override
+  String get productWorkspaceTitle => 'مساحة عمل Bitlogix';
+
+  @override
+  String get productWorkspaceSubtitle => 'نظام أعمال موحّد';
+
+  @override
+  String get productWorkspaceFooter => 'متصل عبر مساحة عمل واحدة';
+
+  @override
+  String get modulePeople => 'الأفراد';
+
+  @override
+  String get moduleOperations => 'العمليات';
+
+  @override
+  String get moduleOperationsDesc => 'سير العمل';
+
+  @override
+  String get moduleCustomers => 'العملاء';
+
+  @override
+  String get moduleCustomersDesc => 'العلاقات';
+
+  @override
+  String get moduleFinance => 'المالية';
+
+  @override
+  String get moduleServices => 'الخدمات';
+
+  @override
+  String get moduleServicesDesc => 'طلبات الخدمة';
+
+  @override
+  String get moduleInventory => 'المخزون';
+
+  @override
+  String get moduleInventoryDesc => 'الأصول';
+
+  @override
+  String get moduleReports => 'التقارير';
+
+  @override
+  String get moduleReportsDesc => 'تصدير مجدول';
+
+  @override
+  String get moduleInsights => 'الرؤى';
+
+  @override
+  String get moduleInsightsDesc => 'نظرة عامة';
+
+  @override
+  String get authWorkdayTitle => 'يوم عملك،\nفي مكان واحد.';
+
+  @override
+  String get authWorkingDay => 'يوم العمل';
+
+  @override
+  String get authNow => 'الآن';
+
+  @override
+  String get authShiftGeneral => 'الدوام العام';
+
+  @override
+  String get authShiftToday => 'اليوم';
+
+  @override
+  String get authWorkLocationMain => 'المكتب الرئيسي';
+
+  @override
+  String authEmployeesActiveCount(int count) {
+    return '$count موظفًا نشطًا';
+  }
+
+  @override
+  String get authDemoUse => 'استخدام حساب تجريبي';
 
   @override
   String get authSessionNote =>
@@ -1057,7 +1167,14 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dashboardSelfContext => 'لمحة عن حضورك وعملك';
+  String get dashboardSelfContext => 'نظرة على يوم عملك';
+
+  @override
+  String get dashboardNoShiftTitle => 'جدول العمل غير مُهيأ';
+
+  @override
+  String get dashboardNoShiftMessage =>
+      'لم يتم تعيين دوام لملفك الوظيفي بعد. تواصل مع الموارد البشرية لإكمال إعداد الحضور.';
 
   @override
   String get dashboardTeamContext => 'لمحة عن فريقك';
@@ -1155,6 +1272,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String dashboardCorrectionsAlert(String count) {
     return '$count تصحيحات تنتظر المراجعة';
   }
+
+  @override
+  String get dashboardLateAlertDetail => 'مراجعة الحضور';
+
+  @override
+  String get dashboardCorrectionsAlertDetail => 'بانتظار المراجعة';
+
+  @override
+  String get dashboardSelfCheckedIn => 'تسجيل الدخول';
+
+  @override
+  String get dashboardSelfBreakStarted => 'بدء استراحة';
+
+  @override
+  String get dashboardSelfCorrectionSubmitted => 'إرسال تصحيح';
 
   @override
   String dashboardCheckedIn(String name) {
@@ -1458,6 +1590,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cfgShifts => 'الورديات';
+
+  @override
+  String get cfgShift => 'الوردية';
+
+  @override
+  String get cfgPolicy => 'سياسة الحضور';
 
   @override
   String get cfgLocations => 'مواقع العمل';
@@ -2093,6 +2231,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendanceWorkedTime => 'وقت العمل';
 
   @override
+  String get attendanceBreakTime => 'وقت الاستراحة';
+
+  @override
   String get attendanceTodayShift => 'وردية اليوم';
 
   @override
@@ -2272,5 +2413,166 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String attendanceMeters(String value) {
     return '$value م';
+  }
+
+  @override
+  String get historyTitle => 'سجل الحضور';
+
+  @override
+  String get historyNav => 'السجل';
+
+  @override
+  String get historyMonthlySummary => 'الملخص الشهري';
+
+  @override
+  String get historyPreviousMonth => 'الشهر السابق';
+
+  @override
+  String get historyNextMonth => 'الشهر التالي';
+
+  @override
+  String get historyPresent => 'حاضر';
+
+  @override
+  String get historyLate => 'متأخر';
+
+  @override
+  String get historyIncomplete => 'غير مكتمل';
+
+  @override
+  String get historyCompletedOnly =>
+      'تشمل إجماليات العمل والاستراحة السجلات المكتملة فقط.';
+
+  @override
+  String get historyEmpty => 'لا توجد سجلات حضور';
+
+  @override
+  String get historyFilteredEmpty => 'لا توجد سجلات حضور مطابقة';
+
+  @override
+  String get historyEmptyNote => 'لم يُسجّل أي نشاط في هذا الشهر.';
+
+  @override
+  String get historyFilteredNote => 'جرّب حالة أخرى أو امسح عوامل التصفية.';
+
+  @override
+  String get historyClearFilters => 'مسح عوامل التصفية';
+
+  @override
+  String get historyAllStatuses => 'كل الحالات';
+
+  @override
+  String get historyFilters => 'تصفية الحالات';
+
+  @override
+  String get historyApply => 'تطبيق التصفية';
+
+  @override
+  String get historyReset => 'إعادة تعيين';
+
+  @override
+  String get historyDetails => 'تفاصيل الحضور';
+
+  @override
+  String get historyDailySummary => 'الملخص اليومي';
+
+  @override
+  String get historyTimeline => 'التسلسل الزمني';
+
+  @override
+  String get historyBreaks => 'الاستراحات';
+
+  @override
+  String get historyMissingOut => 'لم يُسجّل الخروج';
+
+  @override
+  String get historyOpenBreak => 'استراحة غير مكتملة';
+
+  @override
+  String get historyNotRecorded => 'غير مسجّل';
+
+  @override
+  String get historyNeedsAttention => 'يحتاج إلى مراجعة';
+
+  @override
+  String get historyIncompleteNote =>
+      'لا يحتوي هذا السجل على خروج. إجماليات العمل والاستراحة النهائية غير متاحة.';
+
+  @override
+  String get historyOpenBreakNote =>
+      'لم تُسجّل العودة للعمل. لا توجد مدة نهائية لهذه الاستراحة.';
+
+  @override
+  String get historyGoToday => 'فتح حضور اليوم';
+
+  @override
+  String get historyActiveNote =>
+      'هذا السجل ما زال مفتوحاً. استخدم اليوم للإجماليات المباشرة وإجراءات الحضور.';
+
+  @override
+  String get historyNotFound => 'سجل الحضور غير متاح';
+
+  @override
+  String get historyNotFoundNote => 'لم يتم العثور على هذا السجل في سجل حضورك.';
+
+  @override
+  String get historyOvernight => 'وردية ليلية';
+
+  @override
+  String get historyExpected => 'المدة المتوقعة';
+
+  @override
+  String get historyGrace => 'فترة السماح';
+
+  @override
+  String get historyWithinArea => 'داخل المنطقة المحددة';
+
+  @override
+  String get historyOutsideAllowed =>
+      'خارج المنطقة المحددة · مسموح وفق السياسة';
+
+  @override
+  String get historyVerificationIssue => 'مشكلة في التحقق';
+
+  @override
+  String get historyContactHr =>
+      'تم الاحتفاظ بالسجل الأصلي. تواصل مع الموارد البشرية بشأن مشكلة التحقق.';
+
+  @override
+  String get historyDate => 'التاريخ';
+
+  @override
+  String get historyStatus => 'الحالة';
+
+  @override
+  String get historyNow => 'الآن';
+
+  @override
+  String get historyRetry => 'تحديث';
+
+  @override
+  String get historyAverageWork => 'متوسط العمل لكل يوم مكتمل';
+
+  @override
+  String get historyNoBreaks => 'لا توجد استراحات مسجّلة';
+
+  @override
+  String timeRange(String start, String end) {
+    return '$start → $end';
+  }
+
+  @override
+  String dateTimeValue(String date, String time) {
+    return '$date · $time';
+  }
+
+  @override
+  String labeledValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String historyFilterCount(String count) {
+    return 'تصفية الحالات ($count)';
   }
 }

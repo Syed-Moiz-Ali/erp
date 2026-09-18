@@ -171,6 +171,7 @@ class AttendanceBloc extends Bloc<AttendanceBlocEvent, AttendanceBlocState> {
   final bool requireConfirmation;
   final Future<Result<bool>> Function(bool locationSettings)? openSettings;
   StreamSubscription<Result<AttendanceContext>>? _watch;
+  Timer? _eligibilityTimer;
   bool _queued = false;
   @override
   void add(AttendanceBlocEvent event) {
@@ -195,6 +196,8 @@ class AttendanceBloc extends Bloc<AttendanceBlocEvent, AttendanceBlocState> {
     Result<AttendanceContext> result,
     Emitter<AttendanceBlocState> emit,
   ) {
+    _eligibilityTimer?.cancel();
+    _eligibilityTimer = null;
     if (result case Failed<AttendanceContext>(:final failure)) {
       emit(
         state.update(
@@ -220,6 +223,15 @@ class AttendanceBloc extends Bloc<AttendanceBlocEvent, AttendanceBlocState> {
       return;
     }
     var actions = engine.getAvailableActions(c);
+    if (requireConfirmation) {
+      final boundary = engine.nextActionEvaluationAt(c);
+      if (boundary != null) {
+        final delay = boundary.difference(execute.clock.now());
+        _eligibilityTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
+          if (!isClosed) add(const AttendanceRefreshRequested());
+        });
+      }
+    }
     final preview = state.locationPreview;
     if (preview != null &&
         !preview.decision.allowed &&
@@ -489,6 +501,7 @@ class AttendanceBloc extends Bloc<AttendanceBlocEvent, AttendanceBlocState> {
 
   @override
   Future<void> close() async {
+    _eligibilityTimer?.cancel();
     await _watch?.cancel();
     return super.close();
   }

@@ -70,6 +70,8 @@ class AppCard extends StatelessWidget {
   }
 }
 
+enum AppMetricVariant { primary, secondary }
+
 class AppMetricCard extends StatelessWidget {
   const AppMetricCard({
     super.key,
@@ -81,6 +83,7 @@ class AppMetricCard extends StatelessWidget {
     this.trend,
     this.trendPositive = true,
     this.onTap,
+    this.variant = AppMetricVariant.primary,
   });
 
   final String label, value, detail;
@@ -89,6 +92,7 @@ class AppMetricCard extends StatelessWidget {
   final String? trend;
   final bool trendPositive;
   final VoidCallback? onTap;
+  final AppMetricVariant variant;
 
   @override
   Widget build(BuildContext context) {
@@ -99,17 +103,59 @@ class AppMetricCard extends StatelessWidget {
       if (trend != null) trend!,
     ];
     final semanticSummary = semanticParts.join(', ');
+    if (variant == AppMetricVariant.secondary) {
+      final theme = AppTypography.of(context);
+      return Semantics(
+        label: semanticSummary,
+        child: ExcludeSemantics(
+          child: Row(
+            children: [
+              if (status != AppStatus.neutral) ...[
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: status.color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+              ],
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.caption.copyWith(color: AppColors.textSecondary),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Text(
+                value,
+                maxLines: 1,
+                style: theme.bodySmall.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Semantics(
       label: semanticSummary,
       child: ExcludeSemantics(
         child: AppCard(
-          padding: const EdgeInsets.all(AppSpacing.xl),
+          padding: const EdgeInsets.all(AppSpacing.lg + 2),
           onTap: onTap,
           variant: onTap != null
               ? AppCardVariant.interactive
               : AppCardVariant.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,22 +171,31 @@ class AppMetricCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Icon(
-                    icon,
-                    size: 18,
-                    color: status == AppStatus.neutral
-                        ? AppColors.textMuted
-                        : status.color,
-                  ),
+                  if (status != AppStatus.neutral) ...[
+                    const SizedBox(width: AppSpacing.sm),
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        color: status.color,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ],
                 ],
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
                 value,
-                style: AppTypography.of(
-                  context,
-                ).pageTitle.copyWith(fontWeight: FontWeight.w700, height: 1.2),
+                style: AppTypography.of(context).displaySmall.copyWith(
+                  fontSize: 27,
+                  fontWeight: FontWeight.w800,
+                  height: 1.05,
+                  letterSpacing: -1,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               if (detail.isNotEmpty || trend != null) ...[
                 const SizedBox(height: AppSpacing.sm),

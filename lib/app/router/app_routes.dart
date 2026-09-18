@@ -17,6 +17,9 @@ abstract final class AppRoutes {
       notFound = '/app/not-found',
       noDestinations = '/app/no-destinations',
       designSystem = '/design-system';
+  static const attendanceHistory = '$attendance/history';
+  static String attendanceDayDetails(String id) =>
+      '$attendanceHistory/${Uri.encodeComponent(id)}';
   static const employeeNew = '/app/employees/new';
   static String employeeDetails(String id) =>
       '$employees/${Uri.encodeComponent(id)}';

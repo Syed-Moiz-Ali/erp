@@ -1,3 +1,4 @@
+import 'package:modular_erp/features/attendance/presentation/widgets/attendance_dashboard_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,8 +20,8 @@ import 'dashboard_test.dart' show ControlledDashboardRepository;
 void main() {
   setUpAll(() async {
     for (final font in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
+      'Manrope': 'assets/fonts/Manrope-SemiBold.ttf',
+      'IBMPlexSansArabic': 'assets/fonts/IBMPlexSansArabic-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       await (FontLoader(font.key)..addFont(rootBundle.load(font.value))).load();
@@ -87,10 +88,7 @@ void main() {
                 ? findsOneWidget
                 : findsNothing,
           );
-          expect(
-            find.byKey(const ValueKey('metric-hours')),
-            account.key == 'employee' ? findsOneWidget : findsNothing,
-          );
+          expect(find.byKey(const ValueKey('metric-hours')), findsNothing);
           expect(
             find.byKey(const ValueKey('dashboard-action-employees')),
             account.key == 'employee' ? findsNothing : findsOneWidget,
@@ -98,7 +96,9 @@ void main() {
           final context = tester.element(find.byType(DashboardView));
           expect(
             find.text(context.l10n.dashboardDemo('Sep 17, 2026')),
-            language == AppLanguage.english ? findsOneWidget : findsNothing,
+            language == AppLanguage.english && account.key != 'employee'
+                ? findsOneWidget
+                : findsNothing,
           );
           expect(tester.takeException(), isNull);
           if (width == 390 || width == 1280) {
@@ -108,7 +108,9 @@ void main() {
               'phase3_${account.key}_${language.name}_${width.toInt()}',
             );
           }
-          final last = find.byType(AppActivityItem).last;
+          final last = account.key == 'employee'
+              ? find.byKey(const ValueKey('dashboard-action-attendance'))
+              : find.byType(AppActivityItem).last;
           await tester.ensureVisible(last);
           await ui_test.pump(tester);
           expect(tester.takeException(), isNull);
@@ -134,9 +136,7 @@ void main() {
           registryFactory: (auth) =>
               createErpRegistry(auth, dashboardRepository: repo),
         );
-        h.auth.add(
-          const AuthLoginRequested('employee@erp.demo', 'Employee@123'),
-        );
+        h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
         await ui_test.pump(tester);
         expect(find.byType(AppDashboardSkeleton), findsOneWidget);
         repo.requests[0].complete(
@@ -154,7 +154,7 @@ void main() {
         repo.requests[1].complete(
           Success(
             DashboardSummary(
-              scope: DashboardScope.self,
+              scope: DashboardScope.none,
               asOf: DemoDashboardSource.asOf,
               isDemo: true,
             ),
@@ -165,7 +165,7 @@ void main() {
         expect(find.byType(AppMetricCard), findsNothing);
         expect(
           find.byKey(const ValueKey('dashboard-action-employees')),
-          findsNothing,
+          findsOneWidget,
         );
         await tester.ensureVisible(
           find.byTooltip(context.l10n.dashboardRefresh),
@@ -175,7 +175,7 @@ void main() {
         expect(find.text(context.l10n.dashboardEmptyTitle), findsOneWidget);
         expect(find.byType(LinearProgressIndicator), findsOneWidget);
         final snapshot = const DemoDashboardSource().read(
-          DashboardScope.self,
+          DashboardScope.company,
           h.auth.state.context!.user.displayName,
         );
         repo.requests[2].complete(Success(snapshot));
@@ -256,18 +256,19 @@ void main() {
           registryFactory: (auth) =>
               createErpRegistry(auth, dashboardRepository: repo),
         );
-        h.auth.add(
-          const AuthLoginRequested('employee@erp.demo', 'Employee@123'),
-        );
+        h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
         await ui_test.pump(tester);
         final snapshot = const DemoDashboardSource().read(
-          DashboardScope.self,
+          DashboardScope.company,
           h.auth.state.context!.user.displayName,
         );
         repo.requests[0].complete(Success(snapshot));
         await ui_test.pump(tester);
         final metric = find.byKey(const ValueKey('metric-present'));
-        expect(tester.getSemantics(metric).label, 'Present, 17');
+        expect(
+          tester.getSemantics(metric).label,
+          'Present, 73, Includes late arrivals',
+        );
         await tester.drag(
           find.byType(SingleChildScrollView).first,
           const Offset(0, 400),
@@ -303,7 +304,8 @@ void main() {
       h.auth.add(AuthSessionUpdated(updated));
       await ui_test.pump(tester);
       expect(find.byKey(const ValueKey('metric-employees')), findsNothing);
-      expect(find.byKey(const ValueKey('metric-hours')), findsOneWidget);
+      expect(find.byKey(const ValueKey('metric-hours')), findsNothing);
+      expect(find.byType(AttendanceDashboardPreview), findsOneWidget);
       expect(tester.takeException(), isNull);
       await ui_test.unmount(tester, h);
     },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_motion.dart';
+import '../../theme/app_spacing.dart';
 
 class AppBottomSheet {
   static Future<T?> show<T>(
@@ -8,12 +10,18 @@ class AppBottomSheet {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
+    sheetAnimationStyle: MediaQuery.disableAnimationsOf(context)
+        ? AnimationStyle.noAnimation
+        : const AnimationStyle(
+            duration: AppMotion.normal,
+            reverseDuration: AppMotion.fast,
+          ),
     builder: (context) => Padding(
       padding: EdgeInsetsDirectional.fromSTEB(
-        24,
-        8,
-        24,
-        24 + MediaQuery.viewInsetsOf(context).bottom,
+        AppSpacing.xl,
+        AppSpacing.sm,
+        AppSpacing.xl,
+        AppSpacing.xl + MediaQuery.viewInsetsOf(context).bottom,
       ),
       child: SingleChildScrollView(child: builder(context)),
     ),

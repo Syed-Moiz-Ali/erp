@@ -70,11 +70,23 @@ abstract final class DashboardPresentation {
     };
   }
 
-  static String activity(AppLocalizations l, DashboardActivity a) =>
-      switch (a.kind) {
-        DashboardActivityKind.checkedIn => l.dashboardCheckedIn(a.person),
-        DashboardActivityKind.breakStarted => l.dashboardBreakStarted(a.person),
-        DashboardActivityKind.correctionSubmitted =>
-          l.dashboardCorrectionSubmitted(a.person),
-      };
+  static String activity(
+    AppLocalizations l,
+    DashboardActivity a, {
+    bool self = false,
+  }) => self
+      ? switch (a.kind) {
+          DashboardActivityKind.checkedIn => l.dashboardSelfCheckedIn,
+          DashboardActivityKind.breakStarted => l.dashboardSelfBreakStarted,
+          DashboardActivityKind.correctionSubmitted =>
+            l.dashboardSelfCorrectionSubmitted,
+        }
+      : switch (a.kind) {
+          DashboardActivityKind.checkedIn => l.dashboardCheckedIn(a.person),
+          DashboardActivityKind.breakStarted => l.dashboardBreakStarted(
+            a.person,
+          ),
+          DashboardActivityKind.correctionSubmitted =>
+            l.dashboardCorrectionSubmitted(a.person),
+        };
 }

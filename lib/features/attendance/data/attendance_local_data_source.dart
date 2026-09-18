@@ -1,3 +1,5 @@
+import '../domain/shift_workday_resolver.dart';
+import '../domain/attendance_history.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import '../../../core/database/app_database.dart';
@@ -9,6 +11,132 @@ class AttendanceLocalDataSource {
   String dateKey(DateTime date) => date.toIso8601String().substring(0, 10);
   DateTime instant(int milliseconds) =>
       DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: true);
+  // The existing company/employee/workday index bounds all reads to one month.
+  // SQL projects status from frozen scheduledEnd; no event/configuration N+1 reads.
+  static String get _wallOffset {
+    final cases = FixedOffsetCompanyTimeService.offsets.entries
+        .map((e) => "WHEN '${e.key}' THEN '${e.value} minutes'")
+        .join(' ');
+    return "CASE json_extract(configuration_snapshot, '\$.timezone') $cases END";
+  }
+
+  static String get _historyStatus =>
+      "CASE WHEN state='completed' AND punch_out_milliseconds IS NOT NULL THEN CASE WHEN status='late' THEN 'late' ELSE 'present' END WHEN attendance_date < date(?, $_wallOffset) AND julianday(json_extract(configuration_snapshot, '\$.scheduledEnd')) < julianday(?) THEN 'incomplete' ELSE 'working' END";
+  Future<AttendanceHistoryPageData> history(
+    String company,
+    String employee,
+    AttendanceHistoryQuery query,
+    DateTime now,
+  ) async {
+    final scope =
+        'company_id=? AND employee_id=? AND attendance_date>=? AND attendance_date<?';
+    final scopeVariables = [
+      Variable(company),
+      Variable(employee),
+      Variable(dateKey(query.start)),
+      Variable(dateKey(query.end)),
+    ];
+    final projected =
+        'SELECT *, $_historyStatus AS history_status FROM attendance_days WHERE $scope';
+    final variables = [
+      Variable(now.toUtc().toIso8601String()),
+      Variable(now.toUtc().toIso8601String()),
+      ...scopeVariables,
+    ];
+    final groups = await db
+        .customSelect(
+          "SELECT history_status, COUNT(*) AS n, SUM(CASE WHEN history_status IN ('present','late') THEN work_milliseconds ELSE 0 END) AS work, SUM(CASE WHEN history_status IN ('present','late') THEN break_milliseconds ELSE 0 END) AS breaks FROM ($projected) GROUP BY history_status",
+          variables: variables,
+          readsFrom: {db.attendanceDays},
+        )
+        .get();
+    final counts = {
+      for (final status in AttendanceHistoryStatus.values) status: 0,
+    };
+    var work = 0, breaks = 0;
+    for (final row in groups) {
+      counts[AttendanceHistoryStatus.values.byName(
+        row.read<String>('history_status'),
+      )] = row.read<int>(
+        'n',
+      );
+      work += row.read<int>('work');
+      breaks += row.read<int>('breaks');
+    }
+    final filter = query.statuses.isEmpty
+        ? ''
+        : ' WHERE history_status IN (${List.filled(query.statuses.length, '?').join(',')})';
+    final filteredVariables = [
+      ...variables,
+      for (final status in query.statuses) Variable(status.name),
+    ];
+    final count = await db
+        .customSelect(
+          'SELECT COUNT(*) AS n FROM ($projected)$filter',
+          variables: filteredVariables,
+          readsFrom: {db.attendanceDays},
+        )
+        .getSingle();
+    final direction = query.sort == AttendanceHistorySort.newest
+        ? 'DESC'
+        : 'ASC';
+    final rows = await db
+        .customSelect(
+          "SELECT id, attendance_date, punch_in_milliseconds, punch_out_milliseconds, work_milliseconds, break_milliseconds, sync_status, history_status, json_extract(configuration_snapshot, '\$.shift.name') AS shift_name, json_extract(configuration_snapshot, '\$.timezone') AS timezone, json_extract(configuration_snapshot, '\$.workLocation.name') AS location_name FROM ($projected)$filter ORDER BY attendance_date $direction, id $direction LIMIT ? OFFSET ?",
+          variables: [
+            ...filteredVariables,
+            Variable(query.pageSize),
+            Variable(query.page * query.pageSize),
+          ],
+          readsFrom: {db.attendanceDays},
+        )
+        .get();
+    return AttendanceHistoryPageData(
+      query,
+      rows
+          .map(
+            (r) => AttendanceHistoryItem(
+              id: r.read<String>('id'),
+              attendanceDate: DateTime.parse(
+                '${r.read<String>('attendance_date')}T00:00:00Z',
+              ),
+              shiftName: r.read<String>('shift_name'),
+              timezone: r.read<String>('timezone'),
+              locationName: r.readNullable<String>('location_name'),
+              status: AttendanceHistoryStatus.values.byName(
+                r.read<String>('history_status'),
+              ),
+              syncStatus: AttendanceSyncStatus.values.byName(
+                r.read<String>('sync_status'),
+              ),
+              punchInAt: r.readNullable<int>('punch_in_milliseconds') == null
+                  ? null
+                  : instant(r.read<int>('punch_in_milliseconds')),
+              punchOutAt: r.readNullable<int>('punch_out_milliseconds') == null
+                  ? null
+                  : instant(r.read<int>('punch_out_milliseconds')),
+              totalWorkDuration: Duration(
+                milliseconds: r.read<int>('work_milliseconds'),
+              ),
+              totalBreakDuration: Duration(
+                milliseconds: r.read<int>('break_milliseconds'),
+              ),
+            ),
+          )
+          .toList(),
+      count.read<int>('n'),
+      AttendanceMonthSummary(
+        counts: Map.unmodifiable(counts),
+        work: Duration(milliseconds: work),
+        breaks: Duration(milliseconds: breaks),
+        completed:
+            counts[AttendanceHistoryStatus.present]! +
+            counts[AttendanceHistoryStatus.late]!,
+      ),
+      now,
+    );
+  }
+
   Future<AttendanceDay?> forDate(
     String company,
     String employee,

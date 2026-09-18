@@ -21,6 +21,8 @@ class AppTimeFormatter {
               ? DateFormat.Hm(locale.toLanguageTag())
               : DateFormat.jm(locale.toLanguageTag()))
           .format(value);
+  String range(String start, String end, AppLocalizations l10n) =>
+      l10n.timeRange(start, end);
   String timeOfDay(TimeOfDay value, {bool use24Hour = false}) => time(
     DateTime(2000, 1, 1, value.hour, value.minute),
     use24Hour: use24Hour,

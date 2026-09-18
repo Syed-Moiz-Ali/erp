@@ -43,8 +43,8 @@ void main() {
   tearDown(() => repository.dispose());
   setUpAll(() async {
     for (final font in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
+      'Manrope': 'assets/fonts/Manrope-SemiBold.ttf',
+      'IBMPlexSansArabic': 'assets/fonts/IBMPlexSansArabic-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       await (FontLoader(font.key)..addFont(rootBundle.load(font.value))).load();
@@ -59,7 +59,7 @@ void main() {
       'settings',
       'account',
     });
-    expect(registry.registrations.length, 9);
+    expect(registry.registrations.length, 10);
     expect(
       () => ModuleRegistry.fromModules([
         ...registry.modules,
@@ -96,12 +96,24 @@ void main() {
   });
   test('permission-filtered navigation differs across all five demo roles', () {
     final expected = {
-      AppRole.employee: ['dashboard', 'attendance', 'profile'],
-      AppRole.manager: ['dashboard', 'employees', 'attendance', 'profile'],
+      AppRole.employee: [
+        'dashboard',
+        'attendance',
+        'attendance-history',
+        'profile',
+      ],
+      AppRole.manager: [
+        'dashboard',
+        'employees',
+        'attendance',
+        'attendance-history',
+        'profile',
+      ],
       AppRole.hr: [
         'dashboard',
         'employees',
         'attendance',
+        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -113,6 +125,7 @@ void main() {
         'dashboard',
         'employees',
         'attendance',
+        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -124,6 +137,7 @@ void main() {
         'dashboard',
         'employees',
         'attendance',
+        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -163,7 +177,7 @@ void main() {
             .resolve(company, ctx.user.permissions)
             .destinations
             .map((d) => d.id),
-        ['attendance', 'profile'],
+        ['attendance', 'attendance-history', 'profile'],
       );
       expect(
         resolver.routeAccess(
@@ -217,6 +231,7 @@ void main() {
         'attendance',
       ]);
       expect(nav.mobileMore.map((d) => d.id), [
+        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -225,6 +240,7 @@ void main() {
         'profile',
       ]);
       expect(nav.groupsFor(nav.mobileMore).keys, [
+        NavigationGroup.workforce,
         NavigationGroup.insights,
         NavigationGroup.configuration,
         NavigationGroup.account,
@@ -307,6 +323,41 @@ void main() {
       );
     },
   );
+  test('history and detail deep links share module and viewSelf guard', () {
+    expect(
+      registry.ownerOf(AppRoutes.attendanceHistory)!.moduleId,
+      AppModuleIds.attendance,
+    );
+    final detail = AppRoutes.attendanceDayDetails('record-id');
+    expect(registry.ownerOf(detail)!.id, 'attendance-history');
+    final employee = account(AppRole.employee);
+    expect(resolver.routeAccess(detail, employee), RouteAccess.allowed);
+    final teamOnly = employee.copyWith(
+      user: employee.user.copyWith(
+        permissions: PermissionSet([AppPermission.attendanceViewTeam]),
+      ),
+    );
+    expect(resolver.routeAccess(detail, teamOnly), RouteAccess.unauthorized);
+    expect(
+      Uri.parse(
+        authRedirect(
+          const AuthState(AuthStatus.unauthenticated),
+          Uri.parse(detail),
+          navigation: resolver,
+        )!,
+      ).path,
+      AppRoutes.login,
+    );
+    expect(
+      resolver.routeAccess(
+        detail,
+        employee.copyWith(
+          company: employee.company.copyWith(enabledModules: {'dashboard'}),
+        ),
+      ),
+      RouteAccess.moduleUnavailable,
+    );
+  });
   test(
     'sidebar preference persists without touching session storage and recovers from failures',
     () async {
@@ -374,7 +425,7 @@ void main() {
             expect(
               bottom.modules.map((m) => m.id),
               username == 'employee'
-                  ? ['dashboard', 'attendance', 'more']
+                  ? ['dashboard', 'attendance', 'attendance-history', 'more']
                   : ['dashboard', 'employees', 'attendance', 'more'],
             );
           } else if (width < 1000) {

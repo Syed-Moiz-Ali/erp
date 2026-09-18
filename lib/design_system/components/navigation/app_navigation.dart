@@ -7,8 +7,8 @@ import '../../theme/app_spacing.dart';
 import '../../theme/app_radius.dart';
 import '../../theme/app_dimensions.dart';
 import '../../theme/app_motion.dart';
-import '../avatars/app_avatar.dart';
 import '../buttons/app_buttons.dart';
+import '../layout/app_auth_layout.dart';
 
 class AppSidebarItem extends StatelessWidget {
   const AppSidebarItem({
@@ -35,22 +35,24 @@ class AppSidebarItem extends StatelessWidget {
             Size(0, AppDimensions.navigationTarget),
           ),
           padding: WidgetStatePropertyAll(
-            EdgeInsets.symmetric(
-              horizontal: collapsed ? AppSpacing.sm : AppSpacing.md,
-              vertical: AppSpacing.sm,
+            EdgeInsetsDirectional.only(
+              start: collapsed ? AppSpacing.sm : AppSpacing.md,
+              end: AppSpacing.md,
+              top: AppSpacing.sm,
+              bottom: AppSpacing.sm,
             ),
           ),
           foregroundColor: WidgetStatePropertyAll(
-            selected ? AppColors.brand : AppColors.textSecondary,
+            selected ? AppColors.brandPrimary : AppColors.textSecondary,
           ),
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) =>
                 states.contains(WidgetState.hovered) ||
                     states.contains(WidgetState.focused)
-                ? AppColors.brand.withValues(alpha: .10)
+                ? AppColors.brandPrimary.withValues(alpha: .08)
                 : selected
-                ? AppColors.brand.withValues(alpha: .07)
-                : AppColors.surface,
+                ? AppColors.brandSubtle
+                : Colors.transparent,
           ),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
@@ -65,16 +67,20 @@ class AppSidebarItem extends StatelessWidget {
           children: [
             Icon(
               selected ? item.selectedIcon ?? item.icon : item.icon,
-              size: AppSpacing.xl,
+              size: 18,
             ),
             if (!collapsed) ...[
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
                   label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTypography.of(context).bodySmall.copyWith(
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                    color: selected ? AppColors.brand : AppColors.textSecondary,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                    color: selected
+                        ? AppColors.brandPrimary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ),
@@ -83,7 +89,28 @@ class AppSidebarItem extends StatelessWidget {
         ),
       ),
     );
-    return collapsed ? Tooltip(message: label, child: button) : button;
+    final itemWithIndicator = selected
+        ? Stack(
+            children: [
+              button,
+              PositionedDirectional(
+                start: 0,
+                top: AppSpacing.sm,
+                bottom: AppSpacing.sm,
+                child: Container(
+                  width: 3,
+                  decoration: BoxDecoration(
+                    color: AppColors.brandPrimary,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusFull),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : button;
+    return collapsed
+        ? Tooltip(message: label, child: itemWithIndicator)
+        : itemWithIndicator;
   }
 }
 
@@ -110,21 +137,43 @@ class AppCompanyArea extends StatelessWidget {
               ? MainAxisAlignment.center
               : MainAxisAlignment.start,
           children: [
-            AppAvatar(name: name),
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                  colors: [AppColors.brandSecondary, AppColors.brandPrimary],
+                ),
+                borderRadius: BorderRadius.circular(AppRadius.radiusMd + 1),
+              ),
+              child: Center(
+                child: BitlogixMark(
+                  size: 21,
+                  accent: Colors.white,
+                  highlight: const Color(0xFFE6D2E2),
+                ),
+              ),
+            ),
             if (!collapsed) ...[
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       context.l10n.brandName,
-                      style: AppTypography.of(context).label,
+                      style: AppTypography.of(context).bodySmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     Text(
                       name,
                       style: AppTypography.of(context).caption,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -205,10 +254,20 @@ class AppSidebar extends StatelessWidget {
                     for (final group in groups.entries) ...[
                       if (!collapsed && group.value.length > 1)
                         Padding(
-                          padding: const EdgeInsets.all(AppSpacing.md),
+                          padding: const EdgeInsetsDirectional.only(
+                            start: AppSpacing.md,
+                            end: AppSpacing.md,
+                            top: AppSpacing.md,
+                            bottom: AppSpacing.sm,
+                          ),
                           child: Text(
                             group.key.label(context.l10n),
-                            style: AppTypography.of(context).caption,
+                            style: AppTypography.of(context).caption.copyWith(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.6,
+                              color: AppColors.textMuted,
+                            ),
                           ),
                         ),
                       for (final item in group.value)
@@ -385,25 +444,42 @@ class AppBottomNavigation extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          AnimatedContainer(
+                            duration: AppMotion.fast,
+                            width: i == index ? 16 : 0,
+                            height: 3,
+                            margin: const EdgeInsets.only(
+                              bottom: AppSpacing.xs + 1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.brandPrimary,
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.radiusFull,
+                              ),
+                            ),
+                          ),
                           Icon(
                             i == index
                                 ? modules[i].selectedIcon ?? modules[i].icon
                                 : modules[i].icon,
                             color: i == index
-                                ? AppColors.brand
+                                ? AppColors.brandPrimary
                                 : AppColors.textSecondary,
-                            size: AppSpacing.xxl,
+                            size: 22,
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
                             modules[i].name(context.l10n),
                             textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: AppTypography.of(context).caption.copyWith(
+                              fontSize: 11,
                               color: i == index
-                                  ? AppColors.brand
+                                  ? AppColors.brandPrimary
                                   : AppColors.textSecondary,
                               fontWeight: i == index
-                                  ? FontWeight.w600
+                                  ? FontWeight.w700
                                   : FontWeight.w500,
                             ),
                           ),

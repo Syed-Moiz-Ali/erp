@@ -29,8 +29,8 @@ Future<void> settleDb(WidgetTester t) async {
 void main() {
   setUpAll(() async {
     for (final f in {
-      'Inter': 'assets/fonts/InterVariable.ttf',
-      'NotoSansArabic': 'assets/fonts/NotoSansArabicVariable.ttf',
+      'Manrope': 'assets/fonts/Manrope-SemiBold.ttf',
+      'IBMPlexSansArabic': 'assets/fonts/IBMPlexSansArabic-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       await (FontLoader(f.key)..addFont(rootBundle.load(f.value))).load();

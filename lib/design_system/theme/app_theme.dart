@@ -32,7 +32,10 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       fontFamily: typography.body.fontFamily,
-      fontFamilyFallback: const ['Inter', 'NotoSansArabic'],
+      fontFamilyFallback: const [
+        AppTypography.latinFamily,
+        AppTypography.arabicFamily,
+      ],
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.background,
       textTheme: TextTheme(
@@ -191,7 +194,10 @@ abstract final class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       fontFamily: typography.body.fontFamily,
-      fontFamilyFallback: const ['Inter', 'NotoSansArabic'],
+      fontFamilyFallback: const [
+        AppTypography.latinFamily,
+        AppTypography.arabicFamily,
+      ],
       colorScheme: scheme,
       scaffoldBackgroundColor: const Color(0xFF080B11),
       textTheme: TextTheme(

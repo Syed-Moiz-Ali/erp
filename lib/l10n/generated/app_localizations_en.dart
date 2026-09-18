@@ -626,10 +626,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authWelcomeBack => 'Welcome back';
 
   @override
-  String get authSignInSubtitle => 'Sign in to your company workspace.';
+  String get authSignInSubtitle => 'Sign in to your Bitlogix workspace.';
 
   @override
   String get authIdentifier => 'Email or phone number';
+
+  @override
+  String get authIdentifierHint => 'name@company.com';
 
   @override
   String get authIdentifierRequired => 'Email or phone number is required';
@@ -657,6 +660,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authWorkspaceLabel => 'Company workspace';
+
+  @override
+  String get authSecureSession => 'Your session stays secure on this device.';
+
+  @override
+  String get authSecureSessionLabel => 'Secure session';
+
+  @override
+  String get authWorkforce => 'Workforce';
+
+  @override
+  String get authActiveEmployees => 'active employees';
+
+  @override
+  String get authWorking => 'Working';
+
+  @override
+  String get authAttendanceActive => 'Attendance active';
+
+  @override
+  String get authLive => 'Live';
+
+  @override
+  String get authDeveloperAccess => 'Developer access';
+
+  @override
+  String get productEyebrow => 'Modular business workspace';
+
+  @override
+  String get productHeadline => 'Everything your business runs on.\nConnected.';
+
+  @override
+  String get productWorkspaceTitle => 'Bitlogix Workspace';
+
+  @override
+  String get productWorkspaceSubtitle => 'Unified business system';
+
+  @override
+  String get productWorkspaceFooter => 'Connected by one workspace';
+
+  @override
+  String get modulePeople => 'People';
+
+  @override
+  String get moduleOperations => 'Operations';
+
+  @override
+  String get moduleOperationsDesc => 'Workflows';
+
+  @override
+  String get moduleCustomers => 'Customers';
+
+  @override
+  String get moduleCustomersDesc => 'Relationships';
+
+  @override
+  String get moduleFinance => 'Finance';
+
+  @override
+  String get moduleServices => 'Services';
+
+  @override
+  String get moduleServicesDesc => 'Service requests';
+
+  @override
+  String get moduleInventory => 'Inventory';
+
+  @override
+  String get moduleInventoryDesc => 'Assets';
+
+  @override
+  String get moduleReports => 'Reports';
+
+  @override
+  String get moduleReportsDesc => 'Scheduled exports';
+
+  @override
+  String get moduleInsights => 'Insights';
+
+  @override
+  String get moduleInsightsDesc => 'Overview';
+
+  @override
+  String get authWorkdayTitle => 'Your workday,\nall in one place.';
+
+  @override
+  String get authWorkingDay => 'Working day';
+
+  @override
+  String get authNow => 'Now';
+
+  @override
+  String get authShiftGeneral => 'General shift';
+
+  @override
+  String get authShiftToday => 'Today';
+
+  @override
+  String get authWorkLocationMain => 'Main office';
+
+  @override
+  String authEmployeesActiveCount(int count) {
+    return '$count employees active';
+  }
+
+  @override
+  String get authDemoUse => 'Use a demo account';
 
   @override
   String get authSessionNote =>
@@ -1070,7 +1180,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dashboardSelfContext => 'Your workforce at a glance';
+  String get dashboardSelfContext => 'Your workday at a glance';
+
+  @override
+  String get dashboardNoShiftTitle => 'Work schedule not configured';
+
+  @override
+  String get dashboardNoShiftMessage =>
+      'No shift has been assigned to your employee profile yet. Contact HR to complete your attendance setup.';
 
   @override
   String get dashboardTeamContext => 'Your team at a glance';
@@ -1168,6 +1285,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String dashboardCorrectionsAlert(String count) {
     return '$count corrections awaiting review';
   }
+
+  @override
+  String get dashboardLateAlertDetail => 'Review attendance';
+
+  @override
+  String get dashboardCorrectionsAlertDetail => 'Awaiting review';
+
+  @override
+  String get dashboardSelfCheckedIn => 'Checked in';
+
+  @override
+  String get dashboardSelfBreakStarted => 'Started a break';
+
+  @override
+  String get dashboardSelfCorrectionSubmitted => 'Submitted a correction';
 
   @override
   String dashboardCheckedIn(String name) {
@@ -1478,6 +1610,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cfgShifts => 'Shifts';
+
+  @override
+  String get cfgShift => 'Shift';
+
+  @override
+  String get cfgPolicy => 'Attendance policy';
 
   @override
   String get cfgLocations => 'Work locations';
@@ -2132,6 +2270,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceWorkedTime => 'Worked time';
 
   @override
+  String get attendanceBreakTime => 'Break time';
+
+  @override
   String get attendanceTodayShift => 'Today\'s shift';
 
   @override
@@ -2316,5 +2457,167 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String attendanceMeters(String value) {
     return '$value m';
+  }
+
+  @override
+  String get historyTitle => 'Attendance history';
+
+  @override
+  String get historyNav => 'History';
+
+  @override
+  String get historyMonthlySummary => 'Monthly summary';
+
+  @override
+  String get historyPreviousMonth => 'Previous month';
+
+  @override
+  String get historyNextMonth => 'Next month';
+
+  @override
+  String get historyPresent => 'Present';
+
+  @override
+  String get historyLate => 'Late';
+
+  @override
+  String get historyIncomplete => 'Incomplete';
+
+  @override
+  String get historyCompletedOnly =>
+      'Work and break totals include completed records only.';
+
+  @override
+  String get historyEmpty => 'No attendance records';
+
+  @override
+  String get historyFilteredEmpty => 'No matching attendance records';
+
+  @override
+  String get historyEmptyNote => 'No activity was recorded in this month.';
+
+  @override
+  String get historyFilteredNote => 'Try another status or clear your filters.';
+
+  @override
+  String get historyClearFilters => 'Clear filters';
+
+  @override
+  String get historyAllStatuses => 'All statuses';
+
+  @override
+  String get historyFilters => 'Status filters';
+
+  @override
+  String get historyApply => 'Apply filters';
+
+  @override
+  String get historyReset => 'Reset';
+
+  @override
+  String get historyDetails => 'Attendance details';
+
+  @override
+  String get historyDailySummary => 'Daily summary';
+
+  @override
+  String get historyTimeline => 'Timeline';
+
+  @override
+  String get historyBreaks => 'Breaks';
+
+  @override
+  String get historyMissingOut => 'Missing punch out';
+
+  @override
+  String get historyOpenBreak => 'Incomplete break';
+
+  @override
+  String get historyNotRecorded => 'Not recorded';
+
+  @override
+  String get historyNeedsAttention => 'Needs attention';
+
+  @override
+  String get historyIncompleteNote =>
+      'This record has no punch out. Final work and break totals are unavailable.';
+
+  @override
+  String get historyOpenBreakNote =>
+      'No resume recorded. This break has no final duration.';
+
+  @override
+  String get historyGoToday => 'Open today’s attendance';
+
+  @override
+  String get historyActiveNote =>
+      'This record is still open. Use Today for live totals and attendance actions.';
+
+  @override
+  String get historyNotFound => 'Attendance record unavailable';
+
+  @override
+  String get historyNotFoundNote =>
+      'This record was not found in your attendance history.';
+
+  @override
+  String get historyOvernight => 'Overnight shift';
+
+  @override
+  String get historyExpected => 'Expected duration';
+
+  @override
+  String get historyGrace => 'Grace period';
+
+  @override
+  String get historyWithinArea => 'Within assigned area';
+
+  @override
+  String get historyOutsideAllowed =>
+      'Outside assigned area · allowed by policy';
+
+  @override
+  String get historyVerificationIssue => 'Verification issue';
+
+  @override
+  String get historyContactHr =>
+      'The original record is retained. Contact HR about this verification issue.';
+
+  @override
+  String get historyDate => 'Date';
+
+  @override
+  String get historyStatus => 'Status';
+
+  @override
+  String get historyNow => 'Now';
+
+  @override
+  String get historyRetry => 'Refresh';
+
+  @override
+  String get historyAverageWork => 'Average worked per completed day';
+
+  @override
+  String get historyNoBreaks => 'No breaks recorded';
+
+  @override
+  String timeRange(String start, String end) {
+    return '$start → $end';
+  }
+
+  @override
+  String dateTimeValue(String date, String time) {
+    return '$date · $time';
+  }
+
+  @override
+  String labeledValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String historyFilterCount(String count) {
+    return 'Status filters ($count)';
   }
 }

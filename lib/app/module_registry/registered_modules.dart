@@ -1,3 +1,8 @@
+import '../../features/attendance/domain/attendance_repository.dart';
+import '../../features/attendance/presentation/bloc/attendance_history_bloc.dart';
+import '../../features/attendance/presentation/bloc/attendance_day_details_bloc.dart';
+import '../../features/attendance/presentation/pages/attendance_history_page.dart';
+import '../../features/attendance/presentation/pages/attendance_day_details_page.dart';
 import '../../features/attendance/presentation/pages/attendance_today_page.dart';
 import '../../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../../core/location/location_service.dart';
@@ -63,6 +68,7 @@ ModuleRegistry createErpRegistry(
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
+  AttendanceRepository? attendanceRepository,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -496,6 +502,68 @@ ModuleRegistry createErpRegistry(
                   ),
                 )
               : const AttendanceTodayPage(),
+        ),
+        RegisteredDestination(
+          navigation: ErpModule(
+            id: 'attendance-history',
+            moduleId: AppModuleIds.attendance,
+            name: (l) => l.historyNav,
+            icon: Icons.history_outlined,
+            selectedIcon: Icons.history,
+            route: AppRoutes.attendanceHistory,
+            navigationGroup: NavigationGroup.workforce,
+            order: 21,
+            mobilePriority: 3,
+            requiredPermissions: {AppPermission.attendanceViewSelf},
+          ),
+          routes: [
+            ShellRoute(
+              builder: (context, state, child) =>
+                  BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                    selector: (s) => s.context,
+                    builder: (context, actor) {
+                      if (actor == null) return const SizedBox.shrink();
+                      final repository =
+                          attendanceRepository ??
+                          context.read<AttendanceBloc?>()?.repository;
+                      if (repository == null) {
+                        return AppPage(
+                          child: AppErrorState(
+                            message: context.l10n.attendanceUnavailableTitle,
+                          ),
+                        );
+                      }
+                      return BlocProvider(
+                        key: ValueKey(actor),
+                        create: (_) =>
+                            AttendanceHistoryBloc(repository)
+                              ..add(const AttendanceHistoryStarted()),
+                        child: child,
+                      );
+                    },
+                  ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.attendanceHistory,
+                  name: 'attendance-history',
+                  builder: (c, s) => const AttendanceHistoryPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':attendanceDayId',
+                      name: 'attendance-day-details',
+                      builder: (c, s) => BlocProvider(
+                        create: (_) => AttendanceDayDetailsBloc(
+                          c.read<AttendanceHistoryBloc>().repository,
+                          s.pathParameters['attendanceDayId']!,
+                        )..add(const AttendanceDayDetailsStarted()),
+                        child: const AttendanceDayDetailsPage(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     ),

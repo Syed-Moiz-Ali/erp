@@ -51,6 +51,7 @@ class AttendanceTickerCubit extends Cubit<AttendanceSummary?> {
   @override
   Future<void> close() {
     _timer?.cancel();
+    _timer = null;
     return super.close();
   }
 }
