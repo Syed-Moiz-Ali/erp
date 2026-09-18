@@ -17,6 +17,12 @@ class AppTypography {
     fontWeight: FontWeight.w600,
     letterSpacing: _base.fontFamily == 'Inter' ? -1 : 0,
   );
+  TextStyle get timer => _base.copyWith(
+    fontSize: 36,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
+    fontFeatures: const [FontFeature.tabularFigures()],
+  );
   TextStyle get pageTitle => _base.copyWith(
     fontSize: 28,
     fontWeight: FontWeight.w600,

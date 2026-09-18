@@ -35,3 +35,5 @@ export 'components/navigation/app_action_menu.dart';
 export 'components/inputs/app_configuration_inputs.dart';
 
 export 'components/cards/app_settings_tile.dart';
+
+export 'components/timelines/app_timeline.dart';

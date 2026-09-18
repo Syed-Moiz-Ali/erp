@@ -15,6 +15,8 @@ String attendanceFailureLabel(
     l.attendanceWorkLocationRequiredButMissing,
   AttendanceFailureCode.locationRequired => l.attendanceLocationRequired,
   AttendanceFailureCode.locationUnavailable => l.attendanceLocationUnavailable,
+  AttendanceFailureCode.locationPermissionPermanentlyDenied =>
+    l.attendancePermissionSettings,
   AttendanceFailureCode.locationPermissionDenied =>
     l.attendanceLocationPermissionDenied,
   AttendanceFailureCode.locationServicesDisabled =>

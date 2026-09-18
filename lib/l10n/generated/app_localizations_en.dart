@@ -1943,7 +1943,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceAlreadyPunchedIn => 'You have already punched in';
 
   @override
-  String get attendanceNotPunchedIn => 'You need to punch in first';
+  String get attendanceNotPunchedIn => 'Not punched in';
 
   @override
   String get attendanceAlreadyOnBreak => 'You are already on a break';
@@ -2088,4 +2088,233 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get attendancePunchInNotAllowed => 'Punch in is not allowed';
+
+  @override
+  String get attendanceTodayTitle => 'Today\'s attendance';
+
+  @override
+  String get attendanceWorkday => 'YOUR WORKDAY';
+
+  @override
+  String get attendanceCompleteTitle => 'Workday complete';
+
+  @override
+  String get attendancePunchingIn => 'Punching in…';
+
+  @override
+  String get attendancePunchingOut => 'Punching out…';
+
+  @override
+  String get attendanceTakeBreak => 'Take break';
+
+  @override
+  String get attendanceStartingBreak => 'Starting break…';
+
+  @override
+  String get attendanceResumeWork => 'Resume work';
+
+  @override
+  String get attendanceResumingWork => 'Resuming work…';
+
+  @override
+  String get attendanceWorkTime => 'Current work time';
+
+  @override
+  String get attendanceCurrentBreak => 'Current break';
+
+  @override
+  String get attendanceTotalBreak => 'Total break';
+
+  @override
+  String get attendanceElapsedTime => 'Elapsed time';
+
+  @override
+  String get attendanceWorkedTime => 'Worked time';
+
+  @override
+  String get attendanceTodayShift => 'Today\'s shift';
+
+  @override
+  String get attendanceWorkLocation => 'Work location';
+
+  @override
+  String get attendanceLocationChecking => 'Checking your location…';
+
+  @override
+  String get attendanceLocationReady => 'Location ready';
+
+  @override
+  String get attendanceInsideLocation => 'Inside work location';
+
+  @override
+  String get attendanceOutsideLocation => 'Outside work location';
+
+  @override
+  String get attendanceLocationNotRequired =>
+      'Location verification not required';
+
+  @override
+  String get attendanceLocationRequiredNote =>
+      'Your location will be checked when you submit this action.';
+
+  @override
+  String get attendanceAccuracy => 'Location accuracy';
+
+  @override
+  String get attendanceRadius => 'Allowed radius';
+
+  @override
+  String get attendanceRefreshLocation => 'Refresh location';
+
+  @override
+  String get attendanceAllowLocation => 'Allow location';
+
+  @override
+  String get attendanceOpenSettings => 'Open settings';
+
+  @override
+  String get attendancePermissionSettings =>
+      'Location permission is disabled in system settings.';
+
+  @override
+  String get attendanceServicesNote => 'Turn on location services to continue.';
+
+  @override
+  String get attendanceNoActivity => 'No activity yet';
+
+  @override
+  String get attendanceActivityNote =>
+      'Your punch-in and break activity will appear here.';
+
+  @override
+  String get attendanceTodayActivity => 'Today\'s activity';
+
+  @override
+  String get attendancePunchInTime => 'Punch-in time';
+
+  @override
+  String get attendancePunchOutTime => 'Punch-out time';
+
+  @override
+  String get attendanceCurrentTime => 'Current time';
+
+  @override
+  String get attendanceBreakStartedLabel => 'Break started';
+
+  @override
+  String get attendanceWorkResumedLabel => 'Work resumed';
+
+  @override
+  String get attendanceEndWorkday => 'End your workday?';
+
+  @override
+  String get attendanceConfirmAction => 'Confirm attendance action';
+
+  @override
+  String get attendanceContinue => 'Continue';
+
+  @override
+  String get attendanceCloseBreakNote =>
+      'Your current break will end when you punch out.';
+
+  @override
+  String get attendancePendingTitle => 'Pending sync';
+
+  @override
+  String get attendancePendingNote =>
+      'Saved on this device. Waiting for verification when sync becomes available.';
+
+  @override
+  String get attendanceFailedTitle => 'Attendance sync needs attention';
+
+  @override
+  String get attendanceFailedNote =>
+      'Your attendance is saved locally but could not be verified.';
+
+  @override
+  String get attendanceRejectedTitle => 'Attendance could not be verified';
+
+  @override
+  String get attendanceRejectedNote =>
+      'Your recorded events are retained. Contact HR to resolve this issue.';
+
+  @override
+  String get attendanceRetrySync => 'Retry sync';
+
+  @override
+  String get attendanceRequeuedNote =>
+      'Attendance is queued for sync. No sync service is configured yet.';
+
+  @override
+  String get attendanceNotConfigured => 'Attendance is not configured yet';
+
+  @override
+  String get attendanceContactHr =>
+      'Contact HR to complete your attendance setup.';
+
+  @override
+  String get attendanceUnavailableTitle => 'Attendance unavailable';
+
+  @override
+  String get attendanceStartNote => 'Punch in to begin your workday.';
+
+  @override
+  String get attendanceWorkingNote =>
+      'Your work time is calculated from recorded activity.';
+
+  @override
+  String get attendanceBreakNote =>
+      'Work time is paused while you are on a break.';
+
+  @override
+  String get attendanceCompleteNote =>
+      'Your final totals and activity are recorded below.';
+
+  @override
+  String get attendanceExpectedHours => 'Expected work';
+
+  @override
+  String get attendanceGrace => 'Grace period';
+
+  @override
+  String get attendanceOpenAttendance => 'Open attendance';
+
+  @override
+  String get attendanceLastCheck => 'Last location check';
+
+  @override
+  String get attendanceCheckingSetup => 'Loading attendance setup';
+
+  @override
+  String get attendanceWarningNote =>
+      'Review these details before recording your attendance.';
+
+  @override
+  String get attendanceDistance => 'Distance from work location';
+
+  @override
+  String get attendanceTryAgain => 'Try again';
+
+  @override
+  String get attendanceLocationCaptureReady => 'Location captured';
+
+  @override
+  String get attendanceAccuracyLimit => 'Required accuracy';
+
+  @override
+  String get attendanceNoLocation => 'No work location assigned';
+
+  @override
+  String get attendanceGoodMorning => 'Good morning';
+
+  @override
+  String get attendanceGoodAfternoon => 'Good afternoon';
+
+  @override
+  String get attendanceGoodEvening => 'Good evening';
+
+  @override
+  String attendanceMeters(String value) {
+    return '$value m';
+  }
 }

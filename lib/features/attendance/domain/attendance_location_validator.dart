@@ -5,6 +5,17 @@ import 'attendance_models.dart';
 
 class AttendanceLocationRequirementResolver {
   const AttendanceLocationRequirementResolver();
+  double? maximumAccuracy(AttendanceConfigurationSnapshot s) {
+    final thresholds = <double>[
+      if (s.policy.requireLocationAccuracy &&
+          s.policy.maximumAcceptedAccuracyMeters != null)
+        s.policy.maximumAcceptedAccuracyMeters!,
+      if (s.workLocation?.maximumAccuracyMeters != null)
+        s.workLocation!.maximumAccuracyMeters!,
+    ];
+    return thresholds.isEmpty ? null : thresholds.reduce(math.min);
+  }
+
   bool requiresLocation(AttendancePolicy p, AttendanceEventType action) =>
       p.requireLocation &&
       switch (action) {

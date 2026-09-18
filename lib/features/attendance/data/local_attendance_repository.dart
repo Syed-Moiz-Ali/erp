@@ -120,6 +120,8 @@ class LocalAttendanceRepository implements AttendanceRepository {
   @override
   Future<Result<AttendanceContext>> getCurrentAttendance({
     AttendanceWorkMode workMode = AttendanceWorkMode.office,
+    String? expectedUserId,
+    String? expectedCompanyId,
   }) async {
     try {
       final session = await _session();
@@ -127,6 +129,12 @@ class LocalAttendanceRepository implements AttendanceRepository {
         return Failed(failure);
       }
       final a = (session as Success<AuthContext>).value;
+      if ((expectedUserId != null && expectedUserId != a.user.id) ||
+          (expectedCompanyId != null && expectedCompanyId != a.company.id)) {
+        return Failed(
+          attendanceFailure(AttendanceFailureCode.permissionDenied),
+        );
+      }
       final available = await remote.isAvailable;
       return _db.transaction(
         () => _current(a, clock.now().toUtc(), workMode, available),
@@ -251,7 +259,11 @@ class LocalAttendanceRepository implements AttendanceRepository {
         }
         final a = (session as Success<AuthContext>).value,
             now = attendanceInstant(clock.now());
-        if (a.user.id != command.expectedUserId) {
+        if (a.user.id != command.expectedUserId ||
+            (command.expectedCompanyId != null &&
+                command.expectedCompanyId != a.company.id) ||
+            (command.expectedEmployeeId != null &&
+                command.expectedEmployeeId != a.employeeReference!.id)) {
           return Failed<AttendanceMutationResult>(
             attendanceFailure(AttendanceFailureCode.permissionDenied),
           );
@@ -294,6 +306,13 @@ class LocalAttendanceRepository implements AttendanceRepository {
           return Failed<AttendanceMutationResult>(failure);
         }
         final c = (resolved as Success<AttendanceContext>).value;
+        if (command.expectedWorkday != null &&
+            (command.expectedWorkday != c.workday ||
+                command.expectedDayId != c.day?.id)) {
+          return Failed<AttendanceMutationResult>(
+            attendanceFailure(AttendanceFailureCode.invalidAttendanceState),
+          );
+        }
         final decision = engine.decide(
           c,
           command.type,

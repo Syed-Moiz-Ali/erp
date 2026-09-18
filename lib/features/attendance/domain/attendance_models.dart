@@ -64,6 +64,7 @@ enum AttendanceFailureCode {
   locationRequired,
   locationUnavailable,
   locationPermissionDenied,
+  locationPermissionPermanentlyDenied,
   locationServicesDisabled,
   locationAccuracyTooLow,
   outsideAllowedLocation,
@@ -242,6 +243,10 @@ class AttendanceCommand {
     required this.type,
     required this.requestId,
     required this.expectedUserId,
+    this.expectedCompanyId,
+    this.expectedEmployeeId,
+    this.expectedWorkday,
+    this.expectedDayId,
     required this.deviceTimestamp,
     required this.source,
     this.locationEvidence,
@@ -249,6 +254,8 @@ class AttendanceCommand {
   });
   final AttendanceEventType type;
   final String requestId, expectedUserId;
+  final String? expectedCompanyId, expectedEmployeeId, expectedDayId;
+  final DateTime? expectedWorkday;
   final DateTime deviceTimestamp;
   final AttendanceEventSource source;
   final AttendanceLocationEvidence? locationEvidence;

@@ -85,7 +85,7 @@ void configureDependencies() {
       kIsWeb ? AttendanceEventSource.web : AttendanceEventSource.mobile,
     ),
   );
-  services.registerFactory(() => AttendanceBloc(services(), services()));
+  services.registerFactory(() => AttendanceBloc(services(), services(),requireConfirmation:true,openSettings:(gps)=>services<LocationService>().openSettings(locationSettings:gps)));
   services.registerLazySingleton<AppPreferencesLocalDataSource>(
     () => SharedPreferencesLocalDataSource(SharedPreferencesAsync()),
   );

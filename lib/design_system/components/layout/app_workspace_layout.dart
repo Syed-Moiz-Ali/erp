@@ -97,3 +97,38 @@ class AppSplitView extends StatelessWidget {
     },
   );
 }
+
+/// Operational page layout: stacked compact panels, balanced medium columns,
+/// and a two-thirds main column on expanded canvases.
+class AppOperationalLayout extends StatelessWidget {
+  const AppOperationalLayout({
+    super.key,
+    required this.main,
+    required this.supporting,
+  });
+  final Widget main, supporting;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, c) {
+      final size = AppBreakpoints.classify(c.maxWidth);
+      if (size == AppSize.compact) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            main,
+            const SizedBox(height: AppSpacing.xl),
+            supporting,
+          ],
+        );
+      }
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(flex: size == AppSize.medium ? 3 : 2, child: main),
+          const SizedBox(width: AppSpacing.xl),
+          Expanded(flex: size == AppSize.medium ? 2 : 1, child: supporting),
+        ],
+      );
+    },
+  );
+}

@@ -6,6 +6,8 @@ import 'attendance_models.dart';
 abstract interface class AttendanceRepository {
   Future<Result<AttendanceContext>> getCurrentAttendance({
     AttendanceWorkMode workMode = AttendanceWorkMode.office,
+    String? expectedUserId,
+    String? expectedCompanyId,
   });
   Stream<Result<AttendanceContext>> watchCurrentAttendance();
   Future<Result<AttendanceDay?>> getAttendanceForDate(DateTime date);

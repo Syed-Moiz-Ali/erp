@@ -1,3 +1,7 @@
+import '../features/attendance/presentation/attendance_session_scope.dart';
+import '../features/attendance/presentation/bloc/attendance_bloc.dart';
+import '../features/attendance/domain/shift_workday_resolver.dart';
+import '../core/utils/app_clock.dart';
 import 'dart:async';
 import 'module_registry/module_registry.dart';
 import 'shell/app_shell_cubit.dart';
@@ -22,6 +26,9 @@ class ErpApp extends StatefulWidget {
     this.routerOverride,
     this.moduleRegistry,
     this.shellCubit,
+    this.attendanceBlocFactory,
+    this.attendanceClock,
+    this.companyTime,
   });
   final LocaleCubit localeCubit;
   final AuthBloc authBloc;
@@ -31,6 +38,9 @@ class ErpApp extends StatefulWidget {
   final GoRouter? routerOverride;
   final ModuleRegistry? moduleRegistry;
   final AppShellCubit? shellCubit;
+  final AttendanceBloc Function()? attendanceBlocFactory;
+  final AppClock? attendanceClock;
+  final CompanyTimeService? companyTime;
   @override
   State<ErpApp> createState() => _ErpAppState();
 }
@@ -95,7 +105,16 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
               message: (l10n) => state.failure!.localizedMessage(l10n),
             );
           },
-          child: child ?? const SizedBox.shrink(),
+          child: widget.attendanceBlocFactory == null
+              ? child ?? const SizedBox.shrink()
+              : AttendanceSessionScope(
+                  create: widget.attendanceBlocFactory!,
+                  clock: widget.attendanceClock ?? const SystemAppClock(),
+                  time:
+                      widget.companyTime ??
+                      const FixedOffsetCompanyTimeService(),
+                  child: child ?? const SizedBox.shrink(),
+                ),
         ),
         theme: AppTheme.light(locale: state.locale),
         themeMode: ThemeMode.light,

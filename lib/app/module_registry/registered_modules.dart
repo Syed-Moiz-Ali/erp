@@ -1,3 +1,5 @@
+import '../../features/attendance/presentation/pages/attendance_today_page.dart';
+import '../../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../../core/location/location_service.dart';
 import '../../shared/presentation/configuration_landing_page.dart';
 import '../../features/shifts/domain/shift_repository.dart';
@@ -485,13 +487,15 @@ ModuleRegistry createErpRegistry(
             navigationGroup: NavigationGroup.workforce,
             order: 20,
             mobilePriority: 2,
-            anyPermissions: {
-              AppPermission.attendanceViewSelf,
-              AppPermission.attendanceViewTeam,
-              AppPermission.attendanceViewAll,
-            },
+            requiredPermissions: {AppPermission.attendanceViewSelf},
           ),
-          (_) => const AttendancePlaceholderPage(),
+          (c) => c.read<AttendanceBloc?>() == null
+              ? AppPage(
+                  child: AppErrorState(
+                    message: c.l10n.attendanceUnavailableTitle,
+                  ),
+                )
+              : const AttendanceTodayPage(),
         ),
       ],
     ),

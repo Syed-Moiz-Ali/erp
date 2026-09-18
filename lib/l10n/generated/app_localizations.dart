@@ -3719,7 +3719,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceNotPunchedIn.
   ///
   /// In en, this message translates to:
-  /// **'You need to punch in first'**
+  /// **'Not punched in'**
   String get attendanceNotPunchedIn;
 
   /// No description provided for @attendanceAlreadyOnBreak.
@@ -3973,6 +3973,432 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Punch in is not allowed'**
   String get attendancePunchInNotAllowed;
+
+  /// No description provided for @attendanceTodayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s attendance'**
+  String get attendanceTodayTitle;
+
+  /// No description provided for @attendanceWorkday.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR WORKDAY'**
+  String get attendanceWorkday;
+
+  /// No description provided for @attendanceCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workday complete'**
+  String get attendanceCompleteTitle;
+
+  /// No description provided for @attendancePunchingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Punching in…'**
+  String get attendancePunchingIn;
+
+  /// No description provided for @attendancePunchingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punching out…'**
+  String get attendancePunchingOut;
+
+  /// No description provided for @attendanceTakeBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Take break'**
+  String get attendanceTakeBreak;
+
+  /// No description provided for @attendanceStartingBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting break…'**
+  String get attendanceStartingBreak;
+
+  /// No description provided for @attendanceResumeWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume work'**
+  String get attendanceResumeWork;
+
+  /// No description provided for @attendanceResumingWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Resuming work…'**
+  String get attendanceResumingWork;
+
+  /// No description provided for @attendanceWorkTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current work time'**
+  String get attendanceWorkTime;
+
+  /// No description provided for @attendanceCurrentBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Current break'**
+  String get attendanceCurrentBreak;
+
+  /// No description provided for @attendanceTotalBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Total break'**
+  String get attendanceTotalBreak;
+
+  /// No description provided for @attendanceElapsedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Elapsed time'**
+  String get attendanceElapsedTime;
+
+  /// No description provided for @attendanceWorkedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked time'**
+  String get attendanceWorkedTime;
+
+  /// No description provided for @attendanceTodayShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s shift'**
+  String get attendanceTodayShift;
+
+  /// No description provided for @attendanceWorkLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work location'**
+  String get attendanceWorkLocation;
+
+  /// No description provided for @attendanceLocationChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your location…'**
+  String get attendanceLocationChecking;
+
+  /// No description provided for @attendanceLocationReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Location ready'**
+  String get attendanceLocationReady;
+
+  /// No description provided for @attendanceInsideLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside work location'**
+  String get attendanceInsideLocation;
+
+  /// No description provided for @attendanceOutsideLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside work location'**
+  String get attendanceOutsideLocation;
+
+  /// No description provided for @attendanceLocationNotRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location verification not required'**
+  String get attendanceLocationNotRequired;
+
+  /// No description provided for @attendanceLocationRequiredNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location will be checked when you submit this action.'**
+  String get attendanceLocationRequiredNote;
+
+  /// No description provided for @attendanceAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Location accuracy'**
+  String get attendanceAccuracy;
+
+  /// No description provided for @attendanceRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed radius'**
+  String get attendanceRadius;
+
+  /// No description provided for @attendanceRefreshLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh location'**
+  String get attendanceRefreshLocation;
+
+  /// No description provided for @attendanceAllowLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location'**
+  String get attendanceAllowLocation;
+
+  /// No description provided for @attendanceOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get attendanceOpenSettings;
+
+  /// No description provided for @attendancePermissionSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is disabled in system settings.'**
+  String get attendancePermissionSettings;
+
+  /// No description provided for @attendanceServicesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location services to continue.'**
+  String get attendanceServicesNote;
+
+  /// No description provided for @attendanceNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet'**
+  String get attendanceNoActivity;
+
+  /// No description provided for @attendanceActivityNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your punch-in and break activity will appear here.'**
+  String get attendanceActivityNote;
+
+  /// No description provided for @attendanceTodayActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s activity'**
+  String get attendanceTodayActivity;
+
+  /// No description provided for @attendancePunchInTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch-in time'**
+  String get attendancePunchInTime;
+
+  /// No description provided for @attendancePunchOutTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch-out time'**
+  String get attendancePunchOutTime;
+
+  /// No description provided for @attendanceCurrentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current time'**
+  String get attendanceCurrentTime;
+
+  /// No description provided for @attendanceBreakStartedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Break started'**
+  String get attendanceBreakStartedLabel;
+
+  /// No description provided for @attendanceWorkResumedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Work resumed'**
+  String get attendanceWorkResumedLabel;
+
+  /// No description provided for @attendanceEndWorkday.
+  ///
+  /// In en, this message translates to:
+  /// **'End your workday?'**
+  String get attendanceEndWorkday;
+
+  /// No description provided for @attendanceConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm attendance action'**
+  String get attendanceConfirmAction;
+
+  /// No description provided for @attendanceContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get attendanceContinue;
+
+  /// No description provided for @attendanceCloseBreakNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current break will end when you punch out.'**
+  String get attendanceCloseBreakNote;
+
+  /// No description provided for @attendancePendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get attendancePendingTitle;
+
+  /// No description provided for @attendancePendingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device. Waiting for verification when sync becomes available.'**
+  String get attendancePendingNote;
+
+  /// No description provided for @attendanceFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance sync needs attention'**
+  String get attendanceFailedTitle;
+
+  /// No description provided for @attendanceFailedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance is saved locally but could not be verified.'**
+  String get attendanceFailedNote;
+
+  /// No description provided for @attendanceRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance could not be verified'**
+  String get attendanceRejectedTitle;
+
+  /// No description provided for @attendanceRejectedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recorded events are retained. Contact HR to resolve this issue.'**
+  String get attendanceRejectedNote;
+
+  /// No description provided for @attendanceRetrySync.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry sync'**
+  String get attendanceRetrySync;
+
+  /// No description provided for @attendanceRequeuedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance is queued for sync. No sync service is configured yet.'**
+  String get attendanceRequeuedNote;
+
+  /// No description provided for @attendanceNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance is not configured yet'**
+  String get attendanceNotConfigured;
+
+  /// No description provided for @attendanceContactHr.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact HR to complete your attendance setup.'**
+  String get attendanceContactHr;
+
+  /// No description provided for @attendanceUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance unavailable'**
+  String get attendanceUnavailableTitle;
+
+  /// No description provided for @attendanceStartNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in to begin your workday.'**
+  String get attendanceStartNote;
+
+  /// No description provided for @attendanceWorkingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work time is calculated from recorded activity.'**
+  String get attendanceWorkingNote;
+
+  /// No description provided for @attendanceBreakNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Work time is paused while you are on a break.'**
+  String get attendanceBreakNote;
+
+  /// No description provided for @attendanceCompleteNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your final totals and activity are recorded below.'**
+  String get attendanceCompleteNote;
+
+  /// No description provided for @attendanceExpectedHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected work'**
+  String get attendanceExpectedHours;
+
+  /// No description provided for @attendanceGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Grace period'**
+  String get attendanceGrace;
+
+  /// No description provided for @attendanceOpenAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Open attendance'**
+  String get attendanceOpenAttendance;
+
+  /// No description provided for @attendanceLastCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Last location check'**
+  String get attendanceLastCheck;
+
+  /// No description provided for @attendanceCheckingSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading attendance setup'**
+  String get attendanceCheckingSetup;
+
+  /// No description provided for @attendanceWarningNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Review these details before recording your attendance.'**
+  String get attendanceWarningNote;
+
+  /// No description provided for @attendanceDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from work location'**
+  String get attendanceDistance;
+
+  /// No description provided for @attendanceTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get attendanceTryAgain;
+
+  /// No description provided for @attendanceLocationCaptureReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Location captured'**
+  String get attendanceLocationCaptureReady;
+
+  /// No description provided for @attendanceAccuracyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Required accuracy'**
+  String get attendanceAccuracyLimit;
+
+  /// No description provided for @attendanceNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'No work location assigned'**
+  String get attendanceNoLocation;
+
+  /// No description provided for @attendanceGoodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get attendanceGoodMorning;
+
+  /// No description provided for @attendanceGoodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get attendanceGoodAfternoon;
+
+  /// No description provided for @attendanceGoodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get attendanceGoodEvening;
+
+  /// No description provided for @attendanceMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} m'**
+  String attendanceMeters(String value);
 }
 
 class _AppLocalizationsDelegate

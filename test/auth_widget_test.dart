@@ -1,3 +1,5 @@
+import 'package:modular_erp/features/attendance/presentation/bloc/attendance_bloc.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/bootstrap/demo_configuration_seed.dart';
 import 'package:modular_erp/features/shifts/data/local_shift_repository.dart';
@@ -68,6 +70,7 @@ Future<Harness> mount(
   ModuleRegistry Function(AuthRepository)? registryFactory,
   AppShellCubit? shellCubit,
   LocationService? locationService,
+  AttendanceBloc Function(AuthRepository,AppDatabase)? createAttendanceBloc,AppClock? attendanceClock,
 }) async {
   final locale = LocaleCubit(
     LocalAppPreferencesRepository(
@@ -122,6 +125,7 @@ Future<Harness> mount(
         authBloc: auth,
         moduleRegistry: registry,
         shellCubit: shellCubit,
+        attendanceClock:attendanceClock,attendanceBlocFactory:createAttendanceBloc==null ? null : ()=>createAttendanceBloc(repo,database!),
         demoAccounts: source.credentials,
       ),
     ),

@@ -1,7 +1,6 @@
 import '../../../l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import '../cards/app_cards.dart';
-import '../status/app_status_badge.dart';
+import '../../design_system.dart';
 
 abstract final class AppFeedback {
   static void showMessage(
@@ -55,6 +54,50 @@ class AppLoadingState extends StatelessWidget {
           ),
           SizedBox(width: 12),
           Flexible(child: Text(label ?? context.l10n.loadingRecords)),
+        ],
+      ),
+    ),
+  );
+}
+
+class AppNotice extends StatelessWidget {
+  const AppNotice({
+    super.key,
+    required this.title,
+    this.message,
+    this.action,
+    this.status = AppStatus.info,
+    this.icon = Icons.info_outline,
+  });
+  final String title;
+  final String? message;
+  final Widget? action;
+  final AppStatus status;
+  final IconData icon;
+  @override
+  Widget build(BuildContext context) => Semantics(
+    liveRegion: true,
+    child: AppCard(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: status.color),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: AppTypography.of(context).label),
+                if (message != null)
+                  Text(message!, style: AppTypography.of(context).bodySmall),
+                if (action != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  action!,
+                ],
+              ],
+            ),
+          ),
         ],
       ),
     ),

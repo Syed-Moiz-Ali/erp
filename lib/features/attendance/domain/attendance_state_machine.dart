@@ -12,7 +12,8 @@ Failure attendanceFailure(
     AttendanceFailureCode.offlineAttendanceNotAllowed => FailureKind.offline,
     AttendanceFailureCode.synchronizationFailed ||
     AttendanceFailureCode.syncUnavailable => FailureKind.sync,
-    AttendanceFailureCode.locationPermissionDenied =>
+    AttendanceFailureCode.locationPermissionDenied ||
+    AttendanceFailureCode.locationPermissionPermanentlyDenied =>
       FailureKind.locationPermission,
     AttendanceFailureCode.locationServicesDisabled =>
       FailureKind.locationDisabled,

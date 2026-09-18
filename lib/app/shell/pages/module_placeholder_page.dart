@@ -27,16 +27,6 @@ class ModulePlaceholderPage extends StatelessWidget {
   );
 }
 
-class AttendancePlaceholderPage extends StatelessWidget {
-  const AttendancePlaceholderPage({super.key});
-  @override
-  Widget build(BuildContext context) => ModulePlaceholderPage(
-    title: (l) => l.shellAttendance,
-    description: (l) => l.shellAttendanceDescription,
-    icon: Icons.schedule_outlined,
-  );
-}
-
 class ReportsPlaceholderPage extends StatelessWidget {
   const ReportsPlaceholderPage({super.key});
   @override

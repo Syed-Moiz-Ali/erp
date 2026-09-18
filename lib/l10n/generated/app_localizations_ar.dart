@@ -1912,7 +1912,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendanceAlreadyPunchedIn => 'لقد سجلت الحضور بالفعل';
 
   @override
-  String get attendanceNotPunchedIn => 'يجب تسجيل الحضور أولاً';
+  String get attendanceNotPunchedIn => 'لم يتم تسجيل الحضور';
 
   @override
   String get attendanceAlreadyOnBreak => 'أنت في استراحة بالفعل';
@@ -2049,4 +2049,228 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get attendancePunchInNotAllowed => 'لا يُسمح بتسجيل الحضور';
+
+  @override
+  String get attendanceTodayTitle => 'حضور اليوم';
+
+  @override
+  String get attendanceWorkday => 'يوم عملك';
+
+  @override
+  String get attendanceCompleteTitle => 'اكتمل يوم العمل';
+
+  @override
+  String get attendancePunchingIn => 'جارٍ تسجيل الحضور…';
+
+  @override
+  String get attendancePunchingOut => 'جارٍ تسجيل الانصراف…';
+
+  @override
+  String get attendanceTakeBreak => 'بدء استراحة';
+
+  @override
+  String get attendanceStartingBreak => 'جارٍ بدء الاستراحة…';
+
+  @override
+  String get attendanceResumeWork => 'استئناف العمل';
+
+  @override
+  String get attendanceResumingWork => 'جارٍ استئناف العمل…';
+
+  @override
+  String get attendanceWorkTime => 'وقت العمل الحالي';
+
+  @override
+  String get attendanceCurrentBreak => 'الاستراحة الحالية';
+
+  @override
+  String get attendanceTotalBreak => 'إجمالي الاستراحات';
+
+  @override
+  String get attendanceElapsedTime => 'الوقت المنقضي';
+
+  @override
+  String get attendanceWorkedTime => 'وقت العمل';
+
+  @override
+  String get attendanceTodayShift => 'وردية اليوم';
+
+  @override
+  String get attendanceWorkLocation => 'موقع العمل';
+
+  @override
+  String get attendanceLocationChecking => 'جارٍ التحقق من موقعك…';
+
+  @override
+  String get attendanceLocationReady => 'الموقع جاهز';
+
+  @override
+  String get attendanceInsideLocation => 'داخل موقع العمل';
+
+  @override
+  String get attendanceOutsideLocation => 'خارج موقع العمل';
+
+  @override
+  String get attendanceLocationNotRequired => 'التحقق من الموقع غير مطلوب';
+
+  @override
+  String get attendanceLocationRequiredNote =>
+      'سيتم التحقق من موقعك عند تنفيذ هذا الإجراء.';
+
+  @override
+  String get attendanceAccuracy => 'دقة الموقع';
+
+  @override
+  String get attendanceRadius => 'النطاق المسموح به';
+
+  @override
+  String get attendanceRefreshLocation => 'تحديث الموقع';
+
+  @override
+  String get attendanceAllowLocation => 'السماح بالوصول إلى الموقع';
+
+  @override
+  String get attendanceOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get attendancePermissionSettings =>
+      'إذن الوصول إلى الموقع معطل في إعدادات النظام.';
+
+  @override
+  String get attendanceServicesNote => 'شغّل خدمات الموقع للمتابعة.';
+
+  @override
+  String get attendanceNoActivity => 'لا يوجد نشاط بعد';
+
+  @override
+  String get attendanceActivityNote => 'ستظهر هنا أحداث حضورك واستراحاتك.';
+
+  @override
+  String get attendanceTodayActivity => 'نشاط اليوم';
+
+  @override
+  String get attendancePunchInTime => 'وقت تسجيل الحضور';
+
+  @override
+  String get attendancePunchOutTime => 'وقت تسجيل الانصراف';
+
+  @override
+  String get attendanceCurrentTime => 'الوقت الحالي';
+
+  @override
+  String get attendanceBreakStartedLabel => 'بدأت الاستراحة';
+
+  @override
+  String get attendanceWorkResumedLabel => 'تم استئناف العمل';
+
+  @override
+  String get attendanceEndWorkday => 'هل تريد إنهاء يوم عملك؟';
+
+  @override
+  String get attendanceConfirmAction => 'تأكيد إجراء الحضور';
+
+  @override
+  String get attendanceContinue => 'متابعة';
+
+  @override
+  String get attendanceCloseBreakNote =>
+      'ستنتهي استراحتك الحالية عند تسجيل الانصراف.';
+
+  @override
+  String get attendancePendingTitle => 'بانتظار المزامنة';
+
+  @override
+  String get attendancePendingNote =>
+      'تم الحفظ على هذا الجهاز بانتظار التحقق عند توفر المزامنة.';
+
+  @override
+  String get attendanceFailedTitle => 'مزامنة الحضور تحتاج إلى مراجعة';
+
+  @override
+  String get attendanceFailedNote =>
+      'تم حفظ حضورك محلياً ولكن تعذر التحقق منه.';
+
+  @override
+  String get attendanceRejectedTitle => 'تعذر التحقق من الحضور';
+
+  @override
+  String get attendanceRejectedNote =>
+      'تم الاحتفاظ بأحداث الحضور المسجلة. تواصل مع الموارد البشرية لحل المشكلة.';
+
+  @override
+  String get attendanceRetrySync => 'إعادة محاولة المزامنة';
+
+  @override
+  String get attendanceRequeuedNote =>
+      'تم وضع الحضور في قائمة انتظار المزامنة. خدمة المزامنة غير مهيأة بعد.';
+
+  @override
+  String get attendanceNotConfigured => 'لم يتم إعداد الحضور بعد';
+
+  @override
+  String get attendanceContactHr =>
+      'تواصل مع الموارد البشرية لإكمال إعداد الحضور.';
+
+  @override
+  String get attendanceUnavailableTitle => 'الحضور غير متاح';
+
+  @override
+  String get attendanceStartNote => 'سجّل الحضور لبدء يوم عملك.';
+
+  @override
+  String get attendanceWorkingNote => 'يُحسب وقت عملك من الأحداث المسجلة.';
+
+  @override
+  String get attendanceBreakNote => 'يتوقف احتساب وقت العمل أثناء الاستراحة.';
+
+  @override
+  String get attendanceCompleteNote =>
+      'تم تسجيل إجمالياتك النهائية ونشاطك أدناه.';
+
+  @override
+  String get attendanceExpectedHours => 'العمل المتوقع';
+
+  @override
+  String get attendanceGrace => 'فترة السماح';
+
+  @override
+  String get attendanceOpenAttendance => 'فتح الحضور';
+
+  @override
+  String get attendanceLastCheck => 'آخر تحقق من الموقع';
+
+  @override
+  String get attendanceCheckingSetup => 'جارٍ تحميل إعداد الحضور';
+
+  @override
+  String get attendanceWarningNote => 'راجع هذه التفاصيل قبل تسجيل حضورك.';
+
+  @override
+  String get attendanceDistance => 'المسافة من موقع العمل';
+
+  @override
+  String get attendanceTryAgain => 'إعادة المحاولة';
+
+  @override
+  String get attendanceLocationCaptureReady => 'تم تحديد الموقع';
+
+  @override
+  String get attendanceAccuracyLimit => 'الدقة المطلوبة';
+
+  @override
+  String get attendanceNoLocation => 'لم يتم تعيين موقع عمل';
+
+  @override
+  String get attendanceGoodMorning => 'صباح الخير';
+
+  @override
+  String get attendanceGoodAfternoon => 'طاب يومك';
+
+  @override
+  String get attendanceGoodEvening => 'مساء الخير';
+
+  @override
+  String attendanceMeters(String value) {
+    return '$value م';
+  }
 }

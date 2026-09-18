@@ -1,3 +1,4 @@
+import '../../attendance/presentation/widgets/attendance_dashboard_preview.dart';
 import '../../../design_system/theme/app_motion.dart';
 import '../../../design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
@@ -288,92 +289,11 @@ class DashboardView extends StatelessWidget {
       );
     },
   );
-  Widget _today(BuildContext context, DashboardToday today) {
-    final l = context.l10n,
-        times = AppTimeFormatter(Localizations.localeOf(context));
-    final attendance = registry.destinations
-        .where((d) => d.route == AppRoutes.attendance)
-        .firstOrNull;
-    final canOpen =
-        attendance != null &&
-        NavigationResolver(registry).routeAccess(attendance.route, auth) ==
-            RouteAccess.allowed;
-    return AppDashboardSection(
-      title: l.dashboardToday,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (AppBreakpoints.of(context) == AppSize.expanded ||
-              AppBreakpoints.of(context) == AppSize.large)
-            AppResponsiveGrid(
-              maxColumns: 3,
-              minItemWidth: 200,
-              children: [
-                for (final fact in [
-                  (
-                    label: l.dashboardShift,
-                    value: l.dashboardTimeRange(
-                      times.time(today.shiftStart),
-                      times.time(today.shiftEnd),
-                    ),
-                  ),
-                  (label: l.dashboardLocation, value: l.dashboardOffice),
-                  (label: l.dashboardAttendance, value: l.dashboardNotStarted),
-                ])
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        fact.label,
-                        style: AppTypography.of(context).caption,
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        fact.value,
-                        style: AppTypography.of(context).bodyLarge,
-                      ),
-                    ],
-                  ),
-              ],
-            )
-          else
-            AppStatusSummary(
-              rows: [
-                (
-                  label: l.dashboardShift,
-                  value: l.dashboardTimeRange(
-                    times.time(today.shiftStart),
-                    times.time(today.shiftEnd),
-                  ),
-                  status: AppStatus.neutral,
-                ),
-                (
-                  label: l.dashboardLocation,
-                  value: l.dashboardOffice,
-                  status: AppStatus.neutral,
-                ),
-                (
-                  label: l.dashboardAttendance,
-                  value: l.dashboardNotStarted,
-                  status: AppStatus.neutral,
-                ),
-              ],
-            ),
-          if (canOpen) ...[
-            const SizedBox(height: AppSpacing.xl),
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: AppQuickActionCard(
-                label: attendance.name(l),
-                icon: attendance.icon,
-                onPressed: () => context.go(attendance.route),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
+  Widget _today(BuildContext context, DashboardToday today) =>
+      AppDashboardSection(
+        title: context.l10n.dashboardToday,
+        child: const AttendanceDashboardPreview(),
+      );
 
   Widget _status(BuildContext context, DashboardSummary summary) {
     final l = context.l10n,

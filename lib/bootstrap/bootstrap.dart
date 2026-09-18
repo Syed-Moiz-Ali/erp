@@ -1,3 +1,6 @@
+import '../features/attendance/presentation/bloc/attendance_bloc.dart';
+import '../features/attendance/domain/shift_workday_resolver.dart';
+import '../core/utils/app_clock.dart';
 import 'demo_configuration_seed.dart';
 import '../features/employees/data/employee_seed.dart';
 import '../app/shell/app_shell_cubit.dart';
@@ -48,6 +51,9 @@ Future<void> bootstrap() async {
       localeCubit: localeCubit,
       authBloc: authBloc,
       shellCubit: shellCubit,
+      attendanceBlocFactory: () => services<AttendanceBloc>(),
+      attendanceClock: services<AppClock>(),
+      companyTime: services<CompanyTimeService>(),
       moduleRegistry: services<ModuleRegistry>(),
       demoAccounts: AppConfig.demoAuthEnabled
           ? services<DemoAuthSource>().credentials

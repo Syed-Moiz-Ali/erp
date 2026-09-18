@@ -11,6 +11,13 @@ class DeviceAttendanceLocationCapture implements AttendanceLocationCapture {
   Future<Result<AttendanceLocationEvidence>> capture() async {
     final result = await location.currentPosition(requestPermission: true);
     if (result case Failed(:final failure)) {
+      if (failure.code == 'location_permanent') {
+        return Failed(
+          attendanceFailure(
+            AttendanceFailureCode.locationPermissionPermanentlyDenied,
+          ),
+        );
+      }
       return Failed(
         attendanceFailure(switch (failure.kind) {
           FailureKind.locationPermission =>

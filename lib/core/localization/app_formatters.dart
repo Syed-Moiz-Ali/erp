@@ -25,6 +25,12 @@ class AppTimeFormatter {
     DateTime(2000, 1, 1, value.hour, value.minute),
     use24Hour: use24Hour,
   );
+  String digitalDuration(Duration value) {
+    final seconds = value.inSeconds.clamp(0, 1 << 52);
+    String part(int v) => NumberFormat('00', locale.toLanguageTag()).format(v);
+    return '${part(seconds ~/ 3600)}:${part(seconds ~/ 60 % 60)}:${part(seconds % 60)}';
+  }
+
   String duration(Duration value, AppLocalizations l10n) {
     final numbers = AppNumberFormatter(locale);
     if (value.inMinutes.remainder(60) == 0) {
