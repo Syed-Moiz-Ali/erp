@@ -1438,6 +1438,18 @@
   "attendanceResumeWork": "Resume work",
   "attendanceResumingWork": "Resuming work…",
   "attendanceWorkTime": "Current work time",
+  "attendanceCurrentLoggedWorkTime": "Current Logged Work Time (Today)",
+  "attendanceInsideGeofence": "Inside {name} Geofence ({distance})",
+  "@attendanceInsideGeofence": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
   "attendanceCurrentBreak": "Current break",
   "attendanceTotalBreak": "Total break",
   "attendanceElapsedTime": "Elapsed time",

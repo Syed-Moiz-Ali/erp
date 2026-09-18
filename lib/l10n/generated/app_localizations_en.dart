@@ -2280,6 +2280,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceWorkTime => 'Current work time';
 
   @override
+  String get attendanceCurrentLoggedWorkTime =>
+      'Current Logged Work Time (Today)';
+
+  @override
+  String attendanceInsideGeofence(String name, String distance) {
+    return 'Inside $name Geofence ($distance)';
+  }
+
+  @override
   String get attendanceCurrentBreak => 'Current break';
 
   @override

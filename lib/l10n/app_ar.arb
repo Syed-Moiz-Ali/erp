@@ -826,6 +826,8 @@
   "attendanceResumeWork": "استئناف العمل",
   "attendanceResumingWork": "جارٍ استئناف العمل…",
   "attendanceWorkTime": "وقت العمل الحالي",
+  "attendanceCurrentLoggedWorkTime": "وقت العمل المسجّل الحالي (اليوم)",
+  "attendanceInsideGeofence": "داخل نطاق {name} ({distance})",
   "attendanceCurrentBreak": "الاستراحة الحالية",
   "attendanceTotalBreak": "إجمالي الاستراحات",
   "attendanceElapsedTime": "الوقت المنقضي",

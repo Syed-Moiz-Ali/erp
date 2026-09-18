@@ -15,12 +15,37 @@ class AttendanceTodayTimeline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppSectionHeader(title: l.attendanceTodayActivity),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.md),
           if (a.events.isEmpty)
-            AppEmptyState(
-              title: l.attendanceNoActivity,
-              message: l.attendanceActivityNote,
-              icon: Icons.event_note_outlined,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.event_note_outlined,
+                  size: 18,
+                  color: AppColors.textMuted,
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.attendanceNoActivity,
+                        style: AppTypography.of(context).bodySmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        l.attendanceActivityNote,
+                        style: AppTypography.of(context).caption,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             )
           else
             AttendanceTimeline(

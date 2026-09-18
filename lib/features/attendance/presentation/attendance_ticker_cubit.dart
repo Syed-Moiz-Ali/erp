@@ -41,9 +41,11 @@ class AttendanceTickerCubit extends Cubit<AttendanceSummary?> {
     _timer = null;
     refresh();
     final state = this.state?.currentState;
+    // Tick while there is a workday to track (idle or in-progress). Stop once
+    // the day is completed or the page is offstage/inactive.
     if (_active &&
-        (state == AttendanceWorkdayState.working ||
-            state == AttendanceWorkdayState.onBreak)) {
+        _context != null &&
+        state != AttendanceWorkdayState.completed) {
       _timer = Timer.periodic(const Duration(seconds: 1), (_) => refresh());
     }
   }

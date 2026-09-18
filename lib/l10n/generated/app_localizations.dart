@@ -4346,6 +4346,18 @@ abstract class AppLocalizations {
   /// **'Current work time'**
   String get attendanceWorkTime;
 
+  /// No description provided for @attendanceCurrentLoggedWorkTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Logged Work Time (Today)'**
+  String get attendanceCurrentLoggedWorkTime;
+
+  /// No description provided for @attendanceInsideGeofence.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside {name} Geofence ({distance})'**
+  String attendanceInsideGeofence(String name, String distance);
+
   /// No description provided for @attendanceCurrentBreak.
   ///
   /// In en, this message translates to:

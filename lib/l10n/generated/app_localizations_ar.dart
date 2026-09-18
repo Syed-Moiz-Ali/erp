@@ -2241,6 +2241,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendanceWorkTime => 'وقت العمل الحالي';
 
   @override
+  String get attendanceCurrentLoggedWorkTime =>
+      'وقت العمل المسجّل الحالي (اليوم)';
+
+  @override
+  String attendanceInsideGeofence(String name, String distance) {
+    return 'داخل نطاق $name ($distance)';
+  }
+
+  @override
   String get attendanceCurrentBreak => 'الاستراحة الحالية';
 
   @override
