@@ -1,4 +1,5 @@
 import 'demo_attendance_seed.dart';
+import 'demo_workforce_seed.dart';
 import '../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../features/attendance/domain/shift_workday_resolver.dart';
 import '../core/utils/app_clock.dart';
@@ -42,6 +43,12 @@ Future<void> bootstrap() async {
     await seedAttendanceConfiguration(services<AppDatabase>());
     await seedDemoAttendance(
       services<AppDatabase>(),
+      clock: services<AppClock>(),
+      time: services<CompanyTimeService>(),
+    );
+    await seedDemoWorkforce(
+      services<AppDatabase>(),
+      enabled: true,
       clock: services<AppClock>(),
       time: services<CompanyTimeService>(),
     );

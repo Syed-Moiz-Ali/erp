@@ -58,3 +58,30 @@ class AttendanceEvents extends Table {
     {attendanceDayId, sequence},
   ];
 }
+
+@DataClassName('AttendanceCorrectionRequestData')
+class AttendanceCorrectionRequests extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get employeeId => text()();
+  TextColumn get attendanceDayId => text()();
+  TextColumn get requestType => text()();
+  TextColumn get status => text()();
+  TextColumn get reason => text()();
+  TextColumn get originalSnapshot => text()();
+  TextColumn get requestedChanges => text()();
+  TextColumn get requestedByUserId => text()();
+  IntColumn get requestedMilliseconds => integer()();
+  TextColumn get reviewedByUserId => text().nullable()();
+  IntColumn get reviewedMilliseconds => integer().nullable()();
+  TextColumn get reviewNote => text().nullable()();
+  TextColumn get syncStatus => text()();
+  IntColumn get createdMilliseconds => integer()();
+  IntColumn get updatedMilliseconds => integer()();
+  @override
+  Set<Column> get primaryKey => {id};
+  @override
+  List<Set<Column>> get uniqueKeys => [
+    {companyId, id},
+  ];
+}

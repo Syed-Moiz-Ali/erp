@@ -87,7 +87,8 @@ class LocalOutboxRepository implements OutboxRepository {
       final row = await (local.database.select(
         local.database.syncOutbox,
       )..where((t) => t.id.equals(id))).getSingleOrNull();
-      if (row?.moduleId == 'attendance') {
+      if (row?.moduleId == 'attendance' ||
+          row?.moduleId == 'attendance-correction') {
         return const Failed(
           Failure(
             code: 'attendanceConfirmationRequired',

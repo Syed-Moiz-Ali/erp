@@ -43,7 +43,7 @@ class AppUserMenu extends StatelessWidget {
                 label(context.l10n),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.bodySmall.copyWith(
+                style: theme.bodyLarge.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AppColors.textPrimary,
                 ),

@@ -2672,4 +2672,372 @@ class AppLocalizationsEn extends AppLocalizations {
   String historyFilterCount(String count) {
     return 'Status filters ($count)';
   }
+
+  @override
+  String get correctionRequest => 'Request correction';
+
+  @override
+  String get correctionMyRequests => 'My requests';
+
+  @override
+  String get correctionReviewQueue => 'Correction requests';
+
+  @override
+  String get correctionType => 'Correction type';
+
+  @override
+  String get correctionRequestedTime => 'Requested date and time';
+
+  @override
+  String get correctionReason => 'Reason';
+
+  @override
+  String get correctionReviewNote => 'Review note';
+
+  @override
+  String get correctionSubmit => 'Submit request';
+
+  @override
+  String get correctionCancel => 'Cancel request';
+
+  @override
+  String get correctionApprove => 'Approve';
+
+  @override
+  String get correctionReject => 'Reject';
+
+  @override
+  String get correctionPending => 'Pending';
+
+  @override
+  String get correctionApproved => 'Approved';
+
+  @override
+  String get correctionRejected => 'Rejected';
+
+  @override
+  String get correctionCancelled => 'Cancelled';
+
+  @override
+  String get correctionOriginal => 'Original';
+
+  @override
+  String get correctionRequested => 'Requested';
+
+  @override
+  String get correctionNoRequests => 'No correction requests';
+
+  @override
+  String get correctionMissingPunchIn => 'Missing punch in';
+
+  @override
+  String get correctionMissingPunchOut => 'Missing punch out';
+
+  @override
+  String get correctionChangePunchIn => 'Change punch in time';
+
+  @override
+  String get correctionChangePunchOut => 'Change punch out time';
+
+  @override
+  String get correctionMissingBreakStart => 'Missing break start';
+
+  @override
+  String get correctionMissingBreakEnd => 'Missing break end';
+
+  @override
+  String get correctionChangeBreakStart => 'Change break start time';
+
+  @override
+  String get correctionChangeBreakEnd => 'Change break end time';
+
+  @override
+  String get correctionPreview => 'Effective result preview';
+
+  @override
+  String get correctionInvalid => 'Check the requested time and event order.';
+
+  @override
+  String get correctionSaved => 'Correction request submitted';
+
+  @override
+  String get correctionReviewSaved => 'Review saved';
+
+  @override
+  String get correctionReasonRequired => 'Enter a reason';
+
+  @override
+  String get workforceTeam => 'Team attendance';
+
+  @override
+  String get workforceAll => 'All attendance';
+
+  @override
+  String get workforceNotStarted => 'Not started';
+
+  @override
+  String get workforceWorking => 'Working';
+
+  @override
+  String get workforceOnBreak => 'On break';
+
+  @override
+  String get workforceCompleted => 'Completed';
+
+  @override
+  String get workforceIncomplete => 'Incomplete';
+
+  @override
+  String get workforceNoSchedule => 'No schedule';
+
+  @override
+  String get workforceNoRecord => 'No record';
+
+  @override
+  String get workforceSearch => 'Search employees';
+
+  @override
+  String get workforceNoEmployees => 'No employees match';
+
+  @override
+  String get workforceDepartment => 'Department';
+
+  @override
+  String get workforceShift => 'Shift';
+
+  @override
+  String get workforceLocation => 'Work location';
+
+  @override
+  String get workforceDate => 'Attendance date';
+
+  @override
+  String get workforceToday => 'Today';
+
+  @override
+  String get workforcePrevious => 'Previous day';
+
+  @override
+  String get workforceNext => 'Next day';
+
+  @override
+  String get workforcePendingCorrection => 'Pending correction';
+
+  @override
+  String get workforceSort => 'Sort by';
+
+  @override
+  String get workforceName => 'Name';
+
+  @override
+  String get workforceNameDescending => 'Name (Z–A)';
+
+  @override
+  String get workforceCode => 'Employee code';
+
+  @override
+  String get workforceAllFilter => 'All';
+
+  @override
+  String get reportTitle => 'Attendance reports';
+
+  @override
+  String get reportOverview => 'Overview';
+
+  @override
+  String get reportWorkHours => 'Work hours';
+
+  @override
+  String get reportLate => 'Late attendance';
+
+  @override
+  String get reportBreaks => 'Break analysis';
+
+  @override
+  String get reportIssues => 'Attendance issues';
+
+  @override
+  String get reportEmployees => 'Employee summary';
+
+  @override
+  String get reportToday => 'Today';
+
+  @override
+  String get reportThisWeek => 'This week';
+
+  @override
+  String get reportThisMonth => 'This month';
+
+  @override
+  String get reportLastMonth => 'Last month';
+
+  @override
+  String get reportCustom => 'Custom range';
+
+  @override
+  String get reportFrom => 'From';
+
+  @override
+  String get reportTo => 'To';
+
+  @override
+  String get reportScopeTeam => 'My team';
+
+  @override
+  String get reportScopeCompany => 'Company';
+
+  @override
+  String get reportRecordedDays => 'Recorded workdays';
+
+  @override
+  String get reportCompletedDays => 'Completed workdays';
+
+  @override
+  String get reportLateDays => 'Late records';
+
+  @override
+  String get reportIncompleteDays => 'Incomplete records';
+
+  @override
+  String get reportWorkTotal => 'Worked time';
+
+  @override
+  String get reportBreakTotal => 'Break time';
+
+  @override
+  String get reportAverageWork => 'Average per recorded day';
+
+  @override
+  String get reportPendingCorrections => 'Pending corrections';
+
+  @override
+  String get reportIssueDays => 'Days with issues';
+
+  @override
+  String get reportTrend => 'Recorded workdays by date';
+
+  @override
+  String get reportGroupBy => 'Group by';
+
+  @override
+  String get reportNoData =>
+      'No recorded attendance matches this period and filters.';
+
+  @override
+  String get reportInProgress =>
+      'Today\'s active attendance is provisional until punch out.';
+
+  @override
+  String get reportFilter => 'Filters';
+
+  @override
+  String get reportClearFilters => 'Clear filters';
+
+  @override
+  String get reportEmployee => 'Employee';
+
+  @override
+  String get reportStatus => 'Status';
+
+  @override
+  String get reportCorrections => 'Corrections';
+
+  @override
+  String get reportAny => 'Any';
+
+  @override
+  String get reportYes => 'Yes';
+
+  @override
+  String get reportNo => 'No';
+
+  @override
+  String get reportApply => 'Apply';
+
+  @override
+  String get reportExport => 'Export';
+
+  @override
+  String get reportCsv => 'Export CSV';
+
+  @override
+  String get reportPdf => 'Export PDF';
+
+  @override
+  String get reportExported => 'Report saved';
+
+  @override
+  String get reportExportFailed => 'Could not export report';
+
+  @override
+  String get reportLoading => 'Loading report';
+
+  @override
+  String get reportRefreshFailed => 'Could not refresh report';
+
+  @override
+  String get reportDate => 'Date';
+
+  @override
+  String get reportWorked => 'Worked';
+
+  @override
+  String get reportBreak => 'Break';
+
+  @override
+  String get reportLateBy => 'Late by';
+
+  @override
+  String get reportRecorded => 'Recorded days';
+
+  @override
+  String get reportCompleted => 'Completed';
+
+  @override
+  String get reportLateCount => 'Late';
+
+  @override
+  String get reportIssuesCount => 'Issues';
+
+  @override
+  String get reportPending => 'Pending';
+
+  @override
+  String get reportShiftStart => 'Shift start';
+
+  @override
+  String get reportPunchIn => 'Punch in';
+
+  @override
+  String get reportDepartment => 'Department';
+
+  @override
+  String get reportLocation => 'Location';
+
+  @override
+  String get reportPeriod => 'Period';
+
+  @override
+  String get reportGenerated => 'Generated';
+
+  @override
+  String get reportPage => 'Page';
+
+  @override
+  String get reportSortNewest => 'Newest first';
+
+  @override
+  String get reportSortOldest => 'Oldest first';
+
+  @override
+  String get reportSortEmployee => 'Employee name';
+
+  @override
+  String get reportSortWork => 'Most worked time';
+
+  @override
+  String get reportSortBreak => 'Most break time';
+
+  @override
+  String get reportFiltersApplied => 'Applied filters';
 }

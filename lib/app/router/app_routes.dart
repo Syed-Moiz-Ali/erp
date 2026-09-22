@@ -18,6 +18,19 @@ abstract final class AppRoutes {
       noDestinations = '/app/no-destinations',
       designSystem = '/design-system';
   static const attendanceHistory = '$attendance/history';
+  static const attendanceCorrections = '$attendance/corrections';
+  static const attendanceRequests = '$attendance/requests';
+  static const attendanceTeam = '$attendance/team';
+  static const attendanceAll = '$attendance/all';
+  static String attendanceCorrectionForm(String dayId) =>
+      '$attendanceCorrections/new/${Uri.encodeComponent(dayId)}';
+  static String attendanceCorrectionDetails(String id) =>
+      '$attendanceCorrections/${Uri.encodeComponent(id)}';
+  static String attendanceReviewDetails(String id) =>
+      '$attendanceRequests/${Uri.encodeComponent(id)}';
+  static String attendanceWorkforceDetails(String employeeId, String dayId,
+      {bool team = false}) =>
+      '${team ? attendanceTeam : attendanceAll}/${Uri.encodeComponent(employeeId)}/${Uri.encodeComponent(dayId)}';
   static String attendanceDayDetails(String id) =>
       '$attendanceHistory/${Uri.encodeComponent(id)}';
   static const employeeNew = '/app/employees/new';

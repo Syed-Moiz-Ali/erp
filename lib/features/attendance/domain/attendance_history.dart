@@ -1,6 +1,7 @@
 import '../../../core/errors/result.dart';
 import 'shift_workday_resolver.dart';
 import 'attendance_models.dart';
+import 'attendance_correction.dart';
 
 /// Read projection only; persisted engine statuses are unchanged.
 enum AttendanceHistoryStatus { present, late, working, incomplete }
@@ -135,10 +136,19 @@ class AttendanceHistoryPageData {
 }
 
 class AttendanceDayDetails {
-  AttendanceDayDetails(this.day, List<AttendanceEvent> events, this.asOf)
-    : events = List.unmodifiable(events);
+  AttendanceDayDetails(
+    this.day,
+    List<AttendanceEvent> events,
+    this.asOf, {
+    List<AttendanceEvent>? originalEvents,
+    List<AttendanceCorrectionRequest> corrections = const [],
+  }) : events = List.unmodifiable(events),
+       originalEvents = List.unmodifiable(originalEvents ?? events),
+       corrections = List.unmodifiable(corrections);
   final AttendanceDay day;
   final List<AttendanceEvent> events;
+  final List<AttendanceEvent> originalEvents;
+  final List<AttendanceCorrectionRequest> corrections;
   final DateTime asOf;
   AttendanceHistoryStatus get status => historyStatus(day, asOf);
   Set<AttendanceRecordIssue> get issues => Set.unmodifiable({

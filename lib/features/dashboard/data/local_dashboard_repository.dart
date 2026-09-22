@@ -1,6 +1,10 @@
 import '../../../core/errors/result.dart';
 import '../../../core/security/app_permission.dart';
 import '../../auth/domain/entities/auth_context.dart';
+import '../../attendance/data/workforce_attendance_read_repository.dart';
+import '../../attendance/domain/attendance_correction_repository.dart';
+import '../../attendance/domain/attendance_correction.dart';
+import '../../attendance/domain/workforce_attendance.dart';
 import '../domain/dashboard_models.dart';
 import '../domain/dashboard_repository.dart';
 import '../domain/dashboard_scope_resolver.dart';
@@ -11,10 +15,14 @@ class LocalDashboardRepository implements DashboardRepository {
     this.source = const DemoDashboardSource(),
     this.demoEnabled = true,
     this.scopeResolver = const DashboardScopeResolver(),
+    this.workforce,
+    this.corrections,
   });
   final DemoDashboardSource source;
   final bool demoEnabled;
   final DashboardScopeResolver scopeResolver;
+  final WorkforceAttendanceReadRepository? workforce;
+  final AttendanceCorrectionRepository? corrections;
   @override
   Future<Result<DashboardSummary>> load(
     AuthContext context, {
@@ -30,7 +38,96 @@ class LocalDashboardRepository implements DashboardRepository {
     }
     try {
       final scope = scopeResolver.resolve(context);
-      final raw = source.read(scope, context.user.displayName);
+      var raw = source.read(scope, context.user.displayName);
+      if (workforce != null &&
+          scope != DashboardScope.none &&
+          scope != DashboardScope.self &&
+          context.company.enabledModules.contains('attendance')) {
+        raw = DashboardSummary(
+          scope: scope,
+          asOf: DateTime.now(),
+          isDemo: false,
+        );
+        final date = await workforce!.companyToday();
+        if (date is Success<DateTime>) {
+          final result = await workforce!.read(
+            date: date.value,
+            scope: scope == DashboardScope.team
+                ? AttendanceScope.team
+                : AttendanceScope.company,
+            filter: const WorkforceAttendanceFilter(pageSize: 100),
+          );
+          if (result is Success<WorkforceAttendancePage>) {
+            final page = result.value;
+            int count(WorkforceAttendanceState state) =>
+                page.counts[state] ?? 0;
+            final present =
+                count(WorkforceAttendanceState.working) +
+                count(WorkforceAttendanceState.onBreak) +
+                count(WorkforceAttendanceState.completed);
+            final late = page.lateCount;
+            var pending = 0;
+            if (corrections != null &&
+                (PermissionChecker(
+                      context.user.permissions,
+                    ).can(AppPermission.attendanceApprove) ||
+                    PermissionChecker(
+                      context.user.permissions,
+                    ).can(AppPermission.attendanceCorrect))) {
+              final queue = await corrections!.watchPendingRequests().first;
+              if (queue is Success<List<AttendanceCorrectionRequest>>) {
+                pending = queue.value.length;
+              }
+            }
+            final status = DashboardStatusSummary(
+              onTime: present - late,
+              late: late,
+              absent: count(WorkforceAttendanceState.noRecord),
+              onLeave: 0,
+            );
+            raw = DashboardSummary(
+              scope: scope,
+              asOf: DateTime.now(),
+              isDemo: false,
+              status: status,
+              metrics: [
+                DashboardMetric(
+                  scope == DashboardScope.team
+                      ? DashboardMetricKind.teamSize
+                      : DashboardMetricKind.employees,
+                  page.total,
+                ),
+                DashboardMetric(DashboardMetricKind.present, present),
+                DashboardMetric(DashboardMetricKind.late, late),
+                const DashboardMetric(DashboardMetricKind.leave, 0),
+                DashboardMetric(
+                  DashboardMetricKind.working,
+                  count(WorkforceAttendanceState.working),
+                ),
+                DashboardMetric(
+                  DashboardMetricKind.onBreak,
+                  count(WorkforceAttendanceState.onBreak),
+                ),
+                DashboardMetric(DashboardMetricKind.corrections, pending),
+                if (scope == DashboardScope.company)
+                  DashboardMetric(
+                    DashboardMetricKind.attendanceRate,
+                    page.total == 0 ? 0 : present / page.total,
+                  ),
+              ],
+              alerts: [
+                if (late > 0)
+                  DashboardAlert(DashboardAlertKind.lateArrivals, late),
+                if (pending > 0)
+                  DashboardAlert(
+                    DashboardAlertKind.pendingCorrections,
+                    pending,
+                  ),
+              ],
+            );
+          }
+        }
+      }
       final can = PermissionChecker(context.user.permissions).can;
       bool allowed(DashboardMetric m) => switch (m.kind) {
         DashboardMetricKind.employees =>

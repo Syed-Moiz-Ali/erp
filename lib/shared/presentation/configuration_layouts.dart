@@ -116,21 +116,9 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
         subtitle: subtitle,
         actions: [
           if (manage)
-            ElevatedButton.icon(
-              icon: const Icon(Icons.add_rounded, size: 16),
-              label: Text(l.cfgNew),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4E1229), // Brand Deep Plum
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
+            AppPrimaryButton(
+              icon: Icons.add_rounded,
+              label: l.cfgNew,
               onPressed: onCreate,
             ),
         ],
@@ -159,30 +147,11 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                       null,
                       ...ConfigurationStatus.values,
                     ])
-                      ChoiceChip(
-                        label: Text(
-                          status == null
-                              ? l.cfgAll
-                              : configurationStatusLabel(status, l),
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: state.status == status
-                                ? const Color(0xFF4E1229)
-                                : const Color(0xFF4B5563),
-                          ),
-                        ),
+                      AppFilterChip(
+                        label: status == null
+                            ? l.cfgAll
+                            : configurationStatusLabel(status, l),
                         selected: state.status == status,
-                        selectedColor: const Color(0xFFFAF2F5),
-                        backgroundColor: const Color(0xFFF3F4F6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                          side: BorderSide(
-                            color: state.status == status
-                                ? const Color(0xFFECD7DF)
-                                : const Color(0xFFE5E7EB),
-                          ),
-                        ),
                         onSelected: (_) => onStatus(status),
                       ),
                   ],
@@ -231,10 +200,9 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                     Expanded(
                                       child: Text(
                                         item.record.name,
-                                        style: const TextStyle(
-                                          fontSize: 15,
+                                        style: AppTypography.of(c).cardTitle.copyWith(
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF111827),
+                                          color: AppColors.textPrimary,
                                         ),
                                       ),
                                     ),
@@ -244,18 +212,16 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                 const SizedBox(height: 4),
                                 Text(
                                   summary(c, item.record),
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Color(0xFF4B5563),
+                                  style: AppTypography.of(c).bodySmall.copyWith(
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                                 if (mobileDetails != null) ...[
                                   const SizedBox(height: 2),
                                   Text(
                                     mobileDetails!(c, item.record),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF6B7280),
+                                    style: AppTypography.of(c).caption.copyWith(
+                                      color: AppColors.textMuted,
                                     ),
                                   ),
                                 ],
@@ -271,8 +237,13 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                         vertical: 3,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFF3F4F6),
-                                        borderRadius: BorderRadius.circular(4),
+                                        color: AppColors.surfaceSubtle,
+                                        borderRadius: BorderRadius.circular(
+                                          AppRadius.radiusXs,
+                                        ),
+                                        border: Border.all(
+                                          color: AppColors.borderSubtle,
+                                        ),
                                       ),
                                       child: Text(
                                         [
@@ -282,11 +253,10 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                             item.assignedEmployees,
                                           ),
                                         ].join(': '),
-                                        style: const TextStyle(
-                                          fontSize: 11,
+                                        style: AppTypography.of(c).caption.copyWith(
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF374151),
-                                          fontFeatures: [
+                                          color: AppColors.textSecondary,
+                                          fontFeatures: const [
                                             FontFeature.tabularFigures(),
                                           ],
                                         ),
@@ -305,9 +275,8 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                 // Desktop Elegant Data Table wrapped inside a Curved Card
                 return AppCard(
                   padding: EdgeInsets.zero,
-                  // radius: 16.0,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(AppRadius.card),
                     child: AppDataTable(
                       columns: [
                         DataColumn(label: Text(l.cfgName)),
@@ -328,9 +297,9 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                               DataCell(
                                 Text(
                                   item.record.name,
-                                  style: const TextStyle(
+                                  style: AppTypography.of(c).body.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xFF111827),
+                                    color: AppColors.textPrimary,
                                   ),
                                 ),
                               ),
@@ -341,8 +310,8 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                     summary(c, item.record),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Color(0xFF4B5563),
+                                    style: AppTypography.of(c).bodySmall.copyWith(
+                                      color: AppColors.textSecondary,
                                     ),
                                   ),
                                 ),
@@ -534,55 +503,15 @@ class ConfigurationFormLayout extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    OutlinedButton(
+                    AppSecondaryButton(
+                      label: c.l10n.cancel,
                       onPressed: saving ? null : onCancel,
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFFD1D5DB)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: Text(
-                        c.l10n.cancel,
-                        style: const TextStyle(color: Color(0xFF374151)),
-                      ),
                     ),
-                    const SizedBox(width: 12),
-                    ElevatedButton(
+                    const SizedBox(width: AppSpacing.md),
+                    AppPrimaryButton(
+                      label: c.l10n.save,
+                      loading: saving,
                       onPressed: saving ? null : onSave,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4E1229), // Brand Plum
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 22,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: saving
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
-                              ),
-                            )
-                          : Text(
-                              c.l10n.save,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                     ),
                   ],
                 ),

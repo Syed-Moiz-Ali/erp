@@ -86,46 +86,83 @@ class _TodayCard extends StatelessWidget {
         '${AttendancePresentation.time(context, attendance, snapshot.scheduledStart)}–${AttendancePresentation.time(context, attendance, snapshot.scheduledEnd)}';
     final location = snapshot.workLocation?.name ?? l.attendanceNoLocation;
     final contextLine = '${snapshot.shift.name} · $schedule · $location';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 340;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (workState != null) ...[
-              AppStatusBadge(
-                label: AttendancePresentation.state(context, workState),
-                status: AttendancePresentation.status(workState),
-                icon: workState == AttendanceWorkdayState.completed
-                    ? Icons.check_rounded
-                    : null,
-                showDot: workState != AttendanceWorkdayState.completed,
+            if (isCompact) ...[
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                children: [
+                  if (workState != null)
+                    AppStatusBadge(
+                      label: AttendancePresentation.state(context, workState),
+                      status: AttendancePresentation.status(workState),
+                      icon: workState == AttendanceWorkdayState.completed
+                          ? Icons.check_rounded
+                          : null,
+                      showDot: workState != AttendanceWorkdayState.completed,
+                    ),
+                  _action(
+                    context,
+                    completed: workState == AttendanceWorkdayState.completed,
+                  ),
+                ],
               ),
-              const SizedBox(width: AppSpacing.md),
-            ],
-            Expanded(
-              child: Text(
+              const SizedBox(height: AppSpacing.xs),
+              Text(
                 contextLine,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            _action(
-              context,
-              completed: workState == AttendanceWorkdayState.completed,
-            ),
+            ] else ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (workState != null) ...[
+                    AppStatusBadge(
+                      label: AttendancePresentation.state(context, workState),
+                      status: AttendancePresentation.status(workState),
+                      icon: workState == AttendanceWorkdayState.completed
+                          ? Icons.check_rounded
+                          : null,
+                      showDot: workState != AttendanceWorkdayState.completed,
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                  ],
+                  Expanded(
+                    child: Text(
+                      contextLine,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  _action(
+                    context,
+                    completed: workState == AttendanceWorkdayState.completed,
+                  ),
+                ],
+              ),
+            ],
+            if (summary != null && workState != null) ...[
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                child: Divider(height: 1),
+              ),
+              _TodayMetrics(attendance: attendance, summary: summary),
+            ],
           ],
-        ),
-        if (summary != null && workState != null) ...[
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
-            child: Divider(height: 1),
-          ),
-          _TodayMetrics(attendance: attendance, summary: summary),
-        ],
-      ],
+        );
+      },
     );
   }
 }

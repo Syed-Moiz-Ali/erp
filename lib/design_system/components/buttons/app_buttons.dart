@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_borders.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_motion.dart';
 import '../../theme/app_radius.dart';
@@ -45,7 +46,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
       widget.size,
     );
     final isEnabled = widget.onPressed != null && !widget.loading;
-    final borderRadius = BorderRadius.circular(AppRadius.field);
+    final borderRadius = BorderRadius.circular(AppRadius.button);
     final background = !isEnabled
         ? AppColors.brandPrimary.withValues(alpha: .5)
         : _pressed
@@ -77,9 +78,9 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
                 boxShadow: [
                   if (isEnabled)
                     BoxShadow(
-                      color: const Color(0x1414111E),
-                      blurRadius: _hovered ? 12 : 8,
-                      offset: Offset(0, _hovered ? 4 : 2),
+                      color: const Color(0x0C14111E),
+                      blurRadius: _hovered ? 8 : 4,
+                      offset: Offset(0, _hovered ? 2 : 1),
                     ),
                   if (_focused)
                     BoxShadow(
@@ -163,9 +164,9 @@ class AppSecondaryButton extends StatelessWidget {
         disabledForegroundColor: AppColors.textDisabled,
         minimumSize: Size(fullWidth ? double.infinity : 0, height),
         padding: padding,
-        side: const BorderSide(color: AppColors.borderDefault),
+        side: AppBorders.thin,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.control),
+          borderRadius: BorderRadius.circular(AppRadius.button),
         ),
       ),
       child: _ButtonContent(
@@ -221,9 +222,9 @@ class AppDestructiveButton extends StatelessWidget {
               disabledForegroundColor: AppColors.textDisabled,
               minimumSize: Size(fullWidth ? double.infinity : 0, height),
               padding: padding,
-              side: const BorderSide(color: AppColors.danger),
+              side: AppBorders.error,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.control),
+                borderRadius: BorderRadius.circular(AppRadius.button),
               ),
             ),
             child: _ButtonContent(
@@ -246,7 +247,7 @@ class AppDestructiveButton extends StatelessWidget {
               minimumSize: Size(fullWidth ? double.infinity : 0, height),
               padding: padding,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.control),
+                borderRadius: BorderRadius.circular(AppRadius.button),
               ),
             ),
             child: _ButtonContent(
@@ -299,7 +300,7 @@ class AppTextButton extends StatelessWidget {
         minimumSize: Size(0, height),
         padding: padding,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.control),
+          borderRadius: BorderRadius.circular(AppRadius.button),
         ),
       ),
       child: _ButtonContent(
@@ -343,7 +344,7 @@ class AppIconButton extends StatelessWidget {
       style: IconButton.styleFrom(
         minimumSize: Size(targetSize, targetSize),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.control),
+          borderRadius: BorderRadius.circular(AppRadius.button),
         ),
       ),
       icon: Icon(icon, size: iconSize),
@@ -358,7 +359,7 @@ class AppIconButton extends StatelessWidget {
   final typo = AppTypography.of(context);
   return switch (size) {
     AppButtonSize.small => (
-      36.0,
+      32.0,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
@@ -367,10 +368,10 @@ class AppIconButton extends StatelessWidget {
       typo.caption.copyWith(fontWeight: FontWeight.w600),
     ),
     AppButtonSize.medium => (
-      46.0,
+      40.0,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.lg,
-        vertical: AppSpacing.sm,
+        vertical: AppSpacing.xs,
       ),
       18.0,
       typo.label,
@@ -379,7 +380,7 @@ class AppIconButton extends StatelessWidget {
       48.0,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.xl,
-        vertical: AppSpacing.md,
+        vertical: AppSpacing.sm,
       ),
       20.0,
       typo.labelLarge,

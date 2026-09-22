@@ -29,6 +29,7 @@ class SyncOutbox extends Table {
     SyncOutbox,
     AttendanceDays,
     AttendanceEvents,
+    AttendanceCorrectionRequests,
     WorkforceDepartments,
     WorkforceDesignations,
     WorkforceAccounts,
@@ -52,12 +53,12 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 3 || to != 4) {
+      if (from < 1 || from > 4 || to != 5) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -81,6 +82,9 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(syncOutbox, syncOutbox.lastAttemptAt);
         await m.addColumn(syncOutbox, syncOutbox.failureCode);
       }
+      if (from < 5) {
+        await m.createTable(attendanceCorrectionRequests);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
@@ -98,6 +102,15 @@ class AppDatabase extends _$AppDatabase {
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS attendance_sync ON attendance_events(company_id,sync_status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS correction_company_status ON attendance_correction_requests(company_id,status,requested_milliseconds)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS correction_employee_status ON attendance_correction_requests(company_id,employee_id,status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS correction_day ON attendance_correction_requests(company_id,attendance_day_id)',
       );
       for (final table in [
         'shift_records',

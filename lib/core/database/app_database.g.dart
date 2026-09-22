@@ -2959,6 +2959,1036 @@ class AttendanceEventsCompanion extends UpdateCompanion<AttendanceEventData> {
   }
 }
 
+class $AttendanceCorrectionRequestsTable extends AttendanceCorrectionRequests
+    with
+        TableInfo<
+          $AttendanceCorrectionRequestsTable,
+          AttendanceCorrectionRequestData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendanceCorrectionRequestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attendanceDayIdMeta = const VerificationMeta(
+    'attendanceDayId',
+  );
+  @override
+  late final GeneratedColumn<String> attendanceDayId = GeneratedColumn<String>(
+    'attendance_day_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestTypeMeta = const VerificationMeta(
+    'requestType',
+  );
+  @override
+  late final GeneratedColumn<String> requestType = GeneratedColumn<String>(
+    'request_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originalSnapshotMeta = const VerificationMeta(
+    'originalSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> originalSnapshot = GeneratedColumn<String>(
+    'original_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestedChangesMeta = const VerificationMeta(
+    'requestedChanges',
+  );
+  @override
+  late final GeneratedColumn<String> requestedChanges = GeneratedColumn<String>(
+    'requested_changes',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestedByUserIdMeta = const VerificationMeta(
+    'requestedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> requestedByUserId =
+      GeneratedColumn<String>(
+        'requested_by_user_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _requestedMillisecondsMeta =
+      const VerificationMeta('requestedMilliseconds');
+  @override
+  late final GeneratedColumn<int> requestedMilliseconds = GeneratedColumn<int>(
+    'requested_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reviewedByUserIdMeta = const VerificationMeta(
+    'reviewedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> reviewedByUserId = GeneratedColumn<String>(
+    'reviewed_by_user_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewedMillisecondsMeta =
+      const VerificationMeta('reviewedMilliseconds');
+  @override
+  late final GeneratedColumn<int> reviewedMilliseconds = GeneratedColumn<int>(
+    'reviewed_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewNoteMeta = const VerificationMeta(
+    'reviewNote',
+  );
+  @override
+  late final GeneratedColumn<String> reviewNote = GeneratedColumn<String>(
+    'review_note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    employeeId,
+    attendanceDayId,
+    requestType,
+    status,
+    reason,
+    originalSnapshot,
+    requestedChanges,
+    requestedByUserId,
+    requestedMilliseconds,
+    reviewedByUserId,
+    reviewedMilliseconds,
+    reviewNote,
+    syncStatus,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance_correction_requests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendanceCorrectionRequestData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('attendance_day_id')) {
+      context.handle(
+        _attendanceDayIdMeta,
+        attendanceDayId.isAcceptableOrUnknown(
+          data['attendance_day_id']!,
+          _attendanceDayIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_attendanceDayIdMeta);
+    }
+    if (data.containsKey('request_type')) {
+      context.handle(
+        _requestTypeMeta,
+        requestType.isAcceptableOrUnknown(
+          data['request_type']!,
+          _requestTypeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestTypeMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(
+        _reasonMeta,
+        reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reasonMeta);
+    }
+    if (data.containsKey('original_snapshot')) {
+      context.handle(
+        _originalSnapshotMeta,
+        originalSnapshot.isAcceptableOrUnknown(
+          data['original_snapshot']!,
+          _originalSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalSnapshotMeta);
+    }
+    if (data.containsKey('requested_changes')) {
+      context.handle(
+        _requestedChangesMeta,
+        requestedChanges.isAcceptableOrUnknown(
+          data['requested_changes']!,
+          _requestedChangesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestedChangesMeta);
+    }
+    if (data.containsKey('requested_by_user_id')) {
+      context.handle(
+        _requestedByUserIdMeta,
+        requestedByUserId.isAcceptableOrUnknown(
+          data['requested_by_user_id']!,
+          _requestedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestedByUserIdMeta);
+    }
+    if (data.containsKey('requested_milliseconds')) {
+      context.handle(
+        _requestedMillisecondsMeta,
+        requestedMilliseconds.isAcceptableOrUnknown(
+          data['requested_milliseconds']!,
+          _requestedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestedMillisecondsMeta);
+    }
+    if (data.containsKey('reviewed_by_user_id')) {
+      context.handle(
+        _reviewedByUserIdMeta,
+        reviewedByUserId.isAcceptableOrUnknown(
+          data['reviewed_by_user_id']!,
+          _reviewedByUserIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reviewed_milliseconds')) {
+      context.handle(
+        _reviewedMillisecondsMeta,
+        reviewedMilliseconds.isAcceptableOrUnknown(
+          data['reviewed_milliseconds']!,
+          _reviewedMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('review_note')) {
+      context.handle(
+        _reviewNoteMeta,
+        reviewNote.isAcceptableOrUnknown(data['review_note']!, _reviewNoteMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, id},
+  ];
+  @override
+  AttendanceCorrectionRequestData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendanceCorrectionRequestData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      attendanceDayId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attendance_day_id'],
+      )!,
+      requestType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_type'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      )!,
+      originalSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_snapshot'],
+      )!,
+      requestedChanges: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}requested_changes'],
+      )!,
+      requestedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}requested_by_user_id'],
+      )!,
+      requestedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}requested_milliseconds'],
+      )!,
+      reviewedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reviewed_by_user_id'],
+      ),
+      reviewedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reviewed_milliseconds'],
+      ),
+      reviewNote: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}review_note'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendanceCorrectionRequestsTable createAlias(String alias) {
+    return $AttendanceCorrectionRequestsTable(attachedDatabase, alias);
+  }
+}
+
+class AttendanceCorrectionRequestData extends DataClass
+    implements Insertable<AttendanceCorrectionRequestData> {
+  final String id;
+  final String companyId;
+  final String employeeId;
+  final String attendanceDayId;
+  final String requestType;
+  final String status;
+  final String reason;
+  final String originalSnapshot;
+  final String requestedChanges;
+  final String requestedByUserId;
+  final int requestedMilliseconds;
+  final String? reviewedByUserId;
+  final int? reviewedMilliseconds;
+  final String? reviewNote;
+  final String syncStatus;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const AttendanceCorrectionRequestData({
+    required this.id,
+    required this.companyId,
+    required this.employeeId,
+    required this.attendanceDayId,
+    required this.requestType,
+    required this.status,
+    required this.reason,
+    required this.originalSnapshot,
+    required this.requestedChanges,
+    required this.requestedByUserId,
+    required this.requestedMilliseconds,
+    this.reviewedByUserId,
+    this.reviewedMilliseconds,
+    this.reviewNote,
+    required this.syncStatus,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['attendance_day_id'] = Variable<String>(attendanceDayId);
+    map['request_type'] = Variable<String>(requestType);
+    map['status'] = Variable<String>(status);
+    map['reason'] = Variable<String>(reason);
+    map['original_snapshot'] = Variable<String>(originalSnapshot);
+    map['requested_changes'] = Variable<String>(requestedChanges);
+    map['requested_by_user_id'] = Variable<String>(requestedByUserId);
+    map['requested_milliseconds'] = Variable<int>(requestedMilliseconds);
+    if (!nullToAbsent || reviewedByUserId != null) {
+      map['reviewed_by_user_id'] = Variable<String>(reviewedByUserId);
+    }
+    if (!nullToAbsent || reviewedMilliseconds != null) {
+      map['reviewed_milliseconds'] = Variable<int>(reviewedMilliseconds);
+    }
+    if (!nullToAbsent || reviewNote != null) {
+      map['review_note'] = Variable<String>(reviewNote);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  AttendanceCorrectionRequestsCompanion toCompanion(bool nullToAbsent) {
+    return AttendanceCorrectionRequestsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      attendanceDayId: Value(attendanceDayId),
+      requestType: Value(requestType),
+      status: Value(status),
+      reason: Value(reason),
+      originalSnapshot: Value(originalSnapshot),
+      requestedChanges: Value(requestedChanges),
+      requestedByUserId: Value(requestedByUserId),
+      requestedMilliseconds: Value(requestedMilliseconds),
+      reviewedByUserId: reviewedByUserId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewedByUserId),
+      reviewedMilliseconds: reviewedMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewedMilliseconds),
+      reviewNote: reviewNote == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewNote),
+      syncStatus: Value(syncStatus),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory AttendanceCorrectionRequestData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendanceCorrectionRequestData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      attendanceDayId: serializer.fromJson<String>(json['attendanceDayId']),
+      requestType: serializer.fromJson<String>(json['requestType']),
+      status: serializer.fromJson<String>(json['status']),
+      reason: serializer.fromJson<String>(json['reason']),
+      originalSnapshot: serializer.fromJson<String>(json['originalSnapshot']),
+      requestedChanges: serializer.fromJson<String>(json['requestedChanges']),
+      requestedByUserId: serializer.fromJson<String>(json['requestedByUserId']),
+      requestedMilliseconds: serializer.fromJson<int>(
+        json['requestedMilliseconds'],
+      ),
+      reviewedByUserId: serializer.fromJson<String?>(json['reviewedByUserId']),
+      reviewedMilliseconds: serializer.fromJson<int?>(
+        json['reviewedMilliseconds'],
+      ),
+      reviewNote: serializer.fromJson<String?>(json['reviewNote']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'attendanceDayId': serializer.toJson<String>(attendanceDayId),
+      'requestType': serializer.toJson<String>(requestType),
+      'status': serializer.toJson<String>(status),
+      'reason': serializer.toJson<String>(reason),
+      'originalSnapshot': serializer.toJson<String>(originalSnapshot),
+      'requestedChanges': serializer.toJson<String>(requestedChanges),
+      'requestedByUserId': serializer.toJson<String>(requestedByUserId),
+      'requestedMilliseconds': serializer.toJson<int>(requestedMilliseconds),
+      'reviewedByUserId': serializer.toJson<String?>(reviewedByUserId),
+      'reviewedMilliseconds': serializer.toJson<int?>(reviewedMilliseconds),
+      'reviewNote': serializer.toJson<String?>(reviewNote),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  AttendanceCorrectionRequestData copyWith({
+    String? id,
+    String? companyId,
+    String? employeeId,
+    String? attendanceDayId,
+    String? requestType,
+    String? status,
+    String? reason,
+    String? originalSnapshot,
+    String? requestedChanges,
+    String? requestedByUserId,
+    int? requestedMilliseconds,
+    Value<String?> reviewedByUserId = const Value.absent(),
+    Value<int?> reviewedMilliseconds = const Value.absent(),
+    Value<String?> reviewNote = const Value.absent(),
+    String? syncStatus,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => AttendanceCorrectionRequestData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    attendanceDayId: attendanceDayId ?? this.attendanceDayId,
+    requestType: requestType ?? this.requestType,
+    status: status ?? this.status,
+    reason: reason ?? this.reason,
+    originalSnapshot: originalSnapshot ?? this.originalSnapshot,
+    requestedChanges: requestedChanges ?? this.requestedChanges,
+    requestedByUserId: requestedByUserId ?? this.requestedByUserId,
+    requestedMilliseconds: requestedMilliseconds ?? this.requestedMilliseconds,
+    reviewedByUserId: reviewedByUserId.present
+        ? reviewedByUserId.value
+        : this.reviewedByUserId,
+    reviewedMilliseconds: reviewedMilliseconds.present
+        ? reviewedMilliseconds.value
+        : this.reviewedMilliseconds,
+    reviewNote: reviewNote.present ? reviewNote.value : this.reviewNote,
+    syncStatus: syncStatus ?? this.syncStatus,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  AttendanceCorrectionRequestData copyWithCompanion(
+    AttendanceCorrectionRequestsCompanion data,
+  ) {
+    return AttendanceCorrectionRequestData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      attendanceDayId: data.attendanceDayId.present
+          ? data.attendanceDayId.value
+          : this.attendanceDayId,
+      requestType: data.requestType.present
+          ? data.requestType.value
+          : this.requestType,
+      status: data.status.present ? data.status.value : this.status,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      originalSnapshot: data.originalSnapshot.present
+          ? data.originalSnapshot.value
+          : this.originalSnapshot,
+      requestedChanges: data.requestedChanges.present
+          ? data.requestedChanges.value
+          : this.requestedChanges,
+      requestedByUserId: data.requestedByUserId.present
+          ? data.requestedByUserId.value
+          : this.requestedByUserId,
+      requestedMilliseconds: data.requestedMilliseconds.present
+          ? data.requestedMilliseconds.value
+          : this.requestedMilliseconds,
+      reviewedByUserId: data.reviewedByUserId.present
+          ? data.reviewedByUserId.value
+          : this.reviewedByUserId,
+      reviewedMilliseconds: data.reviewedMilliseconds.present
+          ? data.reviewedMilliseconds.value
+          : this.reviewedMilliseconds,
+      reviewNote: data.reviewNote.present
+          ? data.reviewNote.value
+          : this.reviewNote,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceCorrectionRequestData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('attendanceDayId: $attendanceDayId, ')
+          ..write('requestType: $requestType, ')
+          ..write('status: $status, ')
+          ..write('reason: $reason, ')
+          ..write('originalSnapshot: $originalSnapshot, ')
+          ..write('requestedChanges: $requestedChanges, ')
+          ..write('requestedByUserId: $requestedByUserId, ')
+          ..write('requestedMilliseconds: $requestedMilliseconds, ')
+          ..write('reviewedByUserId: $reviewedByUserId, ')
+          ..write('reviewedMilliseconds: $reviewedMilliseconds, ')
+          ..write('reviewNote: $reviewNote, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    employeeId,
+    attendanceDayId,
+    requestType,
+    status,
+    reason,
+    originalSnapshot,
+    requestedChanges,
+    requestedByUserId,
+    requestedMilliseconds,
+    reviewedByUserId,
+    reviewedMilliseconds,
+    reviewNote,
+    syncStatus,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendanceCorrectionRequestData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.attendanceDayId == this.attendanceDayId &&
+          other.requestType == this.requestType &&
+          other.status == this.status &&
+          other.reason == this.reason &&
+          other.originalSnapshot == this.originalSnapshot &&
+          other.requestedChanges == this.requestedChanges &&
+          other.requestedByUserId == this.requestedByUserId &&
+          other.requestedMilliseconds == this.requestedMilliseconds &&
+          other.reviewedByUserId == this.reviewedByUserId &&
+          other.reviewedMilliseconds == this.reviewedMilliseconds &&
+          other.reviewNote == this.reviewNote &&
+          other.syncStatus == this.syncStatus &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class AttendanceCorrectionRequestsCompanion
+    extends UpdateCompanion<AttendanceCorrectionRequestData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> attendanceDayId;
+  final Value<String> requestType;
+  final Value<String> status;
+  final Value<String> reason;
+  final Value<String> originalSnapshot;
+  final Value<String> requestedChanges;
+  final Value<String> requestedByUserId;
+  final Value<int> requestedMilliseconds;
+  final Value<String?> reviewedByUserId;
+  final Value<int?> reviewedMilliseconds;
+  final Value<String?> reviewNote;
+  final Value<String> syncStatus;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const AttendanceCorrectionRequestsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.attendanceDayId = const Value.absent(),
+    this.requestType = const Value.absent(),
+    this.status = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.originalSnapshot = const Value.absent(),
+    this.requestedChanges = const Value.absent(),
+    this.requestedByUserId = const Value.absent(),
+    this.requestedMilliseconds = const Value.absent(),
+    this.reviewedByUserId = const Value.absent(),
+    this.reviewedMilliseconds = const Value.absent(),
+    this.reviewNote = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttendanceCorrectionRequestsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String employeeId,
+    required String attendanceDayId,
+    required String requestType,
+    required String status,
+    required String reason,
+    required String originalSnapshot,
+    required String requestedChanges,
+    required String requestedByUserId,
+    required int requestedMilliseconds,
+    this.reviewedByUserId = const Value.absent(),
+    this.reviewedMilliseconds = const Value.absent(),
+    this.reviewNote = const Value.absent(),
+    required String syncStatus,
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       attendanceDayId = Value(attendanceDayId),
+       requestType = Value(requestType),
+       status = Value(status),
+       reason = Value(reason),
+       originalSnapshot = Value(originalSnapshot),
+       requestedChanges = Value(requestedChanges),
+       requestedByUserId = Value(requestedByUserId),
+       requestedMilliseconds = Value(requestedMilliseconds),
+       syncStatus = Value(syncStatus),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<AttendanceCorrectionRequestData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? attendanceDayId,
+    Expression<String>? requestType,
+    Expression<String>? status,
+    Expression<String>? reason,
+    Expression<String>? originalSnapshot,
+    Expression<String>? requestedChanges,
+    Expression<String>? requestedByUserId,
+    Expression<int>? requestedMilliseconds,
+    Expression<String>? reviewedByUserId,
+    Expression<int>? reviewedMilliseconds,
+    Expression<String>? reviewNote,
+    Expression<String>? syncStatus,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (attendanceDayId != null) 'attendance_day_id': attendanceDayId,
+      if (requestType != null) 'request_type': requestType,
+      if (status != null) 'status': status,
+      if (reason != null) 'reason': reason,
+      if (originalSnapshot != null) 'original_snapshot': originalSnapshot,
+      if (requestedChanges != null) 'requested_changes': requestedChanges,
+      if (requestedByUserId != null) 'requested_by_user_id': requestedByUserId,
+      if (requestedMilliseconds != null)
+        'requested_milliseconds': requestedMilliseconds,
+      if (reviewedByUserId != null) 'reviewed_by_user_id': reviewedByUserId,
+      if (reviewedMilliseconds != null)
+        'reviewed_milliseconds': reviewedMilliseconds,
+      if (reviewNote != null) 'review_note': reviewNote,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttendanceCorrectionRequestsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? attendanceDayId,
+    Value<String>? requestType,
+    Value<String>? status,
+    Value<String>? reason,
+    Value<String>? originalSnapshot,
+    Value<String>? requestedChanges,
+    Value<String>? requestedByUserId,
+    Value<int>? requestedMilliseconds,
+    Value<String?>? reviewedByUserId,
+    Value<int?>? reviewedMilliseconds,
+    Value<String?>? reviewNote,
+    Value<String>? syncStatus,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return AttendanceCorrectionRequestsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      attendanceDayId: attendanceDayId ?? this.attendanceDayId,
+      requestType: requestType ?? this.requestType,
+      status: status ?? this.status,
+      reason: reason ?? this.reason,
+      originalSnapshot: originalSnapshot ?? this.originalSnapshot,
+      requestedChanges: requestedChanges ?? this.requestedChanges,
+      requestedByUserId: requestedByUserId ?? this.requestedByUserId,
+      requestedMilliseconds:
+          requestedMilliseconds ?? this.requestedMilliseconds,
+      reviewedByUserId: reviewedByUserId ?? this.reviewedByUserId,
+      reviewedMilliseconds: reviewedMilliseconds ?? this.reviewedMilliseconds,
+      reviewNote: reviewNote ?? this.reviewNote,
+      syncStatus: syncStatus ?? this.syncStatus,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (attendanceDayId.present) {
+      map['attendance_day_id'] = Variable<String>(attendanceDayId.value);
+    }
+    if (requestType.present) {
+      map['request_type'] = Variable<String>(requestType.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (originalSnapshot.present) {
+      map['original_snapshot'] = Variable<String>(originalSnapshot.value);
+    }
+    if (requestedChanges.present) {
+      map['requested_changes'] = Variable<String>(requestedChanges.value);
+    }
+    if (requestedByUserId.present) {
+      map['requested_by_user_id'] = Variable<String>(requestedByUserId.value);
+    }
+    if (requestedMilliseconds.present) {
+      map['requested_milliseconds'] = Variable<int>(
+        requestedMilliseconds.value,
+      );
+    }
+    if (reviewedByUserId.present) {
+      map['reviewed_by_user_id'] = Variable<String>(reviewedByUserId.value);
+    }
+    if (reviewedMilliseconds.present) {
+      map['reviewed_milliseconds'] = Variable<int>(reviewedMilliseconds.value);
+    }
+    if (reviewNote.present) {
+      map['review_note'] = Variable<String>(reviewNote.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceCorrectionRequestsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('attendanceDayId: $attendanceDayId, ')
+          ..write('requestType: $requestType, ')
+          ..write('status: $status, ')
+          ..write('reason: $reason, ')
+          ..write('originalSnapshot: $originalSnapshot, ')
+          ..write('requestedChanges: $requestedChanges, ')
+          ..write('requestedByUserId: $requestedByUserId, ')
+          ..write('requestedMilliseconds: $requestedMilliseconds, ')
+          ..write('reviewedByUserId: $reviewedByUserId, ')
+          ..write('reviewedMilliseconds: $reviewedMilliseconds, ')
+          ..write('reviewNote: $reviewNote, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $WorkforceDepartmentsTable extends WorkforceDepartments
     with TableInfo<$WorkforceDepartmentsTable, WorkforceDepartment> {
   @override
@@ -9361,6 +10391,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $AttendanceEventsTable attendanceEvents = $AttendanceEventsTable(
     this,
   );
+  late final $AttendanceCorrectionRequestsTable attendanceCorrectionRequests =
+      $AttendanceCorrectionRequestsTable(this);
   late final $WorkforceDepartmentsTable workforceDepartments =
       $WorkforceDepartmentsTable(this);
   late final $WorkforceDesignationsTable workforceDesignations =
@@ -9383,6 +10415,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncOutbox,
     attendanceDays,
     attendanceEvents,
+    attendanceCorrectionRequests,
     workforceDepartments,
     workforceDesignations,
     workforceAccounts,
@@ -10960,6 +11993,479 @@ typedef $$AttendanceEventsTableProcessedTableManager =
       (AttendanceEventData, $$AttendanceEventsTableReferences),
       AttendanceEventData,
       PrefetchHooks Function({bool attendanceDayId})
+    >;
+typedef $$AttendanceCorrectionRequestsTableCreateCompanionBuilder =
+    AttendanceCorrectionRequestsCompanion Function({
+      required String id,
+      required String companyId,
+      required String employeeId,
+      required String attendanceDayId,
+      required String requestType,
+      required String status,
+      required String reason,
+      required String originalSnapshot,
+      required String requestedChanges,
+      required String requestedByUserId,
+      required int requestedMilliseconds,
+      Value<String?> reviewedByUserId,
+      Value<int?> reviewedMilliseconds,
+      Value<String?> reviewNote,
+      required String syncStatus,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$AttendanceCorrectionRequestsTableUpdateCompanionBuilder =
+    AttendanceCorrectionRequestsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> attendanceDayId,
+      Value<String> requestType,
+      Value<String> status,
+      Value<String> reason,
+      Value<String> originalSnapshot,
+      Value<String> requestedChanges,
+      Value<String> requestedByUserId,
+      Value<int> requestedMilliseconds,
+      Value<String?> reviewedByUserId,
+      Value<int?> reviewedMilliseconds,
+      Value<String?> reviewNote,
+      Value<String> syncStatus,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$AttendanceCorrectionRequestsTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendanceCorrectionRequestsTable> {
+  $$AttendanceCorrectionRequestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attendanceDayId => $composableBuilder(
+    column: $table.attendanceDayId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestType => $composableBuilder(
+    column: $table.requestType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get originalSnapshot => $composableBuilder(
+    column: $table.originalSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestedChanges => $composableBuilder(
+    column: $table.requestedChanges,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestedByUserId => $composableBuilder(
+    column: $table.requestedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get requestedMilliseconds => $composableBuilder(
+    column: $table.requestedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reviewedByUserId => $composableBuilder(
+    column: $table.reviewedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AttendanceCorrectionRequestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendanceCorrectionRequestsTable> {
+  $$AttendanceCorrectionRequestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attendanceDayId => $composableBuilder(
+    column: $table.attendanceDayId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestType => $composableBuilder(
+    column: $table.requestType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get originalSnapshot => $composableBuilder(
+    column: $table.originalSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestedChanges => $composableBuilder(
+    column: $table.requestedChanges,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestedByUserId => $composableBuilder(
+    column: $table.requestedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get requestedMilliseconds => $composableBuilder(
+    column: $table.requestedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reviewedByUserId => $composableBuilder(
+    column: $table.reviewedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AttendanceCorrectionRequestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendanceCorrectionRequestsTable> {
+  $$AttendanceCorrectionRequestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get attendanceDayId => $composableBuilder(
+    column: $table.attendanceDayId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestType => $composableBuilder(
+    column: $table.requestType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<String> get originalSnapshot => $composableBuilder(
+    column: $table.originalSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestedChanges => $composableBuilder(
+    column: $table.requestedChanges,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestedByUserId => $composableBuilder(
+    column: $table.requestedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get requestedMilliseconds => $composableBuilder(
+    column: $table.requestedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reviewedByUserId => $composableBuilder(
+    column: $table.reviewedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$AttendanceCorrectionRequestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendanceCorrectionRequestsTable,
+          AttendanceCorrectionRequestData,
+          $$AttendanceCorrectionRequestsTableFilterComposer,
+          $$AttendanceCorrectionRequestsTableOrderingComposer,
+          $$AttendanceCorrectionRequestsTableAnnotationComposer,
+          $$AttendanceCorrectionRequestsTableCreateCompanionBuilder,
+          $$AttendanceCorrectionRequestsTableUpdateCompanionBuilder,
+          (
+            AttendanceCorrectionRequestData,
+            BaseReferences<
+              _$AppDatabase,
+              $AttendanceCorrectionRequestsTable,
+              AttendanceCorrectionRequestData
+            >,
+          ),
+          AttendanceCorrectionRequestData,
+          PrefetchHooks Function()
+        > {
+  $$AttendanceCorrectionRequestsTableTableManager(
+    _$AppDatabase db,
+    $AttendanceCorrectionRequestsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendanceCorrectionRequestsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$AttendanceCorrectionRequestsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$AttendanceCorrectionRequestsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> attendanceDayId = const Value.absent(),
+                Value<String> requestType = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> reason = const Value.absent(),
+                Value<String> originalSnapshot = const Value.absent(),
+                Value<String> requestedChanges = const Value.absent(),
+                Value<String> requestedByUserId = const Value.absent(),
+                Value<int> requestedMilliseconds = const Value.absent(),
+                Value<String?> reviewedByUserId = const Value.absent(),
+                Value<int?> reviewedMilliseconds = const Value.absent(),
+                Value<String?> reviewNote = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceCorrectionRequestsCompanion(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                attendanceDayId: attendanceDayId,
+                requestType: requestType,
+                status: status,
+                reason: reason,
+                originalSnapshot: originalSnapshot,
+                requestedChanges: requestedChanges,
+                requestedByUserId: requestedByUserId,
+                requestedMilliseconds: requestedMilliseconds,
+                reviewedByUserId: reviewedByUserId,
+                reviewedMilliseconds: reviewedMilliseconds,
+                reviewNote: reviewNote,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String employeeId,
+                required String attendanceDayId,
+                required String requestType,
+                required String status,
+                required String reason,
+                required String originalSnapshot,
+                required String requestedChanges,
+                required String requestedByUserId,
+                required int requestedMilliseconds,
+                Value<String?> reviewedByUserId = const Value.absent(),
+                Value<int?> reviewedMilliseconds = const Value.absent(),
+                Value<String?> reviewNote = const Value.absent(),
+                required String syncStatus,
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceCorrectionRequestsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                attendanceDayId: attendanceDayId,
+                requestType: requestType,
+                status: status,
+                reason: reason,
+                originalSnapshot: originalSnapshot,
+                requestedChanges: requestedChanges,
+                requestedByUserId: requestedByUserId,
+                requestedMilliseconds: requestedMilliseconds,
+                reviewedByUserId: reviewedByUserId,
+                reviewedMilliseconds: reviewedMilliseconds,
+                reviewNote: reviewNote,
+                syncStatus: syncStatus,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AttendanceCorrectionRequestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendanceCorrectionRequestsTable,
+      AttendanceCorrectionRequestData,
+      $$AttendanceCorrectionRequestsTableFilterComposer,
+      $$AttendanceCorrectionRequestsTableOrderingComposer,
+      $$AttendanceCorrectionRequestsTableAnnotationComposer,
+      $$AttendanceCorrectionRequestsTableCreateCompanionBuilder,
+      $$AttendanceCorrectionRequestsTableUpdateCompanionBuilder,
+      (
+        AttendanceCorrectionRequestData,
+        BaseReferences<
+          _$AppDatabase,
+          $AttendanceCorrectionRequestsTable,
+          AttendanceCorrectionRequestData
+        >,
+      ),
+      AttendanceCorrectionRequestData,
+      PrefetchHooks Function()
     >;
 typedef $$WorkforceDepartmentsTableCreateCompanionBuilder =
     WorkforceDepartmentsCompanion Function({
@@ -14754,6 +16260,12 @@ class $AppDatabaseManager {
       $$AttendanceDaysTableTableManager(_db, _db.attendanceDays);
   $$AttendanceEventsTableTableManager get attendanceEvents =>
       $$AttendanceEventsTableTableManager(_db, _db.attendanceEvents);
+  $$AttendanceCorrectionRequestsTableTableManager
+  get attendanceCorrectionRequests =>
+      $$AttendanceCorrectionRequestsTableTableManager(
+        _db,
+        _db.attendanceCorrectionRequests,
+      );
   $$WorkforceDepartmentsTableTableManager get workforceDepartments =>
       $$WorkforceDepartmentsTableTableManager(_db, _db.workforceDepartments);
   $$WorkforceDesignationsTableTableManager get workforceDesignations =>

@@ -5065,6 +5065,738 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Status filters ({count})'**
   String historyFilterCount(String count);
+
+  /// No description provided for @correctionRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request correction'**
+  String get correctionRequest;
+
+  /// No description provided for @correctionMyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get correctionMyRequests;
+
+  /// No description provided for @correctionReviewQueue.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction requests'**
+  String get correctionReviewQueue;
+
+  /// No description provided for @correctionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction type'**
+  String get correctionType;
+
+  /// No description provided for @correctionRequestedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested date and time'**
+  String get correctionRequestedTime;
+
+  /// No description provided for @correctionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get correctionReason;
+
+  /// No description provided for @correctionReviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Review note'**
+  String get correctionReviewNote;
+
+  /// No description provided for @correctionSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit request'**
+  String get correctionSubmit;
+
+  /// No description provided for @correctionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel request'**
+  String get correctionCancel;
+
+  /// No description provided for @correctionApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get correctionApprove;
+
+  /// No description provided for @correctionReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get correctionReject;
+
+  /// No description provided for @correctionPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get correctionPending;
+
+  /// No description provided for @correctionApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get correctionApproved;
+
+  /// No description provided for @correctionRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get correctionRejected;
+
+  /// No description provided for @correctionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get correctionCancelled;
+
+  /// No description provided for @correctionOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get correctionOriginal;
+
+  /// No description provided for @correctionRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get correctionRequested;
+
+  /// No description provided for @correctionNoRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No correction requests'**
+  String get correctionNoRequests;
+
+  /// No description provided for @correctionMissingPunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing punch in'**
+  String get correctionMissingPunchIn;
+
+  /// No description provided for @correctionMissingPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing punch out'**
+  String get correctionMissingPunchOut;
+
+  /// No description provided for @correctionChangePunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Change punch in time'**
+  String get correctionChangePunchIn;
+
+  /// No description provided for @correctionChangePunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Change punch out time'**
+  String get correctionChangePunchOut;
+
+  /// No description provided for @correctionMissingBreakStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing break start'**
+  String get correctionMissingBreakStart;
+
+  /// No description provided for @correctionMissingBreakEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing break end'**
+  String get correctionMissingBreakEnd;
+
+  /// No description provided for @correctionChangeBreakStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Change break start time'**
+  String get correctionChangeBreakStart;
+
+  /// No description provided for @correctionChangeBreakEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Change break end time'**
+  String get correctionChangeBreakEnd;
+
+  /// No description provided for @correctionPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective result preview'**
+  String get correctionPreview;
+
+  /// No description provided for @correctionInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the requested time and event order.'**
+  String get correctionInvalid;
+
+  /// No description provided for @correctionSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction request submitted'**
+  String get correctionSaved;
+
+  /// No description provided for @correctionReviewSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Review saved'**
+  String get correctionReviewSaved;
+
+  /// No description provided for @correctionReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a reason'**
+  String get correctionReasonRequired;
+
+  /// No description provided for @workforceTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team attendance'**
+  String get workforceTeam;
+
+  /// No description provided for @workforceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All attendance'**
+  String get workforceAll;
+
+  /// No description provided for @workforceNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get workforceNotStarted;
+
+  /// No description provided for @workforceWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get workforceWorking;
+
+  /// No description provided for @workforceOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'On break'**
+  String get workforceOnBreak;
+
+  /// No description provided for @workforceCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get workforceCompleted;
+
+  /// No description provided for @workforceIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get workforceIncomplete;
+
+  /// No description provided for @workforceNoSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedule'**
+  String get workforceNoSchedule;
+
+  /// No description provided for @workforceNoRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'No record'**
+  String get workforceNoRecord;
+
+  /// No description provided for @workforceSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search employees'**
+  String get workforceSearch;
+
+  /// No description provided for @workforceNoEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees match'**
+  String get workforceNoEmployees;
+
+  /// No description provided for @workforceDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get workforceDepartment;
+
+  /// No description provided for @workforceShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get workforceShift;
+
+  /// No description provided for @workforceLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work location'**
+  String get workforceLocation;
+
+  /// No description provided for @workforceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance date'**
+  String get workforceDate;
+
+  /// No description provided for @workforceToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get workforceToday;
+
+  /// No description provided for @workforcePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get workforcePrevious;
+
+  /// No description provided for @workforceNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get workforceNext;
+
+  /// No description provided for @workforcePendingCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending correction'**
+  String get workforcePendingCorrection;
+
+  /// No description provided for @workforceSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get workforceSort;
+
+  /// No description provided for @workforceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get workforceName;
+
+  /// No description provided for @workforceNameDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Z–A)'**
+  String get workforceNameDescending;
+
+  /// No description provided for @workforceCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee code'**
+  String get workforceCode;
+
+  /// No description provided for @workforceAllFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get workforceAllFilter;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance reports'**
+  String get reportTitle;
+
+  /// No description provided for @reportOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get reportOverview;
+
+  /// No description provided for @reportWorkHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Work hours'**
+  String get reportWorkHours;
+
+  /// No description provided for @reportLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late attendance'**
+  String get reportLate;
+
+  /// No description provided for @reportBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Break analysis'**
+  String get reportBreaks;
+
+  /// No description provided for @reportIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance issues'**
+  String get reportIssues;
+
+  /// No description provided for @reportEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee summary'**
+  String get reportEmployees;
+
+  /// No description provided for @reportToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get reportToday;
+
+  /// No description provided for @reportThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get reportThisWeek;
+
+  /// No description provided for @reportThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get reportThisMonth;
+
+  /// No description provided for @reportLastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get reportLastMonth;
+
+  /// No description provided for @reportCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom range'**
+  String get reportCustom;
+
+  /// No description provided for @reportFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get reportFrom;
+
+  /// No description provided for @reportTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get reportTo;
+
+  /// No description provided for @reportScopeTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'My team'**
+  String get reportScopeTeam;
+
+  /// No description provided for @reportScopeCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get reportScopeCompany;
+
+  /// No description provided for @reportRecordedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded workdays'**
+  String get reportRecordedDays;
+
+  /// No description provided for @reportCompletedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workdays'**
+  String get reportCompletedDays;
+
+  /// No description provided for @reportLateDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Late records'**
+  String get reportLateDays;
+
+  /// No description provided for @reportIncompleteDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete records'**
+  String get reportIncompleteDays;
+
+  /// No description provided for @reportWorkTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked time'**
+  String get reportWorkTotal;
+
+  /// No description provided for @reportBreakTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Break time'**
+  String get reportBreakTotal;
+
+  /// No description provided for @reportAverageWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Average per recorded day'**
+  String get reportAverageWork;
+
+  /// No description provided for @reportPendingCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending corrections'**
+  String get reportPendingCorrections;
+
+  /// No description provided for @reportIssueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days with issues'**
+  String get reportIssueDays;
+
+  /// No description provided for @reportTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded workdays by date'**
+  String get reportTrend;
+
+  /// No description provided for @reportGroupBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Group by'**
+  String get reportGroupBy;
+
+  /// No description provided for @reportNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No recorded attendance matches this period and filters.'**
+  String get reportNoData;
+
+  /// No description provided for @reportInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s active attendance is provisional until punch out.'**
+  String get reportInProgress;
+
+  /// No description provided for @reportFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get reportFilter;
+
+  /// No description provided for @reportClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get reportClearFilters;
+
+  /// No description provided for @reportEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get reportEmployee;
+
+  /// No description provided for @reportStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get reportStatus;
+
+  /// No description provided for @reportCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Corrections'**
+  String get reportCorrections;
+
+  /// No description provided for @reportAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get reportAny;
+
+  /// No description provided for @reportYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get reportYes;
+
+  /// No description provided for @reportNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get reportNo;
+
+  /// No description provided for @reportApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get reportApply;
+
+  /// No description provided for @reportExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get reportExport;
+
+  /// No description provided for @reportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Export CSV'**
+  String get reportCsv;
+
+  /// No description provided for @reportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get reportPdf;
+
+  /// No description provided for @reportExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Report saved'**
+  String get reportExported;
+
+  /// No description provided for @reportExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export report'**
+  String get reportExportFailed;
+
+  /// No description provided for @reportLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading report'**
+  String get reportLoading;
+
+  /// No description provided for @reportRefreshFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not refresh report'**
+  String get reportRefreshFailed;
+
+  /// No description provided for @reportDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get reportDate;
+
+  /// No description provided for @reportWorked.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked'**
+  String get reportWorked;
+
+  /// No description provided for @reportBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get reportBreak;
+
+  /// No description provided for @reportLateBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Late by'**
+  String get reportLateBy;
+
+  /// No description provided for @reportRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded days'**
+  String get reportRecorded;
+
+  /// No description provided for @reportCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get reportCompleted;
+
+  /// No description provided for @reportLateCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get reportLateCount;
+
+  /// No description provided for @reportIssuesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues'**
+  String get reportIssuesCount;
+
+  /// No description provided for @reportPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get reportPending;
+
+  /// No description provided for @reportShiftStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift start'**
+  String get reportShiftStart;
+
+  /// No description provided for @reportPunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in'**
+  String get reportPunchIn;
+
+  /// No description provided for @reportDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get reportDepartment;
+
+  /// No description provided for @reportLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get reportLocation;
+
+  /// No description provided for @reportPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get reportPeriod;
+
+  /// No description provided for @reportGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get reportGenerated;
+
+  /// No description provided for @reportPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page'**
+  String get reportPage;
+
+  /// No description provided for @reportSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest first'**
+  String get reportSortNewest;
+
+  /// No description provided for @reportSortOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get reportSortOldest;
+
+  /// No description provided for @reportSortEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee name'**
+  String get reportSortEmployee;
+
+  /// No description provided for @reportSortWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Most worked time'**
+  String get reportSortWork;
+
+  /// No description provided for @reportSortBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Most break time'**
+  String get reportSortBreak;
+
+  /// No description provided for @reportFiltersApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied filters'**
+  String get reportFiltersApplied;
 }
 
 class _AppLocalizationsDelegate

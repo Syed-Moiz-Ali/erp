@@ -3,7 +3,7 @@ import '../../theme/app_colors.dart';
 import '../../theme/app_radius.dart';
 import '../../theme/app_typography.dart';
 
-enum AppStatus { success, warning, danger, info, neutral }
+enum AppStatus { success, warning, danger, info, neutral, brand }
 
 extension AppStatusColor on AppStatus {
   Color get color => switch (this) {
@@ -12,6 +12,7 @@ extension AppStatusColor on AppStatus {
     AppStatus.danger => AppColors.danger,
     AppStatus.info => AppColors.info,
     AppStatus.neutral => AppColors.neutral,
+    AppStatus.brand => AppColors.brandPrimary,
   };
 
   Color get subtleColor => switch (this) {
@@ -20,14 +21,16 @@ extension AppStatusColor on AppStatus {
     AppStatus.danger => AppColors.dangerSubtle,
     AppStatus.info => AppColors.infoSubtle,
     AppStatus.neutral => AppColors.neutralSubtle,
+    AppStatus.brand => AppColors.brandSubtle,
   };
 
   Color get borderColor => switch (this) {
-    AppStatus.success => AppColors.success.withValues(alpha: .22),
-    AppStatus.warning => AppColors.warning.withValues(alpha: .25),
-    AppStatus.danger => AppColors.danger.withValues(alpha: .22),
-    AppStatus.info => AppColors.info.withValues(alpha: .22),
+    AppStatus.success => AppColors.success.withValues(alpha: .28),
+    AppStatus.warning => AppColors.warning.withValues(alpha: .30),
+    AppStatus.danger => AppColors.danger.withValues(alpha: .28),
+    AppStatus.info => AppColors.info.withValues(alpha: .28),
     AppStatus.neutral => AppColors.borderDefault,
+    AppStatus.brand => AppColors.brandBorder.withValues(alpha: .35),
   };
 }
 
@@ -38,20 +41,24 @@ class AppStatusBadge extends StatelessWidget {
     this.status = AppStatus.neutral,
     this.showDot = false,
     this.icon,
+    this.isPill = false,
   });
 
   final String label;
   final AppStatus status;
   final bool showDot;
   final IconData? icon;
+  final bool isPill;
 
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
       color: status.subtleColor,
-      border: Border.all(color: status.borderColor),
-      borderRadius: BorderRadius.circular(AppRadius.radiusFull),
+      border: Border.all(color: status.borderColor, width: 1),
+      borderRadius: BorderRadius.circular(
+        isPill ? AppRadius.radiusFull : AppRadius.badge,
+      ),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,

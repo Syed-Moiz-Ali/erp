@@ -7,6 +7,10 @@ import '../features/attendance/domain/attendance_repository.dart';
 import '../features/attendance/domain/shift_workday_resolver.dart';
 import '../features/attendance/data/attendance_local_data_source.dart';
 import '../features/attendance/data/local_attendance_repository.dart';
+import '../features/attendance/data/local_attendance_correction_repository.dart';
+import '../features/attendance/data/workforce_attendance_read_repository.dart';
+import '../features/attendance/domain/attendance_correction_repository.dart';
+import '../features/attendance/domain/attendance_scope_resolver.dart';
 import '../features/attendance/data/device_attendance_location_capture.dart';
 import '../features/attendance/application/execute_attendance_action.dart';
 import '../features/attendance/presentation/bloc/attendance_bloc.dart';
@@ -24,6 +28,9 @@ import '../features/employees/data/employee_dao.dart';
 import '../features/employees/data/account_provisioning_repository.dart';
 import '../features/dashboard/domain/dashboard_repository.dart';
 import '../features/dashboard/data/local_dashboard_repository.dart';
+import '../features/reports/domain/attendance_report_repository.dart';
+import '../features/reports/data/local_attendance_report_repository.dart';
+import '../features/reports/data/attendance_report_export_service.dart';
 import '../app/shell/app_shell_cubit.dart';
 import '../app/module_registry/module_registry.dart';
 import '../app/module_registry/registered_modules.dart';
@@ -73,6 +80,34 @@ void configureDependencies() {
           ? AttendanceAuthority.demoLocal
           : AttendanceAuthority.productionPending,
     ),
+  );
+  services.registerLazySingleton<AttendanceCorrectionRepository>(
+    () =>
+        LocalAttendanceCorrectionRepository(services(), services(), services()),
+  );
+  services.registerLazySingleton(() => const AttendanceScopeResolver());
+  services.registerLazySingleton(
+    () => WorkforceAttendanceReadRepository(
+      services(),
+      services(),
+      services(),
+      clock: services(),
+      time: services(),
+    ),
+  );
+  services.registerLazySingleton<AttendanceReportRepository>(
+    () => LocalAttendanceReportRepository(
+      services(),
+      services(),
+      clock: services(),
+      time: services(),
+    ),
+  );
+  services.registerLazySingleton<ReportFileSaver>(
+    () => const PlatformReportFileSaver(),
+  );
+  services.registerLazySingleton(
+    () => AttendanceReportExportService(services(), services()),
   );
   services.registerLazySingleton<AttendanceLocationCapture>(
     () => DeviceAttendanceLocationCapture(services()),
@@ -124,7 +159,11 @@ void configureDependencies() {
     dispose: (cubit) => cubit.close(),
   );
   services.registerLazySingleton<DashboardRepository>(
-    () => LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled),
+    () => LocalDashboardRepository(
+      demoEnabled: AppConfig.demoAuthEnabled,
+      workforce: services(),
+      corrections: services(),
+    ),
   );
   services.registerLazySingleton(() => EmployeeDao(services()));
   services.registerLazySingleton<AccountAccessGuard>(
@@ -155,6 +194,10 @@ void configureDependencies() {
       attendancePolicyRepository: services(),
       locationService: services(),
       attendanceRepository: services(),
+      correctionRepository: services(),
+      workforceAttendanceRepository: services(),
+      attendanceReportRepository: services(),
+      attendanceReportExportService: services(),
     ),
   );
   services.registerSingleton(AppLogger());

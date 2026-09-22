@@ -18,6 +18,7 @@ import '../domain/attendance_state_machine.dart';
 import '../domain/attendance_summary_calculator.dart';
 import '../domain/shift_workday_resolver.dart';
 import 'attendance_local_data_source.dart';
+import 'local_attendance_correction_repository.dart';
 
 class LocalAttendanceRepository implements AttendanceRepository {
   LocalAttendanceRepository(
@@ -115,13 +116,28 @@ class LocalAttendanceRepository implements AttendanceRepository {
     String dayId,
   ) => _historyRead((a) async {
     final day = await local.byId(a.company.id, a.employeeReference!.id, dayId);
-    return day == null
-        ? null
-        : AttendanceDayDetails(
-            day,
-            await local.events(a.company.id, a.employeeReference!.id, dayId),
-            clock.now().toUtc(),
-          );
+    if (day == null) return null;
+    final original = await local.events(
+      a.company.id,
+      a.employeeReference!.id,
+      dayId,
+    );
+    final corrections = LocalAttendanceCorrectionRepository(_db, auth, clock);
+    return AttendanceDayDetails(
+      day,
+      await corrections.effectiveEvents(
+        a.company.id,
+        a.employeeReference!.id,
+        dayId,
+      ),
+      clock.now().toUtc(),
+      originalEvents: original,
+      corrections: await corrections.approvedForDay(
+        a.company.id,
+        a.employeeReference!.id,
+        dayId,
+      ),
+    );
   });
   @override
   Stream<Result<AttendanceDayDetails?>> watchAttendanceDayById(String dayId) =>

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/security/app_permission.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../core/errors/result.dart';
 import '../../../../core/localization/app_formatters.dart';
 import '../../../../design_system/design_system.dart';
@@ -15,6 +17,7 @@ import '../attendance_presentation.dart';
 import '../bloc/attendance_day_details_bloc.dart';
 import '../widgets/attendance_history_components.dart';
 import '../widgets/attendance_timeline.dart';
+import 'attendance_correction_pages.dart';
 
 class AttendanceDayDetailsPage extends StatelessWidget {
   const AttendanceDayDetailsPage({super.key});
@@ -155,6 +158,41 @@ class _Record extends StatelessWidget {
                 : AppStatus.info,
           ),
           const SizedBox(height: AppSpacing.lg),
+        ],
+        if (context.read<AuthBloc?>()?.state.context?.user.permissions.contains(
+                  AppPermission.attendanceRequestCorrection,
+                ) ==
+                true &&
+            d.snapshot.policy.allowEmployeeCorrectionRequest) ...[
+          AppSecondaryButton(
+            label: l.correctionRequest,
+            onPressed: () =>
+                context.push(AppRoutes.attendanceCorrectionForm(d.id)),
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
+        if (details.corrections.isNotEmpty) ...[
+          for (final correction in details.corrections) ...[
+            AppDetailsSection(
+              title: correctionTypeLabel(context, correction.requestType),
+              details: {l.correctionApproved: correction.reason},
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            for (final change in correction.changes)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                child: AppChangeComparison(
+                  title: correctionTypeLabel(context, correction.requestType),
+                  beforeLabel: l.correctionOriginal,
+                  before: AttendanceHistoryPresentation.time(context, d,
+                    change.originalTimestamp, includeDate: true),
+                  afterLabel: l.correctionRequested,
+                  after: AttendanceHistoryPresentation.time(context, d,
+                    change.requestedTimestamp, includeDate: true),
+                ),
+              ),
+          ],
+          const SizedBox(height: AppSpacing.md),
         ],
         AppOperationalLayout(
           main: Column(

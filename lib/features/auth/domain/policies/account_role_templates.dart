@@ -21,6 +21,7 @@ PermissionSet permissionsForRole(AppRole role) {
       AppPermission.employeeViewTeam,
       AppPermission.attendanceViewTeam,
       AppPermission.attendanceApprove,
+      AppPermission.attendanceReportView,
     },
     AppRole.hr => {
       ...self,

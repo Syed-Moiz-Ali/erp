@@ -2627,4 +2627,371 @@ class AppLocalizationsAr extends AppLocalizations {
   String historyFilterCount(String count) {
     return 'تصفية الحالات ($count)';
   }
+
+  @override
+  String get correctionRequest => 'طلب تصحيح';
+
+  @override
+  String get correctionMyRequests => 'طلباتي';
+
+  @override
+  String get correctionReviewQueue => 'طلبات التصحيح';
+
+  @override
+  String get correctionType => 'نوع التصحيح';
+
+  @override
+  String get correctionRequestedTime => 'التاريخ والوقت المطلوبان';
+
+  @override
+  String get correctionReason => 'السبب';
+
+  @override
+  String get correctionReviewNote => 'ملاحظة المراجعة';
+
+  @override
+  String get correctionSubmit => 'إرسال الطلب';
+
+  @override
+  String get correctionCancel => 'إلغاء الطلب';
+
+  @override
+  String get correctionApprove => 'موافقة';
+
+  @override
+  String get correctionReject => 'رفض';
+
+  @override
+  String get correctionPending => 'قيد المراجعة';
+
+  @override
+  String get correctionApproved => 'تمت الموافقة';
+
+  @override
+  String get correctionRejected => 'مرفوض';
+
+  @override
+  String get correctionCancelled => 'ملغى';
+
+  @override
+  String get correctionOriginal => 'الأصل';
+
+  @override
+  String get correctionRequested => 'المطلوب';
+
+  @override
+  String get correctionNoRequests => 'لا توجد طلبات تصحيح';
+
+  @override
+  String get correctionMissingPunchIn => 'تسجيل دخول مفقود';
+
+  @override
+  String get correctionMissingPunchOut => 'تسجيل خروج مفقود';
+
+  @override
+  String get correctionChangePunchIn => 'تعديل وقت الدخول';
+
+  @override
+  String get correctionChangePunchOut => 'تعديل وقت الخروج';
+
+  @override
+  String get correctionMissingBreakStart => 'بداية استراحة مفقودة';
+
+  @override
+  String get correctionMissingBreakEnd => 'نهاية استراحة مفقودة';
+
+  @override
+  String get correctionChangeBreakStart => 'تعديل بداية الاستراحة';
+
+  @override
+  String get correctionChangeBreakEnd => 'تعديل نهاية الاستراحة';
+
+  @override
+  String get correctionPreview => 'معاينة النتيجة الفعلية';
+
+  @override
+  String get correctionInvalid => 'تحقق من الوقت المطلوب وترتيب الأحداث.';
+
+  @override
+  String get correctionSaved => 'تم إرسال طلب التصحيح';
+
+  @override
+  String get correctionReviewSaved => 'تم حفظ المراجعة';
+
+  @override
+  String get correctionReasonRequired => 'أدخل السبب';
+
+  @override
+  String get workforceTeam => 'حضور الفريق';
+
+  @override
+  String get workforceAll => 'حضور جميع الموظفين';
+
+  @override
+  String get workforceNotStarted => 'لم يبدأ';
+
+  @override
+  String get workforceWorking => 'يعمل الآن';
+
+  @override
+  String get workforceOnBreak => 'في استراحة';
+
+  @override
+  String get workforceCompleted => 'مكتمل';
+
+  @override
+  String get workforceIncomplete => 'غير مكتمل';
+
+  @override
+  String get workforceNoSchedule => 'لا توجد مناوبة';
+
+  @override
+  String get workforceNoRecord => 'لا يوجد سجل';
+
+  @override
+  String get workforceSearch => 'ابحث عن موظف';
+
+  @override
+  String get workforceNoEmployees => 'لا يوجد موظفون مطابقون';
+
+  @override
+  String get workforceDepartment => 'القسم';
+
+  @override
+  String get workforceShift => 'المناوبة';
+
+  @override
+  String get workforceLocation => 'موقع العمل';
+
+  @override
+  String get workforceDate => 'تاريخ الحضور';
+
+  @override
+  String get workforceToday => 'اليوم';
+
+  @override
+  String get workforcePrevious => 'اليوم السابق';
+
+  @override
+  String get workforceNext => 'اليوم التالي';
+
+  @override
+  String get workforcePendingCorrection => 'تصحيح قيد المراجعة';
+
+  @override
+  String get workforceSort => 'ترتيب حسب';
+
+  @override
+  String get workforceName => 'الاسم';
+
+  @override
+  String get workforceNameDescending => 'الاسم (تنازليًا)';
+
+  @override
+  String get workforceCode => 'رمز الموظف';
+
+  @override
+  String get workforceAllFilter => 'الكل';
+
+  @override
+  String get reportTitle => 'تقارير الحضور';
+
+  @override
+  String get reportOverview => 'نظرة عامة';
+
+  @override
+  String get reportWorkHours => 'ساعات العمل';
+
+  @override
+  String get reportLate => 'التأخر عن الحضور';
+
+  @override
+  String get reportBreaks => 'تحليل الاستراحات';
+
+  @override
+  String get reportIssues => 'مشكلات الحضور';
+
+  @override
+  String get reportEmployees => 'ملخص الموظفين';
+
+  @override
+  String get reportToday => 'اليوم';
+
+  @override
+  String get reportThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get reportThisMonth => 'هذا الشهر';
+
+  @override
+  String get reportLastMonth => 'الشهر الماضي';
+
+  @override
+  String get reportCustom => 'فترة مخصصة';
+
+  @override
+  String get reportFrom => 'من';
+
+  @override
+  String get reportTo => 'إلى';
+
+  @override
+  String get reportScopeTeam => 'فريقي';
+
+  @override
+  String get reportScopeCompany => 'الشركة';
+
+  @override
+  String get reportRecordedDays => 'أيام العمل المسجلة';
+
+  @override
+  String get reportCompletedDays => 'أيام العمل المكتملة';
+
+  @override
+  String get reportLateDays => 'سجلات التأخر';
+
+  @override
+  String get reportIncompleteDays => 'سجلات غير مكتملة';
+
+  @override
+  String get reportWorkTotal => 'مدة العمل';
+
+  @override
+  String get reportBreakTotal => 'مدة الاستراحة';
+
+  @override
+  String get reportAverageWork => 'المتوسط لكل يوم مسجل';
+
+  @override
+  String get reportPendingCorrections => 'تصحيحات معلقة';
+
+  @override
+  String get reportIssueDays => 'أيام بها مشكلات';
+
+  @override
+  String get reportTrend => 'أيام العمل المسجلة حسب التاريخ';
+
+  @override
+  String get reportGroupBy => 'تجميع حسب';
+
+  @override
+  String get reportNoData =>
+      'لا توجد سجلات حضور تطابق الفترة والمرشحات المحددة.';
+
+  @override
+  String get reportInProgress => 'حضور اليوم الجاري مؤقت حتى تسجيل الانصراف.';
+
+  @override
+  String get reportFilter => 'المرشحات';
+
+  @override
+  String get reportClearFilters => 'مسح المرشحات';
+
+  @override
+  String get reportEmployee => 'الموظف';
+
+  @override
+  String get reportStatus => 'الحالة';
+
+  @override
+  String get reportCorrections => 'التصحيحات';
+
+  @override
+  String get reportAny => 'الكل';
+
+  @override
+  String get reportYes => 'نعم';
+
+  @override
+  String get reportNo => 'لا';
+
+  @override
+  String get reportApply => 'تطبيق';
+
+  @override
+  String get reportExport => 'تصدير';
+
+  @override
+  String get reportCsv => 'تصدير CSV';
+
+  @override
+  String get reportPdf => 'تصدير PDF';
+
+  @override
+  String get reportExported => 'تم حفظ التقرير';
+
+  @override
+  String get reportExportFailed => 'تعذر تصدير التقرير';
+
+  @override
+  String get reportLoading => 'جارٍ تحميل التقرير';
+
+  @override
+  String get reportRefreshFailed => 'تعذر تحديث التقرير';
+
+  @override
+  String get reportDate => 'التاريخ';
+
+  @override
+  String get reportWorked => 'العمل';
+
+  @override
+  String get reportBreak => 'الاستراحة';
+
+  @override
+  String get reportLateBy => 'مدة التأخر';
+
+  @override
+  String get reportRecorded => 'الأيام المسجلة';
+
+  @override
+  String get reportCompleted => 'مكتمل';
+
+  @override
+  String get reportLateCount => 'متأخر';
+
+  @override
+  String get reportIssuesCount => 'المشكلات';
+
+  @override
+  String get reportPending => 'معلق';
+
+  @override
+  String get reportShiftStart => 'بداية الوردية';
+
+  @override
+  String get reportPunchIn => 'تسجيل الحضور';
+
+  @override
+  String get reportDepartment => 'القسم';
+
+  @override
+  String get reportLocation => 'الموقع';
+
+  @override
+  String get reportPeriod => 'الفترة';
+
+  @override
+  String get reportGenerated => 'تاريخ الإنشاء';
+
+  @override
+  String get reportPage => 'الصفحة';
+
+  @override
+  String get reportSortNewest => 'الأحدث أولاً';
+
+  @override
+  String get reportSortOldest => 'الأقدم أولاً';
+
+  @override
+  String get reportSortEmployee => 'اسم الموظف';
+
+  @override
+  String get reportSortWork => 'أطول مدة عمل';
+
+  @override
+  String get reportSortBreak => 'أطول مدة استراحة';
+
+  @override
+  String get reportFiltersApplied => 'المرشحات المطبقة';
 }

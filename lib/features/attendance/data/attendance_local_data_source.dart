@@ -216,6 +216,7 @@ class AttendanceLocalDataSource {
           db.workLocationRecords,
           db.attendancePolicyRecords,
           db.syncOutbox,
+          db.attendanceCorrectionRequests,
         },
       )
       .watch()

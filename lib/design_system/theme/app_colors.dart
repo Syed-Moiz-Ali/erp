@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
+/// Centralized color palette and semantic tokens for Bitlogix ERP.
+///
+/// Follows 2026 enterprise SaaS standards with a deep plum/burgundy identity,
+/// warm neutral workspace canvas, crisp white surfaces, and high-clarity borders.
 abstract final class AppColors {
   // Brand (Deep Plum / Burgundy enterprise identity)
   static const brandPrimary = Color(0xFF4E1736);
   static const brandSecondary = Color(0xFF6B234C);
+  static const brandDark = Color(0xFF2C0A17);
   static const brandSubtle = Color(0xFFF7EFF5);
+  static const brandSoft = Color(0xFFF9F0F4);
   static const brandHover = Color(0xFF5C1D41);
   static const brandPressed = Color(0xFF3B0F28);
+  static const brandBorder = Color(0xFF7E395F);
   static const accentLavender = Color(0xFF8B5CF6);
 
   // Surfaces (Soft neutral canvas + crisp white workspace)
@@ -16,6 +23,10 @@ abstract final class AppColors {
   static const surfaceRaised = Color(0xFFFFFFFF);
   static const surfaceHover = Color(0xFFF3F1F7);
   static const surfaceSelected = Color(0xFFF5EFF5);
+  static const surfacePrimary = Color(0xFFFFFFFF);
+  static const surfaceSecondary = Color(0xFFF9F8FB);
+  static const surfaceMuted = Color(0xFFF3F1F7);
+  static const surfaceDisabled = Color(0xFFECE9EF);
 
   // Authentication environment (soft neutral canvas + composed application stage)
   static const canvas = Color(0xFFE9E8EC);
@@ -34,10 +45,16 @@ abstract final class AppColors {
   static const mobileCanvasTop = Color(0xFFEEECF2);
   static const mobileCanvasBottom = Color(0xFFF6F5F7);
 
-  // Borders (Ultra-subtle cool/lavender-gray)
-  static const borderSubtle = Color(0xFFECE9EF);
-  static const borderDefault = Color(0xFFDFDCE4);
-  static const borderStrong = Color(0xFFB0AABA);
+  // Borders (Disciplined cool/lavender-gray with clear container definition)
+  static const borderSubtle = Color(0xFFE5E1EA);
+  static const borderDefault = Color(0xFFD0CBD6);
+  static const borderStrong = Color(0xFFA59EAE);
+  static const borderInteractive = Color(0xFF8C8496);
+  static const borderFocus = brandPrimary;
+  static const borderSelected = brandPrimary;
+  static const borderError = danger;
+  static const borderSuccess = success;
+  static const borderWarning = warning;
 
   // Text (Deep ink & muted charcoal)
   static const textPrimary = Color(0xFF14111E);

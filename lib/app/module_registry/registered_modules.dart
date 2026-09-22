@@ -1,4 +1,17 @@
 import '../../features/attendance/domain/attendance_repository.dart';
+import '../../features/attendance/domain/attendance_correction_repository.dart';
+import '../../features/attendance/data/workforce_attendance_read_repository.dart';
+import '../../features/reports/domain/attendance_report_repository.dart';
+import '../../features/reports/data/attendance_report_export_service.dart';
+import '../../features/reports/presentation/bloc/attendance_report_bloc.dart';
+import '../../features/reports/presentation/attendance_reports_page.dart';
+import '../../features/attendance/domain/workforce_attendance.dart'
+    show AttendanceScope;
+import '../../features/attendance/presentation/bloc/attendance_correction_bloc.dart';
+import '../../features/attendance/presentation/bloc/workforce_attendance_bloc.dart';
+import '../../features/attendance/presentation/pages/attendance_correction_pages.dart';
+import '../../features/attendance/presentation/pages/workforce_attendance_page.dart';
+import '../../features/attendance/presentation/pages/workforce_attendance_details_page.dart';
 import '../../features/attendance/presentation/bloc/attendance_history_bloc.dart';
 import '../../features/attendance/presentation/bloc/attendance_day_details_bloc.dart';
 import '../../features/attendance/presentation/pages/attendance_history_page.dart';
@@ -54,7 +67,6 @@ import '../../core/security/app_permission.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/password_bloc.dart';
 import '../../features/auth/presentation/pages/change_password_page.dart';
-import '../shell/pages/module_placeholder_page.dart';
 import '../shell/pages/profile_placeholder_page.dart';
 import '../router/app_routes.dart';
 import '../router/app_route_transitions.dart';
@@ -69,6 +81,10 @@ ModuleRegistry createErpRegistry(
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
   AttendanceRepository? attendanceRepository,
+  AttendanceCorrectionRepository? correctionRepository,
+  WorkforceAttendanceReadRepository? workforceAttendanceRepository,
+  AttendanceReportRepository? attendanceReportRepository,
+  AttendanceReportExportService? attendanceReportExportService,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -565,25 +581,221 @@ ModuleRegistry createErpRegistry(
             ),
           ],
         ),
+        if (correctionRepository != null && attendanceRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'attendance-corrections',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.correctionMyRequests,
+              icon: Icons.rate_review_outlined,
+              route: AppRoutes.attendanceCorrections,
+              navigationGroup: NavigationGroup.workforce,
+              order: 22,
+              requiredPermissions: {AppPermission.attendanceRequestCorrection},
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.attendanceCorrections,
+                builder: (c, s) => BlocProvider(
+                  create: (_) =>
+                      AttendanceCorrectionBloc(correctionRepository)
+                        ..add(const CorrectionMyStarted()),
+                  child: const MyAttendanceCorrectionsPage(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'new/:attendanceDayId',
+                    builder: (c, s) => BlocProvider(
+                      create: (_) =>
+                          AttendanceCorrectionBloc(correctionRepository),
+                      child: AttendanceCorrectionFormPage(
+                        dayId: s.pathParameters['attendanceDayId']!,
+                        attendanceRepository: attendanceRepository,
+                      ),
+                    ),
+                  ),
+                  GoRoute(
+                    path: ':correctionId',
+                    builder: (c, s) => BlocProvider(
+                      create: (_) =>
+                          AttendanceCorrectionBloc(correctionRepository)..add(
+                            CorrectionDetailsStarted(
+                              s.pathParameters['correctionId']!,
+                            ),
+                          ),
+                      child: const AttendanceCorrectionDetailsPage(
+                        review: false,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        if (correctionRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'attendance-requests',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.correctionReviewQueue,
+              icon: Icons.fact_check_outlined,
+              route: AppRoutes.attendanceRequests,
+              navigationGroup: NavigationGroup.workforce,
+              order: 23,
+              requiredPermissions: {AppPermission.attendanceApprove},
+              anyPermissions: {
+                AppPermission.attendanceViewTeam,
+                AppPermission.attendanceViewAll,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.attendanceRequests,
+                builder: (c, s) => BlocProvider(
+                  create: (_) =>
+                      AttendanceCorrectionBloc(correctionRepository)
+                        ..add(const CorrectionQueueStarted()),
+                  child: const AttendanceCorrectionQueuePage(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':correctionId',
+                    builder: (c, s) => BlocProvider(
+                      create: (_) =>
+                          AttendanceCorrectionBloc(correctionRepository)..add(
+                            CorrectionDetailsStarted(
+                              s.pathParameters['correctionId']!,
+                            ),
+                          ),
+                      child: const AttendanceCorrectionDetailsPage(
+                        review: true,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        if (workforceAttendanceRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'attendance-team',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.workforceTeam,
+              icon: Icons.groups_outlined,
+              route: AppRoutes.attendanceTeam,
+              navigationGroup: NavigationGroup.workforce,
+              order: 24,
+              anyPermissions: {
+                AppPermission.attendanceViewTeam,
+                AppPermission.attendanceViewAll,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.attendanceTeam,
+                builder: (c, s) => BlocProvider(
+                  create: (_) => WorkforceAttendanceBloc(
+                    workforceAttendanceRepository,
+                    AttendanceScope.team,
+                  )..add(const WorkforceAttendanceStarted()),
+                  child: const WorkforceAttendancePage(
+                    scope: AttendanceScope.team,
+                  ),
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':employeeId/:attendanceDayId',
+                    builder: (c, s) => WorkforceAttendanceDetailsPage(
+                      repository: workforceAttendanceRepository,
+                      employeeId: s.pathParameters['employeeId']!,
+                      dayId: s.pathParameters['attendanceDayId']!,
+                      scope: AttendanceScope.team,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        if (workforceAttendanceRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'attendance-all',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.workforceAll,
+              icon: Icons.badge_outlined,
+              route: AppRoutes.attendanceAll,
+              navigationGroup: NavigationGroup.workforce,
+              order: 25,
+              requiredPermissions: {AppPermission.attendanceViewAll},
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.attendanceAll,
+                builder: (c, s) => BlocProvider(
+                  create: (_) => WorkforceAttendanceBloc(
+                    workforceAttendanceRepository,
+                    AttendanceScope.company,
+                  )..add(const WorkforceAttendanceStarted()),
+                  child: const WorkforceAttendancePage(
+                    scope: AttendanceScope.company,
+                  ),
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':employeeId/:attendanceDayId',
+                    builder: (c, s) => WorkforceAttendanceDetailsPage(
+                      repository: workforceAttendanceRepository,
+                      employeeId: s.pathParameters['employeeId']!,
+                      dayId: s.pathParameters['attendanceDayId']!,
+                      scope: AttendanceScope.company,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
       ],
     ),
     AppModule(
       id: AppModuleIds.reports,
       destinations: [
-        destination(
-          ErpModule(
-            id: 'reports',
-            moduleId: AppModuleIds.reports,
-            name: (l) => l.shellReports,
-            icon: Icons.assessment_outlined,
-            selectedIcon: Icons.assessment,
-            route: AppRoutes.reports,
-            navigationGroup: NavigationGroup.insights,
-            order: 30,
-            requiredPermissions: {AppPermission.attendanceReportView},
+        if (attendanceReportRepository != null &&
+            attendanceReportExportService != null)
+          destination(
+            ErpModule(
+              id: 'reports',
+              moduleId: AppModuleIds.reports,
+              name: (l) => l.shellReports,
+              icon: Icons.assessment_outlined,
+              selectedIcon: Icons.assessment,
+              route: AppRoutes.reports,
+              navigationGroup: NavigationGroup.insights,
+              order: 30,
+              requiredPermissions: {AppPermission.attendanceReportView},
+              anyPermissions: {
+                AppPermission.attendanceViewTeam,
+                AppPermission.attendanceViewAll,
+              },
+            ),
+            (_) => BlocProvider(
+              create: (context) {
+                final actor = context.read<AuthBloc>().state.context!;
+                final scope =
+                    actor.user.permissions.contains(
+                      AppPermission.attendanceViewAll,
+                    )
+                    ? AttendanceScope.company
+                    : AttendanceScope.team;
+                return AttendanceReportBloc(
+                  attendanceReportRepository,
+                  attendanceReportExportService,
+                  scope,
+                )..add(const AttendanceReportStarted());
+              },
+              child: const AttendanceReportsPage(),
+            ),
           ),
-          (_) => const ReportsPlaceholderPage(),
-        ),
       ],
     ),
     AppModule(

@@ -130,7 +130,7 @@ class AttendanceHistoryList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: AppSpacing.sm),
           child: AppCard(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: const EdgeInsets.all(AppSpacing.section),
             onTap: () => onOpen(day),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -608,12 +608,12 @@ InputDecoration appCustomInputDecoration(
     suffixIcon: suffixIcon,
     contentPadding:
         contentPadding ??
-        const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     border: border(borderColor, 1),
     enabledBorder: border(borderColor, 1),
-    focusedBorder: border(AppColors.brandPrimary, 1.4),
+    focusedBorder: border(AppColors.brandPrimary, 1.5),
     errorBorder: border(AppColors.danger, 1),
-    focusedErrorBorder: border(AppColors.danger, 1.4),
+    focusedErrorBorder: border(AppColors.danger, 1.5),
   );
 }
 

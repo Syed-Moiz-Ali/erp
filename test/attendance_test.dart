@@ -1412,6 +1412,7 @@ void integrationTests() {
           );
       await old.customStatement('DROP TABLE attendance_events');
       await old.customStatement('DROP TABLE attendance_days');
+      await old.customStatement('DROP TABLE attendance_correction_requests');
       await old.customStatement('DROP INDEX outbox_request');
       for (final c in [
         'company_id',
