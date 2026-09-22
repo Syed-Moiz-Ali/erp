@@ -22,6 +22,11 @@ class NotificationTile extends StatelessWidget {
     AppNotificationType.attendanceSyncFailed => Icons.sync_problem_outlined,
     AppNotificationType.attendanceConflict => Icons.report_problem_outlined,
     AppNotificationType.pendingCorrectionReview => Icons.fact_check_outlined,
+    AppNotificationType.leaveRequestSubmitted => Icons.event_available_outlined,
+    AppNotificationType.leaveRequestApproved => Icons.event_available_outlined,
+    AppNotificationType.leaveRequestRejected => Icons.event_busy_outlined,
+    AppNotificationType.leaveRequestCancelled => Icons.event_busy_outlined,
+    AppNotificationType.leaveApprovalRequired => Icons.event_note_outlined,
     AppNotificationType.unknown => Icons.notifications_none_outlined,
   };
 

@@ -46,6 +46,7 @@ class ErpModule {
     this.requiredPermissions = const {},
     this.anyPermissions = const {},
     this.requiredCapabilities = const {},
+    this.anyCapabilities = const {},
     this.navigationGroup = NavigationGroup.workspace,
     this.order = 0,
     this.enabled = true,
@@ -62,7 +63,7 @@ class ErpModule {
   final IconData icon;
   final IconData? selectedIcon;
   final Set<AppPermission> requiredPermissions, anyPermissions;
-  final Set<UserCapability> requiredCapabilities;
+  final Set<UserCapability> requiredCapabilities, anyCapabilities;
   final Set<String> routeAliases;
   final int order;
   final int? mobilePriority;

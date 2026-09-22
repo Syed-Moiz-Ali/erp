@@ -3,32 +3,45 @@ import '../entities/auth_context.dart';
 
 /// Explicit local grant templates. A role label never authorizes an operation.
 ///
-/// Self-service attendance permissions are deliberately **not** granted to
-/// Super Admin / Company Admin by template: admin authority does not imply an
-/// employee link. A linked admin can be granted these explicitly.
+/// Self-service permissions (attendance/leave self actions) are deliberately
+/// **not** granted to Super Admin / Company Admin by template: admin authority
+/// does not imply an employee link. A linked admin can be granted them
+/// explicitly.
 PermissionSet permissionsForRole(AppRole role) {
-  final self = {
+  const selfService = {
     AppPermission.employeeViewSelf,
     AppPermission.attendanceViewSelf,
     AppPermission.attendancePunchIn,
     AppPermission.attendancePunchOut,
     AppPermission.attendanceBreak,
     AppPermission.attendanceRequestCorrection,
+    AppPermission.leaveViewSelf,
+    AppPermission.leaveRequest,
+    AppPermission.leaveCancelSelf,
+    AppPermission.leaveBalanceViewSelf,
   };
   if (role == AppRole.superAdmin || role == AppRole.companyAdmin) {
-    return PermissionSet(AppPermission.values.where((p) => !self.contains(p)));
+    return PermissionSet(
+      AppPermission.values.where((p) => !selfService.contains(p)),
+    );
   }
+  // Everyone can see their own leave and the holiday calendar through the
+  // Leave module; holiday *configuration* stays administrative.
+  final base = {...selfService};
   return PermissionSet(switch (role) {
-    AppRole.employee => self,
+    AppRole.employee => base,
     AppRole.manager => {
-      ...self,
+      ...base,
       AppPermission.employeeViewTeam,
       AppPermission.attendanceViewTeam,
       AppPermission.attendanceApprove,
       AppPermission.attendanceReportView,
+      AppPermission.leaveViewTeam,
+      AppPermission.leaveApproveTeam,
+      AppPermission.leaveBalanceViewTeam,
     },
     AppRole.hr => {
-      ...self,
+      ...base,
       AppPermission.employeeViewAll,
       AppPermission.employeeCreate,
       AppPermission.employeeUpdate,
@@ -43,6 +56,17 @@ PermissionSet permissionsForRole(AppRole role) {
       AppPermission.attendancePolicyView,
       AppPermission.attendancePolicyManage,
       AppPermission.attendanceReportView,
+      AppPermission.leaveViewAll,
+      AppPermission.leaveApproveAll,
+      AppPermission.leaveManage,
+      AppPermission.leaveBalanceViewAll,
+      AppPermission.leaveBalanceAdjust,
+      AppPermission.leaveTypeView,
+      AppPermission.leaveTypeManage,
+      AppPermission.leavePolicyView,
+      AppPermission.leavePolicyManage,
+      AppPermission.holidayManage,
+      AppPermission.leaveReportView,
     },
     _ => <AppPermission>{},
   });

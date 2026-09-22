@@ -1,5 +1,6 @@
 export 'components/avatars/app_avatar.dart';
 export 'components/buttons/app_buttons.dart';
+export 'components/charts/app_charts.dart';
 export 'components/cards/app_cards.dart';
 export 'components/cards/app_change_comparison.dart';
 export 'components/dialogs/app_dialog.dart';
@@ -43,5 +44,6 @@ export 'components/navigation/app_action_menu.dart';
 export 'components/inputs/app_configuration_inputs.dart';
 
 export 'components/cards/app_settings_tile.dart';
+export 'components/cards/app_settings_group.dart';
 
 export 'components/timelines/app_timeline.dart';

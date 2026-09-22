@@ -78,6 +78,17 @@ void main() {
       expect(bloc.state.data, isNotNull);
       expect(tester.takeException(), isNull);
       expect(find.byType(AttendanceReportsPage), findsOneWidget);
+      final l = AppLocalizations.of(
+        tester.element(find.byType(AttendanceReportsPage)),
+      );
+      // The overview renders the primary analytics visualization.
+      expect(
+        find.descendant(
+          of: find.byType(AttendanceReportsPage),
+          matching: find.text(l.reportActivityTrend),
+        ),
+        findsOneWidget,
+      );
       for (final type in AttendanceReportType.values) {
         bloc.add(AttendanceReportTypeChanged(type));
         await tester.pump();

@@ -80,6 +80,10 @@ class NavigationResolver {
             !capabilities.hasAny(item.requiredCapabilities))) {
       return RouteAccess.unauthorized;
     }
+    if (item.anyCapabilities.isNotEmpty &&
+        (capabilities == null || !capabilities.hasAny(item.anyCapabilities))) {
+      return RouteAccess.unauthorized;
+    }
     return RouteAccess.allowed;
   }
 

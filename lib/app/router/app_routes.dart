@@ -7,6 +7,7 @@ abstract final class AppRoutes {
       dashboard = '/app/dashboard',
       employees = '/app/employees',
       attendance = '/app/attendance',
+      leave = '/app/leave',
       reports = '/app/reports',
       settings = '/app/settings',
       profile = '/app/profile',
@@ -41,6 +42,31 @@ abstract final class AppRoutes {
   static String attendanceDayDetails(String id) =>
       '$attendanceHistory/${Uri.encodeComponent(id)}';
   static const employeeNew = '/app/employees/new';
+  static const leaveNew = '$leave/new';
+  static const leaveRequests = '$leave/requests';
+  static const leaveApprovals = '$leave/approvals';
+  static const leaveTeam = '$leave/team';
+  static const leaveAll = '$leave/all';
+  static const leaveBalances = '$leave/balances';
+  static const leaveCalendar = '$leave/calendar';
+  static String leaveRequestDetails(String id) =>
+      '$leaveRequests/${Uri.encodeComponent(id)}';
+  static const leaveTypes = '/app/settings/leave-types';
+  static const leaveTypesNew = '$leaveTypes/new';
+  static String leaveTypesDetails(String id) =>
+      '$leaveTypes/${Uri.encodeComponent(id)}';
+  static String leaveTypesEdit(String id) => '${leaveTypesDetails(id)}/edit';
+  static const leavePolicies = '/app/settings/leave-policies';
+  static const leavePoliciesNew = '$leavePolicies/new';
+  static String leavePoliciesDetails(String id) =>
+      '$leavePolicies/${Uri.encodeComponent(id)}';
+  static String leavePoliciesEdit(String id) =>
+      '${leavePoliciesDetails(id)}/edit';
+  static const holidays = '/app/settings/holidays';
+  static const holidaysNew = '$holidays/new';
+  static String holidaysDetails(String id) =>
+      '$holidays/${Uri.encodeComponent(id)}';
+  static String holidaysEdit(String id) => '${holidaysDetails(id)}/edit';
   static String employeeDetails(String id) =>
       '$employees/${Uri.encodeComponent(id)}';
   static String employeeEdit(String id) => '${employeeDetails(id)}/edit';
@@ -77,6 +103,7 @@ abstract final class AppModuleIds {
   static const dashboard = 'dashboard',
       employees = 'employees',
       attendance = 'attendance',
+      leave = 'leave',
       reports = 'reports',
       settings = 'settings',
       account = 'account';

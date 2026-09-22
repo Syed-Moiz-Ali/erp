@@ -17,6 +17,7 @@ import '../../features/attendance/presentation/bloc/attendance_day_details_bloc.
 import '../../features/attendance/presentation/pages/attendance_history_page.dart';
 import '../../features/attendance/presentation/pages/attendance_day_details_page.dart';
 import '../../features/attendance/presentation/pages/attendance_today_page.dart';
+import '../../features/attendance/presentation/widgets/attendance_module_nav.dart';
 import '../../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../../core/location/location_service.dart';
 import '../../shared/presentation/configuration_landing_page.dart';
@@ -51,6 +52,21 @@ import '../../features/employees/presentation/bloc/employee_form_bloc.dart';
 import '../../features/employees/presentation/pages/employee_list_page.dart';
 import '../../features/employees/presentation/pages/employee_details_page.dart';
 import '../../features/employees/presentation/pages/employee_form_page.dart';
+import '../../features/leave/domain/leave_models.dart';
+import '../../features/leave/domain/leave_repository.dart';
+import '../../features/leave/presentation/bloc/leave_blocs.dart';
+import '../../features/leave/presentation/bloc/leave_configuration_blocs.dart';
+import '../../features/leave/presentation/pages/leave_type_pages.dart';
+import '../../features/leave/presentation/pages/leave_policy_pages.dart';
+import '../../features/leave/presentation/pages/holiday_pages.dart';
+import '../../features/leave/presentation/pages/leave_home_page.dart';
+import '../../features/leave/presentation/pages/leave_request_form_page.dart';
+import '../../features/leave/presentation/pages/leave_request_list_page.dart';
+import '../../features/leave/presentation/pages/leave_request_details_page.dart';
+import '../../features/leave/presentation/pages/leave_balances_page.dart';
+import '../../features/leave/presentation/pages/leave_calendar_page.dart';
+import '../../features/leave/presentation/widgets/leave_today_banner.dart';
+import '../../shared/domain/configuration_repository.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/domain/entities/auth_context.dart';
 import '../../features/auth/domain/policies/user_capability.dart';
@@ -87,6 +103,10 @@ ModuleRegistry createErpRegistry(
   WorkforceAttendanceReadRepository? workforceAttendanceRepository,
   AttendanceReportRepository? attendanceReportRepository,
   AttendanceReportExportService? attendanceReportExportService,
+  LeaveRepository? leaveRepository,
+  ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository,
+  ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
+  ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -119,6 +139,8 @@ ModuleRegistry createErpRegistry(
         requiredPermissions: {AppPermission.shiftView},
         navigationGroup: NavigationGroup.configuration,
         order: 41,
+        desktopVisible: false,
+        mobileVisible: false,
       ),
       routes: [
         ShellRoute(
@@ -209,6 +231,8 @@ ModuleRegistry createErpRegistry(
         requiredPermissions: {AppPermission.workLocationView},
         navigationGroup: NavigationGroup.configuration,
         order: 42,
+        desktopVisible: false,
+        mobileVisible: false,
       ),
       routes: [
         ShellRoute(
@@ -304,6 +328,8 @@ ModuleRegistry createErpRegistry(
         requiredPermissions: {AppPermission.attendancePolicyView},
         navigationGroup: NavigationGroup.configuration,
         order: 43,
+        desktopVisible: false,
+        mobileVisible: false,
       ),
       routes: [
         ShellRoute(
@@ -379,6 +405,360 @@ ModuleRegistry createErpRegistry(
                               >(),
                             ),
                         child: AttendancePolicyFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination leaveListDestination({
+    required String id,
+    required String route,
+    required LocalizedText name,
+    required String Function(AppLocalizations) title,
+    required String Function(AppLocalizations) empty,
+    required LeaveRequestScope scope,
+    Set<AppPermission> requiredPermissions = const {},
+    Set<AppPermission> anyPermissions = const {},
+    Set<UserCapability> capabilities = const {},
+    int order = 27,
+    bool withDetails = false,
+  }) => RegisteredDestination(
+    navigation: ErpModule(
+      id: id,
+      moduleId: AppModuleIds.leave,
+      name: name,
+      icon: Icons.event_note_outlined,
+      route: route,
+      navigationGroup: NavigationGroup.workforce,
+      order: order,
+      desktopVisible: false,
+      mobileVisible: false,
+      requiredPermissions: requiredPermissions,
+      anyPermissions: anyPermissions,
+      requiredCapabilities: capabilities,
+    ),
+    routes: [
+      GoRoute(
+        path: route,
+        name: id,
+        builder: (c, s) {
+          final account = c.read<AuthBloc>().state.context!;
+          return BlocProvider(
+            key: ValueKey(account),
+            create: (_) =>
+                LeaveRequestListBloc(leaveRepository!, account, scope)
+                  ..add(const LeaveRequestListStarted()),
+            child: LeaveRequestListPage(
+              title: title(c.l10n),
+              emptyMessage: empty(c.l10n),
+            ),
+          );
+        },
+        routes: withDetails
+            ? [
+                GoRoute(
+                  path: ':id',
+                  name: '$id-details',
+                  builder: (c, s) {
+                    final account = c.read<AuthBloc>().state.context!;
+                    final requestId = s.pathParameters['id']!;
+                    return BlocProvider(
+                      key: ValueKey(requestId),
+                      create: (_) => LeaveRequestDetailsBloc(
+                        leaveRepository!,
+                        account,
+                        requestId,
+                      )..add(const LeaveRequestDetailsStarted()),
+                      child: const LeaveRequestDetailsPage(),
+                    );
+                  },
+                ),
+              ]
+            : const [],
+      ),
+    ],
+  );
+
+  RegisteredDestination leaveTypeDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'leave-types',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.leaveTypesNav,
+        icon: Icons.category_outlined,
+        route: AppRoutes.leaveTypes,
+        requiredPermissions: {AppPermission.leaveTypeView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 44,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (leaveTypeRepository == null) {
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  }
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        LeaveTypeListBloc(leaveTypeRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.leaveTypes,
+              name: 'leave-types',
+              builder: (c, s) => const LeaveTypeListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('leave-type-new'),
+                    create: (_) => LeaveTypeFormBloc(
+                      leaveTypeRepository!,
+                      c.read<LeaveTypeListBloc>().context,
+                    )..add(const RecordFormInitialized<LeaveTypeDraft>()),
+                    child: LeaveTypeFormPage(guard: guard),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => LeaveTypeDetailsBloc(
+                      leaveTypeRepository!,
+                      c.read<LeaveTypeListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const LeaveTypeDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) => LeaveTypeFormBloc(
+                          leaveTypeRepository!,
+                          c.read<LeaveTypeListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<LeaveTypeDraft>()),
+                        child: LeaveTypeFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination leavePolicyDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'leave-policies',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.leavePoliciesNav,
+        icon: Icons.rule_folder_outlined,
+        route: AppRoutes.leavePolicies,
+        requiredPermissions: {AppPermission.leavePolicyView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 45,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (leavePolicyRepository == null) {
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  }
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        LeavePolicyListBloc(leavePolicyRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.leavePolicies,
+              name: 'leave-policies',
+              builder: (c, s) => const LeavePolicyListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('leave-policy-new'),
+                    create: (_) => LeavePolicyFormBloc(
+                      leavePolicyRepository!,
+                      c.read<LeavePolicyListBloc>().context,
+                    )..add(const RecordFormInitialized<LeavePolicyDraft>()),
+                    child: LeavePolicyFormPage(
+                      guard: guard,
+                      repository: leaveRepository!,
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => LeavePolicyDetailsBloc(
+                      leavePolicyRepository!,
+                      c.read<LeavePolicyListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const LeavePolicyDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) => LeavePolicyFormBloc(
+                          leavePolicyRepository!,
+                          c.read<LeavePolicyListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<LeavePolicyDraft>()),
+                        child: LeavePolicyFormPage(
+                          guard: guard,
+                          repository: leaveRepository!,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination holidayDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'holidays',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.holidaysNav,
+        icon: Icons.beach_access_outlined,
+        route: AppRoutes.holidays,
+        requiredPermissions: {AppPermission.holidayView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 46,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (holidayRepository == null) {
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  }
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        HolidayListBloc(holidayRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.holidays,
+              name: 'holidays',
+              builder: (c, s) => const HolidayListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('holiday-new'),
+                    create: (_) => HolidayFormBloc(
+                      holidayRepository!,
+                      c.read<HolidayListBloc>().context,
+                    )..add(const RecordFormInitialized<HolidayDraft>()),
+                    child: HolidayFormPage(
+                      guard: guard,
+                      workLocations: workLocationRepository,
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => HolidayDetailsBloc(
+                      holidayRepository!,
+                      c.read<HolidayListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const HolidayDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) => HolidayFormBloc(
+                          holidayRepository!,
+                          c.read<HolidayListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<HolidayDraft>()),
+                        child: HolidayFormPage(
+                          guard: guard,
+                          workLocations: workLocationRepository,
+                        ),
                       ),
                     ),
                   ],
@@ -514,8 +894,8 @@ ModuleRegistry createErpRegistry(
     AppModule(
       id: AppModuleIds.attendance,
       destinations: [
-        destination(
-          ErpModule(
+        RegisteredDestination(
+          navigation: ErpModule(
             id: 'attendance',
             moduleId: AppModuleIds.attendance,
             name: (l) => l.shellAttendance,
@@ -525,16 +905,54 @@ ModuleRegistry createErpRegistry(
             navigationGroup: NavigationGroup.workforce,
             order: 20,
             mobilePriority: 2,
-            requiredPermissions: {AppPermission.attendanceViewSelf},
-            requiredCapabilities: {UserCapability.selfAttendance},
+            anyCapabilities: {
+              UserCapability.selfAttendance,
+              UserCapability.selfAttendanceHistory,
+              UserCapability.teamAttendance,
+              UserCapability.companyAttendance,
+              UserCapability.approveAttendanceCorrections,
+            },
           ),
-          (c) => c.read<AttendanceBloc?>() == null
-              ? AppPage(
-                  child: AppErrorState(
-                    message: c.l10n.attendanceUnavailableTitle,
-                  ),
-                )
-              : const AttendanceTodayPage(),
+          routes: [
+            GoRoute(
+              path: AppRoutes.attendance,
+              name: 'attendance',
+              // Attendance is one module: non-self users land on the most
+              // relevant organizational destination instead of a self screen.
+              redirect: (context, state) {
+                final account = context.read<AuthBloc>().state.context;
+                if (account == null) return null;
+                final capabilities = const UserCapabilityResolver()
+                    .forAuthContext(account);
+                if (capabilities.has(UserCapability.selfAttendance)) {
+                  return null;
+                }
+                if (capabilities.has(UserCapability.teamAttendance)) {
+                  return AppRoutes.attendanceTeam;
+                }
+                if (capabilities.has(UserCapability.companyAttendance)) {
+                  return AppRoutes.attendanceAll;
+                }
+                return AppRoutes.attendanceRequests;
+              },
+              pageBuilder: (context, state) => AppRouteTransitions.page(
+                context,
+                state,
+                AttendanceModuleScaffold(
+                  banner: leaveRepository == null
+                      ? null
+                      : LeaveTodayBanner(repository: leaveRepository),
+                  child: context.read<AttendanceBloc?>() == null
+                      ? AppPage(
+                          child: AppErrorState(
+                            message: context.l10n.attendanceUnavailableTitle,
+                          ),
+                        )
+                      : const AttendanceTodayPage(),
+                ),
+              ),
+            ),
+          ],
         ),
         RegisteredDestination(
           navigation: ErpModule(
@@ -547,6 +965,8 @@ ModuleRegistry createErpRegistry(
             navigationGroup: NavigationGroup.workforce,
             order: 21,
             mobilePriority: 3,
+            desktopVisible: false,
+            mobileVisible: false,
             requiredPermissions: {AppPermission.attendanceViewSelf},
             requiredCapabilities: {UserCapability.selfAttendanceHistory},
           ),
@@ -580,7 +1000,9 @@ ModuleRegistry createErpRegistry(
                 GoRoute(
                   path: AppRoutes.attendanceHistory,
                   name: 'attendance-history',
-                  builder: (c, s) => const AttendanceHistoryPage(),
+                  builder: (c, s) => AttendanceModuleScaffold(
+                    child: const AttendanceHistoryPage(),
+                  ),
                   routes: [
                     GoRoute(
                       path: ':attendanceDayId',
@@ -610,6 +1032,8 @@ ModuleRegistry createErpRegistry(
               route: AppRoutes.attendanceCorrections,
               navigationGroup: NavigationGroup.workforce,
               order: 22,
+              desktopVisible: false,
+              mobileVisible: false,
               requiredPermissions: {AppPermission.attendanceRequestCorrection},
               requiredCapabilities: {
                 UserCapability.requestAttendanceCorrection,
@@ -622,7 +1046,9 @@ ModuleRegistry createErpRegistry(
                   create: (_) =>
                       AttendanceCorrectionBloc(correctionRepository)
                         ..add(const CorrectionMyStarted()),
-                  child: const MyAttendanceCorrectionsPage(),
+                  child: AttendanceModuleScaffold(
+                    child: const MyAttendanceCorrectionsPage(),
+                  ),
                 ),
                 routes: [
                   GoRoute(
@@ -666,6 +1092,8 @@ ModuleRegistry createErpRegistry(
               route: AppRoutes.attendanceRequests,
               navigationGroup: NavigationGroup.workforce,
               order: 23,
+              desktopVisible: false,
+              mobileVisible: false,
               requiredPermissions: {AppPermission.attendanceApprove},
               anyPermissions: {
                 AppPermission.attendanceViewTeam,
@@ -679,7 +1107,9 @@ ModuleRegistry createErpRegistry(
                   create: (_) =>
                       AttendanceCorrectionBloc(correctionRepository)
                         ..add(const CorrectionQueueStarted()),
-                  child: const AttendanceCorrectionQueuePage(),
+                  child: AttendanceModuleScaffold(
+                    child: const AttendanceCorrectionQueuePage(),
+                  ),
                 ),
                 routes: [
                   GoRoute(
@@ -711,6 +1141,8 @@ ModuleRegistry createErpRegistry(
               route: AppRoutes.attendanceTeam,
               navigationGroup: NavigationGroup.workforce,
               order: 24,
+              desktopVisible: false,
+              mobileVisible: false,
               anyPermissions: {
                 AppPermission.attendanceViewTeam,
                 AppPermission.attendanceViewAll,
@@ -725,8 +1157,10 @@ ModuleRegistry createErpRegistry(
                     workforceAttendanceRepository,
                     AttendanceScope.team,
                   )..add(const WorkforceAttendanceStarted()),
-                  child: const WorkforceAttendancePage(
-                    scope: AttendanceScope.team,
+                  child: AttendanceModuleScaffold(
+                    child: const WorkforceAttendancePage(
+                      scope: AttendanceScope.team,
+                    ),
                   ),
                 ),
                 routes: [
@@ -783,6 +1217,229 @@ ModuleRegistry createErpRegistry(
           ),
       ],
     ),
+    if (leaveRepository != null)
+      AppModule(
+        id: AppModuleIds.leave,
+        destinations: [
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'leave',
+              moduleId: AppModuleIds.leave,
+              name: (l) => l.shellLeave,
+              icon: Icons.event_available_outlined,
+              selectedIcon: Icons.event_available,
+              route: AppRoutes.leave,
+              navigationGroup: NavigationGroup.workforce,
+              order: 25,
+              mobilePriority: 4,
+              anyCapabilities: {
+                UserCapability.requestLeave,
+                UserCapability.viewMyLeave,
+                UserCapability.viewMyLeaveBalance,
+                UserCapability.viewTeamLeave,
+                UserCapability.approveTeamLeave,
+                UserCapability.viewCompanyLeave,
+                UserCapability.approveCompanyLeave,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.leave,
+                name: 'leave',
+                redirect: (context, state) {
+                  final account = context.read<AuthBloc>().state.context;
+                  if (account == null) return null;
+                  final capabilities = const UserCapabilityResolver()
+                      .forAuthContext(account);
+                  if (capabilities.has(UserCapability.viewMyLeave)) {
+                    return null;
+                  }
+                  if (capabilities.has(UserCapability.approveTeamLeave) ||
+                      capabilities.has(UserCapability.approveCompanyLeave)) {
+                    return AppRoutes.leaveApprovals;
+                  }
+                  if (capabilities.has(UserCapability.viewCompanyLeave)) {
+                    return AppRoutes.leaveAll;
+                  }
+                  if (capabilities.has(UserCapability.viewTeamLeave)) {
+                    return AppRoutes.leaveTeam;
+                  }
+                  return null;
+                },
+                pageBuilder: (context, state) => AppRouteTransitions.page(
+                  context,
+                  state,
+                  BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                    selector: (s) => s.context,
+                    builder: (context, account) {
+                      final employee = account?.employeeReference;
+                      if (account == null || employee == null) {
+                        return AppPage(
+                          child: AppErrorState(
+                            message: context.l10n.leaveNoEmployee,
+                          ),
+                        );
+                      }
+                      return BlocProvider(
+                        key: ValueKey(account),
+                        create: (_) => LeaveBalancesCubit(
+                          leaveRepository,
+                          account,
+                          employee.id,
+                        ),
+                        child: const LeaveHomePage(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leaveListDestination(
+            id: 'leave-requests',
+            route: AppRoutes.leaveRequests,
+            name: (l) => l.leaveMyRequests,
+            title: (l) => l.leaveMyRequests,
+            empty: (l) => l.leaveRequestsEmpty,
+            scope: LeaveRequestScope.self,
+            requiredPermissions: {AppPermission.leaveViewSelf},
+            order: 26,
+            withDetails: true,
+          ),
+          leaveListDestination(
+            id: 'leave-approvals',
+            route: AppRoutes.leaveApprovals,
+            name: (l) => l.leaveApprovals,
+            title: (l) => l.leaveApprovals,
+            empty: (l) => l.leaveApprovalsEmpty,
+            scope: LeaveRequestScope.approvals,
+            anyPermissions: {
+              AppPermission.leaveApproveTeam,
+              AppPermission.leaveApproveAll,
+            },
+            order: 27,
+          ),
+          leaveListDestination(
+            id: 'leave-team',
+            route: AppRoutes.leaveTeam,
+            name: (l) => l.leaveTeam,
+            title: (l) => l.leaveTeam,
+            empty: (l) => l.leaveRequestsEmpty,
+            scope: LeaveRequestScope.team,
+            requiredPermissions: {AppPermission.leaveViewTeam},
+            order: 28,
+          ),
+          leaveListDestination(
+            id: 'leave-all',
+            route: AppRoutes.leaveAll,
+            name: (l) => l.leaveAllNav,
+            title: (l) => l.leaveAllNav,
+            empty: (l) => l.leaveRequestsEmpty,
+            scope: LeaveRequestScope.company,
+            requiredPermissions: {AppPermission.leaveViewAll},
+            order: 29,
+          ),
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'leave-new',
+              moduleId: AppModuleIds.leave,
+              name: (l) => l.leaveNewRequest,
+              icon: Icons.add_outlined,
+              route: AppRoutes.leaveNew,
+              navigationGroup: NavigationGroup.workforce,
+              order: 31,
+              desktopVisible: false,
+              mobileVisible: false,
+              requiredPermissions: {AppPermission.leaveRequest},
+              requiredCapabilities: {UserCapability.requestLeave},
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.leaveNew,
+                name: 'leave-new',
+                builder: (c, s) {
+                  final account = c.read<AuthBloc>().state.context!;
+                  return BlocProvider(
+                    key: ValueKey(account),
+                    create: (_) =>
+                        LeaveRequestFormBloc(leaveRepository, account)
+                          ..add(const LeaveRequestFormStarted()),
+                    child: const LeaveRequestFormPage(),
+                  );
+                },
+              ),
+            ],
+          ),
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'leave-balances',
+              moduleId: AppModuleIds.leave,
+              name: (l) => l.leaveBalancesNav,
+              icon: Icons.account_balance_wallet_outlined,
+              route: AppRoutes.leaveBalances,
+              navigationGroup: NavigationGroup.workforce,
+              order: 32,
+              desktopVisible: false,
+              mobileVisible: false,
+              anyCapabilities: {
+                UserCapability.viewMyLeaveBalance,
+                UserCapability.viewCompanyLeave,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.leaveBalances,
+                name: 'leave-balances',
+                builder: (c, s) =>
+                    BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                      selector: (s) => s.context,
+                      builder: (context, account) {
+                        if (account == null) return const SizedBox.shrink();
+                        return LeaveBalancesPage(
+                          repository: leaveRepository,
+                          account: account,
+                          employeeRepository: employeeRepository,
+                        );
+                      },
+                    ),
+              ),
+            ],
+          ),
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'leave-calendar',
+              moduleId: AppModuleIds.leave,
+              name: (l) => l.leaveCalendarNav,
+              icon: Icons.calendar_month_outlined,
+              route: AppRoutes.leaveCalendar,
+              navigationGroup: NavigationGroup.workforce,
+              order: 33,
+              desktopVisible: false,
+              mobileVisible: false,
+              anyCapabilities: {
+                UserCapability.viewMyLeave,
+                UserCapability.viewTeamLeave,
+                UserCapability.viewCompanyLeave,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.leaveCalendar,
+                name: 'leave-calendar',
+                builder: (c, s) {
+                  final account = c.read<AuthBloc>().state.context!;
+                  return BlocProvider(
+                    key: ValueKey(account),
+                    create: (_) =>
+                        LeaveCalendarCubit(leaveRepository, account)..load(),
+                    child: const LeaveCalendarPage(),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     AppModule(
       id: AppModuleIds.reports,
       destinations: [
@@ -843,6 +1500,9 @@ ModuleRegistry createErpRegistry(
               AppPermission.shiftView,
               AppPermission.workLocationView,
               AppPermission.attendancePolicyView,
+              AppPermission.leaveTypeView,
+              AppPermission.leavePolicyView,
+              AppPermission.holidayView,
               AppPermission.companyManage,
               AppPermission.userManage,
               AppPermission.roleManage,
@@ -852,11 +1512,17 @@ ModuleRegistry createErpRegistry(
             shiftRepository: shiftRepository,
             workLocationRepository: workLocationRepository,
             attendancePolicyRepository: attendancePolicyRepository,
+            leaveTypeRepository: leaveTypeRepository,
+            leavePolicyRepository: leavePolicyRepository,
+            holidayRepository: holidayRepository,
           ),
         ),
         shiftsDestination(),
         workLocationsDestination(),
         attendancePoliciesDestination(),
+        if (leaveTypeRepository != null) leaveTypeDestination(),
+        if (leavePolicyRepository != null) leavePolicyDestination(),
+        if (holidayRepository != null) holidayDestination(),
       ],
     ),
     AppModule(

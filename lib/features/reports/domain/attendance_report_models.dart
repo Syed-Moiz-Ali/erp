@@ -188,10 +188,35 @@ class AttendanceTrendPoint {
   const AttendanceTrendPoint(
     this.date,
     this.recordedDays,
-    this.workMilliseconds,
-  );
+    this.workMilliseconds, {
+    this.completedDays = 0,
+    this.lateDays = 0,
+    this.breakMilliseconds = 0,
+    this.issueDays = 0,
+  });
   final DateTime date;
-  final int recordedDays, workMilliseconds;
+  final int recordedDays,
+      workMilliseconds,
+      completedDays,
+      lateDays,
+      breakMilliseconds,
+      issueDays;
+}
+
+/// One slice of the recorded-attendance status composition for the period.
+class AttendanceStatusSlice {
+  const AttendanceStatusSlice(this.status, this.count);
+  final AttendanceReportStatus status;
+  final int count;
+}
+
+enum AttendanceReportStatus { completed, late, working, issues }
+
+/// A single issue category with its count for the selected period.
+class AttendanceIssueCategory {
+  const AttendanceIssueCategory(this.code, this.count);
+  final String code;
+  final int count;
 }
 
 enum ReportGranularity { day, week, month }
@@ -225,11 +250,24 @@ List<AttendanceTrendPoint> aggregateTrend(
     final key = _bucketStart(point.date, granularity);
     final existing = buckets[key];
     buckets[key] = existing == null
-        ? AttendanceTrendPoint(key, point.recordedDays, point.workMilliseconds)
+        ? AttendanceTrendPoint(
+            key,
+            point.recordedDays,
+            point.workMilliseconds,
+            completedDays: point.completedDays,
+            lateDays: point.lateDays,
+            breakMilliseconds: point.breakMilliseconds,
+            issueDays: point.issueDays,
+          )
         : AttendanceTrendPoint(
             key,
             existing.recordedDays + point.recordedDays,
             existing.workMilliseconds + point.workMilliseconds,
+            completedDays: existing.completedDays + point.completedDays,
+            lateDays: existing.lateDays + point.lateDays,
+            breakMilliseconds:
+                existing.breakMilliseconds + point.breakMilliseconds,
+            issueDays: existing.issueDays + point.issueDays,
           );
   }
   return buckets.values.toList()..sort((a, b) => a.date.compareTo(b.date));
@@ -256,9 +294,13 @@ class AttendanceReportData {
     required List<AttendanceReportRow> rows,
     required List<AttendanceTrendPoint> trend,
     required List<AttendanceGroupSummary> groups,
+    List<AttendanceStatusSlice> statusDistribution = const [],
+    List<AttendanceIssueCategory> issueBreakdown = const [],
   }) : rows = List.unmodifiable(rows),
        trend = List.unmodifiable(trend),
-       groups = List.unmodifiable(groups);
+       groups = List.unmodifiable(groups),
+       statusDistribution = List.unmodifiable(statusDistribution),
+       issueBreakdown = List.unmodifiable(issueBreakdown);
   final AttendanceReportType type;
   final AttendanceReportFilter filter;
   final AttendanceReportSummary summary;
@@ -266,4 +308,6 @@ class AttendanceReportData {
   final List<AttendanceReportRow> rows;
   final List<AttendanceTrendPoint> trend;
   final List<AttendanceGroupSummary> groups;
+  final List<AttendanceStatusSlice> statusDistribution;
+  final List<AttendanceIssueCategory> issueBreakdown;
 }

@@ -3113,7 +3113,7 @@ abstract class AppLocalizations {
   /// No description provided for @cfgConfiguration.
   ///
   /// In en, this message translates to:
-  /// **'Configuration'**
+  /// **'Settings'**
   String get cfgConfiguration;
 
   /// No description provided for @cfgShifts.
@@ -6176,6 +6176,66 @@ abstract class AppLocalizations {
   /// **'A correction request is waiting for review.'**
   String get notifPendingReviewBody;
 
+  /// No description provided for @notifLeaveSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request submitted'**
+  String get notifLeaveSubmittedTitle;
+
+  /// No description provided for @notifLeaveSubmittedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was submitted for approval.'**
+  String get notifLeaveSubmittedBody;
+
+  /// No description provided for @notifLeaveApprovedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request approved'**
+  String get notifLeaveApprovedTitle;
+
+  /// No description provided for @notifLeaveApprovedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was approved.'**
+  String get notifLeaveApprovedBody;
+
+  /// No description provided for @notifLeaveRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request rejected'**
+  String get notifLeaveRejectedTitle;
+
+  /// No description provided for @notifLeaveRejectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was not approved.'**
+  String get notifLeaveRejectedBody;
+
+  /// No description provided for @notifLeaveCancelledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request cancelled'**
+  String get notifLeaveCancelledTitle;
+
+  /// No description provided for @notifLeaveCancelledBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A leave request was cancelled.'**
+  String get notifLeaveCancelledBody;
+
+  /// No description provided for @notifLeaveApprovalRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave approval required'**
+  String get notifLeaveApprovalRequiredTitle;
+
+  /// No description provided for @notifLeaveApprovalRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A team leave request is waiting for your review.'**
+  String get notifLeaveApprovalRequiredBody;
+
   /// No description provided for @notifUnknownTitle.
   ///
   /// In en, this message translates to:
@@ -6325,6 +6385,1206 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage'**
   String get profileManage;
+
+  /// No description provided for @settingsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your organization, attendance configuration and preferences.'**
+  String get settingsIntro;
+
+  /// No description provided for @settingsAttendanceCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance configuration'**
+  String get settingsAttendanceCategory;
+
+  /// No description provided for @settingsAttendanceCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure how employees work and record attendance.'**
+  String get settingsAttendanceCategoryDesc;
+
+  /// No description provided for @settingsPreferencesCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal preferences'**
+  String get settingsPreferencesCategory;
+
+  /// No description provided for @settingsPreferencesCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust your own app preferences.'**
+  String get settingsPreferencesCategoryDesc;
+
+  /// No description provided for @settingsSystemCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsSystemCategory;
+
+  /// No description provided for @settingsSystemCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync and application status.'**
+  String get settingsSystemCategoryDesc;
+
+  /// No description provided for @settingsShiftDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Set working hours, working days and break defaults.'**
+  String get settingsShiftDesc;
+
+  /// No description provided for @settingsLocationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage workplaces and attendance location rules.'**
+  String get settingsLocationDesc;
+
+  /// No description provided for @settingsPolicyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Define attendance, break and correction rules.'**
+  String get settingsPolicyDesc;
+
+  /// No description provided for @settingsLanguageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred application language.'**
+  String get settingsLanguageDesc;
+
+  /// No description provided for @settingsNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Control attendance reminders for your account.'**
+  String get settingsNotificationsDesc;
+
+  /// No description provided for @settingsSyncDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View sync status and retry failed changes.'**
+  String get settingsSyncDesc;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze attendance activity, work hours, timing and record quality.'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportActivityTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance activity'**
+  String get reportActivityTrend;
+
+  /// No description provided for @reportActivityTrendDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded records by date.'**
+  String get reportActivityTrendDesc;
+
+  /// No description provided for @reportStatusDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance status'**
+  String get reportStatusDistribution;
+
+  /// No description provided for @reportStatusDistributionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Composition of recorded records.'**
+  String get reportStatusDistributionDesc;
+
+  /// No description provided for @reportWorkHoursTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded work hours'**
+  String get reportWorkHoursTrend;
+
+  /// No description provided for @reportWorkHoursTrendDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Total recorded work time by date.'**
+  String get reportWorkHoursTrendDesc;
+
+  /// No description provided for @reportLateTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Late attendance'**
+  String get reportLateTrend;
+
+  /// No description provided for @reportLateTrendDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Late records by date.'**
+  String get reportLateTrendDesc;
+
+  /// No description provided for @reportBreakTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Break time'**
+  String get reportBreakTrend;
+
+  /// No description provided for @reportBreakTrendDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded break time by date.'**
+  String get reportBreakTrendDesc;
+
+  /// No description provided for @reportIssuesByType.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues by type'**
+  String get reportIssuesByType;
+
+  /// No description provided for @reportIssuesByTypeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'What needs attention in this period.'**
+  String get reportIssuesByTypeDesc;
+
+  /// No description provided for @reportNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get reportNeedsAttention;
+
+  /// No description provided for @reportDetailedRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed records'**
+  String get reportDetailedRecords;
+
+  /// No description provided for @reportStatusWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get reportStatusWorking;
+
+  /// No description provided for @reportStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get reportStatusCompleted;
+
+  /// No description provided for @reportStatusLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get reportStatusLate;
+
+  /// No description provided for @reportStatusIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues'**
+  String get reportStatusIssues;
+
+  /// No description provided for @reportIssueRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected attendance'**
+  String get reportIssueRejected;
+
+  /// No description provided for @reportIssueSyncFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failure'**
+  String get reportIssueSyncFailure;
+
+  /// No description provided for @reportIssuePendingCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending correction'**
+  String get reportIssuePendingCorrection;
+
+  /// No description provided for @reportIssueMissingPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing punch out'**
+  String get reportIssueMissingPunchOut;
+
+  /// No description provided for @reportViewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team view'**
+  String get reportViewTeam;
+
+  /// No description provided for @reportViewCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company view'**
+  String get reportViewCompany;
+
+  /// No description provided for @reportRecordedEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded employees'**
+  String get reportRecordedEmployees;
+
+  /// No description provided for @permissionLeaveViewSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'View own leave'**
+  String get permissionLeaveViewSelf;
+
+  /// No description provided for @permissionLeaveRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request leave'**
+  String get permissionLeaveRequest;
+
+  /// No description provided for @permissionLeaveCancelSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel own leave'**
+  String get permissionLeaveCancelSelf;
+
+  /// No description provided for @permissionLeaveViewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'View team leave'**
+  String get permissionLeaveViewTeam;
+
+  /// No description provided for @permissionLeaveApproveTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve team leave'**
+  String get permissionLeaveApproveTeam;
+
+  /// No description provided for @permissionLeaveViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View company leave'**
+  String get permissionLeaveViewAll;
+
+  /// No description provided for @permissionLeaveApproveAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve company leave'**
+  String get permissionLeaveApproveAll;
+
+  /// No description provided for @permissionLeaveManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave'**
+  String get permissionLeaveManage;
+
+  /// No description provided for @permissionLeaveBalanceViewSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'View own leave balance'**
+  String get permissionLeaveBalanceViewSelf;
+
+  /// No description provided for @permissionLeaveBalanceViewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'View team leave balances'**
+  String get permissionLeaveBalanceViewTeam;
+
+  /// No description provided for @permissionLeaveBalanceViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View company leave balances'**
+  String get permissionLeaveBalanceViewAll;
+
+  /// No description provided for @permissionLeaveBalanceAdjust.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust leave balances'**
+  String get permissionLeaveBalanceAdjust;
+
+  /// No description provided for @permissionLeaveTypeView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave types'**
+  String get permissionLeaveTypeView;
+
+  /// No description provided for @permissionLeaveTypeManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave types'**
+  String get permissionLeaveTypeManage;
+
+  /// No description provided for @permissionLeavePolicyView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave policies'**
+  String get permissionLeavePolicyView;
+
+  /// No description provided for @permissionLeavePolicyManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave policies'**
+  String get permissionLeavePolicyManage;
+
+  /// No description provided for @permissionHolidayView.
+  ///
+  /// In en, this message translates to:
+  /// **'View holidays'**
+  String get permissionHolidayView;
+
+  /// No description provided for @permissionHolidayManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage holidays'**
+  String get permissionHolidayManage;
+
+  /// No description provided for @permissionLeaveReportView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave reports'**
+  String get permissionLeaveReportView;
+
+  /// No description provided for @shellLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get shellLeave;
+
+  /// No description provided for @leaveMyLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'My leave'**
+  String get leaveMyLeave;
+
+  /// No description provided for @leaveNewRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New request'**
+  String get leaveNewRequest;
+
+  /// No description provided for @leaveMyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get leaveMyRequests;
+
+  /// No description provided for @leaveApprovals.
+  ///
+  /// In en, this message translates to:
+  /// **'Approvals'**
+  String get leaveApprovals;
+
+  /// No description provided for @leaveTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team leave'**
+  String get leaveTeam;
+
+  /// No description provided for @leaveAllNav.
+  ///
+  /// In en, this message translates to:
+  /// **'All leave'**
+  String get leaveAllNav;
+
+  /// No description provided for @leaveBalancesNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances'**
+  String get leaveBalancesNav;
+
+  /// No description provided for @leaveCalendarNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get leaveCalendarNav;
+
+  /// No description provided for @leaveTypesNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave types'**
+  String get leaveTypesNav;
+
+  /// No description provided for @leavePoliciesNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave policies'**
+  String get leavePoliciesNav;
+
+  /// No description provided for @holidaysNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Holidays'**
+  String get holidaysNav;
+
+  /// No description provided for @leaveTypeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure the kinds of leave employees can request.'**
+  String get leaveTypeIntro;
+
+  /// No description provided for @leavePolicyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Define entitlement and request rules for each leave type.'**
+  String get leavePolicyIntro;
+
+  /// No description provided for @holidayIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure public, company and optional holidays.'**
+  String get holidayIntro;
+
+  /// No description provided for @leaveType.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave type'**
+  String get leaveType;
+
+  /// No description provided for @leaveCompensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation'**
+  String get leaveCompensation;
+
+  /// No description provided for @leaveRequiresApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires approval'**
+  String get leaveRequiresApproval;
+
+  /// No description provided for @leaveAllowsHalfDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Allows half day'**
+  String get leaveAllowsHalfDay;
+
+  /// No description provided for @leaveRequiresReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason required'**
+  String get leaveRequiresReason;
+
+  /// No description provided for @leaveRequiresAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment required'**
+  String get leaveRequiresAttachment;
+
+  /// No description provided for @leaveCompensationPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get leaveCompensationPaid;
+
+  /// No description provided for @leaveCompensationUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get leaveCompensationUnpaid;
+
+  /// No description provided for @leaveCompensationInformational.
+  ///
+  /// In en, this message translates to:
+  /// **'Informational'**
+  String get leaveCompensationInformational;
+
+  /// No description provided for @leavePolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave policy'**
+  String get leavePolicy;
+
+  /// No description provided for @leavePolicyLeaveType.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave type'**
+  String get leavePolicyLeaveType;
+
+  /// No description provided for @leavePolicyEntitlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual entitlement'**
+  String get leavePolicyEntitlement;
+
+  /// No description provided for @leavePolicyMinDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum request'**
+  String get leavePolicyMinDays;
+
+  /// No description provided for @leavePolicyMaxConsecutive.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum consecutive days'**
+  String get leavePolicyMaxConsecutive;
+
+  /// No description provided for @leavePolicyAdvanceNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance notice'**
+  String get leavePolicyAdvanceNotice;
+
+  /// No description provided for @leavePolicyAllowPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow past requests'**
+  String get leavePolicyAllowPast;
+
+  /// No description provided for @leavePolicyPastWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Past request window'**
+  String get leavePolicyPastWindow;
+
+  /// No description provided for @leavePolicyNegative.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow negative balance'**
+  String get leavePolicyNegative;
+
+  /// No description provided for @leavePolicyCarryForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry forward'**
+  String get leavePolicyCarryForward;
+
+  /// No description provided for @leavePolicyCarryLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry forward limit'**
+  String get leavePolicyCarryLimit;
+
+  /// No description provided for @leavePolicyEmployment.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicable employment types'**
+  String get leavePolicyEmployment;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get holiday;
+
+  /// No description provided for @holidayDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get holidayDate;
+
+  /// No description provided for @holidayEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get holidayEndDate;
+
+  /// No description provided for @holidayTypeField.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get holidayTypeField;
+
+  /// No description provided for @holidayScopeField.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope'**
+  String get holidayScopeField;
+
+  /// No description provided for @holidayWorkLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'Work locations'**
+  String get holidayWorkLocations;
+
+  /// No description provided for @holidayOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional holiday'**
+  String get holidayOptional;
+
+  /// No description provided for @holidayTypePublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Public holiday'**
+  String get holidayTypePublic;
+
+  /// No description provided for @holidayTypeCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company holiday'**
+  String get holidayTypeCompany;
+
+  /// No description provided for @holidayTypeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional holiday'**
+  String get holidayTypeOptional;
+
+  /// No description provided for @holidayTypeSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'Special closure'**
+  String get holidayTypeSpecial;
+
+  /// No description provided for @holidayScopeCompanyWide.
+  ///
+  /// In en, this message translates to:
+  /// **'Company wide'**
+  String get holidayScopeCompanyWide;
+
+  /// No description provided for @holidayScopeSpecific.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific work locations'**
+  String get holidayScopeSpecific;
+
+  /// No description provided for @leaveRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request leave'**
+  String get leaveRequestTitle;
+
+  /// No description provided for @leaveStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get leaveStartDate;
+
+  /// No description provided for @leaveEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get leaveEndDate;
+
+  /// No description provided for @leaveStartPortion.
+  ///
+  /// In en, this message translates to:
+  /// **'First day'**
+  String get leaveStartPortion;
+
+  /// No description provided for @leaveEndPortion.
+  ///
+  /// In en, this message translates to:
+  /// **'Last day'**
+  String get leaveEndPortion;
+
+  /// No description provided for @leaveDayFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full day'**
+  String get leaveDayFull;
+
+  /// No description provided for @leaveDayFirstHalf.
+  ///
+  /// In en, this message translates to:
+  /// **'First half'**
+  String get leaveDayFirstHalf;
+
+  /// No description provided for @leaveDaySecondHalf.
+  ///
+  /// In en, this message translates to:
+  /// **'Second half'**
+  String get leaveDaySecondHalf;
+
+  /// No description provided for @leaveReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get leaveReasonLabel;
+
+  /// No description provided for @leaveAttachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment'**
+  String get leaveAttachmentLabel;
+
+  /// No description provided for @leavePreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get leavePreviewTitle;
+
+  /// No description provided for @leaveRequestedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested days'**
+  String get leaveRequestedDays;
+
+  /// No description provided for @leaveAvailableDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get leaveAvailableDays;
+
+  /// No description provided for @leaveAfterApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'After approval'**
+  String get leaveAfterApproval;
+
+  /// No description provided for @leaveExcludedWeekends.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekends excluded'**
+  String get leaveExcludedWeekends;
+
+  /// No description provided for @leaveExcludedHolidays.
+  ///
+  /// In en, this message translates to:
+  /// **'Holidays excluded'**
+  String get leaveExcludedHolidays;
+
+  /// No description provided for @leaveSubmitRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit request'**
+  String get leaveSubmitRequest;
+
+  /// No description provided for @leaveNoTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'No leave types are available.'**
+  String get leaveNoTypes;
+
+  /// No description provided for @leaveSelectType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select leave type'**
+  String get leaveSelectType;
+
+  /// No description provided for @leaveStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get leaveStatusPending;
+
+  /// No description provided for @leaveStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get leaveStatusApproved;
+
+  /// No description provided for @leaveStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get leaveStatusRejected;
+
+  /// No description provided for @leaveStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get leaveStatusCancelled;
+
+  /// No description provided for @leaveApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get leaveApprove;
+
+  /// No description provided for @leaveReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get leaveReject;
+
+  /// No description provided for @leaveCancelRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel request'**
+  String get leaveCancelRequest;
+
+  /// No description provided for @leaveReviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get leaveReviewNote;
+
+  /// No description provided for @leaveCancelReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation reason'**
+  String get leaveCancelReason;
+
+  /// No description provided for @leaveEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get leaveEmployee;
+
+  /// No description provided for @leaveDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get leaveDepartment;
+
+  /// No description provided for @leaveDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get leaveDateRange;
+
+  /// No description provided for @leaveApprovedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewed by'**
+  String get leaveApprovedBy;
+
+  /// No description provided for @leaveSubmittedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get leaveSubmittedOn;
+
+  /// No description provided for @leaveViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get leaveViewDetails;
+
+  /// No description provided for @leaveApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get leaveApply;
+
+  /// No description provided for @leaveBalancesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave balances'**
+  String get leaveBalancesTitle;
+
+  /// No description provided for @leaveEntitlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Entitlement'**
+  String get leaveEntitlement;
+
+  /// No description provided for @leaveUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get leaveUsed;
+
+  /// No description provided for @leavePendingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get leavePendingBalance;
+
+  /// No description provided for @leaveAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get leaveAvailable;
+
+  /// No description provided for @leaveAdjustBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust balance'**
+  String get leaveAdjustBalance;
+
+  /// No description provided for @leaveAdjustAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add days'**
+  String get leaveAdjustAdd;
+
+  /// No description provided for @leaveAdjustRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove days'**
+  String get leaveAdjustRemove;
+
+  /// No description provided for @leaveAdjustQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get leaveAdjustQuantity;
+
+  /// No description provided for @leaveAdjustReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get leaveAdjustReason;
+
+  /// No description provided for @leaveLedger.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance history'**
+  String get leaveLedger;
+
+  /// No description provided for @leaveNoBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'No balance records.'**
+  String get leaveNoBalance;
+
+  /// No description provided for @leaveSelectEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get leaveSelectEmployee;
+
+  /// No description provided for @leaveEmployeeFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get leaveEmployeeFilter;
+
+  /// No description provided for @leaveCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave calendar'**
+  String get leaveCalendarTitle;
+
+  /// No description provided for @leaveCalendarLegendLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leaveCalendarLegendLeave;
+
+  /// No description provided for @leaveCalendarLegendHoliday.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get leaveCalendarLegendHoliday;
+
+  /// No description provided for @leaveCalendarEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No leave or holidays in this period.'**
+  String get leaveCalendarEmpty;
+
+  /// No description provided for @leaveFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get leaveFrom;
+
+  /// No description provided for @leaveTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get leaveTo;
+
+  /// No description provided for @leaveRequestsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No leave requests.'**
+  String get leaveRequestsEmpty;
+
+  /// No description provided for @leaveApprovalsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests are waiting for review.'**
+  String get leaveApprovalsEmpty;
+
+  /// No description provided for @leaveNoPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no pending leave requests.'**
+  String get leaveNoPendingRequests;
+
+  /// No description provided for @leaveOnLeaveToday.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave today'**
+  String get leaveOnLeaveToday;
+
+  /// No description provided for @workdayScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get workdayScheduled;
+
+  /// No description provided for @workdayWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get workdayWorking;
+
+  /// No description provided for @workdayOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'On break'**
+  String get workdayOnBreak;
+
+  /// No description provided for @workdayCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get workdayCompleted;
+
+  /// No description provided for @workdayIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get workdayIncomplete;
+
+  /// No description provided for @workdayOnLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave'**
+  String get workdayOnLeave;
+
+  /// No description provided for @workdayHoliday.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get workdayHoliday;
+
+  /// No description provided for @workdayNonWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-working'**
+  String get workdayNonWorking;
+
+  /// No description provided for @workdayIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue'**
+  String get workdayIssue;
+
+  /// No description provided for @leavePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have access to leave.'**
+  String get leavePermissionDenied;
+
+  /// No description provided for @leaveStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave data could not be loaded.'**
+  String get leaveStorageError;
+
+  /// No description provided for @leaveUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave is not available.'**
+  String get leaveUnavailable;
+
+  /// No description provided for @leaveTypeInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected leave type is not available.'**
+  String get leaveTypeInactive;
+
+  /// No description provided for @leaveNoEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is not linked to an employee.'**
+  String get leaveNoEmployee;
+
+  /// No description provided for @leaveInvalidDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'The end date must be after the start date.'**
+  String get leaveInvalidDateRange;
+
+  /// No description provided for @leaveReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'A reason is required.'**
+  String get leaveReasonRequired;
+
+  /// No description provided for @leaveNoWorkingDays.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected range has no working days.'**
+  String get leaveNoWorkingDays;
+
+  /// No description provided for @leaveMinimumDays.
+  ///
+  /// In en, this message translates to:
+  /// **'The request is shorter than the policy minimum.'**
+  String get leaveMinimumDays;
+
+  /// No description provided for @leaveOverlapping.
+  ///
+  /// In en, this message translates to:
+  /// **'This request overlaps an existing request.'**
+  String get leaveOverlapping;
+
+  /// No description provided for @leaveInsufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'There is not enough leave balance.'**
+  String get leaveInsufficientBalance;
+
+  /// No description provided for @leavePastRequestNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Past-dated leave is not allowed.'**
+  String get leavePastRequestNotAllowed;
+
+  /// No description provided for @leaveAdvanceNoticeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This request does not meet the advance notice requirement.'**
+  String get leaveAdvanceNoticeRequired;
+
+  /// No description provided for @leaveInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid quantity.'**
+  String get leaveInvalidQuantity;
+
+  /// No description provided for @leaveRequestNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The leave request was not found.'**
+  String get leaveRequestNotFound;
+
+  /// No description provided for @leaveAlreadyReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'This request has already been reviewed.'**
+  String get leaveAlreadyReviewed;
+
+  /// No description provided for @leaveCannotCancelApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved leave can only be cancelled by a manager.'**
+  String get leaveCannotCancelApproved;
+
+  /// No description provided for @leaveReviewNoteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'A note is required.'**
+  String get leaveReviewNoteRequired;
+
+  /// No description provided for @leaveSelfApprovalNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot approve your own leave.'**
+  String get leaveSelfApprovalNotAllowed;
+
+  /// No description provided for @leaveSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave saved.'**
+  String get leaveSaved;
+
+  /// No description provided for @leaveRequestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request submitted.'**
+  String get leaveRequestSubmitted;
+
+  /// No description provided for @leaveIncludeInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Include inactive'**
+  String get leaveIncludeInactive;
+
+  /// No description provided for @settingsLeaveCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave & holidays'**
+  String get settingsLeaveCategory;
+
+  /// No description provided for @settingsLeaveCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure leave types, policies and holidays.'**
+  String get settingsLeaveCategoryDesc;
 }
 
 class _AppLocalizationsDelegate

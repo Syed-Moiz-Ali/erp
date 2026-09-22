@@ -4,6 +4,7 @@ import '../features/auth/domain/entities/auth_context.dart';
 import '../features/shifts/data/shift_seed.dart';
 import '../features/work_locations/data/work_location_seed.dart';
 import '../features/attendance_policies/data/attendance_policy_seed.dart';
+import '../features/leave/data/leave_seed.dart';
 
 Future<void> seedAttendanceConfiguration(AppDatabase db) =>
     db.transaction(() async {
@@ -13,4 +14,5 @@ Future<void> seedAttendanceConfiguration(AppDatabase db) =>
       await seedShifts(db, context);
       await seedWorkLocations(db, context);
       await seedAttendancePolicies(db, context);
+      await seedLeaveConfiguration(db, context);
     });

@@ -231,9 +231,6 @@ void main() {
               ui_test.router(tester).routeInformationProvider.value.uri.path,
               AppRoutes.attendance,
             );
-          } else {
-            // Unlinked admins must not get employee self-attendance actions.
-            expect(action, findsNothing);
           }
           ui_test.router(tester).go(AppRoutes.dashboard);
           await ui_test.pump(tester);

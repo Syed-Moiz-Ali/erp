@@ -60,6 +60,7 @@ class DemoAuthSource {
               'dashboard',
               'employees',
               'attendance',
+              'leave',
               'reports',
               'settings',
             },

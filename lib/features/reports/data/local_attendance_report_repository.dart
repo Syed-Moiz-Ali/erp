@@ -281,12 +281,42 @@ SELECT COUNT(*) recorded,COUNT(DISTINCT employee_id) employees,
       final trendRows = await db
           .customSelect(
             '''$base
-SELECT report_date,COUNT(*) recorded,COALESCE(SUM(work_ms),0) work_ms
+SELECT report_date,COUNT(*) recorded,COALESCE(SUM(work_ms),0) work_ms,
+ COALESCE(SUM(CASE WHEN state='completed' THEN 1 ELSE 0 END),0) completed,
+ COALESCE(SUM(CASE WHEN status='late' THEN 1 ELSE 0 END),0) late,
+ COALESCE(SUM(break_ms),0) break_ms,
+ COALESCE(SUM(issue_flag),0) issues
 FROM scoped GROUP BY report_date ORDER BY report_date''',
             variables: vars,
             readsFrom: reads,
           )
           .get();
+      final distributionRow = await db
+          .customSelect(
+            '''$base
+SELECT
+ COALESCE(SUM(CASE WHEN issue_flag=1 THEN 1 ELSE 0 END),0) issues,
+ COALESCE(SUM(CASE WHEN issue_flag=0 AND status='late' THEN 1 ELSE 0 END),0) late,
+ COALESCE(SUM(CASE WHEN issue_flag=0 AND status!='late' AND state='completed' THEN 1 ELSE 0 END),0) completed,
+ COALESCE(SUM(CASE WHEN issue_flag=0 AND status!='late' AND state!='completed' THEN 1 ELSE 0 END),0) working
+FROM scoped''',
+            variables: vars,
+            readsFrom: reads,
+          )
+          .getSingle();
+      final issueRow = await db
+          .customSelect(
+            '''$base
+SELECT
+ COALESCE(SUM(CASE WHEN sync_status='rejected' THEN 1 ELSE 0 END),0) rejected,
+ COALESCE(SUM(CASE WHEN sync_status='failed' THEN 1 ELSE 0 END),0) sync_failure,
+ COALESCE(SUM(CASE WHEN pending_count>0 THEN 1 ELSE 0 END),0) pending_correction,
+ COALESCE(SUM(CASE WHEN incomplete_flag=1 AND sync_status NOT IN ('failed','rejected') AND pending_count=0 THEN 1 ELSE 0 END),0) missing_punch_out
+FROM scoped''',
+            variables: vars,
+            readsFrom: reads,
+          )
+          .getSingle();
       final groupColumn = switch (filter.group) {
         AttendanceReportGroup.department => 'department',
         AttendanceReportGroup.shift =>
@@ -400,9 +430,33 @@ GROUP BY $groupColumn ORDER BY group_name COLLATE NOCASE''',
                 DateTime.parse(r.read<String>('report_date')),
                 r.read<int>('recorded'),
                 r.read<int>('work_ms'),
+                completedDays: r.read<int>('completed'),
+                lateDays: r.read<int>('late'),
+                breakMilliseconds: r.read<int>('break_ms'),
+                issueDays: r.read<int>('issues'),
               ),
             )
             .toList(),
+        statusDistribution: [
+          for (final (status, column) in const [
+            (AttendanceReportStatus.completed, 'completed'),
+            (AttendanceReportStatus.late, 'late'),
+            (AttendanceReportStatus.working, 'working'),
+            (AttendanceReportStatus.issues, 'issues'),
+          ])
+            if (distributionRow.read<int>(column) > 0)
+              AttendanceStatusSlice(status, distributionRow.read<int>(column)),
+        ],
+        issueBreakdown: [
+          for (final (code, column) in const [
+            ('rejected', 'rejected'),
+            ('syncFailure', 'sync_failure'),
+            ('pendingCorrection', 'pending_correction'),
+            ('missingPunchOut', 'missing_punch_out'),
+          ])
+            if (issueRow.read<int>(column) > 0)
+              AttendanceIssueCategory(code, issueRow.read<int>(column)),
+        ],
         groups: groupRows
             .map(
               (r) => AttendanceGroupSummary(

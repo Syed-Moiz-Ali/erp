@@ -86,7 +86,7 @@ void main() {
                 .widgetList<AppSidebarItem>(find.byType(AppSidebarItem))
                 .where((item) => item.selected);
             expect(selected.length, 1);
-            expect(selected.single.item.id, 'shifts');
+            expect(selected.single.item.id, 'settings');
           }
           expect(t.takeException(), isNull);
           if (width == 390 || width == 1440) {

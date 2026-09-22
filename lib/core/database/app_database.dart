@@ -1,4 +1,5 @@
 import '../../features/attendance/data/attendance_tables.dart';
+import '../../features/leave/data/leave_tables.dart';
 import '../../features/notifications/data/notifications_table.dart';
 import '../../features/shifts/data/shifts_table.dart';
 import '../../features/work_locations/data/work_locations_table.dart';
@@ -49,6 +50,13 @@ class SyncOutbox extends Table {
     ShiftRecords,
     WorkLocationRecords,
     AttendancePolicyRecords,
+    LeaveTypes,
+    LeavePolicies,
+    EmployeeLeavePolicyAssignments,
+    LeaveBalanceTransactions,
+    LeaveRequests,
+    LeaveRequestEvents,
+    Holidays,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -64,7 +72,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -100,7 +108,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 5 || to != 6) {
+      if (from < 1 || from > 6 || to != 7) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -138,6 +146,15 @@ class AppDatabase extends _$AppDatabase {
         await _ensureColumn(m, syncOutbox, syncOutbox.processingStartedAt);
         await _ensureColumn(m, syncOutbox, syncOutbox.processorId);
       }
+      if (from < 7) {
+        await _ensureTable(m, leaveTypes);
+        await _ensureTable(m, leavePolicies);
+        await _ensureTable(m, employeeLeavePolicyAssignments);
+        await _ensureTable(m, leaveBalanceTransactions);
+        await _ensureTable(m, leaveRequests);
+        await _ensureTable(m, leaveRequestEvents);
+        await _ensureTable(m, holidays);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
@@ -161,6 +178,30 @@ class AppDatabase extends _$AppDatabase {
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS conflict_company_status ON sync_conflicts(company_id, status, created_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_types_company_status ON leave_types(company_id, status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_policies_company_status ON leave_policies(company_id, status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_requests_company_status ON leave_requests(company_id, status, start_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_requests_company_employee ON leave_requests(company_id, employee_id, start_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_ledger_account ON leave_balance_transactions(company_id, employee_id, leave_type_id, leave_year)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS holidays_company_date ON holidays(company_id, date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_assignment_employee ON employee_leave_policy_assignments(company_id, employee_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS leave_request_events_request ON leave_request_events(company_id, request_id)',
       );
       await customStatement(
         "CREATE UNIQUE INDEX IF NOT EXISTS attendance_open ON attendance_days(company_id,employee_id) WHERE state != 'completed'",

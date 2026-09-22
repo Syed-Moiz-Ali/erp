@@ -125,6 +125,7 @@ void main() {
       AppRole.companyAdmin: [
         'dashboard',
         'employees',
+        'attendance',
         'reports',
         'settings',
         'shifts',
@@ -135,6 +136,7 @@ void main() {
       AppRole.superAdmin: [
         'dashboard',
         'employees',
+        'attendance',
         'reports',
         'settings',
         'shifts',
@@ -186,7 +188,7 @@ void main() {
             )
             .destinations
             .map((d) => d.id),
-        ['profile'],
+        ['attendance', 'profile'],
       );
       expect(
         resolver.routeAccess(
@@ -235,13 +237,14 @@ void main() {
             ctx.user.permissions,
             employee: ctx.employeeReference,
           );
-      expect(nav.mobilePrimary.map((d) => d.id), ['dashboard', 'employees']);
+      expect(nav.mobilePrimary.map((d) => d.id), [
+        'dashboard',
+        'employees',
+        'attendance',
+      ]);
       expect(nav.mobileMore.map((d) => d.id), [
         'reports',
         'settings',
-        'shifts',
-        'work-locations',
-        'attendance-policies',
         'profile',
       ]);
       expect(nav.groupsFor(nav.mobileMore).keys, [
@@ -429,10 +432,8 @@ void main() {
             expect(
               bottom.modules.map((m) => m.id),
               username == 'employee'
-                  ? ['dashboard', 'attendance', 'attendance-history', 'more']
-                  : username == 'hr'
-                  ? ['dashboard', 'employees', 'attendance', 'more']
-                  : ['dashboard', 'employees', 'more'],
+                  ? ['dashboard', 'attendance', 'more']
+                  : ['dashboard', 'employees', 'attendance', 'more'],
             );
           } else if (width < 1000) {
             expect(find.byType(AppNavigationRail), findsOneWidget);

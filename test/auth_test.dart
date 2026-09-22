@@ -67,6 +67,7 @@ void main() {
         'dashboard',
         'employees',
         'attendance',
+        'leave',
         'reports',
         'settings',
       });

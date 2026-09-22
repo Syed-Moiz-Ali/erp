@@ -12116,6 +12116,6099 @@ class AttendancePolicyRecordsCompanion
   }
 }
 
+class $LeaveTypesTable extends LeaveTypes
+    with TableInfo<$LeaveTypesTable, LeaveTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LeaveTypesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _compensationMeta = const VerificationMeta(
+    'compensation',
+  );
+  @override
+  late final GeneratedColumn<String> compensation = GeneratedColumn<String>(
+    'compensation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('paid'),
+  );
+  static const VerificationMeta _requiresApprovalMeta = const VerificationMeta(
+    'requiresApproval',
+  );
+  @override
+  late final GeneratedColumn<bool> requiresApproval = GeneratedColumn<bool>(
+    'requires_approval',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("requires_approval" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _allowsHalfDayMeta = const VerificationMeta(
+    'allowsHalfDay',
+  );
+  @override
+  late final GeneratedColumn<bool> allowsHalfDay = GeneratedColumn<bool>(
+    'allows_half_day',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allows_half_day" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _requiresReasonMeta = const VerificationMeta(
+    'requiresReason',
+  );
+  @override
+  late final GeneratedColumn<bool> requiresReason = GeneratedColumn<bool>(
+    'requires_reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("requires_reason" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _requiresAttachmentMeta =
+      const VerificationMeta('requiresAttachment');
+  @override
+  late final GeneratedColumn<bool> requiresAttachment = GeneratedColumn<bool>(
+    'requires_attachment',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("requires_attachment" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _colorKeyMeta = const VerificationMeta(
+    'colorKey',
+  );
+  @override
+  late final GeneratedColumn<String> colorKey = GeneratedColumn<String>(
+    'color_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('annual'),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    code,
+    description,
+    compensation,
+    requiresApproval,
+    allowsHalfDay,
+    requiresReason,
+    requiresAttachment,
+    colorKey,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'leave_types';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LeaveTypeData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('compensation')) {
+      context.handle(
+        _compensationMeta,
+        compensation.isAcceptableOrUnknown(
+          data['compensation']!,
+          _compensationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requires_approval')) {
+      context.handle(
+        _requiresApprovalMeta,
+        requiresApproval.isAcceptableOrUnknown(
+          data['requires_approval']!,
+          _requiresApprovalMeta,
+        ),
+      );
+    }
+    if (data.containsKey('allows_half_day')) {
+      context.handle(
+        _allowsHalfDayMeta,
+        allowsHalfDay.isAcceptableOrUnknown(
+          data['allows_half_day']!,
+          _allowsHalfDayMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requires_reason')) {
+      context.handle(
+        _requiresReasonMeta,
+        requiresReason.isAcceptableOrUnknown(
+          data['requires_reason']!,
+          _requiresReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requires_attachment')) {
+      context.handle(
+        _requiresAttachmentMeta,
+        requiresAttachment.isAcceptableOrUnknown(
+          data['requires_attachment']!,
+          _requiresAttachmentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('color_key')) {
+      context.handle(
+        _colorKeyMeta,
+        colorKey.isAcceptableOrUnknown(data['color_key']!, _colorKeyMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  LeaveTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LeaveTypeData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      compensation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}compensation'],
+      )!,
+      requiresApproval: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}requires_approval'],
+      )!,
+      allowsHalfDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allows_half_day'],
+      )!,
+      requiresReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}requires_reason'],
+      )!,
+      requiresAttachment: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}requires_attachment'],
+      )!,
+      colorKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}color_key'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $LeaveTypesTable createAlias(String alias) {
+    return $LeaveTypesTable(attachedDatabase, alias);
+  }
+}
+
+class LeaveTypeData extends DataClass implements Insertable<LeaveTypeData> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String code;
+  final String description;
+  final String compensation;
+  final bool requiresApproval;
+  final bool allowsHalfDay;
+  final bool requiresReason;
+  final bool requiresAttachment;
+  final String colorKey;
+  final String status;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const LeaveTypeData({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.code,
+    required this.description,
+    required this.compensation,
+    required this.requiresApproval,
+    required this.allowsHalfDay,
+    required this.requiresReason,
+    required this.requiresAttachment,
+    required this.colorKey,
+    required this.status,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['code'] = Variable<String>(code);
+    map['description'] = Variable<String>(description);
+    map['compensation'] = Variable<String>(compensation);
+    map['requires_approval'] = Variable<bool>(requiresApproval);
+    map['allows_half_day'] = Variable<bool>(allowsHalfDay);
+    map['requires_reason'] = Variable<bool>(requiresReason);
+    map['requires_attachment'] = Variable<bool>(requiresAttachment);
+    map['color_key'] = Variable<String>(colorKey);
+    map['status'] = Variable<String>(status);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  LeaveTypesCompanion toCompanion(bool nullToAbsent) {
+    return LeaveTypesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      code: Value(code),
+      description: Value(description),
+      compensation: Value(compensation),
+      requiresApproval: Value(requiresApproval),
+      allowsHalfDay: Value(allowsHalfDay),
+      requiresReason: Value(requiresReason),
+      requiresAttachment: Value(requiresAttachment),
+      colorKey: Value(colorKey),
+      status: Value(status),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory LeaveTypeData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LeaveTypeData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      code: serializer.fromJson<String>(json['code']),
+      description: serializer.fromJson<String>(json['description']),
+      compensation: serializer.fromJson<String>(json['compensation']),
+      requiresApproval: serializer.fromJson<bool>(json['requiresApproval']),
+      allowsHalfDay: serializer.fromJson<bool>(json['allowsHalfDay']),
+      requiresReason: serializer.fromJson<bool>(json['requiresReason']),
+      requiresAttachment: serializer.fromJson<bool>(json['requiresAttachment']),
+      colorKey: serializer.fromJson<String>(json['colorKey']),
+      status: serializer.fromJson<String>(json['status']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'code': serializer.toJson<String>(code),
+      'description': serializer.toJson<String>(description),
+      'compensation': serializer.toJson<String>(compensation),
+      'requiresApproval': serializer.toJson<bool>(requiresApproval),
+      'allowsHalfDay': serializer.toJson<bool>(allowsHalfDay),
+      'requiresReason': serializer.toJson<bool>(requiresReason),
+      'requiresAttachment': serializer.toJson<bool>(requiresAttachment),
+      'colorKey': serializer.toJson<String>(colorKey),
+      'status': serializer.toJson<String>(status),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  LeaveTypeData copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? code,
+    String? description,
+    String? compensation,
+    bool? requiresApproval,
+    bool? allowsHalfDay,
+    bool? requiresReason,
+    bool? requiresAttachment,
+    String? colorKey,
+    String? status,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => LeaveTypeData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    code: code ?? this.code,
+    description: description ?? this.description,
+    compensation: compensation ?? this.compensation,
+    requiresApproval: requiresApproval ?? this.requiresApproval,
+    allowsHalfDay: allowsHalfDay ?? this.allowsHalfDay,
+    requiresReason: requiresReason ?? this.requiresReason,
+    requiresAttachment: requiresAttachment ?? this.requiresAttachment,
+    colorKey: colorKey ?? this.colorKey,
+    status: status ?? this.status,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  LeaveTypeData copyWithCompanion(LeaveTypesCompanion data) {
+    return LeaveTypeData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      code: data.code.present ? data.code.value : this.code,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      compensation: data.compensation.present
+          ? data.compensation.value
+          : this.compensation,
+      requiresApproval: data.requiresApproval.present
+          ? data.requiresApproval.value
+          : this.requiresApproval,
+      allowsHalfDay: data.allowsHalfDay.present
+          ? data.allowsHalfDay.value
+          : this.allowsHalfDay,
+      requiresReason: data.requiresReason.present
+          ? data.requiresReason.value
+          : this.requiresReason,
+      requiresAttachment: data.requiresAttachment.present
+          ? data.requiresAttachment.value
+          : this.requiresAttachment,
+      colorKey: data.colorKey.present ? data.colorKey.value : this.colorKey,
+      status: data.status.present ? data.status.value : this.status,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveTypeData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('description: $description, ')
+          ..write('compensation: $compensation, ')
+          ..write('requiresApproval: $requiresApproval, ')
+          ..write('allowsHalfDay: $allowsHalfDay, ')
+          ..write('requiresReason: $requiresReason, ')
+          ..write('requiresAttachment: $requiresAttachment, ')
+          ..write('colorKey: $colorKey, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    code,
+    description,
+    compensation,
+    requiresApproval,
+    allowsHalfDay,
+    requiresReason,
+    requiresAttachment,
+    colorKey,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LeaveTypeData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.code == this.code &&
+          other.description == this.description &&
+          other.compensation == this.compensation &&
+          other.requiresApproval == this.requiresApproval &&
+          other.allowsHalfDay == this.allowsHalfDay &&
+          other.requiresReason == this.requiresReason &&
+          other.requiresAttachment == this.requiresAttachment &&
+          other.colorKey == this.colorKey &&
+          other.status == this.status &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class LeaveTypesCompanion extends UpdateCompanion<LeaveTypeData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> code;
+  final Value<String> description;
+  final Value<String> compensation;
+  final Value<bool> requiresApproval;
+  final Value<bool> allowsHalfDay;
+  final Value<bool> requiresReason;
+  final Value<bool> requiresAttachment;
+  final Value<String> colorKey;
+  final Value<String> status;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const LeaveTypesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.code = const Value.absent(),
+    this.description = const Value.absent(),
+    this.compensation = const Value.absent(),
+    this.requiresApproval = const Value.absent(),
+    this.allowsHalfDay = const Value.absent(),
+    this.requiresReason = const Value.absent(),
+    this.requiresAttachment = const Value.absent(),
+    this.colorKey = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LeaveTypesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String code,
+    this.description = const Value.absent(),
+    this.compensation = const Value.absent(),
+    this.requiresApproval = const Value.absent(),
+    this.allowsHalfDay = const Value.absent(),
+    this.requiresReason = const Value.absent(),
+    this.requiresAttachment = const Value.absent(),
+    this.colorKey = const Value.absent(),
+    this.status = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       code = Value(code),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<LeaveTypeData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? code,
+    Expression<String>? description,
+    Expression<String>? compensation,
+    Expression<bool>? requiresApproval,
+    Expression<bool>? allowsHalfDay,
+    Expression<bool>? requiresReason,
+    Expression<bool>? requiresAttachment,
+    Expression<String>? colorKey,
+    Expression<String>? status,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (code != null) 'code': code,
+      if (description != null) 'description': description,
+      if (compensation != null) 'compensation': compensation,
+      if (requiresApproval != null) 'requires_approval': requiresApproval,
+      if (allowsHalfDay != null) 'allows_half_day': allowsHalfDay,
+      if (requiresReason != null) 'requires_reason': requiresReason,
+      if (requiresAttachment != null) 'requires_attachment': requiresAttachment,
+      if (colorKey != null) 'color_key': colorKey,
+      if (status != null) 'status': status,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LeaveTypesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? code,
+    Value<String>? description,
+    Value<String>? compensation,
+    Value<bool>? requiresApproval,
+    Value<bool>? allowsHalfDay,
+    Value<bool>? requiresReason,
+    Value<bool>? requiresAttachment,
+    Value<String>? colorKey,
+    Value<String>? status,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return LeaveTypesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      code: code ?? this.code,
+      description: description ?? this.description,
+      compensation: compensation ?? this.compensation,
+      requiresApproval: requiresApproval ?? this.requiresApproval,
+      allowsHalfDay: allowsHalfDay ?? this.allowsHalfDay,
+      requiresReason: requiresReason ?? this.requiresReason,
+      requiresAttachment: requiresAttachment ?? this.requiresAttachment,
+      colorKey: colorKey ?? this.colorKey,
+      status: status ?? this.status,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (compensation.present) {
+      map['compensation'] = Variable<String>(compensation.value);
+    }
+    if (requiresApproval.present) {
+      map['requires_approval'] = Variable<bool>(requiresApproval.value);
+    }
+    if (allowsHalfDay.present) {
+      map['allows_half_day'] = Variable<bool>(allowsHalfDay.value);
+    }
+    if (requiresReason.present) {
+      map['requires_reason'] = Variable<bool>(requiresReason.value);
+    }
+    if (requiresAttachment.present) {
+      map['requires_attachment'] = Variable<bool>(requiresAttachment.value);
+    }
+    if (colorKey.present) {
+      map['color_key'] = Variable<String>(colorKey.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveTypesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('description: $description, ')
+          ..write('compensation: $compensation, ')
+          ..write('requiresApproval: $requiresApproval, ')
+          ..write('allowsHalfDay: $allowsHalfDay, ')
+          ..write('requiresReason: $requiresReason, ')
+          ..write('requiresAttachment: $requiresAttachment, ')
+          ..write('colorKey: $colorKey, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LeavePoliciesTable extends LeavePolicies
+    with TableInfo<$LeavePoliciesTable, LeavePolicyData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LeavePoliciesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _leaveTypeIdMeta = const VerificationMeta(
+    'leaveTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> leaveTypeId = GeneratedColumn<String>(
+    'leave_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _annualEntitlementDaysMeta =
+      const VerificationMeta('annualEntitlementDays');
+  @override
+  late final GeneratedColumn<double> annualEntitlementDays =
+      GeneratedColumn<double>(
+        'annual_entitlement_days',
+        aliasedName,
+        false,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(0),
+      );
+  static const VerificationMeta _allowHalfDayMeta = const VerificationMeta(
+    'allowHalfDay',
+  );
+  @override
+  late final GeneratedColumn<bool> allowHalfDay = GeneratedColumn<bool>(
+    'allow_half_day',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_half_day" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _minimumRequestDaysMeta =
+      const VerificationMeta('minimumRequestDays');
+  @override
+  late final GeneratedColumn<double> minimumRequestDays =
+      GeneratedColumn<double>(
+        'minimum_request_days',
+        aliasedName,
+        false,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(0.5),
+      );
+  static const VerificationMeta _maximumConsecutiveDaysMeta =
+      const VerificationMeta('maximumConsecutiveDays');
+  @override
+  late final GeneratedColumn<int> maximumConsecutiveDays = GeneratedColumn<int>(
+    'maximum_consecutive_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _advanceNoticeDaysMeta = const VerificationMeta(
+    'advanceNoticeDays',
+  );
+  @override
+  late final GeneratedColumn<int> advanceNoticeDays = GeneratedColumn<int>(
+    'advance_notice_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _allowPastRequestMeta = const VerificationMeta(
+    'allowPastRequest',
+  );
+  @override
+  late final GeneratedColumn<bool> allowPastRequest = GeneratedColumn<bool>(
+    'allow_past_request',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_past_request" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _pastRequestWindowDaysMeta =
+      const VerificationMeta('pastRequestWindowDays');
+  @override
+  late final GeneratedColumn<int> pastRequestWindowDays = GeneratedColumn<int>(
+    'past_request_window_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _requiresAttachmentAfterDaysMeta =
+      const VerificationMeta('requiresAttachmentAfterDays');
+  @override
+  late final GeneratedColumn<int> requiresAttachmentAfterDays =
+      GeneratedColumn<int>(
+        'requires_attachment_after_days',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _allowNegativeBalanceMeta =
+      const VerificationMeta('allowNegativeBalance');
+  @override
+  late final GeneratedColumn<bool> allowNegativeBalance = GeneratedColumn<bool>(
+    'allow_negative_balance',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_negative_balance" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _carryForwardEnabledMeta =
+      const VerificationMeta('carryForwardEnabled');
+  @override
+  late final GeneratedColumn<bool> carryForwardEnabled = GeneratedColumn<bool>(
+    'carry_forward_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("carry_forward_enabled" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _carryForwardLimitDaysMeta =
+      const VerificationMeta('carryForwardLimitDays');
+  @override
+  late final GeneratedColumn<double> carryForwardLimitDays =
+      GeneratedColumn<double>(
+        'carry_forward_limit_days',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _applicableEmploymentTypesMeta =
+      const VerificationMeta('applicableEmploymentTypes');
+  @override
+  late final GeneratedColumn<String> applicableEmploymentTypes =
+      GeneratedColumn<String>(
+        'applicable_employment_types',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    code,
+    leaveTypeId,
+    annualEntitlementDays,
+    allowHalfDay,
+    minimumRequestDays,
+    maximumConsecutiveDays,
+    advanceNoticeDays,
+    allowPastRequest,
+    pastRequestWindowDays,
+    requiresAttachmentAfterDays,
+    allowNegativeBalance,
+    carryForwardEnabled,
+    carryForwardLimitDays,
+    applicableEmploymentTypes,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'leave_policies';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LeavePolicyData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('leave_type_id')) {
+      context.handle(
+        _leaveTypeIdMeta,
+        leaveTypeId.isAcceptableOrUnknown(
+          data['leave_type_id']!,
+          _leaveTypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_leaveTypeIdMeta);
+    }
+    if (data.containsKey('annual_entitlement_days')) {
+      context.handle(
+        _annualEntitlementDaysMeta,
+        annualEntitlementDays.isAcceptableOrUnknown(
+          data['annual_entitlement_days']!,
+          _annualEntitlementDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('allow_half_day')) {
+      context.handle(
+        _allowHalfDayMeta,
+        allowHalfDay.isAcceptableOrUnknown(
+          data['allow_half_day']!,
+          _allowHalfDayMeta,
+        ),
+      );
+    }
+    if (data.containsKey('minimum_request_days')) {
+      context.handle(
+        _minimumRequestDaysMeta,
+        minimumRequestDays.isAcceptableOrUnknown(
+          data['minimum_request_days']!,
+          _minimumRequestDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('maximum_consecutive_days')) {
+      context.handle(
+        _maximumConsecutiveDaysMeta,
+        maximumConsecutiveDays.isAcceptableOrUnknown(
+          data['maximum_consecutive_days']!,
+          _maximumConsecutiveDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('advance_notice_days')) {
+      context.handle(
+        _advanceNoticeDaysMeta,
+        advanceNoticeDays.isAcceptableOrUnknown(
+          data['advance_notice_days']!,
+          _advanceNoticeDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('allow_past_request')) {
+      context.handle(
+        _allowPastRequestMeta,
+        allowPastRequest.isAcceptableOrUnknown(
+          data['allow_past_request']!,
+          _allowPastRequestMeta,
+        ),
+      );
+    }
+    if (data.containsKey('past_request_window_days')) {
+      context.handle(
+        _pastRequestWindowDaysMeta,
+        pastRequestWindowDays.isAcceptableOrUnknown(
+          data['past_request_window_days']!,
+          _pastRequestWindowDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requires_attachment_after_days')) {
+      context.handle(
+        _requiresAttachmentAfterDaysMeta,
+        requiresAttachmentAfterDays.isAcceptableOrUnknown(
+          data['requires_attachment_after_days']!,
+          _requiresAttachmentAfterDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('allow_negative_balance')) {
+      context.handle(
+        _allowNegativeBalanceMeta,
+        allowNegativeBalance.isAcceptableOrUnknown(
+          data['allow_negative_balance']!,
+          _allowNegativeBalanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('carry_forward_enabled')) {
+      context.handle(
+        _carryForwardEnabledMeta,
+        carryForwardEnabled.isAcceptableOrUnknown(
+          data['carry_forward_enabled']!,
+          _carryForwardEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('carry_forward_limit_days')) {
+      context.handle(
+        _carryForwardLimitDaysMeta,
+        carryForwardLimitDays.isAcceptableOrUnknown(
+          data['carry_forward_limit_days']!,
+          _carryForwardLimitDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('applicable_employment_types')) {
+      context.handle(
+        _applicableEmploymentTypesMeta,
+        applicableEmploymentTypes.isAcceptableOrUnknown(
+          data['applicable_employment_types']!,
+          _applicableEmploymentTypesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  LeavePolicyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LeavePolicyData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      leaveTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}leave_type_id'],
+      )!,
+      annualEntitlementDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}annual_entitlement_days'],
+      )!,
+      allowHalfDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_half_day'],
+      )!,
+      minimumRequestDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}minimum_request_days'],
+      )!,
+      maximumConsecutiveDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}maximum_consecutive_days'],
+      ),
+      advanceNoticeDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}advance_notice_days'],
+      )!,
+      allowPastRequest: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_past_request'],
+      )!,
+      pastRequestWindowDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}past_request_window_days'],
+      )!,
+      requiresAttachmentAfterDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}requires_attachment_after_days'],
+      ),
+      allowNegativeBalance: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_negative_balance'],
+      )!,
+      carryForwardEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}carry_forward_enabled'],
+      )!,
+      carryForwardLimitDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}carry_forward_limit_days'],
+      ),
+      applicableEmploymentTypes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}applicable_employment_types'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $LeavePoliciesTable createAlias(String alias) {
+    return $LeavePoliciesTable(attachedDatabase, alias);
+  }
+}
+
+class LeavePolicyData extends DataClass implements Insertable<LeavePolicyData> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String code;
+  final String leaveTypeId;
+  final double annualEntitlementDays;
+  final bool allowHalfDay;
+  final double minimumRequestDays;
+  final int? maximumConsecutiveDays;
+  final int advanceNoticeDays;
+  final bool allowPastRequest;
+  final int pastRequestWindowDays;
+  final int? requiresAttachmentAfterDays;
+  final bool allowNegativeBalance;
+  final bool carryForwardEnabled;
+  final double? carryForwardLimitDays;
+  final String applicableEmploymentTypes;
+  final String status;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const LeavePolicyData({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.code,
+    required this.leaveTypeId,
+    required this.annualEntitlementDays,
+    required this.allowHalfDay,
+    required this.minimumRequestDays,
+    this.maximumConsecutiveDays,
+    required this.advanceNoticeDays,
+    required this.allowPastRequest,
+    required this.pastRequestWindowDays,
+    this.requiresAttachmentAfterDays,
+    required this.allowNegativeBalance,
+    required this.carryForwardEnabled,
+    this.carryForwardLimitDays,
+    required this.applicableEmploymentTypes,
+    required this.status,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['code'] = Variable<String>(code);
+    map['leave_type_id'] = Variable<String>(leaveTypeId);
+    map['annual_entitlement_days'] = Variable<double>(annualEntitlementDays);
+    map['allow_half_day'] = Variable<bool>(allowHalfDay);
+    map['minimum_request_days'] = Variable<double>(minimumRequestDays);
+    if (!nullToAbsent || maximumConsecutiveDays != null) {
+      map['maximum_consecutive_days'] = Variable<int>(maximumConsecutiveDays);
+    }
+    map['advance_notice_days'] = Variable<int>(advanceNoticeDays);
+    map['allow_past_request'] = Variable<bool>(allowPastRequest);
+    map['past_request_window_days'] = Variable<int>(pastRequestWindowDays);
+    if (!nullToAbsent || requiresAttachmentAfterDays != null) {
+      map['requires_attachment_after_days'] = Variable<int>(
+        requiresAttachmentAfterDays,
+      );
+    }
+    map['allow_negative_balance'] = Variable<bool>(allowNegativeBalance);
+    map['carry_forward_enabled'] = Variable<bool>(carryForwardEnabled);
+    if (!nullToAbsent || carryForwardLimitDays != null) {
+      map['carry_forward_limit_days'] = Variable<double>(carryForwardLimitDays);
+    }
+    map['applicable_employment_types'] = Variable<String>(
+      applicableEmploymentTypes,
+    );
+    map['status'] = Variable<String>(status);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  LeavePoliciesCompanion toCompanion(bool nullToAbsent) {
+    return LeavePoliciesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      code: Value(code),
+      leaveTypeId: Value(leaveTypeId),
+      annualEntitlementDays: Value(annualEntitlementDays),
+      allowHalfDay: Value(allowHalfDay),
+      minimumRequestDays: Value(minimumRequestDays),
+      maximumConsecutiveDays: maximumConsecutiveDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maximumConsecutiveDays),
+      advanceNoticeDays: Value(advanceNoticeDays),
+      allowPastRequest: Value(allowPastRequest),
+      pastRequestWindowDays: Value(pastRequestWindowDays),
+      requiresAttachmentAfterDays:
+          requiresAttachmentAfterDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requiresAttachmentAfterDays),
+      allowNegativeBalance: Value(allowNegativeBalance),
+      carryForwardEnabled: Value(carryForwardEnabled),
+      carryForwardLimitDays: carryForwardLimitDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(carryForwardLimitDays),
+      applicableEmploymentTypes: Value(applicableEmploymentTypes),
+      status: Value(status),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory LeavePolicyData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LeavePolicyData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      code: serializer.fromJson<String>(json['code']),
+      leaveTypeId: serializer.fromJson<String>(json['leaveTypeId']),
+      annualEntitlementDays: serializer.fromJson<double>(
+        json['annualEntitlementDays'],
+      ),
+      allowHalfDay: serializer.fromJson<bool>(json['allowHalfDay']),
+      minimumRequestDays: serializer.fromJson<double>(
+        json['minimumRequestDays'],
+      ),
+      maximumConsecutiveDays: serializer.fromJson<int?>(
+        json['maximumConsecutiveDays'],
+      ),
+      advanceNoticeDays: serializer.fromJson<int>(json['advanceNoticeDays']),
+      allowPastRequest: serializer.fromJson<bool>(json['allowPastRequest']),
+      pastRequestWindowDays: serializer.fromJson<int>(
+        json['pastRequestWindowDays'],
+      ),
+      requiresAttachmentAfterDays: serializer.fromJson<int?>(
+        json['requiresAttachmentAfterDays'],
+      ),
+      allowNegativeBalance: serializer.fromJson<bool>(
+        json['allowNegativeBalance'],
+      ),
+      carryForwardEnabled: serializer.fromJson<bool>(
+        json['carryForwardEnabled'],
+      ),
+      carryForwardLimitDays: serializer.fromJson<double?>(
+        json['carryForwardLimitDays'],
+      ),
+      applicableEmploymentTypes: serializer.fromJson<String>(
+        json['applicableEmploymentTypes'],
+      ),
+      status: serializer.fromJson<String>(json['status']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'code': serializer.toJson<String>(code),
+      'leaveTypeId': serializer.toJson<String>(leaveTypeId),
+      'annualEntitlementDays': serializer.toJson<double>(annualEntitlementDays),
+      'allowHalfDay': serializer.toJson<bool>(allowHalfDay),
+      'minimumRequestDays': serializer.toJson<double>(minimumRequestDays),
+      'maximumConsecutiveDays': serializer.toJson<int?>(maximumConsecutiveDays),
+      'advanceNoticeDays': serializer.toJson<int>(advanceNoticeDays),
+      'allowPastRequest': serializer.toJson<bool>(allowPastRequest),
+      'pastRequestWindowDays': serializer.toJson<int>(pastRequestWindowDays),
+      'requiresAttachmentAfterDays': serializer.toJson<int?>(
+        requiresAttachmentAfterDays,
+      ),
+      'allowNegativeBalance': serializer.toJson<bool>(allowNegativeBalance),
+      'carryForwardEnabled': serializer.toJson<bool>(carryForwardEnabled),
+      'carryForwardLimitDays': serializer.toJson<double?>(
+        carryForwardLimitDays,
+      ),
+      'applicableEmploymentTypes': serializer.toJson<String>(
+        applicableEmploymentTypes,
+      ),
+      'status': serializer.toJson<String>(status),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  LeavePolicyData copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? code,
+    String? leaveTypeId,
+    double? annualEntitlementDays,
+    bool? allowHalfDay,
+    double? minimumRequestDays,
+    Value<int?> maximumConsecutiveDays = const Value.absent(),
+    int? advanceNoticeDays,
+    bool? allowPastRequest,
+    int? pastRequestWindowDays,
+    Value<int?> requiresAttachmentAfterDays = const Value.absent(),
+    bool? allowNegativeBalance,
+    bool? carryForwardEnabled,
+    Value<double?> carryForwardLimitDays = const Value.absent(),
+    String? applicableEmploymentTypes,
+    String? status,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => LeavePolicyData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    code: code ?? this.code,
+    leaveTypeId: leaveTypeId ?? this.leaveTypeId,
+    annualEntitlementDays: annualEntitlementDays ?? this.annualEntitlementDays,
+    allowHalfDay: allowHalfDay ?? this.allowHalfDay,
+    minimumRequestDays: minimumRequestDays ?? this.minimumRequestDays,
+    maximumConsecutiveDays: maximumConsecutiveDays.present
+        ? maximumConsecutiveDays.value
+        : this.maximumConsecutiveDays,
+    advanceNoticeDays: advanceNoticeDays ?? this.advanceNoticeDays,
+    allowPastRequest: allowPastRequest ?? this.allowPastRequest,
+    pastRequestWindowDays: pastRequestWindowDays ?? this.pastRequestWindowDays,
+    requiresAttachmentAfterDays: requiresAttachmentAfterDays.present
+        ? requiresAttachmentAfterDays.value
+        : this.requiresAttachmentAfterDays,
+    allowNegativeBalance: allowNegativeBalance ?? this.allowNegativeBalance,
+    carryForwardEnabled: carryForwardEnabled ?? this.carryForwardEnabled,
+    carryForwardLimitDays: carryForwardLimitDays.present
+        ? carryForwardLimitDays.value
+        : this.carryForwardLimitDays,
+    applicableEmploymentTypes:
+        applicableEmploymentTypes ?? this.applicableEmploymentTypes,
+    status: status ?? this.status,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  LeavePolicyData copyWithCompanion(LeavePoliciesCompanion data) {
+    return LeavePolicyData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      code: data.code.present ? data.code.value : this.code,
+      leaveTypeId: data.leaveTypeId.present
+          ? data.leaveTypeId.value
+          : this.leaveTypeId,
+      annualEntitlementDays: data.annualEntitlementDays.present
+          ? data.annualEntitlementDays.value
+          : this.annualEntitlementDays,
+      allowHalfDay: data.allowHalfDay.present
+          ? data.allowHalfDay.value
+          : this.allowHalfDay,
+      minimumRequestDays: data.minimumRequestDays.present
+          ? data.minimumRequestDays.value
+          : this.minimumRequestDays,
+      maximumConsecutiveDays: data.maximumConsecutiveDays.present
+          ? data.maximumConsecutiveDays.value
+          : this.maximumConsecutiveDays,
+      advanceNoticeDays: data.advanceNoticeDays.present
+          ? data.advanceNoticeDays.value
+          : this.advanceNoticeDays,
+      allowPastRequest: data.allowPastRequest.present
+          ? data.allowPastRequest.value
+          : this.allowPastRequest,
+      pastRequestWindowDays: data.pastRequestWindowDays.present
+          ? data.pastRequestWindowDays.value
+          : this.pastRequestWindowDays,
+      requiresAttachmentAfterDays: data.requiresAttachmentAfterDays.present
+          ? data.requiresAttachmentAfterDays.value
+          : this.requiresAttachmentAfterDays,
+      allowNegativeBalance: data.allowNegativeBalance.present
+          ? data.allowNegativeBalance.value
+          : this.allowNegativeBalance,
+      carryForwardEnabled: data.carryForwardEnabled.present
+          ? data.carryForwardEnabled.value
+          : this.carryForwardEnabled,
+      carryForwardLimitDays: data.carryForwardLimitDays.present
+          ? data.carryForwardLimitDays.value
+          : this.carryForwardLimitDays,
+      applicableEmploymentTypes: data.applicableEmploymentTypes.present
+          ? data.applicableEmploymentTypes.value
+          : this.applicableEmploymentTypes,
+      status: data.status.present ? data.status.value : this.status,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeavePolicyData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('leaveTypeId: $leaveTypeId, ')
+          ..write('annualEntitlementDays: $annualEntitlementDays, ')
+          ..write('allowHalfDay: $allowHalfDay, ')
+          ..write('minimumRequestDays: $minimumRequestDays, ')
+          ..write('maximumConsecutiveDays: $maximumConsecutiveDays, ')
+          ..write('advanceNoticeDays: $advanceNoticeDays, ')
+          ..write('allowPastRequest: $allowPastRequest, ')
+          ..write('pastRequestWindowDays: $pastRequestWindowDays, ')
+          ..write('requiresAttachmentAfterDays: $requiresAttachmentAfterDays, ')
+          ..write('allowNegativeBalance: $allowNegativeBalance, ')
+          ..write('carryForwardEnabled: $carryForwardEnabled, ')
+          ..write('carryForwardLimitDays: $carryForwardLimitDays, ')
+          ..write('applicableEmploymentTypes: $applicableEmploymentTypes, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    code,
+    leaveTypeId,
+    annualEntitlementDays,
+    allowHalfDay,
+    minimumRequestDays,
+    maximumConsecutiveDays,
+    advanceNoticeDays,
+    allowPastRequest,
+    pastRequestWindowDays,
+    requiresAttachmentAfterDays,
+    allowNegativeBalance,
+    carryForwardEnabled,
+    carryForwardLimitDays,
+    applicableEmploymentTypes,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LeavePolicyData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.code == this.code &&
+          other.leaveTypeId == this.leaveTypeId &&
+          other.annualEntitlementDays == this.annualEntitlementDays &&
+          other.allowHalfDay == this.allowHalfDay &&
+          other.minimumRequestDays == this.minimumRequestDays &&
+          other.maximumConsecutiveDays == this.maximumConsecutiveDays &&
+          other.advanceNoticeDays == this.advanceNoticeDays &&
+          other.allowPastRequest == this.allowPastRequest &&
+          other.pastRequestWindowDays == this.pastRequestWindowDays &&
+          other.requiresAttachmentAfterDays ==
+              this.requiresAttachmentAfterDays &&
+          other.allowNegativeBalance == this.allowNegativeBalance &&
+          other.carryForwardEnabled == this.carryForwardEnabled &&
+          other.carryForwardLimitDays == this.carryForwardLimitDays &&
+          other.applicableEmploymentTypes == this.applicableEmploymentTypes &&
+          other.status == this.status &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class LeavePoliciesCompanion extends UpdateCompanion<LeavePolicyData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> code;
+  final Value<String> leaveTypeId;
+  final Value<double> annualEntitlementDays;
+  final Value<bool> allowHalfDay;
+  final Value<double> minimumRequestDays;
+  final Value<int?> maximumConsecutiveDays;
+  final Value<int> advanceNoticeDays;
+  final Value<bool> allowPastRequest;
+  final Value<int> pastRequestWindowDays;
+  final Value<int?> requiresAttachmentAfterDays;
+  final Value<bool> allowNegativeBalance;
+  final Value<bool> carryForwardEnabled;
+  final Value<double?> carryForwardLimitDays;
+  final Value<String> applicableEmploymentTypes;
+  final Value<String> status;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const LeavePoliciesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.code = const Value.absent(),
+    this.leaveTypeId = const Value.absent(),
+    this.annualEntitlementDays = const Value.absent(),
+    this.allowHalfDay = const Value.absent(),
+    this.minimumRequestDays = const Value.absent(),
+    this.maximumConsecutiveDays = const Value.absent(),
+    this.advanceNoticeDays = const Value.absent(),
+    this.allowPastRequest = const Value.absent(),
+    this.pastRequestWindowDays = const Value.absent(),
+    this.requiresAttachmentAfterDays = const Value.absent(),
+    this.allowNegativeBalance = const Value.absent(),
+    this.carryForwardEnabled = const Value.absent(),
+    this.carryForwardLimitDays = const Value.absent(),
+    this.applicableEmploymentTypes = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LeavePoliciesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String code,
+    required String leaveTypeId,
+    this.annualEntitlementDays = const Value.absent(),
+    this.allowHalfDay = const Value.absent(),
+    this.minimumRequestDays = const Value.absent(),
+    this.maximumConsecutiveDays = const Value.absent(),
+    this.advanceNoticeDays = const Value.absent(),
+    this.allowPastRequest = const Value.absent(),
+    this.pastRequestWindowDays = const Value.absent(),
+    this.requiresAttachmentAfterDays = const Value.absent(),
+    this.allowNegativeBalance = const Value.absent(),
+    this.carryForwardEnabled = const Value.absent(),
+    this.carryForwardLimitDays = const Value.absent(),
+    this.applicableEmploymentTypes = const Value.absent(),
+    this.status = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       code = Value(code),
+       leaveTypeId = Value(leaveTypeId),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<LeavePolicyData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? code,
+    Expression<String>? leaveTypeId,
+    Expression<double>? annualEntitlementDays,
+    Expression<bool>? allowHalfDay,
+    Expression<double>? minimumRequestDays,
+    Expression<int>? maximumConsecutiveDays,
+    Expression<int>? advanceNoticeDays,
+    Expression<bool>? allowPastRequest,
+    Expression<int>? pastRequestWindowDays,
+    Expression<int>? requiresAttachmentAfterDays,
+    Expression<bool>? allowNegativeBalance,
+    Expression<bool>? carryForwardEnabled,
+    Expression<double>? carryForwardLimitDays,
+    Expression<String>? applicableEmploymentTypes,
+    Expression<String>? status,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (code != null) 'code': code,
+      if (leaveTypeId != null) 'leave_type_id': leaveTypeId,
+      if (annualEntitlementDays != null)
+        'annual_entitlement_days': annualEntitlementDays,
+      if (allowHalfDay != null) 'allow_half_day': allowHalfDay,
+      if (minimumRequestDays != null)
+        'minimum_request_days': minimumRequestDays,
+      if (maximumConsecutiveDays != null)
+        'maximum_consecutive_days': maximumConsecutiveDays,
+      if (advanceNoticeDays != null) 'advance_notice_days': advanceNoticeDays,
+      if (allowPastRequest != null) 'allow_past_request': allowPastRequest,
+      if (pastRequestWindowDays != null)
+        'past_request_window_days': pastRequestWindowDays,
+      if (requiresAttachmentAfterDays != null)
+        'requires_attachment_after_days': requiresAttachmentAfterDays,
+      if (allowNegativeBalance != null)
+        'allow_negative_balance': allowNegativeBalance,
+      if (carryForwardEnabled != null)
+        'carry_forward_enabled': carryForwardEnabled,
+      if (carryForwardLimitDays != null)
+        'carry_forward_limit_days': carryForwardLimitDays,
+      if (applicableEmploymentTypes != null)
+        'applicable_employment_types': applicableEmploymentTypes,
+      if (status != null) 'status': status,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LeavePoliciesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? code,
+    Value<String>? leaveTypeId,
+    Value<double>? annualEntitlementDays,
+    Value<bool>? allowHalfDay,
+    Value<double>? minimumRequestDays,
+    Value<int?>? maximumConsecutiveDays,
+    Value<int>? advanceNoticeDays,
+    Value<bool>? allowPastRequest,
+    Value<int>? pastRequestWindowDays,
+    Value<int?>? requiresAttachmentAfterDays,
+    Value<bool>? allowNegativeBalance,
+    Value<bool>? carryForwardEnabled,
+    Value<double?>? carryForwardLimitDays,
+    Value<String>? applicableEmploymentTypes,
+    Value<String>? status,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return LeavePoliciesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      code: code ?? this.code,
+      leaveTypeId: leaveTypeId ?? this.leaveTypeId,
+      annualEntitlementDays:
+          annualEntitlementDays ?? this.annualEntitlementDays,
+      allowHalfDay: allowHalfDay ?? this.allowHalfDay,
+      minimumRequestDays: minimumRequestDays ?? this.minimumRequestDays,
+      maximumConsecutiveDays:
+          maximumConsecutiveDays ?? this.maximumConsecutiveDays,
+      advanceNoticeDays: advanceNoticeDays ?? this.advanceNoticeDays,
+      allowPastRequest: allowPastRequest ?? this.allowPastRequest,
+      pastRequestWindowDays:
+          pastRequestWindowDays ?? this.pastRequestWindowDays,
+      requiresAttachmentAfterDays:
+          requiresAttachmentAfterDays ?? this.requiresAttachmentAfterDays,
+      allowNegativeBalance: allowNegativeBalance ?? this.allowNegativeBalance,
+      carryForwardEnabled: carryForwardEnabled ?? this.carryForwardEnabled,
+      carryForwardLimitDays:
+          carryForwardLimitDays ?? this.carryForwardLimitDays,
+      applicableEmploymentTypes:
+          applicableEmploymentTypes ?? this.applicableEmploymentTypes,
+      status: status ?? this.status,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (leaveTypeId.present) {
+      map['leave_type_id'] = Variable<String>(leaveTypeId.value);
+    }
+    if (annualEntitlementDays.present) {
+      map['annual_entitlement_days'] = Variable<double>(
+        annualEntitlementDays.value,
+      );
+    }
+    if (allowHalfDay.present) {
+      map['allow_half_day'] = Variable<bool>(allowHalfDay.value);
+    }
+    if (minimumRequestDays.present) {
+      map['minimum_request_days'] = Variable<double>(minimumRequestDays.value);
+    }
+    if (maximumConsecutiveDays.present) {
+      map['maximum_consecutive_days'] = Variable<int>(
+        maximumConsecutiveDays.value,
+      );
+    }
+    if (advanceNoticeDays.present) {
+      map['advance_notice_days'] = Variable<int>(advanceNoticeDays.value);
+    }
+    if (allowPastRequest.present) {
+      map['allow_past_request'] = Variable<bool>(allowPastRequest.value);
+    }
+    if (pastRequestWindowDays.present) {
+      map['past_request_window_days'] = Variable<int>(
+        pastRequestWindowDays.value,
+      );
+    }
+    if (requiresAttachmentAfterDays.present) {
+      map['requires_attachment_after_days'] = Variable<int>(
+        requiresAttachmentAfterDays.value,
+      );
+    }
+    if (allowNegativeBalance.present) {
+      map['allow_negative_balance'] = Variable<bool>(
+        allowNegativeBalance.value,
+      );
+    }
+    if (carryForwardEnabled.present) {
+      map['carry_forward_enabled'] = Variable<bool>(carryForwardEnabled.value);
+    }
+    if (carryForwardLimitDays.present) {
+      map['carry_forward_limit_days'] = Variable<double>(
+        carryForwardLimitDays.value,
+      );
+    }
+    if (applicableEmploymentTypes.present) {
+      map['applicable_employment_types'] = Variable<String>(
+        applicableEmploymentTypes.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeavePoliciesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('leaveTypeId: $leaveTypeId, ')
+          ..write('annualEntitlementDays: $annualEntitlementDays, ')
+          ..write('allowHalfDay: $allowHalfDay, ')
+          ..write('minimumRequestDays: $minimumRequestDays, ')
+          ..write('maximumConsecutiveDays: $maximumConsecutiveDays, ')
+          ..write('advanceNoticeDays: $advanceNoticeDays, ')
+          ..write('allowPastRequest: $allowPastRequest, ')
+          ..write('pastRequestWindowDays: $pastRequestWindowDays, ')
+          ..write('requiresAttachmentAfterDays: $requiresAttachmentAfterDays, ')
+          ..write('allowNegativeBalance: $allowNegativeBalance, ')
+          ..write('carryForwardEnabled: $carryForwardEnabled, ')
+          ..write('carryForwardLimitDays: $carryForwardLimitDays, ')
+          ..write('applicableEmploymentTypes: $applicableEmploymentTypes, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EmployeeLeavePolicyAssignmentsTable
+    extends EmployeeLeavePolicyAssignments
+    with
+        TableInfo<
+          $EmployeeLeavePolicyAssignmentsTable,
+          EmployeeLeavePolicyAssignmentData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EmployeeLeavePolicyAssignmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _policyIdMeta = const VerificationMeta(
+    'policyId',
+  );
+  @override
+  late final GeneratedColumn<String> policyId = GeneratedColumn<String>(
+    'policy_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _effectiveFromMeta = const VerificationMeta(
+    'effectiveFrom',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveFrom = GeneratedColumn<String>(
+    'effective_from',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _effectiveToMeta = const VerificationMeta(
+    'effectiveTo',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveTo = GeneratedColumn<String>(
+    'effective_to',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    employeeId,
+    policyId,
+    effectiveFrom,
+    effectiveTo,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'employee_leave_policy_assignments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EmployeeLeavePolicyAssignmentData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('policy_id')) {
+      context.handle(
+        _policyIdMeta,
+        policyId.isAcceptableOrUnknown(data['policy_id']!, _policyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_policyIdMeta);
+    }
+    if (data.containsKey('effective_from')) {
+      context.handle(
+        _effectiveFromMeta,
+        effectiveFrom.isAcceptableOrUnknown(
+          data['effective_from']!,
+          _effectiveFromMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_effectiveFromMeta);
+    }
+    if (data.containsKey('effective_to')) {
+      context.handle(
+        _effectiveToMeta,
+        effectiveTo.isAcceptableOrUnknown(
+          data['effective_to']!,
+          _effectiveToMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  EmployeeLeavePolicyAssignmentData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EmployeeLeavePolicyAssignmentData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      policyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}policy_id'],
+      )!,
+      effectiveFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_from'],
+      )!,
+      effectiveTo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_to'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $EmployeeLeavePolicyAssignmentsTable createAlias(String alias) {
+    return $EmployeeLeavePolicyAssignmentsTable(attachedDatabase, alias);
+  }
+}
+
+class EmployeeLeavePolicyAssignmentData extends DataClass
+    implements Insertable<EmployeeLeavePolicyAssignmentData> {
+  final String id;
+  final String companyId;
+  final String employeeId;
+  final String policyId;
+  final String effectiveFrom;
+  final String? effectiveTo;
+  final String status;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const EmployeeLeavePolicyAssignmentData({
+    required this.id,
+    required this.companyId,
+    required this.employeeId,
+    required this.policyId,
+    required this.effectiveFrom,
+    this.effectiveTo,
+    required this.status,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['policy_id'] = Variable<String>(policyId);
+    map['effective_from'] = Variable<String>(effectiveFrom);
+    if (!nullToAbsent || effectiveTo != null) {
+      map['effective_to'] = Variable<String>(effectiveTo);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  EmployeeLeavePolicyAssignmentsCompanion toCompanion(bool nullToAbsent) {
+    return EmployeeLeavePolicyAssignmentsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      policyId: Value(policyId),
+      effectiveFrom: Value(effectiveFrom),
+      effectiveTo: effectiveTo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(effectiveTo),
+      status: Value(status),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory EmployeeLeavePolicyAssignmentData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EmployeeLeavePolicyAssignmentData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      policyId: serializer.fromJson<String>(json['policyId']),
+      effectiveFrom: serializer.fromJson<String>(json['effectiveFrom']),
+      effectiveTo: serializer.fromJson<String?>(json['effectiveTo']),
+      status: serializer.fromJson<String>(json['status']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'policyId': serializer.toJson<String>(policyId),
+      'effectiveFrom': serializer.toJson<String>(effectiveFrom),
+      'effectiveTo': serializer.toJson<String?>(effectiveTo),
+      'status': serializer.toJson<String>(status),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  EmployeeLeavePolicyAssignmentData copyWith({
+    String? id,
+    String? companyId,
+    String? employeeId,
+    String? policyId,
+    String? effectiveFrom,
+    Value<String?> effectiveTo = const Value.absent(),
+    String? status,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => EmployeeLeavePolicyAssignmentData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    policyId: policyId ?? this.policyId,
+    effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+    effectiveTo: effectiveTo.present ? effectiveTo.value : this.effectiveTo,
+    status: status ?? this.status,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  EmployeeLeavePolicyAssignmentData copyWithCompanion(
+    EmployeeLeavePolicyAssignmentsCompanion data,
+  ) {
+    return EmployeeLeavePolicyAssignmentData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      policyId: data.policyId.present ? data.policyId.value : this.policyId,
+      effectiveFrom: data.effectiveFrom.present
+          ? data.effectiveFrom.value
+          : this.effectiveFrom,
+      effectiveTo: data.effectiveTo.present
+          ? data.effectiveTo.value
+          : this.effectiveTo,
+      status: data.status.present ? data.status.value : this.status,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EmployeeLeavePolicyAssignmentData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('policyId: $policyId, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('effectiveTo: $effectiveTo, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    employeeId,
+    policyId,
+    effectiveFrom,
+    effectiveTo,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EmployeeLeavePolicyAssignmentData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.policyId == this.policyId &&
+          other.effectiveFrom == this.effectiveFrom &&
+          other.effectiveTo == this.effectiveTo &&
+          other.status == this.status &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class EmployeeLeavePolicyAssignmentsCompanion
+    extends UpdateCompanion<EmployeeLeavePolicyAssignmentData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> policyId;
+  final Value<String> effectiveFrom;
+  final Value<String?> effectiveTo;
+  final Value<String> status;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const EmployeeLeavePolicyAssignmentsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.policyId = const Value.absent(),
+    this.effectiveFrom = const Value.absent(),
+    this.effectiveTo = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EmployeeLeavePolicyAssignmentsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String employeeId,
+    required String policyId,
+    required String effectiveFrom,
+    this.effectiveTo = const Value.absent(),
+    this.status = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       policyId = Value(policyId),
+       effectiveFrom = Value(effectiveFrom),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<EmployeeLeavePolicyAssignmentData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? policyId,
+    Expression<String>? effectiveFrom,
+    Expression<String>? effectiveTo,
+    Expression<String>? status,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (policyId != null) 'policy_id': policyId,
+      if (effectiveFrom != null) 'effective_from': effectiveFrom,
+      if (effectiveTo != null) 'effective_to': effectiveTo,
+      if (status != null) 'status': status,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EmployeeLeavePolicyAssignmentsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? policyId,
+    Value<String>? effectiveFrom,
+    Value<String?>? effectiveTo,
+    Value<String>? status,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return EmployeeLeavePolicyAssignmentsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      policyId: policyId ?? this.policyId,
+      effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+      effectiveTo: effectiveTo ?? this.effectiveTo,
+      status: status ?? this.status,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (policyId.present) {
+      map['policy_id'] = Variable<String>(policyId.value);
+    }
+    if (effectiveFrom.present) {
+      map['effective_from'] = Variable<String>(effectiveFrom.value);
+    }
+    if (effectiveTo.present) {
+      map['effective_to'] = Variable<String>(effectiveTo.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EmployeeLeavePolicyAssignmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('policyId: $policyId, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('effectiveTo: $effectiveTo, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LeaveBalanceTransactionsTable extends LeaveBalanceTransactions
+    with
+        TableInfo<$LeaveBalanceTransactionsTable, LeaveBalanceTransactionData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LeaveBalanceTransactionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _leaveTypeIdMeta = const VerificationMeta(
+    'leaveTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> leaveTypeId = GeneratedColumn<String>(
+    'leave_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _leaveYearMeta = const VerificationMeta(
+    'leaveYear',
+  );
+  @override
+  late final GeneratedColumn<int> leaveYear = GeneratedColumn<int>(
+    'leave_year',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _quantityDaysMeta = const VerificationMeta(
+    'quantityDays',
+  );
+  @override
+  late final GeneratedColumn<double> quantityDays = GeneratedColumn<double>(
+    'quantity_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _leaveRequestIdMeta = const VerificationMeta(
+    'leaveRequestId',
+  );
+  @override
+  late final GeneratedColumn<String> leaveRequestId = GeneratedColumn<String>(
+    'leave_request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _createdByMeta = const VerificationMeta(
+    'createdBy',
+  );
+  @override
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _effectiveDateMeta = const VerificationMeta(
+    'effectiveDate',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveDate = GeneratedColumn<String>(
+    'effective_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    employeeId,
+    leaveTypeId,
+    leaveYear,
+    type,
+    quantityDays,
+    leaveRequestId,
+    reason,
+    createdBy,
+    effectiveDate,
+    createdMilliseconds,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'leave_balance_transactions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LeaveBalanceTransactionData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('leave_type_id')) {
+      context.handle(
+        _leaveTypeIdMeta,
+        leaveTypeId.isAcceptableOrUnknown(
+          data['leave_type_id']!,
+          _leaveTypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_leaveTypeIdMeta);
+    }
+    if (data.containsKey('leave_year')) {
+      context.handle(
+        _leaveYearMeta,
+        leaveYear.isAcceptableOrUnknown(data['leave_year']!, _leaveYearMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_leaveYearMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('quantity_days')) {
+      context.handle(
+        _quantityDaysMeta,
+        quantityDays.isAcceptableOrUnknown(
+          data['quantity_days']!,
+          _quantityDaysMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_quantityDaysMeta);
+    }
+    if (data.containsKey('leave_request_id')) {
+      context.handle(
+        _leaveRequestIdMeta,
+        leaveRequestId.isAcceptableOrUnknown(
+          data['leave_request_id']!,
+          _leaveRequestIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reason')) {
+      context.handle(
+        _reasonMeta,
+        reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta),
+      );
+    }
+    if (data.containsKey('created_by')) {
+      context.handle(
+        _createdByMeta,
+        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByMeta);
+    }
+    if (data.containsKey('effective_date')) {
+      context.handle(
+        _effectiveDateMeta,
+        effectiveDate.isAcceptableOrUnknown(
+          data['effective_date']!,
+          _effectiveDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_effectiveDateMeta);
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_requestIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LeaveBalanceTransactionData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LeaveBalanceTransactionData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      leaveTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}leave_type_id'],
+      )!,
+      leaveYear: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}leave_year'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      quantityDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}quantity_days'],
+      )!,
+      leaveRequestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}leave_request_id'],
+      ),
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      )!,
+      effectiveDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_date'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $LeaveBalanceTransactionsTable createAlias(String alias) {
+    return $LeaveBalanceTransactionsTable(attachedDatabase, alias);
+  }
+}
+
+class LeaveBalanceTransactionData extends DataClass
+    implements Insertable<LeaveBalanceTransactionData> {
+  final String id;
+  final String companyId;
+  final String employeeId;
+  final String leaveTypeId;
+  final int leaveYear;
+  final String type;
+  final double quantityDays;
+  final String? leaveRequestId;
+  final String reason;
+  final String createdBy;
+  final String effectiveDate;
+  final int createdMilliseconds;
+  final String requestId;
+  final String syncStatus;
+  const LeaveBalanceTransactionData({
+    required this.id,
+    required this.companyId,
+    required this.employeeId,
+    required this.leaveTypeId,
+    required this.leaveYear,
+    required this.type,
+    required this.quantityDays,
+    this.leaveRequestId,
+    required this.reason,
+    required this.createdBy,
+    required this.effectiveDate,
+    required this.createdMilliseconds,
+    required this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['leave_type_id'] = Variable<String>(leaveTypeId);
+    map['leave_year'] = Variable<int>(leaveYear);
+    map['type'] = Variable<String>(type);
+    map['quantity_days'] = Variable<double>(quantityDays);
+    if (!nullToAbsent || leaveRequestId != null) {
+      map['leave_request_id'] = Variable<String>(leaveRequestId);
+    }
+    map['reason'] = Variable<String>(reason);
+    map['created_by'] = Variable<String>(createdBy);
+    map['effective_date'] = Variable<String>(effectiveDate);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['request_id'] = Variable<String>(requestId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  LeaveBalanceTransactionsCompanion toCompanion(bool nullToAbsent) {
+    return LeaveBalanceTransactionsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      leaveTypeId: Value(leaveTypeId),
+      leaveYear: Value(leaveYear),
+      type: Value(type),
+      quantityDays: Value(quantityDays),
+      leaveRequestId: leaveRequestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(leaveRequestId),
+      reason: Value(reason),
+      createdBy: Value(createdBy),
+      effectiveDate: Value(effectiveDate),
+      createdMilliseconds: Value(createdMilliseconds),
+      requestId: Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory LeaveBalanceTransactionData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LeaveBalanceTransactionData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      leaveTypeId: serializer.fromJson<String>(json['leaveTypeId']),
+      leaveYear: serializer.fromJson<int>(json['leaveYear']),
+      type: serializer.fromJson<String>(json['type']),
+      quantityDays: serializer.fromJson<double>(json['quantityDays']),
+      leaveRequestId: serializer.fromJson<String?>(json['leaveRequestId']),
+      reason: serializer.fromJson<String>(json['reason']),
+      createdBy: serializer.fromJson<String>(json['createdBy']),
+      effectiveDate: serializer.fromJson<String>(json['effectiveDate']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      requestId: serializer.fromJson<String>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'leaveTypeId': serializer.toJson<String>(leaveTypeId),
+      'leaveYear': serializer.toJson<int>(leaveYear),
+      'type': serializer.toJson<String>(type),
+      'quantityDays': serializer.toJson<double>(quantityDays),
+      'leaveRequestId': serializer.toJson<String?>(leaveRequestId),
+      'reason': serializer.toJson<String>(reason),
+      'createdBy': serializer.toJson<String>(createdBy),
+      'effectiveDate': serializer.toJson<String>(effectiveDate),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'requestId': serializer.toJson<String>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  LeaveBalanceTransactionData copyWith({
+    String? id,
+    String? companyId,
+    String? employeeId,
+    String? leaveTypeId,
+    int? leaveYear,
+    String? type,
+    double? quantityDays,
+    Value<String?> leaveRequestId = const Value.absent(),
+    String? reason,
+    String? createdBy,
+    String? effectiveDate,
+    int? createdMilliseconds,
+    String? requestId,
+    String? syncStatus,
+  }) => LeaveBalanceTransactionData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    leaveTypeId: leaveTypeId ?? this.leaveTypeId,
+    leaveYear: leaveYear ?? this.leaveYear,
+    type: type ?? this.type,
+    quantityDays: quantityDays ?? this.quantityDays,
+    leaveRequestId: leaveRequestId.present
+        ? leaveRequestId.value
+        : this.leaveRequestId,
+    reason: reason ?? this.reason,
+    createdBy: createdBy ?? this.createdBy,
+    effectiveDate: effectiveDate ?? this.effectiveDate,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    requestId: requestId ?? this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  LeaveBalanceTransactionData copyWithCompanion(
+    LeaveBalanceTransactionsCompanion data,
+  ) {
+    return LeaveBalanceTransactionData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      leaveTypeId: data.leaveTypeId.present
+          ? data.leaveTypeId.value
+          : this.leaveTypeId,
+      leaveYear: data.leaveYear.present ? data.leaveYear.value : this.leaveYear,
+      type: data.type.present ? data.type.value : this.type,
+      quantityDays: data.quantityDays.present
+          ? data.quantityDays.value
+          : this.quantityDays,
+      leaveRequestId: data.leaveRequestId.present
+          ? data.leaveRequestId.value
+          : this.leaveRequestId,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      effectiveDate: data.effectiveDate.present
+          ? data.effectiveDate.value
+          : this.effectiveDate,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveBalanceTransactionData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('leaveTypeId: $leaveTypeId, ')
+          ..write('leaveYear: $leaveYear, ')
+          ..write('type: $type, ')
+          ..write('quantityDays: $quantityDays, ')
+          ..write('leaveRequestId: $leaveRequestId, ')
+          ..write('reason: $reason, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('effectiveDate: $effectiveDate, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    employeeId,
+    leaveTypeId,
+    leaveYear,
+    type,
+    quantityDays,
+    leaveRequestId,
+    reason,
+    createdBy,
+    effectiveDate,
+    createdMilliseconds,
+    requestId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LeaveBalanceTransactionData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.leaveTypeId == this.leaveTypeId &&
+          other.leaveYear == this.leaveYear &&
+          other.type == this.type &&
+          other.quantityDays == this.quantityDays &&
+          other.leaveRequestId == this.leaveRequestId &&
+          other.reason == this.reason &&
+          other.createdBy == this.createdBy &&
+          other.effectiveDate == this.effectiveDate &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class LeaveBalanceTransactionsCompanion
+    extends UpdateCompanion<LeaveBalanceTransactionData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> leaveTypeId;
+  final Value<int> leaveYear;
+  final Value<String> type;
+  final Value<double> quantityDays;
+  final Value<String?> leaveRequestId;
+  final Value<String> reason;
+  final Value<String> createdBy;
+  final Value<String> effectiveDate;
+  final Value<int> createdMilliseconds;
+  final Value<String> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const LeaveBalanceTransactionsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.leaveTypeId = const Value.absent(),
+    this.leaveYear = const Value.absent(),
+    this.type = const Value.absent(),
+    this.quantityDays = const Value.absent(),
+    this.leaveRequestId = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.effectiveDate = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LeaveBalanceTransactionsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String employeeId,
+    required String leaveTypeId,
+    required int leaveYear,
+    required String type,
+    required double quantityDays,
+    this.leaveRequestId = const Value.absent(),
+    this.reason = const Value.absent(),
+    required String createdBy,
+    required String effectiveDate,
+    required int createdMilliseconds,
+    required String requestId,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       leaveTypeId = Value(leaveTypeId),
+       leaveYear = Value(leaveYear),
+       type = Value(type),
+       quantityDays = Value(quantityDays),
+       createdBy = Value(createdBy),
+       effectiveDate = Value(effectiveDate),
+       createdMilliseconds = Value(createdMilliseconds),
+       requestId = Value(requestId);
+  static Insertable<LeaveBalanceTransactionData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? leaveTypeId,
+    Expression<int>? leaveYear,
+    Expression<String>? type,
+    Expression<double>? quantityDays,
+    Expression<String>? leaveRequestId,
+    Expression<String>? reason,
+    Expression<String>? createdBy,
+    Expression<String>? effectiveDate,
+    Expression<int>? createdMilliseconds,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (leaveTypeId != null) 'leave_type_id': leaveTypeId,
+      if (leaveYear != null) 'leave_year': leaveYear,
+      if (type != null) 'type': type,
+      if (quantityDays != null) 'quantity_days': quantityDays,
+      if (leaveRequestId != null) 'leave_request_id': leaveRequestId,
+      if (reason != null) 'reason': reason,
+      if (createdBy != null) 'created_by': createdBy,
+      if (effectiveDate != null) 'effective_date': effectiveDate,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LeaveBalanceTransactionsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? leaveTypeId,
+    Value<int>? leaveYear,
+    Value<String>? type,
+    Value<double>? quantityDays,
+    Value<String?>? leaveRequestId,
+    Value<String>? reason,
+    Value<String>? createdBy,
+    Value<String>? effectiveDate,
+    Value<int>? createdMilliseconds,
+    Value<String>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return LeaveBalanceTransactionsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      leaveTypeId: leaveTypeId ?? this.leaveTypeId,
+      leaveYear: leaveYear ?? this.leaveYear,
+      type: type ?? this.type,
+      quantityDays: quantityDays ?? this.quantityDays,
+      leaveRequestId: leaveRequestId ?? this.leaveRequestId,
+      reason: reason ?? this.reason,
+      createdBy: createdBy ?? this.createdBy,
+      effectiveDate: effectiveDate ?? this.effectiveDate,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (leaveTypeId.present) {
+      map['leave_type_id'] = Variable<String>(leaveTypeId.value);
+    }
+    if (leaveYear.present) {
+      map['leave_year'] = Variable<int>(leaveYear.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (quantityDays.present) {
+      map['quantity_days'] = Variable<double>(quantityDays.value);
+    }
+    if (leaveRequestId.present) {
+      map['leave_request_id'] = Variable<String>(leaveRequestId.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (effectiveDate.present) {
+      map['effective_date'] = Variable<String>(effectiveDate.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveBalanceTransactionsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('leaveTypeId: $leaveTypeId, ')
+          ..write('leaveYear: $leaveYear, ')
+          ..write('type: $type, ')
+          ..write('quantityDays: $quantityDays, ')
+          ..write('leaveRequestId: $leaveRequestId, ')
+          ..write('reason: $reason, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('effectiveDate: $effectiveDate, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LeaveRequestsTable extends LeaveRequests
+    with TableInfo<$LeaveRequestsTable, LeaveRequestData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LeaveRequestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeSnapshotMeta = const VerificationMeta(
+    'typeSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> typeSnapshot = GeneratedColumn<String>(
+    'type_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _policySnapshotMeta = const VerificationMeta(
+    'policySnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> policySnapshot = GeneratedColumn<String>(
+    'policy_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endDateMeta = const VerificationMeta(
+    'endDate',
+  );
+  @override
+  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
+    'end_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startPortionMeta = const VerificationMeta(
+    'startPortion',
+  );
+  @override
+  late final GeneratedColumn<String> startPortion = GeneratedColumn<String>(
+    'start_portion',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('fullDay'),
+  );
+  static const VerificationMeta _endPortionMeta = const VerificationMeta(
+    'endPortion',
+  );
+  @override
+  late final GeneratedColumn<String> endPortion = GeneratedColumn<String>(
+    'end_portion',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('fullDay'),
+  );
+  static const VerificationMeta _requestedDaysMeta = const VerificationMeta(
+    'requestedDays',
+  );
+  @override
+  late final GeneratedColumn<double> requestedDays = GeneratedColumn<double>(
+    'requested_days',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _attachmentNameMeta = const VerificationMeta(
+    'attachmentName',
+  );
+  @override
+  late final GeneratedColumn<String> attachmentName = GeneratedColumn<String>(
+    'attachment_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  static const VerificationMeta _submittedMillisecondsMeta =
+      const VerificationMeta('submittedMilliseconds');
+  @override
+  late final GeneratedColumn<int> submittedMilliseconds = GeneratedColumn<int>(
+    'submitted_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewedMillisecondsMeta =
+      const VerificationMeta('reviewedMilliseconds');
+  @override
+  late final GeneratedColumn<int> reviewedMilliseconds = GeneratedColumn<int>(
+    'reviewed_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewedByMeta = const VerificationMeta(
+    'reviewedBy',
+  );
+  @override
+  late final GeneratedColumn<String> reviewedBy = GeneratedColumn<String>(
+    'reviewed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewNoteMeta = const VerificationMeta(
+    'reviewNote',
+  );
+  @override
+  late final GeneratedColumn<String> reviewNote = GeneratedColumn<String>(
+    'review_note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cancelledMillisecondsMeta =
+      const VerificationMeta('cancelledMilliseconds');
+  @override
+  late final GeneratedColumn<int> cancelledMilliseconds = GeneratedColumn<int>(
+    'cancelled_milliseconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cancelledByMeta = const VerificationMeta(
+    'cancelledBy',
+  );
+  @override
+  late final GeneratedColumn<String> cancelledBy = GeneratedColumn<String>(
+    'cancelled_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cancellationReasonMeta =
+      const VerificationMeta('cancellationReason');
+  @override
+  late final GeneratedColumn<String> cancellationReason =
+      GeneratedColumn<String>(
+        'cancellation_reason',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pending'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    employeeId,
+    typeSnapshot,
+    policySnapshot,
+    startDate,
+    endDate,
+    startPortion,
+    endPortion,
+    requestedDays,
+    reason,
+    attachmentName,
+    status,
+    submittedMilliseconds,
+    reviewedMilliseconds,
+    reviewedBy,
+    reviewNote,
+    cancelledMilliseconds,
+    cancelledBy,
+    cancellationReason,
+    createdMilliseconds,
+    updatedMilliseconds,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'leave_requests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LeaveRequestData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('type_snapshot')) {
+      context.handle(
+        _typeSnapshotMeta,
+        typeSnapshot.isAcceptableOrUnknown(
+          data['type_snapshot']!,
+          _typeSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_typeSnapshotMeta);
+    }
+    if (data.containsKey('policy_snapshot')) {
+      context.handle(
+        _policySnapshotMeta,
+        policySnapshot.isAcceptableOrUnknown(
+          data['policy_snapshot']!,
+          _policySnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(
+        _endDateMeta,
+        endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endDateMeta);
+    }
+    if (data.containsKey('start_portion')) {
+      context.handle(
+        _startPortionMeta,
+        startPortion.isAcceptableOrUnknown(
+          data['start_portion']!,
+          _startPortionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_portion')) {
+      context.handle(
+        _endPortionMeta,
+        endPortion.isAcceptableOrUnknown(data['end_portion']!, _endPortionMeta),
+      );
+    }
+    if (data.containsKey('requested_days')) {
+      context.handle(
+        _requestedDaysMeta,
+        requestedDays.isAcceptableOrUnknown(
+          data['requested_days']!,
+          _requestedDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reason')) {
+      context.handle(
+        _reasonMeta,
+        reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta),
+      );
+    }
+    if (data.containsKey('attachment_name')) {
+      context.handle(
+        _attachmentNameMeta,
+        attachmentName.isAcceptableOrUnknown(
+          data['attachment_name']!,
+          _attachmentNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('submitted_milliseconds')) {
+      context.handle(
+        _submittedMillisecondsMeta,
+        submittedMilliseconds.isAcceptableOrUnknown(
+          data['submitted_milliseconds']!,
+          _submittedMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reviewed_milliseconds')) {
+      context.handle(
+        _reviewedMillisecondsMeta,
+        reviewedMilliseconds.isAcceptableOrUnknown(
+          data['reviewed_milliseconds']!,
+          _reviewedMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reviewed_by')) {
+      context.handle(
+        _reviewedByMeta,
+        reviewedBy.isAcceptableOrUnknown(data['reviewed_by']!, _reviewedByMeta),
+      );
+    }
+    if (data.containsKey('review_note')) {
+      context.handle(
+        _reviewNoteMeta,
+        reviewNote.isAcceptableOrUnknown(data['review_note']!, _reviewNoteMeta),
+      );
+    }
+    if (data.containsKey('cancelled_milliseconds')) {
+      context.handle(
+        _cancelledMillisecondsMeta,
+        cancelledMilliseconds.isAcceptableOrUnknown(
+          data['cancelled_milliseconds']!,
+          _cancelledMillisecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cancelled_by')) {
+      context.handle(
+        _cancelledByMeta,
+        cancelledBy.isAcceptableOrUnknown(
+          data['cancelled_by']!,
+          _cancelledByMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cancellation_reason')) {
+      context.handle(
+        _cancellationReasonMeta,
+        cancellationReason.isAcceptableOrUnknown(
+          data['cancellation_reason']!,
+          _cancellationReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_requestIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LeaveRequestData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LeaveRequestData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      typeSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type_snapshot'],
+      )!,
+      policySnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}policy_snapshot'],
+      ),
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_date'],
+      )!,
+      endDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_date'],
+      )!,
+      startPortion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_portion'],
+      )!,
+      endPortion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_portion'],
+      )!,
+      requestedDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}requested_days'],
+      )!,
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      )!,
+      attachmentName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attachment_name'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      submittedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}submitted_milliseconds'],
+      ),
+      reviewedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reviewed_milliseconds'],
+      ),
+      reviewedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reviewed_by'],
+      ),
+      reviewNote: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}review_note'],
+      ),
+      cancelledMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cancelled_milliseconds'],
+      ),
+      cancelledBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cancelled_by'],
+      ),
+      cancellationReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cancellation_reason'],
+      ),
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $LeaveRequestsTable createAlias(String alias) {
+    return $LeaveRequestsTable(attachedDatabase, alias);
+  }
+}
+
+class LeaveRequestData extends DataClass
+    implements Insertable<LeaveRequestData> {
+  final String id;
+  final String companyId;
+  final String employeeId;
+  final String typeSnapshot;
+  final String? policySnapshot;
+  final String startDate;
+  final String endDate;
+  final String startPortion;
+  final String endPortion;
+  final double requestedDays;
+  final String reason;
+  final String? attachmentName;
+  final String status;
+  final int? submittedMilliseconds;
+  final int? reviewedMilliseconds;
+  final String? reviewedBy;
+  final String? reviewNote;
+  final int? cancelledMilliseconds;
+  final String? cancelledBy;
+  final String? cancellationReason;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  final String requestId;
+  final String syncStatus;
+  const LeaveRequestData({
+    required this.id,
+    required this.companyId,
+    required this.employeeId,
+    required this.typeSnapshot,
+    this.policySnapshot,
+    required this.startDate,
+    required this.endDate,
+    required this.startPortion,
+    required this.endPortion,
+    required this.requestedDays,
+    required this.reason,
+    this.attachmentName,
+    required this.status,
+    this.submittedMilliseconds,
+    this.reviewedMilliseconds,
+    this.reviewedBy,
+    this.reviewNote,
+    this.cancelledMilliseconds,
+    this.cancelledBy,
+    this.cancellationReason,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+    required this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['type_snapshot'] = Variable<String>(typeSnapshot);
+    if (!nullToAbsent || policySnapshot != null) {
+      map['policy_snapshot'] = Variable<String>(policySnapshot);
+    }
+    map['start_date'] = Variable<String>(startDate);
+    map['end_date'] = Variable<String>(endDate);
+    map['start_portion'] = Variable<String>(startPortion);
+    map['end_portion'] = Variable<String>(endPortion);
+    map['requested_days'] = Variable<double>(requestedDays);
+    map['reason'] = Variable<String>(reason);
+    if (!nullToAbsent || attachmentName != null) {
+      map['attachment_name'] = Variable<String>(attachmentName);
+    }
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || submittedMilliseconds != null) {
+      map['submitted_milliseconds'] = Variable<int>(submittedMilliseconds);
+    }
+    if (!nullToAbsent || reviewedMilliseconds != null) {
+      map['reviewed_milliseconds'] = Variable<int>(reviewedMilliseconds);
+    }
+    if (!nullToAbsent || reviewedBy != null) {
+      map['reviewed_by'] = Variable<String>(reviewedBy);
+    }
+    if (!nullToAbsent || reviewNote != null) {
+      map['review_note'] = Variable<String>(reviewNote);
+    }
+    if (!nullToAbsent || cancelledMilliseconds != null) {
+      map['cancelled_milliseconds'] = Variable<int>(cancelledMilliseconds);
+    }
+    if (!nullToAbsent || cancelledBy != null) {
+      map['cancelled_by'] = Variable<String>(cancelledBy);
+    }
+    if (!nullToAbsent || cancellationReason != null) {
+      map['cancellation_reason'] = Variable<String>(cancellationReason);
+    }
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    map['request_id'] = Variable<String>(requestId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  LeaveRequestsCompanion toCompanion(bool nullToAbsent) {
+    return LeaveRequestsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      employeeId: Value(employeeId),
+      typeSnapshot: Value(typeSnapshot),
+      policySnapshot: policySnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(policySnapshot),
+      startDate: Value(startDate),
+      endDate: Value(endDate),
+      startPortion: Value(startPortion),
+      endPortion: Value(endPortion),
+      requestedDays: Value(requestedDays),
+      reason: Value(reason),
+      attachmentName: attachmentName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(attachmentName),
+      status: Value(status),
+      submittedMilliseconds: submittedMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(submittedMilliseconds),
+      reviewedMilliseconds: reviewedMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewedMilliseconds),
+      reviewedBy: reviewedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewedBy),
+      reviewNote: reviewNote == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewNote),
+      cancelledMilliseconds: cancelledMilliseconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelledMilliseconds),
+      cancelledBy: cancelledBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelledBy),
+      cancellationReason: cancellationReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancellationReason),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+      requestId: Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory LeaveRequestData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LeaveRequestData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      typeSnapshot: serializer.fromJson<String>(json['typeSnapshot']),
+      policySnapshot: serializer.fromJson<String?>(json['policySnapshot']),
+      startDate: serializer.fromJson<String>(json['startDate']),
+      endDate: serializer.fromJson<String>(json['endDate']),
+      startPortion: serializer.fromJson<String>(json['startPortion']),
+      endPortion: serializer.fromJson<String>(json['endPortion']),
+      requestedDays: serializer.fromJson<double>(json['requestedDays']),
+      reason: serializer.fromJson<String>(json['reason']),
+      attachmentName: serializer.fromJson<String?>(json['attachmentName']),
+      status: serializer.fromJson<String>(json['status']),
+      submittedMilliseconds: serializer.fromJson<int?>(
+        json['submittedMilliseconds'],
+      ),
+      reviewedMilliseconds: serializer.fromJson<int?>(
+        json['reviewedMilliseconds'],
+      ),
+      reviewedBy: serializer.fromJson<String?>(json['reviewedBy']),
+      reviewNote: serializer.fromJson<String?>(json['reviewNote']),
+      cancelledMilliseconds: serializer.fromJson<int?>(
+        json['cancelledMilliseconds'],
+      ),
+      cancelledBy: serializer.fromJson<String?>(json['cancelledBy']),
+      cancellationReason: serializer.fromJson<String?>(
+        json['cancellationReason'],
+      ),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+      requestId: serializer.fromJson<String>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'typeSnapshot': serializer.toJson<String>(typeSnapshot),
+      'policySnapshot': serializer.toJson<String?>(policySnapshot),
+      'startDate': serializer.toJson<String>(startDate),
+      'endDate': serializer.toJson<String>(endDate),
+      'startPortion': serializer.toJson<String>(startPortion),
+      'endPortion': serializer.toJson<String>(endPortion),
+      'requestedDays': serializer.toJson<double>(requestedDays),
+      'reason': serializer.toJson<String>(reason),
+      'attachmentName': serializer.toJson<String?>(attachmentName),
+      'status': serializer.toJson<String>(status),
+      'submittedMilliseconds': serializer.toJson<int?>(submittedMilliseconds),
+      'reviewedMilliseconds': serializer.toJson<int?>(reviewedMilliseconds),
+      'reviewedBy': serializer.toJson<String?>(reviewedBy),
+      'reviewNote': serializer.toJson<String?>(reviewNote),
+      'cancelledMilliseconds': serializer.toJson<int?>(cancelledMilliseconds),
+      'cancelledBy': serializer.toJson<String?>(cancelledBy),
+      'cancellationReason': serializer.toJson<String?>(cancellationReason),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+      'requestId': serializer.toJson<String>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  LeaveRequestData copyWith({
+    String? id,
+    String? companyId,
+    String? employeeId,
+    String? typeSnapshot,
+    Value<String?> policySnapshot = const Value.absent(),
+    String? startDate,
+    String? endDate,
+    String? startPortion,
+    String? endPortion,
+    double? requestedDays,
+    String? reason,
+    Value<String?> attachmentName = const Value.absent(),
+    String? status,
+    Value<int?> submittedMilliseconds = const Value.absent(),
+    Value<int?> reviewedMilliseconds = const Value.absent(),
+    Value<String?> reviewedBy = const Value.absent(),
+    Value<String?> reviewNote = const Value.absent(),
+    Value<int?> cancelledMilliseconds = const Value.absent(),
+    Value<String?> cancelledBy = const Value.absent(),
+    Value<String?> cancellationReason = const Value.absent(),
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+    String? requestId,
+    String? syncStatus,
+  }) => LeaveRequestData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    employeeId: employeeId ?? this.employeeId,
+    typeSnapshot: typeSnapshot ?? this.typeSnapshot,
+    policySnapshot: policySnapshot.present
+        ? policySnapshot.value
+        : this.policySnapshot,
+    startDate: startDate ?? this.startDate,
+    endDate: endDate ?? this.endDate,
+    startPortion: startPortion ?? this.startPortion,
+    endPortion: endPortion ?? this.endPortion,
+    requestedDays: requestedDays ?? this.requestedDays,
+    reason: reason ?? this.reason,
+    attachmentName: attachmentName.present
+        ? attachmentName.value
+        : this.attachmentName,
+    status: status ?? this.status,
+    submittedMilliseconds: submittedMilliseconds.present
+        ? submittedMilliseconds.value
+        : this.submittedMilliseconds,
+    reviewedMilliseconds: reviewedMilliseconds.present
+        ? reviewedMilliseconds.value
+        : this.reviewedMilliseconds,
+    reviewedBy: reviewedBy.present ? reviewedBy.value : this.reviewedBy,
+    reviewNote: reviewNote.present ? reviewNote.value : this.reviewNote,
+    cancelledMilliseconds: cancelledMilliseconds.present
+        ? cancelledMilliseconds.value
+        : this.cancelledMilliseconds,
+    cancelledBy: cancelledBy.present ? cancelledBy.value : this.cancelledBy,
+    cancellationReason: cancellationReason.present
+        ? cancellationReason.value
+        : this.cancellationReason,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+    requestId: requestId ?? this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  LeaveRequestData copyWithCompanion(LeaveRequestsCompanion data) {
+    return LeaveRequestData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      typeSnapshot: data.typeSnapshot.present
+          ? data.typeSnapshot.value
+          : this.typeSnapshot,
+      policySnapshot: data.policySnapshot.present
+          ? data.policySnapshot.value
+          : this.policySnapshot,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      startPortion: data.startPortion.present
+          ? data.startPortion.value
+          : this.startPortion,
+      endPortion: data.endPortion.present
+          ? data.endPortion.value
+          : this.endPortion,
+      requestedDays: data.requestedDays.present
+          ? data.requestedDays.value
+          : this.requestedDays,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      attachmentName: data.attachmentName.present
+          ? data.attachmentName.value
+          : this.attachmentName,
+      status: data.status.present ? data.status.value : this.status,
+      submittedMilliseconds: data.submittedMilliseconds.present
+          ? data.submittedMilliseconds.value
+          : this.submittedMilliseconds,
+      reviewedMilliseconds: data.reviewedMilliseconds.present
+          ? data.reviewedMilliseconds.value
+          : this.reviewedMilliseconds,
+      reviewedBy: data.reviewedBy.present
+          ? data.reviewedBy.value
+          : this.reviewedBy,
+      reviewNote: data.reviewNote.present
+          ? data.reviewNote.value
+          : this.reviewNote,
+      cancelledMilliseconds: data.cancelledMilliseconds.present
+          ? data.cancelledMilliseconds.value
+          : this.cancelledMilliseconds,
+      cancelledBy: data.cancelledBy.present
+          ? data.cancelledBy.value
+          : this.cancelledBy,
+      cancellationReason: data.cancellationReason.present
+          ? data.cancellationReason.value
+          : this.cancellationReason,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveRequestData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('typeSnapshot: $typeSnapshot, ')
+          ..write('policySnapshot: $policySnapshot, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('startPortion: $startPortion, ')
+          ..write('endPortion: $endPortion, ')
+          ..write('requestedDays: $requestedDays, ')
+          ..write('reason: $reason, ')
+          ..write('attachmentName: $attachmentName, ')
+          ..write('status: $status, ')
+          ..write('submittedMilliseconds: $submittedMilliseconds, ')
+          ..write('reviewedMilliseconds: $reviewedMilliseconds, ')
+          ..write('reviewedBy: $reviewedBy, ')
+          ..write('reviewNote: $reviewNote, ')
+          ..write('cancelledMilliseconds: $cancelledMilliseconds, ')
+          ..write('cancelledBy: $cancelledBy, ')
+          ..write('cancellationReason: $cancellationReason, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    companyId,
+    employeeId,
+    typeSnapshot,
+    policySnapshot,
+    startDate,
+    endDate,
+    startPortion,
+    endPortion,
+    requestedDays,
+    reason,
+    attachmentName,
+    status,
+    submittedMilliseconds,
+    reviewedMilliseconds,
+    reviewedBy,
+    reviewNote,
+    cancelledMilliseconds,
+    cancelledBy,
+    cancellationReason,
+    createdMilliseconds,
+    updatedMilliseconds,
+    requestId,
+    syncStatus,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LeaveRequestData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.employeeId == this.employeeId &&
+          other.typeSnapshot == this.typeSnapshot &&
+          other.policySnapshot == this.policySnapshot &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate &&
+          other.startPortion == this.startPortion &&
+          other.endPortion == this.endPortion &&
+          other.requestedDays == this.requestedDays &&
+          other.reason == this.reason &&
+          other.attachmentName == this.attachmentName &&
+          other.status == this.status &&
+          other.submittedMilliseconds == this.submittedMilliseconds &&
+          other.reviewedMilliseconds == this.reviewedMilliseconds &&
+          other.reviewedBy == this.reviewedBy &&
+          other.reviewNote == this.reviewNote &&
+          other.cancelledMilliseconds == this.cancelledMilliseconds &&
+          other.cancelledBy == this.cancelledBy &&
+          other.cancellationReason == this.cancellationReason &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class LeaveRequestsCompanion extends UpdateCompanion<LeaveRequestData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> employeeId;
+  final Value<String> typeSnapshot;
+  final Value<String?> policySnapshot;
+  final Value<String> startDate;
+  final Value<String> endDate;
+  final Value<String> startPortion;
+  final Value<String> endPortion;
+  final Value<double> requestedDays;
+  final Value<String> reason;
+  final Value<String?> attachmentName;
+  final Value<String> status;
+  final Value<int?> submittedMilliseconds;
+  final Value<int?> reviewedMilliseconds;
+  final Value<String?> reviewedBy;
+  final Value<String?> reviewNote;
+  final Value<int?> cancelledMilliseconds;
+  final Value<String?> cancelledBy;
+  final Value<String?> cancellationReason;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<String> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const LeaveRequestsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.typeSnapshot = const Value.absent(),
+    this.policySnapshot = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.startPortion = const Value.absent(),
+    this.endPortion = const Value.absent(),
+    this.requestedDays = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.attachmentName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.submittedMilliseconds = const Value.absent(),
+    this.reviewedMilliseconds = const Value.absent(),
+    this.reviewedBy = const Value.absent(),
+    this.reviewNote = const Value.absent(),
+    this.cancelledMilliseconds = const Value.absent(),
+    this.cancelledBy = const Value.absent(),
+    this.cancellationReason = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LeaveRequestsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String employeeId,
+    required String typeSnapshot,
+    this.policySnapshot = const Value.absent(),
+    required String startDate,
+    required String endDate,
+    this.startPortion = const Value.absent(),
+    this.endPortion = const Value.absent(),
+    this.requestedDays = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.attachmentName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.submittedMilliseconds = const Value.absent(),
+    this.reviewedMilliseconds = const Value.absent(),
+    this.reviewedBy = const Value.absent(),
+    this.reviewNote = const Value.absent(),
+    this.cancelledMilliseconds = const Value.absent(),
+    this.cancelledBy = const Value.absent(),
+    this.cancellationReason = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    required String requestId,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       employeeId = Value(employeeId),
+       typeSnapshot = Value(typeSnapshot),
+       startDate = Value(startDate),
+       endDate = Value(endDate),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds),
+       requestId = Value(requestId);
+  static Insertable<LeaveRequestData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? employeeId,
+    Expression<String>? typeSnapshot,
+    Expression<String>? policySnapshot,
+    Expression<String>? startDate,
+    Expression<String>? endDate,
+    Expression<String>? startPortion,
+    Expression<String>? endPortion,
+    Expression<double>? requestedDays,
+    Expression<String>? reason,
+    Expression<String>? attachmentName,
+    Expression<String>? status,
+    Expression<int>? submittedMilliseconds,
+    Expression<int>? reviewedMilliseconds,
+    Expression<String>? reviewedBy,
+    Expression<String>? reviewNote,
+    Expression<int>? cancelledMilliseconds,
+    Expression<String>? cancelledBy,
+    Expression<String>? cancellationReason,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (typeSnapshot != null) 'type_snapshot': typeSnapshot,
+      if (policySnapshot != null) 'policy_snapshot': policySnapshot,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+      if (startPortion != null) 'start_portion': startPortion,
+      if (endPortion != null) 'end_portion': endPortion,
+      if (requestedDays != null) 'requested_days': requestedDays,
+      if (reason != null) 'reason': reason,
+      if (attachmentName != null) 'attachment_name': attachmentName,
+      if (status != null) 'status': status,
+      if (submittedMilliseconds != null)
+        'submitted_milliseconds': submittedMilliseconds,
+      if (reviewedMilliseconds != null)
+        'reviewed_milliseconds': reviewedMilliseconds,
+      if (reviewedBy != null) 'reviewed_by': reviewedBy,
+      if (reviewNote != null) 'review_note': reviewNote,
+      if (cancelledMilliseconds != null)
+        'cancelled_milliseconds': cancelledMilliseconds,
+      if (cancelledBy != null) 'cancelled_by': cancelledBy,
+      if (cancellationReason != null) 'cancellation_reason': cancellationReason,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LeaveRequestsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? employeeId,
+    Value<String>? typeSnapshot,
+    Value<String?>? policySnapshot,
+    Value<String>? startDate,
+    Value<String>? endDate,
+    Value<String>? startPortion,
+    Value<String>? endPortion,
+    Value<double>? requestedDays,
+    Value<String>? reason,
+    Value<String?>? attachmentName,
+    Value<String>? status,
+    Value<int?>? submittedMilliseconds,
+    Value<int?>? reviewedMilliseconds,
+    Value<String?>? reviewedBy,
+    Value<String?>? reviewNote,
+    Value<int?>? cancelledMilliseconds,
+    Value<String?>? cancelledBy,
+    Value<String?>? cancellationReason,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<String>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return LeaveRequestsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      employeeId: employeeId ?? this.employeeId,
+      typeSnapshot: typeSnapshot ?? this.typeSnapshot,
+      policySnapshot: policySnapshot ?? this.policySnapshot,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      startPortion: startPortion ?? this.startPortion,
+      endPortion: endPortion ?? this.endPortion,
+      requestedDays: requestedDays ?? this.requestedDays,
+      reason: reason ?? this.reason,
+      attachmentName: attachmentName ?? this.attachmentName,
+      status: status ?? this.status,
+      submittedMilliseconds:
+          submittedMilliseconds ?? this.submittedMilliseconds,
+      reviewedMilliseconds: reviewedMilliseconds ?? this.reviewedMilliseconds,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
+      reviewNote: reviewNote ?? this.reviewNote,
+      cancelledMilliseconds:
+          cancelledMilliseconds ?? this.cancelledMilliseconds,
+      cancelledBy: cancelledBy ?? this.cancelledBy,
+      cancellationReason: cancellationReason ?? this.cancellationReason,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (typeSnapshot.present) {
+      map['type_snapshot'] = Variable<String>(typeSnapshot.value);
+    }
+    if (policySnapshot.present) {
+      map['policy_snapshot'] = Variable<String>(policySnapshot.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<String>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<String>(endDate.value);
+    }
+    if (startPortion.present) {
+      map['start_portion'] = Variable<String>(startPortion.value);
+    }
+    if (endPortion.present) {
+      map['end_portion'] = Variable<String>(endPortion.value);
+    }
+    if (requestedDays.present) {
+      map['requested_days'] = Variable<double>(requestedDays.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (attachmentName.present) {
+      map['attachment_name'] = Variable<String>(attachmentName.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (submittedMilliseconds.present) {
+      map['submitted_milliseconds'] = Variable<int>(
+        submittedMilliseconds.value,
+      );
+    }
+    if (reviewedMilliseconds.present) {
+      map['reviewed_milliseconds'] = Variable<int>(reviewedMilliseconds.value);
+    }
+    if (reviewedBy.present) {
+      map['reviewed_by'] = Variable<String>(reviewedBy.value);
+    }
+    if (reviewNote.present) {
+      map['review_note'] = Variable<String>(reviewNote.value);
+    }
+    if (cancelledMilliseconds.present) {
+      map['cancelled_milliseconds'] = Variable<int>(
+        cancelledMilliseconds.value,
+      );
+    }
+    if (cancelledBy.present) {
+      map['cancelled_by'] = Variable<String>(cancelledBy.value);
+    }
+    if (cancellationReason.present) {
+      map['cancellation_reason'] = Variable<String>(cancellationReason.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveRequestsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('typeSnapshot: $typeSnapshot, ')
+          ..write('policySnapshot: $policySnapshot, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('startPortion: $startPortion, ')
+          ..write('endPortion: $endPortion, ')
+          ..write('requestedDays: $requestedDays, ')
+          ..write('reason: $reason, ')
+          ..write('attachmentName: $attachmentName, ')
+          ..write('status: $status, ')
+          ..write('submittedMilliseconds: $submittedMilliseconds, ')
+          ..write('reviewedMilliseconds: $reviewedMilliseconds, ')
+          ..write('reviewedBy: $reviewedBy, ')
+          ..write('reviewNote: $reviewNote, ')
+          ..write('cancelledMilliseconds: $cancelledMilliseconds, ')
+          ..write('cancelledBy: $cancelledBy, ')
+          ..write('cancellationReason: $cancellationReason, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LeaveRequestEventsTable extends LeaveRequestEvents
+    with TableInfo<$LeaveRequestEventsTable, LeaveRequestEventData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LeaveRequestEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actorIdMeta = const VerificationMeta(
+    'actorId',
+  );
+  @override
+  late final GeneratedColumn<String> actorId = GeneratedColumn<String>(
+    'actor_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    requestId,
+    type,
+    actorId,
+    note,
+    createdMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'leave_request_events';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LeaveRequestEventData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_requestIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('actor_id')) {
+      context.handle(
+        _actorIdMeta,
+        actorId.isAcceptableOrUnknown(data['actor_id']!, _actorIdMeta),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LeaveRequestEventData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LeaveRequestEventData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      actorId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actor_id'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $LeaveRequestEventsTable createAlias(String alias) {
+    return $LeaveRequestEventsTable(attachedDatabase, alias);
+  }
+}
+
+class LeaveRequestEventData extends DataClass
+    implements Insertable<LeaveRequestEventData> {
+  final String id;
+  final String companyId;
+  final String requestId;
+  final String type;
+  final String? actorId;
+  final String? note;
+  final int createdMilliseconds;
+  const LeaveRequestEventData({
+    required this.id,
+    required this.companyId,
+    required this.requestId,
+    required this.type,
+    this.actorId,
+    this.note,
+    required this.createdMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['request_id'] = Variable<String>(requestId);
+    map['type'] = Variable<String>(type);
+    if (!nullToAbsent || actorId != null) {
+      map['actor_id'] = Variable<String>(actorId);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    return map;
+  }
+
+  LeaveRequestEventsCompanion toCompanion(bool nullToAbsent) {
+    return LeaveRequestEventsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      requestId: Value(requestId),
+      type: Value(type),
+      actorId: actorId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actorId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdMilliseconds: Value(createdMilliseconds),
+    );
+  }
+
+  factory LeaveRequestEventData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LeaveRequestEventData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      requestId: serializer.fromJson<String>(json['requestId']),
+      type: serializer.fromJson<String>(json['type']),
+      actorId: serializer.fromJson<String?>(json['actorId']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'requestId': serializer.toJson<String>(requestId),
+      'type': serializer.toJson<String>(type),
+      'actorId': serializer.toJson<String?>(actorId),
+      'note': serializer.toJson<String?>(note),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+    };
+  }
+
+  LeaveRequestEventData copyWith({
+    String? id,
+    String? companyId,
+    String? requestId,
+    String? type,
+    Value<String?> actorId = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdMilliseconds,
+  }) => LeaveRequestEventData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    requestId: requestId ?? this.requestId,
+    type: type ?? this.type,
+    actorId: actorId.present ? actorId.value : this.actorId,
+    note: note.present ? note.value : this.note,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+  );
+  LeaveRequestEventData copyWithCompanion(LeaveRequestEventsCompanion data) {
+    return LeaveRequestEventData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      type: data.type.present ? data.type.value : this.type,
+      actorId: data.actorId.present ? data.actorId.value : this.actorId,
+      note: data.note.present ? data.note.value : this.note,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveRequestEventData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('requestId: $requestId, ')
+          ..write('type: $type, ')
+          ..write('actorId: $actorId, ')
+          ..write('note: $note, ')
+          ..write('createdMilliseconds: $createdMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    requestId,
+    type,
+    actorId,
+    note,
+    createdMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LeaveRequestEventData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.requestId == this.requestId &&
+          other.type == this.type &&
+          other.actorId == this.actorId &&
+          other.note == this.note &&
+          other.createdMilliseconds == this.createdMilliseconds);
+}
+
+class LeaveRequestEventsCompanion
+    extends UpdateCompanion<LeaveRequestEventData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> requestId;
+  final Value<String> type;
+  final Value<String?> actorId;
+  final Value<String?> note;
+  final Value<int> createdMilliseconds;
+  final Value<int> rowid;
+  const LeaveRequestEventsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.actorId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LeaveRequestEventsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String requestId,
+    required String type,
+    this.actorId = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       requestId = Value(requestId),
+       type = Value(type),
+       createdMilliseconds = Value(createdMilliseconds);
+  static Insertable<LeaveRequestEventData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? requestId,
+    Expression<String>? type,
+    Expression<String>? actorId,
+    Expression<String>? note,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (requestId != null) 'request_id': requestId,
+      if (type != null) 'type': type,
+      if (actorId != null) 'actor_id': actorId,
+      if (note != null) 'note': note,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LeaveRequestEventsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? requestId,
+    Value<String>? type,
+    Value<String?>? actorId,
+    Value<String?>? note,
+    Value<int>? createdMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return LeaveRequestEventsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      requestId: requestId ?? this.requestId,
+      type: type ?? this.type,
+      actorId: actorId ?? this.actorId,
+      note: note ?? this.note,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (actorId.present) {
+      map['actor_id'] = Variable<String>(actorId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LeaveRequestEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('requestId: $requestId, ')
+          ..write('type: $type, ')
+          ..write('actorId: $actorId, ')
+          ..write('note: $note, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HolidaysTable extends Holidays
+    with TableInfo<$HolidaysTable, HolidayData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HolidaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endDateMeta = const VerificationMeta(
+    'endDate',
+  );
+  @override
+  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
+    'end_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('companyHoliday'),
+  );
+  static const VerificationMeta _scopeMeta = const VerificationMeta('scope');
+  @override
+  late final GeneratedColumn<String> scope = GeneratedColumn<String>(
+    'scope',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('companyWide'),
+  );
+  static const VerificationMeta _workLocationIdsMeta = const VerificationMeta(
+    'workLocationIds',
+  );
+  @override
+  late final GeneratedColumn<String> workLocationIds = GeneratedColumn<String>(
+    'work_location_ids',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _isOptionalMeta = const VerificationMeta(
+    'isOptional',
+  );
+  @override
+  late final GeneratedColumn<bool> isOptional = GeneratedColumn<bool>(
+    'is_optional',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_optional" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    date,
+    endDate,
+    type,
+    scope,
+    workLocationIds,
+    description,
+    isOptional,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'holidays';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HolidayData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(
+        _endDateMeta,
+        endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta),
+      );
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    }
+    if (data.containsKey('scope')) {
+      context.handle(
+        _scopeMeta,
+        scope.isAcceptableOrUnknown(data['scope']!, _scopeMeta),
+      );
+    }
+    if (data.containsKey('work_location_ids')) {
+      context.handle(
+        _workLocationIdsMeta,
+        workLocationIds.isAcceptableOrUnknown(
+          data['work_location_ids']!,
+          _workLocationIdsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_optional')) {
+      context.handle(
+        _isOptionalMeta,
+        isOptional.isAcceptableOrUnknown(data['is_optional']!, _isOptionalMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HolidayData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HolidayData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}date'],
+      )!,
+      endDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_date'],
+      ),
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      scope: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scope'],
+      )!,
+      workLocationIds: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work_location_ids'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      isOptional: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_optional'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $HolidaysTable createAlias(String alias) {
+    return $HolidaysTable(attachedDatabase, alias);
+  }
+}
+
+class HolidayData extends DataClass implements Insertable<HolidayData> {
+  final String id;
+  final String companyId;
+  final String name;
+  final String date;
+  final String? endDate;
+  final String type;
+  final String scope;
+  final String workLocationIds;
+  final String description;
+  final bool isOptional;
+  final String status;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const HolidayData({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.date,
+    this.endDate,
+    required this.type,
+    required this.scope,
+    required this.workLocationIds,
+    required this.description,
+    required this.isOptional,
+    required this.status,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['date'] = Variable<String>(date);
+    if (!nullToAbsent || endDate != null) {
+      map['end_date'] = Variable<String>(endDate);
+    }
+    map['type'] = Variable<String>(type);
+    map['scope'] = Variable<String>(scope);
+    map['work_location_ids'] = Variable<String>(workLocationIds);
+    map['description'] = Variable<String>(description);
+    map['is_optional'] = Variable<bool>(isOptional);
+    map['status'] = Variable<String>(status);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  HolidaysCompanion toCompanion(bool nullToAbsent) {
+    return HolidaysCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      date: Value(date),
+      endDate: endDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endDate),
+      type: Value(type),
+      scope: Value(scope),
+      workLocationIds: Value(workLocationIds),
+      description: Value(description),
+      isOptional: Value(isOptional),
+      status: Value(status),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory HolidayData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HolidayData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      date: serializer.fromJson<String>(json['date']),
+      endDate: serializer.fromJson<String?>(json['endDate']),
+      type: serializer.fromJson<String>(json['type']),
+      scope: serializer.fromJson<String>(json['scope']),
+      workLocationIds: serializer.fromJson<String>(json['workLocationIds']),
+      description: serializer.fromJson<String>(json['description']),
+      isOptional: serializer.fromJson<bool>(json['isOptional']),
+      status: serializer.fromJson<String>(json['status']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'date': serializer.toJson<String>(date),
+      'endDate': serializer.toJson<String?>(endDate),
+      'type': serializer.toJson<String>(type),
+      'scope': serializer.toJson<String>(scope),
+      'workLocationIds': serializer.toJson<String>(workLocationIds),
+      'description': serializer.toJson<String>(description),
+      'isOptional': serializer.toJson<bool>(isOptional),
+      'status': serializer.toJson<String>(status),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  HolidayData copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    String? date,
+    Value<String?> endDate = const Value.absent(),
+    String? type,
+    String? scope,
+    String? workLocationIds,
+    String? description,
+    bool? isOptional,
+    String? status,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => HolidayData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    date: date ?? this.date,
+    endDate: endDate.present ? endDate.value : this.endDate,
+    type: type ?? this.type,
+    scope: scope ?? this.scope,
+    workLocationIds: workLocationIds ?? this.workLocationIds,
+    description: description ?? this.description,
+    isOptional: isOptional ?? this.isOptional,
+    status: status ?? this.status,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  HolidayData copyWithCompanion(HolidaysCompanion data) {
+    return HolidayData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      date: data.date.present ? data.date.value : this.date,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      type: data.type.present ? data.type.value : this.type,
+      scope: data.scope.present ? data.scope.value : this.scope,
+      workLocationIds: data.workLocationIds.present
+          ? data.workLocationIds.value
+          : this.workLocationIds,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      isOptional: data.isOptional.present
+          ? data.isOptional.value
+          : this.isOptional,
+      status: data.status.present ? data.status.value : this.status,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HolidayData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('date: $date, ')
+          ..write('endDate: $endDate, ')
+          ..write('type: $type, ')
+          ..write('scope: $scope, ')
+          ..write('workLocationIds: $workLocationIds, ')
+          ..write('description: $description, ')
+          ..write('isOptional: $isOptional, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    date,
+    endDate,
+    type,
+    scope,
+    workLocationIds,
+    description,
+    isOptional,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HolidayData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.date == this.date &&
+          other.endDate == this.endDate &&
+          other.type == this.type &&
+          other.scope == this.scope &&
+          other.workLocationIds == this.workLocationIds &&
+          other.description == this.description &&
+          other.isOptional == this.isOptional &&
+          other.status == this.status &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class HolidaysCompanion extends UpdateCompanion<HolidayData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<String> date;
+  final Value<String?> endDate;
+  final Value<String> type;
+  final Value<String> scope;
+  final Value<String> workLocationIds;
+  final Value<String> description;
+  final Value<bool> isOptional;
+  final Value<String> status;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const HolidaysCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.date = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.type = const Value.absent(),
+    this.scope = const Value.absent(),
+    this.workLocationIds = const Value.absent(),
+    this.description = const Value.absent(),
+    this.isOptional = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HolidaysCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required String date,
+    this.endDate = const Value.absent(),
+    this.type = const Value.absent(),
+    this.scope = const Value.absent(),
+    this.workLocationIds = const Value.absent(),
+    this.description = const Value.absent(),
+    this.isOptional = const Value.absent(),
+    this.status = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       date = Value(date),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<HolidayData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<String>? date,
+    Expression<String>? endDate,
+    Expression<String>? type,
+    Expression<String>? scope,
+    Expression<String>? workLocationIds,
+    Expression<String>? description,
+    Expression<bool>? isOptional,
+    Expression<String>? status,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (date != null) 'date': date,
+      if (endDate != null) 'end_date': endDate,
+      if (type != null) 'type': type,
+      if (scope != null) 'scope': scope,
+      if (workLocationIds != null) 'work_location_ids': workLocationIds,
+      if (description != null) 'description': description,
+      if (isOptional != null) 'is_optional': isOptional,
+      if (status != null) 'status': status,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HolidaysCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<String>? date,
+    Value<String?>? endDate,
+    Value<String>? type,
+    Value<String>? scope,
+    Value<String>? workLocationIds,
+    Value<String>? description,
+    Value<bool>? isOptional,
+    Value<String>? status,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return HolidaysCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      date: date ?? this.date,
+      endDate: endDate ?? this.endDate,
+      type: type ?? this.type,
+      scope: scope ?? this.scope,
+      workLocationIds: workLocationIds ?? this.workLocationIds,
+      description: description ?? this.description,
+      isOptional: isOptional ?? this.isOptional,
+      status: status ?? this.status,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<String>(date.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<String>(endDate.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (scope.present) {
+      map['scope'] = Variable<String>(scope.value);
+    }
+    if (workLocationIds.present) {
+      map['work_location_ids'] = Variable<String>(workLocationIds.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (isOptional.present) {
+      map['is_optional'] = Variable<bool>(isOptional.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HolidaysCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('date: $date, ')
+          ..write('endDate: $endDate, ')
+          ..write('type: $type, ')
+          ..write('scope: $scope, ')
+          ..write('workLocationIds: $workLocationIds, ')
+          ..write('description: $description, ')
+          ..write('isOptional: $isOptional, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -12144,6 +18237,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $WorkLocationRecordsTable(this);
   late final $AttendancePolicyRecordsTable attendancePolicyRecords =
       $AttendancePolicyRecordsTable(this);
+  late final $LeaveTypesTable leaveTypes = $LeaveTypesTable(this);
+  late final $LeavePoliciesTable leavePolicies = $LeavePoliciesTable(this);
+  late final $EmployeeLeavePolicyAssignmentsTable
+  employeeLeavePolicyAssignments = $EmployeeLeavePolicyAssignmentsTable(this);
+  late final $LeaveBalanceTransactionsTable leaveBalanceTransactions =
+      $LeaveBalanceTransactionsTable(this);
+  late final $LeaveRequestsTable leaveRequests = $LeaveRequestsTable(this);
+  late final $LeaveRequestEventsTable leaveRequestEvents =
+      $LeaveRequestEventsTable(this);
+  late final $HolidaysTable holidays = $HolidaysTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -12163,6 +18266,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     shiftRecords,
     workLocationRecords,
     attendancePolicyRecords,
+    leaveTypes,
+    leavePolicies,
+    employeeLeavePolicyAssignments,
+    leaveBalanceTransactions,
+    leaveRequests,
+    leaveRequestEvents,
+    holidays,
   ];
 }
 
@@ -18790,6 +24900,2828 @@ typedef $$AttendancePolicyRecordsTableProcessedTableManager =
       AttendancePolicyRecord,
       PrefetchHooks Function()
     >;
+typedef $$LeaveTypesTableCreateCompanionBuilder =
+    LeaveTypesCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String code,
+      Value<String> description,
+      Value<String> compensation,
+      Value<bool> requiresApproval,
+      Value<bool> allowsHalfDay,
+      Value<bool> requiresReason,
+      Value<bool> requiresAttachment,
+      Value<String> colorKey,
+      Value<String> status,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$LeaveTypesTableUpdateCompanionBuilder =
+    LeaveTypesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> code,
+      Value<String> description,
+      Value<String> compensation,
+      Value<bool> requiresApproval,
+      Value<bool> allowsHalfDay,
+      Value<bool> requiresReason,
+      Value<bool> requiresAttachment,
+      Value<String> colorKey,
+      Value<String> status,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$LeaveTypesTableFilterComposer
+    extends Composer<_$AppDatabase, $LeaveTypesTable> {
+  $$LeaveTypesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get compensation => $composableBuilder(
+    column: $table.compensation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requiresApproval => $composableBuilder(
+    column: $table.requiresApproval,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowsHalfDay => $composableBuilder(
+    column: $table.allowsHalfDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requiresReason => $composableBuilder(
+    column: $table.requiresReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requiresAttachment => $composableBuilder(
+    column: $table.requiresAttachment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get colorKey => $composableBuilder(
+    column: $table.colorKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LeaveTypesTableOrderingComposer
+    extends Composer<_$AppDatabase, $LeaveTypesTable> {
+  $$LeaveTypesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get compensation => $composableBuilder(
+    column: $table.compensation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requiresApproval => $composableBuilder(
+    column: $table.requiresApproval,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowsHalfDay => $composableBuilder(
+    column: $table.allowsHalfDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requiresReason => $composableBuilder(
+    column: $table.requiresReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requiresAttachment => $composableBuilder(
+    column: $table.requiresAttachment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get colorKey => $composableBuilder(
+    column: $table.colorKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LeaveTypesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LeaveTypesTable> {
+  $$LeaveTypesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get compensation => $composableBuilder(
+    column: $table.compensation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requiresApproval => $composableBuilder(
+    column: $table.requiresApproval,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowsHalfDay => $composableBuilder(
+    column: $table.allowsHalfDay,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requiresReason => $composableBuilder(
+    column: $table.requiresReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get requiresAttachment => $composableBuilder(
+    column: $table.requiresAttachment,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get colorKey =>
+      $composableBuilder(column: $table.colorKey, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$LeaveTypesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LeaveTypesTable,
+          LeaveTypeData,
+          $$LeaveTypesTableFilterComposer,
+          $$LeaveTypesTableOrderingComposer,
+          $$LeaveTypesTableAnnotationComposer,
+          $$LeaveTypesTableCreateCompanionBuilder,
+          $$LeaveTypesTableUpdateCompanionBuilder,
+          (
+            LeaveTypeData,
+            BaseReferences<_$AppDatabase, $LeaveTypesTable, LeaveTypeData>,
+          ),
+          LeaveTypeData,
+          PrefetchHooks Function()
+        > {
+  $$LeaveTypesTableTableManager(_$AppDatabase db, $LeaveTypesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LeaveTypesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LeaveTypesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LeaveTypesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> compensation = const Value.absent(),
+                Value<bool> requiresApproval = const Value.absent(),
+                Value<bool> allowsHalfDay = const Value.absent(),
+                Value<bool> requiresReason = const Value.absent(),
+                Value<bool> requiresAttachment = const Value.absent(),
+                Value<String> colorKey = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveTypesCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                code: code,
+                description: description,
+                compensation: compensation,
+                requiresApproval: requiresApproval,
+                allowsHalfDay: allowsHalfDay,
+                requiresReason: requiresReason,
+                requiresAttachment: requiresAttachment,
+                colorKey: colorKey,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String code,
+                Value<String> description = const Value.absent(),
+                Value<String> compensation = const Value.absent(),
+                Value<bool> requiresApproval = const Value.absent(),
+                Value<bool> allowsHalfDay = const Value.absent(),
+                Value<bool> requiresReason = const Value.absent(),
+                Value<bool> requiresAttachment = const Value.absent(),
+                Value<String> colorKey = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveTypesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                code: code,
+                description: description,
+                compensation: compensation,
+                requiresApproval: requiresApproval,
+                allowsHalfDay: allowsHalfDay,
+                requiresReason: requiresReason,
+                requiresAttachment: requiresAttachment,
+                colorKey: colorKey,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LeaveTypesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LeaveTypesTable,
+      LeaveTypeData,
+      $$LeaveTypesTableFilterComposer,
+      $$LeaveTypesTableOrderingComposer,
+      $$LeaveTypesTableAnnotationComposer,
+      $$LeaveTypesTableCreateCompanionBuilder,
+      $$LeaveTypesTableUpdateCompanionBuilder,
+      (
+        LeaveTypeData,
+        BaseReferences<_$AppDatabase, $LeaveTypesTable, LeaveTypeData>,
+      ),
+      LeaveTypeData,
+      PrefetchHooks Function()
+    >;
+typedef $$LeavePoliciesTableCreateCompanionBuilder =
+    LeavePoliciesCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String code,
+      required String leaveTypeId,
+      Value<double> annualEntitlementDays,
+      Value<bool> allowHalfDay,
+      Value<double> minimumRequestDays,
+      Value<int?> maximumConsecutiveDays,
+      Value<int> advanceNoticeDays,
+      Value<bool> allowPastRequest,
+      Value<int> pastRequestWindowDays,
+      Value<int?> requiresAttachmentAfterDays,
+      Value<bool> allowNegativeBalance,
+      Value<bool> carryForwardEnabled,
+      Value<double?> carryForwardLimitDays,
+      Value<String> applicableEmploymentTypes,
+      Value<String> status,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$LeavePoliciesTableUpdateCompanionBuilder =
+    LeavePoliciesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> code,
+      Value<String> leaveTypeId,
+      Value<double> annualEntitlementDays,
+      Value<bool> allowHalfDay,
+      Value<double> minimumRequestDays,
+      Value<int?> maximumConsecutiveDays,
+      Value<int> advanceNoticeDays,
+      Value<bool> allowPastRequest,
+      Value<int> pastRequestWindowDays,
+      Value<int?> requiresAttachmentAfterDays,
+      Value<bool> allowNegativeBalance,
+      Value<bool> carryForwardEnabled,
+      Value<double?> carryForwardLimitDays,
+      Value<String> applicableEmploymentTypes,
+      Value<String> status,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$LeavePoliciesTableFilterComposer
+    extends Composer<_$AppDatabase, $LeavePoliciesTable> {
+  $$LeavePoliciesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get annualEntitlementDays => $composableBuilder(
+    column: $table.annualEntitlementDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowHalfDay => $composableBuilder(
+    column: $table.allowHalfDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get minimumRequestDays => $composableBuilder(
+    column: $table.minimumRequestDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get maximumConsecutiveDays => $composableBuilder(
+    column: $table.maximumConsecutiveDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get advanceNoticeDays => $composableBuilder(
+    column: $table.advanceNoticeDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowPastRequest => $composableBuilder(
+    column: $table.allowPastRequest,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get pastRequestWindowDays => $composableBuilder(
+    column: $table.pastRequestWindowDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get requiresAttachmentAfterDays => $composableBuilder(
+    column: $table.requiresAttachmentAfterDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowNegativeBalance => $composableBuilder(
+    column: $table.allowNegativeBalance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get carryForwardEnabled => $composableBuilder(
+    column: $table.carryForwardEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get carryForwardLimitDays => $composableBuilder(
+    column: $table.carryForwardLimitDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get applicableEmploymentTypes => $composableBuilder(
+    column: $table.applicableEmploymentTypes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LeavePoliciesTableOrderingComposer
+    extends Composer<_$AppDatabase, $LeavePoliciesTable> {
+  $$LeavePoliciesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get annualEntitlementDays => $composableBuilder(
+    column: $table.annualEntitlementDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowHalfDay => $composableBuilder(
+    column: $table.allowHalfDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get minimumRequestDays => $composableBuilder(
+    column: $table.minimumRequestDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get maximumConsecutiveDays => $composableBuilder(
+    column: $table.maximumConsecutiveDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get advanceNoticeDays => $composableBuilder(
+    column: $table.advanceNoticeDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowPastRequest => $composableBuilder(
+    column: $table.allowPastRequest,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get pastRequestWindowDays => $composableBuilder(
+    column: $table.pastRequestWindowDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get requiresAttachmentAfterDays => $composableBuilder(
+    column: $table.requiresAttachmentAfterDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allowNegativeBalance => $composableBuilder(
+    column: $table.allowNegativeBalance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get carryForwardEnabled => $composableBuilder(
+    column: $table.carryForwardEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get carryForwardLimitDays => $composableBuilder(
+    column: $table.carryForwardLimitDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get applicableEmploymentTypes => $composableBuilder(
+    column: $table.applicableEmploymentTypes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LeavePoliciesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LeavePoliciesTable> {
+  $$LeavePoliciesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get annualEntitlementDays => $composableBuilder(
+    column: $table.annualEntitlementDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowHalfDay => $composableBuilder(
+    column: $table.allowHalfDay,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get minimumRequestDays => $composableBuilder(
+    column: $table.minimumRequestDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get maximumConsecutiveDays => $composableBuilder(
+    column: $table.maximumConsecutiveDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get advanceNoticeDays => $composableBuilder(
+    column: $table.advanceNoticeDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowPastRequest => $composableBuilder(
+    column: $table.allowPastRequest,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get pastRequestWindowDays => $composableBuilder(
+    column: $table.pastRequestWindowDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get requiresAttachmentAfterDays => $composableBuilder(
+    column: $table.requiresAttachmentAfterDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allowNegativeBalance => $composableBuilder(
+    column: $table.allowNegativeBalance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get carryForwardEnabled => $composableBuilder(
+    column: $table.carryForwardEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get carryForwardLimitDays => $composableBuilder(
+    column: $table.carryForwardLimitDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get applicableEmploymentTypes => $composableBuilder(
+    column: $table.applicableEmploymentTypes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$LeavePoliciesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LeavePoliciesTable,
+          LeavePolicyData,
+          $$LeavePoliciesTableFilterComposer,
+          $$LeavePoliciesTableOrderingComposer,
+          $$LeavePoliciesTableAnnotationComposer,
+          $$LeavePoliciesTableCreateCompanionBuilder,
+          $$LeavePoliciesTableUpdateCompanionBuilder,
+          (
+            LeavePolicyData,
+            BaseReferences<_$AppDatabase, $LeavePoliciesTable, LeavePolicyData>,
+          ),
+          LeavePolicyData,
+          PrefetchHooks Function()
+        > {
+  $$LeavePoliciesTableTableManager(_$AppDatabase db, $LeavePoliciesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LeavePoliciesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LeavePoliciesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LeavePoliciesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> leaveTypeId = const Value.absent(),
+                Value<double> annualEntitlementDays = const Value.absent(),
+                Value<bool> allowHalfDay = const Value.absent(),
+                Value<double> minimumRequestDays = const Value.absent(),
+                Value<int?> maximumConsecutiveDays = const Value.absent(),
+                Value<int> advanceNoticeDays = const Value.absent(),
+                Value<bool> allowPastRequest = const Value.absent(),
+                Value<int> pastRequestWindowDays = const Value.absent(),
+                Value<int?> requiresAttachmentAfterDays = const Value.absent(),
+                Value<bool> allowNegativeBalance = const Value.absent(),
+                Value<bool> carryForwardEnabled = const Value.absent(),
+                Value<double?> carryForwardLimitDays = const Value.absent(),
+                Value<String> applicableEmploymentTypes = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeavePoliciesCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                code: code,
+                leaveTypeId: leaveTypeId,
+                annualEntitlementDays: annualEntitlementDays,
+                allowHalfDay: allowHalfDay,
+                minimumRequestDays: minimumRequestDays,
+                maximumConsecutiveDays: maximumConsecutiveDays,
+                advanceNoticeDays: advanceNoticeDays,
+                allowPastRequest: allowPastRequest,
+                pastRequestWindowDays: pastRequestWindowDays,
+                requiresAttachmentAfterDays: requiresAttachmentAfterDays,
+                allowNegativeBalance: allowNegativeBalance,
+                carryForwardEnabled: carryForwardEnabled,
+                carryForwardLimitDays: carryForwardLimitDays,
+                applicableEmploymentTypes: applicableEmploymentTypes,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String code,
+                required String leaveTypeId,
+                Value<double> annualEntitlementDays = const Value.absent(),
+                Value<bool> allowHalfDay = const Value.absent(),
+                Value<double> minimumRequestDays = const Value.absent(),
+                Value<int?> maximumConsecutiveDays = const Value.absent(),
+                Value<int> advanceNoticeDays = const Value.absent(),
+                Value<bool> allowPastRequest = const Value.absent(),
+                Value<int> pastRequestWindowDays = const Value.absent(),
+                Value<int?> requiresAttachmentAfterDays = const Value.absent(),
+                Value<bool> allowNegativeBalance = const Value.absent(),
+                Value<bool> carryForwardEnabled = const Value.absent(),
+                Value<double?> carryForwardLimitDays = const Value.absent(),
+                Value<String> applicableEmploymentTypes = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => LeavePoliciesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                code: code,
+                leaveTypeId: leaveTypeId,
+                annualEntitlementDays: annualEntitlementDays,
+                allowHalfDay: allowHalfDay,
+                minimumRequestDays: minimumRequestDays,
+                maximumConsecutiveDays: maximumConsecutiveDays,
+                advanceNoticeDays: advanceNoticeDays,
+                allowPastRequest: allowPastRequest,
+                pastRequestWindowDays: pastRequestWindowDays,
+                requiresAttachmentAfterDays: requiresAttachmentAfterDays,
+                allowNegativeBalance: allowNegativeBalance,
+                carryForwardEnabled: carryForwardEnabled,
+                carryForwardLimitDays: carryForwardLimitDays,
+                applicableEmploymentTypes: applicableEmploymentTypes,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LeavePoliciesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LeavePoliciesTable,
+      LeavePolicyData,
+      $$LeavePoliciesTableFilterComposer,
+      $$LeavePoliciesTableOrderingComposer,
+      $$LeavePoliciesTableAnnotationComposer,
+      $$LeavePoliciesTableCreateCompanionBuilder,
+      $$LeavePoliciesTableUpdateCompanionBuilder,
+      (
+        LeavePolicyData,
+        BaseReferences<_$AppDatabase, $LeavePoliciesTable, LeavePolicyData>,
+      ),
+      LeavePolicyData,
+      PrefetchHooks Function()
+    >;
+typedef $$EmployeeLeavePolicyAssignmentsTableCreateCompanionBuilder =
+    EmployeeLeavePolicyAssignmentsCompanion Function({
+      required String id,
+      required String companyId,
+      required String employeeId,
+      required String policyId,
+      required String effectiveFrom,
+      Value<String?> effectiveTo,
+      Value<String> status,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$EmployeeLeavePolicyAssignmentsTableUpdateCompanionBuilder =
+    EmployeeLeavePolicyAssignmentsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> policyId,
+      Value<String> effectiveFrom,
+      Value<String?> effectiveTo,
+      Value<String> status,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$EmployeeLeavePolicyAssignmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $EmployeeLeavePolicyAssignmentsTable> {
+  $$EmployeeLeavePolicyAssignmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get policyId => $composableBuilder(
+    column: $table.policyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveTo => $composableBuilder(
+    column: $table.effectiveTo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$EmployeeLeavePolicyAssignmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $EmployeeLeavePolicyAssignmentsTable> {
+  $$EmployeeLeavePolicyAssignmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get policyId => $composableBuilder(
+    column: $table.policyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveTo => $composableBuilder(
+    column: $table.effectiveTo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$EmployeeLeavePolicyAssignmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $EmployeeLeavePolicyAssignmentsTable> {
+  $$EmployeeLeavePolicyAssignmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get policyId =>
+      $composableBuilder(column: $table.policyId, builder: (column) => column);
+
+  GeneratedColumn<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get effectiveTo => $composableBuilder(
+    column: $table.effectiveTo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$EmployeeLeavePolicyAssignmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $EmployeeLeavePolicyAssignmentsTable,
+          EmployeeLeavePolicyAssignmentData,
+          $$EmployeeLeavePolicyAssignmentsTableFilterComposer,
+          $$EmployeeLeavePolicyAssignmentsTableOrderingComposer,
+          $$EmployeeLeavePolicyAssignmentsTableAnnotationComposer,
+          $$EmployeeLeavePolicyAssignmentsTableCreateCompanionBuilder,
+          $$EmployeeLeavePolicyAssignmentsTableUpdateCompanionBuilder,
+          (
+            EmployeeLeavePolicyAssignmentData,
+            BaseReferences<
+              _$AppDatabase,
+              $EmployeeLeavePolicyAssignmentsTable,
+              EmployeeLeavePolicyAssignmentData
+            >,
+          ),
+          EmployeeLeavePolicyAssignmentData,
+          PrefetchHooks Function()
+        > {
+  $$EmployeeLeavePolicyAssignmentsTableTableManager(
+    _$AppDatabase db,
+    $EmployeeLeavePolicyAssignmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EmployeeLeavePolicyAssignmentsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$EmployeeLeavePolicyAssignmentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$EmployeeLeavePolicyAssignmentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> policyId = const Value.absent(),
+                Value<String> effectiveFrom = const Value.absent(),
+                Value<String?> effectiveTo = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EmployeeLeavePolicyAssignmentsCompanion(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                policyId: policyId,
+                effectiveFrom: effectiveFrom,
+                effectiveTo: effectiveTo,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String employeeId,
+                required String policyId,
+                required String effectiveFrom,
+                Value<String?> effectiveTo = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => EmployeeLeavePolicyAssignmentsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                policyId: policyId,
+                effectiveFrom: effectiveFrom,
+                effectiveTo: effectiveTo,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$EmployeeLeavePolicyAssignmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $EmployeeLeavePolicyAssignmentsTable,
+      EmployeeLeavePolicyAssignmentData,
+      $$EmployeeLeavePolicyAssignmentsTableFilterComposer,
+      $$EmployeeLeavePolicyAssignmentsTableOrderingComposer,
+      $$EmployeeLeavePolicyAssignmentsTableAnnotationComposer,
+      $$EmployeeLeavePolicyAssignmentsTableCreateCompanionBuilder,
+      $$EmployeeLeavePolicyAssignmentsTableUpdateCompanionBuilder,
+      (
+        EmployeeLeavePolicyAssignmentData,
+        BaseReferences<
+          _$AppDatabase,
+          $EmployeeLeavePolicyAssignmentsTable,
+          EmployeeLeavePolicyAssignmentData
+        >,
+      ),
+      EmployeeLeavePolicyAssignmentData,
+      PrefetchHooks Function()
+    >;
+typedef $$LeaveBalanceTransactionsTableCreateCompanionBuilder =
+    LeaveBalanceTransactionsCompanion Function({
+      required String id,
+      required String companyId,
+      required String employeeId,
+      required String leaveTypeId,
+      required int leaveYear,
+      required String type,
+      required double quantityDays,
+      Value<String?> leaveRequestId,
+      Value<String> reason,
+      required String createdBy,
+      required String effectiveDate,
+      required int createdMilliseconds,
+      required String requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+typedef $$LeaveBalanceTransactionsTableUpdateCompanionBuilder =
+    LeaveBalanceTransactionsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> leaveTypeId,
+      Value<int> leaveYear,
+      Value<String> type,
+      Value<double> quantityDays,
+      Value<String?> leaveRequestId,
+      Value<String> reason,
+      Value<String> createdBy,
+      Value<String> effectiveDate,
+      Value<int> createdMilliseconds,
+      Value<String> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$LeaveBalanceTransactionsTableFilterComposer
+    extends Composer<_$AppDatabase, $LeaveBalanceTransactionsTable> {
+  $$LeaveBalanceTransactionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get leaveYear => $composableBuilder(
+    column: $table.leaveYear,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get quantityDays => $composableBuilder(
+    column: $table.quantityDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get leaveRequestId => $composableBuilder(
+    column: $table.leaveRequestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveDate => $composableBuilder(
+    column: $table.effectiveDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LeaveBalanceTransactionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LeaveBalanceTransactionsTable> {
+  $$LeaveBalanceTransactionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get leaveYear => $composableBuilder(
+    column: $table.leaveYear,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get quantityDays => $composableBuilder(
+    column: $table.quantityDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get leaveRequestId => $composableBuilder(
+    column: $table.leaveRequestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdBy => $composableBuilder(
+    column: $table.createdBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveDate => $composableBuilder(
+    column: $table.effectiveDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LeaveBalanceTransactionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LeaveBalanceTransactionsTable> {
+  $$LeaveBalanceTransactionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get leaveTypeId => $composableBuilder(
+    column: $table.leaveTypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get leaveYear =>
+      $composableBuilder(column: $table.leaveYear, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<double> get quantityDays => $composableBuilder(
+    column: $table.quantityDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get leaveRequestId => $composableBuilder(
+    column: $table.leaveRequestId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<String> get createdBy =>
+      $composableBuilder(column: $table.createdBy, builder: (column) => column);
+
+  GeneratedColumn<String> get effectiveDate => $composableBuilder(
+    column: $table.effectiveDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$LeaveBalanceTransactionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LeaveBalanceTransactionsTable,
+          LeaveBalanceTransactionData,
+          $$LeaveBalanceTransactionsTableFilterComposer,
+          $$LeaveBalanceTransactionsTableOrderingComposer,
+          $$LeaveBalanceTransactionsTableAnnotationComposer,
+          $$LeaveBalanceTransactionsTableCreateCompanionBuilder,
+          $$LeaveBalanceTransactionsTableUpdateCompanionBuilder,
+          (
+            LeaveBalanceTransactionData,
+            BaseReferences<
+              _$AppDatabase,
+              $LeaveBalanceTransactionsTable,
+              LeaveBalanceTransactionData
+            >,
+          ),
+          LeaveBalanceTransactionData,
+          PrefetchHooks Function()
+        > {
+  $$LeaveBalanceTransactionsTableTableManager(
+    _$AppDatabase db,
+    $LeaveBalanceTransactionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LeaveBalanceTransactionsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$LeaveBalanceTransactionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$LeaveBalanceTransactionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> leaveTypeId = const Value.absent(),
+                Value<int> leaveYear = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<double> quantityDays = const Value.absent(),
+                Value<String?> leaveRequestId = const Value.absent(),
+                Value<String> reason = const Value.absent(),
+                Value<String> createdBy = const Value.absent(),
+                Value<String> effectiveDate = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<String> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveBalanceTransactionsCompanion(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                leaveTypeId: leaveTypeId,
+                leaveYear: leaveYear,
+                type: type,
+                quantityDays: quantityDays,
+                leaveRequestId: leaveRequestId,
+                reason: reason,
+                createdBy: createdBy,
+                effectiveDate: effectiveDate,
+                createdMilliseconds: createdMilliseconds,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String employeeId,
+                required String leaveTypeId,
+                required int leaveYear,
+                required String type,
+                required double quantityDays,
+                Value<String?> leaveRequestId = const Value.absent(),
+                Value<String> reason = const Value.absent(),
+                required String createdBy,
+                required String effectiveDate,
+                required int createdMilliseconds,
+                required String requestId,
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveBalanceTransactionsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                leaveTypeId: leaveTypeId,
+                leaveYear: leaveYear,
+                type: type,
+                quantityDays: quantityDays,
+                leaveRequestId: leaveRequestId,
+                reason: reason,
+                createdBy: createdBy,
+                effectiveDate: effectiveDate,
+                createdMilliseconds: createdMilliseconds,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LeaveBalanceTransactionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LeaveBalanceTransactionsTable,
+      LeaveBalanceTransactionData,
+      $$LeaveBalanceTransactionsTableFilterComposer,
+      $$LeaveBalanceTransactionsTableOrderingComposer,
+      $$LeaveBalanceTransactionsTableAnnotationComposer,
+      $$LeaveBalanceTransactionsTableCreateCompanionBuilder,
+      $$LeaveBalanceTransactionsTableUpdateCompanionBuilder,
+      (
+        LeaveBalanceTransactionData,
+        BaseReferences<
+          _$AppDatabase,
+          $LeaveBalanceTransactionsTable,
+          LeaveBalanceTransactionData
+        >,
+      ),
+      LeaveBalanceTransactionData,
+      PrefetchHooks Function()
+    >;
+typedef $$LeaveRequestsTableCreateCompanionBuilder =
+    LeaveRequestsCompanion Function({
+      required String id,
+      required String companyId,
+      required String employeeId,
+      required String typeSnapshot,
+      Value<String?> policySnapshot,
+      required String startDate,
+      required String endDate,
+      Value<String> startPortion,
+      Value<String> endPortion,
+      Value<double> requestedDays,
+      Value<String> reason,
+      Value<String?> attachmentName,
+      Value<String> status,
+      Value<int?> submittedMilliseconds,
+      Value<int?> reviewedMilliseconds,
+      Value<String?> reviewedBy,
+      Value<String?> reviewNote,
+      Value<int?> cancelledMilliseconds,
+      Value<String?> cancelledBy,
+      Value<String?> cancellationReason,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      required String requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+typedef $$LeaveRequestsTableUpdateCompanionBuilder =
+    LeaveRequestsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> employeeId,
+      Value<String> typeSnapshot,
+      Value<String?> policySnapshot,
+      Value<String> startDate,
+      Value<String> endDate,
+      Value<String> startPortion,
+      Value<String> endPortion,
+      Value<double> requestedDays,
+      Value<String> reason,
+      Value<String?> attachmentName,
+      Value<String> status,
+      Value<int?> submittedMilliseconds,
+      Value<int?> reviewedMilliseconds,
+      Value<String?> reviewedBy,
+      Value<String?> reviewNote,
+      Value<int?> cancelledMilliseconds,
+      Value<String?> cancelledBy,
+      Value<String?> cancellationReason,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<String> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$LeaveRequestsTableFilterComposer
+    extends Composer<_$AppDatabase, $LeaveRequestsTable> {
+  $$LeaveRequestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get typeSnapshot => $composableBuilder(
+    column: $table.typeSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get policySnapshot => $composableBuilder(
+    column: $table.policySnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startPortion => $composableBuilder(
+    column: $table.startPortion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endPortion => $composableBuilder(
+    column: $table.endPortion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get requestedDays => $composableBuilder(
+    column: $table.requestedDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attachmentName => $composableBuilder(
+    column: $table.attachmentName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get submittedMilliseconds => $composableBuilder(
+    column: $table.submittedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reviewedBy => $composableBuilder(
+    column: $table.reviewedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get cancelledMilliseconds => $composableBuilder(
+    column: $table.cancelledMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cancelledBy => $composableBuilder(
+    column: $table.cancelledBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cancellationReason => $composableBuilder(
+    column: $table.cancellationReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LeaveRequestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LeaveRequestsTable> {
+  $$LeaveRequestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get typeSnapshot => $composableBuilder(
+    column: $table.typeSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get policySnapshot => $composableBuilder(
+    column: $table.policySnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startPortion => $composableBuilder(
+    column: $table.startPortion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endPortion => $composableBuilder(
+    column: $table.endPortion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get requestedDays => $composableBuilder(
+    column: $table.requestedDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attachmentName => $composableBuilder(
+    column: $table.attachmentName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get submittedMilliseconds => $composableBuilder(
+    column: $table.submittedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reviewedBy => $composableBuilder(
+    column: $table.reviewedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get cancelledMilliseconds => $composableBuilder(
+    column: $table.cancelledMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cancelledBy => $composableBuilder(
+    column: $table.cancelledBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cancellationReason => $composableBuilder(
+    column: $table.cancellationReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LeaveRequestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LeaveRequestsTable> {
+  $$LeaveRequestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get typeSnapshot => $composableBuilder(
+    column: $table.typeSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get policySnapshot => $composableBuilder(
+    column: $table.policySnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<String> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
+
+  GeneratedColumn<String> get startPortion => $composableBuilder(
+    column: $table.startPortion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get endPortion => $composableBuilder(
+    column: $table.endPortion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get requestedDays => $composableBuilder(
+    column: $table.requestedDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<String> get attachmentName => $composableBuilder(
+    column: $table.attachmentName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get submittedMilliseconds => $composableBuilder(
+    column: $table.submittedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get reviewedMilliseconds => $composableBuilder(
+    column: $table.reviewedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reviewedBy => $composableBuilder(
+    column: $table.reviewedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reviewNote => $composableBuilder(
+    column: $table.reviewNote,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get cancelledMilliseconds => $composableBuilder(
+    column: $table.cancelledMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get cancelledBy => $composableBuilder(
+    column: $table.cancelledBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get cancellationReason => $composableBuilder(
+    column: $table.cancellationReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$LeaveRequestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LeaveRequestsTable,
+          LeaveRequestData,
+          $$LeaveRequestsTableFilterComposer,
+          $$LeaveRequestsTableOrderingComposer,
+          $$LeaveRequestsTableAnnotationComposer,
+          $$LeaveRequestsTableCreateCompanionBuilder,
+          $$LeaveRequestsTableUpdateCompanionBuilder,
+          (
+            LeaveRequestData,
+            BaseReferences<
+              _$AppDatabase,
+              $LeaveRequestsTable,
+              LeaveRequestData
+            >,
+          ),
+          LeaveRequestData,
+          PrefetchHooks Function()
+        > {
+  $$LeaveRequestsTableTableManager(_$AppDatabase db, $LeaveRequestsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LeaveRequestsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LeaveRequestsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LeaveRequestsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> typeSnapshot = const Value.absent(),
+                Value<String?> policySnapshot = const Value.absent(),
+                Value<String> startDate = const Value.absent(),
+                Value<String> endDate = const Value.absent(),
+                Value<String> startPortion = const Value.absent(),
+                Value<String> endPortion = const Value.absent(),
+                Value<double> requestedDays = const Value.absent(),
+                Value<String> reason = const Value.absent(),
+                Value<String?> attachmentName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int?> submittedMilliseconds = const Value.absent(),
+                Value<int?> reviewedMilliseconds = const Value.absent(),
+                Value<String?> reviewedBy = const Value.absent(),
+                Value<String?> reviewNote = const Value.absent(),
+                Value<int?> cancelledMilliseconds = const Value.absent(),
+                Value<String?> cancelledBy = const Value.absent(),
+                Value<String?> cancellationReason = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<String> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveRequestsCompanion(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                typeSnapshot: typeSnapshot,
+                policySnapshot: policySnapshot,
+                startDate: startDate,
+                endDate: endDate,
+                startPortion: startPortion,
+                endPortion: endPortion,
+                requestedDays: requestedDays,
+                reason: reason,
+                attachmentName: attachmentName,
+                status: status,
+                submittedMilliseconds: submittedMilliseconds,
+                reviewedMilliseconds: reviewedMilliseconds,
+                reviewedBy: reviewedBy,
+                reviewNote: reviewNote,
+                cancelledMilliseconds: cancelledMilliseconds,
+                cancelledBy: cancelledBy,
+                cancellationReason: cancellationReason,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String employeeId,
+                required String typeSnapshot,
+                Value<String?> policySnapshot = const Value.absent(),
+                required String startDate,
+                required String endDate,
+                Value<String> startPortion = const Value.absent(),
+                Value<String> endPortion = const Value.absent(),
+                Value<double> requestedDays = const Value.absent(),
+                Value<String> reason = const Value.absent(),
+                Value<String?> attachmentName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int?> submittedMilliseconds = const Value.absent(),
+                Value<int?> reviewedMilliseconds = const Value.absent(),
+                Value<String?> reviewedBy = const Value.absent(),
+                Value<String?> reviewNote = const Value.absent(),
+                Value<int?> cancelledMilliseconds = const Value.absent(),
+                Value<String?> cancelledBy = const Value.absent(),
+                Value<String?> cancellationReason = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                required String requestId,
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveRequestsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                employeeId: employeeId,
+                typeSnapshot: typeSnapshot,
+                policySnapshot: policySnapshot,
+                startDate: startDate,
+                endDate: endDate,
+                startPortion: startPortion,
+                endPortion: endPortion,
+                requestedDays: requestedDays,
+                reason: reason,
+                attachmentName: attachmentName,
+                status: status,
+                submittedMilliseconds: submittedMilliseconds,
+                reviewedMilliseconds: reviewedMilliseconds,
+                reviewedBy: reviewedBy,
+                reviewNote: reviewNote,
+                cancelledMilliseconds: cancelledMilliseconds,
+                cancelledBy: cancelledBy,
+                cancellationReason: cancellationReason,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LeaveRequestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LeaveRequestsTable,
+      LeaveRequestData,
+      $$LeaveRequestsTableFilterComposer,
+      $$LeaveRequestsTableOrderingComposer,
+      $$LeaveRequestsTableAnnotationComposer,
+      $$LeaveRequestsTableCreateCompanionBuilder,
+      $$LeaveRequestsTableUpdateCompanionBuilder,
+      (
+        LeaveRequestData,
+        BaseReferences<_$AppDatabase, $LeaveRequestsTable, LeaveRequestData>,
+      ),
+      LeaveRequestData,
+      PrefetchHooks Function()
+    >;
+typedef $$LeaveRequestEventsTableCreateCompanionBuilder =
+    LeaveRequestEventsCompanion Function({
+      required String id,
+      required String companyId,
+      required String requestId,
+      required String type,
+      Value<String?> actorId,
+      Value<String?> note,
+      required int createdMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$LeaveRequestEventsTableUpdateCompanionBuilder =
+    LeaveRequestEventsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> requestId,
+      Value<String> type,
+      Value<String?> actorId,
+      Value<String?> note,
+      Value<int> createdMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$LeaveRequestEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $LeaveRequestEventsTable> {
+  $$LeaveRequestEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actorId => $composableBuilder(
+    column: $table.actorId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LeaveRequestEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LeaveRequestEventsTable> {
+  $$LeaveRequestEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actorId => $composableBuilder(
+    column: $table.actorId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LeaveRequestEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LeaveRequestEventsTable> {
+  $$LeaveRequestEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get actorId =>
+      $composableBuilder(column: $table.actorId, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$LeaveRequestEventsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LeaveRequestEventsTable,
+          LeaveRequestEventData,
+          $$LeaveRequestEventsTableFilterComposer,
+          $$LeaveRequestEventsTableOrderingComposer,
+          $$LeaveRequestEventsTableAnnotationComposer,
+          $$LeaveRequestEventsTableCreateCompanionBuilder,
+          $$LeaveRequestEventsTableUpdateCompanionBuilder,
+          (
+            LeaveRequestEventData,
+            BaseReferences<
+              _$AppDatabase,
+              $LeaveRequestEventsTable,
+              LeaveRequestEventData
+            >,
+          ),
+          LeaveRequestEventData,
+          PrefetchHooks Function()
+        > {
+  $$LeaveRequestEventsTableTableManager(
+    _$AppDatabase db,
+    $LeaveRequestEventsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LeaveRequestEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LeaveRequestEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LeaveRequestEventsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> requestId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String?> actorId = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveRequestEventsCompanion(
+                id: id,
+                companyId: companyId,
+                requestId: requestId,
+                type: type,
+                actorId: actorId,
+                note: note,
+                createdMilliseconds: createdMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String requestId,
+                required String type,
+                Value<String?> actorId = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                required int createdMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => LeaveRequestEventsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                requestId: requestId,
+                type: type,
+                actorId: actorId,
+                note: note,
+                createdMilliseconds: createdMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LeaveRequestEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LeaveRequestEventsTable,
+      LeaveRequestEventData,
+      $$LeaveRequestEventsTableFilterComposer,
+      $$LeaveRequestEventsTableOrderingComposer,
+      $$LeaveRequestEventsTableAnnotationComposer,
+      $$LeaveRequestEventsTableCreateCompanionBuilder,
+      $$LeaveRequestEventsTableUpdateCompanionBuilder,
+      (
+        LeaveRequestEventData,
+        BaseReferences<
+          _$AppDatabase,
+          $LeaveRequestEventsTable,
+          LeaveRequestEventData
+        >,
+      ),
+      LeaveRequestEventData,
+      PrefetchHooks Function()
+    >;
+typedef $$HolidaysTableCreateCompanionBuilder =
+    HolidaysCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required String date,
+      Value<String?> endDate,
+      Value<String> type,
+      Value<String> scope,
+      Value<String> workLocationIds,
+      Value<String> description,
+      Value<bool> isOptional,
+      Value<String> status,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$HolidaysTableUpdateCompanionBuilder =
+    HolidaysCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<String> date,
+      Value<String?> endDate,
+      Value<String> type,
+      Value<String> scope,
+      Value<String> workLocationIds,
+      Value<String> description,
+      Value<bool> isOptional,
+      Value<String> status,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$HolidaysTableFilterComposer
+    extends Composer<_$AppDatabase, $HolidaysTable> {
+  $$HolidaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get workLocationIds => $composableBuilder(
+    column: $table.workLocationIds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isOptional => $composableBuilder(
+    column: $table.isOptional,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HolidaysTableOrderingComposer
+    extends Composer<_$AppDatabase, $HolidaysTable> {
+  $$HolidaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get workLocationIds => $composableBuilder(
+    column: $table.workLocationIds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isOptional => $composableBuilder(
+    column: $table.isOptional,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HolidaysTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HolidaysTable> {
+  $$HolidaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<String> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get scope =>
+      $composableBuilder(column: $table.scope, builder: (column) => column);
+
+  GeneratedColumn<String> get workLocationIds => $composableBuilder(
+    column: $table.workLocationIds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isOptional => $composableBuilder(
+    column: $table.isOptional,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$HolidaysTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HolidaysTable,
+          HolidayData,
+          $$HolidaysTableFilterComposer,
+          $$HolidaysTableOrderingComposer,
+          $$HolidaysTableAnnotationComposer,
+          $$HolidaysTableCreateCompanionBuilder,
+          $$HolidaysTableUpdateCompanionBuilder,
+          (
+            HolidayData,
+            BaseReferences<_$AppDatabase, $HolidaysTable, HolidayData>,
+          ),
+          HolidayData,
+          PrefetchHooks Function()
+        > {
+  $$HolidaysTableTableManager(_$AppDatabase db, $HolidaysTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HolidaysTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HolidaysTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HolidaysTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> date = const Value.absent(),
+                Value<String?> endDate = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> scope = const Value.absent(),
+                Value<String> workLocationIds = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<bool> isOptional = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HolidaysCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                date: date,
+                endDate: endDate,
+                type: type,
+                scope: scope,
+                workLocationIds: workLocationIds,
+                description: description,
+                isOptional: isOptional,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required String date,
+                Value<String?> endDate = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> scope = const Value.absent(),
+                Value<String> workLocationIds = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<bool> isOptional = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => HolidaysCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                date: date,
+                endDate: endDate,
+                type: type,
+                scope: scope,
+                workLocationIds: workLocationIds,
+                description: description,
+                isOptional: isOptional,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HolidaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HolidaysTable,
+      HolidayData,
+      $$HolidaysTableFilterComposer,
+      $$HolidaysTableOrderingComposer,
+      $$HolidaysTableAnnotationComposer,
+      $$HolidaysTableCreateCompanionBuilder,
+      $$HolidaysTableUpdateCompanionBuilder,
+      (HolidayData, BaseReferences<_$AppDatabase, $HolidaysTable, HolidayData>),
+      HolidayData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -18829,4 +27761,25 @@ class $AppDatabaseManager {
         _db,
         _db.attendancePolicyRecords,
       );
+  $$LeaveTypesTableTableManager get leaveTypes =>
+      $$LeaveTypesTableTableManager(_db, _db.leaveTypes);
+  $$LeavePoliciesTableTableManager get leavePolicies =>
+      $$LeavePoliciesTableTableManager(_db, _db.leavePolicies);
+  $$EmployeeLeavePolicyAssignmentsTableTableManager
+  get employeeLeavePolicyAssignments =>
+      $$EmployeeLeavePolicyAssignmentsTableTableManager(
+        _db,
+        _db.employeeLeavePolicyAssignments,
+      );
+  $$LeaveBalanceTransactionsTableTableManager get leaveBalanceTransactions =>
+      $$LeaveBalanceTransactionsTableTableManager(
+        _db,
+        _db.leaveBalanceTransactions,
+      );
+  $$LeaveRequestsTableTableManager get leaveRequests =>
+      $$LeaveRequestsTableTableManager(_db, _db.leaveRequests);
+  $$LeaveRequestEventsTableTableManager get leaveRequestEvents =>
+      $$LeaveRequestEventsTableTableManager(_db, _db.leaveRequestEvents);
+  $$HolidaysTableTableManager get holidays =>
+      $$HolidaysTableTableManager(_db, _db.holidays);
 }

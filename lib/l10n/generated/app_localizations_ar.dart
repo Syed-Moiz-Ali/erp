@@ -3185,6 +3185,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notifPendingReviewBody => 'يوجد طلب تصحيح بانتظار المراجعة.';
 
   @override
+  String get notifLeaveSubmittedTitle => 'تم إرسال طلب الإجازة';
+
+  @override
+  String get notifLeaveSubmittedBody =>
+      'تم إرسال طلب الإجازة الخاص بك للموافقة.';
+
+  @override
+  String get notifLeaveApprovedTitle => 'تمت الموافقة على طلب الإجازة';
+
+  @override
+  String get notifLeaveApprovedBody => 'تمت الموافقة على طلب الإجازة الخاص بك.';
+
+  @override
+  String get notifLeaveRejectedTitle => 'تم رفض طلب الإجازة';
+
+  @override
+  String get notifLeaveRejectedBody =>
+      'لم تتم الموافقة على طلب الإجازة الخاص بك.';
+
+  @override
+  String get notifLeaveCancelledTitle => 'تم إلغاء طلب الإجازة';
+
+  @override
+  String get notifLeaveCancelledBody => 'تم إلغاء طلب إجازة.';
+
+  @override
+  String get notifLeaveApprovalRequiredTitle => 'مطلوب موافقة على إجازة';
+
+  @override
+  String get notifLeaveApprovalRequiredBody =>
+      'يوجد طلب إجازة لفريقك بانتظار مراجعتك.';
+
+  @override
   String get notifUnknownTitle => 'إشعار';
 
   @override
@@ -3263,4 +3296,615 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileManage => 'إدارة';
+
+  @override
+  String get settingsIntro => 'إدارة مؤسستك وإعدادات الحضور والتفضيلات.';
+
+  @override
+  String get settingsAttendanceCategory => 'إعدادات الحضور';
+
+  @override
+  String get settingsAttendanceCategoryDesc =>
+      'ضبط كيفية عمل الموظفين وتسجيلهم للحضور.';
+
+  @override
+  String get settingsPreferencesCategory => 'التفضيلات الشخصية';
+
+  @override
+  String get settingsPreferencesCategoryDesc =>
+      'عدّل تفضيلات التطبيق الخاصة بك.';
+
+  @override
+  String get settingsSystemCategory => 'النظام';
+
+  @override
+  String get settingsSystemCategoryDesc => 'حالة المزامنة والتطبيق.';
+
+  @override
+  String get settingsShiftDesc =>
+      'حدد ساعات العمل وأيام العمل والاستراحات الافتراضية.';
+
+  @override
+  String get settingsLocationDesc => 'أدر أماكن العمل وقواعد التحقق من الموقع.';
+
+  @override
+  String get settingsPolicyDesc => 'حدد قواعد الحضور والاستراحة والتصحيح.';
+
+  @override
+  String get settingsLanguageDesc => 'اختر لغة التطبيق المفضلة لديك.';
+
+  @override
+  String get settingsNotificationsDesc => 'تحكم في تذكيرات الحضور لحسابك.';
+
+  @override
+  String get settingsSyncDesc =>
+      'اعرض حالة المزامنة وأعد محاولة التغييرات الفاشلة.';
+
+  @override
+  String get reportSubtitle =>
+      'تحليل نشاط الحضور وساعات العمل والتوقيت وجودة السجلات.';
+
+  @override
+  String get reportActivityTrend => 'نشاط الحضور';
+
+  @override
+  String get reportActivityTrendDesc => 'السجلات المسجلة حسب التاريخ.';
+
+  @override
+  String get reportStatusDistribution => 'حالة الحضور';
+
+  @override
+  String get reportStatusDistributionDesc => 'تكوين السجلات المسجلة.';
+
+  @override
+  String get reportWorkHoursTrend => 'ساعات العمل المسجلة';
+
+  @override
+  String get reportWorkHoursTrendDesc => 'إجمالي وقت العمل المسجل حسب التاريخ.';
+
+  @override
+  String get reportLateTrend => 'التأخر في الحضور';
+
+  @override
+  String get reportLateTrendDesc => 'السجلات المتأخرة حسب التاريخ.';
+
+  @override
+  String get reportBreakTrend => 'وقت الاستراحة';
+
+  @override
+  String get reportBreakTrendDesc => 'وقت الاستراحة المسجل حسب التاريخ.';
+
+  @override
+  String get reportIssuesByType => 'المشكلات حسب النوع';
+
+  @override
+  String get reportIssuesByTypeDesc => 'ما يحتاج إلى انتباه خلال هذه الفترة.';
+
+  @override
+  String get reportNeedsAttention => 'يحتاج إلى انتباه';
+
+  @override
+  String get reportDetailedRecords => 'السجلات التفصيلية';
+
+  @override
+  String get reportStatusWorking => 'قيد العمل';
+
+  @override
+  String get reportStatusCompleted => 'مكتمل';
+
+  @override
+  String get reportStatusLate => 'متأخر';
+
+  @override
+  String get reportStatusIssues => 'مشكلات';
+
+  @override
+  String get reportIssueRejected => 'حضور مرفوض';
+
+  @override
+  String get reportIssueSyncFailure => 'فشل المزامنة';
+
+  @override
+  String get reportIssuePendingCorrection => 'تصحيح معلّق';
+
+  @override
+  String get reportIssueMissingPunchOut => 'انصراف مفقود';
+
+  @override
+  String get reportViewTeam => 'عرض الفريق';
+
+  @override
+  String get reportViewCompany => 'عرض الشركة';
+
+  @override
+  String get reportRecordedEmployees => 'الموظفون المسجلون';
+
+  @override
+  String get permissionLeaveViewSelf => 'عرض إجازتي';
+
+  @override
+  String get permissionLeaveRequest => 'طلب إجازة';
+
+  @override
+  String get permissionLeaveCancelSelf => 'إلغاء إجازتي';
+
+  @override
+  String get permissionLeaveViewTeam => 'عرض إجازات الفريق';
+
+  @override
+  String get permissionLeaveApproveTeam => 'اعتماد إجازات الفريق';
+
+  @override
+  String get permissionLeaveViewAll => 'عرض إجازات الشركة';
+
+  @override
+  String get permissionLeaveApproveAll => 'اعتماد إجازات الشركة';
+
+  @override
+  String get permissionLeaveManage => 'إدارة الإجازات';
+
+  @override
+  String get permissionLeaveBalanceViewSelf => 'عرض رصيد إجازتي';
+
+  @override
+  String get permissionLeaveBalanceViewTeam => 'عرض أرصدة الفريق';
+
+  @override
+  String get permissionLeaveBalanceViewAll => 'عرض أرصدة الشركة';
+
+  @override
+  String get permissionLeaveBalanceAdjust => 'تعديل أرصدة الإجازات';
+
+  @override
+  String get permissionLeaveTypeView => 'عرض أنواع الإجازات';
+
+  @override
+  String get permissionLeaveTypeManage => 'إدارة أنواع الإجازات';
+
+  @override
+  String get permissionLeavePolicyView => 'عرض سياسات الإجازات';
+
+  @override
+  String get permissionLeavePolicyManage => 'إدارة سياسات الإجازات';
+
+  @override
+  String get permissionHolidayView => 'عرض العطلات';
+
+  @override
+  String get permissionHolidayManage => 'إدارة العطلات';
+
+  @override
+  String get permissionLeaveReportView => 'عرض تقارير الإجازات';
+
+  @override
+  String get shellLeave => 'الإجازات';
+
+  @override
+  String get leaveMyLeave => 'إجازاتي';
+
+  @override
+  String get leaveNewRequest => 'طلب جديد';
+
+  @override
+  String get leaveMyRequests => 'طلباتي';
+
+  @override
+  String get leaveApprovals => 'الاعتمادات';
+
+  @override
+  String get leaveTeam => 'إجازات الفريق';
+
+  @override
+  String get leaveAllNav => 'كل الإجازات';
+
+  @override
+  String get leaveBalancesNav => 'الأرصدة';
+
+  @override
+  String get leaveCalendarNav => 'التقويم';
+
+  @override
+  String get leaveTypesNav => 'أنواع الإجازات';
+
+  @override
+  String get leavePoliciesNav => 'سياسات الإجازات';
+
+  @override
+  String get holidaysNav => 'العطلات';
+
+  @override
+  String get leaveTypeIntro => 'اضبط أنواع الإجازات التي يمكن للموظفين طلبها.';
+
+  @override
+  String get leavePolicyIntro => 'حدد الاستحقاق وقواعد الطلب لكل نوع إجازة.';
+
+  @override
+  String get holidayIntro =>
+      'اضبط العطلات الرسمية وعطلات الشركة والعطلات الاختيارية.';
+
+  @override
+  String get leaveType => 'نوع الإجازة';
+
+  @override
+  String get leaveCompensation => 'التعويض';
+
+  @override
+  String get leaveRequiresApproval => 'يتطلب موافقة';
+
+  @override
+  String get leaveAllowsHalfDay => 'يسمح بنصف يوم';
+
+  @override
+  String get leaveRequiresReason => 'السبب مطلوب';
+
+  @override
+  String get leaveRequiresAttachment => 'المرفق مطلوب';
+
+  @override
+  String get leaveCompensationPaid => 'مدفوعة';
+
+  @override
+  String get leaveCompensationUnpaid => 'غير مدفوعة';
+
+  @override
+  String get leaveCompensationInformational => 'إعلامية';
+
+  @override
+  String get leavePolicy => 'سياسة الإجازة';
+
+  @override
+  String get leavePolicyLeaveType => 'نوع الإجازة';
+
+  @override
+  String get leavePolicyEntitlement => 'الاستحقاق السنوي';
+
+  @override
+  String get leavePolicyMinDays => 'الحد الأدنى للطلب';
+
+  @override
+  String get leavePolicyMaxConsecutive => 'أقصى عدد أيام متتالية';
+
+  @override
+  String get leavePolicyAdvanceNotice => 'الإشعار المسبق';
+
+  @override
+  String get leavePolicyAllowPast => 'السماح بالطلبات السابقة';
+
+  @override
+  String get leavePolicyPastWindow => 'نافذة الطلبات السابقة';
+
+  @override
+  String get leavePolicyNegative => 'السماح بالرصيد السالب';
+
+  @override
+  String get leavePolicyCarryForward => 'ترحيل الرصيد';
+
+  @override
+  String get leavePolicyCarryLimit => 'حد الترحيل';
+
+  @override
+  String get leavePolicyEmployment => 'أنواع التوظيف المطبقة';
+
+  @override
+  String get days => 'يوم';
+
+  @override
+  String get holiday => 'عطلة';
+
+  @override
+  String get holidayDate => 'التاريخ';
+
+  @override
+  String get holidayEndDate => 'تاريخ الانتهاء';
+
+  @override
+  String get holidayTypeField => 'النوع';
+
+  @override
+  String get holidayScopeField => 'النطاق';
+
+  @override
+  String get holidayWorkLocations => 'أماكن العمل';
+
+  @override
+  String get holidayOptional => 'عطلة اختيارية';
+
+  @override
+  String get holidayTypePublic => 'عطلة رسمية';
+
+  @override
+  String get holidayTypeCompany => 'عطلة الشركة';
+
+  @override
+  String get holidayTypeOptional => 'عطلة اختيارية';
+
+  @override
+  String get holidayTypeSpecial => 'إغلاق خاص';
+
+  @override
+  String get holidayScopeCompanyWide => 'الشركة بأكملها';
+
+  @override
+  String get holidayScopeSpecific => 'أماكن عمل محددة';
+
+  @override
+  String get leaveRequestTitle => 'طلب إجازة';
+
+  @override
+  String get leaveStartDate => 'تاريخ البداية';
+
+  @override
+  String get leaveEndDate => 'تاريخ النهاية';
+
+  @override
+  String get leaveStartPortion => 'اليوم الأول';
+
+  @override
+  String get leaveEndPortion => 'اليوم الأخير';
+
+  @override
+  String get leaveDayFull => 'يوم كامل';
+
+  @override
+  String get leaveDayFirstHalf => 'النصف الأول';
+
+  @override
+  String get leaveDaySecondHalf => 'النصف الثاني';
+
+  @override
+  String get leaveReasonLabel => 'السبب';
+
+  @override
+  String get leaveAttachmentLabel => 'المرفق';
+
+  @override
+  String get leavePreviewTitle => 'الملخص';
+
+  @override
+  String get leaveRequestedDays => 'الأيام المطلوبة';
+
+  @override
+  String get leaveAvailableDays => 'المتاح';
+
+  @override
+  String get leaveAfterApproval => 'بعد الموافقة';
+
+  @override
+  String get leaveExcludedWeekends => 'عطلات نهاية الأسبوع المستثناة';
+
+  @override
+  String get leaveExcludedHolidays => 'العطلات المستثناة';
+
+  @override
+  String get leaveSubmitRequest => 'إرسال الطلب';
+
+  @override
+  String get leaveNoTypes => 'لا توجد أنواع إجازات متاحة.';
+
+  @override
+  String get leaveSelectType => 'اختر نوع الإجازة';
+
+  @override
+  String get leaveStatusPending => 'معلّق';
+
+  @override
+  String get leaveStatusApproved => 'معتمد';
+
+  @override
+  String get leaveStatusRejected => 'مرفوض';
+
+  @override
+  String get leaveStatusCancelled => 'ملغى';
+
+  @override
+  String get leaveApprove => 'اعتماد';
+
+  @override
+  String get leaveReject => 'رفض';
+
+  @override
+  String get leaveCancelRequest => 'إلغاء الطلب';
+
+  @override
+  String get leaveReviewNote => 'ملاحظة';
+
+  @override
+  String get leaveCancelReason => 'سبب الإلغاء';
+
+  @override
+  String get leaveEmployee => 'الموظف';
+
+  @override
+  String get leaveDepartment => 'القسم';
+
+  @override
+  String get leaveDateRange => 'التواريخ';
+
+  @override
+  String get leaveApprovedBy => 'راجعه';
+
+  @override
+  String get leaveSubmittedOn => 'تم الإرسال';
+
+  @override
+  String get leaveViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get leaveApply => 'تطبيق';
+
+  @override
+  String get leaveBalancesTitle => 'أرصدة الإجازات';
+
+  @override
+  String get leaveEntitlement => 'الاستحقاق';
+
+  @override
+  String get leaveUsed => 'المستخدم';
+
+  @override
+  String get leavePendingBalance => 'المعلّق';
+
+  @override
+  String get leaveAvailable => 'المتاح';
+
+  @override
+  String get leaveAdjustBalance => 'تعديل الرصيد';
+
+  @override
+  String get leaveAdjustAdd => 'إضافة أيام';
+
+  @override
+  String get leaveAdjustRemove => 'خصم أيام';
+
+  @override
+  String get leaveAdjustQuantity => 'الأيام';
+
+  @override
+  String get leaveAdjustReason => 'السبب';
+
+  @override
+  String get leaveLedger => 'سجل الرصيد';
+
+  @override
+  String get leaveNoBalance => 'لا توجد سجلات رصيد.';
+
+  @override
+  String get leaveSelectEmployee => 'الموظف';
+
+  @override
+  String get leaveEmployeeFilter => 'الموظف';
+
+  @override
+  String get leaveCalendarTitle => 'تقويم الإجازات';
+
+  @override
+  String get leaveCalendarLegendLeave => 'إجازة';
+
+  @override
+  String get leaveCalendarLegendHoliday => 'عطلة';
+
+  @override
+  String get leaveCalendarEmpty => 'لا توجد إجازات أو عطلات في هذه الفترة.';
+
+  @override
+  String get leaveFrom => 'من';
+
+  @override
+  String get leaveTo => 'إلى';
+
+  @override
+  String get leaveRequestsEmpty => 'لا توجد طلبات إجازة.';
+
+  @override
+  String get leaveApprovalsEmpty => 'لا توجد طلبات بانتظار المراجعة.';
+
+  @override
+  String get leaveNoPendingRequests => 'لا توجد لديك طلبات إجازة معلّقة.';
+
+  @override
+  String get leaveOnLeaveToday => 'في إجازة اليوم';
+
+  @override
+  String get workdayScheduled => 'مجدول';
+
+  @override
+  String get workdayWorking => 'قيد العمل';
+
+  @override
+  String get workdayOnBreak => 'في استراحة';
+
+  @override
+  String get workdayCompleted => 'مكتمل';
+
+  @override
+  String get workdayIncomplete => 'غير مكتمل';
+
+  @override
+  String get workdayOnLeave => 'في إجازة';
+
+  @override
+  String get workdayHoliday => 'عطلة';
+
+  @override
+  String get workdayNonWorking => 'غير يوم عمل';
+
+  @override
+  String get workdayIssue => 'مشكلة';
+
+  @override
+  String get leavePermissionDenied => 'ليس لديك صلاحية الوصول إلى الإجازات.';
+
+  @override
+  String get leaveStorageError => 'تعذر تحميل بيانات الإجازات.';
+
+  @override
+  String get leaveUnavailable => 'الإجازات غير متاحة.';
+
+  @override
+  String get leaveTypeInactive => 'نوع الإجازة المحدد غير متاح.';
+
+  @override
+  String get leaveNoEmployee => 'حسابك غير مرتبط بموظف.';
+
+  @override
+  String get leaveInvalidDateRange =>
+      'يجب أن يكون تاريخ النهاية بعد تاريخ البداية.';
+
+  @override
+  String get leaveReasonRequired => 'السبب مطلوب.';
+
+  @override
+  String get leaveNoWorkingDays => 'النطاق المحدد لا يحتوي على أيام عمل.';
+
+  @override
+  String get leaveMinimumDays => 'الطلب أقصر من الحد الأدنى للسياسة.';
+
+  @override
+  String get leaveOverlapping => 'هذا الطلب يتداخل مع طلب موجود.';
+
+  @override
+  String get leaveInsufficientBalance => 'لا يوجد رصيد إجازات كافٍ.';
+
+  @override
+  String get leavePastRequestNotAllowed =>
+      'غير مسموح بطلبات الإجازة بأثر رجعي.';
+
+  @override
+  String get leaveAdvanceNoticeRequired =>
+      'هذا الطلب لا يستوفي شرط الإشعار المسبق.';
+
+  @override
+  String get leaveInvalidQuantity => 'أدخل كمية صحيحة.';
+
+  @override
+  String get leaveRequestNotFound => 'لم يتم العثور على طلب الإجازة.';
+
+  @override
+  String get leaveAlreadyReviewed => 'تمت مراجعة هذا الطلب بالفعل.';
+
+  @override
+  String get leaveCannotCancelApproved =>
+      'الإجازة المعتمدة يمكن إلغاؤها فقط من قبل مدير.';
+
+  @override
+  String get leaveReviewNoteRequired => 'الملاحظة مطلوبة.';
+
+  @override
+  String get leaveSelfApprovalNotAllowed => 'لا يمكنك اعتماد إجازتك الخاصة.';
+
+  @override
+  String get leaveSaved => 'تم حفظ الإجازة.';
+
+  @override
+  String get leaveRequestSubmitted => 'تم إرسال طلب الإجازة.';
+
+  @override
+  String get leaveIncludeInactive => 'تضمين غير النشط';
+
+  @override
+  String get settingsLeaveCategory => 'الإجازات والعطلات';
+
+  @override
+  String get settingsLeaveCategoryDesc =>
+      'اضبط أنواع الإجازات وسياساتها والعطلات.';
 }

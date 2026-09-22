@@ -21,6 +21,18 @@ enum UserCapability {
   manageRoles,
   manageCompany,
   platformAdministration,
+  // Leave & holidays
+  requestLeave,
+  viewMyLeave,
+  viewMyLeaveBalance,
+  viewTeamLeave,
+  approveTeamLeave,
+  viewCompanyLeave,
+  approveCompanyLeave,
+  manageLeaveTypes,
+  manageLeavePolicies,
+  manageHolidays,
+  viewLeaveReports,
 }
 
 class UserCapabilityContext {
@@ -109,6 +121,40 @@ class UserCapabilityResolver {
         p.can(AppPermission.userManage) &&
         p.can(AppPermission.roleManage)) {
       granted.add(UserCapability.platformAdministration);
+    }
+    // Leave & holidays. SELF actions require a linked employee.
+    if (linked && p.can(AppPermission.leaveRequest)) {
+      granted.add(UserCapability.requestLeave);
+    }
+    if (linked && p.can(AppPermission.leaveViewSelf)) {
+      granted.add(UserCapability.viewMyLeave);
+    }
+    if (linked && p.can(AppPermission.leaveBalanceViewSelf)) {
+      granted.add(UserCapability.viewMyLeaveBalance);
+    }
+    if (linked && p.can(AppPermission.leaveViewTeam)) {
+      granted.add(UserCapability.viewTeamLeave);
+    }
+    if (linked && p.can(AppPermission.leaveApproveTeam)) {
+      granted.add(UserCapability.approveTeamLeave);
+    }
+    if (p.can(AppPermission.leaveViewAll)) {
+      granted.add(UserCapability.viewCompanyLeave);
+    }
+    if (p.can(AppPermission.leaveApproveAll)) {
+      granted.add(UserCapability.approveCompanyLeave);
+    }
+    if (p.can(AppPermission.leaveTypeManage)) {
+      granted.add(UserCapability.manageLeaveTypes);
+    }
+    if (p.can(AppPermission.leavePolicyManage)) {
+      granted.add(UserCapability.manageLeavePolicies);
+    }
+    if (p.can(AppPermission.holidayManage)) {
+      granted.add(UserCapability.manageHolidays);
+    }
+    if (p.can(AppPermission.leaveReportView)) {
+      granted.add(UserCapability.viewLeaveReports);
     }
     final context = UserCapabilityContext(granted, hasLinkedEmployee: linked);
     return context;

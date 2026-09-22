@@ -216,6 +216,34 @@ void main() {
     expect(monthly.first.date, DateTime.utc(2026, 1, 1));
   });
 
+  test('overview exposes consistent chart-ready aggregates', () async {
+    actor = employeeContext(AppRole.hr);
+    final filter = AttendanceReportFilter.preset(
+      AttendanceReportPeriod.thisMonth,
+      today,
+      AttendanceScope.company,
+    );
+    final data =
+        (await repo.exportData(filter, AttendanceReportType.overview)
+                as Success<AttendanceReportData>)
+            .value;
+    final recorded = data.trend.fold<int>(0, (sum, p) => sum + p.recordedDays);
+    expect(recorded, data.summary.recordedDays);
+    final late = data.trend.fold<int>(0, (sum, p) => sum + p.lateDays);
+    expect(late, data.summary.lateDays);
+    final distribution = data.statusDistribution.fold<int>(
+      0,
+      (sum, slice) => sum + slice.count,
+    );
+    expect(distribution, data.summary.recordedDays);
+    // Every trend point carries its per-date breakdown.
+    for (final point in data.trend) {
+      expect(point.completedDays, lessThanOrEqualTo(point.recordedDays));
+      expect(point.lateDays, lessThanOrEqualTo(point.recordedDays));
+      expect(point.breakMilliseconds, greaterThanOrEqualTo(0));
+    }
+  });
+
   test('English PDF keeps Arabic fallback for mixed-language data', () async {
     actor = employeeContext(AppRole.hr);
     final filter = AttendanceReportFilter.preset(

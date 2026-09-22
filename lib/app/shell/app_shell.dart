@@ -115,9 +115,12 @@ class AppShell extends StatelessWidget {
               onToggleSidebar: () =>
                   unawaited(context.read<AppShellCubit>().toggle()),
               bottomModules: navigation.mobileDestinations,
-              bottomSelectedRoute: owner != null && primary.contains(owner)
-                  ? owner.route
-                  : AppRoutes.more,
+              bottomSelectedRoute:
+                  primary
+                      .where((module) => module.owns(route))
+                      .map((module) => module.route)
+                      .firstOrNull ??
+                  AppRoutes.more,
               onNavigate: navigate,
               topBar: AppTopBar(
                 title: title,

@@ -45,7 +45,6 @@ class AttendanceReportsPage extends StatelessWidget {
       final data = state.data;
       final locale = Localizations.localeOf(context);
       final date = AppDateFormatter(locale);
-      final number = AppNumberFormatter(locale);
       final duration = AppTimeFormatter(locale);
       final granularity = filter == null
           ? ReportGranularity.day
@@ -208,105 +207,28 @@ class AttendanceReportsPage extends StatelessWidget {
                       ),
                     )
                   else ...[
-                    Wrap(
-                      spacing: AppSpacing.md,
-                      runSpacing: AppSpacing.md,
-                      children: [
-                        _metric(
-                          l.reportRecordedDays,
-                          number.integer(data.summary.recordedDays),
-                        ),
-                        _metric(
-                          l.reportCompletedDays,
-                          number.integer(data.summary.completedDays),
-                        ),
-                        _metric(
-                          l.reportLateDays,
-                          number.integer(data.summary.lateDays),
-                        ),
-                        _metric(
-                          l.reportWorkTotal,
-                          duration.duration(data.summary.totalWork, l),
-                        ),
-                        _metric(
-                          l.reportAverageWork,
-                          duration.duration(data.summary.averageWork, l),
-                        ),
-                        _metric(
-                          l.reportBreakTotal,
-                          duration.duration(data.summary.totalBreak, l),
-                        ),
-                        _metric(
-                          l.reportPendingCorrections,
-                          number.integer(data.summary.pendingCorrections),
-                        ),
-                        _metric(
-                          l.reportIssueDays,
-                          number.integer(data.summary.issueDays),
-                        ),
-                      ],
-                    ),
+                    _metricGrid(context, data, state.type),
                     const SizedBox(height: AppSpacing.xl),
-                    if (filter.to == state.today)
+                    if (filter.to == state.today) ...[
                       AppNotice(
                         title: l.reportInProgress,
                         status: AppStatus.info,
                       ),
-                    if (trendPoints.isNotEmpty) ...[
                       const SizedBox(height: AppSpacing.xl),
-                      AppCard(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AppSectionHeader(
-                              title: l.reportTrend,
-                              subtitle: _granularityLabel(l, granularity),
-                            ),
-                            const SizedBox(height: AppSpacing.lg),
-                            _trend(context, trendPoints),
-                          ],
-                        ),
-                      ),
                     ],
-                    if (data.groups.isNotEmpty) ...[
+                    _analytics(
+                      context,
+                      data,
+                      trendPoints,
+                      state.type,
+                      granularity,
+                    ),
+                    if (_hasAttention(data)) ...[
                       const SizedBox(height: AppSpacing.xl),
-                      AppCard(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AppSectionHeader(title: l.reportGroupBy),
-                            const SizedBox(height: AppSpacing.md),
-                            for (final group in data.groups)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: AppSpacing.xs,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        group.name.isEmpty
-                                            ? l.historyNotRecorded
-                                            : group.name,
-                                      ),
-                                    ),
-                                    Text(
-                                      duration.duration(
-                                        Duration(
-                                          milliseconds: group.workMilliseconds,
-                                        ),
-                                        l,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
+                      _attention(context, data, filter, change),
                     ],
                     const SizedBox(height: AppSpacing.xl),
-                    AppSectionHeader(title: _typeLabel(l, state.type)),
+                    AppSectionHeader(title: l.reportDetailedRecords),
                     const SizedBox(height: AppSpacing.md),
                     if (compact) ...[
                       for (final row in data.rows)
@@ -383,57 +305,327 @@ class AttendanceReportsPage extends StatelessWidget {
         ReportGranularity.month => l.reportMonthly,
       };
 
-  Widget _trend(BuildContext context, List<AttendanceTrendPoint> points) {
-    final max = points
-        .map((e) => e.recordedDays)
-        .fold<int>(1, (a, b) => a > b ? a : b);
+  Widget _metricGrid(
+    BuildContext context,
+    AttendanceReportData data,
+    AttendanceReportType type,
+  ) {
+    final l = context.l10n;
+    final number = AppNumberFormatter(Localizations.localeOf(context));
+    final duration = AppTimeFormatter(Localizations.localeOf(context));
+    final summary = data.summary;
+    final entries = switch (type) {
+      AttendanceReportType.overview => [
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportCompletedDays, number.integer(summary.completedDays)),
+        (l.reportLateDays, number.integer(summary.lateDays)),
+        (l.reportWorkTotal, duration.duration(summary.totalWork, l)),
+        (l.reportBreakTotal, duration.duration(summary.totalBreak, l)),
+        (l.reportIssueDays, number.integer(summary.issueDays)),
+      ],
+      AttendanceReportType.workHours => [
+        (l.reportRecordedEmployees, number.integer(summary.employees)),
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportCompletedDays, number.integer(summary.completedDays)),
+        (l.reportWorkTotal, duration.duration(summary.totalWork, l)),
+        (l.reportAverageWork, duration.duration(summary.averageWork, l)),
+      ],
+      AttendanceReportType.lateAttendance => [
+        (l.reportLateDays, number.integer(summary.lateDays)),
+        (l.reportRecordedEmployees, number.integer(summary.employees)),
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportCompletedDays, number.integer(summary.completedDays)),
+      ],
+      AttendanceReportType.breakAnalysis => [
+        (l.reportBreakTotal, duration.duration(summary.totalBreak, l)),
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportRecordedEmployees, number.integer(summary.employees)),
+        (l.reportCompletedDays, number.integer(summary.completedDays)),
+      ],
+      AttendanceReportType.issues => [
+        (l.reportIssueDays, number.integer(summary.issueDays)),
+        (
+          l.reportPendingCorrections,
+          number.integer(summary.pendingCorrections),
+        ),
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportLateDays, number.integer(summary.lateDays)),
+      ],
+      AttendanceReportType.employeeSummary => [
+        (l.reportRecordedEmployees, number.integer(summary.employees)),
+        (l.reportRecordedDays, number.integer(summary.recordedDays)),
+        (l.reportCompletedDays, number.integer(summary.completedDays)),
+        (l.reportWorkTotal, duration.duration(summary.totalWork, l)),
+        (l.reportLateDays, number.integer(summary.lateDays)),
+      ],
+    };
+    return Wrap(
+      spacing: AppSpacing.md,
+      runSpacing: AppSpacing.md,
+      children: [for (final (label, value) in entries) _metric(label, value)],
+    );
+  }
+
+  String _statusLabel(AppLocalizations l, AttendanceReportStatus status) =>
+      switch (status) {
+        AttendanceReportStatus.completed => l.reportStatusCompleted,
+        AttendanceReportStatus.late => l.reportStatusLate,
+        AttendanceReportStatus.working => l.reportStatusWorking,
+        AttendanceReportStatus.issues => l.reportStatusIssues,
+      };
+
+  String _issueLabel(AppLocalizations l, String code) => switch (code) {
+    'missingPunchOut' => l.reportIssueMissingPunchOut,
+    'syncFailure' => l.reportIssueSyncFailure,
+    'rejected' => l.reportIssueRejected,
+    'pendingCorrection' => l.reportIssuePendingCorrection,
+    _ => code,
+  };
+
+  AppStatus _issueStatus(String code) => switch (code) {
+    'rejected' || 'syncFailure' => AppStatus.danger,
+    'pendingCorrection' || 'missingPunchOut' => AppStatus.warning,
+    _ => AppStatus.neutral,
+  };
+
+  /// Descriptive analytics: primary activity trend + capability-free secondary
+  /// visuals + optional group comparison. Charts are driven by typed report
+  /// data only (no widget-side aggregation beyond bucketing done in domain).
+  Widget _analytics(
+    BuildContext context,
+    AttendanceReportData data,
+    List<AttendanceTrendPoint> trend,
+    AttendanceReportType type,
+    ReportGranularity granularity,
+  ) {
+    final l = context.l10n;
     final date = AppDateFormatter(Localizations.localeOf(context));
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          for (final point in points)
-            Semantics(
-              label: _trendLabel(point, date),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 42,
-                      height: 82,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: 24,
-                          height: 8 + 70 * point.recordedDays / max,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(
-                              AppRadius.small,
-                            ),
-                          ),
-                        ),
-                      ),
+    final labels = [for (final p in trend) date.dayOfMonth(p.date)];
+    double hours(int ms) => ms / Duration.millisecondsPerHour;
+    String hourLabel(double value) => '${value.round()}h';
+    final hasTrend = trend.length >= 2;
+
+    final secondary = <Widget>[
+      if (data.statusDistribution.isNotEmpty)
+        AppChartCard(
+          title: l.reportStatusDistribution,
+          description: l.reportStatusDistributionDesc,
+          height: 220,
+          semanticLabel: l.reportStatusDistribution,
+          legend: AppChartLegend(
+            items: [
+              for (final slice in data.statusDistribution)
+                AppChartLegendItem(
+                  _statusLabel(l, slice.status),
+                  _statusColor(slice.status),
+                ),
+            ],
+          ),
+          child: AppDonutChart(
+            centerValue: AppNumberFormatter(Localizations.localeOf(context))
+                .integer(
+                  data.statusDistribution.fold<int>(
+                    0,
+                    (sum, s) => sum + s.count,
+                  ),
+                ),
+            centerTitle: l.reportStatusDistribution,
+            slices: [
+              for (final slice in data.statusDistribution)
+                AppDonutSlice(
+                  label: _statusLabel(l, slice.status),
+                  value: slice.count.toDouble(),
+                  color: _statusColor(slice.status),
+                ),
+            ],
+          ),
+        ),
+      if (hasTrend)
+        AppChartCard(
+          title: l.reportWorkHoursTrend,
+          description: l.reportWorkHoursTrendDesc,
+          height: 220,
+          semanticLabel: l.reportWorkHoursTrend,
+          emptyMessage: l.reportNoData,
+          child: AppBarChart(
+            labels: labels,
+            values: [for (final p in trend) hours(p.workMilliseconds)],
+            color: AppChartColors.working,
+            formatY: hourLabel,
+          ),
+        ),
+      if (hasTrend && data.summary.lateDays > 0)
+        AppChartCard(
+          title: l.reportLateTrend,
+          description: l.reportLateTrendDesc,
+          height: 220,
+          semanticLabel: l.reportLateTrend,
+          child: AppBarChart(
+            labels: labels,
+            values: [for (final p in trend) p.lateDays.toDouble()],
+            color: AppChartColors.late,
+          ),
+        ),
+      if (hasTrend && data.summary.breakMilliseconds > 0)
+        AppChartCard(
+          title: l.reportBreakTrend,
+          description: l.reportBreakTrendDesc,
+          height: 220,
+          semanticLabel: l.reportBreakTrend,
+          child: AppBarChart(
+            labels: labels,
+            values: [for (final p in trend) hours(p.breakMilliseconds)],
+            color: AppChartColors.breakTime,
+            formatY: hourLabel,
+          ),
+        ),
+      if (data.issueBreakdown.isNotEmpty)
+        AppChartCard(
+          title: l.reportIssuesByType,
+          description: l.reportIssuesByTypeDesc,
+          height: 220,
+          semanticLabel: l.reportIssuesByType,
+          child: AppBarChart(
+            labels: [
+              for (final issue in data.issueBreakdown)
+                _issueLabel(l, issue.code),
+            ],
+            values: [
+              for (final issue in data.issueBreakdown) issue.count.toDouble(),
+            ],
+            color: AppChartColors.issues,
+          ),
+        ),
+      if (data.groups.isNotEmpty)
+        AppChartCard(
+          title: l.reportGroupBy,
+          description: l.reportGroupBy,
+          height: 220,
+          semanticLabel: l.reportGroupBy,
+          child: AppBarChart(
+            labels: [
+              for (final group in data.groups)
+                group.name.isEmpty ? l.historyNotRecorded : group.name,
+            ],
+            values: [
+              for (final group in data.groups) hours(group.workMilliseconds),
+            ],
+            color: AppChartColors.series(4),
+            formatY: hourLabel,
+          ),
+        ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppChartCard(
+          title: l.reportActivityTrend,
+          description: l.reportActivityTrendDesc,
+          height: 300,
+          loading: false,
+          empty: !hasTrend,
+          emptyMessage: l.reportNoData,
+          semanticLabel: l.reportActivityTrend,
+          legend: hasTrend
+              ? AppChartLegend(
+                  items: [
+                    AppChartLegendItem(
+                      l.reportRecordedDays,
+                      AppChartColors.working,
                     ),
-                    Text(
-                      AppDateFormatter(
-                        Localizations.localeOf(context),
-                      ).dayOfMonth(point.date),
-                      style: AppTypography.of(context).caption,
+                    AppChartLegendItem(
+                      l.reportCompletedDays,
+                      AppChartColors.completed,
                     ),
                   ],
-                ),
+                )
+              : null,
+          footer: _granularityLabel(l, granularity),
+          child: hasTrend
+              ? AppLineChart(
+                  labels: labels,
+                  series: [
+                    AppChartSeries(
+                      label: l.reportRecordedDays,
+                      color: AppChartColors.working,
+                      values: [
+                        for (final p in trend) p.recordedDays.toDouble(),
+                      ],
+                    ),
+                    AppChartSeries(
+                      label: l.reportCompletedDays,
+                      color: AppChartColors.completed,
+                      values: [
+                        for (final p in trend) p.completedDays.toDouble(),
+                      ],
+                    ),
+                  ],
+                )
+              : null,
+        ),
+        if (secondary.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.xl),
+          AppResponsiveGrid(
+            minItemWidth: 420,
+            maxColumns: 2,
+            children: secondary,
+          ),
+        ],
+      ],
+    );
+  }
+
+  Color _statusColor(AttendanceReportStatus status) => switch (status) {
+    AttendanceReportStatus.completed => AppChartColors.completed,
+    AttendanceReportStatus.late => AppChartColors.late,
+    AttendanceReportStatus.working => AppChartColors.working,
+    AttendanceReportStatus.issues => AppChartColors.issues,
+  };
+
+  Widget _attention(
+    BuildContext context,
+    AttendanceReportData data,
+    AttendanceReportFilter filter,
+    ValueChanged<AttendanceReportFilter> change,
+  ) {
+    final l = context.l10n;
+    final number = AppNumberFormatter(Localizations.localeOf(context));
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppSectionHeader(title: l.reportNeedsAttention),
+          const SizedBox(height: AppSpacing.md),
+          for (final issue in data.issueBreakdown)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Row(
+                children: [
+                  Expanded(child: Text(_issueLabel(l, issue.code))),
+                  AppStatusBadge(
+                    label: number.integer(issue.count),
+                    status: _issueStatus(issue.code),
+                    showDot: true,
+                  ),
+                ],
               ),
             ),
+          const SizedBox(height: AppSpacing.sm),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: AppTextButton(
+              label: l.reportIssues,
+              onPressed: () => change(filter.copyWith(hasIssues: true)),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  String _trendLabel(AttendanceTrendPoint point, AppDateFormatter date) =>
-      '${date.date(point.date)}: ${point.recordedDays}';
+  bool _hasAttention(AttendanceReportData data) =>
+      data.issueBreakdown.isNotEmpty;
 
   List<Widget> _filters(
     BuildContext context,

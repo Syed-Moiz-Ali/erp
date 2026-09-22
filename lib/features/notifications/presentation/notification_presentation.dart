@@ -42,6 +42,26 @@ NotificationContent notificationContent(
     l.notifPendingReviewTitle,
     l.notifPendingReviewBody,
   ),
+  AppNotificationType.leaveRequestSubmitted => NotificationContent(
+    l.notifLeaveSubmittedTitle,
+    l.notifLeaveSubmittedBody,
+  ),
+  AppNotificationType.leaveRequestApproved => NotificationContent(
+    l.notifLeaveApprovedTitle,
+    l.notifLeaveApprovedBody,
+  ),
+  AppNotificationType.leaveRequestRejected => NotificationContent(
+    l.notifLeaveRejectedTitle,
+    l.notifLeaveRejectedBody,
+  ),
+  AppNotificationType.leaveRequestCancelled => NotificationContent(
+    l.notifLeaveCancelledTitle,
+    l.notifLeaveCancelledBody,
+  ),
+  AppNotificationType.leaveApprovalRequired => NotificationContent(
+    l.notifLeaveApprovalRequiredTitle,
+    l.notifLeaveApprovalRequiredBody,
+  ),
   AppNotificationType.unknown => NotificationContent(
     l.notifUnknownTitle,
     l.notifUnknownBody,
@@ -67,10 +87,23 @@ String? notificationRoute(AppNotification notification) =>
       AppNotificationType.punchOutReminder => AppRoutes.attendance,
       AppNotificationType.attendanceSyncFailed ||
       AppNotificationType.attendanceConflict => AppRoutes.attendanceHistory,
+      AppNotificationType.leaveRequestSubmitted ||
+      AppNotificationType.leaveRequestApproved ||
+      AppNotificationType.leaveRequestRejected ||
+      AppNotificationType.leaveRequestCancelled ||
+      AppNotificationType.leaveApprovalRequired =>
+        _leaveRequestId(notification) != null
+            ? AppRoutes.leaveRequestDetails(_leaveRequestId(notification)!)
+            : AppRoutes.leave,
       AppNotificationType.unknown => notification.route,
     };
 
 String? _correctionId(AppNotification notification) {
   final value = notification.payload['correctionId'];
+  return value is String && value.isNotEmpty ? value : null;
+}
+
+String? _leaveRequestId(AppNotification notification) {
+  final value = notification.payload['requestId'];
   return value is String && value.isNotEmpty ? value : null;
 }

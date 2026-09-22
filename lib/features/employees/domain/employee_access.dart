@@ -65,6 +65,10 @@ bool grantAllowed(AuthContext actor, AppPermission permission) {
     AppPermission.attendancePunchOut,
     AppPermission.attendanceBreak,
     AppPermission.attendanceRequestCorrection,
+    AppPermission.leaveViewSelf,
+    AppPermission.leaveRequest,
+    AppPermission.leaveCancelSelf,
+    AppPermission.leaveBalanceViewSelf,
   };
   if (selfService.contains(permission) &&
       p.can(AppPermission.userManage) &&
@@ -75,5 +79,11 @@ bool grantAllowed(AuthContext actor, AppPermission permission) {
   return permission == AppPermission.employeeViewTeam &&
           p.can(AppPermission.employeeViewAll) ||
       permission == AppPermission.attendanceViewTeam &&
-          p.can(AppPermission.attendanceViewAll);
+          p.can(AppPermission.attendanceViewAll) ||
+      permission == AppPermission.leaveViewTeam &&
+          p.can(AppPermission.leaveViewAll) ||
+      permission == AppPermission.leaveApproveTeam &&
+          p.can(AppPermission.leaveApproveAll) ||
+      permission == AppPermission.leaveBalanceViewTeam &&
+          p.can(AppPermission.leaveBalanceViewAll);
 }

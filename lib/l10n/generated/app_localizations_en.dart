@@ -1608,7 +1608,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSelection => 'Not assigned';
 
   @override
-  String get cfgConfiguration => 'Configuration';
+  String get cfgConfiguration => 'Settings';
 
   @override
   String get cfgShifts => 'Shifts';
@@ -3237,6 +3237,38 @@ class AppLocalizationsEn extends AppLocalizations {
       'A correction request is waiting for review.';
 
   @override
+  String get notifLeaveSubmittedTitle => 'Leave request submitted';
+
+  @override
+  String get notifLeaveSubmittedBody =>
+      'Your leave request was submitted for approval.';
+
+  @override
+  String get notifLeaveApprovedTitle => 'Leave request approved';
+
+  @override
+  String get notifLeaveApprovedBody => 'Your leave request was approved.';
+
+  @override
+  String get notifLeaveRejectedTitle => 'Leave request rejected';
+
+  @override
+  String get notifLeaveRejectedBody => 'Your leave request was not approved.';
+
+  @override
+  String get notifLeaveCancelledTitle => 'Leave request cancelled';
+
+  @override
+  String get notifLeaveCancelledBody => 'A leave request was cancelled.';
+
+  @override
+  String get notifLeaveApprovalRequiredTitle => 'Leave approval required';
+
+  @override
+  String get notifLeaveApprovalRequiredBody =>
+      'A team leave request is waiting for your review.';
+
+  @override
   String get notifUnknownTitle => 'Notification';
 
   @override
@@ -3316,4 +3348,621 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileManage => 'Manage';
+
+  @override
+  String get settingsIntro =>
+      'Manage your organization, attendance configuration and preferences.';
+
+  @override
+  String get settingsAttendanceCategory => 'Attendance configuration';
+
+  @override
+  String get settingsAttendanceCategoryDesc =>
+      'Configure how employees work and record attendance.';
+
+  @override
+  String get settingsPreferencesCategory => 'Personal preferences';
+
+  @override
+  String get settingsPreferencesCategoryDesc =>
+      'Adjust your own app preferences.';
+
+  @override
+  String get settingsSystemCategory => 'System';
+
+  @override
+  String get settingsSystemCategoryDesc => 'Sync and application status.';
+
+  @override
+  String get settingsShiftDesc =>
+      'Set working hours, working days and break defaults.';
+
+  @override
+  String get settingsLocationDesc =>
+      'Manage workplaces and attendance location rules.';
+
+  @override
+  String get settingsPolicyDesc =>
+      'Define attendance, break and correction rules.';
+
+  @override
+  String get settingsLanguageDesc =>
+      'Choose your preferred application language.';
+
+  @override
+  String get settingsNotificationsDesc =>
+      'Control attendance reminders for your account.';
+
+  @override
+  String get settingsSyncDesc => 'View sync status and retry failed changes.';
+
+  @override
+  String get reportSubtitle =>
+      'Analyze attendance activity, work hours, timing and record quality.';
+
+  @override
+  String get reportActivityTrend => 'Attendance activity';
+
+  @override
+  String get reportActivityTrendDesc => 'Recorded records by date.';
+
+  @override
+  String get reportStatusDistribution => 'Attendance status';
+
+  @override
+  String get reportStatusDistributionDesc => 'Composition of recorded records.';
+
+  @override
+  String get reportWorkHoursTrend => 'Recorded work hours';
+
+  @override
+  String get reportWorkHoursTrendDesc => 'Total recorded work time by date.';
+
+  @override
+  String get reportLateTrend => 'Late attendance';
+
+  @override
+  String get reportLateTrendDesc => 'Late records by date.';
+
+  @override
+  String get reportBreakTrend => 'Break time';
+
+  @override
+  String get reportBreakTrendDesc => 'Recorded break time by date.';
+
+  @override
+  String get reportIssuesByType => 'Issues by type';
+
+  @override
+  String get reportIssuesByTypeDesc => 'What needs attention in this period.';
+
+  @override
+  String get reportNeedsAttention => 'Needs attention';
+
+  @override
+  String get reportDetailedRecords => 'Detailed records';
+
+  @override
+  String get reportStatusWorking => 'Working';
+
+  @override
+  String get reportStatusCompleted => 'Completed';
+
+  @override
+  String get reportStatusLate => 'Late';
+
+  @override
+  String get reportStatusIssues => 'Issues';
+
+  @override
+  String get reportIssueRejected => 'Rejected attendance';
+
+  @override
+  String get reportIssueSyncFailure => 'Sync failure';
+
+  @override
+  String get reportIssuePendingCorrection => 'Pending correction';
+
+  @override
+  String get reportIssueMissingPunchOut => 'Missing punch out';
+
+  @override
+  String get reportViewTeam => 'Team view';
+
+  @override
+  String get reportViewCompany => 'Company view';
+
+  @override
+  String get reportRecordedEmployees => 'Recorded employees';
+
+  @override
+  String get permissionLeaveViewSelf => 'View own leave';
+
+  @override
+  String get permissionLeaveRequest => 'Request leave';
+
+  @override
+  String get permissionLeaveCancelSelf => 'Cancel own leave';
+
+  @override
+  String get permissionLeaveViewTeam => 'View team leave';
+
+  @override
+  String get permissionLeaveApproveTeam => 'Approve team leave';
+
+  @override
+  String get permissionLeaveViewAll => 'View company leave';
+
+  @override
+  String get permissionLeaveApproveAll => 'Approve company leave';
+
+  @override
+  String get permissionLeaveManage => 'Manage leave';
+
+  @override
+  String get permissionLeaveBalanceViewSelf => 'View own leave balance';
+
+  @override
+  String get permissionLeaveBalanceViewTeam => 'View team leave balances';
+
+  @override
+  String get permissionLeaveBalanceViewAll => 'View company leave balances';
+
+  @override
+  String get permissionLeaveBalanceAdjust => 'Adjust leave balances';
+
+  @override
+  String get permissionLeaveTypeView => 'View leave types';
+
+  @override
+  String get permissionLeaveTypeManage => 'Manage leave types';
+
+  @override
+  String get permissionLeavePolicyView => 'View leave policies';
+
+  @override
+  String get permissionLeavePolicyManage => 'Manage leave policies';
+
+  @override
+  String get permissionHolidayView => 'View holidays';
+
+  @override
+  String get permissionHolidayManage => 'Manage holidays';
+
+  @override
+  String get permissionLeaveReportView => 'View leave reports';
+
+  @override
+  String get shellLeave => 'Leave';
+
+  @override
+  String get leaveMyLeave => 'My leave';
+
+  @override
+  String get leaveNewRequest => 'New request';
+
+  @override
+  String get leaveMyRequests => 'My requests';
+
+  @override
+  String get leaveApprovals => 'Approvals';
+
+  @override
+  String get leaveTeam => 'Team leave';
+
+  @override
+  String get leaveAllNav => 'All leave';
+
+  @override
+  String get leaveBalancesNav => 'Balances';
+
+  @override
+  String get leaveCalendarNav => 'Calendar';
+
+  @override
+  String get leaveTypesNav => 'Leave types';
+
+  @override
+  String get leavePoliciesNav => 'Leave policies';
+
+  @override
+  String get holidaysNav => 'Holidays';
+
+  @override
+  String get leaveTypeIntro =>
+      'Configure the kinds of leave employees can request.';
+
+  @override
+  String get leavePolicyIntro =>
+      'Define entitlement and request rules for each leave type.';
+
+  @override
+  String get holidayIntro => 'Configure public, company and optional holidays.';
+
+  @override
+  String get leaveType => 'Leave type';
+
+  @override
+  String get leaveCompensation => 'Compensation';
+
+  @override
+  String get leaveRequiresApproval => 'Requires approval';
+
+  @override
+  String get leaveAllowsHalfDay => 'Allows half day';
+
+  @override
+  String get leaveRequiresReason => 'Reason required';
+
+  @override
+  String get leaveRequiresAttachment => 'Attachment required';
+
+  @override
+  String get leaveCompensationPaid => 'Paid';
+
+  @override
+  String get leaveCompensationUnpaid => 'Unpaid';
+
+  @override
+  String get leaveCompensationInformational => 'Informational';
+
+  @override
+  String get leavePolicy => 'Leave policy';
+
+  @override
+  String get leavePolicyLeaveType => 'Leave type';
+
+  @override
+  String get leavePolicyEntitlement => 'Annual entitlement';
+
+  @override
+  String get leavePolicyMinDays => 'Minimum request';
+
+  @override
+  String get leavePolicyMaxConsecutive => 'Maximum consecutive days';
+
+  @override
+  String get leavePolicyAdvanceNotice => 'Advance notice';
+
+  @override
+  String get leavePolicyAllowPast => 'Allow past requests';
+
+  @override
+  String get leavePolicyPastWindow => 'Past request window';
+
+  @override
+  String get leavePolicyNegative => 'Allow negative balance';
+
+  @override
+  String get leavePolicyCarryForward => 'Carry forward';
+
+  @override
+  String get leavePolicyCarryLimit => 'Carry forward limit';
+
+  @override
+  String get leavePolicyEmployment => 'Applicable employment types';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get holiday => 'Holiday';
+
+  @override
+  String get holidayDate => 'Date';
+
+  @override
+  String get holidayEndDate => 'End date';
+
+  @override
+  String get holidayTypeField => 'Type';
+
+  @override
+  String get holidayScopeField => 'Scope';
+
+  @override
+  String get holidayWorkLocations => 'Work locations';
+
+  @override
+  String get holidayOptional => 'Optional holiday';
+
+  @override
+  String get holidayTypePublic => 'Public holiday';
+
+  @override
+  String get holidayTypeCompany => 'Company holiday';
+
+  @override
+  String get holidayTypeOptional => 'Optional holiday';
+
+  @override
+  String get holidayTypeSpecial => 'Special closure';
+
+  @override
+  String get holidayScopeCompanyWide => 'Company wide';
+
+  @override
+  String get holidayScopeSpecific => 'Specific work locations';
+
+  @override
+  String get leaveRequestTitle => 'Request leave';
+
+  @override
+  String get leaveStartDate => 'Start date';
+
+  @override
+  String get leaveEndDate => 'End date';
+
+  @override
+  String get leaveStartPortion => 'First day';
+
+  @override
+  String get leaveEndPortion => 'Last day';
+
+  @override
+  String get leaveDayFull => 'Full day';
+
+  @override
+  String get leaveDayFirstHalf => 'First half';
+
+  @override
+  String get leaveDaySecondHalf => 'Second half';
+
+  @override
+  String get leaveReasonLabel => 'Reason';
+
+  @override
+  String get leaveAttachmentLabel => 'Attachment';
+
+  @override
+  String get leavePreviewTitle => 'Summary';
+
+  @override
+  String get leaveRequestedDays => 'Requested days';
+
+  @override
+  String get leaveAvailableDays => 'Available';
+
+  @override
+  String get leaveAfterApproval => 'After approval';
+
+  @override
+  String get leaveExcludedWeekends => 'Weekends excluded';
+
+  @override
+  String get leaveExcludedHolidays => 'Holidays excluded';
+
+  @override
+  String get leaveSubmitRequest => 'Submit request';
+
+  @override
+  String get leaveNoTypes => 'No leave types are available.';
+
+  @override
+  String get leaveSelectType => 'Select leave type';
+
+  @override
+  String get leaveStatusPending => 'Pending';
+
+  @override
+  String get leaveStatusApproved => 'Approved';
+
+  @override
+  String get leaveStatusRejected => 'Rejected';
+
+  @override
+  String get leaveStatusCancelled => 'Cancelled';
+
+  @override
+  String get leaveApprove => 'Approve';
+
+  @override
+  String get leaveReject => 'Reject';
+
+  @override
+  String get leaveCancelRequest => 'Cancel request';
+
+  @override
+  String get leaveReviewNote => 'Note';
+
+  @override
+  String get leaveCancelReason => 'Cancellation reason';
+
+  @override
+  String get leaveEmployee => 'Employee';
+
+  @override
+  String get leaveDepartment => 'Department';
+
+  @override
+  String get leaveDateRange => 'Dates';
+
+  @override
+  String get leaveApprovedBy => 'Reviewed by';
+
+  @override
+  String get leaveSubmittedOn => 'Submitted';
+
+  @override
+  String get leaveViewDetails => 'View details';
+
+  @override
+  String get leaveApply => 'Apply';
+
+  @override
+  String get leaveBalancesTitle => 'Leave balances';
+
+  @override
+  String get leaveEntitlement => 'Entitlement';
+
+  @override
+  String get leaveUsed => 'Used';
+
+  @override
+  String get leavePendingBalance => 'Pending';
+
+  @override
+  String get leaveAvailable => 'Available';
+
+  @override
+  String get leaveAdjustBalance => 'Adjust balance';
+
+  @override
+  String get leaveAdjustAdd => 'Add days';
+
+  @override
+  String get leaveAdjustRemove => 'Remove days';
+
+  @override
+  String get leaveAdjustQuantity => 'Days';
+
+  @override
+  String get leaveAdjustReason => 'Reason';
+
+  @override
+  String get leaveLedger => 'Balance history';
+
+  @override
+  String get leaveNoBalance => 'No balance records.';
+
+  @override
+  String get leaveSelectEmployee => 'Employee';
+
+  @override
+  String get leaveEmployeeFilter => 'Employee';
+
+  @override
+  String get leaveCalendarTitle => 'Leave calendar';
+
+  @override
+  String get leaveCalendarLegendLeave => 'Leave';
+
+  @override
+  String get leaveCalendarLegendHoliday => 'Holiday';
+
+  @override
+  String get leaveCalendarEmpty => 'No leave or holidays in this period.';
+
+  @override
+  String get leaveFrom => 'From';
+
+  @override
+  String get leaveTo => 'To';
+
+  @override
+  String get leaveRequestsEmpty => 'No leave requests.';
+
+  @override
+  String get leaveApprovalsEmpty => 'No requests are waiting for review.';
+
+  @override
+  String get leaveNoPendingRequests => 'You have no pending leave requests.';
+
+  @override
+  String get leaveOnLeaveToday => 'On leave today';
+
+  @override
+  String get workdayScheduled => 'Scheduled';
+
+  @override
+  String get workdayWorking => 'Working';
+
+  @override
+  String get workdayOnBreak => 'On break';
+
+  @override
+  String get workdayCompleted => 'Completed';
+
+  @override
+  String get workdayIncomplete => 'Incomplete';
+
+  @override
+  String get workdayOnLeave => 'On leave';
+
+  @override
+  String get workdayHoliday => 'Holiday';
+
+  @override
+  String get workdayNonWorking => 'Non-working';
+
+  @override
+  String get workdayIssue => 'Issue';
+
+  @override
+  String get leavePermissionDenied => 'You do not have access to leave.';
+
+  @override
+  String get leaveStorageError => 'Leave data could not be loaded.';
+
+  @override
+  String get leaveUnavailable => 'Leave is not available.';
+
+  @override
+  String get leaveTypeInactive => 'The selected leave type is not available.';
+
+  @override
+  String get leaveNoEmployee => 'Your account is not linked to an employee.';
+
+  @override
+  String get leaveInvalidDateRange =>
+      'The end date must be after the start date.';
+
+  @override
+  String get leaveReasonRequired => 'A reason is required.';
+
+  @override
+  String get leaveNoWorkingDays => 'The selected range has no working days.';
+
+  @override
+  String get leaveMinimumDays =>
+      'The request is shorter than the policy minimum.';
+
+  @override
+  String get leaveOverlapping => 'This request overlaps an existing request.';
+
+  @override
+  String get leaveInsufficientBalance => 'There is not enough leave balance.';
+
+  @override
+  String get leavePastRequestNotAllowed => 'Past-dated leave is not allowed.';
+
+  @override
+  String get leaveAdvanceNoticeRequired =>
+      'This request does not meet the advance notice requirement.';
+
+  @override
+  String get leaveInvalidQuantity => 'Enter a valid quantity.';
+
+  @override
+  String get leaveRequestNotFound => 'The leave request was not found.';
+
+  @override
+  String get leaveAlreadyReviewed => 'This request has already been reviewed.';
+
+  @override
+  String get leaveCannotCancelApproved =>
+      'Approved leave can only be cancelled by a manager.';
+
+  @override
+  String get leaveReviewNoteRequired => 'A note is required.';
+
+  @override
+  String get leaveSelfApprovalNotAllowed =>
+      'You cannot approve your own leave.';
+
+  @override
+  String get leaveSaved => 'Leave saved.';
+
+  @override
+  String get leaveRequestSubmitted => 'Leave request submitted.';
+
+  @override
+  String get leaveIncludeInactive => 'Include inactive';
+
+  @override
+  String get settingsLeaveCategory => 'Leave & holidays';
+
+  @override
+  String get settingsLeaveCategoryDesc =>
+      'Configure leave types, policies and holidays.';
 }

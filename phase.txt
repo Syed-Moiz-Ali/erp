@@ -1,3265 +1,2234 @@
 ```text
-PHASE 13.7 — PERSONA CAPABILITY MODEL, NAVIGATION CLEANUP & UNIFIED MY PROFILE ARCHITECTURE
+PHASE 15.1 — EMPLOYEE PROBATION PERIOD, CONFIRMATION WORKFLOW & PROBATION-SPECIFIC LEAVE POLICIES
 
-Continue working on the EXISTING Flutter ERP project.
+Continue working on the EXISTING Flutter ERP project and the Leave/Holiday implementation from Phase 15.
 
-Already completed:
+DO NOT create a separate Probation module unnecessarily.
 
-PHASE 0–13
-+
-PHASE 13.5
-- proper route-per-screen navigation
-- detail URLs
-- browser Back/Forward
-- cross-platform routing
+Probation belongs primarily to:
 
-PHASE 13.6
-- navigation-state restoration
-- session/account isolation
-- tenant/company isolation
-- timezone/workday integrity
-- snapshot consistency
+Employee Employment Information
 
-DO NOT start Phase 14 yet.
+and integrates with:
 
-DO NOT create new business modules.
-
-THIS PHASE EXISTS TO FIX:
-
-1. wrong navigation exposure by role/permission
-2. Super Admin getting employee self-service screens unnecessarily
-3. Company Admin getting Punch In / My Attendance unnecessarily
-4. HR/Manager/Employee capability differences
-5. linked Employee vs non-linked UserAccount behavior
-6. weak/incomplete My Profile UX
-7. Employee Profile and My Profile duplication
-8. persona-aware dashboard/navigation behavior
-9. account + employment profile integration
-
-==================================================
-1. CORE ARCHITECTURE PRINCIPLE
-==================================================
-
-DO NOT assume:
-
-higher role = all lower-role features.
-
-Example:
-
-Super Admin is NOT automatically an employee.
-
-Company Admin is NOT automatically an employee.
-
-HR is NOT automatically required to Punch In.
-
-Manager may be both:
-
-manager
-+
-employee
-
-Employee self-service features depend on:
-
-- linked Employee record
-- specific permissions
-- applicable company context
-
-NOT role hierarchy.
-
-==================================================
-2. VERY IMPORTANT RULE
-==================================================
-
-ADMIN AUTHORITY DOES NOT IMPLY EMPLOYEE SELF-SERVICE ACCESS.
-
-Do NOT automatically grant:
-
-attendanceViewSelf
-attendancePunchIn
-attendancePunchOut
-attendanceBreak
-attendanceRequestCorrection
-
-to:
-
-Super Admin
-Company Admin
-
-unless the account is genuinely linked to an Employee and those permissions are explicitly granted.
-
-==================================================
-3. KEEP USERACCOUNT AND EMPLOYEE SEPARATE
-==================================================
-
-Do NOT merge UserAccount and Employee entities.
-
-They represent different concepts.
-
-UserAccount:
-
-- authentication
-- login identifier
-- password/session
-- permissions
-- role assignment
-- company access
-- locale
-- notification preferences
-- security/access settings
-
-Employee:
-
-- employee code
-- legal/display name
-- department
-- designation
-- manager
-- joining date
-- employment status
-- shift
-- work location
-- attendance policy
-- employment metadata
-
-Keep domain separation.
-
-BUT:
-
-My Profile UI should intelligently combine them when linked.
-
-==================================================
-4. USER-EMPLOYEE LINK
-==================================================
-
-Use existing:
-
-linkedEmployeeId
-EmployeeReference
-or equivalent.
-
-User account can be:
-
-A. linked to Employee
-
-or
-
-B. administrative account with NO Employee record.
-
-Both must be first-class supported scenarios.
-
-Do NOT require every UserAccount to have an Employee.
-
-==================================================
-5. INTRODUCE USER CAPABILITY CONTEXT
-==================================================
-
-Create centralized derived model such as:
-
-UserCapabilityContext
-
-or:
-
-AuthenticatedUserCapabilities
-
-Do NOT replace AppPermission.
-
-This model derives useful product capabilities from:
-
-UserAccount
-PermissionSet
-linked Employee
-CompanyContext
-enabled modules
-scope resolvers
-
-Example fields:
-
-hasLinkedEmployee
-
-canUseSelfAttendance
-
-canViewSelfAttendanceHistory
-
-canRequestAttendanceCorrection
-
-canViewTeamAttendance
-
-canViewCompanyAttendance
-
-canApproveAttendanceCorrections
-
-canManageEmployees
-
-canManageAttendanceConfiguration
-
-canViewAttendanceReports
-
-canManageUsers
-
-canManageRoles
-
-canManageCompany
-
-canAccessPlatformAdministration
-
-Use only capabilities genuinely needed.
-
-==================================================
-6. CAPABILITY RESOLVER
-==================================================
-
-Create:
-
-UserCapabilityResolver
-
-Input:
-
-AuthSession
-UserAccount
-PermissionSet
-EmployeeReference optional
-CompanyContext
-
-Output:
-
-UserCapabilityContext
-
-Do NOT calculate the same capability separately in:
-
-sidebar
-
-dashboard
-
-profile
-
-attendance
-
-routes.
-
-==================================================
-7. SELF ATTENDANCE CAPABILITY
-==================================================
-
-Example logic conceptually:
-
-canUseSelfAttendance =
-    hasLinkedEmployee
-    AND attendanceViewSelf
-    AND one or more self attendance action/view permissions
-
-Do not show My Attendance if:
-
-hasLinkedEmployee == false
-
-even if the user has attendanceViewAll.
-
-==================================================
-8. ATTENDANCE HISTORY CAPABILITY
-==================================================
-
-Show personal Attendance History only when:
-
-hasLinkedEmployee
-AND attendanceViewSelf
-
-Do NOT show personal History just because user can view company attendance.
-
-==================================================
-9. TEAM ATTENDANCE CAPABILITY
-==================================================
-
-Show Team Attendance when:
-
-attendanceViewTeam
-AND a meaningful team scope can be resolved
-
-If manager-type account has no linked Employee and team hierarchy depends on manager employee ID:
-
-Team Attendance should NOT appear.
-
-Do not fabricate a team.
-
-==================================================
-10. ALL ATTENDANCE CAPABILITY
-==================================================
-
-Show All Attendance when:
-
-attendanceViewAll
-
-This does NOT require linkedEmployee.
-
-HR/Admin can have this without self attendance.
-
-==================================================
-11. ATTENDANCE CONFIG CAPABILITY
-==================================================
-
-Show attendance configuration destinations based on:
-
-shiftView/manage
-workLocationView/manage
-attendancePolicyView/manage
-
-Do not expose self attendance controls merely because configuration access exists.
-
-==================================================
-12. ATTENDANCE REPORT CAPABILITY
-==================================================
-
-Show Reports when:
-
-attendanceReportView
-
-Scope still derives from:
-
-attendanceViewTeam
-attendanceViewAll
-
-Do not infer company scope from role name.
-
-==================================================
-13. EMPLOYEE MANAGEMENT CAPABILITY
-==================================================
-
-Show Employees when user has one or more meaningful employee permissions such as:
-
-employeeViewTeam
-employeeViewAll
-employeeCreate
-employeeUpdate
-
-Do not show empty Employee module to ordinary Employee unless self-profile routing requires it.
-
-Self profile should use /app/profile instead.
-
-==================================================
-14. ROLE PURPOSE
-==================================================
-
-Roles may remain useful as:
-
-named permission bundles
-presentation labels
-default dashboard composition
-
-But role must NOT directly authorize screens/actions.
-
-Example:
-
-Role = HR
-
-can influence:
-dashboard wording/layout
-
-But:
-
-permission set determines actual access.
-
-==================================================
-15. PERSONA DEFAULTS — SUPER ADMIN
-==================================================
-
-Default Super Admin experience should focus on PLATFORM administration.
-
-Potential navigation:
-
+Leave Policies
+Leave Eligibility
+Employee Profile
+HR workflows
 Dashboard
-
-Companies / Tenants
-if platform-level company management exists
-
-Users & Access
-
-Roles / Permissions
-
-System / Module Configuration
-
-Audit / Diagnostics where available
-
-Profile
-
-Notifications if relevant
-
-DO NOT show by default:
-
-My Attendance
-
-Attendance History
-
-Punch In
-
-Team Attendance
-
-My Correction Requests
-
-unless account is explicitly linked to Employee and permissions provide those capabilities.
-
-==================================================
-16. SUPER ADMIN COMPANY ATTENDANCE
-==================================================
-
-Do not automatically show attendance operational pages merely because Super Admin technically has broad system authority.
-
-If product gives Super Admin attendance oversight permission:
-
-All Attendance / Reports can appear.
-
-But this must come through explicit permissions/modules.
-
-Avoid making platform administrator sidebar overloaded with every operational screen.
-
-==================================================
-17. PERSONA DEFAULTS — COMPANY ADMIN
-==================================================
-
-Typical Company Admin navigation:
-
-Dashboard
-
-Employees
-
-Attendance Overview / All Attendance
-if attendanceViewAll
-
-Attendance Requests
-if attendanceApprove
-
-Reports
-if attendanceReportView
-
-Configuration
-
-Users & Access
-
-Roles / Permissions
-if allowed
-
-Company Settings
-
 Notifications
-
-Profile
-
-DO NOT automatically show:
-
-My Attendance
-
-My Attendance History
-
-Punch In
-
-Take Break
-
-Punch Out
-
-My Correction Requests
-
-unless:
-
-hasLinkedEmployee
-AND appropriate self permissions.
-
-==================================================
-18. COMPANY ADMIN LINKED AS EMPLOYEE
-==================================================
-
-A Company Admin may ALSO be an employee.
-
-Example:
-
-Owner/Director uses attendance too.
-
-If:
-
-linkedEmployee != null
-AND attendanceViewSelf
-AND attendance self actions allowed
-
-then My Attendance may appear.
-
-This is explicit capability behavior.
-
-Do not prohibit it based on role.
-
-==================================================
-19. PERSONA DEFAULTS — HR
-==================================================
-
-Typical HR navigation:
-
-Dashboard
-
-Employees
-
-All Attendance
-
-Attendance Requests
-
 Reports
 
-Shifts
+IMPORTANT:
 
-Work Locations
+Phase 15 previously only included lightweight concepts such as:
 
-Attendance Policies
+probationRestrictionEnabled
+minimumServiceDays
 
-Notifications
+That is NOT sufficient.
 
-Profile
+Implement probation properly as an employment lifecycle concept.
 
-If HR account is linked to Employee and has self permissions:
-
-also show:
-
-My Attendance
-History
-My Correction Requests
-
-If not linked:
-do not show those.
-
-==================================================
-20. PERSONA DEFAULTS — MANAGER
-==================================================
-
-Typical Manager navigation:
-
-Dashboard
-
-My Attendance
-if linked + permitted
-
-Attendance History
-if linked + permitted
-
-Team Attendance
-
-Team Employees
-if employeeViewTeam
-
-Attendance Requests
-if approval permission
-
-Team Reports
-if report permission
-
-Notifications
-
-Profile
-
-Manager generally requires linked Employee if team scope is based on managerId relationship.
-
-Handle missing link safely.
-
-==================================================
-21. PERSONA DEFAULTS — EMPLOYEE
-==================================================
-
-Typical Employee navigation:
-
-Dashboard
-
-My Attendance
-
-History
-
-My Correction Requests
-
-Notifications
-
-Profile
-
-Do NOT expose:
-
-All Attendance
-
-Team Attendance
-
-Employee Management
-
-Attendance Configuration
-
-Company Reports
-
-unless explicit additional permissions exist.
-
-==================================================
-22. CAPABILITY > PERSONA MATRIX
-==================================================
-
-Build a centralized test/documentation matrix.
-
-Example concept:
-
-SUPER ADMIN
-
-hasLinkedEmployee: maybe false
-
-canUseSelfAttendance:
-false by default
-
-canViewTeamAttendance:
-false by default
-
-canViewCompanyAttendance:
-only if explicitly permitted
-
-canManageUsers:
-true according to permissions
-
-COMPANY ADMIN
-
-canManageEmployees:
-true
-
-canViewCompanyAttendance:
-usually true
-
-canUseSelfAttendance:
-only if linked + permission
-
-HR
-
-canManageEmployees:
-true
-
-canViewCompanyAttendance:
-true
-
-canUseSelfAttendance:
-only if linked + permission
-
-MANAGER
-
-canViewTeamAttendance:
-true if team resolvable
-
-canUseSelfAttendance:
-true if linked + permission
-
-EMPLOYEE
-
-canUseSelfAttendance:
-true
-
-canViewSelfAttendanceHistory:
-true
-
-No hardcoded role enforcement.
-
-==================================================
-23. NAVIGATION RESOLVER UPDATE
-==================================================
-
-Update ModuleNavigationService / NavigationResolver.
-
-Navigation visibility should support:
-
-requiredPermission
-
-requiredCapability
-
-enabledModule
-
-route scope
-
-where useful.
-
-Do NOT put conditions inside Sidebar widgets.
-
-==================================================
-24. NAVIGATION ITEM MODEL
-==================================================
-
-If needed extend:
-
-AppNavigationItem
-
-with something like:
-
-requiredPermissions
-
-requiredCapabilities
-
-matchPolicy
-
-But avoid overly complex dynamic expression engine.
-
-Simple typed conditions are enough.
-
-==================================================
-25. MY ATTENDANCE NAVIGATION
-==================================================
-
-My Attendance visibility:
-
-requires:
-hasLinkedEmployee
-AND relevant self attendance capability
-
-Do NOT show disabled My Attendance menu item.
-
-Hide irrelevant destination cleanly.
-
-==================================================
-26. MY HISTORY NAVIGATION
-==================================================
-
-Personal History:
-
-requires:
-hasLinkedEmployee
-AND canViewSelfAttendanceHistory
-
-==================================================
-27. MY CORRECTIONS NAVIGATION
-==================================================
-
-Personal Correction Requests:
-
-requires:
-hasLinkedEmployee
-AND attendanceRequestCorrection
-
-or current permission/policy combination.
-
-==================================================
-28. TEAM ATTENDANCE NAVIGATION
-==================================================
-
-Requires:
-canViewTeamAttendance
-
-Do not show if team cannot be resolved.
-
-==================================================
-29. ALL ATTENDANCE NAVIGATION
-==================================================
-
-Requires:
-canViewCompanyAttendance
-
-==================================================
-30. REQUEST REVIEW NAVIGATION
-==================================================
-
-Requires:
-canApproveAttendanceCorrections
-
-Scope may be:
-
-team
-company
-
-==================================================
-31. CONFIGURATION NAVIGATION
-==================================================
-
-Config sub-items should independently resolve.
-
-Example:
-
-Shifts
-→ shiftView/manage
-
-Work Locations
-→ workLocationView/manage
-
-Attendance Policies
-→ attendancePolicyView/manage
-
-Do not expose all three because one permission exists.
-
-==================================================
-32. PROFILE ARCHITECTURE
-==================================================
-
-Rebuild:
-
-/app/profile
-
-as:
-
-MY PROFILE
-
-This is the logged-in user's unified profile experience.
-
-It combines:
-
-UserAccount
-+
-linked Employee if available
-
-but does NOT merge domain entities.
-
-==================================================
-33. MY PROFILE DATA MODEL
-==================================================
-
-Create:
-
-MyProfileViewModel
-
-or equivalent typed read model.
-
-Potential sections:
-
-account
-
-employment optional
-
-access
-
-security
-
-preferences
-
-attendance summary optional
-
-Do not pass many unrelated repositories directly into widgets.
-
-==================================================
-34. MY PROFILE REPOSITORY / USE CASE
-==================================================
-
-Create/reuse:
-
-MyProfileRepository
-or:
-GetMyProfileUseCase
-
-May aggregate:
-
-AuthSession/UserAccount
-
-EmployeeRepository linked employee
-
-CompanyContext
-
-permissions
-
-notification preferences
-
-attendance monthly summary if permitted
-
-Do not duplicate business entities.
-
-==================================================
-35. MY PROFILE HEADER — LINKED EMPLOYEE
-==================================================
-
-Example:
-
-[Avatar]
-
-Ahmed Khan
-
-Software Engineer
-
-EMP-0012 · Engineering
-
-Active
-
-This is appropriate when Employee exists.
-
-Use actual designation/department.
-
-==================================================
-36. MY PROFILE HEADER — ADMIN ACCOUNT WITHOUT EMPLOYEE
-==================================================
-
-Example:
-
-[Avatar]
-
-Mohammed Ali
-
-Company Administrator
-
-Bitlogix Systems
-
-Active Account
-
-DO NOT display:
-
-Employee Code
-
-Department
-
-Shift
-
-Work Location
-
-fake designation
-
-if no Employee exists.
-
-==================================================
-37. MY PROFILE — OVERVIEW SECTION
-==================================================
-
-For linked employee:
-
-Full Name
-
-Email
-
-Phone
-
-Employee Code
-
-Department
-
-Designation
-
-Manager
-
-Join Date
-
-Employment Status
-
-Use Employee + UserAccount appropriately.
-
-Avoid duplicate values twice.
-
-==================================================
-38. MY PROFILE — WORK INFORMATION
-==================================================
-
-Only if linked Employee.
-
-Show:
-
-Department
-
-Designation
-
-Manager
-
-Join Date
-
-Employment Type
-
-Shift
-
-Work Location
-
-Attendance Policy
-
-Working Days if useful
-
-Do not show if no Employee.
-
-==================================================
-39. MY PROFILE — ACCOUNT & ACCESS
-==================================================
-
-For ALL users:
-
-Login identifier
-
-Email/Phone
-
-Account status
-
-Current company
-
-Role label(s)
-
-Permission summary
-
-Language
-
-Notification preferences
-
-Do NOT dump 40 raw permission enum names in normal UI.
-
-==================================================
-40. PERMISSION SUMMARY UX
-==================================================
-
-Use readable grouped access summary.
-
-Example:
-
-Access
-
-Employees
-Manage
-
-Attendance
-Company View + Approvals
-
-Reports
-View
-
-Company Settings
-Manage
-
-or:
-
-Administrative Access
-
-Do not show:
-
-employeeViewAll
-attendanceApprove
-companyManage
-
-as raw technical text unless debug/admin inspector.
-
-==================================================
-41. SUPER ADMIN PROFILE
-==================================================
-
-Super Admin profile focuses on:
-
-ACCOUNT
-
-Name
-
-Email
-
-Phone
-
-Account Status
-
-PLATFORM ACCESS
-
-Super Admin
-
-Companies/Tenants accessible
-
-System/module access
-
-SECURITY
-
-Change Password
-
-Sessions if available
-
-PREFERENCES
-
-Language
-
-Notifications
-
-No Employee section unless actually linked.
-
-==================================================
-42. COMPANY ADMIN PROFILE
-==================================================
-
-If no Employee link:
-
-ACCOUNT
-
-ORGANIZATION ACCESS
-
-SECURITY
-
-PREFERENCES
-
-If linked:
-
-also show Employment section.
-
-Do not force attendance card.
-
-==================================================
-43. HR PROFILE
-==================================================
-
-If linked employee:
-
-show account + employment.
-
-If self attendance capability:
-show optional My Attendance section.
-
-If not:
-do not.
-
-==================================================
-44. MANAGER PROFILE
-==================================================
-
-Typically linked employee.
-
-Show:
-
-Employment
-
-Manager hierarchy
-
-Shift/location
-
-Account
-
-Preferences
-
-My Attendance summary if permitted.
-
-Do not show company-wide admin metadata unless permission gives it.
-
-==================================================
-45. EMPLOYEE PROFILE
-==================================================
-
-Employee My Profile should be detailed and useful.
-
-Sections:
-
-Overview
-
-Employment
-
-Work & Attendance
-
-Account & Security
-
-Preferences
-
-Possible attendance section:
-
-This Month
-
-Recorded Days
-
-Worked Hours
-
-Late Records
-
-[ View Attendance History ]
-
-Only use metrics domain supports.
-
-==================================================
-46. MY ATTENDANCE PROFILE SECTION
-==================================================
-
-Show ONLY if:
-
-hasLinkedEmployee
-AND canViewSelfAttendanceHistory
-
-Potential:
-
-Current State
-
-This Month Worked
-
-Completed Days
-
-Late Records
-
-Pending Correction
-
-Actions:
-
-Open Attendance
-
-View History
-
-Do not duplicate full Attendance dashboard.
-
-==================================================
-47. PROFILE SECURITY SECTION
-==================================================
-
-All accounts:
-
-Change Password
-
-Session information if supported
-
-Sign Out action
-
-Possibly account status.
-
-Do not display tokens.
-
-==================================================
-48. PROFILE PREFERENCES
-==================================================
-
-All users:
-
-Language
-
-Notification/Reminder preferences where relevant
-
-Theme if existing
-
-Do not put company business configuration in My Profile.
-
-==================================================
-49. ATTENDANCE REMINDER SETTINGS
-==================================================
-
-Show attendance reminders only when:
-
-hasLinkedEmployee
-AND self attendance/reminder capability makes sense.
-
-Super Admin with no Employee:
-
-do not show:
-
-Shift Reminder
-Punch Out Reminder
-
-==================================================
-50. EMPLOYEE RECORD VS MY PROFILE
-==================================================
-
-Keep:
-
-/app/profile
-
-and:
-
-/app/employees/:employeeId
-
-separate.
-
-They have different purposes.
-
-==================================================
-51. EMPLOYEE RECORD PURPOSE
-==================================================
-
-/app/employees/:employeeId
-
-is an ORGANIZATIONAL EMPLOYEE RECORD.
-
-Used by:
-
-HR
-
-Admin
-
-Manager with scope
-
-It can contain:
-
-Overview
-
-Employment
-
-Attendance Configuration
-
-Account Access
-
-Related Attendance
-
-Administrative actions
-
-==================================================
-52. MY PROFILE PURPOSE
-==================================================
-
-/app/profile
-
-is PERSONAL SELF-SERVICE.
-
-It contains:
-
-My identity
-
-My employment info
-
-My account
-
-My security
-
-My preferences
-
-My attendance summary where relevant
-
-No admin editing controls unless product explicitly includes them.
-
-==================================================
-53. REUSE COMPONENTS
-==================================================
-
-Do NOT duplicate visuals/data.
-
-Create reusable components such as:
-
-PersonProfileHeader
-
-EmploymentOverviewSection
-
-AccountAccessSummary
-
-WorkAssignmentSummary
-
-ProfileDetailsGrid
-
-AttendanceProfileSummary
-
-Use them in:
-
-My Profile
-
-Employee Details
-
-with configuration.
-
-==================================================
-54. EMPLOYEE PROFILE DATA REUSE
-==================================================
-
-My Profile linked Employee section should use same:
-
-Employee
-
-DepartmentReference
-
-DesignationReference
-
-EmployeeReference manager
-
-Shift reference
-
-WorkLocation reference
-
-AttendancePolicy reference
-
-as Employee Details.
-
-Do not create separate profile copies of these fields.
-
 ==================================================
-55. NO DIVERGENT DATA
+1. CORE PRINCIPLE
 ==================================================
 
-If HR updates Employee designation:
+Probation is NOT a Leave Type.
 
-My Profile should reactively show new designation.
+Probation is NOT an Attendance status.
 
-No separate cached profile designation.
+Probation is an EMPLOYMENT STATE/PERIOD.
 
-==================================================
-56. ACCOUNT ACCESS SECTION REUSE
-==================================================
-
-Employee Details may show:
-
-Login Enabled
-Linked User
-Account Status
-
-My Profile may show:
-
-Login Email
-Account Status
-Role/Access
-
-Same domain relationship, different UX.
-
-==================================================
-57. PROFILE EDITING
-==================================================
-
-Do NOT allow employee to edit HR-controlled fields such as:
-
-Employee Code
-
-Department
-
-Designation
-
-Manager
-
-Shift
-
-Work Location
-
-Attendance Policy
-
-through My Profile.
-
-These remain HR/Admin controlled.
-
-==================================================
-58. SELF-EDITABLE PROFILE FIELDS
-==================================================
-
-Only allow profile fields that product explicitly supports.
-
-Possible future/self fields:
-
-avatar
-
-phone
-
-preferred language
-
-notification preferences
-
-Do not assume all Employee fields are self-editable.
-
-If self-edit not already supported:
-keep profile read-only except existing account settings.
-
-==================================================
-59. PROFILE AVATAR
-==================================================
-
-If avatar architecture already exists:
-
-reuse it.
-
-Do not build complex upload flow unless currently supported.
-
-Fallback initials.
-
-==================================================
-60. PROFILE ROUTING
-==================================================
-
-Profile route:
-
-/app/profile
-
-Security:
-
-/app/profile/security
-only if full screen already useful.
-
-Notification settings:
-
-/app/profile/notifications
-or existing settings route.
-
-Do not over-route simple sections.
-
-==================================================
-61. PROFILE SIDEBAR/DRAWER
-==================================================
-
-Profile remains available through account menu.
-
-It does not need to become a major primary sidebar module unless current design intentionally does that.
-
-==================================================
-62. PROFILE ACCOUNT MENU
-==================================================
-
-Top-right account menu:
-
-My Profile
-
-Notifications
-
-Language/Preferences where appropriate
-
-Change Password / Security
-
-Logout
-
-Do not include employee administration actions here.
-
-==================================================
-63. DASHBOARD PERSONA CLEANUP
-==================================================
-
-Revisit Dashboard composition.
-
-Super Admin:
-platform/company administration overview
-
-Company Admin:
-company operations/management overview
-
-HR:
-workforce/attendance management
-
-Manager:
-team operations
-
-Employee:
-self-service
-
-Do NOT show employee Punch In card to unlinked Super/Company Admin.
-
-==================================================
-64. SUPER ADMIN DASHBOARD
-==================================================
-
-If platform-level data exists:
-
-prioritize:
-
-Companies/Tenants
-
-Users
-
-Modules/System
-
-Administration
-
-Do not fake platform metrics if those modules are not implemented.
-
-If current app is single-company frontend demo:
-keep a focused Admin dashboard without pretending they are Employee.
-
-==================================================
-65. COMPANY ADMIN DASHBOARD
-==================================================
-
-Prioritize:
-
-Employees
-
-Company attendance overview if permitted
-
-Pending requests
-
-Reports
-
-Configuration
-
-Users/Access
-
-Do not show:
-
-My Shift
+Leave policy must be able to behave differently:
 
-Punch In
+BEFORE confirmation
 
-My Monthly Attendance
-
-unless linked + self capability.
-
-==================================================
-66. HR DASHBOARD
-==================================================
-
-Prioritize:
-
-workforce
-
-All Attendance
-
-needs attention
-
-corrections
-
-reports
-
-employee actions
-
-Self Attendance only if linked and supported, possibly as secondary.
-
-==================================================
-67. MANAGER DASHBOARD
-==================================================
-
-Prioritize:
-
-Team Attendance
-
-Team issues
-
-Approvals
-
-Team Employees
-
-Self Attendance where permitted.
-
-==================================================
-68. EMPLOYEE DASHBOARD
-==================================================
-
-Prioritize:
-
-My Attendance
-
-My Shift
-
-My Monthly Summary
-
-Recent activity
-
-My requests.
-
-==================================================
-69. DASHBOARD COMPONENT CAPABILITIES
-==================================================
+DURING probation
 
-Dashboard sections should declare required capability/permission.
+AFTER confirmation
 
 Do not hardcode:
 
-if role == companyAdmin
+"employees on probation get no leave."
 
-for authorization.
+Different companies may have different policies.
 
-Composition resolver can use role/persona only for ordering/priority after capability eligibility is established.
-
-==================================================
-70. DEFAULT LANDING PAGE
-==================================================
-
-Review DefaultLandingResolver.
-
-Super Admin/Company Admin without self employee must NOT land on Attendance Today just because it exists.
-
-Priority should consider capability.
-
-Example conceptual landing:
-
-Super Admin
-→ Dashboard
-
-Company Admin
-→ Dashboard
-
-HR
-→ Dashboard
-
-Manager
-→ Dashboard
-
-Employee
-→ Dashboard
-
-If Dashboard unavailable:
-choose first permitted sensible module.
+Everything must be configurable.
 
 ==================================================
-71. ATTENDANCE ROUTE GUARD — SELF
+2. EMPLOYEE PROBATION DATA
 ==================================================
 
-/app/attendance
+Extend Employee/employment architecture with appropriate probation information.
 
-Employee self Attendance Today route must require:
+Suggested fields/model:
 
-hasLinkedEmployee
-AND self attendance capability.
+probationStatus
 
-attendanceViewAll alone is NOT enough.
+probationStartDate
 
-==================================================
-72. SELF HISTORY ROUTE GUARD
-==================================================
+probationExpectedEndDate
 
-/app/attendance/history
+probationActualEndDate optional
 
-requires:
+probationDurationMonths optional
 
-linked Employee
-AND attendanceViewSelf.
+probationExtensionCount
 
-Do not permit unlinked admin just because they have attendanceViewAll.
+probationNotes optional
 
-They should use:
+confirmedAt optional
 
-/app/attendance/all
+confirmedBy optional
+
+Use date-only business dates where appropriate.
 
 ==================================================
-73. MY CORRECTIONS ROUTE GUARD
+3. PROBATION STATUS
 ==================================================
 
-Personal correction routes require:
+Create typed enum such as:
 
-linked Employee
-AND self correction permission/capability.
+notApplicable
 
-==================================================
-74. TEAM ROUTE GUARD
-==================================================
+active
 
-Team Attendance:
+extended
 
-attendanceViewTeam
-AND valid team context.
+completed
 
-If user lacks linked manager Employee where team resolver depends on it:
+confirmedEarly
 
-route unavailable.
+terminatedDuringProbation
 
-==================================================
-75. ALL ATTENDANCE ROUTE GUARD
-==================================================
+Do not use arbitrary strings.
 
-All Attendance:
+If cleaner, separate employment status from probation status.
 
-attendanceViewAll
+Employee may be:
 
-No Employee link required.
+EmploymentStatus.active
 
-==================================================
-76. REPORT ROUTE GUARD
-==================================================
+AND:
 
-Reports:
+ProbationStatus.active
 
-attendanceReportView
-
-Scope resolver determines:
-
-team/company.
-
-No self Employee required for company admin report view.
+These are different dimensions.
 
 ==================================================
-77. CONFIG ROUTE GUARDS
+4. DO NOT OVERLOAD EMPLOYMENT STATUS
 ==================================================
 
-Shifts
+Do NOT turn EmploymentStatus into:
 
-Locations
+probation
+confirmed
+active
+inactive
 
-Policies
+That mixes concepts.
 
-remain permission driven.
+Keep:
 
-No Employee link required.
+employment status:
+active/inactive/etc.
 
-==================================================
-78. MANAGER WITHOUT LINKED EMPLOYEE
-==================================================
-
-If Manager role/account exists without Employee link:
-
-do NOT silently show empty Team Attendance as though nothing is wrong.
-
-Show appropriate configuration state:
-
-No employee profile is linked to this account.
-
-Team access cannot be resolved.
-
-or hide team module based on capabilities.
-
-Admin/HR can fix account linking.
+probation status:
+active/extended/completed/etc.
 
 ==================================================
-79. HR WITHOUT LINKED EMPLOYEE
+5. PROBATION START
 ==================================================
 
-Perfectly valid.
+Default probation start:
 
-HR can manage:
+employee joining date
 
-Employees
+unless company/HR explicitly chooses another effective date.
 
-All Attendance
+Do not calculate it in widgets.
 
-Corrections
-
-Reports
-
-Configuration
-
-without self attendance.
-
-Profile shows account/admin information.
+Use Employment/Probation domain service.
 
 ==================================================
-80. COMPANY ADMIN WITHOUT LINKED EMPLOYEE
+6. PROBATION END CALCULATION
 ==================================================
 
-Perfectly valid.
+Create pure:
 
-Do not show broken Employee placeholders in profile.
+ProbationPeriodCalculator
 
-==================================================
-81. SUPER ADMIN WITHOUT COMPANY EMPLOYEE
-==================================================
+Input:
 
-Perfectly valid.
+start date
+configured duration
+extensions
+manual override if supported
 
-Profile remains fully useful.
+Output:
 
-No fake employment section.
+expected end date.
 
-==================================================
-82. LINK ACCOUNT ACTION
-==================================================
+Do not calculate probation end using:
 
-Employee Details existing Login Access section may support:
+durationDays = months * 30
 
-link/unlink UserAccount
-
-or enable login.
-
-Reuse existing account provisioning architecture.
-
-Do not build a completely new identity management system.
-
-==================================================
-83. UNLINK ACCOUNT SAFETY
-==================================================
-
-If an Employee/User link is removed:
-
-current logged-in account capability must update if affected.
-
-Self Attendance disappears appropriately.
-
-Do not retain stale EmployeeReference.
-
-==================================================
-84. USER PERMISSION CHANGE
-==================================================
-
-If Company Admin gives/removes self attendance permissions while account is active:
-
-NavigationResolver should update reactively.
-
-Do not require app restart.
-
-==================================================
-85. USER LINK CHANGE
-==================================================
-
-If linkedEmployee changes:
-
-capability resolver updates.
-
-Profile updates.
-
-Navigation updates.
-
-Dashboard updates.
-
-Self attendance state resets/re-resolves.
-
-==================================================
-86. NAVIGATION RE-EVALUATION
-==================================================
-
-If current user loses capability for current route:
+Calendar months must be handled correctly.
 
 Example:
 
-User is on My Attendance.
+20 July + 6 months
 
-linkedEmployee removed.
-
-Route becomes invalid.
-
-Navigate to safe:
-
-Dashboard
-or DefaultLandingResolver.
-
-Do not leave stale attendance screen.
+must be calendar-based according to defined business rule.
 
 ==================================================
-87. PROFILE REACTIVE UPDATE
+7. COMPANY PROBATION CONFIGURATION
 ==================================================
 
-My Profile should watch:
-
-current UserAccount
-
-linked Employee
-
-CompanyContext
-
-permission/capability context
-
-preferences.
-
-No manual refresh required for local changes.
-
-==================================================
-88. ACCOUNT DISPLAY NAME
-==================================================
-
-If Employee linked:
-
-prefer appropriate Employee display name where product design chooses.
-
-If no Employee:
-use UserAccount display name.
-
-Do not show blank admin header.
-
-==================================================
-89. PROFILE ROLE LABEL
-==================================================
-
-Role label is useful:
-
-Company Administrator
-
-HR
-
-Manager
-
-Employee
-
-Super Administrator
-
-But authorization still comes from permissions.
-
-==================================================
-90. MULTIPLE ROLES
-==================================================
-
-If system allows multiple roles:
-
-Profile can show:
-
-Roles / Access
-
-Do not assume one role forever.
-
-Navigation remains resolved from resulting permission/capability set.
-
-==================================================
-91. PLATFORM SUPER ADMIN VS COMPANY ADMIN
-==================================================
-
-Keep conceptual distinction.
-
-Super Admin:
-platform scope
-
-Company Admin:
-tenant/company scope
-
-Do not let Company Admin access other companies.
-
-Do not use self attendance to distinguish them.
-
-==================================================
-92. COMPANY ADMIN EMPLOYEE MANAGEMENT
-==================================================
-
-Company Admin may manage Employee records even if not an Employee themselves.
-
-This is expected.
-
-==================================================
-93. HR EMPLOYEE PROFILE LINK
-==================================================
-
-HR can open:
-
-/app/employees/:employeeId
-
-for others.
-
-When opening their own Employee record:
-
-still an organizational record.
-
-My Profile remains:
-
-/app/profile
-
-Do not redirect one to the other automatically.
-
-==================================================
-94. "VIEW MY EMPLOYEE RECORD"
-==================================================
-
-Optional in My Profile linked-employment section:
-
-View Employment Details
-
-only if user has permission to view own Employee record and the Employee Details route supports self safely.
-
-However avoid exposing admin-oriented employee detail unnecessarily to ordinary Employee.
-
-Preferred:
-My Profile already contains needed self data.
-
-==================================================
-95. PROFILE SECTION VISIBILITY
-==================================================
-
-Use capability/data-driven sections.
-
-ACCOUNT:
-always
-
-EMPLOYMENT:
-if linkedEmployee
-
-WORK ASSIGNMENT:
-if linkedEmployee
-
-SELF ATTENDANCE:
-if self attendance capability
-
-ACCESS:
-always, with appropriate summary
-
-SECURITY:
-always
-
-PREFERENCES:
-always/applicable
-
-==================================================
-96. PROFILE EMPTY SECTION RULE
-==================================================
-
-Do not show:
-
-Employment
-"No data"
-
-for admin account with no Employee.
-
-Hide section entirely.
-
-==================================================
-97. PROFILE VISUAL DESIGN
-==================================================
-
-Make Profile detailed but calm.
-
-Desktop suggested composition:
-
-Header
-
-Main content:
-Overview
-Employment/Work Assignment
-
-Side/supporting:
-Account & Access
-Security
-Preferences
-
-Attendance summary can be compact section when applicable.
-
-Mobile:
-stack sections.
-
-Do not turn Profile into giant card grid.
-
-==================================================
-98. PROFILE DESKTOP LAYOUT
-==================================================
-
-Use screen efficiently.
+Create company/employment configuration where appropriate.
 
 Potential:
 
-2/3 main
-1/3 account/security
+ProbationPolicy
 
-Avoid massive empty right side.
+fields:
 
-==================================================
-99. PROFILE TABLET
-==================================================
+id
 
-Responsive two-column where space supports.
+companyId
 
-==================================================
-100. PROFILE MOBILE
-==================================================
+name
 
-Single column.
+defaultDurationMonths
 
-Identity header concise.
+applicableEmploymentTypes
 
-Important actions accessible.
+allowEarlyConfirmation
 
-==================================================
-101. PROFILE NAVIGATION/URL
-==================================================
+allowExtension
 
-/app/profile remains unique routed screen across:
+maxExtensionDays/months optional
 
-Web
-Android
-iOS
-Desktop.
+reminderDaysBeforeEnd
 
-No modal-only profile for desktop.
+leavePolicyDuringProbationId optional
 
-Account menu should route there.
+leavePolicyAfterConfirmationId optional
+
+status
+
+timestamps
+
+Do NOT hardcode 3 or 6 months.
 
 ==================================================
-102. PROFILE BROWSER BACK
+8. DIFFERENT EMPLOYMENT TYPES
 ==================================================
 
-Dashboard
-→ My Profile
-→ Back
+Probation may differ by employment type.
 
-returns Dashboard.
+Examples:
 
-If direct-link:
-Back fallback → Dashboard/default landing.
+Full Time:
+6 months
+
+Part Time:
+3 months
+
+Contract:
+not applicable
+
+Intern:
+different rule
+
+Keep configuration flexible.
 
 ==================================================
-103. PROFILE LOCALIZATION
+9. EMPLOYEE OVERRIDE
 ==================================================
 
-EVERY visible text localized.
+HR should be able to override probation duration for an individual employee when permitted.
 
-Add English + Arabic keys for concepts including:
+Example:
 
-My Profile
+Company default:
+6 months
 
-Overview
+Employee:
+3 months
 
-Employment
+Store effective Employee probation dates.
 
-Work Information
+Do not modify company policy globally.
 
-Account & Access
+==================================================
+10. EMPLOYEE CREATE FORM
+==================================================
 
-Security
+Enhance Employee Create/Edit:
 
-Preferences
+EMPLOYMENT
 
-Employee Code
-
-Department
-
-Designation
-
-Manager
-
-Joining Date
+Join Date
 
 Employment Type
 
-Employment Status
+Probation
 
-Shift
+[ ] Employee is subject to probation
 
-Work Location
+Probation Duration
 
-Attendance Policy
+Probation Start
 
-Working Days
+Expected Confirmation Date
 
-Account Status
+Use company policy defaults.
 
-Login Email
-
-Role
-
-Roles
-
-Access
-
-Current Company
-
-Administrative Access
-
-My Attendance
-
-This Month
-
-Worked Hours
-
-Late Records
-
-Pending Correction
-
-View Attendance History
-
-Open Attendance
-
-Change Password
-
-Notifications
-
-Language
-
-No Employee Profile Linked
-
-Team Access Cannot Be Resolved
-
-and all related support/error text.
+HR may override if permission allows.
 
 ==================================================
-104. RTL PROFILE
+11. DO NOT FORCE PROBATION
 ==================================================
 
-Audit:
+Some employees can be created as:
 
-identity header
+Already Confirmed
 
-avatar
+Probation Not Applicable
 
-detail grids
+Example:
 
-employment section
+senior transfer
 
-access summary
+director
 
-security actions
+contract worker
 
-attendance summary
-
-Arabic must be equally polished.
+Do not force every Employee into probation.
 
 ==================================================
-105. PROFILE MIXED DIRECTION
+12. PROBATION HISTORICAL RECORD
 ==================================================
 
-Handle:
+Do not only store:
 
-EMP-0012
+isOnProbation = true/false.
 
-email
+We need dates/history.
 
-phone
+Otherwise after confirmation we lose:
 
-dates
+when probation started
 
-times
+when it was expected to finish
 
-correctly in Arabic.
+whether it was extended
 
-==================================================
-106. PROFILE ACCESSIBILITY
-==================================================
-
-Ensure:
-
-section headings semantic
-
-avatar has appropriate label
-
-detail values readable
-
-actions keyboard accessible
-
-status not color-only
-
-text scaling safe.
+when confirmation actually occurred.
 
 ==================================================
-107. ACCOUNT MENU CLEANUP
+13. PROBATION HISTORY/AUDIT
 ==================================================
 
-Audit account menu.
+Create lightweight immutable audit/event architecture where appropriate.
 
-Recommended:
+Possible events:
 
-My Profile
+probationStarted
 
-Notifications
+probationExtended
 
-Language/Preferences
+confirmed
 
-Security/Change Password
+confirmedEarly
 
-Logout
+probationCompleted
 
-Do not add:
+probationTerminated
 
-My Attendance
+Fields:
 
-if main navigation already provides it.
+employeeId
 
-Avoid duplicates.
+eventType
+
+effectiveDate
+
+oldExpectedEndDate optional
+
+newExpectedEndDate optional
+
+reason
+
+performedBy
+
+createdAt
+
+requestId/syncStatus if needed.
 
 ==================================================
-108. SIDEBAR CLEANUP
+14. PROBATION EXTENSION
 ==================================================
 
-For each test persona verify no irrelevant modules.
+HR/Admin with permission can extend probation.
 
-SUPER ADMIN without Employee:
+Require:
 
-NO My Attendance
-NO My History
-NO My Corrections
-NO Team Attendance unless explicitly scoped
+new end date or extension duration
 
-COMPANY ADMIN without Employee:
+reason
 
-NO My Attendance
-NO My History
-NO My Corrections
+confirmation.
 
-HR without Employee:
+Do NOT silently modify original start date.
 
-NO My Attendance
-NO My History
+Create audit event.
 
-Manager linked:
-Team + Self where permitted
+==================================================
+15. EARLY CONFIRMATION
+==================================================
+
+If policy permits:
+
+HR can Confirm Employee Early.
+
+Example:
+
+Expected:
+20 Jan
+
+Confirmed:
+15 Dec
+
+After confirmation date:
+
+post-probation leave rules become applicable.
+
+==================================================
+16. NORMAL CONFIRMATION
+==================================================
+
+When expected probation end date arrives:
+
+DO NOT automatically confirm employee silently unless company policy explicitly supports automatic confirmation.
+
+Safer V1:
+
+mark:
+
+Confirmation Due
+
+and notify authorized HR.
+
+HR performs:
+
+Confirm Employee
+
+or:
+
+Extend Probation.
+
+==================================================
+17. CONFIRMATION DUE STATUS
+==================================================
+
+Derived state can include:
+
+Active Probation
+
+Confirmation Due Soon
+
+Confirmation Due
+
+Extended
+
+Confirmed
+
+Do not create unnecessary persisted statuses if they can be derived safely.
+
+==================================================
+18. PERMISSIONS
+==================================================
+
+Add permissions if needed:
+
+probationViewSelf
+
+probationViewTeam
+
+probationViewAll
+
+probationManage
+
+probationConfirm
+
+probationExtend
+
+Do not grant based purely on role.
+
+Employee should normally only see their own probation info.
+
+==================================================
+19. CAPABILITY MODEL
+==================================================
+
+Extend UserCapabilityContext:
+
+canViewMyProbation
+
+canViewTeamProbation
+
+canViewCompanyProbation
+
+canManageProbation
+
+canConfirmEmployees
+
+canExtendProbation
+
+Only if genuinely needed.
+
+==================================================
+20. PROBATION LEAVE POLICY
+==================================================
+
+This is the important integration.
+
+Leave eligibility must resolve against:
+
+Employee
+Employment Type
+Probation Status
+Probation Effective Dates
+Leave Type
+Leave Policy
+Company Date
+
+Create centralized:
+
+LeaveEligibilityResolver
+
+Do NOT put probation checks inside LeaveRequestPage.
+
+==================================================
+21. LEAVE ELIGIBILITY RESULT
+==================================================
+
+Create typed result such as:
+
+LeaveEligibilityDecision
+
+with:
+
+isEligible
+
+availableBalance
+
+maximumRequestable
+
+policyApplied
+
+restrictionReason optional
+
+warnings
+
+effectivePolicyStage
+
+Possible stage:
+
+probation
+
+confirmed
+
+specialOverride
+
+==================================================
+22. DIFFERENT LEAVE RULES DURING PROBATION
+==================================================
+
+Support configuration such as:
+
+Annual Leave:
+not available during probation
+
+Sick Leave:
+available during probation
+
+Emergency Leave:
+available
+
+Unpaid Leave:
+available
+
+Casual Leave:
+2 days maximum during probation
+
+Do not hardcode these examples.
+
+==================================================
+23. LEAVE TYPE ELIGIBILITY DURING PROBATION
+==================================================
+
+Extend LeavePolicy or policy assignment with something like:
+
+ProbationLeaveRule
+
+Possible modes:
+
+notAllowed
+
+allowedNormally
+
+allowedWithReducedEntitlement
+
+allowedWithSeparateEntitlement
+
+unpaidOnly
+
+allowedAfterMinimumService
+
+Choose a clean typed structure.
+
+Do NOT use many loosely related booleans if a typed rule is clearer.
+
+==================================================
+24. MINIMUM SERVICE DAYS
+==================================================
+
+Retain existing minimumServiceDays capability.
+
+Example:
+
+Sick Leave:
+available immediately
+
+Annual Leave:
+available after 90 service days
+
+Casual Leave:
+available after 30 days
+
+This may apply independently of probation.
+
+LeaveEligibilityResolver must account for both.
+
+==================================================
+25. PROBATION RESTRICTION VS SERVICE RESTRICTION
+==================================================
+
+These are different.
+
+Example:
 
 Employee:
-Self modules only.
+still on 6-month probation
+
+Annual Leave rule:
+allowed after 90 days even during probation.
+
+Therefore do not implement:
+
+if onProbation → reject everything.
+
+Evaluate actual policy.
 
 ==================================================
-109. "ATTENDANCE" MODULE STRUCTURE
+26. PROBATION ENTITLEMENT MODE
 ==================================================
 
-Attendance module may contain multiple destinations.
+Support practical options.
 
-Resolve dynamically.
+Example policy configuration:
 
-Example HR/Admin:
+During Probation:
 
-Attendance
-  All Attendance
-  Requests
-  Reports link if inside module architecture
+Entitlement Mode:
+- No entitlement
+- Full entitlement
+- Reduced entitlement
+- Fixed probation entitlement
 
-Example Manager:
+If Reduced:
+percentage or fixed days.
 
-Attendance
-  My Attendance
-  History
-  Team Attendance
-  Requests
-
-Example Employee:
-
-Attendance
-  Today
-  History
-  My Requests
-
-But do not show empty parent/module with no visible children.
+Prefer fixed/day-based configuration for V1 if percentage introduces unnecessary complexity.
 
 ==================================================
-110. NAVIGATION LABEL CLARITY
+27. PROBATION BALANCE
 ==================================================
 
-Avoid ambiguous:
+Leave balance ledger remains source of truth.
 
-Attendance
+Do NOT create separate mutable:
 
-for two different purposes where sub-navigation is visible.
+probationLeaveBalance.
+
+If employee receives probation entitlement:
+
+create ledger transaction with appropriate source/reference.
+
+Example:
+
+PROBATION_ENTITLEMENT
+
+or regular ENTITLEMENT with policy metadata.
+
+==================================================
+28. CONFIRMATION BALANCE TRANSITION
+==================================================
+
+When employee is confirmed:
+
+do NOT simply overwrite leave balance.
+
+Use ledger transactions.
+
+Possible business policies:
+
+A. Keep existing probation entitlement + add remaining confirmed entitlement
+
+B. Replace future entitlement
+
+C. Grant full annual entitlement on confirmation
+
+D. Pro-rate post-confirmation entitlement
+
+Make behavior configurable where needed.
+
+For V1 implement a clear reliable subset.
+
+==================================================
+29. NO SILENT DOUBLE ENTITLEMENT
+==================================================
+
+Critical.
+
+If probation employee already received 3 Annual Leave days and confirmed policy gives 18 days:
+
+do not accidentally create:
+
+3 + 18
+
+unless policy explicitly intends that.
+
+Create EntitlementTransitionService.
+
+==================================================
+30. ENTITLEMENT TRANSITION
+==================================================
+
+Create pure/business service:
+
+LeaveEntitlementTransitionService
+
+Input:
+
+previous policy/stage
+
+new policy/stage
+
+current ledger
+
+confirmation date
+
+leave year
+
+Output:
+
+required ledger transactions.
+
+Must be idempotent.
+
+==================================================
+31. CONFIRMATION IDEMPOTENCY
+==================================================
+
+Click Confirm twice must NOT grant leave twice.
 
 Use:
 
-My Attendance
+confirmation event/requestId
 
-Team Attendance
+unique transition reference
 
-All Attendance
-
-History
-
-Correction Requests
-
-where appropriate.
+ledger transaction idempotency.
 
 ==================================================
-111. ADMIN ATTENDANCE OVERVIEW
+32. PROBATION EXTENSION EFFECT ON LEAVE
 ==================================================
 
-Company Admin/HR can have:
+If probation gets extended:
 
-All Attendance
+leave eligibility should immediately follow probation policy until new end/confirmation.
 
-This is organizational monitoring.
+But DO NOT retroactively invalidate previously approved Leave.
 
-Do not confuse with:
-
-My Attendance
-
-which is self Punch In/Out.
+Existing LeaveRequest snapshot remains authoritative.
 
 ==================================================
-112. ROUTE NAMING
+33. CONFIRMATION EFFECTIVE DATE
 ==================================================
 
-Keep self/org routes distinct.
+Leave-policy transition occurs based on effective confirmation date.
 
-Self:
-
-/app/attendance
-
-/app/attendance/history
-
-/app/attendance/corrections
-
-Org:
-
-/app/attendance/team
-
-/app/attendance/all
-
-/app/attendance/requests
-
-This distinction is good.
-
-Guard them correctly.
-
-==================================================
-113. DASHBOARD QUICK ACTION CLEANUP
-==================================================
-
-Super/Company Admin without self employee:
-
-do not show:
-
-Punch In
-Take Break
-View My History
-
-Instead use permitted actions:
-
-Employees
-
-All Attendance
-
-Reports
-
-Configuration
-
-Users/Access
-
-==================================================
-114. PROFILE DASHBOARD CONSISTENCY
-==================================================
-
-If profile says account has no Employee link:
-
-dashboard must not simultaneously show:
-
-Your Shift
-
-Punch In
-
-My Work Location.
-
-Use same capability context everywhere.
-
-==================================================
-115. NOTIFICATION CLEANUP
-==================================================
-
-Do not send:
-
-Shift Reminder
-
-Punch Out Reminder
-
-to account without linked Employee/self attendance capability.
-
-Notification reminder scheduler must check capabilities.
-
-==================================================
-116. SELF ATTENDANCE BLOC CREATION
-==================================================
-
-Do not instantiate self AttendanceBloc for every admin session.
-
-Create/load only when:
-
-hasLinkedEmployee
-AND self attendance route/dashboard section requires it.
-
-Avoid unnecessary DB watches.
-
-==================================================
-117. DASHBOARD QUERY OPTIMIZATION
-==================================================
-
-Company Admin dashboard should not query self attendance when section is hidden.
-
-Super Admin should not query Employee shift if unlinked.
-
-==================================================
-118. PROFILE QUERY OPTIMIZATION
-==================================================
-
-If no Employee link:
-
-do not issue unrelated:
-
-shift
-
-location
-
-attendance monthly summary
-
-queries.
-
-==================================================
-119. CAPABILITY CACHE
-==================================================
-
-If UserCapabilityContext is cached:
-
-invalidate on:
-
-login
-
-logout
-
-permission update
-
-Employee link update
-
-company switch
-
-module enablement change
-
-Do not retain stale capabilities.
-
-==================================================
-120. ROUTE GUARD USES SAME CAPABILITIES
-==================================================
-
-Avoid mismatch:
-
-sidebar hides My Attendance
-
-but direct URL allows it.
-
-NavigationResolver and route guard must share same capability resolution.
-
-==================================================
-121. DIRECT URL — UNLINKED ADMIN
-==================================================
-
-Company Admin with no Employee opens:
-
-/app/attendance
-
-Expected:
-
-Unauthorized / unavailable / appropriate safe redirect.
-
-Do NOT attempt to resolve old Employee.
-
-But:
-
-/app/attendance/all
-
-can work if permission permits.
-
-==================================================
-122. DIRECT URL — HR WITHOUT EMPLOYEE
-==================================================
-
-Same rule.
-
-Self route unavailable.
-
-Company route works.
-
-==================================================
-123. DIRECT URL — LINKED ADMIN
-==================================================
-
-Company Admin linked to Employee AND self permissions:
-
-/app/attendance
-
-works.
-
-This demonstrates capability-based design.
-
-==================================================
-124. MANAGER TEAM SCOPE
-==================================================
-
-Team Attendance requires valid team resolver.
-
-If direct reports are based on Employee.managerId:
-
-current account must resolve linked employee manager identity.
-
-Do not use UserAccount.id as Employee.managerId.
-
-==================================================
-125. EMPLOYEE PROFILE ACCOUNT LINK DISPLAY
-==================================================
-
-In HR Employee Details:
-
-Account Access section should show:
-
-Login Enabled
-
-Linked User
-
-Account Status
-
-Role/Access
-
-Do not duplicate full My Profile.
-
-==================================================
-126. PROFILE CHANGE PASSWORD
-==================================================
-
-Reuse existing auth/security flow.
-
-Do not create Employee password fields.
-
-Password belongs to UserAccount/auth.
-
-==================================================
-127. PROFILE EMAIL/PHONE SOURCE
-==================================================
-
-If UserAccount and Employee both contain email/phone:
-
-define display/source rule.
+Do not always use button-click timestamp.
 
 Example:
 
-Work Contact:
-Employee.email/phone
+HR confirms on 22 Jan with effective date 20 Jan.
 
-Login Identifier:
-UserAccount.loginIdentifier
+Policy logic must use effective date.
 
-Do not silently assume they must always match.
-
-==================================================
-128. PROFILE DUPLICATE DATA LABELING
-==================================================
-
-If both are shown:
-
-clearly distinguish:
-
-Work Email
-
-Login Email
-
-Phone
-
-Avoid displaying same value twice without explanation.
+If backdating is allowed:
+validate carefully.
 
 ==================================================
-129. USERACCOUNT NAME VS EMPLOYEE NAME
+34. BACKDATED CONFIRMATION
 ==================================================
 
-Define authoritative display behavior.
+For V1:
 
-When linked:
+either:
 
-Employee display name can represent company/person identity.
+restrict confirmation effective date to current/future-safe date
 
-UserAccount display name remains auth/account metadata.
+OR
 
-Avoid inconsistent names across header/dashboard/profile.
+support backdating with explicit entitlement reconciliation.
+
+Do NOT silently backdate without ledger reconciliation.
+
+Prefer simpler safe behavior.
 
 ==================================================
-130. PROFILE ERROR STATES
+35. FUTURE-DATED CONFIRMATION
 ==================================================
 
-Handle:
+Avoid unnecessary complexity.
 
-account loaded, employee missing
+Confirmation action normally effective immediately or on expected end date.
 
-employee link points to unavailable record
+Document chosen behavior.
 
-company missing
+==================================================
+36. REQUEST LEAVE FORM
+==================================================
 
-permissions unavailable
+When Employee selects Leave Type:
 
-Do not crash.
+resolve eligibility.
+
+Example UI:
+
+Annual Leave
+
+Not available during your probation period.
+
+Available after:
+20 January 2027
+
+OR:
+
+Sick Leave
+
+Available:
+4 days
+
+Do not let user fill entire form and only fail at Submit if eligibility is already known.
+
+==================================================
+37. ELIGIBILITY MESSAGE
+==================================================
+
+Messages must be neutral and informative.
+
+Examples:
+
+This leave type is not available during your probation period.
+
+You can request this leave after 90 days of service.
+
+Your current probation policy allows up to 2 days.
+
+Do not expose raw enum names.
+
+==================================================
+38. REQUEST DATE CROSSING PROBATION END
+==================================================
+
+Critical edge case.
 
 Example:
 
-Employment information is currently unavailable.
+Probation ends:
+20 Jan
 
-Account profile remains usable.
+Leave requested:
+18 Jan – 23 Jan
 
-==================================================
-131. BROKEN EMPLOYEE LINK
-==================================================
+Policy differs before/after confirmation.
 
-If linkedEmployeeId exists but Employee no longer exists:
+Do NOT blindly apply one policy to whole request.
 
-capability resolver should NOT claim hasLinkedEmployee=true based solely on non-null ID.
+For V1 choose one explicit rule:
 
-Resolve valid EmployeeReference.
+RECOMMENDED:
 
-Flag account-link issue for admin/debug.
+Split eligibility calculation by date segment internally.
 
-Self attendance unavailable.
+18–19:
+probation policy
 
-==================================================
-132. ACCOUNT LINK DIAGNOSTICS
-==================================================
+20/21 onward:
+post-confirmation policy only if confirmation is effective/known.
 
-In development/admin management UI, safely indicate:
+However if confirmation still requires HR action and is not yet confirmed:
 
-Employee account link missing/invalid
+treat all future dates as probation until actual confirmation is recorded.
 
-where appropriate.
-
-Do not expose technical IDs unnecessarily to employee.
+This avoids assuming confirmation.
 
 ==================================================
-133. PROFILE LOADING
+39. EXPECTED END DOES NOT EQUAL CONFIRMED
 ==================================================
 
-Use structured skeleton.
+Important.
 
-Do not full-screen spinner.
+Expected probation end date passing does NOT necessarily mean confirmed.
 
-Account data can appear with employment section loading if architecture allows, but avoid jarring layout.
+Until status/effective confirmation says confirmed:
 
-==================================================
-134. PROFILE REFRESH
-==================================================
+probation rules remain active
 
-Pull-to-refresh mobile if useful.
-
-Desktop refresh not mandatory if repository reactive.
+unless company policy explicitly has auto-confirmation.
 
 ==================================================
-135. PROFILE EDIT ACTIONS
+40. LEAVE REQUEST SNAPSHOT
 ==================================================
 
-Do not add giant "Edit Profile" if most employment fields are not self editable.
+At submission snapshot:
 
-Provide specific actions:
+probation status
 
-Change Password
+relevant effective probation dates
 
-Notification Preferences
+leave eligibility policy
 
-Language
+entitlement rule
 
-Future self-edit fields only if supported.
-
-==================================================
-136. PERMISSION MANAGEMENT
-==================================================
-
-Do NOT let My Profile edit own permissions/roles.
-
-Administrative Users/Access module handles that.
+Do not later rewrite request because employee gets confirmed.
 
 ==================================================
-137. ROLE MANAGEMENT
+41. APPROVED LEAVE BEFORE CONFIRMATION
 ==================================================
 
-Do NOT let Company Admin see/manage role features unless:
+If Employee requests Leave while probation policy allowed it and HR later confirms them:
 
-roleManage
+approved request remains valid under submitted/approved snapshot.
 
-permission exists.
-
-Top-level label alone is insufficient.
+Do not recalculate it under new policy.
 
 ==================================================
-138. SUPER ADMIN CROSS-COMPANY PROFILE
+42. PENDING REQUEST DURING CONFIRMATION
 ==================================================
 
-Super Admin profile may show platform scope/company access summary.
+If Employee has pending request and gets confirmed before review:
 
-Do not pretend a single employee context if none exists.
+define rule.
 
-==================================================
-139. MULTI-COMPANY USER
-==================================================
+Recommended:
 
-If future/current user belongs to multiple companies:
+preserve submitted policy snapshot for request review.
 
-My Profile current-company Employment section should use linked Employee for CURRENT company.
+Reviewer may see:
 
-Do not reuse Company A Employee profile in Company B.
+Submitted under Probation Policy.
 
-==================================================
-140. EMPLOYEE LINK SHOULD BE COMPANY-SCOPED
-==================================================
-
-Audit model.
-
-A global UserAccount may potentially map to different Employee records across companies.
-
-Do not assume one permanent Employee ID across tenants if architecture intends multi-company.
-
-If current product is single-company-per-account, document assumption.
-
-Do not overbuild unnecessarily.
+Do not silently alter requested days/balance.
 
 ==================================================
-141. CAPABILITY TESTING
+43. LEAVE BALANCE DISPLAY
 ==================================================
 
-Create unit tests for:
+My Leave should clearly communicate probation.
 
-Super Admin no Employee
+Example:
 
-Company Admin no Employee
+Annual Leave
+Available after confirmation
 
-Company Admin linked Employee
+Sick Leave
+4 days available
 
-HR no Employee
+Unpaid Leave
+Available
 
-HR linked Employee
+Do not show misleading 0 days if leave is actually ineligible.
 
-Manager linked Employee
+Distinguish:
 
-Manager no Employee
+0 balance
 
-Employee linked
+from:
 
-Each with varying permissions.
-
-Verify capability output.
-
-==================================================
-142. NAVIGATION TESTING
-==================================================
-
-For each persona/capability context test visible navigation.
-
-SUPER ADMIN no Employee:
-no self attendance destinations.
-
-COMPANY ADMIN no Employee:
-no self attendance.
-
-HR no Employee:
-no self attendance.
-
-MANAGER:
-team + self according to permissions.
-
-EMPLOYEE:
-self only.
+Not eligible yet.
 
 ==================================================
-143. ROUTE GUARD TESTING
+44. EMPLOYEE PROFILE
 ==================================================
 
-Test direct URLs.
+Enhance My Profile → Employment.
 
-Company Admin no Employee:
+Show if applicable:
 
-/app/attendance
-→ denied
+Probation Status
 
-/app/attendance/history
-→ denied
+Probation Start
 
-/app/attendance/all
-→ allowed if attendanceViewAll
+Expected Confirmation
 
-==================================================
-144. LINKED ADMIN TEST
-==================================================
+Confirmed Date
 
-Company Admin linked to Employee + self permissions:
-
-My Attendance becomes visible.
-
-Direct route allowed.
-
-Profile includes Employment.
+Do not expose internal HR notes.
 
 ==================================================
-145. UNLINK TEST
+45. EMPLOYEE RECORD
 ==================================================
 
-Start linked admin.
+HR/Admin Employee Details should have:
 
-Open My Attendance.
+EMPLOYMENT / PROBATION
 
-Remove Employee link.
+Status
 
-Capabilities update.
+Start Date
 
-Route becomes unavailable.
+Expected End
 
-Navigation item disappears.
+Duration
 
-Profile Employment disappears.
+Extensions
 
-No stale attendance data.
+Actual Confirmation Date
 
-==================================================
-146. PERMISSION REMOVAL TEST
-==================================================
+Policy
 
-Linked employee user has:
+Actions:
 
-attendanceViewSelf
+Confirm Employee
 
-Remove permission.
+Extend Probation
 
-Self Attendance navigation disappears.
-
-Route denied.
-
-Profile Attendance summary hides.
-
-Employment section remains.
+according to permissions.
 
 ==================================================
-147. ATTENDANCE VIEWALL DOES NOT IMPLY SELF TEST
+46. EMPLOYEE LIST
 ==================================================
 
-Critical regression test.
+Do NOT add probation as permanent table column if it makes list crowded.
 
-User:
+Use filter:
 
-hasLinkedEmployee = false
-attendanceViewAll = true
-attendanceViewSelf = false
+Probation Status
 
-Expected:
+and optional badge/status where useful.
 
-All Attendance = available
+Possible filters:
 
-My Attendance = unavailable
+On Probation
 
-History = unavailable
+Confirmation Due Soon
 
-==================================================
-148. SELF DOES NOT IMPLY ALL TEST
-==================================================
+Confirmation Due
 
-Employee:
-
-attendanceViewSelf = true
-
-attendanceViewAll = false
-
-Expected:
-
-My Attendance = available
-
-All Attendance = unavailable.
+Confirmed
 
 ==================================================
-149. TEAM DOES NOT IMPLY ALL TEST
+47. HR PROBATION VIEW
 ==================================================
 
-Manager:
+A dedicated full module is not necessary initially.
 
-attendanceViewTeam = true
+Provide within Employees:
 
-attendanceViewAll = false
+filter/view:
 
-Expected:
+Probation
 
-Team Attendance available
+Could support URL:
 
-All Attendance unavailable.
+/app/employees?probation=due
 
-==================================================
-150. PROFILE TESTING — UNLINKED ADMIN
-==================================================
-
-Verify:
-
-Account section
-
-Access section
-
-Security
-
-Preferences
-
-NO Employment section
-
-NO Shift
-
-NO Attendance summary.
+No separate giant sidebar item.
 
 ==================================================
-151. PROFILE TESTING — EMPLOYEE
+48. DASHBOARD — HR
 ==================================================
 
-Verify:
+Add compact HR attention metrics:
 
-Overview
+Probation Ending Soon
 
-Employment
+Confirmations Due
 
-Work Assignment
+Example:
 
-Account
+5 employees
+ending in next 30 days
 
-Security
-
-Preferences
-
-My Attendance section if permitted.
+Click:
+Employees filtered by probation due.
 
 ==================================================
-152. PROFILE TESTING — HR LINKED
+49. DASHBOARD — MANAGER
 ==================================================
 
-Verify combined profile.
+If permission permits:
 
-No duplicate contradictory values.
+Team Probation Ending Soon
+
+Do not show confidential HR notes.
 
 ==================================================
-153. PROFILE RTL TEST
+50. DASHBOARD — EMPLOYEE
 ==================================================
 
-Arabic:
+Employee may see compact:
 
-unlinked Admin profile
+Probation
 
-Employee profile
+Ends 20 Jan 2027
 
-Manager profile
+only if company wants self visibility and permission exists.
+
+Do not overemphasize.
+
+==================================================
+51. ADMIN DASHBOARD
+==================================================
+
+Company Admin can see organizational probation attention if permission.
+
+Unlinked Admin does not get employee self probation card.
+
+==================================================
+52. NOTIFICATIONS
+==================================================
+
+Add AppNotificationTypes as appropriate:
+
+probationEndingSoon
+
+probationConfirmationDue
+
+probationExtended
+
+probationConfirmed
+
+==================================================
+53. HR REMINDER
+==================================================
+
+Example:
+
+30 days before expected end
+
+7 days before
+
+due date
+
+Do not spam.
+
+Use configurable reminder days where practical.
+
+==================================================
+54. EMPLOYEE NOTIFICATION
+==================================================
+
+When confirmed:
+
+Your employment confirmation has been recorded.
+
+When probation extended:
+
+Your probation period has been extended to [date].
+
+Only if business policy allows employee visibility.
+
+==================================================
+55. MANAGER NOTIFICATION
+==================================================
+
+Optional:
+
+Team member probation confirmation due.
+
+Only if manager is part of workflow.
+
+==================================================
+56. PROBATION EXTENSION REASON PRIVACY
+==================================================
+
+Employee may see:
+
+new expected end date
+
+but extension reason visibility should follow company/HR policy.
+
+Do not automatically expose internal performance notes.
+
+==================================================
+57. LEAVE POLICY CONFIG UI
+==================================================
+
+Enhance Leave Policy form with section:
+
+PROBATION ELIGIBILITY
+
+Options:
+
+Available during probation?
+
+Eligibility mode
+
+Minimum service days
+
+Probation entitlement
+
+Negative balance rule if relevant
+
+Policy after confirmation
+
+Keep UX understandable.
+
+Do not expose a wall of switches.
+
+==================================================
+58. BETTER POLICY UI
+==================================================
+
+Example:
+
+Probation access
+
+[ Not available ]
+[ Available ]
+[ Limited ]
+
+If Limited:
+
+Maximum during probation
+2 days
+
+Available after
+30 days of service
+
+This is more understandable than 10 booleans.
+
+==================================================
+59. LEAVE TYPE VS POLICY
+==================================================
+
+LeaveType defines WHAT:
+
+Annual Leave
+Sick Leave
+
+LeavePolicy defines RULES:
+
+entitlement
+probation eligibility
+advance notice
+carry-forward etc.
+
+Do not put probation rules directly inside LeaveType unless they are immutable semantics.
+
+==================================================
+60. COMPANY DEFAULT POLICY
+==================================================
+
+Company can configure:
+
+Standard Employee Leave Policy
+
+and:
+
+Probation Leave Rules
+
+without creating duplicate Leave Types.
+
+Example:
+
+Annual Leave remains same type.
+
+Rules differ by employee stage.
+
+==================================================
+61. MULTIPLE POLICIES
+==================================================
+
+If EmployeeLeavePolicyAssignment already supports effective dates:
+
+use it.
+
+Do not create entirely separate policy assignment system for probation.
+
+==================================================
+62. POLICY TRANSITION AFTER CONFIRMATION
+==================================================
+
+Employee policy resolver must support:
+
+probation stage policy
+
+→ confirmed stage policy
+
+based on effective confirmation.
+
+No manual employee form reassignment should be necessary if company policy already maps both stages.
+
+==================================================
+63. MANUAL POLICY OVERRIDE
+==================================================
+
+HR may assign exceptional LeavePolicy if permission allows.
+
+Explicit employee assignment should have clear precedence over company default.
+
+Document precedence.
+
+==================================================
+64. POLICY RESOLUTION PRECEDENCE
+==================================================
+
+Define centralized order.
+
+Example:
+
+1. employee explicit active override
+2. employment-type policy
+3. company default policy
+
+Then apply employment stage/probation rules.
+
+Do not let individual screens resolve differently.
+
+==================================================
+65. PROBATION + UNPAID LEAVE
+==================================================
+
+Typical scenario:
+
+Paid Annual Leave unavailable during probation.
+
+Unpaid Leave available.
+
+Architecture must support this.
+
+Do not special-case by LeaveType name.
+
+==================================================
+66. PROBATION + SICK LEAVE
+==================================================
+
+Architecture must support immediate Sick Leave even during probation.
+
+No blanket probation rejection.
+
+==================================================
+67. PROBATION + EMERGENCY LEAVE
+==================================================
+
+Same configurable behavior.
+
+==================================================
+68. HOLIDAY INTERACTION
+==================================================
+
+Probation does not affect Holiday applicability.
+
+Company holiday remains holiday.
+
+Do not consume probation leave balance.
+
+==================================================
+69. ATTENDANCE INTERACTION
+==================================================
+
+Probation itself does NOT alter Punch In/out.
+
+Employee on probation still attends normally.
+
+Only approved Leave/Holiday affects Attendance classification.
+
+==================================================
+70. REPORTS
+==================================================
+
+Add optional descriptive HR report/filter:
+
+Probation Status
+
+Confirmation Due
+
+Do not combine with attendance performance scoring.
+
+Potential metrics:
+
+Employees on Probation
+
+Confirmations Due This Month
+
+Extended Probations
+
+Recently Confirmed
+
+==================================================
+71. LEAVE REPORT FILTER
+==================================================
+
+Leave reports can filter:
+
+Employment Stage:
+
+Probation
+
+Confirmed
+
+This is descriptive.
+
+Do not label one group better/worse.
+
+==================================================
+72. HISTORICAL REPORTING
+==================================================
+
+Historical Leave request should use probation snapshot at request time.
+
+Do not look at employee current confirmed state and assume they were confirmed then.
+
+==================================================
+73. DATABASE
+==================================================
+
+Add/migrate appropriate fields/tables.
+
+Possible:
+
+employee_probation records
+
+probation_events
+
+probation_policy/config
+
+or Employee employment fields + events.
+
+Choose architecture that preserves history without unnecessary duplication.
+
+==================================================
+74. RECOMMENDED DATA STRUCTURE
+==================================================
+
+Prefer:
+
+EmployeeProbation
+
+id
+companyId
+employeeId
+startDate
+expectedEndDate
+actualEndDate
+status
+policyId optional
+extensionCount
+createdAt
+updatedAt
+
++
+
+ProbationEvent
+
+for history.
+
+This is cleaner than adding 15 probation fields directly to Employee if Employee model is already large.
+
+==================================================
+75. ONE ACTIVE PROBATION RECORD
+==================================================
+
+Normally one active probation record per Employee.
+
+Enforce invariant.
+
+Historical records/events retained.
+
+==================================================
+76. EXTENSION HISTORY
+==================================================
+
+Never overwrite extension history.
+
+Example:
+
+Original:
+20 Jan
+
+Extension 1:
+20 Feb
+
+Extension 2:
+20 Mar
+
+Audit should preserve all.
+
+==================================================
+77. CONFIRMATION EVENT
+==================================================
+
+Confirmation should write:
+
+probation event
+
+EmployeeProbation final state
+
+leave entitlement transition
+
+outbox operation
+
+notification
+
+atomically where possible.
+
+==================================================
+78. OUTBOX
+==================================================
+
+Extend generic outbox:
+
+PROBATION_START/UPDATE
+
+PROBATION_EXTEND
+
+PROBATION_CONFIRM
+
+if these are remote mutations.
+
+Use stable requestId/idempotency.
+
+==================================================
+79. LEAVE ENTITLEMENT TRANSITION OUTBOX
+==================================================
+
+Do not sync duplicate leave entitlement change separately in a way that can diverge.
+
+Server future contract should process confirmation + leave entitlement transition consistently.
+
+Document expected transactional behavior.
+
+==================================================
+80. CONCURRENT CONFIRMATION
+==================================================
+
+If HR and Admin both click Confirm:
+
+first succeeds.
+
+second receives:
+
+Already Confirmed
+
+No duplicate entitlement.
+
+==================================================
+81. CONCURRENT EXTENSION
+==================================================
+
+Protect against two simultaneous extensions.
+
+Use version/conflict/idempotency architecture.
+
+==================================================
+82. CONFIRM AFTER EXTENSION
+==================================================
+
+HR can confirm before extended end if policy permits early confirmation.
+
+Actual confirmation date wins.
+
+==================================================
+83. TERMINATED DURING PROBATION
+==================================================
+
+If Employee is deactivated/terminated during probation:
+
+close probation appropriately.
+
+Do not leave it forever active.
+
+Do not implement full termination workflow if not existing.
+
+Just maintain consistent state.
+
+==================================================
+84. REJOINING
+==================================================
+
+Do not overbuild rehiring.
+
+If future rehire occurs:
+new employment/probation cycle may be required.
+
+Document future limitation.
+
+==================================================
+85. PROBATION IN MY PROFILE
+==================================================
+
+Show concise.
+
+Example:
+
+Employment Status
+On Probation
+
+Started
+20 Jul 2026
+
+Expected Confirmation
+20 Jan 2027
+
+Do not show internal approval notes.
+
+==================================================
+86. PROBATION IN EMPLOYEE DETAIL
+==================================================
+
+HR view should be richer.
+
+Include:
+
+timeline
+
+extensions
+
+confirmation details
+
+policy applied
+
+==================================================
+87. TIMELINE
+==================================================
+
+Reuse AppTimeline.
+
+Example:
+
+20 Jul
+Probation started
+
+10 Jan
+Probation extended by 30 days
+
+20 Feb
+Employee confirmed
+
+==================================================
+88. FILTERS
+==================================================
+
+Employees page:
+
+probationStatus
+
+confirmationDueWithin
+
+Examples:
+
+Due in 7 days
+
+Due in 30 days
+
+Overdue
+
+==================================================
+89. OVERDUE CONFIRMATION
+==================================================
+
+If expected end passed but no confirmation decision:
+
+derived state:
+
+Confirmation Overdue
+
+Still treat employee according to probation rules unless company policy says auto-confirm.
+
+==================================================
+90. AUTO-CONFIRM OPTION
+==================================================
+
+For V1 preferably do NOT auto-confirm.
+
+If existing business requirement demands it:
+
+ProbationPolicy can have:
+
+confirmationMode:
+manual
+automatic
+
+But automatic confirmation must create the same:
+
+audit
+leave transition
+notifications
+idempotency
+
+as manual confirmation.
+
+Do not simply derive confirmed from date.
+
+==================================================
+91. BUSINESS DATE
+==================================================
+
+All probation dates use CompanyTimeService/business date.
+
+Do not use raw DateTime.now().toLocal().
+
+==================================================
+92. PROBATION DURATION DISPLAY
+==================================================
+
+Display:
+
+6 months
+
+not:
+180 days
+
+when policy is month-based.
+
+==================================================
+93. DATE EDGE CASES
+==================================================
 
 Test:
 
-390
-768
-1440.
+31 Aug + 1 month
+
+29 Feb
+
+year boundary
+
+leap year
+
+Do not implement naive month math.
 
 ==================================================
-154. PROFILE RESPONSIVE TEST
+94. JOIN DATE CHANGE
 ==================================================
 
-At:
+If HR changes Join Date while probation active:
+
+do NOT silently recalculate probation history.
+
+Require explicit decision:
+
+Recalculate probation dates
+
+or:
+Keep existing probation schedule.
+
+If too complex for V1:
+lock Join Date after probation activity without explicit admin workflow.
+
+==================================================
+95. EMPLOYMENT TYPE CHANGE
+==================================================
+
+Changing Employment Type may imply different probation policy.
+
+Do not silently rewrite active probation.
+
+Prompt/configure explicit transition.
+
+For V1:
+existing active probation retains snapshot unless HR deliberately changes it.
+
+==================================================
+96. PROBATION POLICY SNAPSHOT
+==================================================
+
+Freeze policy/config snapshot when probation starts.
+
+Changing company default from 6 months to 3 months must not change existing employee expected end date.
+
+New Employees use new policy.
+
+==================================================
+97. LEAVE POLICY SNAPSHOT
+==================================================
+
+Leave request continues to snapshot LeavePolicy as Phase 15.
+
+Probation status/policy context also captured.
+
+==================================================
+98. TEST — DEFAULT PROBATION
+==================================================
+
+Company:
+6-month default.
+
+Employee joins:
+20 Jul.
+
+Expected end calculated according to calendar rule.
+
+==================================================
+99. TEST — NO PROBATION
+==================================================
+
+Contract Employee:
+Probation not applicable.
+
+Confirmed-stage leave policy resolves immediately.
+
+==================================================
+100. TEST — OVERRIDE
+==================================================
+
+Company default:
+6 months.
+
+Employee override:
+3 months.
+
+Expected end uses override.
+
+==================================================
+101. TEST — EXTENSION
+==================================================
+
+Extend 30 days.
+
+Original expected date retained in audit.
+
+New date active.
+
+Leave eligibility remains probation-stage.
+
+==================================================
+102. TEST — EARLY CONFIRMATION
+==================================================
+
+Confirm before expected end.
+
+Probation ends.
+
+Post-confirmation leave policy activates.
+
+Entitlement ledger transitions exactly once.
+
+==================================================
+103. TEST — OVERDUE
+==================================================
+
+Expected end passes without HR confirmation.
+
+Employee remains probation stage if manual confirmation policy.
+
+Dashboard shows due/overdue.
+
+==================================================
+104. TEST — ANNUAL LEAVE BLOCKED
+==================================================
+
+Annual Leave:
+not allowed during probation.
+
+Employee on probation:
+cannot request.
+
+After confirmation:
+allowed.
+
+==================================================
+105. TEST — SICK LEAVE ALLOWED
+==================================================
+
+Sick Leave:
+allowed during probation.
+
+Request works.
+
+==================================================
+106. TEST — LIMITED PROBATION LEAVE
+==================================================
+
+Casual Leave:
+2 days available during probation.
+
+2 days:
+allowed.
+
+3 days:
+rejected.
+
+==================================================
+107. TEST — MINIMUM SERVICE
+==================================================
+
+Leave requires:
+90 days service.
+
+Day 89:
+not eligible.
+
+Day 90:
+eligible according to defined inclusive boundary.
+
+==================================================
+108. TEST — EXTENSION LEAVE
+==================================================
+
+Expected probation originally ended.
+
+Extended before confirmation.
+
+Post-confirmation leave does NOT activate.
+
+==================================================
+109. TEST — CONFIRMATION LEDGER
+==================================================
+
+Confirm Employee twice.
+
+Only one entitlement transition.
+
+==================================================
+110. TEST — PENDING REQUEST
+==================================================
+
+Request submitted under probation policy.
+
+Employee confirmed before approval.
+
+Request keeps submitted snapshot.
+
+==================================================
+111. TEST — APPROVED REQUEST
+==================================================
+
+Approved probation Leave stays valid after confirmation.
+
+==================================================
+112. TEST — COMPANY POLICY CHANGE
+==================================================
+
+Existing employee probation dates unchanged.
+
+New employee gets new policy.
+
+==================================================
+113. TEST — ACCOUNT WITHOUT EMPLOYEE
+==================================================
+
+Company Admin no Employee:
+
+no probation self information.
+
+Can manage employee probation if permissions permit.
+
+==================================================
+114. TEST — PERMISSIONS
+==================================================
+
+Manager team scope only.
+
+HR company scope.
+
+Employee self only.
+
+Direct URLs/use cases enforce scope.
+
+==================================================
+115. TEST — COMPANY ISOLATION
+==================================================
+
+Company A cannot view/change Company B probation records.
+
+==================================================
+116. TEST — ARABIC
+==================================================
+
+Probation fields
+
+Employee Details
+
+My Profile
+
+Leave eligibility messages
+
+Confirmation dialog
+
+Extension dialog
+
+Dashboard attention
+
+all localized/RTL.
+
+==================================================
+117. LOCALIZATION
+==================================================
+
+Add keys such as:
+
+Probation
+
+Probation Period
+
+On Probation
+
+Probation Start Date
+
+Expected Confirmation Date
+
+Confirmation Date
+
+Confirmed
+
+Confirm Employee
+
+Extend Probation
+
+Extension Reason
+
+Confirmation Due
+
+Confirmation Due Soon
+
+Confirmation Overdue
+
+Probation Completed
+
+Probation Not Applicable
+
+Early Confirmation
+
+Probation Leave Policy
+
+Available During Probation
+
+Not Available During Probation
+
+Limited During Probation
+
+Minimum Service Period
+
+Available After Confirmation
+
+and all validation/error messages.
+
+==================================================
+118. RESPONSIVE
+==================================================
+
+Employee form/details/profile/probation dialogs must work:
+
+360
 
 390
+
+430
 
 600
 
 768
 
+900
+
 1024
+
+1280
 
 1440
 
-1920
-
-No huge dead space.
-
-No card explosion.
+1920.
 
 ==================================================
-155. DASHBOARD TESTING
+119. SETTINGS INFORMATION ARCHITECTURE
 ==================================================
 
-Verify dashboard sections match capabilities.
+Do NOT create "Probation" as a top-level drawer item.
 
-No self-attendance card for unlinked Admin.
+Company probation configuration belongs under:
 
-No all-attendance metric for Employee.
+Settings
+→ People / Employment
 
-==================================================
-156. REMINDER TESTING
-==================================================
+or appropriate company HR configuration section.
 
-Unlinked admin:
-no shift/punch-out reminder scheduling.
+Leave probation rules remain under:
 
-Linked employee:
-reminders according to settings/permissions.
+Settings
+→ Leave Policies.
 
 ==================================================
-157. ACCOUNT SWITCH TEST
+120. HR ACTION UX
 ==================================================
 
-Login Company Admin no Employee.
+Employee Detail:
 
-Profile shows admin.
+Probation section.
 
-Logout.
+Actions:
 
-Login Employee.
+Confirm
 
-Profile shows employment.
+Extend
 
-No stale Admin profile data.
-
-Logout.
-
-Login HR no Employee.
-
-No stale employee fields.
+Do not put these in main global navigation.
 
 ==================================================
-158. COMPANY SWITCH TEST
+121. CONFIRM DIALOG
 ==================================================
 
-If company switching exists:
-
-Profile employment/capabilities recompute per company.
-
-==================================================
-159. PERFORMANCE
-==================================================
-
-Do not load hidden persona features.
-
-Navigation/capability resolution should be lightweight.
-
-Avoid repeatedly querying Employee link for every nav item.
-
-Resolve once/reactively.
-
-==================================================
-160. CLEANUP OLD ROLE-BASED LOGIC
-==================================================
-
-Search:
-
-role == SUPER_ADMIN
-
-role == COMPANY_ADMIN
-
-role == HR
-
-role == MANAGER
-
-role == EMPLOYEE
-
-Categorize.
-
-Allowed:
-presentation prioritization
-role label
-
-Not allowed:
-authorization/navigation capability if permissions/context should decide.
-
-Refactor inappropriate usages.
-
-==================================================
-161. CLEANUP PROFILE DUPLICATION
-==================================================
-
-Remove duplicated:
-
-profile Employee DTO
-
-profile Shift DTO
-
-profile Location DTO
-
-if same domain entities can be reused.
-
-Avoid second source of truth.
-
-==================================================
-162. CLEANUP NAVIGATION
-==================================================
-
-Remove stale menu items such as:
-
-My Attendance
-History
-Team Attendance
-
-from personas lacking capabilities.
-
-Do not merely disable them.
-
-==================================================
-163. DESIGN SYSTEM REUSE
-==================================================
-
-Use:
-
-AppPage
-
-AppPageHeader
-
-AppDetailsGrid
-
-AppDetailsSection
-
-AppAvatar
-
-AppStatusBadge
-
-AppMetricCard
-
-AppCard only where needed
-
-AppEmptyState
-
-AppSkeleton
-
-No profile-specific duplicate primitives unnecessarily.
-
-==================================================
-164. LOCALIZATION AUDIT
-==================================================
-
-No hardcoded profile/persona strings.
-
-English + Arabic.
-
-==================================================
-165. DOCUMENT CAPABILITY MODEL
-==================================================
-
-Create/update:
-
-docs/persona_capabilities.md
-
-Document:
-
-roles vs permissions
-
-linked Employee
-
-self attendance
-
-team attendance
-
-company attendance
-
-navigation rules
-
-profile behavior.
-
-==================================================
-166. DOCUMENT PROFILE ARCHITECTURE
-==================================================
-
-Create/update:
-
-docs/profile_architecture.md
-
-Explain:
-
-UserAccount vs Employee
-
-My Profile vs Employee Record
-
-data ownership
-
-section visibility
-
-self-edit boundaries.
-
-==================================================
-167. DOCUMENT NAVIGATION MATRIX
-==================================================
-
-Create concise matrix for:
-
-Super Admin
-
-Company Admin
-
-HR
-
-Manager
+Show:
 
 Employee
 
-Show typical modules but clearly state actual access is capability/permission driven.
+Current expected end
+
+Effective confirmation date
+
+Leave policy transition summary
+
+Possible entitlement impact
+
+Confirm action.
+
+Do not surprise HR with hidden leave balance changes.
 
 ==================================================
-168. QUALITY CHECK
+122. EXTEND DIALOG
+==================================================
+
+Show:
+
+Current expected end
+
+Extension duration/new date
+
+New expected end
+
+Reason
+
+Keep concise.
+
+==================================================
+123. ENTITLEMENT PREVIEW
+==================================================
+
+When confirming:
+
+show descriptive preview such as:
+
+Annual Leave
+Probation available: 2 days
+Confirmed policy entitlement: 18 days/year
+Adjustment to be posted: +X days
+
+Only if calculation is deterministic.
+
+Do not fabricate.
+
+==================================================
+124. NO PAYROLL
+==================================================
+
+Probation confirmation does NOT:
+
+change salary
+
+calculate increment
+
+change payroll
+
+issue contract
+
+unless future module implements it.
+
+==================================================
+125. NO PERFORMANCE REVIEW
+==================================================
+
+Do not build:
+
+probation score
+
+manager rating
+
+performance evaluation
+
+confirmation recommendation algorithm.
+
+Separate future performance module.
+
+==================================================
+126. BACKEND CONTRACT
+==================================================
+
+Update backend documentation with:
+
+probation policy
+
+employee probation
+
+extension
+
+confirmation
+
+audit events
+
+leave policy stage resolution
+
+entitlement transition
+
+idempotency.
+
+Server must revalidate.
+
+==================================================
+127. DOCUMENTATION
+==================================================
+
+Create/update:
+
+docs/probation_architecture.md
+
+docs/leave_probation_rules.md
+
+Document:
+
+expected vs actual confirmation
+
+manual confirmation behavior
+
+policy snapshots
+
+leave eligibility
+
+ledger transition.
+
+==================================================
+128. QUALITY CHECK
 ==================================================
 
 Run:
-
-flutter pub get
 
 flutter gen-l10n
 
@@ -3272,157 +2241,165 @@ flutter analyze
 
 flutter test
 
-Run persona/capability/profile/navigation tests.
-
 ==================================================
-169. COMPLETION REPORT
+129. COMPLETION REPORT
 ==================================================
 
 At completion provide:
 
-1. issue found with previous role/navigation behavior
+1. probation domain architecture
 
-2. final UserCapabilityContext architecture
+2. default company probation policy
 
-3. UserCapabilityResolver behavior
+3. Employee probation storage
 
-4. UserAccount vs Employee separation
+4. probation status model
 
-5. linked Employee resolution
+5. expected-end calculation
 
-6. Super Admin navigation
+6. employee override behavior
 
-7. Company Admin navigation
+7. extension workflow
 
-8. HR navigation
+8. confirmation workflow
 
-9. Manager navigation
+9. audit history
 
-10. Employee navigation
+10. permissions/capabilities
 
-11. My Attendance visibility rule
+11. My Profile integration
 
-12. Team Attendance visibility rule
+12. Employee Details integration
 
-13. All Attendance visibility rule
+13. Employee list filters
 
-14. Profile architecture
+14. HR dashboard integration
 
-15. My Profile vs Employee Record distinction
+15. notifications
 
-16. linked Employee profile behavior
+16. LeaveEligibilityResolver
 
-17. unlinked Admin profile behavior
+17. probation Leave rules
 
-18. account/access summary behavior
+18. minimum-service rules
 
-19. attendance summary visibility
+19. Leave balance behavior
 
-20. reminder capability behavior
+20. confirmation entitlement transition
 
-21. dashboard capability cleanup
+21. idempotency protections
 
-22. route-guard changes
+22. policy snapshot behavior
 
-23. reactive permission/link changes
+23. pending/approved Leave handling through confirmation
 
-24. cross-session cleanup
+24. company isolation
 
-25. English/Arabic verification
+25. timezone/date behavior
 
-26. RTL verification
+26. English/Arabic/RTL
 
-27. responsive profile verification
+27. tests added
 
-28. tests added
+28. flutter analyze result
 
-29. flutter analyze result
+29. flutter test result
 
-30. flutter test result
-
-31. genuine remaining limitations
-
-32. exact readiness for Phase 14
+30. remaining limitations
 
 ==================================================
-170. STOP CONDITION
+130. STOP CONDITION
 ==================================================
 
-DO NOT START PHASE 14 UNTIL:
+THIS ADD-ON IS COMPLETE ONLY WHEN:
 
-✓ Super Admin no longer automatically sees employee self-attendance features
+✓ Probation is modeled independently from EmploymentStatus
 
-✓ Company Admin no longer automatically sees My Attendance/History
+✓ Employee can have probation not applicable
 
-✓ attendanceViewAll does NOT imply attendanceViewSelf
+✓ Company default probation duration is configurable
 
-✓ attendanceViewTeam does NOT imply attendanceViewAll
+✓ Employment Type can influence probation policy
 
-✓ linked Employee is required for self attendance
+✓ Employee-specific override works if permitted
 
-✓ linked Employee is required where team hierarchy depends on Employee identity
+✓ probation uses calendar-safe date calculations
 
-✓ HR without Employee can still manage workforce/company attendance
+✓ start date is stored
 
-✓ Company Admin without Employee can still manage company features
+✓ expected end date is stored
 
-✓ Super Admin without Employee has valid complete Profile
+✓ actual confirmation date is stored
 
-✓ My Profile is detailed and useful
+✓ extension history is retained
 
-✓ My Profile combines account + employment only when linked
+✓ early confirmation is supported where allowed
 
-✓ UserAccount and Employee remain separate domain entities
+✓ expected end passing does not silently imply confirmation unless configured
 
-✓ Employee Profile remains organizational HR/Admin record
+✓ confirmation due/overdue can be identified
 
-✓ My Profile remains personal self-service record
+✓ HR can confirm according to permission
 
-✓ profile does not show fake Employee Code/Shift/Location for unlinked admins
+✓ HR can extend according to permission
 
-✓ linked users see real Employee data
+✓ self/team/company scope is enforced
 
-✓ Employee updates reactively appear in My Profile
+✓ Company isolation works
 
-✓ self attendance summary only appears when permitted
+✓ My Profile shows appropriate probation info
 
-✓ attendance reminders only apply to relevant linked users
+✓ Employee Details shows full probation management information
 
-✓ dashboard content matches capabilities
+✓ unlinked Admin does not get fake probation self data
 
-✓ navigation is capability-driven
+✓ probation is NOT an Attendance status
 
-✓ route guards use same capability rules
+✓ probation is NOT a Leave Type
 
-✓ direct self-attendance URL is blocked for unlinked admin
+✓ Leave eligibility is resolved centrally
 
-✓ All Attendance remains available to permitted unlinked HR/Admin
+✓ Annual Leave can be blocked during probation
 
-✓ permission changes update navigation/reactive screens
+✓ Sick/Emergency Leave can independently be allowed
 
-✓ Employee link removal removes self capabilities safely
+✓ limited probation Leave is supported
 
-✓ no stale EmployeeReference leaks across login sessions
+✓ minimum service days are supported independently
 
-✓ account switching shows correct profile
+✓ probation balance is ledger-based
 
-✓ company switching recomputes profile/capabilities if applicable
+✓ confirmation does not directly overwrite balances
 
-✓ no inappropriate role-based authorization remains
+✓ confirmation entitlement transition is idempotent
+
+✓ double confirmation cannot double-credit Leave
+
+✓ probation extension keeps probation leave rules active
+
+✓ existing approved Leave is not rewritten after confirmation
+
+✓ pending requests preserve submitted policy snapshot
+
+✓ existing Employee probation snapshot is not changed by later company policy edits
+
+✓ Holidays remain unaffected
+
+✓ Attendance Punch In/Out remains unaffected by probation itself
+
+✓ HR dashboard can surface confirmation-due employees
+
+✓ notifications work where enabled
 
 ✓ English works
 
-✓ Arabic works
+✓ Arabic/RTL works
 
-✓ RTL works
-
-✓ mobile/tablet/desktop profile layouts work
-
-✓ documentation is updated
+✓ responsive layouts work
 
 ✓ flutter analyze passes
 
 ✓ tests pass
 
-Then STOP and proceed to PHASE 14.
+Then STOP.
 ```

@@ -7,6 +7,11 @@ enum AppNotificationType {
   attendanceSyncFailed,
   attendanceConflict,
   pendingCorrectionReview,
+  leaveRequestSubmitted,
+  leaveRequestApproved,
+  leaveRequestRejected,
+  leaveRequestCancelled,
+  leaveApprovalRequired,
   unknown;
 
   static AppNotificationType fromName(String? name) => values.firstWhere(

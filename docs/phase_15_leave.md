@@ -1,0 +1,29 @@
+# Phase 15 — Leave management, holiday calendar & attendance overlay
+
+1. **Implemented:** A complete local-first Leave domain: leave types, policies, holidays, effective-dated policy assignment, per-year leave balances derived from an append-only ledger, request submission with preview, approval/rejection/cancellation, team/company request views, balance adjustment, a leave calendar, and a read-only attendance overlay that labels Today as approved leave or a holiday. Leave is modelled separately from Attendance; it never creates attendance events.
+2. **Important files:** `lib/features/leave/domain/leave_models.dart`, `leave_services.dart`, `leave_repository.dart`; `lib/features/leave/data/leave_tables.dart`, `local_leave_repository.dart`, `leave_configuration_repositories.dart`, `leave_seed.dart`; `lib/features/leave/presentation/bloc/leave_blocs.dart`, `leave_configuration_blocs.dart`; pages under `lib/features/leave/presentation/pages/`; `leave_localization.dart`; `widgets/leave_today_banner.dart`. Wiring lives in `lib/core/database/app_database.dart` (schema v7), `lib/app/module_registry/registered_modules.dart`, `lib/app/router/app_routes.dart`, `lib/bootstrap/dependencies.dart`, `lib/bootstrap/demo_configuration_seed.dart`, `lib/features/auth/domain/policies/account_role_templates.dart`, `lib/features/employees/domain/employee_access.dart`.
+3. **Schema v7:** New tables `leave_types`, `leave_policies`, `employee_leave_policy_assignments`, `leave_balance_transactions`, `leave_requests`, `leave_request_events`, `holidays`. Migration accepts `from < 7` and creates missing tables idempotently via `_ensureTable`, adding the supporting indexes. Leave configuration reuses the shared configuration workflow through `LeaveConfigurationRepository`, an adapter over the domain repository.
+4. **No accrual engine:** Balances are a pure sum over the ledger plus approved/pending requests. Transaction kinds are `entitlement`, `adjustmentAdd`, `adjustmentSubtract`, `leaveReserved`, `leaveReleased`, `leaveConsumed`, `carryForward`, `expiry`, `migration`. Submission writes a `leaveReserved` row; approval converts it to `leaveConsumed` + `leaveReleased`; rejection/cancellation release the reservation. Entitlement is seeded per employee for the current year. Leave year is the Gregorian year via `LeaveYearResolver`.
+5. **Working-day math:** `LeaveDayCalculator` counts only scheduled working weekdays (from the employee's shift mask, defaulting to Mon–Fri), excludes applicable non-optional holidays, and applies a single-day half-day portion. It never uses `end - start + 1`. Weekends, holidays and the resulting leave dates are returned for the calendar overlay.
+6. **Request rules:** Past-dated requests and advance-notice windows follow the effective policy; overlap against pending/approved requests is rejected; paid types without `allowNegativeBalance` cannot exceed the available balance. The request form shows a live preview (requested days, available, after approval, excluded weekends/holidays).
+7. **Review:** Approval is limited to a reviewer who is not the requester, holding `leaveApproveTeam` (own reports) or `leaveApproveAll`. Self-approval is refused. Rejection requires a note. Cancellation is allowed by the owner for pending requests, and by managers for approved leave.
+8. **Notifications:** Leave events raise typed `AppNotificationType` values with deep links to the request details route; copy is localized and resolved at render time through `notification_presentation.dart`.
+9. **Attendance overlay:** `LeaveRepository.dayOverride` returns a `LeaveWorkdayOverlay` (approved leave or holiday) for a single workday. The attendance module renders it through `LeaveTodayBanner` above the Today experience. Attendance events, states and durations remain untouched; no leave row is written into attendance tables.
+10. **Navigation & capabilities:** A new `leave` module participates in capability-driven navigation (`requestLeave`, `viewMyLeave`, `viewMyLeaveBalance`, `viewTeamLeave`, `approveTeamLeave`, `viewCompanyLeave`, `approveCompanyLeave`, `manageLeaveTypes/Policies`, `manageHolidays`, `viewLeaveReports`). The module root redirects a non-self user to the most relevant organizational destination. Leave type/policy/holiday configuration appears under Settings for administrators.
+11. **Role templates:** Leave self-service permissions are treated as self-service (never implicitly granted to unlinked administrators) and excluded from administrative role templates. Holiday *configuration* is administrative; employees view holidays through the leave calendar.
+12. **Demo seed:** `seedLeaveConfiguration` provisions four leave types, their policies, three holidays and starting entitlements for every active employee, idempotently.
+13. **Tests:** Seven focused Drift/repository tests in `test/leave_test.dart` cover seeding and starting balances, reservation→consumption, overlap and over-balance rejection, self-approval/invalid-range refusal, the configuration adapter, the day overlay and the day calculator. Existing navigation, permission-ceiling, migration and localization expectations were updated for the new module (schema v7, `leave` enabled module, holiday permission boundary).
+14. **Analyzer/test:** `flutter analyze` clean; the full suite passes.
+15. **Genuine limitations:** Policy assignment UI (effective-dated per-employee assignment), carry-forward/expiry generation, leave reports, attachment upload and per-employee attendance-history leave classification are not yet exposed. There is no remote backend; outbox enqueue happens only outside demo mode.
+
+## Validation commands
+
+```sh
+flutter pub get
+flutter gen-l10n
+dart run build_runner build --delete-conflicting-outputs
+dart format .
+flutter analyze
+flutter test
+flutter build web --release --dart-define=DEMO_AUTH=true --no-wasm-dry-run
+```

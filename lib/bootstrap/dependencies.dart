@@ -31,6 +31,9 @@ import '../features/dashboard/data/local_dashboard_repository.dart';
 import '../features/reports/domain/attendance_report_repository.dart';
 import '../features/reports/data/local_attendance_report_repository.dart';
 import '../features/reports/data/attendance_report_export_service.dart';
+import '../features/leave/domain/leave_repository.dart';
+import '../features/leave/data/local_leave_repository.dart';
+import '../features/leave/data/leave_configuration_repositories.dart';
 import '../app/shell/app_shell_cubit.dart';
 import '../app/module_registry/module_registry.dart';
 import '../app/module_registry/registered_modules.dart';
@@ -198,6 +201,17 @@ void configureDependencies() {
   services.registerLazySingleton<AttendancePolicyRepository>(
     () => LocalAttendancePolicyRepository(services()),
   );
+  services.registerLazySingleton<LeaveRepository>(
+    () => LocalLeaveRepository(
+      services(),
+      services(),
+      services(),
+      notifications: services(),
+    ),
+  );
+  services.registerLazySingleton(() => leaveTypeConfiguration(services()));
+  services.registerLazySingleton(() => leavePolicyConfiguration(services()));
+  services.registerLazySingleton(() => holidayConfiguration(services()));
   services.registerLazySingleton<ModuleRegistry>(
     () => createErpRegistry(
       services(),
@@ -212,6 +226,10 @@ void configureDependencies() {
       workforceAttendanceRepository: services(),
       attendanceReportRepository: services(),
       attendanceReportExportService: services(),
+      leaveRepository: services(),
+      leaveTypeRepository: services(),
+      leavePolicyRepository: services(),
+      holidayRepository: services(),
     ),
   );
   services.registerSingleton(AppLogger());

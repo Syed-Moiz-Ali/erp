@@ -37,6 +37,27 @@ String configurationFailure(Failure failure, AppLocalizations l) =>
       'location_unavailable' => l.cfgLocationUnavailable,
       'denied' => l.shellAccessMessage,
       'notFound' => l.cfgNotFound,
+      'invalidQuantity' => l.leaveInvalidQuantity,
+      'invalidDateRange' => l.leaveInvalidDateRange,
+      'leavePermissionDenied' => l.leavePermissionDenied,
+      'leaveStorageError' => l.leaveStorageError,
+      'leaveUnavailable' => l.leaveUnavailable,
+      'leaveTypeInactive' => l.leaveTypeInactive,
+      'leaveNoEmployee' => l.leaveNoEmployee,
+      'leaveInvalidDateRange' => l.leaveInvalidDateRange,
+      'leaveReasonRequired' => l.leaveReasonRequired,
+      'leaveNoWorkingDays' => l.leaveNoWorkingDays,
+      'leaveMinimumDays' => l.leaveMinimumDays,
+      'leaveOverlapping' => l.leaveOverlapping,
+      'leaveInsufficientBalance' => l.leaveInsufficientBalance,
+      'leavePastRequestNotAllowed' => l.leavePastRequestNotAllowed,
+      'leaveAdvanceNoticeRequired' => l.leaveAdvanceNoticeRequired,
+      'leaveInvalidQuantity' => l.leaveInvalidQuantity,
+      'leaveRequestNotFound' => l.leaveRequestNotFound,
+      'leaveAlreadyReviewed' => l.leaveAlreadyReviewed,
+      'leaveCannotCancelApproved' => l.leaveCannotCancelApproved,
+      'leaveReviewNoteRequired' => l.leaveReviewNoteRequired,
+      'leaveSelfApprovalNotAllowed' => l.leaveSelfApprovalNotAllowed,
       _ => l.cfgStorageError,
     };
 String shiftBreakLabel(ShiftBreakMode mode, AppLocalizations l) =>
@@ -61,6 +82,8 @@ String offlineModeLabel(OfflineAttendanceMode mode, AppLocalizations l) =>
 String configurationNumber(BuildContext c, num value) => AppNumberFormatter(
   Localizations.localeOf(c),
 ).decimal(value, decimalDigits: value == value.roundToDouble() ? 0 : 2);
+String configurationDate(BuildContext c, DateTime value) =>
+    AppDateFormatter(Localizations.localeOf(c)).date(value);
 String configurationTime(BuildContext c, LocalTime value) =>
     AppTimeFormatter(Localizations.localeOf(c)).timeOfDay(
       TimeOfDay(hour: value.hour, minute: value.minute),
