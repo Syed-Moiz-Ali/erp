@@ -13,4 +13,13 @@ abstract final class AppDimensions {
       dialog = 480.0,
       detailField = 240.0,
       compactDetailField = 130.0;
+
+  // Centralized icon scale.
+  static const double iconXs = 12, iconSm = 16, iconMd = 20, iconLg = 22;
+
+  // Centralized control (tap target) scale; never below 40 for icon actions.
+  static const double controlSm = 32, controlMd = 40, controlLg = 44;
+
+  // Dense data row / header heights for enterprise tables.
+  static const double tableRowHeight = 50, tableHeaderHeight = 44;
 }

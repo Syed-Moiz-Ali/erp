@@ -222,12 +222,7 @@ class _DayCell extends StatelessWidget {
             weekdayShort,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: theme.caption.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: 11,
-              letterSpacing: 0.3,
-              color: AppColors.textMuted,
-            ),
+            style: theme.metricLabel.copyWith(letterSpacing: 0.3),
           ),
           const SizedBox(height: AppSpacing.xxs),
           Text(

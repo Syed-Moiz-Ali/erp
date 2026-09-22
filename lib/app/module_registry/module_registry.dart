@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/security/app_permission.dart';
+import '../../features/auth/domain/policies/user_capability.dart';
 import '../../l10n/l10n.dart';
 
 enum NavigationGroup {
@@ -44,6 +45,7 @@ class ErpModule {
     this.selectedIcon,
     this.requiredPermissions = const {},
     this.anyPermissions = const {},
+    this.requiredCapabilities = const {},
     this.navigationGroup = NavigationGroup.workspace,
     this.order = 0,
     this.enabled = true,
@@ -60,6 +62,7 @@ class ErpModule {
   final IconData icon;
   final IconData? selectedIcon;
   final Set<AppPermission> requiredPermissions, anyPermissions;
+  final Set<UserCapability> requiredCapabilities;
   final Set<String> routeAliases;
   final int order;
   final int? mobilePriority;

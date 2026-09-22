@@ -54,8 +54,25 @@ class AccountRolePolicy {
 
 bool grantAllowed(AuthContext actor, AppPermission permission) {
   final p = PermissionChecker(actor.user.permissions);
-  return p.can(permission) ||
-      permission == AppPermission.employeeViewTeam &&
+  if (p.can(permission)) return true;
+  // Administrative provisioning may grant employee self-service grants even
+  // when the administrator is not themselves linked to an employee. Granting
+  // self-service access is an administrative act, not a capability escalation.
+  const selfService = {
+    AppPermission.employeeViewSelf,
+    AppPermission.attendanceViewSelf,
+    AppPermission.attendancePunchIn,
+    AppPermission.attendancePunchOut,
+    AppPermission.attendanceBreak,
+    AppPermission.attendanceRequestCorrection,
+  };
+  if (selfService.contains(permission) &&
+      p.can(AppPermission.userManage) &&
+      (p.can(AppPermission.employeeCreate) ||
+          p.can(AppPermission.employeeUpdate))) {
+    return true;
+  }
+  return permission == AppPermission.employeeViewTeam &&
           p.can(AppPermission.employeeViewAll) ||
       permission == AppPermission.attendanceViewTeam &&
           p.can(AppPermission.attendanceViewAll);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
+import '../../../../shared/navigation/app_navigation.dart';
 import '../../../../core/security/app_permission.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../core/errors/result.dart';
@@ -51,9 +52,7 @@ class AttendanceDayDetailsPage extends StatelessWidget {
             AppTextButton(
               label: l.historyNav,
               icon: Icons.arrow_back,
-              onPressed: () => context.canPop()
-                  ? context.pop()
-                  : context.go(AppRoutes.attendanceHistory),
+              onPressed: () => context.popOrGo(AppRoutes.attendanceHistory),
             ),
             AppIconButton(
               icon: Icons.refresh,
@@ -184,11 +183,19 @@ class _Record extends StatelessWidget {
                 child: AppChangeComparison(
                   title: correctionTypeLabel(context, correction.requestType),
                   beforeLabel: l.correctionOriginal,
-                  before: AttendanceHistoryPresentation.time(context, d,
-                    change.originalTimestamp, includeDate: true),
+                  before: AttendanceHistoryPresentation.time(
+                    context,
+                    d,
+                    change.originalTimestamp,
+                    includeDate: true,
+                  ),
                   afterLabel: l.correctionRequested,
-                  after: AttendanceHistoryPresentation.time(context, d,
-                    change.requestedTimestamp, includeDate: true),
+                  after: AttendanceHistoryPresentation.time(
+                    context,
+                    d,
+                    change.requestedTimestamp,
+                    includeDate: true,
+                  ),
                 ),
               ),
           ],

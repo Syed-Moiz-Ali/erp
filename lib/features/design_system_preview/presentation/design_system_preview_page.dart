@@ -409,6 +409,15 @@ class _Preview extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),
+                  // Count badges (capped, hidden at zero)
+                  Row(
+                    children: const [
+                      AppCountBadge(count: 3),
+                      SizedBox(width: AppSpacing.sm),
+                      AppCountBadge(count: 128),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.md),
 
                   // Badges with Icons & Avatars
                   Wrap(

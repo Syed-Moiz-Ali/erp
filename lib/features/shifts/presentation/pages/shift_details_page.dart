@@ -29,7 +29,7 @@ class ShiftDetailsPage extends StatelessWidget {
               AppPermission.shiftManage,
             ),
             onRetry: () => bloc.add(const RecordDetailsStarted()),
-            onEdit: () => context.go(AppRoutes.shiftsEdit(bloc.id)),
+            onEdit: () => context.push(AppRoutes.shiftsEdit(bloc.id)),
             onActive: (v) => bloc.add(RecordDetailsStatusRequested(v)),
             content: (record) => AppFormSection(
               title: l.cfgSchedule,

@@ -113,4 +113,36 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     fontFeatures: const [FontFeature.tabularFigures()],
   );
+
+  /// Dashboard/report metric value with tabular figures for stable digits.
+  TextStyle get metricValue => _base.copyWith(
+    fontSize: 22,
+    fontWeight: FontWeight.w800,
+    height: _isArabic ? 1.5 : 1.1,
+    letterSpacing: _tracking(-0.6),
+    fontFeatures: const [FontFeature.tabularFigures()],
+  );
+
+  /// Uppercase metric label / eyebrow text.
+  TextStyle get metricLabel => _base.copyWith(
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    letterSpacing: _tracking(0.6),
+    color: _isDark ? const Color(0xFF94A3B8) : AppColors.textMuted,
+  );
+
+  /// Secondary supporting line under a metric value.
+  TextStyle get metricSupporting => _base.copyWith(
+    fontSize: 11.5,
+    fontWeight: FontWeight.w600,
+    color: _isDark ? const Color(0xFF94A3B8) : AppColors.textMuted,
+  );
+
+  /// Enterprise table header cell.
+  TextStyle get tableHeader => _base.copyWith(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    letterSpacing: _tracking(0.5),
+    color: _isDark ? const Color(0xFF94A3B8) : AppColors.textSecondary,
+  );
 }

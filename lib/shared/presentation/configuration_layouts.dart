@@ -83,12 +83,12 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
       actions: [
         AppMenuAction(
           label: (l) => l.cfgView,
-          onPressed: () => c.go(detailRoute(item.record.id)),
+          onPressed: () => c.push(detailRoute(item.record.id)),
         ),
         if (manage)
           AppMenuAction(
             label: (l) => l.cfgEdit,
-            onPressed: () => c.go(editRoute(item.record.id)),
+            onPressed: () => c.push(editRoute(item.record.id)),
           ),
         if (manage)
           AppMenuAction(
@@ -200,10 +200,11 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                     Expanded(
                                       child: Text(
                                         item.record.name,
-                                        style: AppTypography.of(c).cardTitle.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textPrimary,
-                                        ),
+                                        style: AppTypography.of(c).cardTitle
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textPrimary,
+                                            ),
                                       ),
                                     ),
                                     actions(item),
@@ -253,13 +254,14 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                             item.assignedEmployees,
                                           ),
                                         ].join(': '),
-                                        style: AppTypography.of(c).caption.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textSecondary,
-                                          fontFeatures: const [
-                                            FontFeature.tabularFigures(),
-                                          ],
-                                        ),
+                                        style: AppTypography.of(c).caption
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textSecondary,
+                                              fontFeatures: const [
+                                                FontFeature.tabularFigures(),
+                                              ],
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -292,7 +294,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                         for (final item in data.items)
                           DataRow(
                             onSelectChanged: (_) =>
-                                c.go(detailRoute(item.record.id)),
+                                c.push(detailRoute(item.record.id)),
                             cells: [
                               DataCell(
                                 Text(
@@ -310,9 +312,10 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                                     summary(c, item.record),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: AppTypography.of(c).bodySmall.copyWith(
-                                      color: AppColors.textSecondary,
-                                    ),
+                                    style: AppTypography.of(c).bodySmall
+                                        .copyWith(
+                                          color: AppColors.textSecondary,
+                                        ),
                                   ),
                                 ),
                               ),

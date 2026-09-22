@@ -146,7 +146,7 @@ class _CorrectionListState extends State<_CorrectionList> {
                 padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: AppCard(
                   variant: AppCardVariant.interactive,
-                  onTap: () => context.go(
+                  onTap: () => context.push(
                     widget.review
                         ? AppRoutes.attendanceReviewDetails(request.id)
                         : AppRoutes.attendanceCorrectionDetails(request.id),

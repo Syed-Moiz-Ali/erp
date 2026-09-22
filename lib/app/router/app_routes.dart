@@ -12,6 +12,10 @@ abstract final class AppRoutes {
       profile = '/app/profile',
       changePassword = '/app/change-password',
       more = '/app/more',
+      notifications = '/app/notifications',
+      reminderSettings = '/app/settings/notifications',
+      syncSettings = '/app/settings/sync',
+      syncInspector = '/app/sync-inspector',
       unauthorized = '/app/access-denied',
       unavailable = '/app/module-unavailable',
       notFound = '/app/not-found',
@@ -28,8 +32,11 @@ abstract final class AppRoutes {
       '$attendanceCorrections/${Uri.encodeComponent(id)}';
   static String attendanceReviewDetails(String id) =>
       '$attendanceRequests/${Uri.encodeComponent(id)}';
-  static String attendanceWorkforceDetails(String employeeId, String dayId,
-      {bool team = false}) =>
+  static String attendanceWorkforceDetails(
+    String employeeId,
+    String dayId, {
+    bool team = false,
+  }) =>
       '${team ? attendanceTeam : attendanceAll}/${Uri.encodeComponent(employeeId)}/${Uri.encodeComponent(dayId)}';
   static String attendanceDayDetails(String id) =>
       '$attendanceHistory/${Uri.encodeComponent(id)}';
@@ -56,6 +63,9 @@ abstract final class AppRoutes {
       '${attendancePoliciesDetails(id)}/edit';
   static const utilityPaths = {
     more,
+    notifications,
+    reminderSettings,
+    syncSettings,
     unauthorized,
     unavailable,
     notFound,

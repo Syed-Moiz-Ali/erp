@@ -1,0 +1,3428 @@
+```text
+PHASE 13.7 — PERSONA CAPABILITY MODEL, NAVIGATION CLEANUP & UNIFIED MY PROFILE ARCHITECTURE
+
+Continue working on the EXISTING Flutter ERP project.
+
+Already completed:
+
+PHASE 0–13
++
+PHASE 13.5
+- proper route-per-screen navigation
+- detail URLs
+- browser Back/Forward
+- cross-platform routing
+
+PHASE 13.6
+- navigation-state restoration
+- session/account isolation
+- tenant/company isolation
+- timezone/workday integrity
+- snapshot consistency
+
+DO NOT start Phase 14 yet.
+
+DO NOT create new business modules.
+
+THIS PHASE EXISTS TO FIX:
+
+1. wrong navigation exposure by role/permission
+2. Super Admin getting employee self-service screens unnecessarily
+3. Company Admin getting Punch In / My Attendance unnecessarily
+4. HR/Manager/Employee capability differences
+5. linked Employee vs non-linked UserAccount behavior
+6. weak/incomplete My Profile UX
+7. Employee Profile and My Profile duplication
+8. persona-aware dashboard/navigation behavior
+9. account + employment profile integration
+
+==================================================
+1. CORE ARCHITECTURE PRINCIPLE
+==================================================
+
+DO NOT assume:
+
+higher role = all lower-role features.
+
+Example:
+
+Super Admin is NOT automatically an employee.
+
+Company Admin is NOT automatically an employee.
+
+HR is NOT automatically required to Punch In.
+
+Manager may be both:
+
+manager
++
+employee
+
+Employee self-service features depend on:
+
+- linked Employee record
+- specific permissions
+- applicable company context
+
+NOT role hierarchy.
+
+==================================================
+2. VERY IMPORTANT RULE
+==================================================
+
+ADMIN AUTHORITY DOES NOT IMPLY EMPLOYEE SELF-SERVICE ACCESS.
+
+Do NOT automatically grant:
+
+attendanceViewSelf
+attendancePunchIn
+attendancePunchOut
+attendanceBreak
+attendanceRequestCorrection
+
+to:
+
+Super Admin
+Company Admin
+
+unless the account is genuinely linked to an Employee and those permissions are explicitly granted.
+
+==================================================
+3. KEEP USERACCOUNT AND EMPLOYEE SEPARATE
+==================================================
+
+Do NOT merge UserAccount and Employee entities.
+
+They represent different concepts.
+
+UserAccount:
+
+- authentication
+- login identifier
+- password/session
+- permissions
+- role assignment
+- company access
+- locale
+- notification preferences
+- security/access settings
+
+Employee:
+
+- employee code
+- legal/display name
+- department
+- designation
+- manager
+- joining date
+- employment status
+- shift
+- work location
+- attendance policy
+- employment metadata
+
+Keep domain separation.
+
+BUT:
+
+My Profile UI should intelligently combine them when linked.
+
+==================================================
+4. USER-EMPLOYEE LINK
+==================================================
+
+Use existing:
+
+linkedEmployeeId
+EmployeeReference
+or equivalent.
+
+User account can be:
+
+A. linked to Employee
+
+or
+
+B. administrative account with NO Employee record.
+
+Both must be first-class supported scenarios.
+
+Do NOT require every UserAccount to have an Employee.
+
+==================================================
+5. INTRODUCE USER CAPABILITY CONTEXT
+==================================================
+
+Create centralized derived model such as:
+
+UserCapabilityContext
+
+or:
+
+AuthenticatedUserCapabilities
+
+Do NOT replace AppPermission.
+
+This model derives useful product capabilities from:
+
+UserAccount
+PermissionSet
+linked Employee
+CompanyContext
+enabled modules
+scope resolvers
+
+Example fields:
+
+hasLinkedEmployee
+
+canUseSelfAttendance
+
+canViewSelfAttendanceHistory
+
+canRequestAttendanceCorrection
+
+canViewTeamAttendance
+
+canViewCompanyAttendance
+
+canApproveAttendanceCorrections
+
+canManageEmployees
+
+canManageAttendanceConfiguration
+
+canViewAttendanceReports
+
+canManageUsers
+
+canManageRoles
+
+canManageCompany
+
+canAccessPlatformAdministration
+
+Use only capabilities genuinely needed.
+
+==================================================
+6. CAPABILITY RESOLVER
+==================================================
+
+Create:
+
+UserCapabilityResolver
+
+Input:
+
+AuthSession
+UserAccount
+PermissionSet
+EmployeeReference optional
+CompanyContext
+
+Output:
+
+UserCapabilityContext
+
+Do NOT calculate the same capability separately in:
+
+sidebar
+
+dashboard
+
+profile
+
+attendance
+
+routes.
+
+==================================================
+7. SELF ATTENDANCE CAPABILITY
+==================================================
+
+Example logic conceptually:
+
+canUseSelfAttendance =
+    hasLinkedEmployee
+    AND attendanceViewSelf
+    AND one or more self attendance action/view permissions
+
+Do not show My Attendance if:
+
+hasLinkedEmployee == false
+
+even if the user has attendanceViewAll.
+
+==================================================
+8. ATTENDANCE HISTORY CAPABILITY
+==================================================
+
+Show personal Attendance History only when:
+
+hasLinkedEmployee
+AND attendanceViewSelf
+
+Do NOT show personal History just because user can view company attendance.
+
+==================================================
+9. TEAM ATTENDANCE CAPABILITY
+==================================================
+
+Show Team Attendance when:
+
+attendanceViewTeam
+AND a meaningful team scope can be resolved
+
+If manager-type account has no linked Employee and team hierarchy depends on manager employee ID:
+
+Team Attendance should NOT appear.
+
+Do not fabricate a team.
+
+==================================================
+10. ALL ATTENDANCE CAPABILITY
+==================================================
+
+Show All Attendance when:
+
+attendanceViewAll
+
+This does NOT require linkedEmployee.
+
+HR/Admin can have this without self attendance.
+
+==================================================
+11. ATTENDANCE CONFIG CAPABILITY
+==================================================
+
+Show attendance configuration destinations based on:
+
+shiftView/manage
+workLocationView/manage
+attendancePolicyView/manage
+
+Do not expose self attendance controls merely because configuration access exists.
+
+==================================================
+12. ATTENDANCE REPORT CAPABILITY
+==================================================
+
+Show Reports when:
+
+attendanceReportView
+
+Scope still derives from:
+
+attendanceViewTeam
+attendanceViewAll
+
+Do not infer company scope from role name.
+
+==================================================
+13. EMPLOYEE MANAGEMENT CAPABILITY
+==================================================
+
+Show Employees when user has one or more meaningful employee permissions such as:
+
+employeeViewTeam
+employeeViewAll
+employeeCreate
+employeeUpdate
+
+Do not show empty Employee module to ordinary Employee unless self-profile routing requires it.
+
+Self profile should use /app/profile instead.
+
+==================================================
+14. ROLE PURPOSE
+==================================================
+
+Roles may remain useful as:
+
+named permission bundles
+presentation labels
+default dashboard composition
+
+But role must NOT directly authorize screens/actions.
+
+Example:
+
+Role = HR
+
+can influence:
+dashboard wording/layout
+
+But:
+
+permission set determines actual access.
+
+==================================================
+15. PERSONA DEFAULTS — SUPER ADMIN
+==================================================
+
+Default Super Admin experience should focus on PLATFORM administration.
+
+Potential navigation:
+
+Dashboard
+
+Companies / Tenants
+if platform-level company management exists
+
+Users & Access
+
+Roles / Permissions
+
+System / Module Configuration
+
+Audit / Diagnostics where available
+
+Profile
+
+Notifications if relevant
+
+DO NOT show by default:
+
+My Attendance
+
+Attendance History
+
+Punch In
+
+Team Attendance
+
+My Correction Requests
+
+unless account is explicitly linked to Employee and permissions provide those capabilities.
+
+==================================================
+16. SUPER ADMIN COMPANY ATTENDANCE
+==================================================
+
+Do not automatically show attendance operational pages merely because Super Admin technically has broad system authority.
+
+If product gives Super Admin attendance oversight permission:
+
+All Attendance / Reports can appear.
+
+But this must come through explicit permissions/modules.
+
+Avoid making platform administrator sidebar overloaded with every operational screen.
+
+==================================================
+17. PERSONA DEFAULTS — COMPANY ADMIN
+==================================================
+
+Typical Company Admin navigation:
+
+Dashboard
+
+Employees
+
+Attendance Overview / All Attendance
+if attendanceViewAll
+
+Attendance Requests
+if attendanceApprove
+
+Reports
+if attendanceReportView
+
+Configuration
+
+Users & Access
+
+Roles / Permissions
+if allowed
+
+Company Settings
+
+Notifications
+
+Profile
+
+DO NOT automatically show:
+
+My Attendance
+
+My Attendance History
+
+Punch In
+
+Take Break
+
+Punch Out
+
+My Correction Requests
+
+unless:
+
+hasLinkedEmployee
+AND appropriate self permissions.
+
+==================================================
+18. COMPANY ADMIN LINKED AS EMPLOYEE
+==================================================
+
+A Company Admin may ALSO be an employee.
+
+Example:
+
+Owner/Director uses attendance too.
+
+If:
+
+linkedEmployee != null
+AND attendanceViewSelf
+AND attendance self actions allowed
+
+then My Attendance may appear.
+
+This is explicit capability behavior.
+
+Do not prohibit it based on role.
+
+==================================================
+19. PERSONA DEFAULTS — HR
+==================================================
+
+Typical HR navigation:
+
+Dashboard
+
+Employees
+
+All Attendance
+
+Attendance Requests
+
+Reports
+
+Shifts
+
+Work Locations
+
+Attendance Policies
+
+Notifications
+
+Profile
+
+If HR account is linked to Employee and has self permissions:
+
+also show:
+
+My Attendance
+History
+My Correction Requests
+
+If not linked:
+do not show those.
+
+==================================================
+20. PERSONA DEFAULTS — MANAGER
+==================================================
+
+Typical Manager navigation:
+
+Dashboard
+
+My Attendance
+if linked + permitted
+
+Attendance History
+if linked + permitted
+
+Team Attendance
+
+Team Employees
+if employeeViewTeam
+
+Attendance Requests
+if approval permission
+
+Team Reports
+if report permission
+
+Notifications
+
+Profile
+
+Manager generally requires linked Employee if team scope is based on managerId relationship.
+
+Handle missing link safely.
+
+==================================================
+21. PERSONA DEFAULTS — EMPLOYEE
+==================================================
+
+Typical Employee navigation:
+
+Dashboard
+
+My Attendance
+
+History
+
+My Correction Requests
+
+Notifications
+
+Profile
+
+Do NOT expose:
+
+All Attendance
+
+Team Attendance
+
+Employee Management
+
+Attendance Configuration
+
+Company Reports
+
+unless explicit additional permissions exist.
+
+==================================================
+22. CAPABILITY > PERSONA MATRIX
+==================================================
+
+Build a centralized test/documentation matrix.
+
+Example concept:
+
+SUPER ADMIN
+
+hasLinkedEmployee: maybe false
+
+canUseSelfAttendance:
+false by default
+
+canViewTeamAttendance:
+false by default
+
+canViewCompanyAttendance:
+only if explicitly permitted
+
+canManageUsers:
+true according to permissions
+
+COMPANY ADMIN
+
+canManageEmployees:
+true
+
+canViewCompanyAttendance:
+usually true
+
+canUseSelfAttendance:
+only if linked + permission
+
+HR
+
+canManageEmployees:
+true
+
+canViewCompanyAttendance:
+true
+
+canUseSelfAttendance:
+only if linked + permission
+
+MANAGER
+
+canViewTeamAttendance:
+true if team resolvable
+
+canUseSelfAttendance:
+true if linked + permission
+
+EMPLOYEE
+
+canUseSelfAttendance:
+true
+
+canViewSelfAttendanceHistory:
+true
+
+No hardcoded role enforcement.
+
+==================================================
+23. NAVIGATION RESOLVER UPDATE
+==================================================
+
+Update ModuleNavigationService / NavigationResolver.
+
+Navigation visibility should support:
+
+requiredPermission
+
+requiredCapability
+
+enabledModule
+
+route scope
+
+where useful.
+
+Do NOT put conditions inside Sidebar widgets.
+
+==================================================
+24. NAVIGATION ITEM MODEL
+==================================================
+
+If needed extend:
+
+AppNavigationItem
+
+with something like:
+
+requiredPermissions
+
+requiredCapabilities
+
+matchPolicy
+
+But avoid overly complex dynamic expression engine.
+
+Simple typed conditions are enough.
+
+==================================================
+25. MY ATTENDANCE NAVIGATION
+==================================================
+
+My Attendance visibility:
+
+requires:
+hasLinkedEmployee
+AND relevant self attendance capability
+
+Do NOT show disabled My Attendance menu item.
+
+Hide irrelevant destination cleanly.
+
+==================================================
+26. MY HISTORY NAVIGATION
+==================================================
+
+Personal History:
+
+requires:
+hasLinkedEmployee
+AND canViewSelfAttendanceHistory
+
+==================================================
+27. MY CORRECTIONS NAVIGATION
+==================================================
+
+Personal Correction Requests:
+
+requires:
+hasLinkedEmployee
+AND attendanceRequestCorrection
+
+or current permission/policy combination.
+
+==================================================
+28. TEAM ATTENDANCE NAVIGATION
+==================================================
+
+Requires:
+canViewTeamAttendance
+
+Do not show if team cannot be resolved.
+
+==================================================
+29. ALL ATTENDANCE NAVIGATION
+==================================================
+
+Requires:
+canViewCompanyAttendance
+
+==================================================
+30. REQUEST REVIEW NAVIGATION
+==================================================
+
+Requires:
+canApproveAttendanceCorrections
+
+Scope may be:
+
+team
+company
+
+==================================================
+31. CONFIGURATION NAVIGATION
+==================================================
+
+Config sub-items should independently resolve.
+
+Example:
+
+Shifts
+→ shiftView/manage
+
+Work Locations
+→ workLocationView/manage
+
+Attendance Policies
+→ attendancePolicyView/manage
+
+Do not expose all three because one permission exists.
+
+==================================================
+32. PROFILE ARCHITECTURE
+==================================================
+
+Rebuild:
+
+/app/profile
+
+as:
+
+MY PROFILE
+
+This is the logged-in user's unified profile experience.
+
+It combines:
+
+UserAccount
++
+linked Employee if available
+
+but does NOT merge domain entities.
+
+==================================================
+33. MY PROFILE DATA MODEL
+==================================================
+
+Create:
+
+MyProfileViewModel
+
+or equivalent typed read model.
+
+Potential sections:
+
+account
+
+employment optional
+
+access
+
+security
+
+preferences
+
+attendance summary optional
+
+Do not pass many unrelated repositories directly into widgets.
+
+==================================================
+34. MY PROFILE REPOSITORY / USE CASE
+==================================================
+
+Create/reuse:
+
+MyProfileRepository
+or:
+GetMyProfileUseCase
+
+May aggregate:
+
+AuthSession/UserAccount
+
+EmployeeRepository linked employee
+
+CompanyContext
+
+permissions
+
+notification preferences
+
+attendance monthly summary if permitted
+
+Do not duplicate business entities.
+
+==================================================
+35. MY PROFILE HEADER — LINKED EMPLOYEE
+==================================================
+
+Example:
+
+[Avatar]
+
+Ahmed Khan
+
+Software Engineer
+
+EMP-0012 · Engineering
+
+Active
+
+This is appropriate when Employee exists.
+
+Use actual designation/department.
+
+==================================================
+36. MY PROFILE HEADER — ADMIN ACCOUNT WITHOUT EMPLOYEE
+==================================================
+
+Example:
+
+[Avatar]
+
+Mohammed Ali
+
+Company Administrator
+
+Bitlogix Systems
+
+Active Account
+
+DO NOT display:
+
+Employee Code
+
+Department
+
+Shift
+
+Work Location
+
+fake designation
+
+if no Employee exists.
+
+==================================================
+37. MY PROFILE — OVERVIEW SECTION
+==================================================
+
+For linked employee:
+
+Full Name
+
+Email
+
+Phone
+
+Employee Code
+
+Department
+
+Designation
+
+Manager
+
+Join Date
+
+Employment Status
+
+Use Employee + UserAccount appropriately.
+
+Avoid duplicate values twice.
+
+==================================================
+38. MY PROFILE — WORK INFORMATION
+==================================================
+
+Only if linked Employee.
+
+Show:
+
+Department
+
+Designation
+
+Manager
+
+Join Date
+
+Employment Type
+
+Shift
+
+Work Location
+
+Attendance Policy
+
+Working Days if useful
+
+Do not show if no Employee.
+
+==================================================
+39. MY PROFILE — ACCOUNT & ACCESS
+==================================================
+
+For ALL users:
+
+Login identifier
+
+Email/Phone
+
+Account status
+
+Current company
+
+Role label(s)
+
+Permission summary
+
+Language
+
+Notification preferences
+
+Do NOT dump 40 raw permission enum names in normal UI.
+
+==================================================
+40. PERMISSION SUMMARY UX
+==================================================
+
+Use readable grouped access summary.
+
+Example:
+
+Access
+
+Employees
+Manage
+
+Attendance
+Company View + Approvals
+
+Reports
+View
+
+Company Settings
+Manage
+
+or:
+
+Administrative Access
+
+Do not show:
+
+employeeViewAll
+attendanceApprove
+companyManage
+
+as raw technical text unless debug/admin inspector.
+
+==================================================
+41. SUPER ADMIN PROFILE
+==================================================
+
+Super Admin profile focuses on:
+
+ACCOUNT
+
+Name
+
+Email
+
+Phone
+
+Account Status
+
+PLATFORM ACCESS
+
+Super Admin
+
+Companies/Tenants accessible
+
+System/module access
+
+SECURITY
+
+Change Password
+
+Sessions if available
+
+PREFERENCES
+
+Language
+
+Notifications
+
+No Employee section unless actually linked.
+
+==================================================
+42. COMPANY ADMIN PROFILE
+==================================================
+
+If no Employee link:
+
+ACCOUNT
+
+ORGANIZATION ACCESS
+
+SECURITY
+
+PREFERENCES
+
+If linked:
+
+also show Employment section.
+
+Do not force attendance card.
+
+==================================================
+43. HR PROFILE
+==================================================
+
+If linked employee:
+
+show account + employment.
+
+If self attendance capability:
+show optional My Attendance section.
+
+If not:
+do not.
+
+==================================================
+44. MANAGER PROFILE
+==================================================
+
+Typically linked employee.
+
+Show:
+
+Employment
+
+Manager hierarchy
+
+Shift/location
+
+Account
+
+Preferences
+
+My Attendance summary if permitted.
+
+Do not show company-wide admin metadata unless permission gives it.
+
+==================================================
+45. EMPLOYEE PROFILE
+==================================================
+
+Employee My Profile should be detailed and useful.
+
+Sections:
+
+Overview
+
+Employment
+
+Work & Attendance
+
+Account & Security
+
+Preferences
+
+Possible attendance section:
+
+This Month
+
+Recorded Days
+
+Worked Hours
+
+Late Records
+
+[ View Attendance History ]
+
+Only use metrics domain supports.
+
+==================================================
+46. MY ATTENDANCE PROFILE SECTION
+==================================================
+
+Show ONLY if:
+
+hasLinkedEmployee
+AND canViewSelfAttendanceHistory
+
+Potential:
+
+Current State
+
+This Month Worked
+
+Completed Days
+
+Late Records
+
+Pending Correction
+
+Actions:
+
+Open Attendance
+
+View History
+
+Do not duplicate full Attendance dashboard.
+
+==================================================
+47. PROFILE SECURITY SECTION
+==================================================
+
+All accounts:
+
+Change Password
+
+Session information if supported
+
+Sign Out action
+
+Possibly account status.
+
+Do not display tokens.
+
+==================================================
+48. PROFILE PREFERENCES
+==================================================
+
+All users:
+
+Language
+
+Notification/Reminder preferences where relevant
+
+Theme if existing
+
+Do not put company business configuration in My Profile.
+
+==================================================
+49. ATTENDANCE REMINDER SETTINGS
+==================================================
+
+Show attendance reminders only when:
+
+hasLinkedEmployee
+AND self attendance/reminder capability makes sense.
+
+Super Admin with no Employee:
+
+do not show:
+
+Shift Reminder
+Punch Out Reminder
+
+==================================================
+50. EMPLOYEE RECORD VS MY PROFILE
+==================================================
+
+Keep:
+
+/app/profile
+
+and:
+
+/app/employees/:employeeId
+
+separate.
+
+They have different purposes.
+
+==================================================
+51. EMPLOYEE RECORD PURPOSE
+==================================================
+
+/app/employees/:employeeId
+
+is an ORGANIZATIONAL EMPLOYEE RECORD.
+
+Used by:
+
+HR
+
+Admin
+
+Manager with scope
+
+It can contain:
+
+Overview
+
+Employment
+
+Attendance Configuration
+
+Account Access
+
+Related Attendance
+
+Administrative actions
+
+==================================================
+52. MY PROFILE PURPOSE
+==================================================
+
+/app/profile
+
+is PERSONAL SELF-SERVICE.
+
+It contains:
+
+My identity
+
+My employment info
+
+My account
+
+My security
+
+My preferences
+
+My attendance summary where relevant
+
+No admin editing controls unless product explicitly includes them.
+
+==================================================
+53. REUSE COMPONENTS
+==================================================
+
+Do NOT duplicate visuals/data.
+
+Create reusable components such as:
+
+PersonProfileHeader
+
+EmploymentOverviewSection
+
+AccountAccessSummary
+
+WorkAssignmentSummary
+
+ProfileDetailsGrid
+
+AttendanceProfileSummary
+
+Use them in:
+
+My Profile
+
+Employee Details
+
+with configuration.
+
+==================================================
+54. EMPLOYEE PROFILE DATA REUSE
+==================================================
+
+My Profile linked Employee section should use same:
+
+Employee
+
+DepartmentReference
+
+DesignationReference
+
+EmployeeReference manager
+
+Shift reference
+
+WorkLocation reference
+
+AttendancePolicy reference
+
+as Employee Details.
+
+Do not create separate profile copies of these fields.
+
+==================================================
+55. NO DIVERGENT DATA
+==================================================
+
+If HR updates Employee designation:
+
+My Profile should reactively show new designation.
+
+No separate cached profile designation.
+
+==================================================
+56. ACCOUNT ACCESS SECTION REUSE
+==================================================
+
+Employee Details may show:
+
+Login Enabled
+Linked User
+Account Status
+
+My Profile may show:
+
+Login Email
+Account Status
+Role/Access
+
+Same domain relationship, different UX.
+
+==================================================
+57. PROFILE EDITING
+==================================================
+
+Do NOT allow employee to edit HR-controlled fields such as:
+
+Employee Code
+
+Department
+
+Designation
+
+Manager
+
+Shift
+
+Work Location
+
+Attendance Policy
+
+through My Profile.
+
+These remain HR/Admin controlled.
+
+==================================================
+58. SELF-EDITABLE PROFILE FIELDS
+==================================================
+
+Only allow profile fields that product explicitly supports.
+
+Possible future/self fields:
+
+avatar
+
+phone
+
+preferred language
+
+notification preferences
+
+Do not assume all Employee fields are self-editable.
+
+If self-edit not already supported:
+keep profile read-only except existing account settings.
+
+==================================================
+59. PROFILE AVATAR
+==================================================
+
+If avatar architecture already exists:
+
+reuse it.
+
+Do not build complex upload flow unless currently supported.
+
+Fallback initials.
+
+==================================================
+60. PROFILE ROUTING
+==================================================
+
+Profile route:
+
+/app/profile
+
+Security:
+
+/app/profile/security
+only if full screen already useful.
+
+Notification settings:
+
+/app/profile/notifications
+or existing settings route.
+
+Do not over-route simple sections.
+
+==================================================
+61. PROFILE SIDEBAR/DRAWER
+==================================================
+
+Profile remains available through account menu.
+
+It does not need to become a major primary sidebar module unless current design intentionally does that.
+
+==================================================
+62. PROFILE ACCOUNT MENU
+==================================================
+
+Top-right account menu:
+
+My Profile
+
+Notifications
+
+Language/Preferences where appropriate
+
+Change Password / Security
+
+Logout
+
+Do not include employee administration actions here.
+
+==================================================
+63. DASHBOARD PERSONA CLEANUP
+==================================================
+
+Revisit Dashboard composition.
+
+Super Admin:
+platform/company administration overview
+
+Company Admin:
+company operations/management overview
+
+HR:
+workforce/attendance management
+
+Manager:
+team operations
+
+Employee:
+self-service
+
+Do NOT show employee Punch In card to unlinked Super/Company Admin.
+
+==================================================
+64. SUPER ADMIN DASHBOARD
+==================================================
+
+If platform-level data exists:
+
+prioritize:
+
+Companies/Tenants
+
+Users
+
+Modules/System
+
+Administration
+
+Do not fake platform metrics if those modules are not implemented.
+
+If current app is single-company frontend demo:
+keep a focused Admin dashboard without pretending they are Employee.
+
+==================================================
+65. COMPANY ADMIN DASHBOARD
+==================================================
+
+Prioritize:
+
+Employees
+
+Company attendance overview if permitted
+
+Pending requests
+
+Reports
+
+Configuration
+
+Users/Access
+
+Do not show:
+
+My Shift
+
+Punch In
+
+My Monthly Attendance
+
+unless linked + self capability.
+
+==================================================
+66. HR DASHBOARD
+==================================================
+
+Prioritize:
+
+workforce
+
+All Attendance
+
+needs attention
+
+corrections
+
+reports
+
+employee actions
+
+Self Attendance only if linked and supported, possibly as secondary.
+
+==================================================
+67. MANAGER DASHBOARD
+==================================================
+
+Prioritize:
+
+Team Attendance
+
+Team issues
+
+Approvals
+
+Team Employees
+
+Self Attendance where permitted.
+
+==================================================
+68. EMPLOYEE DASHBOARD
+==================================================
+
+Prioritize:
+
+My Attendance
+
+My Shift
+
+My Monthly Summary
+
+Recent activity
+
+My requests.
+
+==================================================
+69. DASHBOARD COMPONENT CAPABILITIES
+==================================================
+
+Dashboard sections should declare required capability/permission.
+
+Do not hardcode:
+
+if role == companyAdmin
+
+for authorization.
+
+Composition resolver can use role/persona only for ordering/priority after capability eligibility is established.
+
+==================================================
+70. DEFAULT LANDING PAGE
+==================================================
+
+Review DefaultLandingResolver.
+
+Super Admin/Company Admin without self employee must NOT land on Attendance Today just because it exists.
+
+Priority should consider capability.
+
+Example conceptual landing:
+
+Super Admin
+→ Dashboard
+
+Company Admin
+→ Dashboard
+
+HR
+→ Dashboard
+
+Manager
+→ Dashboard
+
+Employee
+→ Dashboard
+
+If Dashboard unavailable:
+choose first permitted sensible module.
+
+==================================================
+71. ATTENDANCE ROUTE GUARD — SELF
+==================================================
+
+/app/attendance
+
+Employee self Attendance Today route must require:
+
+hasLinkedEmployee
+AND self attendance capability.
+
+attendanceViewAll alone is NOT enough.
+
+==================================================
+72. SELF HISTORY ROUTE GUARD
+==================================================
+
+/app/attendance/history
+
+requires:
+
+linked Employee
+AND attendanceViewSelf.
+
+Do not permit unlinked admin just because they have attendanceViewAll.
+
+They should use:
+
+/app/attendance/all
+
+==================================================
+73. MY CORRECTIONS ROUTE GUARD
+==================================================
+
+Personal correction routes require:
+
+linked Employee
+AND self correction permission/capability.
+
+==================================================
+74. TEAM ROUTE GUARD
+==================================================
+
+Team Attendance:
+
+attendanceViewTeam
+AND valid team context.
+
+If user lacks linked manager Employee where team resolver depends on it:
+
+route unavailable.
+
+==================================================
+75. ALL ATTENDANCE ROUTE GUARD
+==================================================
+
+All Attendance:
+
+attendanceViewAll
+
+No Employee link required.
+
+==================================================
+76. REPORT ROUTE GUARD
+==================================================
+
+Reports:
+
+attendanceReportView
+
+Scope resolver determines:
+
+team/company.
+
+No self Employee required for company admin report view.
+
+==================================================
+77. CONFIG ROUTE GUARDS
+==================================================
+
+Shifts
+
+Locations
+
+Policies
+
+remain permission driven.
+
+No Employee link required.
+
+==================================================
+78. MANAGER WITHOUT LINKED EMPLOYEE
+==================================================
+
+If Manager role/account exists without Employee link:
+
+do NOT silently show empty Team Attendance as though nothing is wrong.
+
+Show appropriate configuration state:
+
+No employee profile is linked to this account.
+
+Team access cannot be resolved.
+
+or hide team module based on capabilities.
+
+Admin/HR can fix account linking.
+
+==================================================
+79. HR WITHOUT LINKED EMPLOYEE
+==================================================
+
+Perfectly valid.
+
+HR can manage:
+
+Employees
+
+All Attendance
+
+Corrections
+
+Reports
+
+Configuration
+
+without self attendance.
+
+Profile shows account/admin information.
+
+==================================================
+80. COMPANY ADMIN WITHOUT LINKED EMPLOYEE
+==================================================
+
+Perfectly valid.
+
+Do not show broken Employee placeholders in profile.
+
+==================================================
+81. SUPER ADMIN WITHOUT COMPANY EMPLOYEE
+==================================================
+
+Perfectly valid.
+
+Profile remains fully useful.
+
+No fake employment section.
+
+==================================================
+82. LINK ACCOUNT ACTION
+==================================================
+
+Employee Details existing Login Access section may support:
+
+link/unlink UserAccount
+
+or enable login.
+
+Reuse existing account provisioning architecture.
+
+Do not build a completely new identity management system.
+
+==================================================
+83. UNLINK ACCOUNT SAFETY
+==================================================
+
+If an Employee/User link is removed:
+
+current logged-in account capability must update if affected.
+
+Self Attendance disappears appropriately.
+
+Do not retain stale EmployeeReference.
+
+==================================================
+84. USER PERMISSION CHANGE
+==================================================
+
+If Company Admin gives/removes self attendance permissions while account is active:
+
+NavigationResolver should update reactively.
+
+Do not require app restart.
+
+==================================================
+85. USER LINK CHANGE
+==================================================
+
+If linkedEmployee changes:
+
+capability resolver updates.
+
+Profile updates.
+
+Navigation updates.
+
+Dashboard updates.
+
+Self attendance state resets/re-resolves.
+
+==================================================
+86. NAVIGATION RE-EVALUATION
+==================================================
+
+If current user loses capability for current route:
+
+Example:
+
+User is on My Attendance.
+
+linkedEmployee removed.
+
+Route becomes invalid.
+
+Navigate to safe:
+
+Dashboard
+or DefaultLandingResolver.
+
+Do not leave stale attendance screen.
+
+==================================================
+87. PROFILE REACTIVE UPDATE
+==================================================
+
+My Profile should watch:
+
+current UserAccount
+
+linked Employee
+
+CompanyContext
+
+permission/capability context
+
+preferences.
+
+No manual refresh required for local changes.
+
+==================================================
+88. ACCOUNT DISPLAY NAME
+==================================================
+
+If Employee linked:
+
+prefer appropriate Employee display name where product design chooses.
+
+If no Employee:
+use UserAccount display name.
+
+Do not show blank admin header.
+
+==================================================
+89. PROFILE ROLE LABEL
+==================================================
+
+Role label is useful:
+
+Company Administrator
+
+HR
+
+Manager
+
+Employee
+
+Super Administrator
+
+But authorization still comes from permissions.
+
+==================================================
+90. MULTIPLE ROLES
+==================================================
+
+If system allows multiple roles:
+
+Profile can show:
+
+Roles / Access
+
+Do not assume one role forever.
+
+Navigation remains resolved from resulting permission/capability set.
+
+==================================================
+91. PLATFORM SUPER ADMIN VS COMPANY ADMIN
+==================================================
+
+Keep conceptual distinction.
+
+Super Admin:
+platform scope
+
+Company Admin:
+tenant/company scope
+
+Do not let Company Admin access other companies.
+
+Do not use self attendance to distinguish them.
+
+==================================================
+92. COMPANY ADMIN EMPLOYEE MANAGEMENT
+==================================================
+
+Company Admin may manage Employee records even if not an Employee themselves.
+
+This is expected.
+
+==================================================
+93. HR EMPLOYEE PROFILE LINK
+==================================================
+
+HR can open:
+
+/app/employees/:employeeId
+
+for others.
+
+When opening their own Employee record:
+
+still an organizational record.
+
+My Profile remains:
+
+/app/profile
+
+Do not redirect one to the other automatically.
+
+==================================================
+94. "VIEW MY EMPLOYEE RECORD"
+==================================================
+
+Optional in My Profile linked-employment section:
+
+View Employment Details
+
+only if user has permission to view own Employee record and the Employee Details route supports self safely.
+
+However avoid exposing admin-oriented employee detail unnecessarily to ordinary Employee.
+
+Preferred:
+My Profile already contains needed self data.
+
+==================================================
+95. PROFILE SECTION VISIBILITY
+==================================================
+
+Use capability/data-driven sections.
+
+ACCOUNT:
+always
+
+EMPLOYMENT:
+if linkedEmployee
+
+WORK ASSIGNMENT:
+if linkedEmployee
+
+SELF ATTENDANCE:
+if self attendance capability
+
+ACCESS:
+always, with appropriate summary
+
+SECURITY:
+always
+
+PREFERENCES:
+always/applicable
+
+==================================================
+96. PROFILE EMPTY SECTION RULE
+==================================================
+
+Do not show:
+
+Employment
+"No data"
+
+for admin account with no Employee.
+
+Hide section entirely.
+
+==================================================
+97. PROFILE VISUAL DESIGN
+==================================================
+
+Make Profile detailed but calm.
+
+Desktop suggested composition:
+
+Header
+
+Main content:
+Overview
+Employment/Work Assignment
+
+Side/supporting:
+Account & Access
+Security
+Preferences
+
+Attendance summary can be compact section when applicable.
+
+Mobile:
+stack sections.
+
+Do not turn Profile into giant card grid.
+
+==================================================
+98. PROFILE DESKTOP LAYOUT
+==================================================
+
+Use screen efficiently.
+
+Potential:
+
+2/3 main
+1/3 account/security
+
+Avoid massive empty right side.
+
+==================================================
+99. PROFILE TABLET
+==================================================
+
+Responsive two-column where space supports.
+
+==================================================
+100. PROFILE MOBILE
+==================================================
+
+Single column.
+
+Identity header concise.
+
+Important actions accessible.
+
+==================================================
+101. PROFILE NAVIGATION/URL
+==================================================
+
+/app/profile remains unique routed screen across:
+
+Web
+Android
+iOS
+Desktop.
+
+No modal-only profile for desktop.
+
+Account menu should route there.
+
+==================================================
+102. PROFILE BROWSER BACK
+==================================================
+
+Dashboard
+→ My Profile
+→ Back
+
+returns Dashboard.
+
+If direct-link:
+Back fallback → Dashboard/default landing.
+
+==================================================
+103. PROFILE LOCALIZATION
+==================================================
+
+EVERY visible text localized.
+
+Add English + Arabic keys for concepts including:
+
+My Profile
+
+Overview
+
+Employment
+
+Work Information
+
+Account & Access
+
+Security
+
+Preferences
+
+Employee Code
+
+Department
+
+Designation
+
+Manager
+
+Joining Date
+
+Employment Type
+
+Employment Status
+
+Shift
+
+Work Location
+
+Attendance Policy
+
+Working Days
+
+Account Status
+
+Login Email
+
+Role
+
+Roles
+
+Access
+
+Current Company
+
+Administrative Access
+
+My Attendance
+
+This Month
+
+Worked Hours
+
+Late Records
+
+Pending Correction
+
+View Attendance History
+
+Open Attendance
+
+Change Password
+
+Notifications
+
+Language
+
+No Employee Profile Linked
+
+Team Access Cannot Be Resolved
+
+and all related support/error text.
+
+==================================================
+104. RTL PROFILE
+==================================================
+
+Audit:
+
+identity header
+
+avatar
+
+detail grids
+
+employment section
+
+access summary
+
+security actions
+
+attendance summary
+
+Arabic must be equally polished.
+
+==================================================
+105. PROFILE MIXED DIRECTION
+==================================================
+
+Handle:
+
+EMP-0012
+
+email
+
+phone
+
+dates
+
+times
+
+correctly in Arabic.
+
+==================================================
+106. PROFILE ACCESSIBILITY
+==================================================
+
+Ensure:
+
+section headings semantic
+
+avatar has appropriate label
+
+detail values readable
+
+actions keyboard accessible
+
+status not color-only
+
+text scaling safe.
+
+==================================================
+107. ACCOUNT MENU CLEANUP
+==================================================
+
+Audit account menu.
+
+Recommended:
+
+My Profile
+
+Notifications
+
+Language/Preferences
+
+Security/Change Password
+
+Logout
+
+Do not add:
+
+My Attendance
+
+if main navigation already provides it.
+
+Avoid duplicates.
+
+==================================================
+108. SIDEBAR CLEANUP
+==================================================
+
+For each test persona verify no irrelevant modules.
+
+SUPER ADMIN without Employee:
+
+NO My Attendance
+NO My History
+NO My Corrections
+NO Team Attendance unless explicitly scoped
+
+COMPANY ADMIN without Employee:
+
+NO My Attendance
+NO My History
+NO My Corrections
+
+HR without Employee:
+
+NO My Attendance
+NO My History
+
+Manager linked:
+Team + Self where permitted
+
+Employee:
+Self modules only.
+
+==================================================
+109. "ATTENDANCE" MODULE STRUCTURE
+==================================================
+
+Attendance module may contain multiple destinations.
+
+Resolve dynamically.
+
+Example HR/Admin:
+
+Attendance
+  All Attendance
+  Requests
+  Reports link if inside module architecture
+
+Example Manager:
+
+Attendance
+  My Attendance
+  History
+  Team Attendance
+  Requests
+
+Example Employee:
+
+Attendance
+  Today
+  History
+  My Requests
+
+But do not show empty parent/module with no visible children.
+
+==================================================
+110. NAVIGATION LABEL CLARITY
+==================================================
+
+Avoid ambiguous:
+
+Attendance
+
+for two different purposes where sub-navigation is visible.
+
+Use:
+
+My Attendance
+
+Team Attendance
+
+All Attendance
+
+History
+
+Correction Requests
+
+where appropriate.
+
+==================================================
+111. ADMIN ATTENDANCE OVERVIEW
+==================================================
+
+Company Admin/HR can have:
+
+All Attendance
+
+This is organizational monitoring.
+
+Do not confuse with:
+
+My Attendance
+
+which is self Punch In/Out.
+
+==================================================
+112. ROUTE NAMING
+==================================================
+
+Keep self/org routes distinct.
+
+Self:
+
+/app/attendance
+
+/app/attendance/history
+
+/app/attendance/corrections
+
+Org:
+
+/app/attendance/team
+
+/app/attendance/all
+
+/app/attendance/requests
+
+This distinction is good.
+
+Guard them correctly.
+
+==================================================
+113. DASHBOARD QUICK ACTION CLEANUP
+==================================================
+
+Super/Company Admin without self employee:
+
+do not show:
+
+Punch In
+Take Break
+View My History
+
+Instead use permitted actions:
+
+Employees
+
+All Attendance
+
+Reports
+
+Configuration
+
+Users/Access
+
+==================================================
+114. PROFILE DASHBOARD CONSISTENCY
+==================================================
+
+If profile says account has no Employee link:
+
+dashboard must not simultaneously show:
+
+Your Shift
+
+Punch In
+
+My Work Location.
+
+Use same capability context everywhere.
+
+==================================================
+115. NOTIFICATION CLEANUP
+==================================================
+
+Do not send:
+
+Shift Reminder
+
+Punch Out Reminder
+
+to account without linked Employee/self attendance capability.
+
+Notification reminder scheduler must check capabilities.
+
+==================================================
+116. SELF ATTENDANCE BLOC CREATION
+==================================================
+
+Do not instantiate self AttendanceBloc for every admin session.
+
+Create/load only when:
+
+hasLinkedEmployee
+AND self attendance route/dashboard section requires it.
+
+Avoid unnecessary DB watches.
+
+==================================================
+117. DASHBOARD QUERY OPTIMIZATION
+==================================================
+
+Company Admin dashboard should not query self attendance when section is hidden.
+
+Super Admin should not query Employee shift if unlinked.
+
+==================================================
+118. PROFILE QUERY OPTIMIZATION
+==================================================
+
+If no Employee link:
+
+do not issue unrelated:
+
+shift
+
+location
+
+attendance monthly summary
+
+queries.
+
+==================================================
+119. CAPABILITY CACHE
+==================================================
+
+If UserCapabilityContext is cached:
+
+invalidate on:
+
+login
+
+logout
+
+permission update
+
+Employee link update
+
+company switch
+
+module enablement change
+
+Do not retain stale capabilities.
+
+==================================================
+120. ROUTE GUARD USES SAME CAPABILITIES
+==================================================
+
+Avoid mismatch:
+
+sidebar hides My Attendance
+
+but direct URL allows it.
+
+NavigationResolver and route guard must share same capability resolution.
+
+==================================================
+121. DIRECT URL — UNLINKED ADMIN
+==================================================
+
+Company Admin with no Employee opens:
+
+/app/attendance
+
+Expected:
+
+Unauthorized / unavailable / appropriate safe redirect.
+
+Do NOT attempt to resolve old Employee.
+
+But:
+
+/app/attendance/all
+
+can work if permission permits.
+
+==================================================
+122. DIRECT URL — HR WITHOUT EMPLOYEE
+==================================================
+
+Same rule.
+
+Self route unavailable.
+
+Company route works.
+
+==================================================
+123. DIRECT URL — LINKED ADMIN
+==================================================
+
+Company Admin linked to Employee AND self permissions:
+
+/app/attendance
+
+works.
+
+This demonstrates capability-based design.
+
+==================================================
+124. MANAGER TEAM SCOPE
+==================================================
+
+Team Attendance requires valid team resolver.
+
+If direct reports are based on Employee.managerId:
+
+current account must resolve linked employee manager identity.
+
+Do not use UserAccount.id as Employee.managerId.
+
+==================================================
+125. EMPLOYEE PROFILE ACCOUNT LINK DISPLAY
+==================================================
+
+In HR Employee Details:
+
+Account Access section should show:
+
+Login Enabled
+
+Linked User
+
+Account Status
+
+Role/Access
+
+Do not duplicate full My Profile.
+
+==================================================
+126. PROFILE CHANGE PASSWORD
+==================================================
+
+Reuse existing auth/security flow.
+
+Do not create Employee password fields.
+
+Password belongs to UserAccount/auth.
+
+==================================================
+127. PROFILE EMAIL/PHONE SOURCE
+==================================================
+
+If UserAccount and Employee both contain email/phone:
+
+define display/source rule.
+
+Example:
+
+Work Contact:
+Employee.email/phone
+
+Login Identifier:
+UserAccount.loginIdentifier
+
+Do not silently assume they must always match.
+
+==================================================
+128. PROFILE DUPLICATE DATA LABELING
+==================================================
+
+If both are shown:
+
+clearly distinguish:
+
+Work Email
+
+Login Email
+
+Phone
+
+Avoid displaying same value twice without explanation.
+
+==================================================
+129. USERACCOUNT NAME VS EMPLOYEE NAME
+==================================================
+
+Define authoritative display behavior.
+
+When linked:
+
+Employee display name can represent company/person identity.
+
+UserAccount display name remains auth/account metadata.
+
+Avoid inconsistent names across header/dashboard/profile.
+
+==================================================
+130. PROFILE ERROR STATES
+==================================================
+
+Handle:
+
+account loaded, employee missing
+
+employee link points to unavailable record
+
+company missing
+
+permissions unavailable
+
+Do not crash.
+
+Example:
+
+Employment information is currently unavailable.
+
+Account profile remains usable.
+
+==================================================
+131. BROKEN EMPLOYEE LINK
+==================================================
+
+If linkedEmployeeId exists but Employee no longer exists:
+
+capability resolver should NOT claim hasLinkedEmployee=true based solely on non-null ID.
+
+Resolve valid EmployeeReference.
+
+Flag account-link issue for admin/debug.
+
+Self attendance unavailable.
+
+==================================================
+132. ACCOUNT LINK DIAGNOSTICS
+==================================================
+
+In development/admin management UI, safely indicate:
+
+Employee account link missing/invalid
+
+where appropriate.
+
+Do not expose technical IDs unnecessarily to employee.
+
+==================================================
+133. PROFILE LOADING
+==================================================
+
+Use structured skeleton.
+
+Do not full-screen spinner.
+
+Account data can appear with employment section loading if architecture allows, but avoid jarring layout.
+
+==================================================
+134. PROFILE REFRESH
+==================================================
+
+Pull-to-refresh mobile if useful.
+
+Desktop refresh not mandatory if repository reactive.
+
+==================================================
+135. PROFILE EDIT ACTIONS
+==================================================
+
+Do not add giant "Edit Profile" if most employment fields are not self editable.
+
+Provide specific actions:
+
+Change Password
+
+Notification Preferences
+
+Language
+
+Future self-edit fields only if supported.
+
+==================================================
+136. PERMISSION MANAGEMENT
+==================================================
+
+Do NOT let My Profile edit own permissions/roles.
+
+Administrative Users/Access module handles that.
+
+==================================================
+137. ROLE MANAGEMENT
+==================================================
+
+Do NOT let Company Admin see/manage role features unless:
+
+roleManage
+
+permission exists.
+
+Top-level label alone is insufficient.
+
+==================================================
+138. SUPER ADMIN CROSS-COMPANY PROFILE
+==================================================
+
+Super Admin profile may show platform scope/company access summary.
+
+Do not pretend a single employee context if none exists.
+
+==================================================
+139. MULTI-COMPANY USER
+==================================================
+
+If future/current user belongs to multiple companies:
+
+My Profile current-company Employment section should use linked Employee for CURRENT company.
+
+Do not reuse Company A Employee profile in Company B.
+
+==================================================
+140. EMPLOYEE LINK SHOULD BE COMPANY-SCOPED
+==================================================
+
+Audit model.
+
+A global UserAccount may potentially map to different Employee records across companies.
+
+Do not assume one permanent Employee ID across tenants if architecture intends multi-company.
+
+If current product is single-company-per-account, document assumption.
+
+Do not overbuild unnecessarily.
+
+==================================================
+141. CAPABILITY TESTING
+==================================================
+
+Create unit tests for:
+
+Super Admin no Employee
+
+Company Admin no Employee
+
+Company Admin linked Employee
+
+HR no Employee
+
+HR linked Employee
+
+Manager linked Employee
+
+Manager no Employee
+
+Employee linked
+
+Each with varying permissions.
+
+Verify capability output.
+
+==================================================
+142. NAVIGATION TESTING
+==================================================
+
+For each persona/capability context test visible navigation.
+
+SUPER ADMIN no Employee:
+no self attendance destinations.
+
+COMPANY ADMIN no Employee:
+no self attendance.
+
+HR no Employee:
+no self attendance.
+
+MANAGER:
+team + self according to permissions.
+
+EMPLOYEE:
+self only.
+
+==================================================
+143. ROUTE GUARD TESTING
+==================================================
+
+Test direct URLs.
+
+Company Admin no Employee:
+
+/app/attendance
+→ denied
+
+/app/attendance/history
+→ denied
+
+/app/attendance/all
+→ allowed if attendanceViewAll
+
+==================================================
+144. LINKED ADMIN TEST
+==================================================
+
+Company Admin linked to Employee + self permissions:
+
+My Attendance becomes visible.
+
+Direct route allowed.
+
+Profile includes Employment.
+
+==================================================
+145. UNLINK TEST
+==================================================
+
+Start linked admin.
+
+Open My Attendance.
+
+Remove Employee link.
+
+Capabilities update.
+
+Route becomes unavailable.
+
+Navigation item disappears.
+
+Profile Employment disappears.
+
+No stale attendance data.
+
+==================================================
+146. PERMISSION REMOVAL TEST
+==================================================
+
+Linked employee user has:
+
+attendanceViewSelf
+
+Remove permission.
+
+Self Attendance navigation disappears.
+
+Route denied.
+
+Profile Attendance summary hides.
+
+Employment section remains.
+
+==================================================
+147. ATTENDANCE VIEWALL DOES NOT IMPLY SELF TEST
+==================================================
+
+Critical regression test.
+
+User:
+
+hasLinkedEmployee = false
+attendanceViewAll = true
+attendanceViewSelf = false
+
+Expected:
+
+All Attendance = available
+
+My Attendance = unavailable
+
+History = unavailable
+
+==================================================
+148. SELF DOES NOT IMPLY ALL TEST
+==================================================
+
+Employee:
+
+attendanceViewSelf = true
+
+attendanceViewAll = false
+
+Expected:
+
+My Attendance = available
+
+All Attendance = unavailable.
+
+==================================================
+149. TEAM DOES NOT IMPLY ALL TEST
+==================================================
+
+Manager:
+
+attendanceViewTeam = true
+
+attendanceViewAll = false
+
+Expected:
+
+Team Attendance available
+
+All Attendance unavailable.
+
+==================================================
+150. PROFILE TESTING — UNLINKED ADMIN
+==================================================
+
+Verify:
+
+Account section
+
+Access section
+
+Security
+
+Preferences
+
+NO Employment section
+
+NO Shift
+
+NO Attendance summary.
+
+==================================================
+151. PROFILE TESTING — EMPLOYEE
+==================================================
+
+Verify:
+
+Overview
+
+Employment
+
+Work Assignment
+
+Account
+
+Security
+
+Preferences
+
+My Attendance section if permitted.
+
+==================================================
+152. PROFILE TESTING — HR LINKED
+==================================================
+
+Verify combined profile.
+
+No duplicate contradictory values.
+
+==================================================
+153. PROFILE RTL TEST
+==================================================
+
+Arabic:
+
+unlinked Admin profile
+
+Employee profile
+
+Manager profile
+
+Test:
+
+390
+768
+1440.
+
+==================================================
+154. PROFILE RESPONSIVE TEST
+==================================================
+
+At:
+
+390
+
+600
+
+768
+
+1024
+
+1440
+
+1920
+
+No huge dead space.
+
+No card explosion.
+
+==================================================
+155. DASHBOARD TESTING
+==================================================
+
+Verify dashboard sections match capabilities.
+
+No self-attendance card for unlinked Admin.
+
+No all-attendance metric for Employee.
+
+==================================================
+156. REMINDER TESTING
+==================================================
+
+Unlinked admin:
+no shift/punch-out reminder scheduling.
+
+Linked employee:
+reminders according to settings/permissions.
+
+==================================================
+157. ACCOUNT SWITCH TEST
+==================================================
+
+Login Company Admin no Employee.
+
+Profile shows admin.
+
+Logout.
+
+Login Employee.
+
+Profile shows employment.
+
+No stale Admin profile data.
+
+Logout.
+
+Login HR no Employee.
+
+No stale employee fields.
+
+==================================================
+158. COMPANY SWITCH TEST
+==================================================
+
+If company switching exists:
+
+Profile employment/capabilities recompute per company.
+
+==================================================
+159. PERFORMANCE
+==================================================
+
+Do not load hidden persona features.
+
+Navigation/capability resolution should be lightweight.
+
+Avoid repeatedly querying Employee link for every nav item.
+
+Resolve once/reactively.
+
+==================================================
+160. CLEANUP OLD ROLE-BASED LOGIC
+==================================================
+
+Search:
+
+role == SUPER_ADMIN
+
+role == COMPANY_ADMIN
+
+role == HR
+
+role == MANAGER
+
+role == EMPLOYEE
+
+Categorize.
+
+Allowed:
+presentation prioritization
+role label
+
+Not allowed:
+authorization/navigation capability if permissions/context should decide.
+
+Refactor inappropriate usages.
+
+==================================================
+161. CLEANUP PROFILE DUPLICATION
+==================================================
+
+Remove duplicated:
+
+profile Employee DTO
+
+profile Shift DTO
+
+profile Location DTO
+
+if same domain entities can be reused.
+
+Avoid second source of truth.
+
+==================================================
+162. CLEANUP NAVIGATION
+==================================================
+
+Remove stale menu items such as:
+
+My Attendance
+History
+Team Attendance
+
+from personas lacking capabilities.
+
+Do not merely disable them.
+
+==================================================
+163. DESIGN SYSTEM REUSE
+==================================================
+
+Use:
+
+AppPage
+
+AppPageHeader
+
+AppDetailsGrid
+
+AppDetailsSection
+
+AppAvatar
+
+AppStatusBadge
+
+AppMetricCard
+
+AppCard only where needed
+
+AppEmptyState
+
+AppSkeleton
+
+No profile-specific duplicate primitives unnecessarily.
+
+==================================================
+164. LOCALIZATION AUDIT
+==================================================
+
+No hardcoded profile/persona strings.
+
+English + Arabic.
+
+==================================================
+165. DOCUMENT CAPABILITY MODEL
+==================================================
+
+Create/update:
+
+docs/persona_capabilities.md
+
+Document:
+
+roles vs permissions
+
+linked Employee
+
+self attendance
+
+team attendance
+
+company attendance
+
+navigation rules
+
+profile behavior.
+
+==================================================
+166. DOCUMENT PROFILE ARCHITECTURE
+==================================================
+
+Create/update:
+
+docs/profile_architecture.md
+
+Explain:
+
+UserAccount vs Employee
+
+My Profile vs Employee Record
+
+data ownership
+
+section visibility
+
+self-edit boundaries.
+
+==================================================
+167. DOCUMENT NAVIGATION MATRIX
+==================================================
+
+Create concise matrix for:
+
+Super Admin
+
+Company Admin
+
+HR
+
+Manager
+
+Employee
+
+Show typical modules but clearly state actual access is capability/permission driven.
+
+==================================================
+168. QUALITY CHECK
+==================================================
+
+Run:
+
+flutter pub get
+
+flutter gen-l10n
+
+dart run build_runner build --delete-conflicting-outputs
+if required
+
+dart format .
+
+flutter analyze
+
+flutter test
+
+Run persona/capability/profile/navigation tests.
+
+==================================================
+169. COMPLETION REPORT
+==================================================
+
+At completion provide:
+
+1. issue found with previous role/navigation behavior
+
+2. final UserCapabilityContext architecture
+
+3. UserCapabilityResolver behavior
+
+4. UserAccount vs Employee separation
+
+5. linked Employee resolution
+
+6. Super Admin navigation
+
+7. Company Admin navigation
+
+8. HR navigation
+
+9. Manager navigation
+
+10. Employee navigation
+
+11. My Attendance visibility rule
+
+12. Team Attendance visibility rule
+
+13. All Attendance visibility rule
+
+14. Profile architecture
+
+15. My Profile vs Employee Record distinction
+
+16. linked Employee profile behavior
+
+17. unlinked Admin profile behavior
+
+18. account/access summary behavior
+
+19. attendance summary visibility
+
+20. reminder capability behavior
+
+21. dashboard capability cleanup
+
+22. route-guard changes
+
+23. reactive permission/link changes
+
+24. cross-session cleanup
+
+25. English/Arabic verification
+
+26. RTL verification
+
+27. responsive profile verification
+
+28. tests added
+
+29. flutter analyze result
+
+30. flutter test result
+
+31. genuine remaining limitations
+
+32. exact readiness for Phase 14
+
+==================================================
+170. STOP CONDITION
+==================================================
+
+DO NOT START PHASE 14 UNTIL:
+
+✓ Super Admin no longer automatically sees employee self-attendance features
+
+✓ Company Admin no longer automatically sees My Attendance/History
+
+✓ attendanceViewAll does NOT imply attendanceViewSelf
+
+✓ attendanceViewTeam does NOT imply attendanceViewAll
+
+✓ linked Employee is required for self attendance
+
+✓ linked Employee is required where team hierarchy depends on Employee identity
+
+✓ HR without Employee can still manage workforce/company attendance
+
+✓ Company Admin without Employee can still manage company features
+
+✓ Super Admin without Employee has valid complete Profile
+
+✓ My Profile is detailed and useful
+
+✓ My Profile combines account + employment only when linked
+
+✓ UserAccount and Employee remain separate domain entities
+
+✓ Employee Profile remains organizational HR/Admin record
+
+✓ My Profile remains personal self-service record
+
+✓ profile does not show fake Employee Code/Shift/Location for unlinked admins
+
+✓ linked users see real Employee data
+
+✓ Employee updates reactively appear in My Profile
+
+✓ self attendance summary only appears when permitted
+
+✓ attendance reminders only apply to relevant linked users
+
+✓ dashboard content matches capabilities
+
+✓ navigation is capability-driven
+
+✓ route guards use same capability rules
+
+✓ direct self-attendance URL is blocked for unlinked admin
+
+✓ All Attendance remains available to permitted unlinked HR/Admin
+
+✓ permission changes update navigation/reactive screens
+
+✓ Employee link removal removes self capabilities safely
+
+✓ no stale EmployeeReference leaks across login sessions
+
+✓ account switching shows correct profile
+
+✓ company switching recomputes profile/capabilities if applicable
+
+✓ no inappropriate role-based authorization remains
+
+✓ English works
+
+✓ Arabic works
+
+✓ RTL works
+
+✓ mobile/tablet/desktop profile layouts work
+
+✓ documentation is updated
+
+✓ flutter analyze passes
+
+✓ tests pass
+
+Then STOP and proceed to PHASE 14.
+```

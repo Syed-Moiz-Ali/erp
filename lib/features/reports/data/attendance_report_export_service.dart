@@ -8,6 +8,7 @@ import 'package:pdf/widgets.dart' as pw;
 import '../../../core/errors/result.dart';
 import '../../../core/localization/app_formatters.dart';
 import '../../../l10n/generated/app_localizations.dart';
+import '../../attendance/domain/workforce_attendance.dart';
 import '../domain/attendance_report_models.dart';
 import '../domain/attendance_report_repository.dart';
 
@@ -229,29 +230,61 @@ class AttendanceReportExportService {
     AppLocalizations l,
   ) async {
     final arabic = request.locale.languageCode == 'ar';
-    final regular = pw.Font.ttf(
-      await rootBundle.load(
-        arabic
-            ? 'assets/fonts/IBMPlexSansArabic-Regular.ttf'
-            : 'assets/fonts/Manrope-Regular.ttf',
-      ),
+    final arabicRegular = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/IBMPlexSansArabic-Regular.ttf'),
     );
-    final bold = pw.Font.ttf(
-      await rootBundle.load(
-        arabic
-            ? 'assets/fonts/IBMPlexSansArabic-Bold.ttf'
-            : 'assets/fonts/Manrope-Bold.ttf',
-      ),
+    final arabicBold = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/IBMPlexSansArabic-Bold.ttf'),
     );
+    final latinRegular = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/Manrope-Regular.ttf'),
+    );
+    final latinBold = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/Manrope-Bold.ttf'),
+    );
+    final regular = arabic ? arabicRegular : latinRegular;
+    final bold = arabic ? arabicBold : latinBold;
+    // Mixed-language data (e.g. Arabic department names) must always render,
+    // so every style keeps the opposite family as an explicit fallback.
+    final fallback = arabic
+        ? <pw.Font>[latinRegular, latinBold]
+        : <pw.Font>[arabicRegular, arabicBold];
     final pdf = pw.Document();
-    final theme = pw.ThemeData.withFont(base: regular, bold: bold);
+    final theme = pw.ThemeData.withFont(
+      base: regular,
+      bold: bold,
+      italic: regular,
+      boldItalic: bold,
+      fontFallback: fallback,
+    );
+    pw.TextStyle style(pw.Font font, double size, PdfColor color) =>
+        pw.TextStyle(
+          font: font,
+          fontSize: size,
+          color: color,
+          fontFallback: fallback,
+        );
     final dates = AppDateFormatter(request.locale);
     final period =
         '${dates.date(request.filter.from)} – ${dates.date(request.filter.to)}';
+    final periodLabel = '${l.reportPeriod}: $period';
+    final generatedLabel =
+        '${l.reportGenerated}: ${dates.date(request.generatedAt)}';
+    final appliedFilters =
+        '${l.reportFiltersApplied}: ${_filterSummary(request.filter, l)}';
     final (headers, rows) = _table(data, request.locale, l);
     final ink = PdfColor.fromHex('#28242B');
     final muted = PdfColor.fromHex('#716B75');
     final line = PdfColor.fromHex('#E8E3E9');
+    final body = style(regular, 9, muted);
+    final small = style(regular, 8, muted);
+    pw.Widget metric(String label, String value) => pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(label, style: style(regular, 8, ink)),
+        pw.Text(value, style: style(bold, 12, ink)),
+      ],
+    );
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4.landscape,
@@ -261,69 +294,50 @@ class AttendanceReportExportService {
         header: (context) => pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text(
-              request.companyName,
-              style: pw.TextStyle(font: bold, fontSize: 10, color: muted),
-            ),
+            pw.Text(request.companyName, style: style(bold, 10, muted)),
             pw.SizedBox(height: 5),
-            pw.Text(
-              _title(request.type, l),
-              style: pw.TextStyle(font: bold, fontSize: 20, color: ink),
-            ),
+            pw.Text(_title(request.type, l), style: style(bold, 20, ink)),
             pw.SizedBox(height: 4),
-            pw.Text(
-              '${l.reportPeriod}: $period',
-              style: pw.TextStyle(fontSize: 9, color: muted),
-            ),
-            pw.Text(
-              '${l.reportGenerated}: ${dates.date(request.generatedAt)}',
-              style: pw.TextStyle(fontSize: 9, color: muted),
-            ),
+            pw.Text(periodLabel, style: body),
+            pw.Text(generatedLabel, style: body),
+            pw.SizedBox(height: 2),
+            pw.Text(appliedFilters, style: small),
             pw.Divider(color: line),
           ],
         ),
-        footer: (context) => pw.Align(
-          alignment: arabic
-              ? pw.Alignment.centerLeft
-              : pw.Alignment.centerRight,
-          child: pw.Text(
-            '${l.reportPage} ${context.pageNumber} / ${context.pagesCount}',
-            style: pw.TextStyle(fontSize: 9, color: muted),
-          ),
-        ),
+        footer: (context) {
+          final pageLabel =
+              '${l.reportPage} ${context.pageNumber} / ${context.pagesCount}';
+          return pw.Align(
+            alignment: pw.Alignment(arabic ? 1 : -1, 0),
+            child: pw.Text(pageLabel, style: body),
+          );
+        },
         build: (context) => [
           pw.Wrap(
             spacing: 18,
             runSpacing: 8,
             children: [
-              _pdfMetric(
+              metric(
                 l.reportRecordedDays,
                 data.summary.recordedDays.toString(),
-                bold,
               ),
-              _pdfMetric(
+              metric(
                 l.reportCompletedDays,
                 data.summary.completedDays.toString(),
-                bold,
               ),
-              _pdfMetric(
-                l.reportLateDays,
-                data.summary.lateDays.toString(),
-                bold,
-              ),
-              _pdfMetric(
+              metric(l.reportLateDays, data.summary.lateDays.toString()),
+              metric(
                 l.reportWorkTotal,
                 AppTimeFormatter(
                   request.locale,
                 ).duration(data.summary.totalWork, l),
-                bold,
               ),
-              _pdfMetric(
+              metric(
                 l.reportBreakTotal,
                 AppTimeFormatter(
                   request.locale,
                 ).duration(data.summary.totalBreak, l),
-                bold,
               ),
             ],
           ),
@@ -332,8 +346,8 @@ class AttendanceReportExportService {
             pw.TableHelper.fromTextArray(
               headers: headers,
               data: rows,
-              headerStyle: pw.TextStyle(font: bold, fontSize: 8, color: ink),
-              cellStyle: pw.TextStyle(font: regular, fontSize: 7.5, color: ink),
+              headerStyle: style(bold, 8, ink),
+              cellStyle: style(regular, 7.5, ink),
               headerDecoration: pw.BoxDecoration(
                 color: PdfColor.fromHex('#F5F2F6'),
               ),
@@ -346,18 +360,32 @@ class AttendanceReportExportService {
               ),
             )
           else
-            pw.Text(l.reportNoData),
+            pw.Text(l.reportNoData, style: body),
         ],
       ),
     );
     return pdf.save();
   }
 
-  pw.Widget _pdfMetric(String label, String value, pw.Font bold) => pw.Column(
-    crossAxisAlignment: pw.CrossAxisAlignment.start,
-    children: [
-      pw.Text(label, style: const pw.TextStyle(fontSize: 8)),
-      pw.Text(value, style: pw.TextStyle(font: bold, fontSize: 12)),
-    ],
-  );
+  String _filterSummary(AttendanceReportFilter filter, AppLocalizations l) {
+    String count(String label, int total) => '$label ($total)';
+    final parts = <String>[
+      filter.scope == AttendanceScope.team
+          ? l.reportScopeTeam
+          : l.reportScopeCompany,
+      if (filter.departmentIds.isNotEmpty)
+        count(l.reportDepartment, filter.departmentIds.length),
+      if (filter.shiftIds.isNotEmpty)
+        count(l.workforceShift, filter.shiftIds.length),
+      if (filter.locationIds.isNotEmpty)
+        count(l.reportLocation, filter.locationIds.length),
+      if (filter.statuses.isNotEmpty)
+        count(l.reportStatus, filter.statuses.length),
+      if (filter.hasCorrections != null)
+        '${l.reportCorrections}: ${filter.hasCorrections! ? l.reportYes : l.reportNo}',
+      if (filter.hasIssues != null)
+        '${l.reportIssues}: ${filter.hasIssues! ? l.reportYes : l.reportNo}',
+    ];
+    return parts.join(' · ');
+  }
 }

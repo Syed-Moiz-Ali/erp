@@ -156,7 +156,9 @@ abstract final class AppTheme {
         selectedColor: AppColors.brandSubtle,
         disabledColor: AppColors.surfaceDisabled,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        labelStyle: typography.labelMedium.copyWith(color: AppColors.textPrimary),
+        labelStyle: typography.labelMedium.copyWith(
+          color: AppColors.textPrimary,
+        ),
         secondaryLabelStyle: typography.labelMedium.copyWith(
           color: AppColors.brandPrimary,
         ),
@@ -197,7 +199,9 @@ abstract final class AppTheme {
           return AppColors.textMuted;
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) return AppColors.brandPrimary;
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.brandPrimary;
+          }
           return AppColors.borderDefault;
         }),
         trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
@@ -244,7 +248,10 @@ abstract final class AppTheme {
           filled: true,
           fillColor: AppColors.surface,
           isDense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 10,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppRadius.input),
             borderSide: AppBorders.thin,
@@ -274,7 +281,9 @@ abstract final class AppTheme {
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: AppColors.surface,
         selectedIconTheme: const IconThemeData(color: AppColors.brandPrimary),
-        unselectedIconTheme: const IconThemeData(color: AppColors.textSecondary),
+        unselectedIconTheme: const IconThemeData(
+          color: AppColors.textSecondary,
+        ),
         selectedLabelTextStyle: typography.label.copyWith(
           color: AppColors.brandPrimary,
           fontWeight: FontWeight.w600,
@@ -607,7 +616,10 @@ abstract final class AppTheme {
           filled: true,
           fillColor: const Color(0xFF1E1922),
           isDense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 10,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppRadius.input),
             borderSide: const BorderSide(color: Color(0xFF3A3342)),

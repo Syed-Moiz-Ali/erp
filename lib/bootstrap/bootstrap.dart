@@ -16,6 +16,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import '../app/erp_app.dart';
 import '../core/logging/app_logger.dart';
+import '../core/sync/outbox_repository.dart';
+import '../core/sync/app_sync_status_cubit.dart';
+import '../core/sync/sync_coordinator.dart';
+import '../app/app_lifecycle_coordinator.dart';
 import '../core/localization/locale_cubit.dart';
 import 'dependencies.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -58,6 +62,18 @@ Future<void> bootstrap() async {
   final shellCubit = services<AppShellCubit>();
   await shellCubit.restore();
   final authBloc = services<AuthBloc>();
+  final syncStatus = services<AppSyncStatusCubit>();
+  syncStatus.onSyncNow = () async {
+    await services<OutboxLocalDataSource>().recoverStaleProcessing(
+      now: services<AppClock>().now().toUtc(),
+    );
+    await services<SyncCoordinator>().synchronize();
+  };
+  await syncStatus.start();
+  final lifecycle = services<AppLifecycleCoordinator>();
+  // Foreground sync only: connectivity-triggered processing after bootstrap.
+  // No handlers are registered until a real transport is configured.
+  services<SyncCoordinator>().start();
 
   runApp(
     ErpApp(
@@ -68,6 +84,13 @@ Future<void> bootstrap() async {
       attendanceClock: services<AppClock>(),
       companyTime: services<CompanyTimeService>(),
       moduleRegistry: services<ModuleRegistry>(),
+      notificationRepository: services(),
+      syncStatusCubit: syncStatus,
+      lifecycleCoordinator: lifecycle,
+      preferences: services(),
+      deviceNotifications: services(),
+      reminderService: services(),
+      syncDiagnostics: services(),
       demoAccounts: AppConfig.demoAuthEnabled
           ? services<DemoAuthSource>().credentials
           : const [],

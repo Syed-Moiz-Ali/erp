@@ -52,6 +52,16 @@ import '../core/database/app_database.dart';
 import '../core/storage/secure_session_storage.dart';
 import '../core/connectivity/connectivity_service.dart';
 import '../core/sync/sync_coordinator.dart';
+import '../core/sync/sync_diagnostics.dart';
+import '../core/sync/app_sync_status_cubit.dart';
+import '../features/notifications/domain/notification_repository.dart';
+import '../features/notifications/domain/device_notification_service.dart';
+import '../features/notifications/data/local_notification_repository.dart';
+import '../features/notifications/application/reminder_context.dart';
+import '../features/notifications/application/attendance_reminder_service.dart';
+import '../features/notifications/data/local_reminder_context_source.dart';
+import '../features/attendance/application/attendance_maintenance_service.dart';
+import '../app/app_lifecycle_coordinator.dart';
 import '../core/logging/app_logger.dart';
 
 final services = GetIt.instance;
@@ -82,8 +92,12 @@ void configureDependencies() {
     ),
   );
   services.registerLazySingleton<AttendanceCorrectionRepository>(
-    () =>
-        LocalAttendanceCorrectionRepository(services(), services(), services()),
+    () => LocalAttendanceCorrectionRepository(
+      services(),
+      services(),
+      services(),
+      notifications: services(),
+    ),
   );
   services.registerLazySingleton(() => const AttendanceScopeResolver());
   services.registerLazySingleton(
@@ -225,5 +239,45 @@ void configureDependencies() {
   services.registerLazySingleton(
     () => SyncCoordinator(services()),
     dispose: (sync) => sync.dispose(),
+  );
+  services.registerLazySingleton<NotificationRepository>(
+    () => LocalNotificationRepository(services()),
+  );
+  services.registerLazySingleton<DeviceNotificationService>(
+    () => const NoopDeviceNotificationService(),
+  );
+  services.registerLazySingleton<ReminderContextSource>(
+    () => LocalReminderContextSource(services()),
+  );
+  services.registerLazySingleton(
+    () => AttendanceReminderService(
+      preferences: services(),
+      source: services(),
+      device: services(),
+      clock: services(),
+    ),
+  );
+  services.registerLazySingleton(
+    () => SyncDiagnosticsService(services(), services()),
+  );
+  services.registerLazySingleton(
+    () => AttendanceMaintenanceService(services(), services(), services()),
+  );
+  services.registerLazySingleton(
+    () => AppSyncStatusCubit(
+      outbox: services(),
+      connectivity: services(),
+      preferences: services(),
+      auth: services(),
+    ),
+    dispose: (cubit) => cubit.close(),
+  );
+  services.registerLazySingleton(
+    () => AppLifecycleCoordinator(
+      sync: () => services<SyncCoordinator>().synchronize(),
+      reconcileReminders: () => services<AttendanceReminderService>().reconcile(
+        locale: services<LocaleCubit>().state.locale,
+      ),
+    ),
   );
 }

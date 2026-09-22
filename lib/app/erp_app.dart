@@ -1,7 +1,17 @@
 import '../features/attendance/presentation/attendance_session_scope.dart';
 import '../features/attendance/presentation/bloc/attendance_bloc.dart';
 import '../features/attendance/domain/shift_workday_resolver.dart';
+import '../features/notifications/domain/notification_repository.dart';
+import '../features/notifications/presentation/bloc/notification_badge_cubit.dart';
+import '../features/notifications/presentation/bloc/notifications_bloc.dart';
+import '../core/sync/app_sync_status_cubit.dart';
+import '../core/sync/sync_diagnostics.dart';
+import '../core/preferences/app_preferences_repository.dart';
+import '../features/notifications/application/attendance_reminder_service.dart';
+import '../features/notifications/domain/device_notification_service.dart';
+import '../shared/presentation/app_sync_status.dart';
 import '../core/utils/app_clock.dart';
+import 'app_lifecycle_coordinator.dart';
 import 'dart:async';
 import 'module_registry/module_registry.dart';
 import 'shell/app_shell_cubit.dart';
@@ -29,6 +39,13 @@ class ErpApp extends StatefulWidget {
     this.attendanceBlocFactory,
     this.attendanceClock,
     this.companyTime,
+    this.notificationRepository,
+    this.syncStatusCubit,
+    this.lifecycleCoordinator,
+    this.preferences,
+    this.deviceNotifications,
+    this.reminderService,
+    this.syncDiagnostics,
   });
   final LocaleCubit localeCubit;
   final AuthBloc authBloc;
@@ -41,21 +58,48 @@ class ErpApp extends StatefulWidget {
   final AttendanceBloc Function()? attendanceBlocFactory;
   final AppClock? attendanceClock;
   final CompanyTimeService? companyTime;
+  final NotificationRepository? notificationRepository;
+  final AppSyncStatusCubit? syncStatusCubit;
+  final AppLifecycleCoordinator? lifecycleCoordinator;
+  final AppPreferencesRepository? preferences;
+  final DeviceNotificationService? deviceNotifications;
+  final AttendanceReminderService? reminderService;
+  final SyncDiagnosticsService? syncDiagnostics;
   @override
   State<ErpApp> createState() => _ErpAppState();
 }
 
 class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
+  NotificationBadgeCubit? _badgeCubit;
+  NotificationsBloc? _notificationsBloc;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    final repository = widget.notificationRepository;
+    if (repository != null) {
+      final badge = NotificationBadgeCubit(
+        repository,
+        widget.authBloc.repository,
+      );
+      final notifications = NotificationsBloc(
+        repository,
+        widget.authBloc.repository,
+      )..add(const NotificationsStarted());
+      _badgeCubit = badge;
+      _notificationsBloc = notifications;
+      unawaited(badge.start());
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       widget.authBloc.add(const AuthSessionCheckRequested());
+      widget.lifecycleCoordinator?.onResumed();
+    } else if (state == AppLifecycleState.paused) {
+      widget.lifecycleCoordinator?.onPaused();
     }
   }
 
@@ -76,6 +120,10 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     router.dispose();
     refresh.dispose();
+    final notifications = _notificationsBloc;
+    final badge = _badgeCubit;
+    if (notifications != null) unawaited(notifications.close());
+    if (badge != null) unawaited(badge.close());
     if (widget.shellCubit == null) unawaited(shellCubit.close());
     super.dispose();
   }
@@ -86,6 +134,27 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
       BlocProvider.value(value: widget.localeCubit),
       BlocProvider.value(value: widget.authBloc),
       BlocProvider.value(value: shellCubit),
+      if (_notificationsBloc != null)
+        BlocProvider.value(value: _notificationsBloc!),
+      if (_badgeCubit != null) BlocProvider.value(value: _badgeCubit!),
+      if (widget.syncStatusCubit != null)
+        BlocProvider.value(value: widget.syncStatusCubit!),
+      if (widget.preferences != null)
+        RepositoryProvider<AppPreferencesRepository>.value(
+          value: widget.preferences!,
+        ),
+      if (widget.deviceNotifications != null)
+        RepositoryProvider<DeviceNotificationService>.value(
+          value: widget.deviceNotifications!,
+        ),
+      if (widget.reminderService != null)
+        RepositoryProvider<AttendanceReminderService>.value(
+          value: widget.reminderService!,
+        ),
+      if (widget.syncDiagnostics != null)
+        RepositoryProvider<SyncDiagnosticsService>.value(
+          value: widget.syncDiagnostics!,
+        ),
     ],
     child: BlocBuilder<LocaleCubit, LocaleState>(
       buildWhen: (previous, current) => previous.language != current.language,
@@ -95,17 +164,8 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
         locale: state.locale,
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
-        builder: (context, child) => BlocListener<LocaleCubit, LocaleState>(
-          listenWhen: (previous, current) =>
-              current.failure != null && previous.failure != current.failure,
-          listener: (context, state) {
-            // One listener serves all selectors; copy tracks live localization.
-            AppFeedback.showMessage(
-              context,
-              message: (l10n) => state.failure!.localizedMessage(l10n),
-            );
-          },
-          child: widget.attendanceBlocFactory == null
+        builder: (context, child) {
+          final content = widget.attendanceBlocFactory == null
               ? child ?? const SizedBox.shrink()
               : AttendanceSessionScope(
                   create: widget.attendanceBlocFactory!,
@@ -114,8 +174,25 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
                       widget.companyTime ??
                       const FixedOffsetCompanyTimeService(),
                   child: child ?? const SizedBox.shrink(),
-                ),
-        ),
+                );
+          return BlocListener<LocaleCubit, LocaleState>(
+            listenWhen: (previous, current) =>
+                current.failure != null && previous.failure != current.failure,
+            listener: (context, state) {
+              // One listener serves all selectors; copy tracks live localization.
+              AppFeedback.showMessage(
+                context,
+                message: (l10n) => state.failure!.localizedMessage(l10n),
+              );
+            },
+            child: widget.syncStatusCubit == null
+                ? content
+                : AppSyncStatusBanner(
+                    cubit: widget.syncStatusCubit,
+                    child: content,
+                  ),
+          );
+        },
         theme: AppTheme.light(locale: state.locale),
         themeMode: ThemeMode.light,
         routerConfig: router,

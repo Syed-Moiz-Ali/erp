@@ -302,7 +302,7 @@ class _ForgotPasswordAction extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           textStyle: AppTypography.of(
             context,
-          ).caption.copyWith(fontSize: 12.5, fontWeight: FontWeight.w600),
+          ).caption.copyWith(fontWeight: FontWeight.w600),
         ).copyWith(
           overlayColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.hovered)

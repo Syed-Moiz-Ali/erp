@@ -2,10 +2,11 @@ import '../../../../core/security/app_permission.dart';
 import '../entities/auth_context.dart';
 
 /// Explicit local grant templates. A role label never authorizes an operation.
+///
+/// Self-service attendance permissions are deliberately **not** granted to
+/// Super Admin / Company Admin by template: admin authority does not imply an
+/// employee link. A linked admin can be granted these explicitly.
 PermissionSet permissionsForRole(AppRole role) {
-  if (role == AppRole.superAdmin || role == AppRole.companyAdmin) {
-    return PermissionSet(AppPermission.values);
-  }
   final self = {
     AppPermission.employeeViewSelf,
     AppPermission.attendanceViewSelf,
@@ -14,6 +15,9 @@ PermissionSet permissionsForRole(AppRole role) {
     AppPermission.attendanceBreak,
     AppPermission.attendanceRequestCorrection,
   };
+  if (role == AppRole.superAdmin || role == AppRole.companyAdmin) {
+    return PermissionSet(AppPermission.values.where((p) => !self.contains(p)));
+  }
   return PermissionSet(switch (role) {
     AppRole.employee => self,
     AppRole.manager => {

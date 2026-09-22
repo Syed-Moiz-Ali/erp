@@ -107,6 +107,7 @@ void main() {
         'employees',
         'attendance',
         'attendance-history',
+        'reports',
         'profile',
       ],
       AppRole.hr: [
@@ -124,8 +125,6 @@ void main() {
       AppRole.companyAdmin: [
         'dashboard',
         'employees',
-        'attendance',
-        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -136,8 +135,6 @@ void main() {
       AppRole.superAdmin: [
         'dashboard',
         'employees',
-        'attendance',
-        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -150,7 +147,11 @@ void main() {
       final ctx = account(role);
       expect(
         resolver
-            .resolve(ctx.company, ctx.user.permissions)
+            .resolve(
+              ctx.company,
+              ctx.user.permissions,
+              employee: ctx.employeeReference,
+            )
             .destinations
             .map((d) => d.id),
         expected[role],
@@ -161,7 +162,11 @@ void main() {
     );
     expect(
       resolver
-          .resolve(hrWithoutGrants.company, hrWithoutGrants.user.permissions)
+          .resolve(
+            hrWithoutGrants.company,
+            hrWithoutGrants.user.permissions,
+            employee: hrWithoutGrants.employeeReference,
+          )
           .destinations
           .map((d) => d.id),
       ['dashboard', 'profile'],
@@ -174,10 +179,14 @@ void main() {
       final company = ctx.company.copyWith(enabledModules: {'attendance'});
       expect(
         resolver
-            .resolve(company, ctx.user.permissions)
+            .resolve(
+              company,
+              ctx.user.permissions,
+              employee: ctx.employeeReference,
+            )
             .destinations
             .map((d) => d.id),
-        ['attendance', 'attendance-history', 'profile'],
+        ['profile'],
       );
       expect(
         resolver.routeAccess(
@@ -224,14 +233,10 @@ void main() {
           nav = resolver.resolve(
             account(AppRole.superAdmin).company,
             ctx.user.permissions,
+            employee: ctx.employeeReference,
           );
-      expect(nav.mobilePrimary.map((d) => d.id), [
-        'dashboard',
-        'employees',
-        'attendance',
-      ]);
+      expect(nav.mobilePrimary.map((d) => d.id), ['dashboard', 'employees']);
       expect(nav.mobileMore.map((d) => d.id), [
-        'attendance-history',
         'reports',
         'settings',
         'shifts',
@@ -240,7 +245,6 @@ void main() {
         'profile',
       ]);
       expect(nav.groupsFor(nav.mobileMore).keys, [
-        NavigationGroup.workforce,
         NavigationGroup.insights,
         NavigationGroup.configuration,
         NavigationGroup.account,
@@ -426,7 +430,9 @@ void main() {
               bottom.modules.map((m) => m.id),
               username == 'employee'
                   ? ['dashboard', 'attendance', 'attendance-history', 'more']
-                  : ['dashboard', 'employees', 'attendance', 'more'],
+                  : username == 'hr'
+                  ? ['dashboard', 'employees', 'attendance', 'more']
+                  : ['dashboard', 'employees', 'more'],
             );
           } else if (width < 1000) {
             expect(find.byType(AppNavigationRail), findsOneWidget);
@@ -588,7 +594,7 @@ void main() {
     },
   );
   testWidgets(
-    'nested branch route, form state and highlighting survive navigation and resize',
+    'module reselect goes to canonical root and nested route survives locale/resize',
     (tester) async {
       ui_test.viewport(tester, 1280);
       final h = await ui_test.mount(
@@ -627,16 +633,30 @@ void main() {
       h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
       await ui_test.pump(tester);
       final r = ui_test.router(tester);
+      Finder item(String id) =>
+          find.byWidgetPredicate((w) => w is AppSidebarItem && w.item.id == id);
       r.go('/app/employees/preview');
       await ui_test.pump(tester);
       await tester.enterText(find.byType(TextFormField), 'retained draft');
-      Finder item(String id) =>
-          find.byWidgetPredicate((w) => w is AppSidebarItem && w.item.id == id);
       expect(tester.widget<AppSidebarItem>(item('employees')).selected, true);
+
+      // A primary module click always targets the module's canonical root,
+      // even from a nested route inside the same branch (Phase 13.5).
       await tester.tap(item('attendance'));
       await ui_test.pump(tester);
+      expect(r.routeInformationProvider.value.uri.path, '/app/attendance');
       await tester.tap(item('employees'));
       await ui_test.pump(tester);
+      expect(r.routeInformationProvider.value.uri.path, '/app/employees');
+      expect(find.text('retained draft'), findsNothing);
+
+      // Reopen a nested route: locale change and resize preserve it in place.
+      r.go('/app/employees/preview');
+      await ui_test.pump(tester);
+      await tester.enterText(find.byType(TextFormField), 'retained draft');
+      final saved = h.locale.changeLanguage(AppLanguage.arabic);
+      await ui_test.pump(tester);
+      await saved;
       expect(
         r.routeInformationProvider.value.uri.path,
         '/app/employees/preview',
@@ -644,14 +664,13 @@ void main() {
       expect(find.text('retained draft'), findsOneWidget);
       tester.view.physicalSize = const Size(390, 900);
       await ui_test.pump(tester);
-      final saved = h.locale.changeLanguage(AppLanguage.arabic);
-      await ui_test.pump(tester);
-      await saved;
       expect(find.text('retained draft'), findsOneWidget);
       final bottom = tester.widget<AppBottomNavigation>(
         find.byType(AppBottomNavigation),
       );
       expect(bottom.modules[bottom.index].id, 'employees');
+
+      // Logout clears session-specific form state.
       h.auth.add(const AuthLogoutRequested());
       await ui_test.pump(tester);
       h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));

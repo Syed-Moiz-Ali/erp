@@ -1053,28 +1053,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shellFinance => 'Finance';
 
   @override
-  String get shellDashboardDescription =>
-      'Your workspace overview will be introduced in a later phase.';
-
-  @override
-  String get shellEmployeesDescription =>
-      'Employee management will be implemented in a later phase.';
-
-  @override
-  String get shellAttendanceDescription =>
-      'Attendance workflows will be implemented in a later phase.';
-
-  @override
-  String get shellReportsDescription =>
-      'Reporting will be implemented in a later phase.';
-
-  @override
-  String get shellSettingsDescription =>
-      'Company settings will be implemented in a later phase.';
-
-  @override
   String get shellProfileDescription =>
-      'Profile editing will be introduced in a later phase.';
+      'Your account, preferences and attendance settings.';
 
   @override
   String get shellPlaceholderTitle => 'Ready for the next phase';
@@ -2917,6 +2897,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportTrend => 'Recorded workdays by date';
 
   @override
+  String get reportDaily => 'Daily';
+
+  @override
+  String get reportWeekly => 'Weekly';
+
+  @override
+  String get reportMonthly => 'Monthly';
+
+  @override
   String get reportGroupBy => 'Group by';
 
   @override
@@ -2974,6 +2963,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportRefreshFailed => 'Could not refresh report';
+
+  @override
+  String get reportUnavailable => 'Attendance reports are unavailable.';
 
   @override
   String get reportDate => 'Date';
@@ -3040,4 +3032,288 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportFiltersApplied => 'Applied filters';
+
+  @override
+  String get syncOfflineTitle => 'You\'re offline';
+
+  @override
+  String get syncOfflineMessage =>
+      'Changes will sync when your connection returns.';
+
+  @override
+  String get syncServiceUnavailable => 'Service temporarily unavailable';
+
+  @override
+  String get syncSyncing => 'Syncing';
+
+  @override
+  String get syncAllChangesSynced => 'All changes synced';
+
+  @override
+  String get syncPending => 'Pending sync';
+
+  @override
+  String get syncFailed => 'Sync failed';
+
+  @override
+  String get syncNeedsAttention => 'Sync needs attention';
+
+  @override
+  String get syncRetry => 'Retry';
+
+  @override
+  String get syncRetryNow => 'Retry now';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncLastSync => 'Last sync';
+
+  @override
+  String get syncNever => 'Not yet synced';
+
+  @override
+  String get syncChangesWaiting => 'Changes waiting to sync';
+
+  @override
+  String get syncDataAndSync => 'Data and sync';
+
+  @override
+  String get syncNoPendingChanges => 'No changes waiting';
+
+  @override
+  String get syncSyncSucceeded => 'Sync complete';
+
+  @override
+  String get syncStatusTitle => 'Sync status';
+
+  @override
+  String get syncPendingOperations => 'Pending operations';
+
+  @override
+  String get syncFailedOperations => 'Failed operations';
+
+  @override
+  String get syncSwitchAccount => 'Sign in to sync';
+
+  @override
+  String get attendanceNeedsReview => 'Attendance needs review';
+
+  @override
+  String get attendanceConflict => 'Attendance conflict';
+
+  @override
+  String get attendanceConflictMessage =>
+      'Your local attendance does not match the latest server record.';
+
+  @override
+  String get attendanceCouldNotBeVerified => 'Attendance could not be verified';
+
+  @override
+  String get attendanceNeedsAttention => 'Attendance needs attention';
+
+  @override
+  String get viewDetails => 'View details';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsNoItems => 'No notifications';
+
+  @override
+  String get notificationsNoItemsMessage => 'You are all caught up.';
+
+  @override
+  String get notificationsMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsToday => 'Today';
+
+  @override
+  String get notificationsEarlier => 'Earlier';
+
+  @override
+  String get notificationsUnread => 'Unread';
+
+  @override
+  String get notificationsReminders => 'Notifications and reminders';
+
+  @override
+  String get notificationsOpen => 'Open notifications';
+
+  @override
+  String get reminderAttendanceSection => 'Attendance reminders';
+
+  @override
+  String get reminderShift => 'Shift reminder';
+
+  @override
+  String get reminderPunchOut => 'Punch out reminder';
+
+  @override
+  String get reminderNotifyBefore => 'Notify before shift';
+
+  @override
+  String get reminderMinutesBefore => 'Minutes before';
+
+  @override
+  String get reminderNotificationPermission => 'Notification permission';
+
+  @override
+  String get reminderPermissionRequired => 'Notification permission required';
+
+  @override
+  String get reminderNotificationsDisabled => 'Notifications disabled';
+
+  @override
+  String get reminderNotificationsEnabled => 'Reminders enabled in the app';
+
+  @override
+  String get reminderOpenSettings => 'Open settings';
+
+  @override
+  String get reminderSaved => 'Reminder settings saved';
+
+  @override
+  String get reminderSaveFailed => 'Could not save reminder settings';
+
+  @override
+  String get reminderPermissionHint =>
+      'Enable reminders to receive shift notifications.';
+
+  @override
+  String get notifShiftSoonTitle => 'Your shift starts soon';
+
+  @override
+  String get notifShiftSoonBody =>
+      'Your shift is about to start. Open attendance to check in.';
+
+  @override
+  String get notifPunchOutTitle => 'Remember to punch out';
+
+  @override
+  String get notifPunchOutBody =>
+      'Your shift has ended. Remember to punch out.';
+
+  @override
+  String get notifShiftEndingOnBreakBody =>
+      'Your shift is ending. Review your attendance before leaving.';
+
+  @override
+  String get notifCorrectionApprovedTitle => 'Attendance correction approved';
+
+  @override
+  String get notifCorrectionApprovedBody =>
+      'Your attendance correction was approved and applied.';
+
+  @override
+  String get notifCorrectionRejectedTitle => 'Attendance correction rejected';
+
+  @override
+  String get notifCorrectionRejectedBody =>
+      'Your attendance correction request was not approved.';
+
+  @override
+  String get notifSyncFailedTitle => 'Attendance needs attention';
+
+  @override
+  String get notifSyncFailedBody =>
+      'Some attendance changes could not be synced.';
+
+  @override
+  String get notifConflictTitle => 'Attendance needs review';
+
+  @override
+  String get notifConflictBody =>
+      'Your local attendance does not match the latest server record.';
+
+  @override
+  String get notifPendingReviewTitle => 'New attendance correction request';
+
+  @override
+  String get notifPendingReviewBody =>
+      'A correction request is waiting for review.';
+
+  @override
+  String get notifUnknownTitle => 'Notification';
+
+  @override
+  String get notifUnknownBody => 'You have a new notification.';
+
+  @override
+  String get timeJustNow => 'Just now';
+
+  @override
+  String timeMinutesAgo(Object count) {
+    return '$count min ago';
+  }
+
+  @override
+  String timeHoursAgo(Object count) {
+    return '$count h ago';
+  }
+
+  @override
+  String get timeYesterday => 'Yesterday';
+
+  @override
+  String get profileMyProfile => 'My profile';
+
+  @override
+  String get profileOverview => 'Overview';
+
+  @override
+  String get profileWorkInformation => 'Work information';
+
+  @override
+  String get profileAccountAccess => 'Account and access';
+
+  @override
+  String get profileSecurity => 'Security';
+
+  @override
+  String get profilePreferences => 'Preferences';
+
+  @override
+  String get profileAccess => 'Access';
+
+  @override
+  String get profileAdministrativeAccess => 'Administrative access';
+
+  @override
+  String get profileRoles => 'Roles';
+
+  @override
+  String get profileEmploymentStatus => 'Employment status';
+
+  @override
+  String get profileLoginEmail => 'Login email';
+
+  @override
+  String get profileWorkEmail => 'Work email';
+
+  @override
+  String get profileMyAttendance => 'My attendance';
+
+  @override
+  String get profileViewEmployeeRecord => 'View employment details';
+
+  @override
+  String get profileNoEmployeeLinked =>
+      'No employee profile is linked to this account.';
+
+  @override
+  String get profileTeamUnavailable => 'Team access cannot be resolved.';
+
+  @override
+  String get profileEmploymentUnavailable =>
+      'Employment information is currently unavailable.';
+
+  @override
+  String get profileCurrentCompany => 'Current company';
+
+  @override
+  String get profileManage => 'Manage';
 }

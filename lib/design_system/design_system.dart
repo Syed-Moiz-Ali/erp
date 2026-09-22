@@ -15,6 +15,7 @@ export 'components/navigation/app_navigation.dart';
 export 'components/sheets/app_bottom_sheet.dart';
 export 'components/skeletons/app_skeleton.dart';
 export 'components/status/app_status_badge.dart';
+export 'components/status/app_count_badge.dart';
 export 'components/tables/app_data_table.dart';
 export 'theme/app_typography.dart';
 export 'theme/app_colors.dart';

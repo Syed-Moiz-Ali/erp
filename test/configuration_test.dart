@@ -759,6 +759,8 @@ void main() {
       await old.customStatement('DROP TABLE attendance_days');
       await old.customStatement('DROP TABLE attendance_correction_requests');
       await old.customStatement('DROP INDEX outbox_request');
+      await old.customStatement('DROP INDEX IF EXISTS outbox_status_next');
+      await old.customStatement('DROP INDEX IF EXISTS outbox_company_status');
       for (final column in [
         'company_id',
         'request_id',
@@ -788,7 +790,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        5,
+        6,
       );
       await seedAttendanceConfiguration(upgraded);
       final sr = LocalShiftRepository(upgraded);

@@ -137,7 +137,8 @@ Future<void> seedDemoWorkforce(
         today.add(Duration(minutes: shift.endTime.minutes)),
         admin.company.timezone,
       );
-      if (startResult is! Success<DateTime> || endResult is! Success<DateTime>) {
+      if (startResult is! Success<DateTime> ||
+          endResult is! Success<DateTime>) {
         continue;
       }
       final start = startResult.value, end = endResult.value;

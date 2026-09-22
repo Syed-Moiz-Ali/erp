@@ -164,4 +164,3 @@ void main() {
     expect(employee.shiftId, null);
   });
 }
-

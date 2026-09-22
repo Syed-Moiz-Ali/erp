@@ -1046,27 +1046,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shellFinance => 'الشؤون المالية';
 
   @override
-  String get shellDashboardDescription =>
-      'ستُضاف نظرة عامة على مساحة عملك في مرحلة لاحقة.';
-
-  @override
-  String get shellEmployeesDescription =>
-      'ستُضاف إدارة الموظفين في مرحلة لاحقة.';
-
-  @override
-  String get shellAttendanceDescription =>
-      'ستُضاف إجراءات الحضور في مرحلة لاحقة.';
-
-  @override
-  String get shellReportsDescription => 'ستُضاف التقارير في مرحلة لاحقة.';
-
-  @override
-  String get shellSettingsDescription =>
-      'ستُضاف إعدادات الشركة في مرحلة لاحقة.';
-
-  @override
-  String get shellProfileDescription =>
-      'ستُضاف إمكانية تعديل الملف الشخصي في مرحلة لاحقة.';
+  String get shellProfileDescription => 'حسابك وتفضيلاتك وإعدادات الحضور.';
 
   @override
   String get shellPlaceholderTitle => 'جاهز للمرحلة القادمة';
@@ -2872,6 +2852,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportTrend => 'أيام العمل المسجلة حسب التاريخ';
 
   @override
+  String get reportDaily => 'يومي';
+
+  @override
+  String get reportWeekly => 'أسبوعي';
+
+  @override
+  String get reportMonthly => 'شهري';
+
+  @override
   String get reportGroupBy => 'تجميع حسب';
 
   @override
@@ -2928,6 +2917,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportRefreshFailed => 'تعذر تحديث التقرير';
+
+  @override
+  String get reportUnavailable => 'تقارير الحضور غير متاحة.';
 
   @override
   String get reportDate => 'التاريخ';
@@ -2994,4 +2986,281 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportFiltersApplied => 'المرشحات المطبقة';
+
+  @override
+  String get syncOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get syncOfflineMessage => 'ستتم المزامنة عند عودة الاتصال.';
+
+  @override
+  String get syncServiceUnavailable => 'الخدمة غير متاحة مؤقتاً';
+
+  @override
+  String get syncSyncing => 'جارٍ المزامنة';
+
+  @override
+  String get syncAllChangesSynced => 'تمت مزامنة كل التغييرات';
+
+  @override
+  String get syncPending => 'بانتظار المزامنة';
+
+  @override
+  String get syncFailed => 'فشلت المزامنة';
+
+  @override
+  String get syncNeedsAttention => 'المزامنة تحتاج إلى مراجعة';
+
+  @override
+  String get syncRetry => 'إعادة المحاولة';
+
+  @override
+  String get syncRetryNow => 'إعادة المحاولة الآن';
+
+  @override
+  String get syncNow => 'المزامنة الآن';
+
+  @override
+  String get syncLastSync => 'آخر مزامنة';
+
+  @override
+  String get syncNever => 'لم تتم المزامنة بعد';
+
+  @override
+  String get syncChangesWaiting => 'تغييرات بانتظار المزامنة';
+
+  @override
+  String get syncDataAndSync => 'البيانات والمزامنة';
+
+  @override
+  String get syncNoPendingChanges => 'لا توجد تغييرات معلقة';
+
+  @override
+  String get syncSyncSucceeded => 'اكتملت المزامنة';
+
+  @override
+  String get syncStatusTitle => 'حالة المزامنة';
+
+  @override
+  String get syncPendingOperations => 'العمليات المعلقة';
+
+  @override
+  String get syncFailedOperations => 'العمليات الفاشلة';
+
+  @override
+  String get syncSwitchAccount => 'سجّل الدخول للمزامنة';
+
+  @override
+  String get attendanceNeedsReview => 'الحضور يحتاج إلى مراجعة';
+
+  @override
+  String get attendanceConflict => 'تعارض في الحضور';
+
+  @override
+  String get attendanceConflictMessage =>
+      'لا يطابق حضورك المحلي أحدث سجل على الخادم.';
+
+  @override
+  String get attendanceCouldNotBeVerified => 'تعذر التحقق من الحضور';
+
+  @override
+  String get attendanceNeedsAttention => 'الحضور يحتاج إلى انتباه';
+
+  @override
+  String get viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsNoItems => 'لا توجد إشعارات';
+
+  @override
+  String get notificationsNoItemsMessage => 'لا يوجد جديد لديك.';
+
+  @override
+  String get notificationsMarkAllRead => 'تحديد الكل كمقروء';
+
+  @override
+  String get notificationsToday => 'اليوم';
+
+  @override
+  String get notificationsEarlier => 'سابقاً';
+
+  @override
+  String get notificationsUnread => 'غير مقروء';
+
+  @override
+  String get notificationsReminders => 'الإشعارات والتذكيرات';
+
+  @override
+  String get notificationsOpen => 'فتح الإشعارات';
+
+  @override
+  String get reminderAttendanceSection => 'تذكيرات الحضور';
+
+  @override
+  String get reminderShift => 'تذكير الوردية';
+
+  @override
+  String get reminderPunchOut => 'تذكير تسجيل الانصراف';
+
+  @override
+  String get reminderNotifyBefore => 'التنبيه قبل الوردية';
+
+  @override
+  String get reminderMinutesBefore => 'دقائق قبل';
+
+  @override
+  String get reminderNotificationPermission => 'إذن الإشعارات';
+
+  @override
+  String get reminderPermissionRequired => 'مطلوب إذن الإشعارات';
+
+  @override
+  String get reminderNotificationsDisabled => 'الإشعارات معطلة';
+
+  @override
+  String get reminderNotificationsEnabled => 'التذكيرات مفعلة في التطبيق';
+
+  @override
+  String get reminderOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get reminderSaved => 'تم حفظ إعدادات التذكير';
+
+  @override
+  String get reminderSaveFailed => 'تعذر حفظ إعدادات التذكير';
+
+  @override
+  String get reminderPermissionHint => 'فعّل التذكيرات لتلقي تنبيهات الوردية.';
+
+  @override
+  String get notifShiftSoonTitle => 'ورديتك تبدأ قريباً';
+
+  @override
+  String get notifShiftSoonBody =>
+      'ورديتك على وشك البدء. افتح الحضور لتسجيل الدخول.';
+
+  @override
+  String get notifPunchOutTitle => 'تذكّر تسجيل الانصراف';
+
+  @override
+  String get notifPunchOutBody => 'انتهت ورديتك. تذكّر تسجيل الانصراف.';
+
+  @override
+  String get notifShiftEndingOnBreakBody =>
+      'ورديتك تنتهي. راجع حضورك قبل المغادرة.';
+
+  @override
+  String get notifCorrectionApprovedTitle => 'تمت الموافقة على تصحيح الحضور';
+
+  @override
+  String get notifCorrectionApprovedBody =>
+      'تمت الموافقة على تصحيح حضورك وتطبيقه.';
+
+  @override
+  String get notifCorrectionRejectedTitle => 'تم رفض تصحيح الحضور';
+
+  @override
+  String get notifCorrectionRejectedBody =>
+      'لم تتم الموافقة على طلب تصحيح حضورك.';
+
+  @override
+  String get notifSyncFailedTitle => 'الحضور يحتاج إلى انتباه';
+
+  @override
+  String get notifSyncFailedBody => 'تعذرت مزامنة بعض تغييرات الحضور.';
+
+  @override
+  String get notifConflictTitle => 'الحضور يحتاج إلى مراجعة';
+
+  @override
+  String get notifConflictBody => 'لا يطابق حضورك المحلي أحدث سجل على الخادم.';
+
+  @override
+  String get notifPendingReviewTitle => 'طلب تصحيح حضور جديد';
+
+  @override
+  String get notifPendingReviewBody => 'يوجد طلب تصحيح بانتظار المراجعة.';
+
+  @override
+  String get notifUnknownTitle => 'إشعار';
+
+  @override
+  String get notifUnknownBody => 'لديك إشعار جديد.';
+
+  @override
+  String get timeJustNow => 'الآن';
+
+  @override
+  String timeMinutesAgo(Object count) {
+    return 'قبل $count دقيقة';
+  }
+
+  @override
+  String timeHoursAgo(Object count) {
+    return 'قبل $count ساعة';
+  }
+
+  @override
+  String get timeYesterday => 'أمس';
+
+  @override
+  String get profileMyProfile => 'ملفي الشخصي';
+
+  @override
+  String get profileOverview => 'نظرة عامة';
+
+  @override
+  String get profileWorkInformation => 'معلومات العمل';
+
+  @override
+  String get profileAccountAccess => 'الحساب والصلاحيات';
+
+  @override
+  String get profileSecurity => 'الأمان';
+
+  @override
+  String get profilePreferences => 'التفضيلات';
+
+  @override
+  String get profileAccess => 'الصلاحيات';
+
+  @override
+  String get profileAdministrativeAccess => 'صلاحيات إدارية';
+
+  @override
+  String get profileRoles => 'الأدوار';
+
+  @override
+  String get profileEmploymentStatus => 'حالة التوظيف';
+
+  @override
+  String get profileLoginEmail => 'بريد تسجيل الدخول';
+
+  @override
+  String get profileWorkEmail => 'بريد العمل';
+
+  @override
+  String get profileMyAttendance => 'حضوري';
+
+  @override
+  String get profileViewEmployeeRecord => 'عرض تفاصيل التوظيف';
+
+  @override
+  String get profileNoEmployeeLinked => 'لا يوجد ملف موظف مرتبط بهذا الحساب.';
+
+  @override
+  String get profileTeamUnavailable => 'تعذر تحديد نطاق الفريق.';
+
+  @override
+  String get profileEmploymentUnavailable =>
+      'معلومات التوظيف غير متاحة حالياً.';
+
+  @override
+  String get profileCurrentCompany => 'الشركة الحالية';
+
+  @override
+  String get profileManage => 'إدارة';
 }

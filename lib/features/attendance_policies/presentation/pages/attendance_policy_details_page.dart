@@ -30,7 +30,8 @@ class AttendancePolicyDetailsPage extends StatelessWidget {
               AppPermission.attendancePolicyManage,
             ),
             onRetry: () => bloc.add(const RecordDetailsStarted()),
-            onEdit: () => context.go(AppRoutes.attendancePoliciesEdit(bloc.id)),
+            onEdit: () =>
+                context.push(AppRoutes.attendancePoliciesEdit(bloc.id)),
             onActive: (v) => bloc.add(RecordDetailsStatusRequested(v)),
             content: (record) => Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

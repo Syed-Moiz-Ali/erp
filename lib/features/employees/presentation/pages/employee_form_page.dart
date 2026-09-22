@@ -9,6 +9,7 @@ import '../../../../design_system/design_system.dart';
 import '../../../../core/security/app_permission.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../shared/navigation/form_navigation_guard.dart';
+import '../../../../shared/navigation/app_navigation.dart';
 import '../../../../features/auth/domain/entities/auth_context.dart';
 import '../../../../features/auth/presentation/auth_localization.dart';
 import '../../../../l10n/l10n.dart';
@@ -128,20 +129,17 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
               label: l.cancel,
               onPressed: state.saving
                   ? null
-                  : () => context.canPop()
-                        ? context.pop()
-                        : context.go(
-                            const EmployeeScopeResolver().resolve(
-                                          bloc.context,
-                                        ) ==
-                                        EmployeeScope.all ||
-                                    const EmployeeScopeResolver().resolve(
-                                          bloc.context,
-                                        ) ==
-                                        EmployeeScope.team
-                                ? AppRoutes.employees
-                                : AppRoutes.dashboard,
-                          ),
+                  : () {
+                      final scope = const EmployeeScopeResolver().resolve(
+                        bloc.context,
+                      );
+                      context.popOrGo(
+                        scope == EmployeeScope.all ||
+                                scope == EmployeeScope.team
+                            ? AppRoutes.employees
+                            : AppRoutes.dashboard,
+                      );
+                    },
             ),
             AppPrimaryButton(
               label: l.empSave,

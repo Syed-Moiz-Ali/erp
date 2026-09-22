@@ -582,6 +582,9 @@ class LocalAttendanceRepository implements AttendanceRepository {
           const SyncOutboxCompanion(
             status: Value('pending'),
             failureCode: Value(null),
+            nextAttemptAt: Value(null),
+            processingStartedAt: Value(null),
+            processorId: Value(null),
           ),
         );
         await (_db.update(

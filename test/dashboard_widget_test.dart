@@ -210,21 +210,31 @@ void main() {
           );
           await ui_test.pump(tester);
           expect(tester.takeException(), isNull);
+          final selfCapable = const {
+            'employee',
+            'manager',
+            'hr',
+          }.contains(textAccount.key);
           final action = find.byKey(
             const ValueKey('dashboard-action-attendance'),
           );
-          await Scrollable.ensureVisible(
-            tester.element(action),
-            alignment: 0.5,
-          );
-          await ui_test.pump(tester);
-          expect(tester.takeException(), isNull);
-          await tester.tap(action);
-          await ui_test.pump(tester);
-          expect(
-            ui_test.router(tester).routeInformationProvider.value.uri.path,
-            AppRoutes.attendance,
-          );
+          if (selfCapable) {
+            await Scrollable.ensureVisible(
+              tester.element(action),
+              alignment: 0.5,
+            );
+            await ui_test.pump(tester);
+            expect(tester.takeException(), isNull);
+            await tester.tap(action);
+            await ui_test.pump(tester);
+            expect(
+              ui_test.router(tester).routeInformationProvider.value.uri.path,
+              AppRoutes.attendance,
+            );
+          } else {
+            // Unlinked admins must not get employee self-attendance actions.
+            expect(action, findsNothing);
+          }
           ui_test.router(tester).go(AppRoutes.dashboard);
           await ui_test.pump(tester);
           final before = ui_test.router(tester);

@@ -47,6 +47,12 @@ class AttendanceReportsPage extends StatelessWidget {
       final date = AppDateFormatter(locale);
       final number = AppNumberFormatter(locale);
       final duration = AppTimeFormatter(locale);
+      final granularity = filter == null
+          ? ReportGranularity.day
+          : resolveReportGranularity(filter.from, filter.to);
+      final trendPoints = data == null
+          ? const <AttendanceTrendPoint>[]
+          : aggregateTrend(data.trend, granularity);
       void change(AttendanceReportFilter next) =>
           bloc.add(AttendanceReportFilterChanged(next));
       return AppPage(
@@ -191,6 +197,15 @@ class AttendanceReportsPage extends StatelessWidget {
                     AppEmptyState(
                       title: l.reportNoData,
                       message: l.reportNoData,
+                      actionLabel: l.reportClearFilters,
+                      onAction: () => change(
+                        AttendanceReportFilter(
+                          period: filter.period,
+                          from: filter.from,
+                          to: filter.to,
+                          scope: filter.scope,
+                        ),
+                      ),
                     )
                   else ...[
                     Wrap(
@@ -214,6 +229,10 @@ class AttendanceReportsPage extends StatelessWidget {
                           duration.duration(data.summary.totalWork, l),
                         ),
                         _metric(
+                          l.reportAverageWork,
+                          duration.duration(data.summary.averageWork, l),
+                        ),
+                        _metric(
                           l.reportBreakTotal,
                           duration.duration(data.summary.totalBreak, l),
                         ),
@@ -233,15 +252,18 @@ class AttendanceReportsPage extends StatelessWidget {
                         title: l.reportInProgress,
                         status: AppStatus.info,
                       ),
-                    if (data.trend.isNotEmpty && data.trend.length <= 45) ...[
+                    if (trendPoints.isNotEmpty) ...[
                       const SizedBox(height: AppSpacing.xl),
                       AppCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            AppSectionHeader(title: l.reportTrend),
+                            AppSectionHeader(
+                              title: l.reportTrend,
+                              subtitle: _granularityLabel(l, granularity),
+                            ),
                             const SizedBox(height: AppSpacing.lg),
-                            _trend(context, data.trend),
+                            _trend(context, trendPoints),
                           ],
                         ),
                       ),
@@ -307,10 +329,16 @@ class AttendanceReportsPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: AppSpacing.sm),
                                 Text(
-                                  '${l.reportWorked}: ${duration.duration(row.work, l)}',
+                                  _labeled(
+                                    l.reportWorked,
+                                    duration.duration(row.work, l),
+                                  ),
                                 ),
                                 Text(
-                                  '${l.reportBreak}: ${duration.duration(row.breaks, l)}',
+                                  _labeled(
+                                    l.reportBreak,
+                                    duration.duration(row.breaks, l),
+                                  ),
                                 ),
                                 if (row.issueDays > 0)
                                   AppStatusBadge(
@@ -345,6 +373,15 @@ class AttendanceReportsPage extends StatelessWidget {
       variant: AppMetricVariant.secondary,
     ),
   );
+
+  String _labeled(String label, String value) => '$label: $value';
+
+  String _granularityLabel(AppLocalizations l, ReportGranularity granularity) =>
+      switch (granularity) {
+        ReportGranularity.day => l.reportDaily,
+        ReportGranularity.week => l.reportWeekly,
+        ReportGranularity.month => l.reportMonthly,
+      };
 
   Widget _trend(BuildContext context, List<AttendanceTrendPoint> points) {
     final max = points
@@ -656,6 +693,7 @@ class AttendanceReportsPage extends StatelessWidget {
     final locale = Localizations.localeOf(context);
     final dates = AppDateFormatter(locale);
     final time = AppTimeFormatter(locale);
+    final number = AppNumberFormatter(locale);
     final grouped =
         data.type == AttendanceReportType.workHours ||
         data.type == AttendanceReportType.breakAnalysis ||
@@ -720,12 +758,12 @@ class AttendanceReportsPage extends StatelessWidget {
         return [
           DataCell(Text(row.employeeName)),
           DataCell(Text(row.department)),
-          DataCell(Text('${row.recordedDays}')),
-          DataCell(Text('${row.completedDays}')),
-          DataCell(Text('${row.lateDays}')),
+          DataCell(Text(number.integer(row.recordedDays))),
+          DataCell(Text(number.integer(row.completedDays))),
+          DataCell(Text(number.integer(row.lateDays))),
           DataCell(Text(time.duration(row.work, l))),
           DataCell(Text(time.duration(row.breaks, l))),
-          DataCell(Text('${row.issueDays}')),
+          DataCell(Text(number.integer(row.issueDays))),
         ];
       }
       if (data.type == AttendanceReportType.lateAttendance) {
@@ -737,7 +775,7 @@ class AttendanceReportsPage extends StatelessWidget {
           DataCell(Text(time.duration(row.lateBy, l))),
           DataCell(Text(row.department)),
           DataCell(Text(row.location ?? '')),
-          DataCell(Text('${row.pendingCorrections}')),
+          DataCell(Text(number.integer(row.pendingCorrections))),
         ];
       }
       if (data.type == AttendanceReportType.issues) {
@@ -745,8 +783,8 @@ class AttendanceReportsPage extends StatelessWidget {
           DataCell(Text(dates.date(row.date!))),
           DataCell(Text(row.employeeName)),
           DataCell(Text(status(row))),
-          DataCell(Text('${row.issueDays}')),
-          DataCell(Text('${row.pendingCorrections}')),
+          DataCell(Text(number.integer(row.issueDays))),
+          DataCell(Text(number.integer(row.pendingCorrections))),
           DataCell(Text(row.department)),
         ];
       }

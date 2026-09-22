@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_dimensions.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../../l10n/l10n.dart';
 import '../buttons/app_buttons.dart';
 import '../../../core/localization/app_formatters.dart';
 
+/// Enterprise data table with centralized density (compact header/row heights),
+/// typed header styling and horizontal-scroll fallback on narrow widths.
+///
+/// Pair with [AppTablePagination] for paging and use [AppMobileRecordCard]
+/// lists instead of this table on compact layouts.
 class AppDataTable extends StatelessWidget {
   const AppDataTable({
     super.key,
@@ -14,8 +20,8 @@ class AppDataTable extends StatelessWidget {
     this.sortColumnIndex,
     this.sortAscending = true,
     this.showCheckboxColumn = false,
-    this.dataRowMinHeight = 50.0,
-    this.headingRowHeight = 44.0,
+    this.dataRowMinHeight = AppDimensions.tableRowHeight,
+    this.headingRowHeight = AppDimensions.tableHeaderHeight,
   });
   final List<DataColumn> columns;
   final List<DataRow> rows;
@@ -39,11 +45,7 @@ class AppDataTable extends StatelessWidget {
             headingRowHeight: headingRowHeight * scale,
             dataRowMinHeight: dataRowMinHeight,
             dataRowMaxHeight: dataRowMinHeight * scale,
-            headingTextStyle: AppTypography.of(context).caption.copyWith(
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-              letterSpacing: 0.5,
-            ),
+            headingTextStyle: AppTypography.of(context).tableHeader,
             columns: columns,
             rows: rows,
             sortColumnIndex: sortColumnIndex,

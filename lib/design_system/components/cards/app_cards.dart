@@ -72,6 +72,9 @@ class AppCard extends StatelessWidget {
 
 enum AppMetricVariant { primary, secondary }
 
+/// Dashboard/report metric tile. Exposes a single semantic label combining the
+/// label, value, detail and trend so screen readers announce one coherent
+/// metric instead of fragments.
 class AppMetricCard extends StatelessWidget {
   const AppMetricCard({
     super.key,

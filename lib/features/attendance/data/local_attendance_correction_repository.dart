@@ -8,6 +8,8 @@ import '../../../core/security/app_permission.dart';
 import '../../../core/utils/app_clock.dart';
 import '../../auth/domain/entities/auth_context.dart';
 import '../../auth/domain/repositories/auth_repository.dart';
+import '../../notifications/domain/app_notification.dart';
+import '../../notifications/domain/notification_repository.dart';
 import '../domain/attendance_correction.dart';
 import '../domain/attendance_correction_repository.dart';
 import '../domain/attendance_correction_validator.dart';
@@ -24,11 +26,13 @@ class LocalAttendanceCorrectionRepository
     this.auth,
     this.clock, {
     this.demoEnabled = AppConfig.demoAuthEnabled,
+    this.notifications,
   });
   final AppDatabase db;
   final AuthRepository auth;
   final AppClock clock;
   final bool demoEnabled;
+  final NotificationRepository? notifications;
   final _validator = const AttendanceCorrectionValidator();
   AttendanceLocalDataSource get _days => AttendanceLocalDataSource(db);
 
@@ -565,11 +569,38 @@ class LocalAttendanceCorrectionRepository
         'reviewerId': actor.user.id,
         'note': note?.trim(),
       }, now);
+      await _notifyOutcome(actor, row, status, now);
       final updated = await (db.select(
         db.attendanceCorrectionRequests,
       )..where((t) => t.id.equals(id))).getSingle();
       return Success(_map(updated));
     });
+  }
+
+  /// In-app notification for the requesting user; content is localized at
+  /// render time, so no translated strings are persisted.
+  Future<void> _notifyOutcome(
+    AuthContext actor,
+    AttendanceCorrectionRequestData row,
+    String status,
+    DateTime now,
+  ) async {
+    final repository = notifications;
+    if (repository == null) return;
+    await repository.createLocal(
+      AppNotification(
+        id: const Uuid().v4(),
+        companyId: actor.company.id,
+        userId: row.requestedByUserId,
+        type: status == 'approved'
+            ? AppNotificationType.correctionApproved
+            : AppNotificationType.correctionRejected,
+        priority: AppNotificationPriority.normal,
+        dedupeKey: 'correctionReview:${row.id}:$status',
+        payload: {'correctionId': row.id, 'dayId': row.attendanceDayId},
+        createdAt: now,
+      ),
+    );
   }
 
   @override

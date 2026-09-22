@@ -1140,6 +1140,62 @@ void integrationTests() {
         AttendanceFailureCode.invalidAttendanceState,
       );
     });
+    test(
+      'transient failure schedules retry with the same request id',
+      () async {
+        final first = await action(AttendanceEventType.punchIn, 0);
+        final sender = TestSender(
+          (e) async =>
+              const Failed(Failure(code: 'timeout', kind: FailureKind.timeout)),
+        );
+        expect(
+          await AttendanceSyncHandler(
+            AttendanceLocalDataSource(db),
+            auth,
+            sender,
+            clock,
+          ).synchronize(),
+          isA<Failed<void>>(),
+        );
+        final row = (await db.select(db.syncOutbox).get()).single;
+        expect(row.status, 'retryScheduled');
+        expect(row.nextAttemptAt, isNotNull);
+        expect(row.requestId, first.event.requestId);
+        expect(row.attempts, 1);
+      },
+    );
+    test('stale processing operation recovers on the next run', () async {
+      final first = await action(AttendanceEventType.punchIn, 0);
+      await (db.update(
+        db.syncOutbox,
+      )..where((t) => t.id.equals(first.event.requestId))).write(
+        SyncOutboxCompanion(
+          status: const Value('processing'),
+          processingStartedAt: Value(
+            clock.now().subtract(const Duration(hours: 1)),
+          ),
+        ),
+      );
+      final sender = TestSender(
+        (e) async => Success(
+          AttendanceRemoteConfirmation(
+            requestId: e.requestId,
+            accepted: true,
+            serverTimestamp: e.deviceTimestamp,
+          ),
+        ),
+      );
+      expect(
+        await AttendanceSyncHandler(
+          AttendanceLocalDataSource(db),
+          auth,
+          sender,
+          clock,
+        ).synchronize(),
+        isA<Success<void>>(),
+      );
+      expect(await db.select(db.syncOutbox).get(), isEmpty);
+    });
     test('reactive watcher changes and cancellation', () async {
       final values = <Result<AttendanceContext>>[];
       final sub = repo.watchCurrentAttendance().listen(values.add);
@@ -1414,6 +1470,8 @@ void integrationTests() {
       await old.customStatement('DROP TABLE attendance_days');
       await old.customStatement('DROP TABLE attendance_correction_requests');
       await old.customStatement('DROP INDEX outbox_request');
+      await old.customStatement('DROP INDEX IF EXISTS outbox_status_next');
+      await old.customStatement('DROP INDEX IF EXISTS outbox_company_status');
       for (final c in [
         'company_id',
         'request_id',

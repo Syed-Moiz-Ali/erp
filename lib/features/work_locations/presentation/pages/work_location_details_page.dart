@@ -30,7 +30,7 @@ class WorkLocationDetailsPage extends StatelessWidget {
           AppPermission.workLocationManage,
         ),
         onRetry: () => bloc.add(const RecordDetailsStarted()),
-        onEdit: () => context.go(AppRoutes.workLocationsEdit(bloc.id)),
+        onEdit: () => context.push(AppRoutes.workLocationsEdit(bloc.id)),
         onActive: (v) => bloc.add(RecordDetailsStatusRequested(v)),
         content: (record) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

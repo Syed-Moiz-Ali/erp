@@ -80,7 +80,11 @@ class DashboardView extends StatelessWidget {
       final isSelf =
           const DashboardScopeResolver().resolve(auth) == DashboardScope.self;
       final actions = NavigationResolver(registry)
-          .resolve(auth.company, auth.user.permissions)
+          .resolve(
+            auth.company,
+            auth.user.permissions,
+            employee: auth.employeeReference,
+          )
           .destinations
           .where(
             (d) =>

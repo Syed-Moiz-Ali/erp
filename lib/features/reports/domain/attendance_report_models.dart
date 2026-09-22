@@ -194,6 +194,47 @@ class AttendanceTrendPoint {
   final int recordedDays, workMilliseconds;
 }
 
+enum ReportGranularity { day, week, month }
+
+/// Coarse granularity keeps long-range trends readable instead of rendering
+/// hundreds of daily axis labels. Weeks start on Monday.
+ReportGranularity resolveReportGranularity(DateTime from, DateTime to) {
+  final days = to.difference(from).inDays + 1;
+  if (days <= 31) return ReportGranularity.day;
+  if (days <= 180) return ReportGranularity.week;
+  return ReportGranularity.month;
+}
+
+DateTime _bucketStart(DateTime date, ReportGranularity granularity) {
+  final day = DateTime.utc(date.year, date.month, date.day);
+  return switch (granularity) {
+    ReportGranularity.day => day,
+    ReportGranularity.week => day.subtract(Duration(days: day.weekday - 1)),
+    ReportGranularity.month => DateTime.utc(day.year, day.month),
+  };
+}
+
+/// Aggregates already query-aggregated daily points into week/month buckets.
+List<AttendanceTrendPoint> aggregateTrend(
+  List<AttendanceTrendPoint> points,
+  ReportGranularity granularity,
+) {
+  if (granularity == ReportGranularity.day) return points;
+  final buckets = <DateTime, AttendanceTrendPoint>{};
+  for (final point in points) {
+    final key = _bucketStart(point.date, granularity);
+    final existing = buckets[key];
+    buckets[key] = existing == null
+        ? AttendanceTrendPoint(key, point.recordedDays, point.workMilliseconds)
+        : AttendanceTrendPoint(
+            key,
+            existing.recordedDays + point.recordedDays,
+            existing.workMilliseconds + point.workMilliseconds,
+          );
+  }
+  return buckets.values.toList()..sort((a, b) => a.date.compareTo(b.date));
+}
+
 class AttendanceGroupSummary {
   const AttendanceGroupSummary(
     this.name,

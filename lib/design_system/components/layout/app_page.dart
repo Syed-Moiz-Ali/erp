@@ -6,6 +6,11 @@ import '../../theme/app_motion.dart';
 import '../cards/app_cards.dart';
 import '../headers/app_headers.dart';
 
+/// Standard page frame: owns responsive page padding, max content width and
+/// the optional header/filters, then scrolls its [child].
+///
+/// Do not place another scrollable (`ListView`) directly inside [child]; use a
+/// `Column` or provide a dedicated sliver body.
 class AppPage extends StatelessWidget {
   const AppPage({
     super.key,

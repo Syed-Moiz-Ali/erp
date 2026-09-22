@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,16 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/bloc/password_bloc.dart';
 import '../../features/design_system_preview/presentation/design_system_preview_page.dart';
+import '../../features/notifications/presentation/notifications_page.dart';
+import '../../features/notifications/presentation/bloc/reminder_settings_cubit.dart';
+import '../../features/notifications/presentation/reminder_settings_page.dart';
+import '../../features/notifications/application/attendance_reminder_service.dart';
+import '../../features/notifications/domain/device_notification_service.dart';
+import '../../features/sync/presentation/sync_settings_page.dart';
+import '../../features/sync/presentation/sync_inspector_page.dart';
+import '../../core/preferences/app_preferences_repository.dart';
+import '../../core/sync/app_sync_status_cubit.dart';
+import '../../core/sync/sync_diagnostics.dart';
 import '../../design_system/design_system.dart';
 import '../../l10n/l10n.dart';
 import '../module_registry/module_registry.dart';
@@ -20,6 +31,14 @@ import '../shell/app_shell.dart';
 import '../shell/pages/more_page.dart';
 import '../shell/pages/route_status_pages.dart';
 import 'app_routes.dart';
+
+T? _providerOrNull<T>(BuildContext context) {
+  try {
+    return context.read<T>();
+  } catch (_) {
+    return null;
+  }
+}
 
 class AuthRouterRefresh extends ChangeNotifier {
   AuthRouterRefresh(AuthBloc bloc) {
@@ -112,6 +131,11 @@ GoRouter createAppRouter({
   bool enablePreview = false,
   String? initialLocation,
 }) {
+  // Critical for cross-platform URL state: go_router does not reflect
+  // imperative push/replace in the URL by default, which left the browser URL
+  // stuck on the list route while a detail screen was pushed. Enabling this
+  // keeps the URL authoritative for every navigable destination.
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   final modules = registry ?? createErpRegistry(authRepository);
   final navigation = NavigationResolver(modules);
   String landing() => authBloc.state.context == null
@@ -186,6 +210,7 @@ GoRouter createAppRouter({
                               navigation: navigation.resolve(
                                 account.company,
                                 account.user.permissions,
+                                employee: account.employeeReference,
                               ),
                             ),
                     ),
@@ -200,6 +225,106 @@ GoRouter createAppRouter({
                 builder: (context, state) =>
                     ModuleUnavailablePage(landing: landing()),
               ),
+              GoRoute(
+                path: AppRoutes.notifications,
+                name: 'notifications',
+                builder: (context, state) => const NotificationsPage(),
+              ),
+              GoRoute(
+                path: AppRoutes.reminderSettings,
+                name: 'reminder-settings',
+                builder: (context, state) {
+                  final preferences = _providerOrNull<AppPreferencesRepository>(
+                    context,
+                  );
+                  final device = _providerOrNull<DeviceNotificationService>(
+                    context,
+                  );
+                  final reminders = _providerOrNull<AttendanceReminderService>(
+                    context,
+                  );
+                  if (preferences == null || device == null) {
+                    return AppPage(
+                      maxWidth: AppDimensions.details,
+                      header: AppPageHeader(
+                        title: context.l10n.notificationsReminders,
+                      ),
+                      child: AppErrorState(
+                        message: context.l10n.reminderSaveFailed,
+                      ),
+                    );
+                  }
+                  // Attendance reminders only make sense for a linked employee.
+                  final linked = context
+                      .read<AuthBloc>()
+                      .state
+                      .context
+                      ?.employeeReference;
+                  if (linked == null) {
+                    return AppPage(
+                      maxWidth: AppDimensions.details,
+                      header: AppPageHeader(
+                        title: context.l10n.notificationsReminders,
+                      ),
+                      child: AppEmptyState(
+                        title: context.l10n.profileNoEmployeeLinked,
+                        message: context.l10n.reminderPermissionHint,
+                      ),
+                    );
+                  }
+                  final locale = Localizations.localeOf(context);
+                  return BlocProvider(
+                    create: (_) => ReminderSettingsCubit(
+                      preferences,
+                      device,
+                      onChanged: reminders == null
+                          ? null
+                          : () => reminders.reconcile(locale: locale),
+                    )..load(),
+                    child: const ReminderSettingsPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: AppRoutes.syncSettings,
+                name: 'sync-settings',
+                builder: (context, state) {
+                  final cubit = _providerOrNull<AppSyncStatusCubit>(context);
+                  if (cubit == null) {
+                    return AppPage(
+                      maxWidth: AppDimensions.details,
+                      header: AppPageHeader(
+                        title: context.l10n.syncDataAndSync,
+                      ),
+                      child: AppEmptyState(
+                        title: context.l10n.syncAllChangesSynced,
+                        message: context.l10n.syncNoPendingChanges,
+                      ),
+                    );
+                  }
+                  return BlocProvider.value(
+                    value: cubit,
+                    child: const SyncSettingsPage(),
+                  );
+                },
+              ),
+              if (kDebugMode)
+                GoRoute(
+                  path: AppRoutes.syncInspector,
+                  name: 'sync-inspector',
+                  builder: (context, state) {
+                    final diagnostics = _providerOrNull<SyncDiagnosticsService>(
+                      context,
+                    );
+                    if (diagnostics == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return SyncInspectorPage(
+                      diagnostics: diagnostics,
+                      auth: authRepository,
+                    );
+                  },
+                ),
               GoRoute(
                 path: AppRoutes.notFound,
                 builder: (context, state) => NotFoundPage(landing: landing()),

@@ -1,11 +1,16 @@
 import '../../../core/database/app_database.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 import '../../../core/errors/result.dart';
+import '../../../core/sync/outbox_repository.dart';
 import '../../../core/sync/sync_coordinator.dart';
+import '../../../core/sync/sync_retry_policy.dart';
 import '../../../core/utils/app_clock.dart';
 import '../../auth/domain/entities/auth_context.dart';
 import '../../auth/domain/repositories/auth_repository.dart';
+import '../../notifications/domain/app_notification.dart';
+import '../../notifications/domain/notification_repository.dart';
 import '../domain/attendance_models.dart';
 import '../domain/attendance_state_machine.dart';
 import '../domain/attendance_summary_calculator.dart';
@@ -33,11 +38,20 @@ abstract interface class AttendanceRemoteSender {
 /// Register with SyncCoordinator only when a real sender is configured.
 /// Never synthesize server timestamps/acceptance; failures preserve the original operation.
 class AttendanceSyncHandler implements ModuleSyncHandler {
-  const AttendanceSyncHandler(this.local, this.auth, this.sender, this.clock);
+  const AttendanceSyncHandler(
+    this.local,
+    this.auth,
+    this.sender,
+    this.clock, {
+    this.notifications,
+    this.retryPolicy = const SyncRetryPolicy(),
+  });
   final AttendanceLocalDataSource local;
   final AuthRepository auth;
   final AttendanceRemoteSender sender;
   final AppClock clock;
+  final NotificationRepository? notifications;
+  final SyncRetryPolicy retryPolicy;
   @override
   String get moduleId => 'attendance';
   @override
@@ -66,13 +80,20 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
       return Failed(attendanceFailure(AttendanceFailureCode.accountInactive));
     }
     final db = local.db;
+    final now = clock.now().toUtc();
+    await OutboxLocalDataSource(db).recoverStaleProcessing(now: now);
     final rows =
         await (db.select(db.syncOutbox)
               ..where(
                 (t) =>
                     t.moduleId.equals(moduleId) &
                     t.companyId.equals(a.company.id) &
-                    t.status.isIn(['pending', 'failed', 'rejected']),
+                    t.status.isIn([
+                      'pending',
+                      'retryScheduled',
+                      'failed',
+                      'rejected',
+                    ]),
               )
               ..orderBy([
                 (t) => OrderingTerm.asc(t.createdAt),
@@ -97,7 +118,16 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
           event.companyId != a.company.id) {
         continue;
       }
-      if (row.status != 'pending') {
+      // Out-of-order protection: a blocked/rejected or not-yet-due operation
+      // stops the queue so later events never sync before their predecessors.
+      if (row.status == 'rejected' || row.status == 'failed') {
+        return Failed(
+          attendanceFailure(AttendanceFailureCode.synchronizationFailed),
+        );
+      }
+      if (row.status == 'retryScheduled' &&
+          row.nextAttemptAt != null &&
+          row.nextAttemptAt!.toUtc().isAfter(now)) {
         return Failed(
           attendanceFailure(AttendanceFailureCode.synchronizationFailed),
         );
@@ -110,8 +140,11 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
       }
       await (db.update(db.syncOutbox)..where((t) => t.id.equals(row.id))).write(
         SyncOutboxCompanion(
+          status: const Value('processing'),
           attempts: Value(row.attempts + 1),
-          lastAttemptAt: Value(clock.now()),
+          lastAttemptAt: Value(now),
+          processingStartedAt: Value(now),
+          processorId: const Value('attendance'),
         ),
       );
       Result<AttendanceRemoteConfirmation> result;
@@ -142,12 +175,17 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
         );
         if (day == null) throw StateError('Missing day');
         if (result case Failed<AttendanceRemoteConfirmation>(:final failure)) {
+          final retryAt = retryPolicy.nextAttemptAt(now, row.attempts + 1);
           await (db.update(
             db.syncOutbox,
           )..where((t) => t.id.equals(row.id))).write(
             SyncOutboxCompanion(
-              status: const Value('failed'),
+              status: const Value('retryScheduled'),
               failureCode: Value(failure.code),
+              lastFailureMessageSafe: const Value('syncTransientFailure'),
+              nextAttemptAt: Value(retryAt),
+              processingStartedAt: const Value(null),
+              processorId: const Value(null),
             ),
           );
           await (db.update(
@@ -170,6 +208,8 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
                 failureCode: Value(
                   confirmation.rejectionCode ?? 'synchronizationFailed',
                 ),
+                processingStartedAt: const Value(null),
+                processorId: const Value(null),
               ),
             );
             await (db.update(
@@ -177,6 +217,7 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
             )..where((t) => t.id.equals(event.id))).write(
               const AttendanceEventsCompanion(syncStatus: Value('rejected')),
             );
+            await _notifyRejection(a, row.id, event);
           } else {
             final candidate = local
                 .readEvent(stored)
@@ -264,5 +305,28 @@ class AttendanceSyncHandler implements ModuleSyncHandler {
       }
     }
     return const Success(null);
+  }
+
+  /// Persistent rejection requires user action; one deduplicated notification
+  /// per operation, never one per retry.
+  Future<void> _notifyRejection(
+    AuthContext actor,
+    String operationId,
+    AttendanceEvent event,
+  ) async {
+    final repository = notifications;
+    if (repository == null) return;
+    await repository.createLocal(
+      AppNotification(
+        id: const Uuid().v4(),
+        companyId: actor.company.id,
+        userId: actor.user.id,
+        type: AppNotificationType.attendanceSyncFailed,
+        priority: AppNotificationPriority.high,
+        dedupeKey: 'syncFailure:$operationId',
+        payload: {'dayId': event.attendanceDayId},
+        createdAt: clock.now().toUtc(),
+      ),
+    );
   }
 }

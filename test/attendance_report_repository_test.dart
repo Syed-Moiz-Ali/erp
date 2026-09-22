@@ -176,4 +176,72 @@ void main() {
       expect(saver.result, same(pdf));
     },
   );
+
+  test('trend granularity resolves by range and buckets points', () {
+    expect(
+      resolveReportGranularity(
+        DateTime.utc(2026, 9, 1),
+        DateTime.utc(2026, 9, 30),
+      ),
+      ReportGranularity.day,
+    );
+    expect(
+      resolveReportGranularity(
+        DateTime.utc(2026, 1, 1),
+        DateTime.utc(2026, 3, 1),
+      ),
+      ReportGranularity.week,
+    );
+    expect(
+      resolveReportGranularity(
+        DateTime.utc(2026, 1, 1),
+        DateTime.utc(2026, 12, 31),
+      ),
+      ReportGranularity.month,
+    );
+    final weekly = aggregateTrend([
+      AttendanceTrendPoint(DateTime.utc(2026, 1, 2), 1, 100),
+      AttendanceTrendPoint(DateTime.utc(2026, 1, 3), 2, 200),
+      AttendanceTrendPoint(DateTime.utc(2026, 1, 9), 3, 300),
+    ], ReportGranularity.week);
+    expect(weekly, hasLength(2));
+    expect(weekly.first.recordedDays, 3);
+    expect(weekly.first.workMilliseconds, 300);
+    expect(weekly.first.date, DateTime.utc(2025, 12, 29));
+    final monthly = aggregateTrend([
+      AttendanceTrendPoint(DateTime.utc(2026, 1, 2), 1, 100),
+      AttendanceTrendPoint(DateTime.utc(2026, 2, 3), 2, 200),
+    ], ReportGranularity.month);
+    expect(monthly, hasLength(2));
+    expect(monthly.first.date, DateTime.utc(2026, 1, 1));
+  });
+
+  test('English PDF keeps Arabic fallback for mixed-language data', () async {
+    actor = employeeContext(AppRole.hr);
+    final filter = AttendanceReportFilter.preset(
+      AttendanceReportPeriod.thisMonth,
+      today,
+      AttendanceScope.company,
+    );
+    final service = AttendanceReportExportService(repo, _CaptureSaver());
+    final result =
+        (await service.export(
+                  ReportExportRequest(
+                    type: AttendanceReportType.employeeSummary,
+                    filter: filter,
+                    sort: AttendanceReportSort.newest,
+                    format: ReportExportFormat.pdf,
+                    locale: const Locale('en'),
+                    companyName: 'Demo ERP Company',
+                    generatedAt: today,
+                  ),
+                )
+                as Success<ReportExportResult>)
+            .value;
+    expect(
+      latin1.decode(result.bytes).contains('IBMPlexSansArabic'),
+      isTrue,
+      reason: 'Arabic data values embed the bundled Arabic fallback font',
+    );
+  });
 }

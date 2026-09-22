@@ -2102,40 +2102,10 @@ abstract class AppLocalizations {
   /// **'Finance'**
   String get shellFinance;
 
-  /// No description provided for @shellDashboardDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Your workspace overview will be introduced in a later phase.'**
-  String get shellDashboardDescription;
-
-  /// No description provided for @shellEmployeesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Employee management will be implemented in a later phase.'**
-  String get shellEmployeesDescription;
-
-  /// No description provided for @shellAttendanceDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance workflows will be implemented in a later phase.'**
-  String get shellAttendanceDescription;
-
-  /// No description provided for @shellReportsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Reporting will be implemented in a later phase.'**
-  String get shellReportsDescription;
-
-  /// No description provided for @shellSettingsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Company settings will be implemented in a later phase.'**
-  String get shellSettingsDescription;
-
   /// No description provided for @shellProfileDescription.
   ///
   /// In en, this message translates to:
-  /// **'Profile editing will be introduced in a later phase.'**
+  /// **'Your account, preferences and attendance settings.'**
   String get shellProfileDescription;
 
   /// No description provided for @shellPlaceholderTitle.
@@ -5552,6 +5522,24 @@ abstract class AppLocalizations {
   /// **'Recorded workdays by date'**
   String get reportTrend;
 
+  /// No description provided for @reportDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get reportDaily;
+
+  /// No description provided for @reportWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get reportWeekly;
+
+  /// No description provided for @reportMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get reportMonthly;
+
   /// No description provided for @reportGroupBy.
   ///
   /// In en, this message translates to:
@@ -5665,6 +5653,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not refresh report'**
   String get reportRefreshFailed;
+
+  /// No description provided for @reportUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance reports are unavailable.'**
+  String get reportUnavailable;
 
   /// No description provided for @reportDate.
   ///
@@ -5797,6 +5791,540 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Applied filters'**
   String get reportFiltersApplied;
+
+  /// No description provided for @syncOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get syncOfflineTitle;
+
+  /// No description provided for @syncOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes will sync when your connection returns.'**
+  String get syncOfflineMessage;
+
+  /// No description provided for @syncServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Service temporarily unavailable'**
+  String get syncServiceUnavailable;
+
+  /// No description provided for @syncSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing'**
+  String get syncSyncing;
+
+  /// No description provided for @syncAllChangesSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'All changes synced'**
+  String get syncAllChangesSynced;
+
+  /// No description provided for @syncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get syncPending;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed'**
+  String get syncFailed;
+
+  /// No description provided for @syncNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync needs attention'**
+  String get syncNeedsAttention;
+
+  /// No description provided for @syncRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get syncRetry;
+
+  /// No description provided for @syncRetryNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry now'**
+  String get syncRetryNow;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @syncLastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync'**
+  String get syncLastSync;
+
+  /// No description provided for @syncNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced'**
+  String get syncNever;
+
+  /// No description provided for @syncChangesWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes waiting to sync'**
+  String get syncChangesWaiting;
+
+  /// No description provided for @syncDataAndSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Data and sync'**
+  String get syncDataAndSync;
+
+  /// No description provided for @syncNoPendingChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes waiting'**
+  String get syncNoPendingChanges;
+
+  /// No description provided for @syncSyncSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get syncSyncSucceeded;
+
+  /// No description provided for @syncStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync status'**
+  String get syncStatusTitle;
+
+  /// No description provided for @syncPendingOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending operations'**
+  String get syncPendingOperations;
+
+  /// No description provided for @syncFailedOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed operations'**
+  String get syncFailedOperations;
+
+  /// No description provided for @syncSwitchAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync'**
+  String get syncSwitchAccount;
+
+  /// No description provided for @attendanceNeedsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs review'**
+  String get attendanceNeedsReview;
+
+  /// No description provided for @attendanceConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance conflict'**
+  String get attendanceConflict;
+
+  /// No description provided for @attendanceConflictMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your local attendance does not match the latest server record.'**
+  String get attendanceConflictMessage;
+
+  /// No description provided for @attendanceCouldNotBeVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance could not be verified'**
+  String get attendanceCouldNotBeVerified;
+
+  /// No description provided for @attendanceNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs attention'**
+  String get attendanceNeedsAttention;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsNoItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get notificationsNoItems;
+
+  /// No description provided for @notificationsNoItemsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You are all caught up.'**
+  String get notificationsNoItemsMessage;
+
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get notificationsToday;
+
+  /// No description provided for @notificationsEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get notificationsEarlier;
+
+  /// No description provided for @notificationsUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsUnread;
+
+  /// No description provided for @notificationsReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications and reminders'**
+  String get notificationsReminders;
+
+  /// No description provided for @notificationsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open notifications'**
+  String get notificationsOpen;
+
+  /// No description provided for @reminderAttendanceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance reminders'**
+  String get reminderAttendanceSection;
+
+  /// No description provided for @reminderShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift reminder'**
+  String get reminderShift;
+
+  /// No description provided for @reminderPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out reminder'**
+  String get reminderPunchOut;
+
+  /// No description provided for @reminderNotifyBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify before shift'**
+  String get reminderNotifyBefore;
+
+  /// No description provided for @reminderMinutesBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes before'**
+  String get reminderMinutesBefore;
+
+  /// No description provided for @reminderNotificationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission'**
+  String get reminderNotificationPermission;
+
+  /// No description provided for @reminderPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission required'**
+  String get reminderPermissionRequired;
+
+  /// No description provided for @reminderNotificationsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get reminderNotificationsDisabled;
+
+  /// No description provided for @reminderNotificationsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders enabled in the app'**
+  String get reminderNotificationsEnabled;
+
+  /// No description provided for @reminderOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get reminderOpenSettings;
+
+  /// No description provided for @reminderSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder settings saved'**
+  String get reminderSaved;
+
+  /// No description provided for @reminderSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save reminder settings'**
+  String get reminderSaveFailed;
+
+  /// No description provided for @reminderPermissionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminders to receive shift notifications.'**
+  String get reminderPermissionHint;
+
+  /// No description provided for @notifShiftSoonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift starts soon'**
+  String get notifShiftSoonTitle;
+
+  /// No description provided for @notifShiftSoonBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift is about to start. Open attendance to check in.'**
+  String get notifShiftSoonBody;
+
+  /// No description provided for @notifPunchOutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember to punch out'**
+  String get notifPunchOutTitle;
+
+  /// No description provided for @notifPunchOutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift has ended. Remember to punch out.'**
+  String get notifPunchOutBody;
+
+  /// No description provided for @notifShiftEndingOnBreakBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift is ending. Review your attendance before leaving.'**
+  String get notifShiftEndingOnBreakBody;
+
+  /// No description provided for @notifCorrectionApprovedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance correction approved'**
+  String get notifCorrectionApprovedTitle;
+
+  /// No description provided for @notifCorrectionApprovedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance correction was approved and applied.'**
+  String get notifCorrectionApprovedBody;
+
+  /// No description provided for @notifCorrectionRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance correction rejected'**
+  String get notifCorrectionRejectedTitle;
+
+  /// No description provided for @notifCorrectionRejectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance correction request was not approved.'**
+  String get notifCorrectionRejectedBody;
+
+  /// No description provided for @notifSyncFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs attention'**
+  String get notifSyncFailedTitle;
+
+  /// No description provided for @notifSyncFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Some attendance changes could not be synced.'**
+  String get notifSyncFailedBody;
+
+  /// No description provided for @notifConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs review'**
+  String get notifConflictTitle;
+
+  /// No description provided for @notifConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your local attendance does not match the latest server record.'**
+  String get notifConflictBody;
+
+  /// No description provided for @notifPendingReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New attendance correction request'**
+  String get notifPendingReviewTitle;
+
+  /// No description provided for @notifPendingReviewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A correction request is waiting for review.'**
+  String get notifPendingReviewBody;
+
+  /// No description provided for @notifUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notifUnknownTitle;
+
+  /// No description provided for @notifUnknownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a new notification.'**
+  String get notifUnknownBody;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String timeMinutesAgo(Object count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String timeHoursAgo(Object count);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @profileMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get profileMyProfile;
+
+  /// No description provided for @profileOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get profileOverview;
+
+  /// No description provided for @profileWorkInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work information'**
+  String get profileWorkInformation;
+
+  /// No description provided for @profileAccountAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account and access'**
+  String get profileAccountAccess;
+
+  /// No description provided for @profileSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get profileSecurity;
+
+  /// No description provided for @profilePreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get profilePreferences;
+
+  /// No description provided for @profileAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access'**
+  String get profileAccess;
+
+  /// No description provided for @profileAdministrativeAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative access'**
+  String get profileAdministrativeAccess;
+
+  /// No description provided for @profileRoles.
+  ///
+  /// In en, this message translates to:
+  /// **'Roles'**
+  String get profileRoles;
+
+  /// No description provided for @profileEmploymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment status'**
+  String get profileEmploymentStatus;
+
+  /// No description provided for @profileLoginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Login email'**
+  String get profileLoginEmail;
+
+  /// No description provided for @profileWorkEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Work email'**
+  String get profileWorkEmail;
+
+  /// No description provided for @profileMyAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'My attendance'**
+  String get profileMyAttendance;
+
+  /// No description provided for @profileViewEmployeeRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'View employment details'**
+  String get profileViewEmployeeRecord;
+
+  /// No description provided for @profileNoEmployeeLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'No employee profile is linked to this account.'**
+  String get profileNoEmployeeLinked;
+
+  /// No description provided for @profileTeamUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Team access cannot be resolved.'**
+  String get profileTeamUnavailable;
+
+  /// No description provided for @profileEmploymentUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment information is currently unavailable.'**
+  String get profileEmploymentUnavailable;
+
+  /// No description provided for @profileCurrentCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Current company'**
+  String get profileCurrentCompany;
+
+  /// No description provided for @profileManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get profileManage;
 }
 
 class _AppLocalizationsDelegate

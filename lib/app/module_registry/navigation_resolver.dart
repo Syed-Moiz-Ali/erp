@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../features/auth/domain/entities/auth_context.dart';
+import '../../features/auth/domain/policies/user_capability.dart';
 import '../../core/security/app_permission.dart';
 import '../router/app_routes.dart';
 import 'module_registry.dart';
@@ -58,8 +59,9 @@ class NavigationResolver {
   RouteAccess access(
     ErpModule item,
     CompanyContext company,
-    PermissionSet permissions,
-  ) {
+    PermissionSet permissions, [
+    UserCapabilityContext? capabilities,
+  ]) {
     final module = registry.module(item.moduleId);
     if (!item.enabled ||
         module?.enabled == false ||
@@ -73,11 +75,17 @@ class NavigationResolver {
             !checker.canAny(item.anyPermissions))) {
       return RouteAccess.unauthorized;
     }
+    if (item.requiredCapabilities.isNotEmpty &&
+        (capabilities == null ||
+            !capabilities.hasAny(item.requiredCapabilities))) {
+      return RouteAccess.unauthorized;
+    }
     return RouteAccess.allowed;
   }
 
   RouteAccess routeAccess(String path, AuthContext context) {
     final owner = registry.ownerOf(path);
+    final capabilities = const UserCapabilityResolver().forAuthContext(context);
     final configurationManage = switch (owner?.id) {
       'shifts' => AppPermission.shiftManage,
       'work-locations' => AppPermission.workLocationManage,
@@ -86,14 +94,24 @@ class NavigationResolver {
     };
     if (configurationManage != null &&
         (path.endsWith('/new') || path.endsWith('/edit'))) {
-      final base = access(owner!, context.company, context.user.permissions);
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
       if (base == RouteAccess.moduleUnavailable) return base;
       return context.user.permissions.contains(configurationManage)
           ? RouteAccess.allowed
           : RouteAccess.unauthorized;
     }
     if (owner?.id == 'employees' && path != AppRoutes.employees) {
-      final base = access(owner!, context.company, context.user.permissions);
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
       if (base == RouteAccess.moduleUnavailable) return base;
       final p = PermissionChecker(context.user.permissions),
           segments = Uri.parse(path).pathSegments;
@@ -123,17 +141,30 @@ class NavigationResolver {
     }
     return owner == null
         ? RouteAccess.unknown
-        : access(owner, context.company, context.user.permissions);
+        : access(
+            owner,
+            context.company,
+            context.user.permissions,
+            capabilities,
+          );
   }
 
   ResolvedNavigation resolve(
     CompanyContext company,
-    PermissionSet permissions,
-  ) {
+    PermissionSet permissions, {
+    EmployeeReference? employee,
+  }) {
+    final capabilities = const UserCapabilityResolver().resolve(
+      company: company,
+      permissions: permissions,
+      employee: employee,
+    );
     final items =
         registry.destinations
             .where(
-              (d) => access(d, company, permissions) == RouteAccess.allowed,
+              (d) =>
+                  access(d, company, permissions, capabilities) ==
+                  RouteAccess.allowed,
             )
             .toList()
           ..sort((a, b) {
@@ -149,7 +180,11 @@ class DefaultLandingResolver {
   final NavigationResolver navigation;
   String resolve(AuthContext context) =>
       navigation
-          .resolve(context.company, context.user.permissions)
+          .resolve(
+            context.company,
+            context.user.permissions,
+            employee: context.employeeReference,
+          )
           .destinations
           .firstOrNull
           ?.route ??

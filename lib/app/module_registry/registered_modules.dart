@@ -53,6 +53,7 @@ import '../../features/employees/presentation/pages/employee_details_page.dart';
 import '../../features/employees/presentation/pages/employee_form_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/domain/entities/auth_context.dart';
+import '../../features/auth/domain/policies/user_capability.dart';
 import '../../shared/navigation/form_navigation_guard.dart';
 import '../../design_system/design_system.dart';
 import '../../l10n/l10n.dart';
@@ -67,7 +68,8 @@ import '../../core/security/app_permission.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/password_bloc.dart';
 import '../../features/auth/presentation/pages/change_password_page.dart';
-import '../shell/pages/profile_placeholder_page.dart';
+import '../../features/profile/application/my_profile_cubit.dart';
+import '../../features/profile/presentation/my_profile_page.dart';
 import '../router/app_routes.dart';
 import '../router/app_route_transitions.dart';
 import 'module_registry.dart';
@@ -151,6 +153,7 @@ ModuleRegistry createErpRegistry(
                   path: 'new',
                   onExit: (c, s) => guard.onExit(c),
                   builder: (c, s) => BlocProvider(
+                    key: const ValueKey('shift-new'),
                     create: (_) => ShiftFormBloc(
                       shiftRepository!,
                       c.read<ShiftListBloc>().context,
@@ -162,6 +165,7 @@ ModuleRegistry createErpRegistry(
                 GoRoute(
                   path: ':id',
                   builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
                     create: (_) => ShiftDetailsBloc(
                       shiftRepository!,
                       c.read<ShiftListBloc>().context,
@@ -174,6 +178,7 @@ ModuleRegistry createErpRegistry(
                       path: 'edit',
                       onExit: (c, s) => guard.onExit(c),
                       builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
                         create: (_) => ShiftFormBloc(
                           shiftRepository!,
                           c.read<ShiftListBloc>().context,
@@ -238,6 +243,7 @@ ModuleRegistry createErpRegistry(
                   path: 'new',
                   onExit: (c, s) => guard.onExit(c),
                   builder: (c, s) => BlocProvider(
+                    key: const ValueKey('work-location-new'),
                     create: (_) => WorkLocationFormBloc(
                       workLocationRepository!,
                       c.read<WorkLocationListBloc>().context,
@@ -250,6 +256,7 @@ ModuleRegistry createErpRegistry(
                 GoRoute(
                   path: ':id',
                   builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
                     create: (_) => WorkLocationDetailsBloc(
                       workLocationRepository!,
                       c.read<WorkLocationListBloc>().context,
@@ -262,6 +269,7 @@ ModuleRegistry createErpRegistry(
                       path: 'edit',
                       onExit: (c, s) => guard.onExit(c),
                       builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
                         create: (_) =>
                             WorkLocationFormBloc(
                               workLocationRepository!,
@@ -331,6 +339,7 @@ ModuleRegistry createErpRegistry(
                   path: 'new',
                   onExit: (c, s) => guard.onExit(c),
                   builder: (c, s) => BlocProvider(
+                    key: const ValueKey('attendance-policy-new'),
                     create: (_) =>
                         AttendancePolicyFormBloc(
                           attendancePolicyRepository!,
@@ -345,6 +354,7 @@ ModuleRegistry createErpRegistry(
                 GoRoute(
                   path: ':id',
                   builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
                     create: (_) => AttendancePolicyDetailsBloc(
                       attendancePolicyRepository!,
                       c.read<AttendancePolicyListBloc>().context,
@@ -357,6 +367,7 @@ ModuleRegistry createErpRegistry(
                       path: 'edit',
                       onExit: (c, s) => guard.onExit(c),
                       builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
                         create: (_) =>
                             AttendancePolicyFormBloc(
                               attendancePolicyRepository!,
@@ -453,6 +464,7 @@ ModuleRegistry createErpRegistry(
                       name: 'employee-new',
                       onExit: (context, state) => formGuard.onExit(context),
                       builder: (context, state) => BlocProvider(
+                        key: const ValueKey('employee-new'),
                         create: (_) => EmployeeFormBloc(
                           employeeRepository!,
                           context.read<EmployeeListBloc>().context,
@@ -464,6 +476,7 @@ ModuleRegistry createErpRegistry(
                       path: ':employeeId',
                       name: 'employee-details',
                       builder: (context, state) => BlocProvider(
+                        key: ValueKey(state.pathParameters['employeeId']),
                         create: (_) => EmployeeDetailsBloc(
                           employeeRepository!,
                           context.read<EmployeeListBloc>().context,
@@ -477,6 +490,9 @@ ModuleRegistry createErpRegistry(
                           name: 'employee-edit',
                           onExit: (context, state) => formGuard.onExit(context),
                           builder: (context, state) => BlocProvider(
+                            key: ValueKey(
+                              '${state.pathParameters['employeeId']}-edit',
+                            ),
                             create: (_) => EmployeeFormBloc(
                               employeeRepository!,
                               context.read<EmployeeListBloc>().context,
@@ -510,6 +526,7 @@ ModuleRegistry createErpRegistry(
             order: 20,
             mobilePriority: 2,
             requiredPermissions: {AppPermission.attendanceViewSelf},
+            requiredCapabilities: {UserCapability.selfAttendance},
           ),
           (c) => c.read<AttendanceBloc?>() == null
               ? AppPage(
@@ -531,6 +548,7 @@ ModuleRegistry createErpRegistry(
             order: 21,
             mobilePriority: 3,
             requiredPermissions: {AppPermission.attendanceViewSelf},
+            requiredCapabilities: {UserCapability.selfAttendanceHistory},
           ),
           routes: [
             ShellRoute(
@@ -568,6 +586,7 @@ ModuleRegistry createErpRegistry(
                       path: ':attendanceDayId',
                       name: 'attendance-day-details',
                       builder: (c, s) => BlocProvider(
+                        key: ValueKey(s.pathParameters['attendanceDayId']),
                         create: (_) => AttendanceDayDetailsBloc(
                           c.read<AttendanceHistoryBloc>().repository,
                           s.pathParameters['attendanceDayId']!,
@@ -592,6 +611,9 @@ ModuleRegistry createErpRegistry(
               navigationGroup: NavigationGroup.workforce,
               order: 22,
               requiredPermissions: {AppPermission.attendanceRequestCorrection},
+              requiredCapabilities: {
+                UserCapability.requestAttendanceCorrection,
+              },
             ),
             routes: [
               GoRoute(
@@ -606,6 +628,7 @@ ModuleRegistry createErpRegistry(
                   GoRoute(
                     path: 'new/:attendanceDayId',
                     builder: (c, s) => BlocProvider(
+                      key: ValueKey(s.pathParameters['attendanceDayId']),
                       create: (_) =>
                           AttendanceCorrectionBloc(correctionRepository),
                       child: AttendanceCorrectionFormPage(
@@ -617,6 +640,7 @@ ModuleRegistry createErpRegistry(
                   GoRoute(
                     path: ':correctionId',
                     builder: (c, s) => BlocProvider(
+                      key: ValueKey(s.pathParameters['correctionId']),
                       create: (_) =>
                           AttendanceCorrectionBloc(correctionRepository)..add(
                             CorrectionDetailsStarted(
@@ -661,6 +685,7 @@ ModuleRegistry createErpRegistry(
                   GoRoute(
                     path: ':correctionId',
                     builder: (c, s) => BlocProvider(
+                      key: ValueKey(s.pathParameters['correctionId']),
                       create: (_) =>
                           AttendanceCorrectionBloc(correctionRepository)..add(
                             CorrectionDetailsStarted(
@@ -690,6 +715,7 @@ ModuleRegistry createErpRegistry(
                 AppPermission.attendanceViewTeam,
                 AppPermission.attendanceViewAll,
               },
+              requiredCapabilities: {UserCapability.teamAttendance},
             ),
             routes: [
               GoRoute(
@@ -760,42 +786,44 @@ ModuleRegistry createErpRegistry(
     AppModule(
       id: AppModuleIds.reports,
       destinations: [
-        if (attendanceReportRepository != null &&
-            attendanceReportExportService != null)
-          destination(
-            ErpModule(
-              id: 'reports',
-              moduleId: AppModuleIds.reports,
-              name: (l) => l.shellReports,
-              icon: Icons.assessment_outlined,
-              selectedIcon: Icons.assessment,
-              route: AppRoutes.reports,
-              navigationGroup: NavigationGroup.insights,
-              order: 30,
-              requiredPermissions: {AppPermission.attendanceReportView},
-              anyPermissions: {
-                AppPermission.attendanceViewTeam,
-                AppPermission.attendanceViewAll,
-              },
-            ),
-            (_) => BlocProvider(
-              create: (context) {
-                final actor = context.read<AuthBloc>().state.context!;
-                final scope =
-                    actor.user.permissions.contains(
-                      AppPermission.attendanceViewAll,
-                    )
-                    ? AttendanceScope.company
-                    : AttendanceScope.team;
-                return AttendanceReportBloc(
-                  attendanceReportRepository,
-                  attendanceReportExportService,
-                  scope,
-                )..add(const AttendanceReportStarted());
-              },
-              child: const AttendanceReportsPage(),
-            ),
+        destination(
+          ErpModule(
+            id: 'reports',
+            moduleId: AppModuleIds.reports,
+            name: (l) => l.shellReports,
+            icon: Icons.assessment_outlined,
+            selectedIcon: Icons.assessment,
+            route: AppRoutes.reports,
+            navigationGroup: NavigationGroup.insights,
+            order: 30,
+            requiredPermissions: {AppPermission.attendanceReportView},
+            anyPermissions: {
+              AppPermission.attendanceViewTeam,
+              AppPermission.attendanceViewAll,
+            },
+            requiredCapabilities: {UserCapability.viewAttendanceReports},
           ),
+          (context) {
+            final repository = attendanceReportRepository;
+            final exportService = attendanceReportExportService;
+            if (repository == null || exportService == null) {
+              return AppPage(
+                child: AppErrorState(message: context.l10n.reportUnavailable),
+              );
+            }
+            final actor = context.read<AuthBloc>().state.context!;
+            final scope =
+                actor.user.permissions.contains(AppPermission.attendanceViewAll)
+                ? AttendanceScope.company
+                : AttendanceScope.team;
+            return BlocProvider(
+              create: (_) =>
+                  AttendanceReportBloc(repository, exportService, scope)
+                    ..add(const AttendanceReportStarted()),
+              child: const AttendanceReportsPage(),
+            );
+          },
+        ),
       ],
     ),
     AppModule(
@@ -854,7 +882,12 @@ ModuleRegistry createErpRegistry(
               pageBuilder: (context, state) => AppRouteTransitions.page(
                 context,
                 state,
-                ProfilePlaceholderPage(),
+                BlocProvider(
+                  create: (_) =>
+                      MyProfileCubit(authRepository, employeeRepository)
+                        ..start(),
+                  child: const MyProfilePage(),
+                ),
               ),
             ),
             GoRoute(

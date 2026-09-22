@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_borders.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_dimensions.dart';
 import '../../theme/app_motion.dart';
 import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
@@ -334,9 +335,9 @@ class AppIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (targetSize, iconSize) = switch (size) {
-      AppButtonSize.small => (32.0, 16.0),
-      AppButtonSize.medium => (40.0, 20.0),
-      AppButtonSize.large => (44.0, 22.0),
+      AppButtonSize.small => (AppDimensions.controlSm, AppDimensions.iconSm),
+      AppButtonSize.medium => (AppDimensions.controlMd, AppDimensions.iconMd),
+      AppButtonSize.large => (AppDimensions.controlLg, AppDimensions.iconLg),
     };
     return IconButton(
       tooltip: tooltip,

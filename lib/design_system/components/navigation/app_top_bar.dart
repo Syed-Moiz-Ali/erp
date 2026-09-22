@@ -10,11 +10,15 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
     required this.accountMenu,
     required this.onSearch,
     required this.onNotifications,
+    this.notificationsButton,
+    this.syncIndicator,
     this.breadcrumbs,
   });
   final String? title;
   final Widget accountMenu;
   final Widget? breadcrumbs;
+  final Widget? notificationsButton;
+  final Widget? syncIndicator;
   final VoidCallback onSearch, onNotifications;
   @override
   Size get preferredSize => const Size.fromHeight(AppDimensions.topBar);
@@ -41,16 +45,18 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       shape: const Border(bottom: BorderSide(color: AppColors.border)),
       title: titleWidget,
       actions: [
+        if (syncIndicator != null) syncIndicator!,
         AppIconButton(
           icon: Icons.search,
           tooltip: context.l10n.shellSearchTitle,
           onPressed: onSearch,
         ),
-        AppIconButton(
-          icon: Icons.notifications_none_outlined,
-          tooltip: context.l10n.shellNotifications,
-          onPressed: onNotifications,
-        ),
+        notificationsButton ??
+            AppIconButton(
+              icon: Icons.notifications_none_outlined,
+              tooltip: context.l10n.shellNotifications,
+              onPressed: onNotifications,
+            ),
         if (desktop) const AppLanguageSelector(compact: true),
         Padding(
           padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),

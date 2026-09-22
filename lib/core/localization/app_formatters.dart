@@ -15,6 +15,23 @@ class AppDateFormatter {
       DateFormat.E(locale.toLanguageTag()).format(value);
   String dayOfMonth(DateTime value) =>
       DateFormat.d(locale.toLanguageTag()).format(value);
+
+  /// Human relative time for notification lists; absolute fallback for older
+  /// items keeps dates unambiguous.
+  String relative(DateTime value, AppLocalizations l10n, {DateTime? now}) {
+    final reference = (now ?? DateTime.now()).toUtc();
+    final diff = reference.difference(value.toUtc());
+    final numbers = AppNumberFormatter(locale);
+    if (diff.inMinutes < 1) return l10n.timeJustNow;
+    if (diff.inMinutes < 60) {
+      return l10n.timeMinutesAgo(numbers.integer(diff.inMinutes));
+    }
+    if (diff.inHours < 24) {
+      return l10n.timeHoursAgo(numbers.integer(diff.inHours));
+    }
+    if (diff.inHours < 48) return l10n.timeYesterday;
+    return '$date(value) · ${AppTimeFormatter(locale).time(value)}';
+  }
 }
 
 class AppTimeFormatter {

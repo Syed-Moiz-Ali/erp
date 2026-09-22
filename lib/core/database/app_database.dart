@@ -1,16 +1,19 @@
 import '../../features/attendance/data/attendance_tables.dart';
+import '../../features/notifications/data/notifications_table.dart';
 import '../../features/shifts/data/shifts_table.dart';
 import '../../features/work_locations/data/work_locations_table.dart';
 import '../../features/attendance_policies/data/attendance_policies_table.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import '../../features/employees/data/employee_tables.dart';
+import '../sync/sync_conflicts_table.dart';
 part 'app_database.g.dart';
 
 class SyncOutbox extends Table {
   TextColumn get id => text()();
   TextColumn get moduleId => text()();
   TextColumn get entityId => text()();
+  TextColumn get entityType => text().nullable()();
   TextColumn get operation => text()();
   TextColumn get payload => text()();
   DateTimeColumn get createdAt => dateTime()();
@@ -18,7 +21,13 @@ class SyncOutbox extends Table {
   TextColumn get requestId => text().nullable()();
   TextColumn get status => text().withDefault(const Constant('pending'))();
   DateTimeColumn get lastAttemptAt => dateTime().nullable()();
+  DateTimeColumn get nextAttemptAt => dateTime().nullable()();
   TextColumn get failureCode => text().nullable()();
+  TextColumn get lastFailureMessageSafe => text().nullable()();
+  TextColumn get serverResponseMetadata => text().nullable()();
+  IntColumn get payloadVersion => integer().withDefault(const Constant(1))();
+  DateTimeColumn get processingStartedAt => dateTime().nullable()();
+  TextColumn get processorId => text().nullable()();
   IntColumn get attempts => integer().withDefault(const Constant(0))();
   @override
   Set<Column<Object>> get primaryKey => {id};
@@ -27,6 +36,8 @@ class SyncOutbox extends Table {
 @DriftDatabase(
   tables: [
     SyncOutbox,
+    SyncConflicts,
+    AppNotifications,
     AttendanceDays,
     AttendanceEvents,
     AttendanceCorrectionRequests,
@@ -53,12 +64,43 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
+
+  Future<bool> _tableExists(String name) async {
+    final rows = await customSelect(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+      variables: [Variable(name)],
+    ).get();
+    return rows.isNotEmpty;
+  }
+
+  /// Idempotent migration helpers keep upgrades safe even when a database was
+  /// created at a newer schema and simulated backwards in tests.
+  Future<void> _ensureTable<T extends Table, D>(
+    Migrator m,
+    TableInfo<T, D> table,
+  ) async {
+    if (await _tableExists(table.actualTableName)) return;
+    await m.createTable(table);
+  }
+
+  Future<void> _ensureColumn<T extends Table, D extends Object>(
+    Migrator m,
+    TableInfo<T, D> table,
+    GeneratedColumn<D> column,
+  ) async {
+    final rows = await customSelect(
+      'PRAGMA table_info(${table.actualTableName})',
+    ).get();
+    if (rows.any((row) => row.read<String>('name') == column.name)) return;
+    await m.addColumn(table, column);
+  }
+
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 4 || to != 5) {
+      if (from < 1 || from > 5 || to != 6) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -85,11 +127,40 @@ class AppDatabase extends _$AppDatabase {
       if (from < 5) {
         await m.createTable(attendanceCorrectionRequests);
       }
+      if (from < 6) {
+        await _ensureTable(m, syncConflicts);
+        await _ensureTable(m, appNotifications);
+        await _ensureColumn(m, syncOutbox, syncOutbox.entityType);
+        await _ensureColumn(m, syncOutbox, syncOutbox.nextAttemptAt);
+        await _ensureColumn(m, syncOutbox, syncOutbox.lastFailureMessageSafe);
+        await _ensureColumn(m, syncOutbox, syncOutbox.serverResponseMetadata);
+        await _ensureColumn(m, syncOutbox, syncOutbox.payloadVersion);
+        await _ensureColumn(m, syncOutbox, syncOutbox.processingStartedAt);
+        await _ensureColumn(m, syncOutbox, syncOutbox.processorId);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
       await customStatement(
         'CREATE UNIQUE INDEX IF NOT EXISTS outbox_request ON sync_outbox(request_id) WHERE request_id IS NOT NULL',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS outbox_status_next ON sync_outbox(status, next_attempt_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS outbox_company_status ON sync_outbox(company_id, status, created_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS notification_user ON app_notifications(company_id, user_id, created_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS notification_unread ON app_notifications(company_id, user_id, read_at)',
+      );
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS notification_dedupe ON app_notifications(company_id, user_id, dedupe_key) WHERE dedupe_key IS NOT NULL',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS conflict_company_status ON sync_conflicts(company_id, status, created_at)',
       );
       await customStatement(
         "CREATE UNIQUE INDEX IF NOT EXISTS attendance_open ON attendance_days(company_id,employee_id) WHERE state != 'completed'",
