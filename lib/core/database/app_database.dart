@@ -1,13 +1,13 @@
-import '../../features/attendance/data/attendance_tables.dart';
-import '../../features/leave/data/leave_tables.dart';
-import '../../features/notifications/data/notifications_table.dart';
-import '../../features/shifts/data/shifts_table.dart';
-import '../../features/work_locations/data/work_locations_table.dart';
-import '../../features/attendance_policies/data/attendance_policies_table.dart';
+import 'package:modular_erp/modules/hr/attendance/data/attendance_tables.dart';
+import 'package:modular_erp/modules/hr/leave/data/leave_tables.dart';
+import 'package:modular_erp/platform/notifications/data/notifications_table.dart';
+import 'package:modular_erp/modules/hr/shifts/data/shifts_table.dart';
+import 'package:modular_erp/modules/hr/work_locations/data/work_locations_table.dart';
+import 'package:modular_erp/modules/hr/attendance_policies/data/attendance_policies_table.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import '../../features/employees/data/employee_tables.dart';
-import '../sync/sync_conflicts_table.dart';
+import 'package:modular_erp/modules/hr/employees/data/employee_tables.dart';
+import 'package:modular_erp/core/sync/sync_conflicts_table.dart';
 part 'app_database.g.dart';
 
 class SyncOutbox extends Table {

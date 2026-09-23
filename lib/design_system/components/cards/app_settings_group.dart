@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
-import '../cards/app_cards.dart';
-import '../headers/app_headers.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/components/cards/app_cards.dart';
+import 'package:modular_erp/design_system/components/headers/app_headers.dart';
 
 /// Grouped settings surface: a section header followed by a single bordered
 /// surface of rows separated by hairlines. Preferred over one card per row.

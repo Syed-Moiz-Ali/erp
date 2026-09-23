@@ -1,11 +1,11 @@
-import '../../l10n/l10n.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../module_registry/module_registry.dart';
-import '../shell/erp_shell.dart';
-import '../../features/design_system_preview/presentation/design_system_preview_page.dart';
-import '../../features/workspace/presentation/workspace_page.dart';
-import '../../design_system/components/empty_states/app_empty_state.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/app/shell/erp_shell.dart';
+import 'package:modular_erp/platform/design_system_preview/presentation/design_system_preview_page.dart';
+import 'package:modular_erp/platform/workspace/presentation/workspace_page.dart';
+import 'package:modular_erp/design_system/components/empty_states/app_empty_state.dart';
 
 final moduleRegistry = ModuleRegistry([
   ErpModule(

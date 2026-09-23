@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/l10n.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 enum AppUserMenuAction { profile, password, language, logout }
 

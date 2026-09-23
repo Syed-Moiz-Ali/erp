@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
 
 abstract final class AppRouteTransitions {
   /// Indexed branch switches are instant; nested route entries use a short nondirectional fade.

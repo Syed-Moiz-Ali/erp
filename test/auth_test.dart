@@ -12,13 +12,13 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/storage/secure_session_storage.dart';
 import 'package:modular_erp/core/validation/app_validation.dart';
-import 'package:modular_erp/features/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/features/auth/data/dto/auth_session_dto.dart';
-import 'package:modular_erp/features/auth/data/repositories/demo_auth_repository.dart';
-import 'package:modular_erp/features/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/features/auth/domain/repositories/auth_repository.dart';
-import 'package:modular_erp/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/features/auth/presentation/bloc/password_bloc.dart';
+import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'package:modular_erp/platform/auth/data/dto/auth_session_dto.dart';
+import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/password_bloc.dart';
 import 'support/memory_session_storage.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}

@@ -1,6 +1,6 @@
 import 'dart:async';
-import '../connectivity/connectivity_service.dart';
-import '../errors/result.dart';
+import 'package:modular_erp/core/connectivity/connectivity_service.dart';
+import 'package:modular_erp/core/errors/result.dart';
 
 abstract interface class ModuleSyncHandler {
   String get moduleId;

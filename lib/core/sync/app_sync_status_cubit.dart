@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../connectivity/connectivity_service.dart';
-import '../errors/result.dart';
-import '../preferences/app_preferences_repository.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
-import '../../features/auth/domain/repositories/auth_repository.dart';
+import 'package:modular_erp/core/connectivity/connectivity_service.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'outbox_repository.dart';
 
 /// Global, quiet-by-default sync status surfaced by the shell indicator.

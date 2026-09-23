@@ -1,6 +1,6 @@
-import '../auth/password_policy.dart';
-import '../auth/auth_identifier.dart';
-import '../../l10n/generated/app_localizations.dart';
+import 'package:modular_erp/core/auth/password_policy.dart';
+import 'package:modular_erp/core/auth/auth_identifier.dart';
+import 'package:modular_erp/l10n/generated/app_localizations.dart';
 
 enum ValidationIssue {
   required,

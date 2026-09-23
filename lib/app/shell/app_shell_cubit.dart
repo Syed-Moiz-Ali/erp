@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/errors/result.dart';
-import '../../core/preferences/app_preferences_repository.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 
 class AppShellState {
   const AppShellState({this.collapsed = false, this.failure});

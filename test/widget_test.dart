@@ -1,6 +1,6 @@
 import 'package:modular_erp/app/router/preview_router.dart';
-import 'package:modular_erp/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/features/auth/data/repositories/demo_auth_repository.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'support/memory_session_storage.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -15,7 +15,7 @@ import 'package:modular_erp/core/localization/app_language.dart';
 import 'package:modular_erp/core/localization/locale_cubit.dart';
 import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 import 'package:modular_erp/design_system/design_system.dart';
-import 'package:modular_erp/features/design_system_preview/presentation/preview_cubit.dart';
+import 'package:modular_erp/platform/design_system_preview/presentation/preview_cubit.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'support/memory_preferences.dart';
 

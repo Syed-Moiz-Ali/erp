@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_dimensions.dart';
-import '../../theme/app_breakpoints.dart';
-import '../../theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_dimensions.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 
 class AppContentMaxWidth extends StatelessWidget {
   const AppContentMaxWidth({

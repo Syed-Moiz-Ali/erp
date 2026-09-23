@@ -1,5 +1,5 @@
-import '../errors/result.dart';
-import '../preferences/app_preferences_repository.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 import 'outbox_repository.dart';
 
 /// Aggregate, non-sensitive sync diagnostics. Never exposes payloads or tokens.

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/l10n.dart';
-import '../../../app/module_registry/module_registry.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_typography.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_dimensions.dart';
-import '../../theme/app_motion.dart';
-import '../buttons/app_buttons.dart';
-import '../layout/app_auth_layout.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_radius.dart';
+import 'package:modular_erp/design_system/theme/app_dimensions.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/components/buttons/app_buttons.dart';
+import 'package:modular_erp/design_system/components/layout/app_auth_layout.dart';
 
 class AppSidebarItem extends StatelessWidget {
   const AppSidebarItem({

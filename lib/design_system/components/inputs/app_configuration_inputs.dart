@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../core/utils/local_time.dart';
-import '../../../l10n/l10n.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/core/utils/local_time.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 /// Numeric entry accepts Latin, Arabic-Indic and Persian digits. Empty and
 /// invalid input remain distinct so repositories cannot silently accept zero.

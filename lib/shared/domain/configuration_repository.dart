@@ -1,6 +1,6 @@
-import '../../core/models/configuration_record.dart';
-import '../../core/errors/result.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 
 abstract interface class ConfigurationRepository<
   T extends ConfigurationRecord,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../design_system/design_system.dart';
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 class RouteStatusPage extends StatelessWidget {
   const RouteStatusPage({

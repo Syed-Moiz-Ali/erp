@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../core/localization/app_formatters.dart';
-import '../../core/sync/app_sync_status_cubit.dart';
-import '../../design_system/design_system.dart';
-import '../../l10n/l10n.dart';
+import 'package:modular_erp/core/localization/app_formatters.dart';
+import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 enum _SyncTone { quiet, syncing, pending, attention, offline }
 

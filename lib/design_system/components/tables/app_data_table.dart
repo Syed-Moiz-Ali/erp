@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_dimensions.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
-import '../../../l10n/l10n.dart';
-import '../buttons/app_buttons.dart';
-import '../../../core/localization/app_formatters.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_dimensions.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/components/buttons/app_buttons.dart';
+import 'package:modular_erp/core/localization/app_formatters.dart';
 
 /// Enterprise data table with centralized density (compact header/row heights),
 /// typed header styling and horizontal-scroll fallback on narrow widths.

@@ -1,4 +1,4 @@
-import '../errors/result.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'pending_mutation.dart';
 import 'sync_conflict.dart';
 import 'sync_failure.dart';

@@ -1,14 +1,14 @@
-import '../../theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/localization/app_language.dart';
-import '../../../core/localization/locale_cubit.dart';
-import '../../../l10n/l10n.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_motion.dart';
+import 'package:modular_erp/core/localization/app_language.dart';
+import 'package:modular_erp/core/localization/locale_cubit.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_radius.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
 
 /// Reusable in the preview, login, profile and settings. No storage logic here.
 ///

@@ -1,10 +1,10 @@
-import '../../theme/app_dimensions.dart';
+import 'package:modular_erp/design_system/theme/app_dimensions.dart';
 import 'package:flutter/material.dart';
-import '../../theme/app_breakpoints.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_motion.dart';
-import '../cards/app_cards.dart';
-import '../headers/app_headers.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/components/cards/app_cards.dart';
+import 'package:modular_erp/design_system/components/headers/app_headers.dart';
 
 /// Standard page frame: owns responsive page padding, max content width and
 /// the optional header/filters, then scrolls its [child].

@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../core/security/app_permission.dart';
-export '../../core/security/app_permission.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+export 'package:modular_erp/core/security/app_permission.dart';
 
 extension PermissionContext on BuildContext {
   /// Reactive: rebuilding widgets subscribe to current explicit session grants.

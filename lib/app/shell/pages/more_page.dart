@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../design_system/design_system.dart';
-import '../../../l10n/l10n.dart';
-import '../../module_registry/module_registry.dart';
-import '../../module_registry/navigation_resolver.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/app/module_registry/navigation_resolver.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key, required this.navigation});

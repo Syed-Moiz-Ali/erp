@@ -1,4 +1,4 @@
-import '../../l10n/generated/app_localizations.dart';
+import 'package:modular_erp/l10n/generated/app_localizations.dart';
 import 'result.dart';
 
 extension FailureLocalization on Failure {

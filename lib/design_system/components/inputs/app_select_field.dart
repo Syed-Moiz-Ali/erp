@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../design_system.dart';
-import '../../theme/app_breakpoints.dart';
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 class AppSelectOption<T> {
   const AppSelectOption(

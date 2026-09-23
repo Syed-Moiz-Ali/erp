@@ -1,11 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
-import '../cards/app_cards.dart';
-import '../skeletons/app_skeleton.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_radius.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/components/cards/app_cards.dart';
+import 'package:modular_erp/design_system/components/skeletons/app_skeleton.dart';
 
 /// Centralized, semantic chart palette. Feature widgets must not hardcode
 /// chart colors; future modules (Services/Finance) reuse these too.

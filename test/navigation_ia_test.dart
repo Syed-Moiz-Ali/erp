@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/module_registry/navigation_resolver.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
-import 'package:modular_erp/features/auth/data/repositories/demo_auth_repository.dart';
-import 'package:modular_erp/features/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/features/auth/domain/policies/user_capability.dart';
-import 'package:modular_erp/features/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
+import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'support/memory_session_storage.dart';
 import 'employee_test.dart' show employeeContext;

@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import '../../core/database/app_database.dart';
-import '../../core/errors/result.dart';
-import '../../core/models/configuration_record.dart';
-import '../../core/security/app_permission.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
-import '../domain/configuration_repository.dart';
+import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/shared/domain/configuration_repository.dart';
 
 /// Shared tenant-safe mechanics only. Feature repositories own their schemas,
 /// domain rules, drafts and entity/row mapping.

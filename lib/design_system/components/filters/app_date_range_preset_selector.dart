@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_filters.dart';
-import '../../theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 
 class AppDateRangePresetSelector<T extends Object> extends StatelessWidget {
   const AppDateRangePresetSelector({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../module_registry/module_registry.dart';
-import '../../design_system/components/layout/app_responsive_scaffold.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/design_system/components/layout/app_responsive_scaffold.dart';
 
 class ErpShell extends StatelessWidget {
   const ErpShell({

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/errors/result.dart';
-import '../../core/models/configuration_record.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
-import '../domain/configuration_repository.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/shared/domain/configuration_repository.dart';
 
 sealed class RecordListEvent {
   const RecordListEvent();

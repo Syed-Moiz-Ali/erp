@@ -1,8 +1,8 @@
-import '../../features/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../design_system/design_system.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class FormNavigationGuard {
   bool dirty = false, saving = false;

@@ -1,16 +1,16 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:modular_erp/bootstrap/demo_configuration_seed.dart';
+import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
-import 'package:modular_erp/features/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/features/employees/data/employee_seed.dart';
-import 'package:modular_erp/features/leave/data/leave_configuration_repositories.dart';
-import 'package:modular_erp/features/leave/data/local_leave_repository.dart';
-import 'package:modular_erp/features/leave/domain/leave_models.dart';
-import 'package:modular_erp/features/leave/domain/leave_repository.dart';
-import 'package:modular_erp/features/leave/domain/leave_services.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
+import 'package:modular_erp/modules/hr/leave/data/leave_configuration_repositories.dart';
+import 'package:modular_erp/modules/hr/leave/data/local_leave_repository.dart';
+import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
+import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
+import 'package:modular_erp/modules/hr/leave/domain/leave_services.dart';
 import 'attendance_test.dart' show FakeClock, MockAuth;
 import 'employee_test.dart' show employeeContext;
 

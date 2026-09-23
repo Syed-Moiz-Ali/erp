@@ -14,7 +14,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/sync/sync_coordinator.dart';
 import 'package:modular_erp/core/sync/outbox_repository.dart';
 import 'package:modular_erp/core/sync/pending_mutation.dart';
-import 'package:modular_erp/features/design_system_preview/presentation/preview_cubit.dart';
+import 'package:modular_erp/platform/design_system_preview/presentation/preview_cubit.dart';
 
 class MockConnectivity extends Mock implements ConnectivityService {}
 

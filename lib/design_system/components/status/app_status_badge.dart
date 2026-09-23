@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_radius.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
 
 enum AppStatus { success, warning, danger, info, neutral, brand }
 

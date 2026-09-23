@@ -1,6 +1,6 @@
-import '../../theme/app_breakpoints.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
 import 'package:flutter/material.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 /// Uses the existing responsive grid; text scaling increases minimum width.
 class AppDashboardGrid extends StatelessWidget {

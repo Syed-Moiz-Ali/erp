@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 class AppDetailField extends StatelessWidget {
   const AppDetailField({

@@ -1,2486 +1,2303 @@
 ```text
-PHASE 15.3 — COMPLETE LEAVE & HOLIDAY MODULE REBUILD:
-HOLIDAY ADMINISTRATION, GOVERNMENT/FESTIVAL CALENDAR, PERSONA UX,
-RESPONSIVE LEAVE WORKSPACE & ARCHITECTURAL CLEANUP
+SERVICES PHASE 0.1 — DASHBOARD OWNERSHIP & ERP MODULE BOUNDARY CORRECTION
 
 Continue working on the EXISTING Flutter ERP project.
 
+Phase 0 file movement has already started.
+
+CURRENT STRUCTURE AFTER THE MOVE:
+
+lib/modules/hr/
+  attendance/
+  attendance_policies/
+  employees/
+  leave/
+  reports/
+  shifts/
+  work_locations/
+
+lib/platform/
+  auth/
+  dashboard/
+  design_system_preview/
+  notifications/
+  profile/
+  sync/
+  workspace/
+
+THIS NEEDS ONE IMPORTANT CORRECTION.
+
+==================================================
+1. PROBLEM
+==================================================
+
+The current Dashboard implementation was moved to:
+
+lib/platform/dashboard/
+
+but the ACTUAL current Dashboard is HR-specific.
+
+It currently contains information related to:
+
+- Employees
+- Attendance
+- Leave
+- Workforce
+- Attendance summaries
+- Leave summaries
+- HR persona dashboards
+- HR operational metrics
+
+It is NOT yet a generic ERP-wide Dashboard framework.
+
+Therefore:
+
+CURRENT dashboard implementation belongs to:
+
+lib/modules/hr/dashboard/
+
+NOT:
+
+lib/platform/dashboard/
+
+==================================================
+2. FIX THE FILE LOCATION
+==================================================
+
+Move:
+
+lib/platform/dashboard/
+
+to:
+
+lib/modules/hr/dashboard/
+
+Result:
+
+lib/modules/hr/
+  dashboard/
+  employees/
+  attendance/
+  leave/
+  shifts/
+  work_locations/
+  attendance_policies/
+  reports/
+
+==================================================
+3. DO NOT CHANGE DASHBOARD URL
+==================================================
+
 IMPORTANT:
 
-I have inspected the CURRENT implementation.
+Source-code ownership and URL architecture are different.
 
-Do NOT create a new project.
-Do NOT rebuild working Leave domain logic from scratch.
-Do NOT discard the existing ledger/request/approval/repository implementation.
+Keep current route:
 
-Instead AUDIT, FIX and COMPLETE the existing module.
+/app/dashboard
 
-==================================================
-CURRENT IMPLEMENTATION ALREADY EXISTS
-==================================================
+DO NOT change to:
 
-Current source already contains:
+/app/hr/dashboard
 
-lib/features/leave/domain/*
-lib/features/leave/data/*
-lib/features/leave/presentation/*
+DO NOT change browser/deep-link behavior.
 
-including:
-
-Leave Types
-Leave Policies
-Leave requests
-Leave balances/ledger
-Approve/reject/cancel
-Team Leave
-All Leave
-Approval Queue
-Employee Leave page
-Leave Calendar
-Holiday configuration
-Leave settings
-Attendance day override
-Notifications
-English/Arabic localization
-routes
-permissions
-capabilities
-
-Reuse all valid existing architecture.
+Existing route names/constants remain compatible.
 
 ==================================================
-KNOWN REAL PROBLEMS FOUND IN CURRENT SOURCE
+4. DO NOT CHANGE DASHBOARD BEHAVIOR
 ==================================================
 
-The current implementation has several concrete deficiencies.
+This phase is ownership correction only.
 
-1. HR HOLIDAY PERMISSION BUG
+Do NOT redesign Dashboard.
 
-In:
+Do NOT change:
 
-account_role_templates.dart
+- widgets
+- metrics
+- role/persona content
+- permissions
+- capabilities
+- cards
+- queries
+- layout
+- responsive behavior
+- localization
 
-HR receives:
-
-holidayManage
-
-but NOT:
-
-holidayView
-
-However:
-
-ConfigurationLandingPage
-
-Holiday registered destination
-
-/app/settings/holidays
-
-require:
-
-holidayView
-
-Therefore HR can have "manage holidays" authority while the Holiday screen is hidden/inaccessible.
-
-FIX THIS FIRST.
+The Dashboard should render exactly as before.
 
 ==================================================
-2. HOLIDAY MANAGEMENT IS NOT DISCOVERABLE
+5. WHY DASHBOARD BELONGS TO HR CURRENTLY
 ==================================================
 
-Holiday creation technically exists under:
+Use this ownership rule:
 
-/app/settings/holidays
+A feature belongs to a business module when most/all of its current business
+data and use cases belong to that module.
 
-but users operating Leave/Holiday calendar cannot easily discover:
+Current Dashboard consumes only HR/workforce concerns.
 
-Add Holiday
-Manage Holidays
-Configure next year's calendar
+Therefore:
 
-The Leave Calendar is read-oriented only.
+HR Dashboard → modules/hr/dashboard
 
-This is bad UX.
+Later Services may have:
 
-==================================================
-3. HOLIDAY DOMAIN IS TOO BASIC FOR A REAL ERP
-==================================================
+modules/services/dashboard/
 
-Current Holiday supports roughly:
+with metrics such as:
 
-publicHoliday
-companyHoliday
-optionalHoliday
-specialClosure
+- Open Service Enquiries
+- Scheduled Jobs
+- Pending Inspections
+- Material Requests
+- Work In Progress
+- Completed Jobs
+- Overdue Jobs
 
-companyWide
-specificWorkLocations
+DO NOT put future Services metrics into:
 
-But there is no proper concept for:
-
-government/public holidays
-festival holidays
-regional/state holidays
-annual company holiday calendar
-holiday year setup
-country/region context
-copying previous year's calendar
-bulk import
-holiday source
-calendar readiness for next year.
-
-Complete this properly.
+modules/hr/dashboard/
 
 ==================================================
-4. HOLIDAY UI IS OVER-GENERIC
+6. FUTURE GLOBAL DASHBOARD
 ==================================================
 
-HolidayListPage currently uses generic:
+DO NOT build a global dashboard framework prematurely.
 
-ConfigurationListLayout
+However document the intended future direction.
 
-This generic configuration layout includes concepts such as:
+If the application later needs one combined ERP landing dashboard:
 
-assigned employee counts
+platform/dashboard/
 
-generic configuration filtering
+may eventually contain ONLY a thin composition layer.
 
-that do not semantically fit Holidays.
+Conceptually:
 
-Do NOT force Holidays into a generic configuration UI just because the repository implements ConfigurationRecord.
+platform/dashboard/
+  dashboard_shell.dart
+  dashboard_contributor.dart
 
-Create a PURPOSE-BUILT Holiday Management UX.
+modules/hr/dashboard/
+  hr_dashboard_contributor.dart
 
-==================================================
-5. LEAVE HOME UX IS TOO BASIC
-==================================================
+modules/services/dashboard/
+  services_dashboard_contributor.dart
 
-Current LeaveHomePage is mainly:
+But:
 
-quick-action cards
-+
-balance metric cards.
+DO NOT implement this now unless necessary.
 
-It does not show enough useful context such as:
+For Phase 0.1:
 
-upcoming approved leave
-next holiday
-pending request
-recent request
-leave balance composition
-
-Redesign it.
+the whole CURRENT Dashboard remains HR-owned.
 
 ==================================================
-6. ORGANIZATIONAL LEAVE OVERVIEW IS TOO BASIC
+7. DO NOT LEAVE DUPLICATE DASHBOARD CODE
 ==================================================
 
-Current LeaveOverviewPage is mainly:
+After moving:
 
-summary metrics
-on-leave-today
-shortcut cards.
+lib/platform/dashboard/
 
-HR/Manager/Admin need a real operational workspace.
+should NOT contain duplicate:
 
-==================================================
-7. MODULE SUB-NAVIGATION IS WEAK
-==================================================
+domain
+data
+application
+presentation
 
-LeaveModuleScaffold currently renders many destinations as:
+implementations.
 
-AppFilterChip
+There must be ONE current Dashboard implementation:
 
-inside a horizontal scrolling Row.
-
-This is not appropriate as the permanent navigation model for a professional ERP module.
-
-Redesign secondary navigation.
+lib/modules/hr/dashboard/
 
 ==================================================
-8. FILTER UX IS TOO HEAVY
+8. UPDATE IMPORTS
 ==================================================
 
-Team/All Leave filter currently contains:
+Search entire project for:
 
-employee search
-all status chips
-all period chips
-leave type
-department
+/platform/dashboard/
 
-inside one large card.
+and update imports to:
 
-This becomes visually noisy.
+/modules/hr/dashboard/
 
-Redesign filters for Desktop and Mobile separately.
+where referring to the current HR Dashboard.
 
-==================================================
-9. CALENDAR UX IS TOO SIMPLE
-==================================================
+Examples to audit:
 
-Current LeaveCalendarPage essentially renders:
+registered_modules.dart
 
-7-column day grid
+bootstrap/dependencies.dart
 
-colored day cells
+router
 
-then a separate list of entries.
+dashboard BLoC providers
 
-This does not feel like a professional Leave/Holiday calendar.
+dashboard repository
 
-Rebuild it.
+dashboard tests
 
-==================================================
-10. TIME ARCHITECTURE REGRESSION
-==================================================
+navigation tests
 
-Search all Leave files for:
+widget tests
 
-DateTime.now()
-.toUtc()
-
-Current examples exist in:
-
-leave_today_banner.dart
-leave_blocs.dart
-leave_operations_pages.dart
-leave_employee_page.dart
-leave_approvals_page.dart
-leave_balances_page.dart
-leave_seed.dart
-
-Business "today", year, periods and effective dates must use:
-
-AppClock
-CompanyTimeService
-LeaveYearResolver
-
-as appropriate.
-
-Do not continue raw device-time business logic.
+demo seed wiring
 
 ==================================================
-PART A — PERMISSION CORRECTION
+9. REGISTRY OWNERSHIP
 ==================================================
 
-Fix the permission model systematically.
+Dashboard registration should be reviewed carefully.
 
-HR should normally receive:
+Even though the Dashboard source lives in:
 
-holidayView
-holidayManage
+modules/hr/dashboard/
 
-when its default template gives Holiday administration.
+the destination remains:
 
-Company Admin/Super Admin permissions continue according to existing architecture.
+/app/dashboard
 
-Manager/Employee:
+For CURRENT product state, HR module registration may own the Dashboard
+destination because the page itself is HR-specific.
 
-holiday viewing occurs through the Leave/Holiday calendar according to appropriate capability.
-
-They do NOT receive holiday management by default.
+Do NOT create fake platform ownership only because route is `/app/dashboard`.
 
 ==================================================
-MANAGE MUST NOT EXIST WITHOUT VIEW
+10. DASHBOARD VISIBILITY
 ==================================================
 
-Audit these pairs:
+Preserve current behavior.
 
-leaveTypeView
-leaveTypeManage
-
-leavePolicyView
-leavePolicyManage
-
-holidayView
-holidayManage
-
-A permission configuration should not result in:
-
-Manage = true
-View = false
-
-and then hide the screen.
-
-Implement a clean permission-dependency rule.
-
-Options:
-
-permission grant normalization
-or
-permission dependency resolver
-
-Do not scatter:
-
-if holidayManage then pretend holidayView
-
-across random widgets.
-
-Add regression tests.
-
-==================================================
-PERSONA MATRIX — HOLIDAY
-==================================================
-
-EMPLOYEE
-
-Can:
-view applicable company holidays
-
-Cannot:
-create/edit/delete/deactivate holidays.
-
-MANAGER
-
-Can:
-view applicable holidays
-
-Cannot manage unless explicitly permitted.
-
+Employee
+Manager
 HR
+Company Admin
+Super Admin
 
-Can normally:
-view holiday calendar
-create holidays
-edit holidays
-manage yearly calendar
+must still receive the same Dashboard experience they had before this move.
 
-according to permissions.
-
-COMPANY ADMIN
-
-Can manage company holidays according to permissions.
-
-SUPER ADMIN
-
-Do NOT automatically become the person maintaining every company's festival calendar merely because of platform authority.
-
-Tenant/company context and explicit permissions still apply.
+Do NOT expose Services.
 
 ==================================================
-PART B — HOLIDAY CALENDAR DOMAIN
+11. SUPER ADMIN NOTE
 ==================================================
 
-Upgrade Holiday configuration into a proper annual Holiday Calendar system.
+If current Super Admin Dashboard already uses the same HR Dashboard framework,
+preserve behavior for now.
 
-Do NOT rely only on individual flat holiday records forever.
+Do not redesign platform/admin dashboards during Phase 0.1.
 
-Introduce a lightweight:
-
-HolidayCalendar
-
-if it cleanly improves architecture.
-
-Suggested:
-
-id
-
-companyId
-
-name
-
-year
-
-countryCode optional
-
-regionCode optional
-
-status
-
-isDefault
-
-createdAt
-
-updatedAt
-
-syncStatus
-
-Example:
-
-India Holiday Calendar 2026
-
-Hyderabad Operations Calendar 2026
-
-Dubai Office Calendar 2026
+If future platform-wide Super Admin dashboard is needed,
+that is separate future architecture.
 
 ==================================================
-HOLIDAY CALENDAR ASSIGNMENT
+12. PROFILE REMAINS PLATFORM
 ==================================================
 
-A calendar can apply to:
-
-whole company
-
-specific Work Locations
-
-If multiple calendar architecture becomes unnecessarily complex for the current project, it is acceptable to keep WorkLocation scope at Holiday-entry level.
-
-But yearly management MUST be first-class.
-
-==================================================
-HOLIDAY ENTITY ENHANCEMENT
-==================================================
-
-Review existing Holiday model.
-
-Support meaningful categories such as:
-
-PUBLIC / GOVERNMENT HOLIDAY
-
-FESTIVAL HOLIDAY
-
-REGIONAL HOLIDAY
-
-COMPANY HOLIDAY
-
-SPECIAL CLOSURE
-
-Keep Optionality as an independent concept if possible.
-
-Example:
-
-Festival Holiday
-Diwali
-optional = false
-
-Regional Holiday
-Bonalu
-optional = true
-
-This is cleaner than using:
-
-optionalHoliday
-
-as both category and optional behavior.
-
-==================================================
-MIGRATION OF CURRENT OPTIONAL HOLIDAY
-==================================================
-
-Current model has:
-
-HolidayType.optionalHoliday
-
-AND:
-
-isOptional
-
-This duplicates meaning.
-
-Normalize the model.
-
-Choose ONE authoritative optionality field.
-
-Preferred:
-
-type describes WHAT the holiday is.
-
-isOptional describes whether attendance/non-working applicability is optional.
-
-Provide a safe schema migration for existing values.
-
-Do not lose existing data.
-
-==================================================
-HOLIDAY SOURCE
-==================================================
-
-Add lightweight source metadata:
-
-manual
-
-copiedFromPreviousYear
-
-imported
-
-companyTemplate
-
-Do NOT pretend the app automatically knows authoritative government holidays.
-
-==================================================
-GOVERNMENT HOLIDAY BEHAVIOR
-==================================================
-
-The system must answer:
-
-Who adds government/festival holidays?
-
-Answer in product architecture:
-
-HR / Company Admin with holidayManage configures the company's annual holiday calendar.
-
-The system may help through:
-
-manual Add Holiday
-Copy Previous Year
-Bulk Import
-company templates
-
-But the company remains responsible for confirming its applicable holidays.
-
-==================================================
-DO NOT HARD-CODE GOVERNMENT HOLIDAY LISTS
-==================================================
-
-Do not permanently hardcode:
-
-India holiday list
-
-UAE holiday list
-
-etc.
-
-Government/festival dates may vary by:
-
-year
-state/region
-location
-company policy
-
-and some festival dates vary annually.
-
-Use company-managed configuration.
-
-==================================================
-OPTIONAL FUTURE IMPORT PROVIDER
-==================================================
-
-Architect so a backend holiday-provider/import source can be added later.
-
-Do NOT add an internet holiday API dependency now.
-
-==================================================
-PART C — YEARLY HOLIDAY MANAGEMENT
-==================================================
-
-Create a first-class Holiday Management experience.
-
-Canonical management route can remain:
-
-/app/settings/holidays
-
-but redesign the page.
-
-==================================================
-HOLIDAY MANAGEMENT HEADER
-==================================================
-
-Example:
-
-Holidays
-
-Manage public, festival, regional and company holidays.
-
-Controls:
-
-[Year: 2026 ▼]
-
-[Add Holiday]
-
-[More ▼]
-
-More:
-
-Copy Previous Year
-Import Holidays
-Export optional if useful
-
-==================================================
-YEAR SELECTOR
-==================================================
-
-Holiday administration MUST clearly work by year.
-
-Example:
-
-2025
-2026
-2027
-
-Default to company-current year.
-
-Do not mix years in one giant generic list.
-
-==================================================
-INITIALIZE NEW YEAR
-==================================================
-
-If 2027 has no calendar/holidays:
-
-show:
-
-Set up 2027 Holiday Calendar
-
-Options:
-
-Start Blank
-
-Copy 2026
-
-Import File
-
-Do not silently clone previous year.
-
-==================================================
-COPY PREVIOUS YEAR
-==================================================
-
-Support:
-
-Copy Holidays from 2026 → 2027
-
-Preview entries before creating.
-
-IMPORTANT:
-
-Do not blindly copy date numbers for festival holidays.
-
-Copied entries should be editable before confirmation.
-
-Example:
-
-"Copied from previous year — verify festival dates."
-
-==================================================
-BULK IMPORT
-==================================================
-
-Provide CSV import foundation.
-
-Columns can include:
-
-name
-
-date
-
-endDate optional
-
-type
-
-optional
-
-scope
-
-workLocation codes/names if supported
-
-description
-
-countryCode optional
-
-regionCode optional
-
-Provide:
-
-upload/select file
-preview
-validation
-duplicate detection
-confirm import
-
-Do NOT silently import invalid entries.
-
-==================================================
-ADD HOLIDAY
-==================================================
-
-Prominent action:
-
-Add Holiday
-
-Form should be PURPOSE-BUILT.
-
-Not generic configuration wording.
-
-Sections:
-
-BASIC INFORMATION
-
-Holiday Name
-
-Holiday Type
-
-Date
-
-End Date / Multi-day toggle
-
-APPLICABILITY
-
-Company Wide
-
-Specific Work Locations
-
-OPTIONALITY
-
-Optional Holiday
-
-DETAILS
-
-Description / Note
-
-STATUS
-
-Active
-
-==================================================
-HOLIDAY TYPE UX
-==================================================
-
-User-friendly labels:
-
-Public / Government Holiday
-
-Festival Holiday
-
-Regional Holiday
-
-Company Holiday
-
-Special Closure
-
-Do not expose enum names.
-
-==================================================
-EXAMPLES IN UX
-==================================================
-
-Optional helper copy only:
-
-Government/public holidays
-
-Religious or festival holidays
-
-State/regional holidays
-
-Company-declared holidays
-
-Do not hardcode a particular religion or geography into core UI.
-
-==================================================
-MULTI-DAY HOLIDAY
-==================================================
-
-Support existing endDate correctly.
-
-Example:
-
-Company shutdown:
-24 Dec – 26 Dec.
-
-Calendar should render each affected date.
-
-==================================================
-WORK LOCATION APPLICABILITY
-==================================================
-
-Existing WorkLocation scope is useful.
-
-Improve UI.
-
-If:
-
-Specific Work Locations
-
-show searchable multi-select/list.
-
-Do not present dozens of chips if company has many locations.
-
-Use suitable selector.
-
-==================================================
-HOLIDAY MANAGEMENT LIST
-==================================================
-
-Desktop:
-
-purpose-built table.
-
-Suggested columns:
-
-Holiday
-
-Date
-
-Type
-
-Applies To
-
-Optional
-
-Status
-
-Actions
-
-Mobile:
-
-purpose-built compact cards.
-
-Do NOT show meaningless:
-
-Assigned Employees: 0
-
-for Holiday entries.
-
-==================================================
-HOLIDAY LIST GROUPING
-==================================================
-
-Optional useful grouping:
-
-January
-February
-...
-
-or simple chronological table.
-
-Default sort:
-
-date ascending.
-
-==================================================
-HOLIDAY STATUS
-==================================================
-
-Historical holidays should not be hard-deleted.
-
-Use Active/Inactive/Cancelled semantics according to existing configuration architecture.
-
-==================================================
-HOLIDAY DUPLICATE VALIDATION
-==================================================
-
-Warn/prevent obvious duplicate active holiday entries for:
-
-same company
-same date
-same scope
-same name/category where appropriate.
-
-Do not block legitimate overlapping regional/company holidays if business needs both.
-
-==================================================
-PART D — MAKE HOLIDAYS DISCOVERABLE FROM LEAVE
-==================================================
-
-Current problem:
-
-users can view Leave Calendar but management is buried in Settings.
-
-Fix this.
-
-==================================================
-LEAVE CALENDAR HEADER
-==================================================
-
-For normal Employee/Manager:
-
-Leave & Holiday Calendar
-
-For HR/Admin with holidayManage:
-
-include:
-
-[Add Holiday]
-
-[Manage Holidays]
-
-These link to canonical settings holiday routes.
-
-Do NOT duplicate Holiday form/business logic.
-
-Example:
-
-Add Holiday
-→ /app/settings/holidays/new
-
-Manage Holidays
-→ /app/settings/holidays
-
-==================================================
-CALENDAR EMPTY STATE
-==================================================
-
-HR/Admin when no holidays:
-
-No holidays configured for 2026.
-
-[Add Holiday]
-
-[Set Up Holiday Calendar]
-
-Employee:
-
-No company holidays have been published for this period.
-
-No admin CTA.
-
-==================================================
-NEXT HOLIDAY
-==================================================
-
-Employee Leave home should surface:
-
-Next Holiday
-
-Holiday Name
-Date
-X days away
-
-according to applicable WorkLocation/company scope.
-
-==================================================
-PART E — COMPLETELY REDESIGN LEAVE MODULE NAVIGATION
-==================================================
+DO NOT move Profile into HR.
 
 Current:
 
-horizontal AppFilterChip navigation.
+lib/platform/profile/
 
-Replace it.
+is correct.
 
-Do not use FilterChip as permanent module navigation.
+Reason:
 
-==================================================
-DESKTOP LEAVE NAVIGATION
-==================================================
+My Profile represents the authenticated UserAccount.
 
-Use proper secondary navigation component.
+HR employment information is optional linked content.
 
-Example:
-
-Leave
-
-Overview
-My Leave
-Team
-All Leave
-Approvals
-Balances
-Calendar
-
-Only show permitted destinations.
-
-Use:
-
-tabs / compact secondary nav / proper page navigation
-
-NOT filter chips.
+Future Services permissions/context may also be shown there.
 
 ==================================================
-MOBILE LEAVE NAVIGATION
+13. NOTIFICATIONS REMAIN PLATFORM
 ==================================================
-
-Do NOT horizontally scroll six tiny navigation chips.
-
-For Employee with few destinations:
-
-compact tabs may work.
-
-For Manager/HR/Admin:
-
-use Leave landing + section navigation / dropdown / More.
-
-Keep mobile understandable.
-
-==================================================
-ROUTE REMAINS SOURCE OF TRUTH
-==================================================
-
-All navigation still uses:
-
-go_router
-
-Existing semantic routes remain.
-
-Nested Leave routes keep Leave selected in main navigation.
-
-==================================================
-PART F — EMPLOYEE LEAVE HOME REDESIGN
-==================================================
-
-Rebuild LeaveHomePage.
-
-Current implementation is too empty/simple.
-
-Desired information hierarchy:
-
-HEADER
-
-Leave
-
-[Request Leave]
-
-BALANCE SUMMARY
-
-Annual
-12 available
-6 used
-1 pending
-
-Sick
-...
-
-UPCOMING
-
-Upcoming Approved Leave
-
-NEXT HOLIDAY
-
-Pending Request if any
-
-RECENT REQUESTS
-
-compact list
-
-Do NOT put three large navigation cards at the top.
-
-==================================================
-EMPLOYEE BALANCE UX
-==================================================
-
-Use AppResponsiveGrid.
-
-Balance card should show more than one giant available number.
-
-Example:
-
-Annual Leave
-
-12 days available
-
-Used        6
-Pending     1
-Entitlement 19
-
-Optional subtle progress visualization.
-
-Do not create giant circular gauges.
-
-==================================================
-BALANCE NUMBER FORMATTING
-==================================================
-
-Current code often renders:
-
-'${balance.available}'
-
-leading to values like:
-
-12.0
-
-Use centralized leave-day formatting.
-
-Examples:
-
-12 days
-
-0.5 day
-
-12.5 days
-
-localized.
-
-==================================================
-NEXT HOLIDAY CARD
-==================================================
-
-Show:
-
-Diwali
-
-Festival Holiday
-
-8 November
-
-Company wide / applicable location where useful.
-
-If none:
-do not waste a large card.
-
-==================================================
-UPCOMING LEAVE
-==================================================
-
-Show nearest approved leave with:
-
-Leave Type
-
-Date Range
-
-Working Days
-
-Status.
-
-==================================================
-PENDING REQUEST
-==================================================
-
-If employee has pending requests:
-
-show clearly.
-
-No need to open My Requests just to know there is one.
-
-==================================================
-PART G — MANAGER LEAVE WORKSPACE REDESIGN
-==================================================
-
-Manager landing should prioritize:
-
-Pending Approvals
-
-On Leave Today
-
-Upcoming Team Leave
-
-Team Calendar
-
-Personal Leave only as secondary when linked/permitted.
-
-Suggested Desktop:
-
-summary metrics row
-
-LEFT/WIDE:
-On Leave Today
-
-RIGHT:
-Pending Approvals
-
-FULL/WIDE:
-Upcoming Team Leave / mini calendar
-
-Do not present just shortcut cards.
-
-==================================================
-MANAGER METRICS
-==================================================
-
-Use:
-
-On Leave Today
-
-Upcoming This Week
-
-Pending Approval
-
-Team Members
-
-No fake availability/productivity score.
-
-==================================================
-PART H — HR / COMPANY ADMIN LEAVE WORKSPACE
-==================================================
-
-HR/Admin landing should feel like an HR operations dashboard.
-
-Suggested:
-
-SUMMARY
-
-On Leave Today
-
-Pending Requests
-
-Upcoming Approved
-
-Approved This Month
-
-MAIN CONTENT
-
-On Leave Today
-
-Pending Approvals
-
-Upcoming Leave
-
-Holiday Calendar Status
-
-ACTIONS
-
-Review Requests
-
-View All Leave
-
-Balances
-
-Manage Holidays if permitted
-
-Do not turn actions into a grid of identical cards.
-
-==================================================
-HOLIDAY CALENDAR STATUS FOR HR
-==================================================
-
-Useful panel:
-
-2026 Holiday Calendar
-
-12 active holidays
-
-Next: [Holiday]
-
-2027:
-Not configured
-
-[Manage Holidays]
-
-This directly solves discoverability.
-
-==================================================
-PART I — TEAM / ALL LEAVE FILTER UX
-==================================================
-
-Current filter card is too heavy.
-
-Redesign.
-
-==================================================
-DESKTOP FILTER BAR
-==================================================
-
-Compact single/dual-row filter toolbar:
-
-[Search employee]
-
-[Period ▼]
-
-[Status ▼]
-
-[Leave Type ▼]
-
-[Department ▼] company only
-
-[More Filters]
-
-[Reset]
-
-Do NOT render every possible Status and Period simultaneously as dozens of chips.
-
-==================================================
-ACTIVE FILTERS
-==================================================
-
-Below bar only when active:
-
-Pending ×
-
-Engineering ×
-
-This Month ×
-
-==================================================
-MOBILE FILTER UX
-==================================================
-
-Header:
-
-[Search]
-
-[Filters 3]
-
-Tap Filters:
-
-bottom sheet/full-screen filter page
-
-Status
-
-Period
-
-Leave Type
-
-Department
-
-Apply
-
-Reset
-
-Do not squeeze desktop controls.
-
-==================================================
-VIEW SWITCHING
-==================================================
-
-Requests
-Today
-Upcoming
-
-should use a real segmented control/tab where appropriate.
-
-Not filter chips pretending to be navigation.
-
-==================================================
-PART J — REQUEST LIST UX
-==================================================
-
-Current self request screen is card-only.
-
-Desktop:
-
-use proper table/list.
-
-Columns:
-
-Leave Type
-
-Period
-
-Days
-
-Status
-
-Submitted
-
-Reviewed By where useful
-
-Actions
-
-Mobile:
-
-cards.
-
-==================================================
-SELF REQUEST LIST FILTERS
-==================================================
-
-Add compact:
-
-Status
-Year
-Leave Type
-
-No giant filters.
-
-==================================================
-PART K — APPROVAL QUEUE UX
-==================================================
-
-Current Approval Queue has useful foundations.
-
-Enhance it.
-
-Add:
-
-search
-period
-leave type
-department where company scope
-urgency/start date sorting
 
 Keep:
 
-pending count
-starting soon
+lib/platform/notifications/
 
-Desktop table.
+Notifications are cross-module.
 
-Mobile cards.
+HR creates:
 
-Review action prominent.
+Attendance notifications
+Leave notifications
+Holiday notifications
 
-==================================================
-APPROVAL DETAIL UX
-==================================================
+Services will later create:
 
-On Desktop use structured 2-column review composition:
+Service assignment
+Inspection
+Material
+Execution notifications.
 
-LEFT
-
-Employee + request
-
-Reason
-
-Dates
-
-Duration
-
-RIGHT
-
-Balance
-
-Team context
-
-Warnings
-
-Decision controls
-
-On mobile:
-
-single column
-
-Approve/Reject safe bottom actions.
+Therefore notification infrastructure stays platform.
 
 ==================================================
-PART L — EMPLOYEE LEAVE PROFILE UX
+14. AUTH REMAINS PLATFORM
 ==================================================
 
-Improve:
+Keep:
 
-/app/leave/employee/:employeeId
+lib/platform/auth/
 
-Header should support:
-
-avatar
-name
-employee code
-designation
-department
-
-Balance section should use a consistent responsive grid.
-
-Then:
-
-Upcoming Leave
-
-Recent Requests
-
-Ledger access where permitted
-
-Do not put everything into identical bordered cards.
+Authentication/session/company/permission foundation is cross-module.
 
 ==================================================
-LEDGER YEAR
+15. SYNC REMAINS PLATFORM
 ==================================================
 
-Current code uses:
+Keep:
 
-DateTime.now().toUtc().year
+lib/platform/sync/
 
-Fix this.
+Generic outbox/sync infrastructure supports all ERP modules.
 
-Use:
-
-CompanyTimeService
-+
-LeaveYearResolver.
+HR-specific sync payload handlers may remain inside HR where appropriate,
+but infrastructure stays platform.
 
 ==================================================
-PART M — BALANCE MANAGEMENT UX
+16. WORKSPACE REMAINS PLATFORM
 ==================================================
 
-HR/Admin balances:
+Keep:
 
-Desktop table.
+lib/platform/workspace/
 
-Suggested:
+if it represents global application workspace/shell behavior.
+
+==================================================
+17. DESIGN SYSTEM PREVIEW
+==================================================
+
+Keep:
+
+lib/platform/design_system_preview/
+
+or move to design_system/dev if that is cleaner.
+
+Do NOT move into HR.
+
+==================================================
+18. FINAL EXPECTED TOP-LEVEL STRUCTURE
+==================================================
+
+Preferred after Phase 0.1:
+
+lib/
+  app/
+  bootstrap/
+  core/
+  design_system/
+  l10n/
+  shared/
+
+  platform/
+    auth/
+    notifications/
+    profile/
+    sync/
+    workspace/
+    design_system_preview/
+
+  modules/
+    hr/
+      dashboard/
+      employees/
+      attendance/
+      leave/
+      shifts/
+      work_locations/
+      attendance_policies/
+      reports/
+
+    services/
+
+==================================================
+19. OWNERSHIP RULE TO DOCUMENT
+==================================================
+
+Add/update architecture documentation with this rule:
+
+PLATFORM
+
+Cross-module technical/product concerns.
+
+Examples:
+
+Auth
+Profile
+Notifications
+Sync
+Workspace
+
+BUSINESS MODULE
+
+Domain-specific business functionality.
+
+Examples:
+
+HR Dashboard
+Employees
+Attendance
+Leave
+Services
+Finance
+Inventory
+
+==================================================
+20. DO NOT USE SCREEN NAME TO DETERMINE OWNERSHIP
+==================================================
+
+A folder called:
+
+dashboard
+
+does NOT automatically mean Platform.
+
+Ownership depends on what business domain the code represents.
+
+Likewise:
+
+reports
+
+does NOT automatically mean global Reports.
+
+Current Reports are Attendance/HR reports,
+so they belong to HR.
+
+==================================================
+21. REPORTS CONFIRMATION
+==================================================
+
+Keep:
+
+modules/hr/reports/
+
+because current reporting implementation is:
+
+Attendance / Workforce reporting.
+
+Future:
+
+modules/services/reports/
+
+will contain Service analytics.
+
+Later a global Reports shell may compose both.
+
+Do not create that shell now.
+
+==================================================
+22. FUTURE SERVICE DASHBOARD
+==================================================
+
+Reserve conceptual ownership:
+
+modules/services/dashboard/
+
+but DO NOT create it until there is actual Services dashboard functionality.
+
+Avoid empty-folder architecture.
+
+==================================================
+23. NO SERVICE IMPLEMENTATION
+==================================================
+
+Do NOT implement:
+
+Service Overview
+Service Enquiry
+Scheduling
+Inspection
+Material Request
+Work Execution
+
+in Phase 0.1.
+
+==================================================
+24. NO DASHBOARD CONTRIBUTOR FRAMEWORK YET
+==================================================
+
+Do not prematurely create:
+
+DashboardContributor
+DashboardPlugin
+DashboardWidgetRegistry
+
+unless the current code genuinely requires it to compile.
+
+We will introduce composition when Services needs to contribute data.
+
+==================================================
+25. DEPENDENCY INJECTION
+==================================================
+
+If Dashboard repository/BLoC registrations were moved toward platform DI
+during Phase 0:
+
+correct ownership.
+
+HR-specific Dashboard dependencies should be registered from:
+
+hr_dependencies.dart
+
+where appropriate.
+
+Generic platform dependencies remain global/platform.
+
+==================================================
+26. DASHBOARD REPOSITORY
+==================================================
+
+If current LocalDashboardRepository directly queries:
+
+Attendance
+Employees
+Leave
+
+it belongs to:
+
+modules/hr/dashboard/data/
+
+Do not leave HR repository in Platform.
+
+==================================================
+27. DASHBOARD DOMAIN MODELS
+==================================================
+
+If models are specifically:
+
+Attendance metrics
+Leave metrics
+Employee workforce data
+
+they remain HR Dashboard domain models.
+
+Do not move them to shared/core.
+
+==================================================
+28. GENERIC UI PRIMITIVES
+==================================================
+
+Widgets such as:
+
+AppMetricCard
+AppSectionHeader
+AppChartCard
+
+belong in design_system/shared if already generic.
+
+Do not duplicate them inside HR Dashboard.
+
+==================================================
+29. TEST PATHS
+==================================================
+
+Update tests referencing:
+
+platform/dashboard
+
+to:
+
+modules/hr/dashboard
+
+without changing assertions.
+
+==================================================
+30. IMPORT AUDIT
+==================================================
+
+Run a project-wide search:
+
+platform/dashboard
+
+Expected final result:
+
+ZERO imports/references to the old HR Dashboard location.
+
+Exception:
+
+architecture documentation discussing the future global dashboard,
+if explicitly intentional.
+
+==================================================
+31. DIRECTORY AUDIT
+==================================================
+
+Verify:
+
+lib/platform/dashboard
+
+does not remain as an empty or duplicated folder.
+
+Remove it for now.
+
+Do not create future placeholder folders.
+
+==================================================
+32. ROUTING AUDIT
+==================================================
+
+Ensure:
+
+/app/dashboard
+
+still loads.
+
+Refresh:
+
+/app/dashboard
+
+still loads.
+
+Browser Back/Forward still works.
+
+Mobile navigation still selects Dashboard/Home correctly.
+
+Desktop navigation still selects Dashboard.
+
+==================================================
+33. PERSONA REGRESSION TESTS
+==================================================
+
+Check Dashboard for:
 
 Employee
 
-Department
+Manager
 
-Annual Available
+HR
 
-Sick Available
+Company Admin
 
-Other/summary
+Super Admin
 
-Pending
+No changes to visible content caused by folder move.
 
-Actions
-
-OR use one row per Employee + Leave Type if repository design prefers.
-
-Do not create unreadable huge matrix if many leave types.
-
-==================================================
-BALANCE ADJUSTMENT
-==================================================
-
-Existing ledger architecture remains.
-
-Adjustment UI:
-
-Employee
-
-Leave Type
-
-Current Balance
-
-Add / Deduct
-
-Days
-
-Effective Date
-
-Reason
-
-New Balance Preview
-
-Confirm
-
-Effective Date default uses CompanyTimeService, NOT raw DateTime.now.
-
-==================================================
-PART N — CALENDAR REBUILD
-==================================================
-
-Replace the simplistic existing LeaveCalendarPage UX.
-
-==================================================
-DESKTOP CALENDAR
-==================================================
-
-At expanded widths:
-
-Month header
-
-Previous
-Today
-Next
-
-Filters
-
-Monthly calendar grid
-
-Selected-day agenda/sidebar
-
-Each day cell should support event chips.
-
-Example:
-
-8
-
-Ahmed · Annual
-Diwali · Holiday
-
-+3 more
-
-Do not merely color the background of day 8.
-
-==================================================
-EVENT TYPES
-==================================================
-
-Visually distinguish:
-
-Approved Leave
-
-Pending Leave if viewer is allowed to see it
-
-Holiday
-
-Optional Holiday
-
-Use restrained design-system colors.
-
-==================================================
-CALENDAR FILTERS
-==================================================
-
-According to scope:
-
-Leave
-Holidays
-
-Leave Type
-
-Department
-
-Work Location
-
-Status
-
-Keep minimal.
-
-==================================================
-CALENDAR DAY SELECTION
-==================================================
-
-Click/tap day:
-
-show day agenda.
-
-Example:
-
-8 November 2026
-
-HOLIDAY
-
-Diwali
-Festival Holiday
-Company wide
-
-ON LEAVE
-
-Ahmed Khan
-Annual Leave
-Approved
-
-Fatima
-Sick Leave
-Approved
-
-==================================================
-MOBILE CALENDAR
-==================================================
-
-Do NOT squeeze a full desktop calendar as the primary experience.
-
-Use:
-
-compact month selector
-
-selected date
-
-agenda/list
-
-Optional small month grid above.
-
-Mobile priority:
-
-agenda readability.
-
-==================================================
-TABLET
-==================================================
-
-Month grid + agenda below or side depending width.
-
-==================================================
-EVENT CLICK
-==================================================
-
-Leave event:
-real Leave Request route.
-
-Holiday event:
-Holiday Detail if user has admin/view permission,
-otherwise display safe read-only holiday information.
-
-==================================================
-PART O — HOLIDAY + LEAVE CALENDAR PRIVACY
-==================================================
-
-Employee should see:
-
-company holiday
-
-their own Leave
-
-not everyone's private leave reason.
-
-Manager:
-
-team names + Leave Type where permitted
-
-not sensitive reasons in calendar.
-
-HR/Admin:
-
-company operational visibility according to permission.
-
-==================================================
-PART P — ATTENDANCE INTEGRATION AUDIT
-==================================================
-
-Recheck Phase 15 integration.
-
-Approved full-day Leave:
-
-Attendance Today
-→ Leave
-
-Team Attendance
-→ Leave
-
-All Attendance
-→ Leave
-
-History
-→ Approved Leave classification where implemented
-
-Applicable Holiday:
-
-Attendance Today
-→ Holiday
-
-Team/All Attendance
-→ Holiday
-
-History
-→ Holiday where reliable.
-
-Do NOT create fake AttendanceDay.
-
-==================================================
-LEAVE/HOLIDAY PRIORITY
-==================================================
-
-Central WorkdayClassification resolver determines:
-
-Attendance event present
-Approved Leave
-Holiday
-Non-working day
-No record
-
-Define consistent precedence.
-
-Example:
-
-If employee genuinely worked on Holiday:
-
-display Holiday + Attendance Recorded appropriately,
-not discard the attendance.
-
-==================================================
-PART Q — TIME ARCHITECTURE FIX
-==================================================
-
-Search every Leave file.
-
-Remove inappropriate presentation/business usages of:
-
-DateTime.now()
-
-Current known offenders include:
-
-leave_today_banner.dart
-
-leave_blocs.dart
-
-leave_operations_pages.dart
-
-leave_employee_page.dart
-
-leave_approvals_page.dart
-
-leave_balances_page.dart
-
-leave_seed.dart
-
-==================================================
-USE THE CORRECT SOURCE
-==================================================
-
-For absolute current time:
-
-AppClock.
-
-For company "today":
-
-CompanyTimeService.
-
-For leave year:
-
-LeaveYearResolver.
-
-For period boundaries:
-
-company business-date helpers.
-
-==================================================
-STATIC TODAY BUG
-==================================================
-
-Audit any code like:
-
-static final DateTime _today = DateTime.now()
-
-This becomes stale if app remains open across midnight.
-
-Remove it.
-
-==================================================
-PERIOD FILTER BUG
-==================================================
-
-Team/All Leave filters currently calculate Today/Week/Month using raw UTC DateTime.now.
-
-Replace with company business date.
-
-==================================================
-APPROVAL STARTING SOON
-==================================================
-
-Current approval screen calculates startingSoon using raw DateTime.now().toUtc().
-
-Replace with company business date.
-
-==================================================
-DEMO SEED
-==================================================
-
-Current leave_seed uses a mixture of:
-
-DateTime.utc(2026)
-
-and:
-
-DateTime.now().toUtc().year
-
-Clean this.
-
-Demo seeding must be deterministic and internally consistent.
-
-==================================================
-PART R — HOLIDAY DEMO DATA
-==================================================
-
-Do NOT pretend demo seed is an authoritative government holiday database.
-
-Label/structure it as demo.
-
-Provide a few:
-
-Public/Government
-
-Festival
-
-Company
-
-entries.
-
-Do not make production depend on them.
-
-==================================================
-PART S — SETTINGS UX
-==================================================
-
-Settings:
-
-Leave & Holidays
-
-Leave Types
-
-Leave Policies
-
-Holiday Calendar / Holidays
-
-Use clear labels.
-
-For HR/Admin:
-
-Holiday row should clearly say:
-
-Holidays
-Manage the company's annual public, festival and company holiday calendar.
-
-Not merely:
-
-Configure public, company and optional holidays.
-
-==================================================
-PART T — LEAVE TYPES / POLICIES
-==================================================
-
-Leave Types and Leave Policies can continue using configuration layouts where semantically appropriate.
-
-But audit their UX.
-
-Do not redesign stable business logic unnecessarily.
-
-Holiday Management MUST be purpose-built because calendar/year semantics differ.
-
-==================================================
-PART U — ROUTING
-==================================================
-
-Keep existing meaningful routes where possible.
-
-Current:
-
-/app/leave
-
-/app/leave/my-requests
-
-/app/leave/request
-
-/app/leave/requests/:id
-
-/app/leave/team
-
-/app/leave/all
-
-/app/leave/approvals
-
-/app/leave/balances
-
-/app/leave/calendar
-
-/app/leave/employee/:employeeId
-
-/app/settings/leave-types
-
-/app/settings/leave-policies
-
-/app/settings/holidays
-
-Keep them stable.
-
-==================================================
-OPTIONAL NEW HOLIDAY ROUTES
-==================================================
-
-If Holiday Calendar entity/year management needs routes:
-
-/app/settings/holidays
-
-/app/settings/holidays/new
-
-/app/settings/holidays/:holidayId
-
-/app/settings/holidays/:holidayId/edit
-
-Optional:
-
-/app/settings/holidays/import
-
-/app/settings/holidays/setup-year
-
-Do not encode year in awkward role-derived routes.
-
-==================================================
-PART V — MAIN NAVIGATION
-==================================================
-
-Keep ONE primary:
-
-Leave
-
-Do NOT add:
-
-Holidays
-Approvals
-Balances
-Team Leave
-
-as top-level drawer items.
-
-Holiday management remains nested.
-
-==================================================
-PART W — RESPONSIVE LAYOUT
-==================================================
-
-Test all Leave/Holiday pages at:
-
-360
-390
-430
-600
-768
-900
-1024
-1280
-1440
-1920
-
-==================================================
-DESKTOP EXPECTATION
-==================================================
-
-Use screen space.
-
-No huge empty right side.
-
-No grid of tiny 200px shortcut cards floating in a 1440px page.
-
-Use:
-
-responsive metrics
-
-operational 2-column sections
-
-tables
-
-calendar workspace
-
-focused panels.
-
-==================================================
-MOBILE EXPECTATION
-==================================================
-
-Purpose-built.
-
-No desktop table squeezing.
-
-No six-chip horizontal subnav.
-
-No huge filter card.
-
-No month calendar with unreadable 7 tiny cells as the only view.
-
-==================================================
-PART X — VISUAL DIRECTION
-==================================================
-
-Leave/Holiday should feel:
-
-calm
-
-human
-
-professional
-
-premium enterprise
-
-2026 SaaS
-
-not:
-
-generic Material demo
-
-dashboard card explosion
-
-rainbow HR software
-
-==================================================
-COLORS
-==================================================
-
-Use centralized semantic tokens.
-
-Leave Types may have subtle category color.
-
-Holidays use a distinct calm holiday semantic.
-
-Do not hardcode random colors.
-
-==================================================
-CARD USAGE
-==================================================
-
-Avoid:
-
-card inside card inside card.
-
-Sections can exist through spacing and headings.
-
-Use cards only where the surface genuinely needs containment.
-
-==================================================
-METRIC RESPONSIVENESS
-==================================================
-
-Replace hardcoded:
-
-SizedBox(width: 190)
-
-SizedBox(width: 210)
-
-SizedBox(width: 220)
-
-where it causes awkward composition.
-
-Prefer:
-
-AppResponsiveGrid
-
-or responsive grid calculations.
-
-==================================================
-PART Y — LOCALIZATION
-==================================================
-
-Add English + Arabic terms including:
-
-Holiday Calendar
-
-Set Up Holiday Calendar
-
-Add Holiday
-
-Manage Holidays
-
-Government Holiday
-
-Public Holiday
-
-Festival Holiday
-
-Regional Holiday
-
-Company Holiday
-
-Special Closure
-
-Optional Holiday
-
-Holiday Year
-
-Copy Previous Year
-
-Import Holidays
-
-Start Blank
-
-Apply To
-
-Company Wide
-
-Specific Work Locations
-
-Next Holiday
-
-No Holidays Configured
-
-Verify Festival Dates
-
-Leave & Holiday Calendar
-
-and all new UX strings.
-
-No hardcoded visible text.
-
-==================================================
-RTL
-==================================================
-
-Audit:
-
-Leave subnav
-
-filters
-
-holiday form
-
-holiday table
-
-calendar
-
-day agenda
-
-employee balance
-
-approval pages.
-
-==================================================
-PART Z — ACCESSIBILITY
-==================================================
-
-Calendar events need semantic labels.
-
-Holiday type not color-only.
-
-Approval actions accessible.
-
-Desktop keyboard navigation.
-
-Mobile touch targets.
-
-==================================================
-TESTS — PERMISSIONS
-==================================================
-
-Add explicit regression test:
-
-HR default permissions:
-
-holidayView = true
-holidayManage = true
-
-Company Admin:
-view/manage according to expected template.
-
-Employee:
-holidayManage = false.
-
-Manager:
-holidayManage = false unless explicit.
-
 ==================================================
-TEST MANAGE IMPLIES VIEW
+34. HR MODULE IMPORT BOUNDARY
 ==================================================
 
-Permission configuration cannot result in unusable:
+It is acceptable for:
 
-holidayManage without holidayView.
+modules/hr/dashboard/
 
-Do same audit for:
+to import public contracts/domain APIs from:
 
-Leave Type
+employees
+attendance
+leave
 
-Leave Policy.
+because they are all inside HR.
 
-==================================================
-TEST — HR HOLIDAY MANAGEMENT
-==================================================
-
-Login HR.
-
-Settings
-→ Leave & Holidays
-→ Holidays
-
-Holiday page visible.
-
-Add Holiday visible.
-
-Create:
-
-Festival Holiday
-
-Save.
-
-Holiday appears in list and calendar.
-
-==================================================
-TEST — COMPANY ADMIN
-==================================================
-
-Company Admin:
-
-manage Holiday according to permissions.
-
-No Employee linkage required.
-
-==================================================
-TEST — EMPLOYEE
-==================================================
-
-Employee:
-
-can view applicable holidays in calendar.
-
-Cannot see Add/Edit/Delete/Deactivate.
-
-==================================================
-TEST — LOCATION SCOPE
-==================================================
-
-Create holiday:
-
-specific Hyderabad location.
-
-Hyderabad employee:
-sees Holiday.
-
-Other location employee:
-does not.
-
-==================================================
-TEST — MULTI-DAY
-==================================================
-
-Create:
-
-24–26 Dec closure.
-
-All three dates appear correctly.
-
-==================================================
-TEST — OPTIONAL
-==================================================
-
-Optional holiday is displayed as Optional.
-
-Do not automatically treat it as mandatory non-working day unless current domain rules explicitly support selection.
-
-==================================================
-TEST — COPY YEAR
-==================================================
-
-Copy previous year's holidays.
-
-No duplicate IDs.
-
-Dates/year updated according to defined workflow.
-
-Entries remain reviewable before confirmation.
-
-==================================================
-TEST — IMPORT
-==================================================
-
-Valid CSV imports.
-
-Invalid dates rejected.
-
-Duplicates identified.
-
-Cross-company locations rejected.
-
-==================================================
-TEST — CALENDAR
-==================================================
-
-Desktop:
-
-multiple events in one day.
-
-Mobile:
-
-agenda readable.
+Prefer domain/repository contracts.
 
-Event route opens correctly.
+Do not import random presentation widgets simply to access data.
 
 ==================================================
-TEST — LEAVE HOME
+35. PLATFORM MUST NOT DEPEND ON HR DASHBOARD IMPLEMENTATION
 ==================================================
-
-Employee sees:
-
-balances
-upcoming leave
-next holiday
-pending request
-recent requests.
-
-==================================================
-TEST — HR LANDING
-==================================================
-
-HR sees:
-
-on leave today
-pending approvals
-upcoming leave
-holiday calendar status.
-
-==================================================
-TEST — MANAGER LANDING
-==================================================
-
-Manager sees:
-
-team leave
-pending approvals
-upcoming team leave.
-
-==================================================
-TEST — TIME
-==================================================
-
-Company timezone differs from device.
-
-Today/This Week/This Month
-
-approval starting soon
-
-leave year
-
-upcoming holiday
-
-remain company-correct.
-
-==================================================
-TEST — MIDNIGHT
-==================================================
-
-App remains open across company midnight.
-
-"Today" calculations update correctly.
-
-No static cached day.
-
-==================================================
-TEST — ROUTES
-==================================================
-
-Direct:
-
-/app/leave/calendar
-
-/app/settings/holidays
-
-/app/settings/holidays/new
-
-refresh correctly.
-
-Back/Forward correctly.
-
-==================================================
-TEST — MOBILE
-==================================================
-
-390px:
-
-Employee Leave
-
-HR All Leave
-
-Approvals
-
-Calendar
-
-Holiday Management
-
-Holiday Form
-
-No overflow.
-
-==================================================
-TEST — DESKTOP
-==================================================
-
-1440px:
-
-Leave landing uses width intelligently.
-
-Holiday table/calendars look like desktop ERP.
-
-No mobile card-only layout.
-
-==================================================
-TEST — ARABIC
-==================================================
-
-All redesigned surfaces RTL/localized.
-
-==================================================
-DO NOT ADD FAKE FEATURES
-==================================================
-
-Do NOT add:
 
-Payroll calculation
+After correction:
 
-Leave encashment
+platform/
 
-performance scoring
+should not import:
 
-automatic legal compliance claims
+modules/hr/dashboard/presentation
 
-automatic government holiday download
+unless there is a very explicit composition reason.
 
-fake medical attachments
+Current AppRegistry/app route composition can reference it.
 
-unless separately implemented.
+Platform infrastructure should not.
 
 ==================================================
-DOCUMENTATION
+36. ARCHITECTURE DOCUMENTATION
 ==================================================
 
 Update:
 
-docs/phase_15_leave.md
+docs/architecture/modules.md
 
-Add:
+or equivalent.
 
-Complete Persona Matrix
+Explicitly include:
 
-Holiday Administration
+CURRENT STATE
 
-Government/Festival Holiday Process
+HR owns Dashboard because Dashboard is workforce-specific.
 
-Holiday Year Setup
+FUTURE STATE
 
-Holiday Permission Rules
+If multiple ERP modules contribute to one landing Dashboard,
+create thin platform composition later.
 
-Leave UX Architecture
-
-Calendar UX
-
-Company-Time Rules
-
-Clearly document:
-
-HR/Company Admin maintain company holidays.
-
-Employees/Managers consume applicable calendars.
+Do not do it prematurely.
 
 ==================================================
-QUALITY GATE
+37. DO NOT REVERSE OTHER VALID MOVES
+==================================================
+
+Keep current correct moves:
+
+auth → platform
+
+notifications → platform
+
+profile → platform
+
+sync → platform
+
+workspace → platform
+
+design_system_preview → platform
+
+Employees → HR
+
+Attendance → HR
+
+Leave → HR
+
+Shifts → HR
+
+Work Locations → HR
+
+Attendance Policies → HR
+
+Attendance Reports → HR
+
+Only Dashboard ownership is being corrected.
+
+==================================================
+38. PHASE 0 CONTINUATION
+==================================================
+
+After completing this correction:
+
+continue the remaining original Services Phase 0 tasks:
+
+- HR dependency composition
+- ModuleRegistry splitting
+- Services registration foundation
+- Workforce cross-module contract
+- documentation
+- tests
+
+Do NOT restart Phase 0 from scratch.
+
+==================================================
+39. QUALITY GATE
+==================================================
+
+Run:
+
+dart format .
+
+flutter analyze
+
+flutter test
+
+At the final Phase 0 boundary also run:
+
+flutter build web --release --dart-define=DEMO_AUTH=true
+
+==================================================
+40. COMPLETION REPORT
+==================================================
+
+Provide:
+
+1. Dashboard's previous incorrect location
+
+2. final Dashboard location
+
+3. number of Dashboard files moved
+
+4. imports updated
+
+5. DI ownership updated
+
+6. registry ownership updated
+
+7. route confirmation
+
+8. persona Dashboard regression status
+
+9. platform folders remaining
+
+10. HR module folders remaining
+
+11. architecture documentation updated
+
+12. flutter analyze result
+
+13. flutter test result
+
+14. whether original Phase 0 can safely continue
+
+==================================================
+41. STOP CONDITION
+==================================================
+
+PHASE 0.1 IS COMPLETE ONLY WHEN:
+
+✓ current Dashboard is located under modules/hr/dashboard
+
+✓ Dashboard is no longer under platform/dashboard
+
+✓ no duplicate Dashboard implementation exists
+
+✓ /app/dashboard route remains unchanged
+
+✓ current Dashboard UI remains unchanged
+
+✓ Employee Dashboard remains unchanged
+
+✓ Manager Dashboard remains unchanged
+
+✓ HR Dashboard remains unchanged
+
+✓ Company Admin Dashboard remains unchanged
+
+✓ Super Admin existing behavior remains unchanged
+
+✓ Attendance/Leave/Employee Dashboard data still loads
+
+✓ Dashboard repository ownership is HR-correct
+
+✓ Dashboard BLoCs/controllers are HR-correct
+
+✓ HR-specific Dashboard DI is HR-owned where appropriate
+
+✓ Profile remains Platform
+
+✓ Auth remains Platform
+
+✓ Notifications remain Platform
+
+✓ Sync remains Platform
+
+✓ Workspace remains Platform
+
+✓ Attendance Reports remain HR
+
+✓ no premature global Dashboard contributor system was built
+
+✓ no Services functionality was implemented
+
+✓ architecture docs explain current vs future Dashboard ownership
+
+✓ flutter analyze passes
+
+✓ flutter test passes
+
+Then continue the remaining Services Phase 0 work.
+```
+
+
+
+
+
+
+```text
+SERVICES PHASE 0.2 — MODULAR LOCALIZATION ARCHITECTURE
+SPLIT ARB SOURCES BY ERP MODULE WHILE PRESERVING ONE AppLocalizations API
+
+Continue working on the EXISTING Flutter ERP project after Services Phase 0 / 0.1.
+
+DO NOT begin Services Phase 1 yet.
+
+CURRENT LOCALIZATION ARCHITECTURE:
+
+lib/l10n/
+  app_en.arb
+  app_ar.arb
+
+or equivalent current English/Arabic ARB files.
+
+The application already uses:
+
+Flutter gen_l10n
+AppLocalizations
+context.l10n
+English
+Arabic
+RTL
+
+This works today but will not scale well as we add:
+
+Services
+CRM
+Inventory
+Finance
+Purchase
+Sales
+Rental
+Production
+etc.
+
+The purpose of this phase is to SPLIT LOCALIZATION SOURCE FILES BY MODULE
+without changing the runtime localization API.
+
+==================================================
+1. CRITICAL DESIGN DECISION
+==================================================
+
+DO NOT create separate runtime localization delegates such as:
+
+HrLocalizations
+
+ServicesLocalizations
+
+AttendanceLocalizations
+
+LeaveLocalizations
+
+DO NOT force widgets to use:
+
+context.hrL10n
+
+context.servicesL10n
+
+context.leaveL10n
+
+Keep ONE public localization API:
+
+context.l10n
+
+backed by:
+
+AppLocalizations
+
+This preserves the current application architecture.
+
+==================================================
+2. WHY A MERGE STEP IS REQUIRED
+==================================================
+
+Flutter gen_l10n expects localization inputs under one configured:
+
+arb-dir
+
+with a template ARB file.
+
+It does not automatically recursively combine arbitrary module-specific ARB
+directories into one AppLocalizations class.
+
+Therefore use:
+
+MODULAR SOURCE ARBs
+        ↓
+DETERMINISTIC BUILD-TIME MERGE
+        ↓
+GENERATED APP ARBs
+        ↓
+flutter gen-l10n
+        ↓
+AppLocalizations
+
+==================================================
+3. TARGET STRUCTURE
+==================================================
+
+Create a structure similar to:
+
+lib/l10n/
+  source/
+
+    common/
+      common_en.arb
+      common_ar.arb
+
+    platform/
+      platform_en.arb
+      platform_ar.arb
+
+    hr/
+      hr_en.arb
+      hr_ar.arb
+
+    services/
+      services_en.arb
+      services_ar.arb
+
+  generated/
+    app_en.arb
+    app_ar.arb
+    app_localizations.dart
+    app_localizations_en.dart
+    app_localizations_ar.dart
+
+Exact generated Dart filenames may follow current gen_l10n output.
+
+Do not manually edit generated merged ARBs.
+
+==================================================
+4. CURRENT HR STRINGS
+==================================================
+
+Move existing HR-specific localization messages into:
+
+source/hr/hr_en.arb
+
+source/hr/hr_ar.arb
+
+HR includes strings belonging to:
+
+Dashboard
+Employees
+Attendance
+Attendance Corrections
+Attendance Reports
+Shifts
+Work Locations
+Attendance Policies
+Leave
+Leave Balances
+Leave Requests
+Leave Approvals
+Holidays
+Holiday Calendars
+
+Do not split HR into 15 tiny ARB files yet.
+
+One HR English + one HR Arabic source file is sufficient.
+
+==================================================
+5. PLATFORM STRINGS
+==================================================
+
+Move platform-level strings into:
+
+source/platform/platform_en.arb
+
+source/platform/platform_ar.arb
+
+Examples:
+
+Login
+Forgot Password
+Profile
+Security
+Notifications
+Sync
+Workspace
+Session
+Account
+Preferences
+global navigation related to platform behavior
+
+==================================================
+6. COMMON STRINGS
+==================================================
+
+Use:
+
+source/common/common_en.arb
+source/common/common_ar.arb
+
+only for truly generic reusable UI vocabulary.
+
+Examples:
+
+Save
+Cancel
+Delete
+Edit
+Create
+Update
+Search
+Filter
+Reset
+Apply
+Back
+Next
+Close
+Confirm
+Retry
+Loading
+No Results
+Yes
+No
+Active
+Inactive
+Status
+Date
+From
+To
+
+Do NOT dump business-specific text into Common.
+
+==================================================
+7. SERVICES STRINGS
+==================================================
+
+Create:
+
+source/services/services_en.arb
+source/services/services_ar.arb
+
+For Phase 0.2 these can contain ONLY genuine Services foundation strings if
+any already exist.
+
+Do NOT invent hundreds of future Service translations yet.
+
+Services Phase 1+ will add strings here.
+
+==================================================
+8. FUTURE MODULE PATTERN
+==================================================
+
+Future modules follow:
+
+source/crm/
+  crm_en.arb
+  crm_ar.arb
+
+source/inventory/
+  inventory_en.arb
+  inventory_ar.arb
+
+source/finance/
+  finance_en.arb
+  finance_ar.arb
+
+etc.
+
+==================================================
+9. DO NOT SPLIT BY SCREEN
+==================================================
+
+Avoid:
+
+attendance_today_en.arb
+attendance_history_en.arb
+leave_home_en.arb
+leave_request_en.arb
+holiday_form_en.arb
+
+This becomes fragmentation.
+
+Boundary should initially be ERP MODULE.
+
+==================================================
+10. KEY NAMES
+==================================================
+
+Existing localization keys should remain unchanged wherever possible.
+
+DO NOT rename hundreds of keys merely because files are moving.
+
+For NEW keys, adopt a predictable naming convention.
+
+Recommended examples:
+
+commonSave
+
+platformProfileTitle
+
+hrEmployeeTitle
+
+hrAttendanceTodayTitle
+
+hrLeaveRequestTitle
+
+hrHolidayCalendarTitle
+
+servicesEnquiryTitle
+
+servicesInspectionTitle
+
+servicesWorkExecutionTitle
+
+However:
+
+do NOT forcibly rename all legacy keys now.
+
+Compatibility and low-risk migration matter more.
+
+==================================================
+11. KEY UNIQUENESS
+==================================================
+
+The merge process must guarantee globally unique localization keys.
+
+Example invalid:
+
+common_en.arb:
+"title": "Settings"
+
+hr_en.arb:
+"title": "Employees"
+
+This must fail.
+
+Duplicate message key across modules must cause:
+
+BUILD/MERGE FAILURE
+
+with a clear message containing:
+
+duplicate key
+first source file
+second source file
+
+Do NOT silently overwrite.
+
+==================================================
+12. METADATA KEYS
+==================================================
+
+ARB metadata such as:
+
+"@someMessage"
+
+must stay paired with:
+
+"someMessage"
+
+during merge.
+
+Do not lose:
+
+descriptions
+placeholders
+plural metadata
+select metadata.
+
+==================================================
+13. ARB LOCALE METADATA
+==================================================
+
+The merged files should contain appropriate:
+
+@@locale
+
+Example:
+
+app_en.arb:
+"@@locale": "en"
+
+app_ar.arb:
+"@@locale": "ar"
+
+Module source files may contain @@locale if useful,
+but merger must validate consistency.
+
+==================================================
+14. MERGE TOOL
+==================================================
+
+Create a small deterministic Dart tool.
+
+Recommended location:
+
+tool/l10n/merge_arb.dart
+
+or:
+
+tool/merge_l10n.dart
+
+Do NOT add a large third-party localization framework.
+
+Use Dart:
+
+dart:convert
+dart:io
+
+and existing dependencies where sufficient.
+
+==================================================
+15. MERGE TOOL INPUT
+==================================================
+
+The tool should know the source order explicitly.
+
+Example:
+
+common
+platform
+hr
+services
+
+Do NOT rely on filesystem enumeration order.
+
+Order should only affect generated file readability.
+
+Duplicate keys still fail regardless of order.
+
+==================================================
+16. MERGE ENGLISH
+==================================================
+
+Merge:
+
+common_en.arb
+platform_en.arb
+hr_en.arb
+services_en.arb
+
+into:
+
+generated/app_en.arb
+
+==================================================
+17. MERGE ARABIC
+==================================================
+
+Merge:
+
+common_ar.arb
+platform_ar.arb
+hr_ar.arb
+services_ar.arb
+
+into:
+
+generated/app_ar.arb
+
+==================================================
+18. LANGUAGE PARITY VALIDATION
+==================================================
+
+The merge tool must verify English/Arabic key parity.
+
+If English contains:
+
+servicesEnquiryTitle
+
+but Arabic does not:
+
+FAIL.
+
+Do not silently fall back during development.
+
+Report:
+
+Missing Arabic keys:
+- servicesEnquiryTitle
+
+and vice versa.
+
+==================================================
+19. EXCLUDE METADATA FROM PARITY
+==================================================
+
+Compare actual message keys properly.
+
+Do not treat:
+
+@messageName
+
+as a separate translated message.
+
+==================================================
+20. PLACEHOLDER VALIDATION
+==================================================
+
+Where feasible validate that corresponding locale messages preserve required
+placeholder names.
+
+Example English:
+
+"welcomeUser": "Welcome {name}"
+
+Arabic must still contain:
+
+{name}
+
+If not:
+fail validation.
+
+Do not attempt full ICU parser if unnecessary,
+but catch obvious placeholder drift safely.
+
+==================================================
+21. GENERATED FILES
+==================================================
+
+Generated merged ARBs must contain a header/comment strategy if supported
+indicating:
+
+AUTO-GENERATED — DO NOT EDIT
+Generated from lib/l10n/source/*
+
+If ARB JSON comments are unsuitable, document it via README and file generation.
+
+==================================================
+22. l10n.yaml
+==================================================
+
+Update:
+
+l10n.yaml
+
+to use:
+
+arb-dir: lib/l10n/generated
+
+template-arb-file: app_en.arb
+
+output-localization-file: app_localizations.dart
+
+Set output directory according to current architecture.
+
+Keep generated source inside the application source tree as supported by
+modern Flutter gen_l10n.
+
+==================================================
+23. PUBLIC IMPORT STABILITY
+==================================================
+
+If current code imports:
+
+lib/l10n/app_localizations.dart
+
+or an existing stable package path,
+
+prefer keeping a stable exported entry point.
+
+Possible:
+
+lib/l10n/app_localizations.dart
+→ exports generated/app_localizations.dart
+
+ONLY if this prevents project-wide import churn cleanly.
+
+Otherwise update imports systematically once.
+
+Do not create confusing duplicate generated classes.
+
+==================================================
+24. context.l10n MUST REMAIN
+==================================================
+
+Existing:
+
+context.l10n
+
+helper must continue working unchanged from widget perspective.
+
+This is a hard requirement.
+
+Example before:
+
+Text(context.l10n.save)
+
+After:
+
+Text(context.l10n.save)
+
+No module-specific localization accessor.
+
+==================================================
+25. MaterialApp CONFIGURATION
+==================================================
+
+Continue using ONE:
+
+AppLocalizations.delegate
+
+and:
+
+AppLocalizations.supportedLocales
+
+Do NOT register:
+
+CommonLocalizations.delegate
+HrLocalizations.delegate
+ServicesLocalizations.delegate
+
+etc.
+
+==================================================
+26. CURRENT LANGUAGE SUPPORT
+==================================================
+
+Preserve exactly:
+
+English
+
+Arabic
+
+Do not add new languages in Phase 0.2.
+
+Architecture should make future locale addition straightforward.
+
+==================================================
+27. FUTURE LANGUAGE ADDITION
+==================================================
+
+Example future Hindi:
+
+common_hi.arb
+platform_hi.arb
+hr_hi.arb
+services_hi.arb
+
+merge:
+
+app_hi.arb
+
+This should not require changing app feature code.
+
+==================================================
+28. SOURCE FILE OWNERSHIP
+==================================================
+
+Document:
+
+Common team vocabulary
+→ common ARB
+
+Platform
+→ platform ARB
+
+HR
+→ hr ARB
+
+Services
+→ services ARB
+
+This should align with the new code module boundaries.
+
+==================================================
+29. MODULE SOURCE LOCATION ALTERNATIVE
+==================================================
+
+If architectural ownership is clearer, module ARBs MAY live with the modules:
+
+modules/hr/l10n/hr_en.arb
+modules/hr/l10n/hr_ar.arb
+
+modules/services/l10n/services_en.arb
+modules/services/l10n/services_ar.arb
+
+platform/l10n/platform_en.arb
+platform/l10n/platform_ar.arb
+
+l10n/common/common_en.arb
+l10n/common/common_ar.arb
+
+This is also acceptable.
+
+Choose ONE approach.
+
+==================================================
+30. RECOMMENDED APPROACH
+==================================================
+
+Prefer collocated ownership if it fits the repository:
+
+lib/
+  l10n/
+    common/
+
+  platform/
+    l10n/
+
+  modules/
+    hr/
+      l10n/
+
+    services/
+      l10n/
+
+Then merge into:
+
+lib/l10n/generated/
+
+This makes it obvious which module owns each string.
+
+==================================================
+31. DO NOT SCATTER L10N FILES DEEPLY
+==================================================
+
+Even with collocation, keep one localization folder per MODULE.
+
+Good:
+
+modules/hr/l10n/
+
+Bad:
+
+modules/hr/attendance/presentation/l10n/
+modules/hr/leave/presentation/l10n/
+modules/hr/employees/presentation/l10n/
+
+==================================================
+32. MIGRATE CURRENT ARB DATA
+==================================================
+
+Parse the current existing:
+
+app_en.arb
+app_ar.arb
+
+Classify EVERY key into:
+
+common
+platform
+hr
+
+Do not drop keys.
+
+Do not leave duplicate source copies.
+
+==================================================
+33. SERVICES SOURCE
+==================================================
+
+Create Services ARB source ready for future use.
+
+It is acceptable for it to initially contain only:
+
+@@locale
+
+or a small number of real strings.
+
+Do not invent future copy.
+
+==================================================
+34. MIGRATION SCRIPT OPTIONAL
+==================================================
+
+Because the current ARBs may be large, it is acceptable to write a one-time
+migration helper.
+
+But final source ownership should be human-readable.
+
+Do not keep a fragile runtime classification algorithm.
+
+==================================================
+35. NO STRING VALUE CHANGES
+==================================================
+
+Phase 0.2 is architectural.
+
+Do NOT rewrite English copy unless fixing a real localization issue.
+
+Do NOT rewrite Arabic translations unnecessarily.
+
+The rendered application should look the same.
+
+==================================================
+36. ARABIC MUST NOT REGRESS
+==================================================
+
+Maintain existing:
+
+Arabic text
+RTL
+plurals/placeholders
+date/number formatting behavior.
+
+==================================================
+37. BUILD WORKFLOW
+==================================================
+
+Create a canonical localization generation command/workflow.
+
+Concept:
+
+dart run tool/l10n/merge_arb.dart
+flutter gen-l10n
+
+==================================================
+38. SINGLE COMMAND
+==================================================
+
+Prefer developer convenience.
+
+Add a tool such as:
+
+tool/l10n/generate.dart
+
+that:
+
+1. merges module ARBs
+2. validates
+3. invokes or prepares gen_l10n
+
+If invoking Flutter subprocess from Dart is undesirable,
+document two explicit commands.
+
+Keep it simple and cross-platform.
+
+==================================================
+39. WINDOWS SUPPORT
+==================================================
+
+The developer environment uses Windows/PowerShell.
+
+Do NOT depend on:
+
+bash
+grep
+sed
+Unix shell-only scripts.
+
+Dart tooling is preferred.
+
+==================================================
+40. CI / QUALITY GATE
+==================================================
+
+Localization validation should be runnable in tests/CI.
+
+At minimum add:
+
+dart test / flutter test for merger
+
+or a localization architecture test.
+
+==================================================
+41. TEST — DUPLICATE KEY
+==================================================
+
+Given:
+
+common_en:
+save
+
+hr_en:
+save
+
+merger should fail with useful error.
+
+==================================================
+42. TEST — MISSING TRANSLATION
+==================================================
+
+English has key:
+foo
+
+Arabic missing:
+foo
+
+validation fails.
+
+==================================================
+43. TEST — EXTRA TRANSLATION
+==================================================
+
+Arabic has orphan key not in English.
+
+Validation fails.
+
+==================================================
+44. TEST — PLACEHOLDER
+==================================================
+
+English:
+
+"hello": "Hello {name}"
+
+Arabic:
+
+missing {name}
+
+validation should fail where supported.
+
+==================================================
+45. TEST — SUCCESSFUL MERGE
+==================================================
+
+All module files valid.
+
+Merged app_en/app_ar contain every source message exactly once.
+
+==================================================
+46. TEST — GENERATED APP
 ==================================================
 
 Run:
 
 flutter gen-l10n
 
-dart run build_runner build --delete-conflicting-outputs
-if needed
+and verify existing code compiles.
+
+==================================================
+47. TEST — EXISTING HR SCREENS
+==================================================
+
+Verify localization still works for:
+
+Login
+
+Dashboard
+
+Employees
+
+Attendance
+
+Leave
+
+Holiday
+
+Reports
+
+Settings
+
+Profile
+
+Notifications.
+
+==================================================
+48. TEST — ARABIC
+==================================================
+
+Run representative RTL widget/localization tests.
+
+Existing tests must remain green.
+
+==================================================
+49. GENERATED ARB VERSION CONTROL
+==================================================
+
+Choose and document one policy.
+
+Recommended for this project:
+
+COMMIT source module ARBs.
+
+Generated merged ARBs can also remain committed if current Flutter workflow
+expects them and this improves reproducibility.
+
+Generated Dart localization files follow current project convention.
+
+Do not create contradictory rules.
+
+==================================================
+50. SOURCE OF TRUTH
+==================================================
+
+After Phase 0.2:
+
+module/source ARBs are the SOURCE OF TRUTH.
+
+Generated:
+
+app_en.arb
+app_ar.arb
+
+must never be manually edited.
+
+==================================================
+51. README
+==================================================
+
+Create:
+
+lib/l10n/README.md
+
+Explain:
+
+where to add new translation
+
+which module file to edit
+
+how to generate
+
+duplicate key rule
+
+English/Arabic parity
+
+future module convention.
+
+==================================================
+52. SERVICES DEVELOPER EXAMPLE
+==================================================
+
+Document:
+
+When Services Phase 1 needs:
+
+"Service Types"
+
+add:
+
+servicesServiceTypesTitle
+
+to:
+
+Services English ARB
+
+and:
+
+Services Arabic ARB
+
+Then run merge + gen-l10n.
+
+Do NOT edit app_en.arb directly.
+
+==================================================
+53. COMMON STRING REUSE
+==================================================
+
+If Services needs:
+
+Save
+
+Cancel
+
+Search
+
+use existing common localization key.
+
+Do not create:
+
+servicesSave
+servicesCancel
+
+unless meaning genuinely differs.
+
+==================================================
+54. BUSINESS TERM OWNERSHIP
+==================================================
+
+Examples:
+
+Employee
+Attendance
+Leave
+Holiday
+
+→ HR
+
+Service Enquiry
+Inspection
+Work Execution
+
+→ Services
+
+Profile
+Password
+Notification
+
+→ Platform
+
+Save
+Cancel
+Search
+
+→ Common.
+
+==================================================
+55. NO CROSS-MODULE DUPLICATION
+==================================================
+
+Do not duplicate identical global keys across modules.
+
+If a term becomes truly cross-module:
+
+move it to Common.
+
+==================================================
+56. MOVING A KEY
+==================================================
+
+Moving localization source ownership must not require renaming its key.
+
+Example:
+
+"status"
+
+can move from HR source → Common source while staying:
+
+status
+
+if that is already the public key.
+
+==================================================
+57. GENERATED CLASS SIZE
+==================================================
+
+It is acceptable for:
+
+AppLocalizations
+
+to eventually contain many generated getters.
+
+The maintenance problem being solved is the HUMAN source ARB organization,
+not necessarily generated Dart class size.
+
+Do not over-engineer multiple delegates solely to reduce generated getter count.
+
+==================================================
+58. WEB BUNDLE NOTE
+==================================================
+
+Flutter supports deferred locale loading for Web if desired,
+but do NOT introduce it merely because ARBs are module-split.
+
+This phase is about source organization.
+
+==================================================
+59. SERVICES MODULE ARCHITECTURE INTEGRATION
+==================================================
+
+After Phase 0.2:
+
+Services code owns:
+
+modules/services/l10n/
+
+or the chosen equivalent source/services folder.
+
+Services Phase 1 must add new translations there.
+
+Update the Phase 1 architectural docs accordingly.
+
+==================================================
+60. HR MODULE ARCHITECTURE INTEGRATION
+==================================================
+
+HR code and HR translations should now share clear module ownership.
+
+Do not move generated AppLocalizations into HR.
+
+Generated localization remains app-level.
+
+==================================================
+61. PLATFORM OWNERSHIP
+==================================================
+
+Platform translations remain separate source inputs,
+but their merged output still belongs to app-level localization.
+
+==================================================
+62. APP-LEVEL STRINGS
+==================================================
+
+If there are a handful of strings representing the whole product rather than
+Platform/Common, an optional:
+
+app_en.arb
+app_ar.arb
+
+SOURCE category may exist:
+
+source/app/
+
+Examples:
+
+product name
+global app title
+
+Do not misuse it as another dumping ground.
+
+==================================================
+63. IDE EXPERIENCE
+==================================================
+
+Ensure developers can easily locate translations.
+
+A developer working in:
+
+modules/services/
+
+should know immediately:
+
+modules/services/l10n/services_en.arb
+modules/services/l10n/services_ar.arb
+
+if collocated architecture is selected.
+
+This is the preferred outcome.
+
+==================================================
+64. ARB FORMATTING
+==================================================
+
+Generated merged ARB output should be deterministic.
+
+Prefer:
+
+stable source/module order
+stable key order
+
+so Git diffs are understandable.
+
+==================================================
+65. JSON VALIDATION
+==================================================
+
+Malformed ARB must produce a clear file-specific error.
+
+Example:
+
+Invalid ARB JSON:
+modules/services/l10n/services_ar.arb
+
+Do not fail with vague FormatException only.
+
+==================================================
+66. DUPLICATE METADATA
+==================================================
+
+Validate message metadata pairing.
+
+If:
+
+@foo
+
+exists without:
+
+foo
+
+warn/fail appropriately.
+
+==================================================
+67. UNKNOWN FILES
+==================================================
+
+Merge tool should only include explicitly recognized locale/module files.
+
+Do not accidentally merge:
+
+backup_en.arb
+old_en.arb
+test_en.arb.
+
+==================================================
+68. MODULE REGISTRATION
+==================================================
+
+Localization source registration should be centralized in the merge tool/config.
+
+Potential configuration:
+
+const modules = [
+  L10nSource('common', ...),
+  L10nSource('platform', ...),
+  L10nSource('hr', ...),
+  L10nSource('services', ...),
+];
+
+Future module addition is one clear change.
+
+==================================================
+69. OPTIONAL AUTO-DISCOVERY
+==================================================
+
+Auto-discovery is acceptable only if strict:
+
+each registered module/l10n directory
+contains expected locales.
+
+Explicit registration is safer for V1.
+
+==================================================
+70. NO RUNTIME FILE READING
+==================================================
+
+Do NOT load ARB JSON dynamically at runtime.
+
+Everything remains compile-time generated via gen_l10n.
+
+==================================================
+71. PERFORMANCE
+==================================================
+
+There should be no runtime performance regression.
+
+Same:
+
+AppLocalizations
+
+same locale resolution.
+
+==================================================
+72. ARCHITECTURE DOC
+==================================================
+
+Update:
+
+docs/architecture/modules.md
+
+with Localization Ownership.
+
+Also create:
+
+docs/architecture/localization.md
+
+covering:
+
+source modules
+merge process
+generated output
+key ownership
+new module procedure.
+
+==================================================
+73. UPDATE CONTRIBUTOR WORKFLOW
+==================================================
+
+Document steps:
+
+Adding a Services localization:
+
+1. add English key to Services source ARB
+2. add Arabic key
+3. run localization generation
+4. use context.l10n.key
+
+==================================================
+74. DO NOT START SERVICES BUSINESS LOGIC
+==================================================
+
+No Service Type
+
+No Complaint Type
+
+No Service Enquiry
+
+No Job Assignment
+
+No Inspection
+
+No Material Request
+
+No Work Execution
+
+business implementation in this phase.
+
+Localization architecture only.
+
+==================================================
+75. PRESERVE PHASE 0 ARCHITECTURE
+==================================================
+
+Do not undo:
+
+modules/hr
+
+modules/services
+
+platform boundaries.
+
+Localization should align with them.
+
+==================================================
+76. QUALITY COMMANDS
+==================================================
+
+Run localization merge tool.
+
+Then:
+
+flutter gen-l10n
 
 dart format .
 
@@ -2491,182 +2308,112 @@ flutter test
 flutter build web --release --dart-define=DEMO_AUTH=true
 
 ==================================================
-FINAL COMPLETION REPORT
+77. COMPLETION REPORT
 ==================================================
 
-Report:
+Provide:
 
-1. exact HR holiday permission bug fixed
+1. previous ARB architecture
 
-2. final Holiday permission model
+2. final source localization tree
 
-3. Holiday domain/schema changes
+3. Common key count
 
-4. schema migration version
+4. Platform key count
 
-5. Government/Public holiday support
+5. HR key count
 
-6. Festival holiday support
+6. Services key count
 
-7. Regional holiday support
+7. generated English total
 
-8. optional holiday normalization
+8. generated Arabic total
 
-9. annual Holiday Calendar architecture
+9. duplicate validation behavior
 
-10. Add Holiday flow
+10. missing translation validation behavior
 
-11. Holiday Management screen
+11. placeholder validation
 
-12. Copy Previous Year
+12. l10n.yaml changes
 
-13. Import flow
+13. merge tool location
 
-14. WorkLocation scope
+14. generation command
 
-15. Leave Calendar redesign
+15. context.l10n compatibility
 
-16. Employee Leave redesign
+16. AppLocalizations compatibility
 
-17. Manager Leave redesign
+17. imports changed if any
 
-18. HR/Admin Leave redesign
+18. Arabic/RTL regression result
 
-19. approval UX changes
+19. flutter analyze result
 
-20. filters redesign
+20. flutter test result/count
 
-21. request list redesign
-
-22. balance UX
-
-23. secondary Leave navigation redesign
-
-24. raw DateTime.now usages removed/fixed
-
-25. company-time behavior
-
-26. English/Arabic/RTL
-
-27. responsive QA
-
-28. permission tests
-
-29. holiday tests
-
-30. leave UI tests
-
-31. flutter analyze result
-
-32. flutter test count
-
-33. Web release result
-
-34. genuine remaining limitations
+21. Web build result
 
 ==================================================
-STOP CONDITION
+78. STOP CONDITION
 ==================================================
 
-DO NOT CALL THIS COMPLETE UNTIL:
+PHASE 0.2 IS COMPLETE ONLY WHEN:
 
-✓ HR can actually VIEW Holidays
+✓ localization source is split by ERP module
 
-✓ HR can actually ADD Holidays
+✓ HR translations have their own source ARBs
 
-✓ Company Admin can manage Holidays when permitted
+✓ Platform translations have their own source ARBs
 
-✓ Holiday Manage cannot become inaccessible because View is absent
+✓ Common translations have their own source ARBs
 
-✓ Employees can view applicable Holidays
+✓ Services has its own localization source ready
 
-✓ Managers can view applicable Holidays
+✓ future modules can add their own source ARBs
 
-✓ Government/Public Holidays can be configured
+✓ only one runtime AppLocalizations API exists
 
-✓ Festival Holidays can be configured
+✓ context.l10n still works
 
-✓ Regional Holidays can be configured
-
-✓ Company Holidays can be configured
-
-✓ multi-day Holidays work
-
-✓ location-specific Holidays work
-
-✓ optional Holiday semantics are not duplicated/conflicting
-
-✓ Holiday management is year-aware
-
-✓ new year can be initialized
-
-✓ previous year can be copied
-
-✓ bulk import has validation/preview
-
-✓ no external government API is required
-
-✓ Holidays are discoverable from Leave Calendar
-
-✓ HR/Admin see Add Holiday from relevant workflow
-
-✓ Settings still provides canonical Holiday management
-
-✓ Holiday list no longer shows meaningless generic Assigned Employee UI
-
-✓ Employee Leave home is substantially redesigned
-
-✓ Manager Leave workspace is substantially redesigned
-
-✓ HR/Admin Leave workspace is substantially redesigned
-
-✓ Leave navigation is no longer a row of FilterChips
-
-✓ desktop filters are compact
-
-✓ mobile filters use appropriate sheet/page
-
-✓ self requests use desktop-appropriate table/list
-
-✓ Calendar is a real Leave + Holiday calendar
-
-✓ desktop calendar shows actual events
-
-✓ mobile calendar has useful agenda experience
-
-✓ multiple events/day are handled
-
-✓ privacy rules remain intact
-
-✓ Team/All Attendance Leave/Holiday classification remains correct
-
-✓ no fake AttendanceDay is created
-
-✓ raw DateTime.now business logic is removed from Leave presentation/domain flows
-
-✓ company business date is used
-
-✓ Leave year is resolved centrally
-
-✓ no static cached "today" survives midnight incorrectly
-
-✓ routing/deep links remain correct
-
-✓ mobile works
-
-✓ tablet works
-
-✓ desktop/web works
+✓ only one AppLocalizations.delegate is required
 
 ✓ English works
 
-✓ Arabic/RTL works
+✓ Arabic works
+
+✓ RTL works
+
+✓ no existing localization key was lost
+
+✓ no existing visible copy changed accidentally
+
+✓ duplicate keys across modules fail generation
+
+✓ missing Arabic translation fails validation
+
+✓ missing English counterpart fails validation
+
+✓ placeholders remain valid
+
+✓ merged ARBs are deterministic
+
+✓ generated ARBs are not the manual source of truth
+
+✓ source ownership is documented
+
+✓ Windows-compatible generation workflow exists
+
+✓ flutter gen-l10n succeeds
 
 ✓ flutter analyze passes
 
-✓ all tests pass
+✓ flutter test passes
 
 ✓ Web release build succeeds
 
 THEN STOP.
+
+DO NOT START SERVICES PHASE 1 AUTOMATICALLY.
 ```

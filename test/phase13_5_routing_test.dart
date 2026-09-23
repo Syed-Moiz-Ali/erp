@@ -7,11 +7,11 @@ import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/app/shell/pages/route_status_pages.dart';
 import 'package:modular_erp/core/localization/app_language.dart';
 import 'package:modular_erp/design_system/design_system.dart';
-import 'package:modular_erp/features/auth/data/repositories/demo_auth_repository.dart';
-import 'package:modular_erp/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/features/employees/presentation/pages/employee_details_page.dart';
-import 'package:modular_erp/features/employees/presentation/pages/employee_list_page.dart';
-import 'package:modular_erp/features/employees/presentation/bloc/employee_list_bloc.dart';
+import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_details_page.dart';
+import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_list_page.dart';
+import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_list_bloc.dart';
 import 'auth_widget_test.dart' as h;
 import 'support/memory_session_storage.dart';
 

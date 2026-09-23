@@ -1,4 +1,4 @@
-import '../errors/result.dart';
+import 'package:modular_erp/core/errors/result.dart';
 
 /// Outcome classification for a sync attempt. Transient failures may be
 /// retried with backoff; permanent failures stop retrying and need attention.

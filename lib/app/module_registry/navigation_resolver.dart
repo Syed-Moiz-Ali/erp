@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
-import '../../features/auth/domain/policies/user_capability.dart';
-import '../../core/security/app_permission.dart';
-import '../router/app_routes.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/app/router/app_routes.dart';
 import 'module_registry.dart';
 
 enum RouteAccess { allowed, moduleUnavailable, unauthorized, unknown }

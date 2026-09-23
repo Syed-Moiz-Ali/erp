@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_motion.dart';
-import '../../theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 
 class AppBottomSheet {
   static Future<T?> show<T>(

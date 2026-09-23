@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import '../../app/module_registry/module_registry.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
 
 /// Central navigation helpers. Feature widgets must not invent their own
 /// push/pop/fallback rules.

@@ -1,10 +1,10 @@
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import '../../../app/module_registry/module_registry.dart';
-import '../../theme/app_breakpoints.dart';
-import '../navigation/app_navigation.dart';
-import '../avatars/app_avatar.dart';
-import '../inputs/app_language_selector.dart';
+import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/design_system/components/navigation/app_navigation.dart';
+import 'package:modular_erp/design_system/components/avatars/app_avatar.dart';
+import 'package:modular_erp/design_system/components/inputs/app_language_selector.dart';
 
 class AppResponsiveScaffold extends StatelessWidget {
   const AppResponsiveScaffold({

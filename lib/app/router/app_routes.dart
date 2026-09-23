@@ -8,6 +8,7 @@ abstract final class AppRoutes {
       employees = '/app/employees',
       attendance = '/app/attendance',
       leave = '/app/leave',
+      services = '/app/services',
       reports = '/app/reports',
       settings = '/app/settings',
       profile = '/app/profile',
@@ -109,6 +110,7 @@ abstract final class AppModuleIds {
       employees = 'employees',
       attendance = 'attendance',
       leave = 'leave',
+      services = 'services',
       reports = 'reports',
       settings = 'settings',
       account = 'account';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../l10n/generated/app_localizations.dart';
+import 'package:modular_erp/l10n/generated/app_localizations.dart';
 
 class AppDateFormatter {
   const AppDateFormatter(this.locale);

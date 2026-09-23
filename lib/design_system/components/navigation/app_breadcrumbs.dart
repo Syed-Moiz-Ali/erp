@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/l10n.dart';
-import '../../theme/app_typography.dart';
-import '../../theme/app_spacing.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 
 class AppBreadcrumbItem {
   const AppBreadcrumbItem({required this.label, this.route});

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
-import '../errors/result.dart';
-import '../storage/secure_session_storage.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/storage/secure_session_storage.dart';
 
 class AuthenticationInterceptor extends Interceptor {
   AuthenticationInterceptor(this.storage);

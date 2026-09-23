@@ -1,10 +1,10 @@
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import '../../../core/localization/app_formatters.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_motion.dart';
-import '../../theme/app_typography.dart';
+import 'package:modular_erp/core/localization/app_formatters.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_radius.dart';
+import 'package:modular_erp/design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({

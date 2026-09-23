@@ -1,6 +1,6 @@
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 abstract final class AppFeedback {
   static void showMessage(

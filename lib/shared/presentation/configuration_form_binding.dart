@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../features/auth/domain/entities/auth_context.dart';
-import '../navigation/form_navigation_guard.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
 
 /// Owns the guard independently of BLoC rebuilds and stale page disposal.
 class ConfigurationFormBinding extends StatefulWidget {

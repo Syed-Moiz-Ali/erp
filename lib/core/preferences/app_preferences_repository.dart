@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../errors/result.dart';
-import '../localization/app_language.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/localization/app_language.dart';
 
 /// Non-sensitive reminder + sync metadata persisted as plain preferences.
 /// Never store tokens, passwords or GPS here.

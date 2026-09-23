@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
-import '../errors/result.dart';
+import 'package:modular_erp/core/errors/result.dart';
 
 abstract interface class LocationService {
   Future<Result<Position>> currentPosition({bool requestPermission = false});

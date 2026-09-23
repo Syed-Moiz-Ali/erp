@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../design_system.dart';
+import 'package:modular_erp/design_system/design_system.dart';
 
 class AppSettingsTile extends StatelessWidget {
   const AppSettingsTile({

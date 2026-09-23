@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/errors/result.dart';
-import '../../core/models/configuration_record.dart';
-import '../../design_system/design_system.dart';
-import '../../design_system/theme/app_breakpoints.dart';
-import '../../l10n/l10n.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'configuration_localization.dart';
-import '../workflows/record_list_bloc.dart';
-import '../workflows/record_details_bloc.dart';
+import 'package:modular_erp/shared/workflows/record_list_bloc.dart';
+import 'package:modular_erp/shared/workflows/record_details_bloc.dart';
 
 Widget configurationBadge(BuildContext c, ConfigurationStatus status) =>
     AppStatusBadge(

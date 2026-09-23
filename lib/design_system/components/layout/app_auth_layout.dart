@@ -3,9 +3,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../l10n/l10n.dart';
-import '../../design_system.dart';
-import '../../theme/app_breakpoints.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
 
 /// Signature Bitlogix motif: three layered diamonds. Reused in the brand
 /// mark, the workspace object and as a low-contrast background element.

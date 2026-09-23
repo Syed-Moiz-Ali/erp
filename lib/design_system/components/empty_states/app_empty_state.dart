@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
-import '../buttons/app_buttons.dart';
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/design_system/theme/app_colors.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/components/buttons/app_buttons.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 class AppEmptyState extends StatelessWidget {
   const AppEmptyState({

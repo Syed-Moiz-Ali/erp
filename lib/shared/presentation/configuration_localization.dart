@@ -1,12 +1,12 @@
-import '../../core/errors/result.dart';
-import '../../core/models/configuration_record.dart';
-import '../../core/utils/local_time.dart';
-import '../../features/shifts/domain/shift.dart';
-import '../../features/work_locations/domain/work_location.dart';
-import '../../features/attendance_policies/domain/attendance_policy.dart';
-import '../../l10n/l10n.dart';
-import '../../design_system/design_system.dart';
-import '../../core/localization/app_formatters.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/core/utils/local_time.dart';
+import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
+import 'package:modular_erp/modules/hr/work_locations/domain/work_location.dart';
+import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:flutter/material.dart';
 
 String configurationStatusLabel(

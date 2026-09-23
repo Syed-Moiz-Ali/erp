@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
-import '../database/app_database.dart';
-import '../errors/result.dart';
+import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'pending_mutation.dart';
 
 abstract interface class OutboxRepository {

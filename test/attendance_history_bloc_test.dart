@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:modular_erp/core/errors/result.dart';
-import 'package:modular_erp/features/attendance/domain/attendance_history.dart';
-import 'package:modular_erp/features/attendance/domain/attendance_repository.dart';
-import 'package:modular_erp/features/attendance/presentation/bloc/attendance_history_bloc.dart';
-import 'package:modular_erp/features/attendance/presentation/bloc/attendance_day_details_bloc.dart';
+import 'package:modular_erp/modules/hr/attendance/domain/attendance_history.dart';
+import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
+import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_history_bloc.dart';
+import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_day_details_bloc.dart';
 import 'attendance_history_test.dart' show record;
 
 class MockHistoryRepository extends Mock implements AttendanceRepository {}

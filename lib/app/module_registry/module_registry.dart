@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/security/app_permission.dart';
-import '../../features/auth/domain/policies/user_capability.dart';
-import '../../l10n/l10n.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 enum NavigationGroup {
   workspace,

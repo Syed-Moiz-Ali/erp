@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 
 class AppMenuAction {
   const AppMenuAction({required this.label, required this.onPressed});

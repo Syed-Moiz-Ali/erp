@@ -3,14 +3,14 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
-import 'package:modular_erp/features/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/features/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/features/dashboard/domain/dashboard_models.dart';
-import 'package:modular_erp/features/dashboard/domain/dashboard_scope_resolver.dart';
-import 'package:modular_erp/features/dashboard/domain/dashboard_repository.dart';
-import 'package:modular_erp/features/dashboard/data/demo_dashboard_source.dart';
-import 'package:modular_erp/features/dashboard/data/local_dashboard_repository.dart';
-import 'package:modular_erp/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'package:modular_erp/platform/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/platform/dashboard/domain/dashboard_scope_resolver.dart';
+import 'package:modular_erp/platform/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/platform/dashboard/data/demo_dashboard_source.dart';
+import 'package:modular_erp/platform/dashboard/data/local_dashboard_repository.dart';
+import 'package:modular_erp/platform/dashboard/presentation/bloc/dashboard_bloc.dart';
 
 class ControlledDashboardRepository implements DashboardRepository {
   final requests = <Completer<Result<DashboardSummary>>>[];

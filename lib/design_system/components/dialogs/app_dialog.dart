@@ -1,7 +1,7 @@
-import '../../theme/app_dimensions.dart';
-import '../../../l10n/l10n.dart';
+import 'package:modular_erp/design_system/theme/app_dimensions.dart';
+import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import '../buttons/app_buttons.dart';
+import 'package:modular_erp/design_system/components/buttons/app_buttons.dart';
 
 class AppDialog extends StatelessWidget {
   const AppDialog({

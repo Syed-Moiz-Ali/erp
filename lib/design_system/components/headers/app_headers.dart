@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_typography.dart';
-import '../../theme/app_breakpoints.dart';
-import '../../theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 
 class AppPageHeader extends StatelessWidget {
   const AppPageHeader({

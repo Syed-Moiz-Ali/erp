@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
+import 'package:modular_erp/design_system/theme/app_typography.dart';
 import 'app_cards.dart';
 
 /// Reusable labeled before/after comparison for approval workflows.
