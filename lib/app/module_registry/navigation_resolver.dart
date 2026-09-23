@@ -94,6 +94,9 @@ class NavigationResolver {
       'shifts' => AppPermission.shiftManage,
       'work-locations' => AppPermission.workLocationManage,
       'attendance-policies' => AppPermission.attendancePolicyManage,
+      'leave-types' => AppPermission.leaveTypeManage,
+      'leave-policies' => AppPermission.leavePolicyManage,
+      'holidays' => AppPermission.holidayManage,
       _ => null,
     };
     if (configurationManage != null &&

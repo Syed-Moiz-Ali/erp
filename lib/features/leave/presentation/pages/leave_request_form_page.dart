@@ -18,7 +18,7 @@ class LeaveRequestFormPage extends StatelessWidget {
     listener: (c, s) {
       if (s.submitted != null) {
         AppFeedback.showMessage(c, message: (l) => l.leaveRequestSubmitted);
-        c.go(AppRoutes.leaveRequests);
+        c.go(AppRoutes.leaveMyRequests);
       } else if (s.failure != null) {
         AppFeedback.showMessage(
           c,

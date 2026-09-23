@@ -12,6 +12,8 @@ import 'attendance_local_data_source.dart';
 import 'local_attendance_correction_repository.dart';
 import '../domain/shift_workday_resolver.dart';
 import '../domain/workforce_attendance.dart';
+import '../../leave/domain/leave_models.dart';
+import '../../leave/domain/leave_repository.dart';
 
 /// A bounded, joined read projection. No per-row employee/event reads.
 class WorkforceAttendanceReadRepository {
@@ -21,12 +23,14 @@ class WorkforceAttendanceReadRepository {
     this.scopes, {
     this.clock = const SystemAppClock(),
     this.time = const FixedOffsetCompanyTimeService(),
+    this.leave,
   });
   final AppDatabase db;
   final AuthRepository auth;
   final AttendanceScopeResolver scopes;
   final AppClock clock;
   final CompanyTimeService time;
+  final LeaveRepository? leave;
 
   Failed<T> _fail<T>(String code) =>
       Failed(Failure(code: code, kind: FailureKind.invalidData));
@@ -225,10 +229,26 @@ LEFT JOIN (SELECT company_id,employee_id,attendance_day_id,COUNT(*) n FROM atten
         latest.value?.company.id != actor.company.id) {
       return _fail('attendanceSessionChanged');
     }
+    var leaveIds = <String>{};
+    var holiday = false;
+    if (sameDay && leave != null) {
+      final ids = rows
+          .map((r) => r.read<String>('employee_id'))
+          .toList(growable: false);
+      final leaveResult = await leave!.employeesOnApprovedLeave(
+        actor,
+        date,
+        employeeIds: ids,
+      );
+      if (leaveResult is Success<Set<String>>) leaveIds = leaveResult.value;
+      final holidayResult = await leave!.companyHolidayOn(actor, date);
+      if (holidayResult is Success<bool>) holiday = holidayResult.value;
+    }
     final items = rows
-        .map(
-          (r) => WorkforceAttendanceItem(
-            employeeId: r.read<String>('employee_id'),
+        .map((r) {
+          final employeeId = r.read<String>('employee_id');
+          return WorkforceAttendanceItem(
+            employeeId: employeeId,
             employeeCode: r.read<String>('employee_code'),
             employeeName:
                 '${r.read<String>('first_name')} ${r.read<String>('last_name')}'
@@ -262,8 +282,13 @@ LEFT JOIN (SELECT company_id,employee_id,attendance_day_id,COUNT(*) n FROM atten
                 : AttendanceSyncStatus.values.byName(
                     r.read<String>('sync_status'),
                   ),
-          ),
-        )
+            classification: holiday
+                ? WorkdayClassification.holiday
+                : leaveIds.contains(employeeId)
+                ? WorkdayClassification.approvedLeave
+                : null,
+          );
+        })
         .toList(growable: false);
     return Success(
       WorkforceAttendancePage(

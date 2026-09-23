@@ -27,7 +27,7 @@ class LeaveTodayBanner extends StatelessWidget {
             future: repository.dayOverride(
               account,
               employeeId,
-              DateTime.now().toUtc(),
+              repository.companyToday(account),
             ),
             builder: (context, snapshot) {
               final overlay = snapshot.data is Success<LeaveWorkdayOverlay?>

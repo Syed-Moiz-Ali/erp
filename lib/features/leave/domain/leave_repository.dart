@@ -72,6 +72,12 @@ class LeaveBalanceAdjustment {
 enum LeaveRequestScope { self, team, company, approvals }
 
 abstract interface class LeaveRepository {
+  /// Company business date (UTC midnight) for the actor's company time zone.
+  DateTime companyToday(AuthContext context);
+
+  /// Centralized leave year for a date.
+  int leaveYearFor(DateTime date);
+
   // ---- configuration -------------------------------------------------------
   Stream<Result<List<LeaveType>>> watchLeaveTypes(
     AuthContext context, {
@@ -118,6 +124,34 @@ abstract interface class LeaveRepository {
     bool active,
   );
 
+  // ---- holiday calendars / yearly management -------------------------------
+  Stream<Result<List<Holiday>>> watchHolidaysForYear(
+    AuthContext context,
+    int year, {
+    bool includeInactive = false,
+  });
+  Stream<Result<List<HolidayCalendar>>> watchHolidayCalendars(
+    AuthContext context,
+  );
+  Future<Result<HolidayCalendar>> saveHolidayCalendar(
+    AuthContext context,
+    HolidayCalendarDraft draft,
+  );
+  Future<Result<int>> copyHolidaysToYear(
+    AuthContext context, {
+    required int fromYear,
+    required int toYear,
+  });
+  Future<Result<HolidayImportResult>> importHolidays(
+    AuthContext context,
+    List<HolidayImportRow> rows,
+  );
+  Future<Result<Holiday?>> nextHoliday(
+    AuthContext context,
+    String employeeId,
+    DateTime from,
+  );
+
   // ---- requests ------------------------------------------------------------
   Future<Result<LeaveRequestPreview>> previewRequest(
     AuthContext context,
@@ -147,9 +181,35 @@ abstract interface class LeaveRepository {
     AuthContext context, {
     required LeaveRequestScope scope,
     LeaveRequestStatus? status,
-    int limit = 50,
+    LeaveRequestFilter filter = const LeaveRequestFilter(),
+    int limit = 200,
   });
   Future<Result<LeaveRequestRow?>> requestById(AuthContext context, String id);
+
+  // ---- organizational operations ------------------------------------------
+  Stream<Result<LeaveOperationsData>> watchOperations(
+    AuthContext context, {
+    required LeaveRequestScope scope,
+    LeaveRequestFilter filter = const LeaveRequestFilter(),
+    int upcomingDays = 30,
+  });
+  Stream<Result<List<LeaveApprovalItem>>> watchApprovalQueue(
+    AuthContext context,
+  );
+  Stream<Result<EmployeeLeaveSummary?>> watchEmployeeLeave(
+    AuthContext context,
+    String employeeId,
+  );
+  Stream<Result<List<LeaveBalanceRow>>> watchBalanceTable(
+    AuthContext context, {
+    int? year,
+    String? departmentId,
+    String? leaveTypeId,
+    String search = '',
+  });
+  Stream<Result<List<LeaveDepartmentOption>>> watchDepartments(
+    AuthContext context,
+  );
 
   // ---- balances ------------------------------------------------------------
   Stream<Result<List<LeaveBalanceSummary>>> watchBalances(
@@ -188,4 +248,14 @@ abstract interface class LeaveRepository {
     String employeeId,
     DateTime date,
   );
+
+  /// Employee ids (from [employeeIds]) on approved leave covering [date].
+  Future<Result<Set<String>>> employeesOnApprovedLeave(
+    AuthContext context,
+    DateTime date, {
+    required List<String> employeeIds,
+  });
+
+  /// True when [date] is a company-wide, non-optional holiday.
+  Future<Result<bool>> companyHolidayOn(AuthContext context, DateTime date);
 }

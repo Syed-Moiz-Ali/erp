@@ -230,7 +230,7 @@ class ConfigurationLandingPage extends StatelessWidget {
               if (permissions.can(AppPermission.holidayView))
                 AppSettingsRow(
                   title: l.holidaysNav,
-                  description: l.holidayIntro,
+                  description: l.leaveManageHolidaysHint,
                   icon: Icons.beach_access_outlined,
                   trailing: count('holidays'),
                   onPressed: () => context.push(AppRoutes.holidays),

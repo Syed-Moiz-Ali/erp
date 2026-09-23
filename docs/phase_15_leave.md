@@ -16,6 +16,48 @@
 14. **Analyzer/test:** `flutter analyze` clean; the full suite passes.
 15. **Genuine limitations:** Policy assignment UI (effective-dated per-employee assignment), carry-forward/expiry generation, leave reports, attachment upload and per-employee attendance-history leave classification are not yet exposed. There is no remote backend; outbox enqueue happens only outside demo mode.
 
+## Operational Leave Management (Phase 15.2)
+
+**My vs Team vs All.** The Leave module root `/app/leave` is persona-aware: capabilities with `leaveViewAll` get a Company overview, `leaveViewTeam` a Team overview, and linked self-only users the My Leave overview. All three share the same underlying read model (`LeaveOperationsData`) and the same request/detail components — only the scope and copy differ. Reads never fabricate a second approval/request pipeline.
+
+**Sub-navigation.** `LeaveModuleScaffold` renders the Leave destinations the actor actually has (`shellLeave`/overview, My requests, Team, All, Approvals, Balances, Calendar) and hides itself when only one applies. It is presentation only: routes stay the source of truth, and every nested Leave route keeps Leave selected through route ownership. Configuration (types/policies/holidays) stays under Settings.
+
+**Scope rules.** Scope is derived exclusively from capabilities/permissions; a `?scope=` style query is never authorization. `LocalLeaveRepository._scopeClause` resolves `self`/`team`/`company`/`approvals` and returns `leavePermissionDenied` when unauthorized. Team scope uses the actor's linked employee id (`e.manager_id = ?`); company scope requires `leaveViewAll`. An unlinked HR/Admin can use All Leave, Approvals, Balances and Calendar without an `EmployeeReference`, but cannot submit self leave. A manager with no linked employee has no team scope and never sees company leave by accident.
+
+**Approval Queue.** `/app/leave/approvals` is an operational queue, not a filtered list: pending requests only, ordered by soonest start then oldest submitted, enriched with the requester's available balance and the post-approval balance. Review opens the single shared `LeaveRequestDetailsPage`; approve offers an optional note, reject requires one. Self-approval is refused even with `leaveApproveAll`. The queue is reactive, so a decision updates it immediately.
+
+**Employee Leave profile.** `/app/leave/employee/:employeeId` shows identity (name, code, department, designation, manager), balances, upcoming leave, recent requests and (for authorized balance viewers) the immutable ledger. It is reachable from the balance table, Team/All request rows, and the Employee Details page via a "View employee leave" related action.
+
+**Filters and pagination.** Team/All views support status, leave type, department, employee search and period presets (All/Today/This week/This month/Next 30). Filtering is applied against a bounded scoped read; the balance table adds department/type/search filters. Detail navigation preserves queue/list context through the router.
+
+**Attendance row classification.** `WorkforceAttendanceItem.classification` carries a `WorkdayClassification` (`approvedLeave`/`holiday`) computed once per read via `employeesOnApprovedLeave` and `companyHolidayOn`. Team and All attendance rows display "Leave"/"Holiday" instead of "Not started" for current-day rows. Attendance events, states, durations and the state machine are never modified and no `AttendanceDay` is created for leave. The self Today banner (`LeaveTodayBanner`) remains unchanged.
+
+**Explicitly deferred after this increment:** historical attendance-history row classification, dashboard leave widgets, leave reports, policy-assignment UI, carry-forward/expiry generation and attachments.
+
+## Phase 15.3 — Holiday administration, calendar & persona UX
+
+**Permission model.** `PermissionSet` now normalizes grants centrally: every `*Manage` grant carries its `*View` dependency (`shift`, `workLocation`, `attendancePolicy`, `leaveType`, `leavePolicy`, `holiday`). HR therefore has `holidayView` + `holidayManage`; a manage-only configuration can never hide the screen it administers. Route access for `/app/settings/{leave-types,leave-policies,holidays}/new|edit` requires the matching manage permission.
+
+**Persona matrix.** Employees and managers view applicable holidays through the Leave calendar and never manage. HR creates/edits holidays and runs the annual calendar. Company admins manage according to explicit permissions without an employee link. Super Admin gains nothing implicitly — tenant/company context and explicit permissions still apply.
+
+**Holiday domain.** Categories are `publicHoliday`, `festivalHoliday`, `regionalHoliday`, `companyHoliday`, `specialClosure`. Optionality is a single independent field (`isOptional`); the legacy `optionalHoliday` category was removed and migrated (`type=companyHoliday, is_optional=1`). Entries carry `source` (`manual`/`copiedFromPreviousYear`/`imported`/`companyTemplate`), optional `countryCode`/`regionCode`, multi-day `endDate`, and work-location scope. A lightweight `HolidayCalendar` entity (company, name, year, optional country/region, default flag) makes yearly management first-class. Schema version **8** adds `holiday_calendars` and the new holiday columns, normalizing existing data.
+
+**Yearly management.** `/app/settings/holidays` is purpose-built, not the generic configuration layout: a year selector (company-current year by default), Add Holiday, Copy Previous Year, Import Holidays and an Active/Next-holiday summary with a deliberate empty-state to set up a new year. Copying shifts month/day, marks entries `copiedFromPreviousYear`, skips duplicates and requires confirmation ("verify festival dates"). CSV import validates rows, previews them with per-row validity, detects duplicates and rejects cross-company work locations — no external holiday API is used or required.
+
+**Discoverability.** The Leave & Holiday calendar header shows Add Holiday / Manage Holidays to managers with `holidayManage`, linking to the canonical settings routes. HR/Admin workspaces show a Holiday-calendar-status panel. The employee home surfaces the next applicable holiday.
+
+**Calendar.** Rebuilt as a real Leave + Holiday calendar: month grid with per-day event chips and "+N", a selected-day agenda (Holiday first, then On Leave), leave/holiday filters, month navigation and Today. Desktop shows grid + side agenda; mobile stacks the grid above the agenda. Leave events navigate to the request route; holiday events show read-only information. Privacy is preserved: employees see company holidays and their own leave; managers see team names + type; reasons are never shown in calendar cells.
+
+**Workspaces.** Employee My Leave shows a responsive balance grid (available/used/pending/entitlement with a subtle progress bar), upcoming approved leave, a pending-request card, the next holiday and recent requests. The Manager workspace prioritizes pending approvals and on-leave-today with upcoming team leave. The HR/Company workspace adds company metrics, upcoming company leave and the holiday-calendar-status panel, with Review/All Leave/Balances/Manage Holidays actions that are not a grid of identical cards.
+
+**Navigation.** `LeaveModuleScaffold` renders a proper secondary navigation — underline tabs on desktop and a section switcher (bottom sheet) on mobile — instead of filter chips. Leave remains one primary sidebar module; Team/All/Approvals/Balances/Calendar stay secondary routes.
+
+**Filters & lists.** Team/All/Approval views use a compact desktop toolbar (search, period, status, leave type, department, Reset) with removable active-filter chips; mobile uses a search field plus a Filters bottom sheet with Apply/Reset. View switching uses a segmented control. Self requests render as a desktop table or mobile cards with a compact status filter.
+
+**Company time.** All business dates — "today", periods, approval "starting soon", ledger year and adjustment effective date — resolve through the repository's `companyToday` (AppClock + CompanyTimeService + company time zone) and `leaveYearFor` (LeaveYearResolver). Raw `DateTime.now()` was removed from every Leave presentation/domain file, including the previously static form/calendar "today" and the demo seed (fixed demo year).
+
+**Tests.** `test/leave_holiday_test.dart` adds permission regression (HR view+manage, employee/manager no manage, manage⇒view), year filtering, category coverage, optionality independence, multi-day rendering, location scope, copy-previous-year with `copiedFromPreviousYear` source, CSV validation + duplicate skipping, and new-year calendar setup. Existing schema/boundary expectations were updated (schema v8, manage⇒view).
+
 ## Validation commands
 
 ```sh

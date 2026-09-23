@@ -159,6 +159,12 @@ _Holiday _$HolidayFromJson(Map<String, dynamic> json) => _Holiday(
       const <String>{},
   description: json['description'] as String? ?? '',
   isOptional: json['isOptional'] as bool? ?? false,
+  source:
+      $enumDecodeNullable(_$HolidaySourceEnumMap, json['source']) ??
+      HolidaySource.manual,
+  calendarId: json['calendarId'] as String?,
+  countryCode: json['countryCode'] as String?,
+  regionCode: json['regionCode'] as String?,
   status:
       $enumDecodeNullable(_$ConfigurationStatusEnumMap, json['status']) ??
       ConfigurationStatus.active,
@@ -180,6 +186,10 @@ Map<String, dynamic> _$HolidayToJson(_Holiday instance) => <String, dynamic>{
   'workLocationIds': instance.workLocationIds.toList(),
   'description': instance.description,
   'isOptional': instance.isOptional,
+  'source': _$HolidaySourceEnumMap[instance.source]!,
+  'calendarId': instance.calendarId,
+  'countryCode': instance.countryCode,
+  'regionCode': instance.regionCode,
   'status': _$ConfigurationStatusEnumMap[instance.status]!,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),
@@ -188,14 +198,22 @@ Map<String, dynamic> _$HolidayToJson(_Holiday instance) => <String, dynamic>{
 
 const _$HolidayTypeEnumMap = {
   HolidayType.publicHoliday: 'publicHoliday',
+  HolidayType.festivalHoliday: 'festivalHoliday',
+  HolidayType.regionalHoliday: 'regionalHoliday',
   HolidayType.companyHoliday: 'companyHoliday',
-  HolidayType.optionalHoliday: 'optionalHoliday',
   HolidayType.specialClosure: 'specialClosure',
 };
 
 const _$HolidayScopeEnumMap = {
   HolidayScope.companyWide: 'companyWide',
   HolidayScope.specificWorkLocations: 'specificWorkLocations',
+};
+
+const _$HolidaySourceEnumMap = {
+  HolidaySource.manual: 'manual',
+  HolidaySource.copiedFromPreviousYear: 'copiedFromPreviousYear',
+  HolidaySource.imported: 'imported',
+  HolidaySource.companyTemplate: 'companyTemplate',
 };
 
 _LeaveTypeSnapshot _$LeaveTypeSnapshotFromJson(Map<String, dynamic> json) =>

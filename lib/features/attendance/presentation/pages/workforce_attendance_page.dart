@@ -8,6 +8,7 @@ import '../../../../design_system/design_system.dart';
 import '../../../../design_system/theme/app_breakpoints.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/workforce_attendance.dart';
+import '../../../leave/domain/leave_models.dart';
 import '../bloc/workforce_attendance_bloc.dart';
 
 class WorkforceAttendancePage extends StatefulWidget {
@@ -42,6 +43,20 @@ class _WorkforceAttendancePageState extends State<WorkforceAttendancePage> {
       WorkforceAttendanceState.noRecord => l.workforceNoRecord,
     };
   }
+
+  String itemLabel(BuildContext context, WorkforceAttendanceItem item) =>
+      switch (item.classification) {
+        WorkdayClassification.approvedLeave => context.l10n.workdayOnLeave,
+        WorkdayClassification.holiday => context.l10n.workdayHoliday,
+        _ => label(context, item.attendanceState),
+      };
+
+  AppStatus itemStatus(WorkforceAttendanceItem item) =>
+      switch (item.classification) {
+        WorkdayClassification.approvedLeave => AppStatus.brand,
+        WorkdayClassification.holiday => AppStatus.success,
+        _ => item.hasIssue ? AppStatus.warning : AppStatus.neutral,
+      };
 
   @override
   Widget build(
@@ -340,13 +355,8 @@ class _WorkforceAttendancePageState extends State<WorkforceAttendancePage> {
                                       DataCell(Text(item.shiftName ?? '—')),
                                       DataCell(
                                         AppStatusBadge(
-                                          label: label(
-                                            context,
-                                            item.attendanceState,
-                                          ),
-                                          status: item.hasIssue
-                                              ? AppStatus.warning
-                                              : AppStatus.neutral,
+                                          label: itemLabel(context, item),
+                                          status: itemStatus(item),
                                         ),
                                       ),
                                     ],
@@ -380,13 +390,8 @@ class _WorkforceAttendancePageState extends State<WorkforceAttendancePage> {
                                           spacing: AppSpacing.sm,
                                           children: [
                                             AppStatusBadge(
-                                              label: label(
-                                                context,
-                                                item.attendanceState,
-                                              ),
-                                              status: item.hasIssue
-                                                  ? AppStatus.warning
-                                                  : AppStatus.neutral,
+                                              label: itemLabel(context, item),
+                                              status: itemStatus(item),
                                             ),
                                             if (item.hasPendingCorrection)
                                               AppStatusBadge(

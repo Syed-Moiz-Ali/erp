@@ -10,6 +10,7 @@ import '../../domain/leave_models.dart';
 import '../../domain/leave_repository.dart';
 import '../bloc/leave_blocs.dart';
 import '../leave_localization.dart';
+import '../widgets/leave_operations_widgets.dart';
 
 AppStatus leaveStatusColor(LeaveRequestStatus status) => switch (status) {
   LeaveRequestStatus.pending => AppStatus.warning,
@@ -18,13 +19,20 @@ AppStatus leaveStatusColor(LeaveRequestStatus status) => switch (status) {
   LeaveRequestStatus.cancelled => AppStatus.neutral,
 };
 
-class LeaveRequestListPage extends StatelessWidget {
+class LeaveRequestListPage extends StatefulWidget {
   const LeaveRequestListPage({
     super.key,
     required this.title,
     required this.emptyMessage,
   });
   final String title, emptyMessage;
+  @override
+  State<LeaveRequestListPage> createState() => _LeaveRequestListPageState();
+}
+
+class _LeaveRequestListPageState extends State<LeaveRequestListPage> {
+  LeaveRequestStatus? _status;
+
   @override
   Widget build(BuildContext context) =>
       BlocConsumer<LeaveRequestListBloc, LeaveRequestListState>(
@@ -37,21 +45,25 @@ class LeaveRequestListPage extends StatelessWidget {
           }
         },
         builder: (c, s) {
+          final l = c.l10n;
           final bloc = c.read<LeaveRequestListBloc>();
           final canRequest =
               bloc.scope != LeaveRequestScope.approvals &&
               bloc.context.user.permissions.contains(
                 AppPermission.leaveRequest,
               );
+          final rows = _status == null
+              ? s.rows
+              : s.rows.where((r) => r.request.status == _status).toList();
           return AppPage(
             header: AppPageHeader(
-              title: title,
+              title: widget.title,
               actions: [
                 if (canRequest)
                   AppPrimaryButton(
                     icon: Icons.add_rounded,
-                    label: c.l10n.leaveNewRequest,
-                    onPressed: () => c.push(AppRoutes.leaveNew),
+                    label: l.leaveNewRequest,
+                    onPressed: () => c.push(AppRoutes.leaveRequest),
                   ),
               ],
             ),
@@ -59,94 +71,41 @@ class LeaveRequestListPage extends StatelessWidget {
                 ? const AppLoadingState()
                 : s.failure != null
                 ? AppErrorState(
-                    message: configurationFailure(s.failure!, c.l10n),
+                    message: configurationFailure(s.failure!, l),
                     onRetry: () => bloc.add(const LeaveRequestListStarted()),
                   )
-                : s.rows.isEmpty
-                ? AppEmptyState(title: emptyMessage, message: emptyMessage)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      for (final row in s.rows)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                          child: _RequestCard(
-                            row: row,
-                            showEmployee: bloc.scope != LeaveRequestScope.self,
+                      SizedBox(
+                        width: 220,
+                        child: AppSelectField<String>(
+                          label: l.leaveStatusField,
+                          value: _status?.name ?? '',
+                          options: [
+                            AppSelectOption('', l.leaveAllStatuses),
+                            for (final status in LeaveRequestStatus.values)
+                              AppSelectOption(
+                                status.name,
+                                leaveRequestStatusLabel(status, l),
+                              ),
+                          ],
+                          onChanged: (v) => setState(
+                            () => _status = v == null || v.isEmpty
+                                ? null
+                                : LeaveRequestStatus.values.byName(v),
                           ),
                         ),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      LeaveRequestTable(
+                        rows: rows,
+                        showEmployee: bloc.scope != LeaveRequestScope.self,
+                        emptyTitle: widget.emptyMessage,
+                      ),
                     ],
                   ),
           );
         },
       );
-}
-
-class _RequestCard extends StatelessWidget {
-  const _RequestCard({required this.row, required this.showEmployee});
-  final LeaveRequestRow row;
-  final bool showEmployee;
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final request = row.request;
-    final title = showEmployee && row.employeeName.isNotEmpty
-        ? row.employeeName
-        : request.typeSnapshot.name;
-    final subtitle = showEmployee && row.employeeName.isNotEmpty
-        ? request.typeSnapshot.name
-        : '${configurationDate(context, request.startDate)} - '
-              '${configurationDate(context, request.endDate)}';
-    final detail =
-        '${configurationDate(context, request.startDate)} - '
-        '${configurationDate(context, request.endDate)}';
-    final dayCountLabel = '${request.requestedDays} ${l.days}';
-    return AppCard(
-      variant: AppCardVariant.interactive,
-      onTap: () => context.push(AppRoutes.leaveRequestDetails(request.id)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTypography.of(context).cardTitle),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: AppTypography.of(
-                    context,
-                  ).bodySmall.copyWith(color: AppColors.textSecondary),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  detail,
-                  style: AppTypography.of(
-                    context,
-                  ).caption.copyWith(color: AppColors.textMuted),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              AppStatusBadge(
-                label: leaveRequestStatusLabel(request.status, l),
-                status: leaveStatusColor(request.status),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                dayCountLabel,
-                style: AppTypography.of(
-                  context,
-                ).caption.copyWith(color: AppColors.textMuted),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }

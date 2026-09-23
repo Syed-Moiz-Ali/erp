@@ -155,9 +155,33 @@ class Holidays extends Table {
   TextColumn get workLocationIds => text().withDefault(const Constant('[]'))();
   TextColumn get description => text().withDefault(const Constant(''))();
   BoolColumn get isOptional => boolean().withDefault(const Constant(false))();
+  TextColumn get source => text().withDefault(const Constant('manual'))();
+  TextColumn get calendarId => text().nullable()();
+  TextColumn get countryCode => text().nullable()();
+  TextColumn get regionCode => text().nullable()();
   TextColumn get status => text().withDefault(const Constant('active'))();
   IntColumn get createdMilliseconds => integer()();
   IntColumn get updatedMilliseconds => integer()();
   @override
   Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('HolidayCalendarData')
+class HolidayCalendars extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get name => text()();
+  IntColumn get year => integer()();
+  TextColumn get countryCode => text().nullable()();
+  TextColumn get regionCode => text().nullable()();
+  BoolColumn get isDefault => boolean().withDefault(const Constant(false))();
+  TextColumn get status => text().withDefault(const Constant('active'))();
+  IntColumn get createdMilliseconds => integer()();
+  IntColumn get updatedMilliseconds => integer()();
+  @override
+  Set<Column> get primaryKey => {id};
+  @override
+  List<Set<Column>> get uniqueKeys => [
+    {companyId, year, name},
+  ];
 }

@@ -4,14 +4,20 @@ import 'package:uuid/uuid.dart';
 import '../../../core/database/app_database.dart';
 import '../../auth/domain/entities/auth_context.dart';
 
+/// Fixed demo year so seeding is deterministic and internally consistent. This
+/// is development fixture data, not an authoritative government holiday feed.
+const int demoLeaveYear = 2026;
+
 /// Demo-only leave configuration and starting balances so the Leave module is
 /// immediately usable. Idempotent: entries are skipped when they already exist.
 Future<void> seedLeaveConfiguration(AppDatabase db, AuthContext context) async {
-  final now = DateTime.utc(2026);
-  final year = DateTime.now().toUtc().year;
-  final effectiveDate = '${year.toString().padLeft(4, '0')}-01-01';
+  final now = DateTime.utc(demoLeaveYear);
+  const year = demoLeaveYear;
+  const effectiveDate = '$year-01-01';
 
   await db.transaction(() async {
+    final calendarId = await _ensureCalendar(db, context, now);
+
     final types =
         <
           ({
@@ -144,26 +150,66 @@ Future<void> seedLeaveConfiguration(AppDatabase db, AuthContext context) async {
           );
     }
 
-    final holidays = <({String id, String name, String date, String type})>[
-      (
-        id: 'holiday-new-year',
-        name: 'New Year',
-        date: '$year-01-01',
-        type: 'publicHoliday',
-      ),
-      (
-        id: 'holiday-labour-day',
-        name: 'Labour Day',
-        date: '$year-05-01',
-        type: 'publicHoliday',
-      ),
-      (
-        id: 'holiday-company-day',
-        name: 'Company Day',
-        date: '$year-12-25',
-        type: 'companyHoliday',
-      ),
-    ];
+    final holidays =
+        <
+          ({
+            String id,
+            String name,
+            String date,
+            String? endDate,
+            String type,
+            bool optional,
+          })
+        >[
+          (
+            id: 'holiday-new-year',
+            name: 'New Year',
+            date: '$year-01-01',
+            endDate: null,
+            type: 'publicHoliday',
+            optional: false,
+          ),
+          (
+            id: 'holiday-national-day',
+            name: 'National Day',
+            date: '$year-01-26',
+            endDate: null,
+            type: 'publicHoliday',
+            optional: false,
+          ),
+          (
+            id: 'holiday-spring-festival',
+            name: 'Spring Festival',
+            date: '$year-03-20',
+            endDate: null,
+            type: 'festivalHoliday',
+            optional: false,
+          ),
+          (
+            id: 'holiday-regional-harvest',
+            name: 'Regional Harvest Festival',
+            date: '$year-04-14',
+            endDate: null,
+            type: 'regionalHoliday',
+            optional: true,
+          ),
+          (
+            id: 'holiday-company-day',
+            name: 'Company Day',
+            date: '$year-12-25',
+            endDate: null,
+            type: 'companyHoliday',
+            optional: false,
+          ),
+          (
+            id: 'holiday-year-end-closure',
+            name: 'Year-End Closure',
+            date: '$year-12-24',
+            endDate: '$year-12-26',
+            type: 'specialClosure',
+            optional: false,
+          ),
+        ];
     for (final holiday in holidays) {
       final existing = await (db.select(
         db.holidays,
@@ -177,7 +223,10 @@ Future<void> seedLeaveConfiguration(AppDatabase db, AuthContext context) async {
               companyId: context.company.id,
               name: holiday.name,
               date: holiday.date,
+              endDate: Value(holiday.endDate),
               type: Value(holiday.type),
+              isOptional: Value(holiday.optional),
+              calendarId: Value(calendarId),
               createdMilliseconds: now.millisecondsSinceEpoch,
               updatedMilliseconds: now.millisecondsSinceEpoch,
             ),
@@ -230,4 +279,35 @@ Future<void> seedLeaveConfiguration(AppDatabase db, AuthContext context) async {
       }
     }
   });
+}
+
+Future<String> _ensureCalendar(
+  AppDatabase db,
+  AuthContext context,
+  DateTime now,
+) async {
+  final existing =
+      await (db.select(db.holidayCalendars)..where(
+            (t) =>
+                t.companyId.equals(context.company.id) &
+                t.year.equals(demoLeaveYear) &
+                t.isDefault.equals(true),
+          ))
+          .getSingleOrNull();
+  if (existing != null) return existing.id;
+  const id = 'holiday-calendar-demo';
+  await db
+      .into(db.holidayCalendars)
+      .insert(
+        HolidayCalendarsCompanion.insert(
+          id: id,
+          companyId: context.company.id,
+          name: 'Demo Company Holiday Calendar $demoLeaveYear',
+          year: demoLeaveYear,
+          isDefault: const Value(true),
+          createdMilliseconds: now.millisecondsSinceEpoch,
+          updatedMilliseconds: now.millisecondsSinceEpoch,
+        ),
+      );
+  return id;
 }

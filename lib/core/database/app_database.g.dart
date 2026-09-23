@@ -17563,6 +17563,49 @@ class $HolidaysTable extends Holidays
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('manual'),
+  );
+  static const VerificationMeta _calendarIdMeta = const VerificationMeta(
+    'calendarId',
+  );
+  @override
+  late final GeneratedColumn<String> calendarId = GeneratedColumn<String>(
+    'calendar_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _regionCodeMeta = const VerificationMeta(
+    'regionCode',
+  );
+  @override
+  late final GeneratedColumn<String> regionCode = GeneratedColumn<String>(
+    'region_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -17605,6 +17648,10 @@ class $HolidaysTable extends Holidays
     workLocationIds,
     description,
     isOptional,
+    source,
+    calendarId,
+    countryCode,
+    regionCode,
     status,
     createdMilliseconds,
     updatedMilliseconds,
@@ -17692,6 +17739,33 @@ class $HolidaysTable extends Holidays
         isOptional.isAcceptableOrUnknown(data['is_optional']!, _isOptionalMeta),
       );
     }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('calendar_id')) {
+      context.handle(
+        _calendarIdMeta,
+        calendarId.isAcceptableOrUnknown(data['calendar_id']!, _calendarIdMeta),
+      );
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('region_code')) {
+      context.handle(
+        _regionCodeMeta,
+        regionCode.isAcceptableOrUnknown(data['region_code']!, _regionCodeMeta),
+      );
+    }
     if (data.containsKey('status')) {
       context.handle(
         _statusMeta,
@@ -17769,6 +17843,22 @@ class $HolidaysTable extends Holidays
         DriftSqlType.bool,
         data['${effectivePrefix}is_optional'],
       )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      calendarId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}calendar_id'],
+      ),
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      ),
+      regionCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}region_code'],
+      ),
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
@@ -17801,6 +17891,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
   final String workLocationIds;
   final String description;
   final bool isOptional;
+  final String source;
+  final String? calendarId;
+  final String? countryCode;
+  final String? regionCode;
   final String status;
   final int createdMilliseconds;
   final int updatedMilliseconds;
@@ -17815,6 +17909,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
     required this.workLocationIds,
     required this.description,
     required this.isOptional,
+    required this.source,
+    this.calendarId,
+    this.countryCode,
+    this.regionCode,
     required this.status,
     required this.createdMilliseconds,
     required this.updatedMilliseconds,
@@ -17834,6 +17932,16 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
     map['work_location_ids'] = Variable<String>(workLocationIds);
     map['description'] = Variable<String>(description);
     map['is_optional'] = Variable<bool>(isOptional);
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || calendarId != null) {
+      map['calendar_id'] = Variable<String>(calendarId);
+    }
+    if (!nullToAbsent || countryCode != null) {
+      map['country_code'] = Variable<String>(countryCode);
+    }
+    if (!nullToAbsent || regionCode != null) {
+      map['region_code'] = Variable<String>(regionCode);
+    }
     map['status'] = Variable<String>(status);
     map['created_milliseconds'] = Variable<int>(createdMilliseconds);
     map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
@@ -17854,6 +17962,16 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
       workLocationIds: Value(workLocationIds),
       description: Value(description),
       isOptional: Value(isOptional),
+      source: Value(source),
+      calendarId: calendarId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(calendarId),
+      countryCode: countryCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(countryCode),
+      regionCode: regionCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(regionCode),
       status: Value(status),
       createdMilliseconds: Value(createdMilliseconds),
       updatedMilliseconds: Value(updatedMilliseconds),
@@ -17876,6 +17994,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
       workLocationIds: serializer.fromJson<String>(json['workLocationIds']),
       description: serializer.fromJson<String>(json['description']),
       isOptional: serializer.fromJson<bool>(json['isOptional']),
+      source: serializer.fromJson<String>(json['source']),
+      calendarId: serializer.fromJson<String?>(json['calendarId']),
+      countryCode: serializer.fromJson<String?>(json['countryCode']),
+      regionCode: serializer.fromJson<String?>(json['regionCode']),
       status: serializer.fromJson<String>(json['status']),
       createdMilliseconds: serializer.fromJson<int>(
         json['createdMilliseconds'],
@@ -17899,6 +18021,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
       'workLocationIds': serializer.toJson<String>(workLocationIds),
       'description': serializer.toJson<String>(description),
       'isOptional': serializer.toJson<bool>(isOptional),
+      'source': serializer.toJson<String>(source),
+      'calendarId': serializer.toJson<String?>(calendarId),
+      'countryCode': serializer.toJson<String?>(countryCode),
+      'regionCode': serializer.toJson<String?>(regionCode),
       'status': serializer.toJson<String>(status),
       'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
       'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
@@ -17916,6 +18042,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
     String? workLocationIds,
     String? description,
     bool? isOptional,
+    String? source,
+    Value<String?> calendarId = const Value.absent(),
+    Value<String?> countryCode = const Value.absent(),
+    Value<String?> regionCode = const Value.absent(),
     String? status,
     int? createdMilliseconds,
     int? updatedMilliseconds,
@@ -17930,6 +18060,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
     workLocationIds: workLocationIds ?? this.workLocationIds,
     description: description ?? this.description,
     isOptional: isOptional ?? this.isOptional,
+    source: source ?? this.source,
+    calendarId: calendarId.present ? calendarId.value : this.calendarId,
+    countryCode: countryCode.present ? countryCode.value : this.countryCode,
+    regionCode: regionCode.present ? regionCode.value : this.regionCode,
     status: status ?? this.status,
     createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
     updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
@@ -17952,6 +18086,16 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
       isOptional: data.isOptional.present
           ? data.isOptional.value
           : this.isOptional,
+      source: data.source.present ? data.source.value : this.source,
+      calendarId: data.calendarId.present
+          ? data.calendarId.value
+          : this.calendarId,
+      countryCode: data.countryCode.present
+          ? data.countryCode.value
+          : this.countryCode,
+      regionCode: data.regionCode.present
+          ? data.regionCode.value
+          : this.regionCode,
       status: data.status.present ? data.status.value : this.status,
       createdMilliseconds: data.createdMilliseconds.present
           ? data.createdMilliseconds.value
@@ -17975,6 +18119,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
           ..write('workLocationIds: $workLocationIds, ')
           ..write('description: $description, ')
           ..write('isOptional: $isOptional, ')
+          ..write('source: $source, ')
+          ..write('calendarId: $calendarId, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('regionCode: $regionCode, ')
           ..write('status: $status, ')
           ..write('createdMilliseconds: $createdMilliseconds, ')
           ..write('updatedMilliseconds: $updatedMilliseconds')
@@ -17994,6 +18142,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
     workLocationIds,
     description,
     isOptional,
+    source,
+    calendarId,
+    countryCode,
+    regionCode,
     status,
     createdMilliseconds,
     updatedMilliseconds,
@@ -18012,6 +18164,10 @@ class HolidayData extends DataClass implements Insertable<HolidayData> {
           other.workLocationIds == this.workLocationIds &&
           other.description == this.description &&
           other.isOptional == this.isOptional &&
+          other.source == this.source &&
+          other.calendarId == this.calendarId &&
+          other.countryCode == this.countryCode &&
+          other.regionCode == this.regionCode &&
           other.status == this.status &&
           other.createdMilliseconds == this.createdMilliseconds &&
           other.updatedMilliseconds == this.updatedMilliseconds);
@@ -18028,6 +18184,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
   final Value<String> workLocationIds;
   final Value<String> description;
   final Value<bool> isOptional;
+  final Value<String> source;
+  final Value<String?> calendarId;
+  final Value<String?> countryCode;
+  final Value<String?> regionCode;
   final Value<String> status;
   final Value<int> createdMilliseconds;
   final Value<int> updatedMilliseconds;
@@ -18043,6 +18203,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
     this.workLocationIds = const Value.absent(),
     this.description = const Value.absent(),
     this.isOptional = const Value.absent(),
+    this.source = const Value.absent(),
+    this.calendarId = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.regionCode = const Value.absent(),
     this.status = const Value.absent(),
     this.createdMilliseconds = const Value.absent(),
     this.updatedMilliseconds = const Value.absent(),
@@ -18059,6 +18223,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
     this.workLocationIds = const Value.absent(),
     this.description = const Value.absent(),
     this.isOptional = const Value.absent(),
+    this.source = const Value.absent(),
+    this.calendarId = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.regionCode = const Value.absent(),
     this.status = const Value.absent(),
     required int createdMilliseconds,
     required int updatedMilliseconds,
@@ -18080,6 +18248,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
     Expression<String>? workLocationIds,
     Expression<String>? description,
     Expression<bool>? isOptional,
+    Expression<String>? source,
+    Expression<String>? calendarId,
+    Expression<String>? countryCode,
+    Expression<String>? regionCode,
     Expression<String>? status,
     Expression<int>? createdMilliseconds,
     Expression<int>? updatedMilliseconds,
@@ -18096,6 +18268,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
       if (workLocationIds != null) 'work_location_ids': workLocationIds,
       if (description != null) 'description': description,
       if (isOptional != null) 'is_optional': isOptional,
+      if (source != null) 'source': source,
+      if (calendarId != null) 'calendar_id': calendarId,
+      if (countryCode != null) 'country_code': countryCode,
+      if (regionCode != null) 'region_code': regionCode,
       if (status != null) 'status': status,
       if (createdMilliseconds != null)
         'created_milliseconds': createdMilliseconds,
@@ -18116,6 +18292,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
     Value<String>? workLocationIds,
     Value<String>? description,
     Value<bool>? isOptional,
+    Value<String>? source,
+    Value<String?>? calendarId,
+    Value<String?>? countryCode,
+    Value<String?>? regionCode,
     Value<String>? status,
     Value<int>? createdMilliseconds,
     Value<int>? updatedMilliseconds,
@@ -18132,6 +18312,10 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
       workLocationIds: workLocationIds ?? this.workLocationIds,
       description: description ?? this.description,
       isOptional: isOptional ?? this.isOptional,
+      source: source ?? this.source,
+      calendarId: calendarId ?? this.calendarId,
+      countryCode: countryCode ?? this.countryCode,
+      regionCode: regionCode ?? this.regionCode,
       status: status ?? this.status,
       createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
       updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
@@ -18172,6 +18356,18 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
     if (isOptional.present) {
       map['is_optional'] = Variable<bool>(isOptional.value);
     }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (calendarId.present) {
+      map['calendar_id'] = Variable<String>(calendarId.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (regionCode.present) {
+      map['region_code'] = Variable<String>(regionCode.value);
+    }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
@@ -18200,6 +18396,639 @@ class HolidaysCompanion extends UpdateCompanion<HolidayData> {
           ..write('workLocationIds: $workLocationIds, ')
           ..write('description: $description, ')
           ..write('isOptional: $isOptional, ')
+          ..write('source: $source, ')
+          ..write('calendarId: $calendarId, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('regionCode: $regionCode, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HolidayCalendarsTable extends HolidayCalendars
+    with TableInfo<$HolidayCalendarsTable, HolidayCalendarData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HolidayCalendarsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _yearMeta = const VerificationMeta('year');
+  @override
+  late final GeneratedColumn<int> year = GeneratedColumn<int>(
+    'year',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _regionCodeMeta = const VerificationMeta(
+    'regionCode',
+  );
+  @override
+  late final GeneratedColumn<String> regionCode = GeneratedColumn<String>(
+    'region_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isDefaultMeta = const VerificationMeta(
+    'isDefault',
+  );
+  @override
+  late final GeneratedColumn<bool> isDefault = GeneratedColumn<bool>(
+    'is_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _createdMillisecondsMeta =
+      const VerificationMeta('createdMilliseconds');
+  @override
+  late final GeneratedColumn<int> createdMilliseconds = GeneratedColumn<int>(
+    'created_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedMillisecondsMeta =
+      const VerificationMeta('updatedMilliseconds');
+  @override
+  late final GeneratedColumn<int> updatedMilliseconds = GeneratedColumn<int>(
+    'updated_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    name,
+    year,
+    countryCode,
+    regionCode,
+    isDefault,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'holiday_calendars';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HolidayCalendarData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('year')) {
+      context.handle(
+        _yearMeta,
+        year.isAcceptableOrUnknown(data['year']!, _yearMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_yearMeta);
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('region_code')) {
+      context.handle(
+        _regionCodeMeta,
+        regionCode.isAcceptableOrUnknown(data['region_code']!, _regionCodeMeta),
+      );
+    }
+    if (data.containsKey('is_default')) {
+      context.handle(
+        _isDefaultMeta,
+        isDefault.isAcceptableOrUnknown(data['is_default']!, _isDefaultMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('created_milliseconds')) {
+      context.handle(
+        _createdMillisecondsMeta,
+        createdMilliseconds.isAcceptableOrUnknown(
+          data['created_milliseconds']!,
+          _createdMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdMillisecondsMeta);
+    }
+    if (data.containsKey('updated_milliseconds')) {
+      context.handle(
+        _updatedMillisecondsMeta,
+        updatedMilliseconds.isAcceptableOrUnknown(
+          data['updated_milliseconds']!,
+          _updatedMillisecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedMillisecondsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, year, name},
+  ];
+  @override
+  HolidayCalendarData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HolidayCalendarData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      year: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}year'],
+      )!,
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      ),
+      regionCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}region_code'],
+      ),
+      isDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_default'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_milliseconds'],
+      )!,
+      updatedMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $HolidayCalendarsTable createAlias(String alias) {
+    return $HolidayCalendarsTable(attachedDatabase, alias);
+  }
+}
+
+class HolidayCalendarData extends DataClass
+    implements Insertable<HolidayCalendarData> {
+  final String id;
+  final String companyId;
+  final String name;
+  final int year;
+  final String? countryCode;
+  final String? regionCode;
+  final bool isDefault;
+  final String status;
+  final int createdMilliseconds;
+  final int updatedMilliseconds;
+  const HolidayCalendarData({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.year,
+    this.countryCode,
+    this.regionCode,
+    required this.isDefault,
+    required this.status,
+    required this.createdMilliseconds,
+    required this.updatedMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['name'] = Variable<String>(name);
+    map['year'] = Variable<int>(year);
+    if (!nullToAbsent || countryCode != null) {
+      map['country_code'] = Variable<String>(countryCode);
+    }
+    if (!nullToAbsent || regionCode != null) {
+      map['region_code'] = Variable<String>(regionCode);
+    }
+    map['is_default'] = Variable<bool>(isDefault);
+    map['status'] = Variable<String>(status);
+    map['created_milliseconds'] = Variable<int>(createdMilliseconds);
+    map['updated_milliseconds'] = Variable<int>(updatedMilliseconds);
+    return map;
+  }
+
+  HolidayCalendarsCompanion toCompanion(bool nullToAbsent) {
+    return HolidayCalendarsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      name: Value(name),
+      year: Value(year),
+      countryCode: countryCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(countryCode),
+      regionCode: regionCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(regionCode),
+      isDefault: Value(isDefault),
+      status: Value(status),
+      createdMilliseconds: Value(createdMilliseconds),
+      updatedMilliseconds: Value(updatedMilliseconds),
+    );
+  }
+
+  factory HolidayCalendarData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HolidayCalendarData(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      name: serializer.fromJson<String>(json['name']),
+      year: serializer.fromJson<int>(json['year']),
+      countryCode: serializer.fromJson<String?>(json['countryCode']),
+      regionCode: serializer.fromJson<String?>(json['regionCode']),
+      isDefault: serializer.fromJson<bool>(json['isDefault']),
+      status: serializer.fromJson<String>(json['status']),
+      createdMilliseconds: serializer.fromJson<int>(
+        json['createdMilliseconds'],
+      ),
+      updatedMilliseconds: serializer.fromJson<int>(
+        json['updatedMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'name': serializer.toJson<String>(name),
+      'year': serializer.toJson<int>(year),
+      'countryCode': serializer.toJson<String?>(countryCode),
+      'regionCode': serializer.toJson<String?>(regionCode),
+      'isDefault': serializer.toJson<bool>(isDefault),
+      'status': serializer.toJson<String>(status),
+      'createdMilliseconds': serializer.toJson<int>(createdMilliseconds),
+      'updatedMilliseconds': serializer.toJson<int>(updatedMilliseconds),
+    };
+  }
+
+  HolidayCalendarData copyWith({
+    String? id,
+    String? companyId,
+    String? name,
+    int? year,
+    Value<String?> countryCode = const Value.absent(),
+    Value<String?> regionCode = const Value.absent(),
+    bool? isDefault,
+    String? status,
+    int? createdMilliseconds,
+    int? updatedMilliseconds,
+  }) => HolidayCalendarData(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    name: name ?? this.name,
+    year: year ?? this.year,
+    countryCode: countryCode.present ? countryCode.value : this.countryCode,
+    regionCode: regionCode.present ? regionCode.value : this.regionCode,
+    isDefault: isDefault ?? this.isDefault,
+    status: status ?? this.status,
+    createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+    updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+  );
+  HolidayCalendarData copyWithCompanion(HolidayCalendarsCompanion data) {
+    return HolidayCalendarData(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      name: data.name.present ? data.name.value : this.name,
+      year: data.year.present ? data.year.value : this.year,
+      countryCode: data.countryCode.present
+          ? data.countryCode.value
+          : this.countryCode,
+      regionCode: data.regionCode.present
+          ? data.regionCode.value
+          : this.regionCode,
+      isDefault: data.isDefault.present ? data.isDefault.value : this.isDefault,
+      status: data.status.present ? data.status.value : this.status,
+      createdMilliseconds: data.createdMilliseconds.present
+          ? data.createdMilliseconds.value
+          : this.createdMilliseconds,
+      updatedMilliseconds: data.updatedMilliseconds.present
+          ? data.updatedMilliseconds.value
+          : this.updatedMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HolidayCalendarData(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('year: $year, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('regionCode: $regionCode, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('status: $status, ')
+          ..write('createdMilliseconds: $createdMilliseconds, ')
+          ..write('updatedMilliseconds: $updatedMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    name,
+    year,
+    countryCode,
+    regionCode,
+    isDefault,
+    status,
+    createdMilliseconds,
+    updatedMilliseconds,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HolidayCalendarData &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.name == this.name &&
+          other.year == this.year &&
+          other.countryCode == this.countryCode &&
+          other.regionCode == this.regionCode &&
+          other.isDefault == this.isDefault &&
+          other.status == this.status &&
+          other.createdMilliseconds == this.createdMilliseconds &&
+          other.updatedMilliseconds == this.updatedMilliseconds);
+}
+
+class HolidayCalendarsCompanion extends UpdateCompanion<HolidayCalendarData> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> name;
+  final Value<int> year;
+  final Value<String?> countryCode;
+  final Value<String?> regionCode;
+  final Value<bool> isDefault;
+  final Value<String> status;
+  final Value<int> createdMilliseconds;
+  final Value<int> updatedMilliseconds;
+  final Value<int> rowid;
+  const HolidayCalendarsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.year = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.regionCode = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdMilliseconds = const Value.absent(),
+    this.updatedMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HolidayCalendarsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String name,
+    required int year,
+    this.countryCode = const Value.absent(),
+    this.regionCode = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.status = const Value.absent(),
+    required int createdMilliseconds,
+    required int updatedMilliseconds,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       name = Value(name),
+       year = Value(year),
+       createdMilliseconds = Value(createdMilliseconds),
+       updatedMilliseconds = Value(updatedMilliseconds);
+  static Insertable<HolidayCalendarData> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? name,
+    Expression<int>? year,
+    Expression<String>? countryCode,
+    Expression<String>? regionCode,
+    Expression<bool>? isDefault,
+    Expression<String>? status,
+    Expression<int>? createdMilliseconds,
+    Expression<int>? updatedMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (name != null) 'name': name,
+      if (year != null) 'year': year,
+      if (countryCode != null) 'country_code': countryCode,
+      if (regionCode != null) 'region_code': regionCode,
+      if (isDefault != null) 'is_default': isDefault,
+      if (status != null) 'status': status,
+      if (createdMilliseconds != null)
+        'created_milliseconds': createdMilliseconds,
+      if (updatedMilliseconds != null)
+        'updated_milliseconds': updatedMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HolidayCalendarsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? name,
+    Value<int>? year,
+    Value<String?>? countryCode,
+    Value<String?>? regionCode,
+    Value<bool>? isDefault,
+    Value<String>? status,
+    Value<int>? createdMilliseconds,
+    Value<int>? updatedMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return HolidayCalendarsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      name: name ?? this.name,
+      year: year ?? this.year,
+      countryCode: countryCode ?? this.countryCode,
+      regionCode: regionCode ?? this.regionCode,
+      isDefault: isDefault ?? this.isDefault,
+      status: status ?? this.status,
+      createdMilliseconds: createdMilliseconds ?? this.createdMilliseconds,
+      updatedMilliseconds: updatedMilliseconds ?? this.updatedMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (year.present) {
+      map['year'] = Variable<int>(year.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (regionCode.present) {
+      map['region_code'] = Variable<String>(regionCode.value);
+    }
+    if (isDefault.present) {
+      map['is_default'] = Variable<bool>(isDefault.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdMilliseconds.present) {
+      map['created_milliseconds'] = Variable<int>(createdMilliseconds.value);
+    }
+    if (updatedMilliseconds.present) {
+      map['updated_milliseconds'] = Variable<int>(updatedMilliseconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HolidayCalendarsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('name: $name, ')
+          ..write('year: $year, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('regionCode: $regionCode, ')
+          ..write('isDefault: $isDefault, ')
           ..write('status: $status, ')
           ..write('createdMilliseconds: $createdMilliseconds, ')
           ..write('updatedMilliseconds: $updatedMilliseconds, ')
@@ -18247,6 +19076,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LeaveRequestEventsTable leaveRequestEvents =
       $LeaveRequestEventsTable(this);
   late final $HolidaysTable holidays = $HolidaysTable(this);
+  late final $HolidayCalendarsTable holidayCalendars = $HolidayCalendarsTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -18273,6 +19105,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     leaveRequests,
     leaveRequestEvents,
     holidays,
+    holidayCalendars,
   ];
 }
 
@@ -27375,6 +28208,10 @@ typedef $$HolidaysTableCreateCompanionBuilder =
       Value<String> workLocationIds,
       Value<String> description,
       Value<bool> isOptional,
+      Value<String> source,
+      Value<String?> calendarId,
+      Value<String?> countryCode,
+      Value<String?> regionCode,
       Value<String> status,
       required int createdMilliseconds,
       required int updatedMilliseconds,
@@ -27392,6 +28229,10 @@ typedef $$HolidaysTableUpdateCompanionBuilder =
       Value<String> workLocationIds,
       Value<String> description,
       Value<bool> isOptional,
+      Value<String> source,
+      Value<String?> calendarId,
+      Value<String?> countryCode,
+      Value<String?> regionCode,
       Value<String> status,
       Value<int> createdMilliseconds,
       Value<int> updatedMilliseconds,
@@ -27454,6 +28295,26 @@ class $$HolidaysTableFilterComposer
 
   ColumnFilters<bool> get isOptional => $composableBuilder(
     column: $table.isOptional,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get calendarId => $composableBuilder(
+    column: $table.calendarId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -27532,6 +28393,26 @@ class $$HolidaysTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get calendarId => $composableBuilder(
+    column: $table.calendarId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
     builder: (column) => ColumnOrderings(column),
@@ -27593,6 +28474,24 @@ class $$HolidaysTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get calendarId => $composableBuilder(
+    column: $table.calendarId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
@@ -27648,6 +28547,10 @@ class $$HolidaysTableTableManager
                 Value<String> workLocationIds = const Value.absent(),
                 Value<String> description = const Value.absent(),
                 Value<bool> isOptional = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> calendarId = const Value.absent(),
+                Value<String?> countryCode = const Value.absent(),
+                Value<String?> regionCode = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<int> createdMilliseconds = const Value.absent(),
                 Value<int> updatedMilliseconds = const Value.absent(),
@@ -27663,6 +28566,10 @@ class $$HolidaysTableTableManager
                 workLocationIds: workLocationIds,
                 description: description,
                 isOptional: isOptional,
+                source: source,
+                calendarId: calendarId,
+                countryCode: countryCode,
+                regionCode: regionCode,
                 status: status,
                 createdMilliseconds: createdMilliseconds,
                 updatedMilliseconds: updatedMilliseconds,
@@ -27680,6 +28587,10 @@ class $$HolidaysTableTableManager
                 Value<String> workLocationIds = const Value.absent(),
                 Value<String> description = const Value.absent(),
                 Value<bool> isOptional = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> calendarId = const Value.absent(),
+                Value<String?> countryCode = const Value.absent(),
+                Value<String?> regionCode = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 required int createdMilliseconds,
                 required int updatedMilliseconds,
@@ -27695,6 +28606,10 @@ class $$HolidaysTableTableManager
                 workLocationIds: workLocationIds,
                 description: description,
                 isOptional: isOptional,
+                source: source,
+                calendarId: calendarId,
+                countryCode: countryCode,
+                regionCode: regionCode,
                 status: status,
                 createdMilliseconds: createdMilliseconds,
                 updatedMilliseconds: updatedMilliseconds,
@@ -27720,6 +28635,319 @@ typedef $$HolidaysTableProcessedTableManager =
       $$HolidaysTableUpdateCompanionBuilder,
       (HolidayData, BaseReferences<_$AppDatabase, $HolidaysTable, HolidayData>),
       HolidayData,
+      PrefetchHooks Function()
+    >;
+typedef $$HolidayCalendarsTableCreateCompanionBuilder =
+    HolidayCalendarsCompanion Function({
+      required String id,
+      required String companyId,
+      required String name,
+      required int year,
+      Value<String?> countryCode,
+      Value<String?> regionCode,
+      Value<bool> isDefault,
+      Value<String> status,
+      required int createdMilliseconds,
+      required int updatedMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$HolidayCalendarsTableUpdateCompanionBuilder =
+    HolidayCalendarsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> name,
+      Value<int> year,
+      Value<String?> countryCode,
+      Value<String?> regionCode,
+      Value<bool> isDefault,
+      Value<String> status,
+      Value<int> createdMilliseconds,
+      Value<int> updatedMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$HolidayCalendarsTableFilterComposer
+    extends Composer<_$AppDatabase, $HolidayCalendarsTable> {
+  $$HolidayCalendarsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HolidayCalendarsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HolidayCalendarsTable> {
+  $$HolidayCalendarsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get year => $composableBuilder(
+    column: $table.year,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HolidayCalendarsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HolidayCalendarsTable> {
+  $$HolidayCalendarsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get year =>
+      $composableBuilder(column: $table.year, builder: (column) => column);
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get regionCode => $composableBuilder(
+    column: $table.regionCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isDefault =>
+      $composableBuilder(column: $table.isDefault, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get createdMilliseconds => $composableBuilder(
+    column: $table.createdMilliseconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedMilliseconds => $composableBuilder(
+    column: $table.updatedMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$HolidayCalendarsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HolidayCalendarsTable,
+          HolidayCalendarData,
+          $$HolidayCalendarsTableFilterComposer,
+          $$HolidayCalendarsTableOrderingComposer,
+          $$HolidayCalendarsTableAnnotationComposer,
+          $$HolidayCalendarsTableCreateCompanionBuilder,
+          $$HolidayCalendarsTableUpdateCompanionBuilder,
+          (
+            HolidayCalendarData,
+            BaseReferences<
+              _$AppDatabase,
+              $HolidayCalendarsTable,
+              HolidayCalendarData
+            >,
+          ),
+          HolidayCalendarData,
+          PrefetchHooks Function()
+        > {
+  $$HolidayCalendarsTableTableManager(
+    _$AppDatabase db,
+    $HolidayCalendarsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HolidayCalendarsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HolidayCalendarsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HolidayCalendarsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> year = const Value.absent(),
+                Value<String?> countryCode = const Value.absent(),
+                Value<String?> regionCode = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> createdMilliseconds = const Value.absent(),
+                Value<int> updatedMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HolidayCalendarsCompanion(
+                id: id,
+                companyId: companyId,
+                name: name,
+                year: year,
+                countryCode: countryCode,
+                regionCode: regionCode,
+                isDefault: isDefault,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String name,
+                required int year,
+                Value<String?> countryCode = const Value.absent(),
+                Value<String?> regionCode = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                required int createdMilliseconds,
+                required int updatedMilliseconds,
+                Value<int> rowid = const Value.absent(),
+              }) => HolidayCalendarsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                name: name,
+                year: year,
+                countryCode: countryCode,
+                regionCode: regionCode,
+                isDefault: isDefault,
+                status: status,
+                createdMilliseconds: createdMilliseconds,
+                updatedMilliseconds: updatedMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HolidayCalendarsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HolidayCalendarsTable,
+      HolidayCalendarData,
+      $$HolidayCalendarsTableFilterComposer,
+      $$HolidayCalendarsTableOrderingComposer,
+      $$HolidayCalendarsTableAnnotationComposer,
+      $$HolidayCalendarsTableCreateCompanionBuilder,
+      $$HolidayCalendarsTableUpdateCompanionBuilder,
+      (
+        HolidayCalendarData,
+        BaseReferences<
+          _$AppDatabase,
+          $HolidayCalendarsTable,
+          HolidayCalendarData
+        >,
+      ),
+      HolidayCalendarData,
       PrefetchHooks Function()
     >;
 
@@ -27782,4 +29010,6 @@ class $AppDatabaseManager {
       $$LeaveRequestEventsTableTableManager(_db, _db.leaveRequestEvents);
   $$HolidaysTableTableManager get holidays =>
       $$HolidaysTableTableManager(_db, _db.holidays);
+  $$HolidayCalendarsTableTableManager get holidayCalendars =>
+      $$HolidayCalendarsTableTableManager(_db, _db.holidayCalendars);
 }

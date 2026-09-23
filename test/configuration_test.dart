@@ -356,10 +356,7 @@ void main() {
         unwrap(await shifts.getById(manage, 'shift-night', forEditing: true)),
         isNotNull,
       );
-      expect(
-        await shifts.getById(manage, 'shift-night'),
-        isA<Failed<Shift?>>(),
-      );
+      expect(unwrap(await shifts.getById(manage, 'shift-night')), isNotNull);
     },
   );
   test(
@@ -709,14 +706,19 @@ void main() {
           root: AppRoutes.attendancePolicies,
           permission: AppPermission.attendancePolicyManage,
         ),
+        (root: AppRoutes.leaveTypes, permission: AppPermission.leaveTypeManage),
+        (
+          root: AppRoutes.leavePolicies,
+          permission: AppPermission.leavePolicyManage,
+        ),
+        (root: AppRoutes.holidays, permission: AppPermission.holidayManage),
       ]) {
         final manage = hr.copyWith(
           user: hr.user.copyWith(permissions: PermissionSet([pair.permission])),
         );
-        expect(
-          resolver.routeAccess(pair.root, manage),
-          RouteAccess.unauthorized,
-        );
+        // A manage grant carries its view dependency, so the screen is never
+        // inaccessible merely because View was not listed separately.
+        expect(resolver.routeAccess(pair.root, manage), RouteAccess.allowed);
         expect(
           resolver.routeAccess('${pair.root}/new', manage),
           RouteAccess.allowed,
@@ -790,7 +792,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        7,
+        8,
       );
       await seedAttendanceConfiguration(upgraded);
       final sr = LocalShiftRepository(upgraded);

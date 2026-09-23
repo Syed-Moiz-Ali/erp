@@ -57,6 +57,7 @@ class SyncOutbox extends Table {
     LeaveRequests,
     LeaveRequestEvents,
     Holidays,
+    HolidayCalendars,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -72,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -108,7 +109,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 6 || to != 7) {
+      if (from < 1 || from > 7 || to != 8) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -155,6 +156,17 @@ class AppDatabase extends _$AppDatabase {
         await _ensureTable(m, leaveRequestEvents);
         await _ensureTable(m, holidays);
       }
+      if (from < 8) {
+        await _ensureTable(m, holidayCalendars);
+        await _ensureColumn(m, holidays, holidays.source);
+        await _ensureColumn(m, holidays, holidays.calendarId);
+        await _ensureColumn(m, holidays, holidays.countryCode);
+        await _ensureColumn(m, holidays, holidays.regionCode);
+        // Normalize the legacy optionalHoliday category into an optional type.
+        await customStatement(
+          "UPDATE holidays SET type='companyHoliday', is_optional=1 WHERE type='optionalHoliday'",
+        );
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
@@ -196,6 +208,9 @@ class AppDatabase extends _$AppDatabase {
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS holidays_company_date ON holidays(company_id, date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS holiday_calendars_company_year ON holiday_calendars(company_id, year)',
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS leave_assignment_employee ON employee_leave_policy_assignments(company_id, employee_id)',

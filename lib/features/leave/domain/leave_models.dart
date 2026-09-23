@@ -28,12 +28,17 @@ enum LeaveBalanceTransactionType {
   migration,
 }
 
+/// What a holiday *is*. Optionality is modelled separately by `isOptional`.
 enum HolidayType {
   publicHoliday,
+  festivalHoliday,
+  regionalHoliday,
   companyHoliday,
-  optionalHoliday,
   specialClosure,
 }
+
+/// Where a holiday entry came from. Never an authoritative government feed.
+enum HolidaySource { manual, copiedFromPreviousYear, imported, companyTemplate }
 
 enum HolidayScope { companyWide, specificWorkLocations }
 
@@ -125,6 +130,10 @@ abstract class Holiday with _$Holiday implements ConfigurationRecord {
     @Default(<String>{}) Set<String> workLocationIds,
     @Default('') String description,
     @Default(false) bool isOptional,
+    @Default(HolidaySource.manual) HolidaySource source,
+    String? calendarId,
+    String? countryCode,
+    String? regionCode,
     @Default(ConfigurationStatus.active) ConfigurationStatus status,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -132,6 +141,29 @@ abstract class Holiday with _$Holiday implements ConfigurationRecord {
   }) = _Holiday;
   factory Holiday.fromJson(Map<String, dynamic> json) =>
       _$HolidayFromJson(json);
+}
+
+/// A company's annual holiday calendar. Year management is first-class so a new
+/// year can be set up, copied or imported deliberately rather than silently.
+class HolidayCalendar {
+  const HolidayCalendar({
+    required this.id,
+    required this.companyId,
+    required this.name,
+    required this.year,
+    this.countryCode,
+    this.regionCode,
+    this.isDefault = false,
+    this.status = ConfigurationStatus.active,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  final String id, companyId, name;
+  final int year;
+  final String? countryCode, regionCode;
+  final bool isDefault;
+  final ConfigurationStatus status;
+  final DateTime createdAt, updatedAt;
 }
 
 @freezed
@@ -246,9 +278,13 @@ class LeaveRequestRow {
     required this.employeeName,
     required this.employeeCode,
     required this.department,
+    this.departmentId = '',
+    this.designation = '',
+    this.managerName = '',
   });
   final LeaveRequest request;
   final String employeeName, employeeCode, department;
+  final String departmentId, designation, managerName;
 }
 
 enum LeaveCalendarKind { leave, holiday }
@@ -261,12 +297,14 @@ class LeaveCalendarEntry {
     this.leaveTypeName,
     this.status,
     this.employeeName,
+    this.requestId,
   });
   final DateTime date;
   final LeaveCalendarKind kind;
   final String title;
   final String? leaveTypeName, employeeName;
   final LeaveRequestStatus? status;
+  final String? requestId;
 }
 
 class LeaveRequestPage {
@@ -394,6 +432,10 @@ abstract class HolidayDraft with _$HolidayDraft {
     @Default(<String>{}) Set<String> workLocationIds,
     @Default('') String description,
     @Default(false) bool isOptional,
+    @Default(HolidaySource.manual) HolidaySource source,
+    String? calendarId,
+    String? countryCode,
+    String? regionCode,
     @Default(ConfigurationStatus.active) ConfigurationStatus status,
   }) = _HolidayDraft;
 
@@ -422,6 +464,208 @@ abstract class HolidayDraft with _$HolidayDraft {
     workLocationIds: holiday.workLocationIds,
     description: holiday.description,
     isOptional: holiday.isOptional,
+    source: holiday.source,
+    calendarId: holiday.calendarId,
+    countryCode: holiday.countryCode,
+    regionCode: holiday.regionCode,
     status: holiday.status,
   );
+}
+
+/// Draft for creating/updating an annual holiday calendar.
+class HolidayCalendarDraft {
+  const HolidayCalendarDraft({
+    required this.name,
+    required this.year,
+    this.countryCode,
+    this.regionCode,
+    this.isDefault = false,
+  });
+  final String name;
+  final int year;
+  final String? countryCode, regionCode;
+  final bool isDefault;
+}
+
+/// One parsed import row; [error] is set when the row cannot be imported.
+class HolidayImportRow {
+  const HolidayImportRow({required this.draft, this.error});
+  final HolidayDraft draft;
+  final String? error;
+  bool get isValid => error == null;
+}
+
+class HolidayImportResult {
+  const HolidayImportResult({
+    required this.imported,
+    required this.skipped,
+    this.errors = const [],
+  });
+  final int imported, skipped;
+  final List<String> errors;
+}
+
+// ---- operational read models ----------------------------------------------
+
+/// Filters for organizational leave request lists. All fields are optional;
+/// scope (team/company) is always resolved from capabilities, never a filter.
+class LeaveRequestFilter {
+  const LeaveRequestFilter({
+    this.status,
+    this.leaveTypeId,
+    this.employeeId,
+    this.departmentId,
+    this.from,
+    this.to,
+    this.search = '',
+  });
+  final LeaveRequestStatus? status;
+  final String? leaveTypeId, employeeId, departmentId;
+  final DateTime? from, to;
+  final String search;
+
+  bool get isEmpty =>
+      status == null &&
+      leaveTypeId == null &&
+      employeeId == null &&
+      departmentId == null &&
+      from == null &&
+      to == null &&
+      search.trim().isEmpty;
+
+  LeaveRequestFilter copyWith({
+    LeaveRequestStatus? status,
+    bool clearStatus = false,
+    String? leaveTypeId,
+    bool clearLeaveType = false,
+    String? employeeId,
+    bool clearEmployee = false,
+    String? departmentId,
+    bool clearDepartment = false,
+    DateTime? from,
+    bool clearFrom = false,
+    DateTime? to,
+    bool clearTo = false,
+    String? search,
+  }) => LeaveRequestFilter(
+    status: clearStatus ? null : status ?? this.status,
+    leaveTypeId: clearLeaveType ? null : leaveTypeId ?? this.leaveTypeId,
+    employeeId: clearEmployee ? null : employeeId ?? this.employeeId,
+    departmentId: clearDepartment ? null : departmentId ?? this.departmentId,
+    from: clearFrom ? null : from ?? this.from,
+    to: clearTo ? null : to ?? this.to,
+    search: search ?? this.search,
+  );
+}
+
+/// One employee currently on approved leave for a day.
+class LeaveTodayItem {
+  const LeaveTodayItem({
+    required this.row,
+    required this.returnDate,
+    this.designation = '',
+  });
+  final LeaveRequestRow row;
+  final DateTime returnDate;
+  final String designation;
+  bool get isHalfDay => !row.request.isFullDay;
+}
+
+/// An upcoming approved leave, nearest first.
+class UpcomingLeaveItem {
+  const UpcomingLeaveItem({required this.row, required this.workingDays});
+  final LeaveRequestRow row;
+  final double workingDays;
+}
+
+/// A pending request enriched with the requester's balance for its type/year.
+class LeaveApprovalItem {
+  const LeaveApprovalItem({
+    required this.row,
+    required this.entitlement,
+    required this.used,
+    required this.pending,
+  });
+  final LeaveRequestRow row;
+  final double entitlement, used, pending;
+  double get available => entitlement - used - pending;
+  double get afterApproval => available - row.request.requestedDays;
+}
+
+/// One employee/leave-type balance line for the organizational balance table.
+class LeaveBalanceRow {
+  const LeaveBalanceRow({
+    required this.employeeId,
+    required this.employeeName,
+    required this.employeeCode,
+    required this.department,
+    required this.leaveTypeId,
+    required this.leaveTypeName,
+    required this.entitlement,
+    required this.used,
+    required this.pending,
+  });
+  final String employeeId,
+      employeeName,
+      employeeCode,
+      department,
+      leaveTypeId,
+      leaveTypeName;
+  final double entitlement, used, pending;
+  double get available => entitlement - used - pending;
+}
+
+class LeaveOperationsSummary {
+  const LeaveOperationsSummary({
+    required this.onLeaveToday,
+    required this.upcoming,
+    required this.pending,
+    required this.approvedThisMonth,
+    required this.teamMembers,
+  });
+  final int onLeaveToday, upcoming, pending, approvedThisMonth, teamMembers;
+}
+
+/// Combined organizational leave read: summary + today + upcoming + requests.
+class LeaveOperationsData {
+  const LeaveOperationsData({
+    required this.summary,
+    required this.today,
+    required this.upcoming,
+    required this.requests,
+  });
+  final LeaveOperationsSummary summary;
+  final List<LeaveTodayItem> today;
+  final List<UpcomingLeaveItem> upcoming;
+  final List<LeaveRequestRow> requests;
+}
+
+/// A department option for organizational filters.
+class LeaveDepartmentOption {
+  const LeaveDepartmentOption(this.id, this.name);
+  final String id, name;
+}
+
+/// Employee leave profile: identity, balances, upcoming and recent requests.
+class EmployeeLeaveSummary {
+  const EmployeeLeaveSummary({
+    required this.employeeId,
+    required this.employeeName,
+    required this.employeeCode,
+    required this.department,
+    required this.designation,
+    required this.managerName,
+    required this.balances,
+    required this.upcoming,
+    required this.recent,
+  });
+  final String employeeId,
+      employeeName,
+      employeeCode,
+      department,
+      designation,
+      managerName;
+  final List<LeaveBalanceSummary> balances;
+  final List<LeaveRequestRow> upcoming;
+  final List<LeaveRequestRow> recent;
 }

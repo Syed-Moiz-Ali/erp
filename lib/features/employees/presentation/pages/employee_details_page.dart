@@ -375,6 +375,16 @@ class EmployeeDetailsPage extends StatelessWidget {
                 icon: Icons.schedule,
                 onPressed: () => context.go(AppRoutes.attendance),
               ),
+            if (navigation.routeAccess(
+                  AppRoutes.leaveEmployee(bloc.id),
+                  bloc.context,
+                ) ==
+                RouteAccess.allowed)
+              AppRelatedAction(
+                label: l.leaveViewEmployeeLeave,
+                icon: Icons.event_available,
+                onPressed: () => context.go(AppRoutes.leaveEmployee(bloc.id)),
+              ),
           ],
         ),
       );

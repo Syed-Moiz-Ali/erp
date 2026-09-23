@@ -1,198 +1,378 @@
 ```text
-PHASE 15.1 — EMPLOYEE PROBATION PERIOD, CONFIRMATION WORKFLOW & PROBATION-SPECIFIC LEAVE POLICIES
+PHASE 15.3 — COMPLETE LEAVE & HOLIDAY MODULE REBUILD:
+HOLIDAY ADMINISTRATION, GOVERNMENT/FESTIVAL CALENDAR, PERSONA UX,
+RESPONSIVE LEAVE WORKSPACE & ARCHITECTURAL CLEANUP
 
-Continue working on the EXISTING Flutter ERP project and the Leave/Holiday implementation from Phase 15.
-
-DO NOT create a separate Probation module unnecessarily.
-
-Probation belongs primarily to:
-
-Employee Employment Information
-
-and integrates with:
-
-Leave Policies
-Leave Eligibility
-Employee Profile
-HR workflows
-Dashboard
-Notifications
-Reports
+Continue working on the EXISTING Flutter ERP project.
 
 IMPORTANT:
 
-Phase 15 previously only included lightweight concepts such as:
+I have inspected the CURRENT implementation.
 
-probationRestrictionEnabled
-minimumServiceDays
+Do NOT create a new project.
+Do NOT rebuild working Leave domain logic from scratch.
+Do NOT discard the existing ledger/request/approval/repository implementation.
 
-That is NOT sufficient.
-
-Implement probation properly as an employment lifecycle concept.
-
-==================================================
-1. CORE PRINCIPLE
-==================================================
-
-Probation is NOT a Leave Type.
-
-Probation is NOT an Attendance status.
-
-Probation is an EMPLOYMENT STATE/PERIOD.
-
-Leave policy must be able to behave differently:
-
-BEFORE confirmation
-
-DURING probation
-
-AFTER confirmation
-
-Do not hardcode:
-
-"employees on probation get no leave."
-
-Different companies may have different policies.
-
-Everything must be configurable.
+Instead AUDIT, FIX and COMPLETE the existing module.
 
 ==================================================
-2. EMPLOYEE PROBATION DATA
+CURRENT IMPLEMENTATION ALREADY EXISTS
 ==================================================
 
-Extend Employee/employment architecture with appropriate probation information.
+Current source already contains:
 
-Suggested fields/model:
+lib/features/leave/domain/*
+lib/features/leave/data/*
+lib/features/leave/presentation/*
 
-probationStatus
+including:
 
-probationStartDate
+Leave Types
+Leave Policies
+Leave requests
+Leave balances/ledger
+Approve/reject/cancel
+Team Leave
+All Leave
+Approval Queue
+Employee Leave page
+Leave Calendar
+Holiday configuration
+Leave settings
+Attendance day override
+Notifications
+English/Arabic localization
+routes
+permissions
+capabilities
 
-probationExpectedEndDate
-
-probationActualEndDate optional
-
-probationDurationMonths optional
-
-probationExtensionCount
-
-probationNotes optional
-
-confirmedAt optional
-
-confirmedBy optional
-
-Use date-only business dates where appropriate.
-
-==================================================
-3. PROBATION STATUS
-==================================================
-
-Create typed enum such as:
-
-notApplicable
-
-active
-
-extended
-
-completed
-
-confirmedEarly
-
-terminatedDuringProbation
-
-Do not use arbitrary strings.
-
-If cleaner, separate employment status from probation status.
-
-Employee may be:
-
-EmploymentStatus.active
-
-AND:
-
-ProbationStatus.active
-
-These are different dimensions.
+Reuse all valid existing architecture.
 
 ==================================================
-4. DO NOT OVERLOAD EMPLOYMENT STATUS
+KNOWN REAL PROBLEMS FOUND IN CURRENT SOURCE
 ==================================================
 
-Do NOT turn EmploymentStatus into:
+The current implementation has several concrete deficiencies.
 
-probation
-confirmed
-active
-inactive
+1. HR HOLIDAY PERMISSION BUG
 
-That mixes concepts.
+In:
 
-Keep:
+account_role_templates.dart
 
-employment status:
-active/inactive/etc.
+HR receives:
 
-probation status:
-active/extended/completed/etc.
+holidayManage
 
-==================================================
-5. PROBATION START
-==================================================
+but NOT:
 
-Default probation start:
+holidayView
 
-employee joining date
+However:
 
-unless company/HR explicitly chooses another effective date.
+ConfigurationLandingPage
 
-Do not calculate it in widgets.
+Holiday registered destination
 
-Use Employment/Probation domain service.
+/app/settings/holidays
 
-==================================================
-6. PROBATION END CALCULATION
-==================================================
+require:
 
-Create pure:
+holidayView
 
-ProbationPeriodCalculator
+Therefore HR can have "manage holidays" authority while the Holiday screen is hidden/inaccessible.
 
-Input:
-
-start date
-configured duration
-extensions
-manual override if supported
-
-Output:
-
-expected end date.
-
-Do not calculate probation end using:
-
-durationDays = months * 30
-
-Calendar months must be handled correctly.
-
-Example:
-
-20 July + 6 months
-
-must be calendar-based according to defined business rule.
+FIX THIS FIRST.
 
 ==================================================
-7. COMPANY PROBATION CONFIGURATION
+2. HOLIDAY MANAGEMENT IS NOT DISCOVERABLE
 ==================================================
 
-Create company/employment configuration where appropriate.
+Holiday creation technically exists under:
 
-Potential:
+/app/settings/holidays
 
-ProbationPolicy
+but users operating Leave/Holiday calendar cannot easily discover:
 
-fields:
+Add Holiday
+Manage Holidays
+Configure next year's calendar
+
+The Leave Calendar is read-oriented only.
+
+This is bad UX.
+
+==================================================
+3. HOLIDAY DOMAIN IS TOO BASIC FOR A REAL ERP
+==================================================
+
+Current Holiday supports roughly:
+
+publicHoliday
+companyHoliday
+optionalHoliday
+specialClosure
+
+companyWide
+specificWorkLocations
+
+But there is no proper concept for:
+
+government/public holidays
+festival holidays
+regional/state holidays
+annual company holiday calendar
+holiday year setup
+country/region context
+copying previous year's calendar
+bulk import
+holiday source
+calendar readiness for next year.
+
+Complete this properly.
+
+==================================================
+4. HOLIDAY UI IS OVER-GENERIC
+==================================================
+
+HolidayListPage currently uses generic:
+
+ConfigurationListLayout
+
+This generic configuration layout includes concepts such as:
+
+assigned employee counts
+
+generic configuration filtering
+
+that do not semantically fit Holidays.
+
+Do NOT force Holidays into a generic configuration UI just because the repository implements ConfigurationRecord.
+
+Create a PURPOSE-BUILT Holiday Management UX.
+
+==================================================
+5. LEAVE HOME UX IS TOO BASIC
+==================================================
+
+Current LeaveHomePage is mainly:
+
+quick-action cards
++
+balance metric cards.
+
+It does not show enough useful context such as:
+
+upcoming approved leave
+next holiday
+pending request
+recent request
+leave balance composition
+
+Redesign it.
+
+==================================================
+6. ORGANIZATIONAL LEAVE OVERVIEW IS TOO BASIC
+==================================================
+
+Current LeaveOverviewPage is mainly:
+
+summary metrics
+on-leave-today
+shortcut cards.
+
+HR/Manager/Admin need a real operational workspace.
+
+==================================================
+7. MODULE SUB-NAVIGATION IS WEAK
+==================================================
+
+LeaveModuleScaffold currently renders many destinations as:
+
+AppFilterChip
+
+inside a horizontal scrolling Row.
+
+This is not appropriate as the permanent navigation model for a professional ERP module.
+
+Redesign secondary navigation.
+
+==================================================
+8. FILTER UX IS TOO HEAVY
+==================================================
+
+Team/All Leave filter currently contains:
+
+employee search
+all status chips
+all period chips
+leave type
+department
+
+inside one large card.
+
+This becomes visually noisy.
+
+Redesign filters for Desktop and Mobile separately.
+
+==================================================
+9. CALENDAR UX IS TOO SIMPLE
+==================================================
+
+Current LeaveCalendarPage essentially renders:
+
+7-column day grid
+
+colored day cells
+
+then a separate list of entries.
+
+This does not feel like a professional Leave/Holiday calendar.
+
+Rebuild it.
+
+==================================================
+10. TIME ARCHITECTURE REGRESSION
+==================================================
+
+Search all Leave files for:
+
+DateTime.now()
+.toUtc()
+
+Current examples exist in:
+
+leave_today_banner.dart
+leave_blocs.dart
+leave_operations_pages.dart
+leave_employee_page.dart
+leave_approvals_page.dart
+leave_balances_page.dart
+leave_seed.dart
+
+Business "today", year, periods and effective dates must use:
+
+AppClock
+CompanyTimeService
+LeaveYearResolver
+
+as appropriate.
+
+Do not continue raw device-time business logic.
+
+==================================================
+PART A — PERMISSION CORRECTION
+==================================================
+
+Fix the permission model systematically.
+
+HR should normally receive:
+
+holidayView
+holidayManage
+
+when its default template gives Holiday administration.
+
+Company Admin/Super Admin permissions continue according to existing architecture.
+
+Manager/Employee:
+
+holiday viewing occurs through the Leave/Holiday calendar according to appropriate capability.
+
+They do NOT receive holiday management by default.
+
+==================================================
+MANAGE MUST NOT EXIST WITHOUT VIEW
+==================================================
+
+Audit these pairs:
+
+leaveTypeView
+leaveTypeManage
+
+leavePolicyView
+leavePolicyManage
+
+holidayView
+holidayManage
+
+A permission configuration should not result in:
+
+Manage = true
+View = false
+
+and then hide the screen.
+
+Implement a clean permission-dependency rule.
+
+Options:
+
+permission grant normalization
+or
+permission dependency resolver
+
+Do not scatter:
+
+if holidayManage then pretend holidayView
+
+across random widgets.
+
+Add regression tests.
+
+==================================================
+PERSONA MATRIX — HOLIDAY
+==================================================
+
+EMPLOYEE
+
+Can:
+view applicable company holidays
+
+Cannot:
+create/edit/delete/deactivate holidays.
+
+MANAGER
+
+Can:
+view applicable holidays
+
+Cannot manage unless explicitly permitted.
+
+HR
+
+Can normally:
+view holiday calendar
+create holidays
+edit holidays
+manage yearly calendar
+
+according to permissions.
+
+COMPANY ADMIN
+
+Can manage company holidays according to permissions.
+
+SUPER ADMIN
+
+Do NOT automatically become the person maintaining every company's festival calendar merely because of platform authority.
+
+Tenant/company context and explicit permissions still apply.
+
+==================================================
+PART B — HOLIDAY CALENDAR DOMAIN
+==================================================
+
+Upgrade Holiday configuration into a proper annual Holiday Calendar system.
+
+Do NOT rely only on individual flat holiday records forever.
+
+Introduce a lightweight:
+
+HolidayCalendar
+
+if it cleanly improves architecture.
+
+Suggested:
 
 id
 
@@ -200,2032 +380,2099 @@ companyId
 
 name
 
-defaultDurationMonths
+year
 
-applicableEmploymentTypes
+countryCode optional
 
-allowEarlyConfirmation
-
-allowExtension
-
-maxExtensionDays/months optional
-
-reminderDaysBeforeEnd
-
-leavePolicyDuringProbationId optional
-
-leavePolicyAfterConfirmationId optional
+regionCode optional
 
 status
 
-timestamps
-
-Do NOT hardcode 3 or 6 months.
-
-==================================================
-8. DIFFERENT EMPLOYMENT TYPES
-==================================================
-
-Probation may differ by employment type.
-
-Examples:
-
-Full Time:
-6 months
-
-Part Time:
-3 months
-
-Contract:
-not applicable
-
-Intern:
-different rule
-
-Keep configuration flexible.
-
-==================================================
-9. EMPLOYEE OVERRIDE
-==================================================
-
-HR should be able to override probation duration for an individual employee when permitted.
-
-Example:
-
-Company default:
-6 months
-
-Employee:
-3 months
-
-Store effective Employee probation dates.
-
-Do not modify company policy globally.
-
-==================================================
-10. EMPLOYEE CREATE FORM
-==================================================
-
-Enhance Employee Create/Edit:
-
-EMPLOYMENT
-
-Join Date
-
-Employment Type
-
-Probation
-
-[ ] Employee is subject to probation
-
-Probation Duration
-
-Probation Start
-
-Expected Confirmation Date
-
-Use company policy defaults.
-
-HR may override if permission allows.
-
-==================================================
-11. DO NOT FORCE PROBATION
-==================================================
-
-Some employees can be created as:
-
-Already Confirmed
-
-Probation Not Applicable
-
-Example:
-
-senior transfer
-
-director
-
-contract worker
-
-Do not force every Employee into probation.
-
-==================================================
-12. PROBATION HISTORICAL RECORD
-==================================================
-
-Do not only store:
-
-isOnProbation = true/false.
-
-We need dates/history.
-
-Otherwise after confirmation we lose:
-
-when probation started
-
-when it was expected to finish
-
-whether it was extended
-
-when confirmation actually occurred.
-
-==================================================
-13. PROBATION HISTORY/AUDIT
-==================================================
-
-Create lightweight immutable audit/event architecture where appropriate.
-
-Possible events:
-
-probationStarted
-
-probationExtended
-
-confirmed
-
-confirmedEarly
-
-probationCompleted
-
-probationTerminated
-
-Fields:
-
-employeeId
-
-eventType
-
-effectiveDate
-
-oldExpectedEndDate optional
-
-newExpectedEndDate optional
-
-reason
-
-performedBy
+isDefault
 
 createdAt
 
-requestId/syncStatus if needed.
+updatedAt
 
-==================================================
-14. PROBATION EXTENSION
-==================================================
-
-HR/Admin with permission can extend probation.
-
-Require:
-
-new end date or extension duration
-
-reason
-
-confirmation.
-
-Do NOT silently modify original start date.
-
-Create audit event.
-
-==================================================
-15. EARLY CONFIRMATION
-==================================================
-
-If policy permits:
-
-HR can Confirm Employee Early.
+syncStatus
 
 Example:
 
-Expected:
-20 Jan
+India Holiday Calendar 2026
 
-Confirmed:
-15 Dec
+Hyderabad Operations Calendar 2026
 
-After confirmation date:
-
-post-probation leave rules become applicable.
+Dubai Office Calendar 2026
 
 ==================================================
-16. NORMAL CONFIRMATION
+HOLIDAY CALENDAR ASSIGNMENT
 ==================================================
 
-When expected probation end date arrives:
+A calendar can apply to:
 
-DO NOT automatically confirm employee silently unless company policy explicitly supports automatic confirmation.
+whole company
 
-Safer V1:
+specific Work Locations
 
-mark:
+If multiple calendar architecture becomes unnecessarily complex for the current project, it is acceptable to keep WorkLocation scope at Holiday-entry level.
 
-Confirmation Due
-
-and notify authorized HR.
-
-HR performs:
-
-Confirm Employee
-
-or:
-
-Extend Probation.
+But yearly management MUST be first-class.
 
 ==================================================
-17. CONFIRMATION DUE STATUS
+HOLIDAY ENTITY ENHANCEMENT
 ==================================================
 
-Derived state can include:
+Review existing Holiday model.
 
-Active Probation
+Support meaningful categories such as:
 
-Confirmation Due Soon
+PUBLIC / GOVERNMENT HOLIDAY
 
-Confirmation Due
+FESTIVAL HOLIDAY
 
-Extended
+REGIONAL HOLIDAY
 
-Confirmed
+COMPANY HOLIDAY
 
-Do not create unnecessary persisted statuses if they can be derived safely.
+SPECIAL CLOSURE
 
-==================================================
-18. PERMISSIONS
-==================================================
-
-Add permissions if needed:
-
-probationViewSelf
-
-probationViewTeam
-
-probationViewAll
-
-probationManage
-
-probationConfirm
-
-probationExtend
-
-Do not grant based purely on role.
-
-Employee should normally only see their own probation info.
-
-==================================================
-19. CAPABILITY MODEL
-==================================================
-
-Extend UserCapabilityContext:
-
-canViewMyProbation
-
-canViewTeamProbation
-
-canViewCompanyProbation
-
-canManageProbation
-
-canConfirmEmployees
-
-canExtendProbation
-
-Only if genuinely needed.
-
-==================================================
-20. PROBATION LEAVE POLICY
-==================================================
-
-This is the important integration.
-
-Leave eligibility must resolve against:
-
-Employee
-Employment Type
-Probation Status
-Probation Effective Dates
-Leave Type
-Leave Policy
-Company Date
-
-Create centralized:
-
-LeaveEligibilityResolver
-
-Do NOT put probation checks inside LeaveRequestPage.
-
-==================================================
-21. LEAVE ELIGIBILITY RESULT
-==================================================
-
-Create typed result such as:
-
-LeaveEligibilityDecision
-
-with:
-
-isEligible
-
-availableBalance
-
-maximumRequestable
-
-policyApplied
-
-restrictionReason optional
-
-warnings
-
-effectivePolicyStage
-
-Possible stage:
-
-probation
-
-confirmed
-
-specialOverride
-
-==================================================
-22. DIFFERENT LEAVE RULES DURING PROBATION
-==================================================
-
-Support configuration such as:
-
-Annual Leave:
-not available during probation
-
-Sick Leave:
-available during probation
-
-Emergency Leave:
-available
-
-Unpaid Leave:
-available
-
-Casual Leave:
-2 days maximum during probation
-
-Do not hardcode these examples.
-
-==================================================
-23. LEAVE TYPE ELIGIBILITY DURING PROBATION
-==================================================
-
-Extend LeavePolicy or policy assignment with something like:
-
-ProbationLeaveRule
-
-Possible modes:
-
-notAllowed
-
-allowedNormally
-
-allowedWithReducedEntitlement
-
-allowedWithSeparateEntitlement
-
-unpaidOnly
-
-allowedAfterMinimumService
-
-Choose a clean typed structure.
-
-Do NOT use many loosely related booleans if a typed rule is clearer.
-
-==================================================
-24. MINIMUM SERVICE DAYS
-==================================================
-
-Retain existing minimumServiceDays capability.
+Keep Optionality as an independent concept if possible.
 
 Example:
 
-Sick Leave:
-available immediately
+Festival Holiday
+Diwali
+optional = false
 
-Annual Leave:
-available after 90 service days
+Regional Holiday
+Bonalu
+optional = true
 
-Casual Leave:
-available after 30 days
+This is cleaner than using:
 
-This may apply independently of probation.
+optionalHoliday
 
-LeaveEligibilityResolver must account for both.
-
-==================================================
-25. PROBATION RESTRICTION VS SERVICE RESTRICTION
-==================================================
-
-These are different.
-
-Example:
-
-Employee:
-still on 6-month probation
-
-Annual Leave rule:
-allowed after 90 days even during probation.
-
-Therefore do not implement:
-
-if onProbation → reject everything.
-
-Evaluate actual policy.
+as both category and optional behavior.
 
 ==================================================
-26. PROBATION ENTITLEMENT MODE
+MIGRATION OF CURRENT OPTIONAL HOLIDAY
 ==================================================
 
-Support practical options.
+Current model has:
 
-Example policy configuration:
+HolidayType.optionalHoliday
 
-During Probation:
+AND:
 
-Entitlement Mode:
-- No entitlement
-- Full entitlement
-- Reduced entitlement
-- Fixed probation entitlement
+isOptional
 
-If Reduced:
-percentage or fixed days.
+This duplicates meaning.
 
-Prefer fixed/day-based configuration for V1 if percentage introduces unnecessary complexity.
+Normalize the model.
 
-==================================================
-27. PROBATION BALANCE
-==================================================
+Choose ONE authoritative optionality field.
 
-Leave balance ledger remains source of truth.
+Preferred:
 
-Do NOT create separate mutable:
+type describes WHAT the holiday is.
 
-probationLeaveBalance.
+isOptional describes whether attendance/non-working applicability is optional.
 
-If employee receives probation entitlement:
+Provide a safe schema migration for existing values.
 
-create ledger transaction with appropriate source/reference.
-
-Example:
-
-PROBATION_ENTITLEMENT
-
-or regular ENTITLEMENT with policy metadata.
+Do not lose existing data.
 
 ==================================================
-28. CONFIRMATION BALANCE TRANSITION
+HOLIDAY SOURCE
 ==================================================
 
-When employee is confirmed:
+Add lightweight source metadata:
 
-do NOT simply overwrite leave balance.
+manual
 
-Use ledger transactions.
+copiedFromPreviousYear
 
-Possible business policies:
+imported
 
-A. Keep existing probation entitlement + add remaining confirmed entitlement
+companyTemplate
 
-B. Replace future entitlement
-
-C. Grant full annual entitlement on confirmation
-
-D. Pro-rate post-confirmation entitlement
-
-Make behavior configurable where needed.
-
-For V1 implement a clear reliable subset.
+Do NOT pretend the app automatically knows authoritative government holidays.
 
 ==================================================
-29. NO SILENT DOUBLE ENTITLEMENT
+GOVERNMENT HOLIDAY BEHAVIOR
 ==================================================
 
-Critical.
+The system must answer:
 
-If probation employee already received 3 Annual Leave days and confirmed policy gives 18 days:
+Who adds government/festival holidays?
 
-do not accidentally create:
+Answer in product architecture:
 
-3 + 18
+HR / Company Admin with holidayManage configures the company's annual holiday calendar.
 
-unless policy explicitly intends that.
+The system may help through:
 
-Create EntitlementTransitionService.
+manual Add Holiday
+Copy Previous Year
+Bulk Import
+company templates
 
-==================================================
-30. ENTITLEMENT TRANSITION
-==================================================
-
-Create pure/business service:
-
-LeaveEntitlementTransitionService
-
-Input:
-
-previous policy/stage
-
-new policy/stage
-
-current ledger
-
-confirmation date
-
-leave year
-
-Output:
-
-required ledger transactions.
-
-Must be idempotent.
+But the company remains responsible for confirming its applicable holidays.
 
 ==================================================
-31. CONFIRMATION IDEMPOTENCY
+DO NOT HARD-CODE GOVERNMENT HOLIDAY LISTS
 ==================================================
 
-Click Confirm twice must NOT grant leave twice.
+Do not permanently hardcode:
 
-Use:
+India holiday list
 
-confirmation event/requestId
+UAE holiday list
 
-unique transition reference
+etc.
 
-ledger transaction idempotency.
+Government/festival dates may vary by:
 
-==================================================
-32. PROBATION EXTENSION EFFECT ON LEAVE
-==================================================
+year
+state/region
+location
+company policy
 
-If probation gets extended:
+and some festival dates vary annually.
 
-leave eligibility should immediately follow probation policy until new end/confirmation.
-
-But DO NOT retroactively invalidate previously approved Leave.
-
-Existing LeaveRequest snapshot remains authoritative.
+Use company-managed configuration.
 
 ==================================================
-33. CONFIRMATION EFFECTIVE DATE
+OPTIONAL FUTURE IMPORT PROVIDER
 ==================================================
 
-Leave-policy transition occurs based on effective confirmation date.
+Architect so a backend holiday-provider/import source can be added later.
 
-Do not always use button-click timestamp.
-
-Example:
-
-HR confirms on 22 Jan with effective date 20 Jan.
-
-Policy logic must use effective date.
-
-If backdating is allowed:
-validate carefully.
+Do NOT add an internet holiday API dependency now.
 
 ==================================================
-34. BACKDATED CONFIRMATION
+PART C — YEARLY HOLIDAY MANAGEMENT
 ==================================================
 
-For V1:
+Create a first-class Holiday Management experience.
 
-either:
+Canonical management route can remain:
 
-restrict confirmation effective date to current/future-safe date
+/app/settings/holidays
 
-OR
-
-support backdating with explicit entitlement reconciliation.
-
-Do NOT silently backdate without ledger reconciliation.
-
-Prefer simpler safe behavior.
+but redesign the page.
 
 ==================================================
-35. FUTURE-DATED CONFIRMATION
-==================================================
-
-Avoid unnecessary complexity.
-
-Confirmation action normally effective immediately or on expected end date.
-
-Document chosen behavior.
-
-==================================================
-36. REQUEST LEAVE FORM
-==================================================
-
-When Employee selects Leave Type:
-
-resolve eligibility.
-
-Example UI:
-
-Annual Leave
-
-Not available during your probation period.
-
-Available after:
-20 January 2027
-
-OR:
-
-Sick Leave
-
-Available:
-4 days
-
-Do not let user fill entire form and only fail at Submit if eligibility is already known.
-
-==================================================
-37. ELIGIBILITY MESSAGE
-==================================================
-
-Messages must be neutral and informative.
-
-Examples:
-
-This leave type is not available during your probation period.
-
-You can request this leave after 90 days of service.
-
-Your current probation policy allows up to 2 days.
-
-Do not expose raw enum names.
-
-==================================================
-38. REQUEST DATE CROSSING PROBATION END
-==================================================
-
-Critical edge case.
-
-Example:
-
-Probation ends:
-20 Jan
-
-Leave requested:
-18 Jan – 23 Jan
-
-Policy differs before/after confirmation.
-
-Do NOT blindly apply one policy to whole request.
-
-For V1 choose one explicit rule:
-
-RECOMMENDED:
-
-Split eligibility calculation by date segment internally.
-
-18–19:
-probation policy
-
-20/21 onward:
-post-confirmation policy only if confirmation is effective/known.
-
-However if confirmation still requires HR action and is not yet confirmed:
-
-treat all future dates as probation until actual confirmation is recorded.
-
-This avoids assuming confirmation.
-
-==================================================
-39. EXPECTED END DOES NOT EQUAL CONFIRMED
-==================================================
-
-Important.
-
-Expected probation end date passing does NOT necessarily mean confirmed.
-
-Until status/effective confirmation says confirmed:
-
-probation rules remain active
-
-unless company policy explicitly has auto-confirmation.
-
-==================================================
-40. LEAVE REQUEST SNAPSHOT
-==================================================
-
-At submission snapshot:
-
-probation status
-
-relevant effective probation dates
-
-leave eligibility policy
-
-entitlement rule
-
-Do not later rewrite request because employee gets confirmed.
-
-==================================================
-41. APPROVED LEAVE BEFORE CONFIRMATION
-==================================================
-
-If Employee requests Leave while probation policy allowed it and HR later confirms them:
-
-approved request remains valid under submitted/approved snapshot.
-
-Do not recalculate it under new policy.
-
-==================================================
-42. PENDING REQUEST DURING CONFIRMATION
-==================================================
-
-If Employee has pending request and gets confirmed before review:
-
-define rule.
-
-Recommended:
-
-preserve submitted policy snapshot for request review.
-
-Reviewer may see:
-
-Submitted under Probation Policy.
-
-Do not silently alter requested days/balance.
-
-==================================================
-43. LEAVE BALANCE DISPLAY
-==================================================
-
-My Leave should clearly communicate probation.
-
-Example:
-
-Annual Leave
-Available after confirmation
-
-Sick Leave
-4 days available
-
-Unpaid Leave
-Available
-
-Do not show misleading 0 days if leave is actually ineligible.
-
-Distinguish:
-
-0 balance
-
-from:
-
-Not eligible yet.
-
-==================================================
-44. EMPLOYEE PROFILE
-==================================================
-
-Enhance My Profile → Employment.
-
-Show if applicable:
-
-Probation Status
-
-Probation Start
-
-Expected Confirmation
-
-Confirmed Date
-
-Do not expose internal HR notes.
-
-==================================================
-45. EMPLOYEE RECORD
-==================================================
-
-HR/Admin Employee Details should have:
-
-EMPLOYMENT / PROBATION
-
-Status
-
-Start Date
-
-Expected End
-
-Duration
-
-Extensions
-
-Actual Confirmation Date
-
-Policy
-
-Actions:
-
-Confirm Employee
-
-Extend Probation
-
-according to permissions.
-
-==================================================
-46. EMPLOYEE LIST
-==================================================
-
-Do NOT add probation as permanent table column if it makes list crowded.
-
-Use filter:
-
-Probation Status
-
-and optional badge/status where useful.
-
-Possible filters:
-
-On Probation
-
-Confirmation Due Soon
-
-Confirmation Due
-
-Confirmed
-
-==================================================
-47. HR PROBATION VIEW
-==================================================
-
-A dedicated full module is not necessary initially.
-
-Provide within Employees:
-
-filter/view:
-
-Probation
-
-Could support URL:
-
-/app/employees?probation=due
-
-No separate giant sidebar item.
-
-==================================================
-48. DASHBOARD — HR
-==================================================
-
-Add compact HR attention metrics:
-
-Probation Ending Soon
-
-Confirmations Due
-
-Example:
-
-5 employees
-ending in next 30 days
-
-Click:
-Employees filtered by probation due.
-
-==================================================
-49. DASHBOARD — MANAGER
-==================================================
-
-If permission permits:
-
-Team Probation Ending Soon
-
-Do not show confidential HR notes.
-
-==================================================
-50. DASHBOARD — EMPLOYEE
-==================================================
-
-Employee may see compact:
-
-Probation
-
-Ends 20 Jan 2027
-
-only if company wants self visibility and permission exists.
-
-Do not overemphasize.
-
-==================================================
-51. ADMIN DASHBOARD
-==================================================
-
-Company Admin can see organizational probation attention if permission.
-
-Unlinked Admin does not get employee self probation card.
-
-==================================================
-52. NOTIFICATIONS
-==================================================
-
-Add AppNotificationTypes as appropriate:
-
-probationEndingSoon
-
-probationConfirmationDue
-
-probationExtended
-
-probationConfirmed
-
-==================================================
-53. HR REMINDER
+HOLIDAY MANAGEMENT HEADER
 ==================================================
 
 Example:
 
-30 days before expected end
+Holidays
 
-7 days before
+Manage public, festival, regional and company holidays.
 
-due date
+Controls:
 
-Do not spam.
+[Year: 2026 ▼]
 
-Use configurable reminder days where practical.
+[Add Holiday]
 
-==================================================
-54. EMPLOYEE NOTIFICATION
-==================================================
+[More ▼]
 
-When confirmed:
+More:
 
-Your employment confirmation has been recorded.
-
-When probation extended:
-
-Your probation period has been extended to [date].
-
-Only if business policy allows employee visibility.
+Copy Previous Year
+Import Holidays
+Export optional if useful
 
 ==================================================
-55. MANAGER NOTIFICATION
+YEAR SELECTOR
 ==================================================
 
-Optional:
+Holiday administration MUST clearly work by year.
 
-Team member probation confirmation due.
+Example:
 
-Only if manager is part of workflow.
+2025
+2026
+2027
 
-==================================================
-56. PROBATION EXTENSION REASON PRIVACY
-==================================================
+Default to company-current year.
 
-Employee may see:
-
-new expected end date
-
-but extension reason visibility should follow company/HR policy.
-
-Do not automatically expose internal performance notes.
+Do not mix years in one giant generic list.
 
 ==================================================
-57. LEAVE POLICY CONFIG UI
+INITIALIZE NEW YEAR
 ==================================================
 
-Enhance Leave Policy form with section:
+If 2027 has no calendar/holidays:
 
-PROBATION ELIGIBILITY
+show:
+
+Set up 2027 Holiday Calendar
 
 Options:
 
-Available during probation?
+Start Blank
 
-Eligibility mode
+Copy 2026
 
-Minimum service days
+Import File
 
-Probation entitlement
-
-Negative balance rule if relevant
-
-Policy after confirmation
-
-Keep UX understandable.
-
-Do not expose a wall of switches.
+Do not silently clone previous year.
 
 ==================================================
-58. BETTER POLICY UI
+COPY PREVIOUS YEAR
 ==================================================
+
+Support:
+
+Copy Holidays from 2026 → 2027
+
+Preview entries before creating.
+
+IMPORTANT:
+
+Do not blindly copy date numbers for festival holidays.
+
+Copied entries should be editable before confirmation.
 
 Example:
 
-Probation access
-
-[ Not available ]
-[ Available ]
-[ Limited ]
-
-If Limited:
-
-Maximum during probation
-2 days
-
-Available after
-30 days of service
-
-This is more understandable than 10 booleans.
+"Copied from previous year — verify festival dates."
 
 ==================================================
-59. LEAVE TYPE VS POLICY
+BULK IMPORT
 ==================================================
 
-LeaveType defines WHAT:
+Provide CSV import foundation.
+
+Columns can include:
+
+name
+
+date
+
+endDate optional
+
+type
+
+optional
+
+scope
+
+workLocation codes/names if supported
+
+description
+
+countryCode optional
+
+regionCode optional
+
+Provide:
+
+upload/select file
+preview
+validation
+duplicate detection
+confirm import
+
+Do NOT silently import invalid entries.
+
+==================================================
+ADD HOLIDAY
+==================================================
+
+Prominent action:
+
+Add Holiday
+
+Form should be PURPOSE-BUILT.
+
+Not generic configuration wording.
+
+Sections:
+
+BASIC INFORMATION
+
+Holiday Name
+
+Holiday Type
+
+Date
+
+End Date / Multi-day toggle
+
+APPLICABILITY
+
+Company Wide
+
+Specific Work Locations
+
+OPTIONALITY
+
+Optional Holiday
+
+DETAILS
+
+Description / Note
+
+STATUS
+
+Active
+
+==================================================
+HOLIDAY TYPE UX
+==================================================
+
+User-friendly labels:
+
+Public / Government Holiday
+
+Festival Holiday
+
+Regional Holiday
+
+Company Holiday
+
+Special Closure
+
+Do not expose enum names.
+
+==================================================
+EXAMPLES IN UX
+==================================================
+
+Optional helper copy only:
+
+Government/public holidays
+
+Religious or festival holidays
+
+State/regional holidays
+
+Company-declared holidays
+
+Do not hardcode a particular religion or geography into core UI.
+
+==================================================
+MULTI-DAY HOLIDAY
+==================================================
+
+Support existing endDate correctly.
+
+Example:
+
+Company shutdown:
+24 Dec – 26 Dec.
+
+Calendar should render each affected date.
+
+==================================================
+WORK LOCATION APPLICABILITY
+==================================================
+
+Existing WorkLocation scope is useful.
+
+Improve UI.
+
+If:
+
+Specific Work Locations
+
+show searchable multi-select/list.
+
+Do not present dozens of chips if company has many locations.
+
+Use suitable selector.
+
+==================================================
+HOLIDAY MANAGEMENT LIST
+==================================================
+
+Desktop:
+
+purpose-built table.
+
+Suggested columns:
+
+Holiday
+
+Date
+
+Type
+
+Applies To
+
+Optional
+
+Status
+
+Actions
+
+Mobile:
+
+purpose-built compact cards.
+
+Do NOT show meaningless:
+
+Assigned Employees: 0
+
+for Holiday entries.
+
+==================================================
+HOLIDAY LIST GROUPING
+==================================================
+
+Optional useful grouping:
+
+January
+February
+...
+
+or simple chronological table.
+
+Default sort:
+
+date ascending.
+
+==================================================
+HOLIDAY STATUS
+==================================================
+
+Historical holidays should not be hard-deleted.
+
+Use Active/Inactive/Cancelled semantics according to existing configuration architecture.
+
+==================================================
+HOLIDAY DUPLICATE VALIDATION
+==================================================
+
+Warn/prevent obvious duplicate active holiday entries for:
+
+same company
+same date
+same scope
+same name/category where appropriate.
+
+Do not block legitimate overlapping regional/company holidays if business needs both.
+
+==================================================
+PART D — MAKE HOLIDAYS DISCOVERABLE FROM LEAVE
+==================================================
+
+Current problem:
+
+users can view Leave Calendar but management is buried in Settings.
+
+Fix this.
+
+==================================================
+LEAVE CALENDAR HEADER
+==================================================
+
+For normal Employee/Manager:
+
+Leave & Holiday Calendar
+
+For HR/Admin with holidayManage:
+
+include:
+
+[Add Holiday]
+
+[Manage Holidays]
+
+These link to canonical settings holiday routes.
+
+Do NOT duplicate Holiday form/business logic.
+
+Example:
+
+Add Holiday
+→ /app/settings/holidays/new
+
+Manage Holidays
+→ /app/settings/holidays
+
+==================================================
+CALENDAR EMPTY STATE
+==================================================
+
+HR/Admin when no holidays:
+
+No holidays configured for 2026.
+
+[Add Holiday]
+
+[Set Up Holiday Calendar]
+
+Employee:
+
+No company holidays have been published for this period.
+
+No admin CTA.
+
+==================================================
+NEXT HOLIDAY
+==================================================
+
+Employee Leave home should surface:
+
+Next Holiday
+
+Holiday Name
+Date
+X days away
+
+according to applicable WorkLocation/company scope.
+
+==================================================
+PART E — COMPLETELY REDESIGN LEAVE MODULE NAVIGATION
+==================================================
+
+Current:
+
+horizontal AppFilterChip navigation.
+
+Replace it.
+
+Do not use FilterChip as permanent module navigation.
+
+==================================================
+DESKTOP LEAVE NAVIGATION
+==================================================
+
+Use proper secondary navigation component.
+
+Example:
+
+Leave
+
+Overview
+My Leave
+Team
+All Leave
+Approvals
+Balances
+Calendar
+
+Only show permitted destinations.
+
+Use:
+
+tabs / compact secondary nav / proper page navigation
+
+NOT filter chips.
+
+==================================================
+MOBILE LEAVE NAVIGATION
+==================================================
+
+Do NOT horizontally scroll six tiny navigation chips.
+
+For Employee with few destinations:
+
+compact tabs may work.
+
+For Manager/HR/Admin:
+
+use Leave landing + section navigation / dropdown / More.
+
+Keep mobile understandable.
+
+==================================================
+ROUTE REMAINS SOURCE OF TRUTH
+==================================================
+
+All navigation still uses:
+
+go_router
+
+Existing semantic routes remain.
+
+Nested Leave routes keep Leave selected in main navigation.
+
+==================================================
+PART F — EMPLOYEE LEAVE HOME REDESIGN
+==================================================
+
+Rebuild LeaveHomePage.
+
+Current implementation is too empty/simple.
+
+Desired information hierarchy:
+
+HEADER
+
+Leave
+
+[Request Leave]
+
+BALANCE SUMMARY
+
+Annual
+12 available
+6 used
+1 pending
+
+Sick
+...
+
+UPCOMING
+
+Upcoming Approved Leave
+
+NEXT HOLIDAY
+
+Pending Request if any
+
+RECENT REQUESTS
+
+compact list
+
+Do NOT put three large navigation cards at the top.
+
+==================================================
+EMPLOYEE BALANCE UX
+==================================================
+
+Use AppResponsiveGrid.
+
+Balance card should show more than one giant available number.
+
+Example:
 
 Annual Leave
-Sick Leave
 
-LeavePolicy defines RULES:
+12 days available
 
-entitlement
-probation eligibility
-advance notice
-carry-forward etc.
+Used        6
+Pending     1
+Entitlement 19
 
-Do not put probation rules directly inside LeaveType unless they are immutable semantics.
+Optional subtle progress visualization.
 
-==================================================
-60. COMPANY DEFAULT POLICY
-==================================================
-
-Company can configure:
-
-Standard Employee Leave Policy
-
-and:
-
-Probation Leave Rules
-
-without creating duplicate Leave Types.
-
-Example:
-
-Annual Leave remains same type.
-
-Rules differ by employee stage.
+Do not create giant circular gauges.
 
 ==================================================
-61. MULTIPLE POLICIES
+BALANCE NUMBER FORMATTING
 ==================================================
 
-If EmployeeLeavePolicyAssignment already supports effective dates:
+Current code often renders:
 
-use it.
+'${balance.available}'
 
-Do not create entirely separate policy assignment system for probation.
+leading to values like:
 
-==================================================
-62. POLICY TRANSITION AFTER CONFIRMATION
-==================================================
+12.0
 
-Employee policy resolver must support:
-
-probation stage policy
-
-→ confirmed stage policy
-
-based on effective confirmation.
-
-No manual employee form reassignment should be necessary if company policy already maps both stages.
-
-==================================================
-63. MANUAL POLICY OVERRIDE
-==================================================
-
-HR may assign exceptional LeavePolicy if permission allows.
-
-Explicit employee assignment should have clear precedence over company default.
-
-Document precedence.
-
-==================================================
-64. POLICY RESOLUTION PRECEDENCE
-==================================================
-
-Define centralized order.
-
-Example:
-
-1. employee explicit active override
-2. employment-type policy
-3. company default policy
-
-Then apply employment stage/probation rules.
-
-Do not let individual screens resolve differently.
-
-==================================================
-65. PROBATION + UNPAID LEAVE
-==================================================
-
-Typical scenario:
-
-Paid Annual Leave unavailable during probation.
-
-Unpaid Leave available.
-
-Architecture must support this.
-
-Do not special-case by LeaveType name.
-
-==================================================
-66. PROBATION + SICK LEAVE
-==================================================
-
-Architecture must support immediate Sick Leave even during probation.
-
-No blanket probation rejection.
-
-==================================================
-67. PROBATION + EMERGENCY LEAVE
-==================================================
-
-Same configurable behavior.
-
-==================================================
-68. HOLIDAY INTERACTION
-==================================================
-
-Probation does not affect Holiday applicability.
-
-Company holiday remains holiday.
-
-Do not consume probation leave balance.
-
-==================================================
-69. ATTENDANCE INTERACTION
-==================================================
-
-Probation itself does NOT alter Punch In/out.
-
-Employee on probation still attends normally.
-
-Only approved Leave/Holiday affects Attendance classification.
-
-==================================================
-70. REPORTS
-==================================================
-
-Add optional descriptive HR report/filter:
-
-Probation Status
-
-Confirmation Due
-
-Do not combine with attendance performance scoring.
-
-Potential metrics:
-
-Employees on Probation
-
-Confirmations Due This Month
-
-Extended Probations
-
-Recently Confirmed
-
-==================================================
-71. LEAVE REPORT FILTER
-==================================================
-
-Leave reports can filter:
-
-Employment Stage:
-
-Probation
-
-Confirmed
-
-This is descriptive.
-
-Do not label one group better/worse.
-
-==================================================
-72. HISTORICAL REPORTING
-==================================================
-
-Historical Leave request should use probation snapshot at request time.
-
-Do not look at employee current confirmed state and assume they were confirmed then.
-
-==================================================
-73. DATABASE
-==================================================
-
-Add/migrate appropriate fields/tables.
-
-Possible:
-
-employee_probation records
-
-probation_events
-
-probation_policy/config
-
-or Employee employment fields + events.
-
-Choose architecture that preserves history without unnecessary duplication.
-
-==================================================
-74. RECOMMENDED DATA STRUCTURE
-==================================================
-
-Prefer:
-
-EmployeeProbation
-
-id
-companyId
-employeeId
-startDate
-expectedEndDate
-actualEndDate
-status
-policyId optional
-extensionCount
-createdAt
-updatedAt
-
-+
-
-ProbationEvent
-
-for history.
-
-This is cleaner than adding 15 probation fields directly to Employee if Employee model is already large.
-
-==================================================
-75. ONE ACTIVE PROBATION RECORD
-==================================================
-
-Normally one active probation record per Employee.
-
-Enforce invariant.
-
-Historical records/events retained.
-
-==================================================
-76. EXTENSION HISTORY
-==================================================
-
-Never overwrite extension history.
-
-Example:
-
-Original:
-20 Jan
-
-Extension 1:
-20 Feb
-
-Extension 2:
-20 Mar
-
-Audit should preserve all.
-
-==================================================
-77. CONFIRMATION EVENT
-==================================================
-
-Confirmation should write:
-
-probation event
-
-EmployeeProbation final state
-
-leave entitlement transition
-
-outbox operation
-
-notification
-
-atomically where possible.
-
-==================================================
-78. OUTBOX
-==================================================
-
-Extend generic outbox:
-
-PROBATION_START/UPDATE
-
-PROBATION_EXTEND
-
-PROBATION_CONFIRM
-
-if these are remote mutations.
-
-Use stable requestId/idempotency.
-
-==================================================
-79. LEAVE ENTITLEMENT TRANSITION OUTBOX
-==================================================
-
-Do not sync duplicate leave entitlement change separately in a way that can diverge.
-
-Server future contract should process confirmation + leave entitlement transition consistently.
-
-Document expected transactional behavior.
-
-==================================================
-80. CONCURRENT CONFIRMATION
-==================================================
-
-If HR and Admin both click Confirm:
-
-first succeeds.
-
-second receives:
-
-Already Confirmed
-
-No duplicate entitlement.
-
-==================================================
-81. CONCURRENT EXTENSION
-==================================================
-
-Protect against two simultaneous extensions.
-
-Use version/conflict/idempotency architecture.
-
-==================================================
-82. CONFIRM AFTER EXTENSION
-==================================================
-
-HR can confirm before extended end if policy permits early confirmation.
-
-Actual confirmation date wins.
-
-==================================================
-83. TERMINATED DURING PROBATION
-==================================================
-
-If Employee is deactivated/terminated during probation:
-
-close probation appropriately.
-
-Do not leave it forever active.
-
-Do not implement full termination workflow if not existing.
-
-Just maintain consistent state.
-
-==================================================
-84. REJOINING
-==================================================
-
-Do not overbuild rehiring.
-
-If future rehire occurs:
-new employment/probation cycle may be required.
-
-Document future limitation.
-
-==================================================
-85. PROBATION IN MY PROFILE
-==================================================
-
-Show concise.
-
-Example:
-
-Employment Status
-On Probation
-
-Started
-20 Jul 2026
-
-Expected Confirmation
-20 Jan 2027
-
-Do not show internal approval notes.
-
-==================================================
-86. PROBATION IN EMPLOYEE DETAIL
-==================================================
-
-HR view should be richer.
-
-Include:
-
-timeline
-
-extensions
-
-confirmation details
-
-policy applied
-
-==================================================
-87. TIMELINE
-==================================================
-
-Reuse AppTimeline.
-
-Example:
-
-20 Jul
-Probation started
-
-10 Jan
-Probation extended by 30 days
-
-20 Feb
-Employee confirmed
-
-==================================================
-88. FILTERS
-==================================================
-
-Employees page:
-
-probationStatus
-
-confirmationDueWithin
+Use centralized leave-day formatting.
 
 Examples:
 
-Due in 7 days
+12 days
 
-Due in 30 days
+0.5 day
 
-Overdue
+12.5 days
 
-==================================================
-89. OVERDUE CONFIRMATION
-==================================================
-
-If expected end passed but no confirmation decision:
-
-derived state:
-
-Confirmation Overdue
-
-Still treat employee according to probation rules unless company policy says auto-confirm.
-
-==================================================
-90. AUTO-CONFIRM OPTION
-==================================================
-
-For V1 preferably do NOT auto-confirm.
-
-If existing business requirement demands it:
-
-ProbationPolicy can have:
-
-confirmationMode:
-manual
-automatic
-
-But automatic confirmation must create the same:
-
-audit
-leave transition
-notifications
-idempotency
-
-as manual confirmation.
-
-Do not simply derive confirmed from date.
-
-==================================================
-91. BUSINESS DATE
-==================================================
-
-All probation dates use CompanyTimeService/business date.
-
-Do not use raw DateTime.now().toLocal().
-
-==================================================
-92. PROBATION DURATION DISPLAY
-==================================================
-
-Display:
-
-6 months
-
-not:
-180 days
-
-when policy is month-based.
-
-==================================================
-93. DATE EDGE CASES
-==================================================
-
-Test:
-
-31 Aug + 1 month
-
-29 Feb
-
-year boundary
-
-leap year
-
-Do not implement naive month math.
-
-==================================================
-94. JOIN DATE CHANGE
-==================================================
-
-If HR changes Join Date while probation active:
-
-do NOT silently recalculate probation history.
-
-Require explicit decision:
-
-Recalculate probation dates
-
-or:
-Keep existing probation schedule.
-
-If too complex for V1:
-lock Join Date after probation activity without explicit admin workflow.
-
-==================================================
-95. EMPLOYMENT TYPE CHANGE
-==================================================
-
-Changing Employment Type may imply different probation policy.
-
-Do not silently rewrite active probation.
-
-Prompt/configure explicit transition.
-
-For V1:
-existing active probation retains snapshot unless HR deliberately changes it.
-
-==================================================
-96. PROBATION POLICY SNAPSHOT
-==================================================
-
-Freeze policy/config snapshot when probation starts.
-
-Changing company default from 6 months to 3 months must not change existing employee expected end date.
-
-New Employees use new policy.
-
-==================================================
-97. LEAVE POLICY SNAPSHOT
-==================================================
-
-Leave request continues to snapshot LeavePolicy as Phase 15.
-
-Probation status/policy context also captured.
-
-==================================================
-98. TEST — DEFAULT PROBATION
-==================================================
-
-Company:
-6-month default.
-
-Employee joins:
-20 Jul.
-
-Expected end calculated according to calendar rule.
-
-==================================================
-99. TEST — NO PROBATION
-==================================================
-
-Contract Employee:
-Probation not applicable.
-
-Confirmed-stage leave policy resolves immediately.
-
-==================================================
-100. TEST — OVERRIDE
-==================================================
-
-Company default:
-6 months.
-
-Employee override:
-3 months.
-
-Expected end uses override.
-
-==================================================
-101. TEST — EXTENSION
-==================================================
-
-Extend 30 days.
-
-Original expected date retained in audit.
-
-New date active.
-
-Leave eligibility remains probation-stage.
-
-==================================================
-102. TEST — EARLY CONFIRMATION
-==================================================
-
-Confirm before expected end.
-
-Probation ends.
-
-Post-confirmation leave policy activates.
-
-Entitlement ledger transitions exactly once.
-
-==================================================
-103. TEST — OVERDUE
-==================================================
-
-Expected end passes without HR confirmation.
-
-Employee remains probation stage if manual confirmation policy.
-
-Dashboard shows due/overdue.
-
-==================================================
-104. TEST — ANNUAL LEAVE BLOCKED
-==================================================
-
-Annual Leave:
-not allowed during probation.
-
-Employee on probation:
-cannot request.
-
-After confirmation:
-allowed.
-
-==================================================
-105. TEST — SICK LEAVE ALLOWED
-==================================================
-
-Sick Leave:
-allowed during probation.
-
-Request works.
-
-==================================================
-106. TEST — LIMITED PROBATION LEAVE
-==================================================
-
-Casual Leave:
-2 days available during probation.
-
-2 days:
-allowed.
-
-3 days:
-rejected.
-
-==================================================
-107. TEST — MINIMUM SERVICE
-==================================================
-
-Leave requires:
-90 days service.
-
-Day 89:
-not eligible.
-
-Day 90:
-eligible according to defined inclusive boundary.
-
-==================================================
-108. TEST — EXTENSION LEAVE
-==================================================
-
-Expected probation originally ended.
-
-Extended before confirmation.
-
-Post-confirmation leave does NOT activate.
-
-==================================================
-109. TEST — CONFIRMATION LEDGER
-==================================================
-
-Confirm Employee twice.
-
-Only one entitlement transition.
-
-==================================================
-110. TEST — PENDING REQUEST
-==================================================
-
-Request submitted under probation policy.
-
-Employee confirmed before approval.
-
-Request keeps submitted snapshot.
-
-==================================================
-111. TEST — APPROVED REQUEST
-==================================================
-
-Approved probation Leave stays valid after confirmation.
-
-==================================================
-112. TEST — COMPANY POLICY CHANGE
-==================================================
-
-Existing employee probation dates unchanged.
-
-New employee gets new policy.
-
-==================================================
-113. TEST — ACCOUNT WITHOUT EMPLOYEE
-==================================================
-
-Company Admin no Employee:
-
-no probation self information.
-
-Can manage employee probation if permissions permit.
-
-==================================================
-114. TEST — PERMISSIONS
-==================================================
-
-Manager team scope only.
-
-HR company scope.
-
-Employee self only.
-
-Direct URLs/use cases enforce scope.
-
-==================================================
-115. TEST — COMPANY ISOLATION
-==================================================
-
-Company A cannot view/change Company B probation records.
-
-==================================================
-116. TEST — ARABIC
-==================================================
-
-Probation fields
-
-Employee Details
-
-My Profile
-
-Leave eligibility messages
-
-Confirmation dialog
-
-Extension dialog
-
-Dashboard attention
-
-all localized/RTL.
-
-==================================================
-117. LOCALIZATION
-==================================================
-
-Add keys such as:
-
-Probation
-
-Probation Period
-
-On Probation
-
-Probation Start Date
-
-Expected Confirmation Date
-
-Confirmation Date
-
-Confirmed
-
-Confirm Employee
-
-Extend Probation
-
-Extension Reason
-
-Confirmation Due
-
-Confirmation Due Soon
-
-Confirmation Overdue
-
-Probation Completed
-
-Probation Not Applicable
-
-Early Confirmation
-
-Probation Leave Policy
-
-Available During Probation
-
-Not Available During Probation
-
-Limited During Probation
-
-Minimum Service Period
-
-Available After Confirmation
-
-and all validation/error messages.
-
-==================================================
-118. RESPONSIVE
-==================================================
-
-Employee form/details/profile/probation dialogs must work:
-
-360
-
-390
-
-430
-
-600
-
-768
-
-900
-
-1024
-
-1280
-
-1440
-
-1920.
-
-==================================================
-119. SETTINGS INFORMATION ARCHITECTURE
-==================================================
-
-Do NOT create "Probation" as a top-level drawer item.
-
-Company probation configuration belongs under:
-
-Settings
-→ People / Employment
-
-or appropriate company HR configuration section.
-
-Leave probation rules remain under:
-
-Settings
-→ Leave Policies.
-
-==================================================
-120. HR ACTION UX
-==================================================
-
-Employee Detail:
-
-Probation section.
-
-Actions:
-
-Confirm
-
-Extend
-
-Do not put these in main global navigation.
+localized.
 
 ==================================================
-121. CONFIRM DIALOG
+NEXT HOLIDAY CARD
 ==================================================
 
 Show:
 
-Employee
+Diwali
 
-Current expected end
+Festival Holiday
 
-Effective confirmation date
+8 November
 
-Leave policy transition summary
+Company wide / applicable location where useful.
 
-Possible entitlement impact
-
-Confirm action.
-
-Do not surprise HR with hidden leave balance changes.
+If none:
+do not waste a large card.
 
 ==================================================
-122. EXTEND DIALOG
+UPCOMING LEAVE
 ==================================================
 
-Show:
+Show nearest approved leave with:
 
-Current expected end
+Leave Type
 
-Extension duration/new date
+Date Range
 
-New expected end
+Working Days
+
+Status.
+
+==================================================
+PENDING REQUEST
+==================================================
+
+If employee has pending requests:
+
+show clearly.
+
+No need to open My Requests just to know there is one.
+
+==================================================
+PART G — MANAGER LEAVE WORKSPACE REDESIGN
+==================================================
+
+Manager landing should prioritize:
+
+Pending Approvals
+
+On Leave Today
+
+Upcoming Team Leave
+
+Team Calendar
+
+Personal Leave only as secondary when linked/permitted.
+
+Suggested Desktop:
+
+summary metrics row
+
+LEFT/WIDE:
+On Leave Today
+
+RIGHT:
+Pending Approvals
+
+FULL/WIDE:
+Upcoming Team Leave / mini calendar
+
+Do not present just shortcut cards.
+
+==================================================
+MANAGER METRICS
+==================================================
+
+Use:
+
+On Leave Today
+
+Upcoming This Week
+
+Pending Approval
+
+Team Members
+
+No fake availability/productivity score.
+
+==================================================
+PART H — HR / COMPANY ADMIN LEAVE WORKSPACE
+==================================================
+
+HR/Admin landing should feel like an HR operations dashboard.
+
+Suggested:
+
+SUMMARY
+
+On Leave Today
+
+Pending Requests
+
+Upcoming Approved
+
+Approved This Month
+
+MAIN CONTENT
+
+On Leave Today
+
+Pending Approvals
+
+Upcoming Leave
+
+Holiday Calendar Status
+
+ACTIONS
+
+Review Requests
+
+View All Leave
+
+Balances
+
+Manage Holidays if permitted
+
+Do not turn actions into a grid of identical cards.
+
+==================================================
+HOLIDAY CALENDAR STATUS FOR HR
+==================================================
+
+Useful panel:
+
+2026 Holiday Calendar
+
+12 active holidays
+
+Next: [Holiday]
+
+2027:
+Not configured
+
+[Manage Holidays]
+
+This directly solves discoverability.
+
+==================================================
+PART I — TEAM / ALL LEAVE FILTER UX
+==================================================
+
+Current filter card is too heavy.
+
+Redesign.
+
+==================================================
+DESKTOP FILTER BAR
+==================================================
+
+Compact single/dual-row filter toolbar:
+
+[Search employee]
+
+[Period ▼]
+
+[Status ▼]
+
+[Leave Type ▼]
+
+[Department ▼] company only
+
+[More Filters]
+
+[Reset]
+
+Do NOT render every possible Status and Period simultaneously as dozens of chips.
+
+==================================================
+ACTIVE FILTERS
+==================================================
+
+Below bar only when active:
+
+Pending ×
+
+Engineering ×
+
+This Month ×
+
+==================================================
+MOBILE FILTER UX
+==================================================
+
+Header:
+
+[Search]
+
+[Filters 3]
+
+Tap Filters:
+
+bottom sheet/full-screen filter page
+
+Status
+
+Period
+
+Leave Type
+
+Department
+
+Apply
+
+Reset
+
+Do not squeeze desktop controls.
+
+==================================================
+VIEW SWITCHING
+==================================================
+
+Requests
+Today
+Upcoming
+
+should use a real segmented control/tab where appropriate.
+
+Not filter chips pretending to be navigation.
+
+==================================================
+PART J — REQUEST LIST UX
+==================================================
+
+Current self request screen is card-only.
+
+Desktop:
+
+use proper table/list.
+
+Columns:
+
+Leave Type
+
+Period
+
+Days
+
+Status
+
+Submitted
+
+Reviewed By where useful
+
+Actions
+
+Mobile:
+
+cards.
+
+==================================================
+SELF REQUEST LIST FILTERS
+==================================================
+
+Add compact:
+
+Status
+Year
+Leave Type
+
+No giant filters.
+
+==================================================
+PART K — APPROVAL QUEUE UX
+==================================================
+
+Current Approval Queue has useful foundations.
+
+Enhance it.
+
+Add:
+
+search
+period
+leave type
+department where company scope
+urgency/start date sorting
+
+Keep:
+
+pending count
+starting soon
+
+Desktop table.
+
+Mobile cards.
+
+Review action prominent.
+
+==================================================
+APPROVAL DETAIL UX
+==================================================
+
+On Desktop use structured 2-column review composition:
+
+LEFT
+
+Employee + request
 
 Reason
 
-Keep concise.
+Dates
+
+Duration
+
+RIGHT
+
+Balance
+
+Team context
+
+Warnings
+
+Decision controls
+
+On mobile:
+
+single column
+
+Approve/Reject safe bottom actions.
 
 ==================================================
-123. ENTITLEMENT PREVIEW
+PART L — EMPLOYEE LEAVE PROFILE UX
 ==================================================
 
-When confirming:
+Improve:
 
-show descriptive preview such as:
+/app/leave/employee/:employeeId
 
+Header should support:
+
+avatar
+name
+employee code
+designation
+department
+
+Balance section should use a consistent responsive grid.
+
+Then:
+
+Upcoming Leave
+
+Recent Requests
+
+Ledger access where permitted
+
+Do not put everything into identical bordered cards.
+
+==================================================
+LEDGER YEAR
+==================================================
+
+Current code uses:
+
+DateTime.now().toUtc().year
+
+Fix this.
+
+Use:
+
+CompanyTimeService
++
+LeaveYearResolver.
+
+==================================================
+PART M — BALANCE MANAGEMENT UX
+==================================================
+
+HR/Admin balances:
+
+Desktop table.
+
+Suggested:
+
+Employee
+
+Department
+
+Annual Available
+
+Sick Available
+
+Other/summary
+
+Pending
+
+Actions
+
+OR use one row per Employee + Leave Type if repository design prefers.
+
+Do not create unreadable huge matrix if many leave types.
+
+==================================================
+BALANCE ADJUSTMENT
+==================================================
+
+Existing ledger architecture remains.
+
+Adjustment UI:
+
+Employee
+
+Leave Type
+
+Current Balance
+
+Add / Deduct
+
+Days
+
+Effective Date
+
+Reason
+
+New Balance Preview
+
+Confirm
+
+Effective Date default uses CompanyTimeService, NOT raw DateTime.now.
+
+==================================================
+PART N — CALENDAR REBUILD
+==================================================
+
+Replace the simplistic existing LeaveCalendarPage UX.
+
+==================================================
+DESKTOP CALENDAR
+==================================================
+
+At expanded widths:
+
+Month header
+
+Previous
+Today
+Next
+
+Filters
+
+Monthly calendar grid
+
+Selected-day agenda/sidebar
+
+Each day cell should support event chips.
+
+Example:
+
+8
+
+Ahmed · Annual
+Diwali · Holiday
+
++3 more
+
+Do not merely color the background of day 8.
+
+==================================================
+EVENT TYPES
+==================================================
+
+Visually distinguish:
+
+Approved Leave
+
+Pending Leave if viewer is allowed to see it
+
+Holiday
+
+Optional Holiday
+
+Use restrained design-system colors.
+
+==================================================
+CALENDAR FILTERS
+==================================================
+
+According to scope:
+
+Leave
+Holidays
+
+Leave Type
+
+Department
+
+Work Location
+
+Status
+
+Keep minimal.
+
+==================================================
+CALENDAR DAY SELECTION
+==================================================
+
+Click/tap day:
+
+show day agenda.
+
+Example:
+
+8 November 2026
+
+HOLIDAY
+
+Diwali
+Festival Holiday
+Company wide
+
+ON LEAVE
+
+Ahmed Khan
 Annual Leave
-Probation available: 2 days
-Confirmed policy entitlement: 18 days/year
-Adjustment to be posted: +X days
+Approved
 
-Only if calculation is deterministic.
-
-Do not fabricate.
+Fatima
+Sick Leave
+Approved
 
 ==================================================
-124. NO PAYROLL
+MOBILE CALENDAR
 ==================================================
 
-Probation confirmation does NOT:
+Do NOT squeeze a full desktop calendar as the primary experience.
 
-change salary
+Use:
 
-calculate increment
+compact month selector
 
-change payroll
+selected date
 
-issue contract
+agenda/list
 
-unless future module implements it.
+Optional small month grid above.
 
-==================================================
-125. NO PERFORMANCE REVIEW
-==================================================
+Mobile priority:
 
-Do not build:
-
-probation score
-
-manager rating
-
-performance evaluation
-
-confirmation recommendation algorithm.
-
-Separate future performance module.
+agenda readability.
 
 ==================================================
-126. BACKEND CONTRACT
+TABLET
 ==================================================
 
-Update backend documentation with:
-
-probation policy
-
-employee probation
-
-extension
-
-confirmation
-
-audit events
-
-leave policy stage resolution
-
-entitlement transition
-
-idempotency.
-
-Server must revalidate.
+Month grid + agenda below or side depending width.
 
 ==================================================
-127. DOCUMENTATION
+EVENT CLICK
 ==================================================
 
-Create/update:
+Leave event:
+real Leave Request route.
 
-docs/probation_architecture.md
-
-docs/leave_probation_rules.md
-
-Document:
-
-expected vs actual confirmation
-
-manual confirmation behavior
-
-policy snapshots
-
-leave eligibility
-
-ledger transition.
+Holiday event:
+Holiday Detail if user has admin/view permission,
+otherwise display safe read-only holiday information.
 
 ==================================================
-128. QUALITY CHECK
+PART O — HOLIDAY + LEAVE CALENDAR PRIVACY
+==================================================
+
+Employee should see:
+
+company holiday
+
+their own Leave
+
+not everyone's private leave reason.
+
+Manager:
+
+team names + Leave Type where permitted
+
+not sensitive reasons in calendar.
+
+HR/Admin:
+
+company operational visibility according to permission.
+
+==================================================
+PART P — ATTENDANCE INTEGRATION AUDIT
+==================================================
+
+Recheck Phase 15 integration.
+
+Approved full-day Leave:
+
+Attendance Today
+→ Leave
+
+Team Attendance
+→ Leave
+
+All Attendance
+→ Leave
+
+History
+→ Approved Leave classification where implemented
+
+Applicable Holiday:
+
+Attendance Today
+→ Holiday
+
+Team/All Attendance
+→ Holiday
+
+History
+→ Holiday where reliable.
+
+Do NOT create fake AttendanceDay.
+
+==================================================
+LEAVE/HOLIDAY PRIORITY
+==================================================
+
+Central WorkdayClassification resolver determines:
+
+Attendance event present
+Approved Leave
+Holiday
+Non-working day
+No record
+
+Define consistent precedence.
+
+Example:
+
+If employee genuinely worked on Holiday:
+
+display Holiday + Attendance Recorded appropriately,
+not discard the attendance.
+
+==================================================
+PART Q — TIME ARCHITECTURE FIX
+==================================================
+
+Search every Leave file.
+
+Remove inappropriate presentation/business usages of:
+
+DateTime.now()
+
+Current known offenders include:
+
+leave_today_banner.dart
+
+leave_blocs.dart
+
+leave_operations_pages.dart
+
+leave_employee_page.dart
+
+leave_approvals_page.dart
+
+leave_balances_page.dart
+
+leave_seed.dart
+
+==================================================
+USE THE CORRECT SOURCE
+==================================================
+
+For absolute current time:
+
+AppClock.
+
+For company "today":
+
+CompanyTimeService.
+
+For leave year:
+
+LeaveYearResolver.
+
+For period boundaries:
+
+company business-date helpers.
+
+==================================================
+STATIC TODAY BUG
+==================================================
+
+Audit any code like:
+
+static final DateTime _today = DateTime.now()
+
+This becomes stale if app remains open across midnight.
+
+Remove it.
+
+==================================================
+PERIOD FILTER BUG
+==================================================
+
+Team/All Leave filters currently calculate Today/Week/Month using raw UTC DateTime.now.
+
+Replace with company business date.
+
+==================================================
+APPROVAL STARTING SOON
+==================================================
+
+Current approval screen calculates startingSoon using raw DateTime.now().toUtc().
+
+Replace with company business date.
+
+==================================================
+DEMO SEED
+==================================================
+
+Current leave_seed uses a mixture of:
+
+DateTime.utc(2026)
+
+and:
+
+DateTime.now().toUtc().year
+
+Clean this.
+
+Demo seeding must be deterministic and internally consistent.
+
+==================================================
+PART R — HOLIDAY DEMO DATA
+==================================================
+
+Do NOT pretend demo seed is an authoritative government holiday database.
+
+Label/structure it as demo.
+
+Provide a few:
+
+Public/Government
+
+Festival
+
+Company
+
+entries.
+
+Do not make production depend on them.
+
+==================================================
+PART S — SETTINGS UX
+==================================================
+
+Settings:
+
+Leave & Holidays
+
+Leave Types
+
+Leave Policies
+
+Holiday Calendar / Holidays
+
+Use clear labels.
+
+For HR/Admin:
+
+Holiday row should clearly say:
+
+Holidays
+Manage the company's annual public, festival and company holiday calendar.
+
+Not merely:
+
+Configure public, company and optional holidays.
+
+==================================================
+PART T — LEAVE TYPES / POLICIES
+==================================================
+
+Leave Types and Leave Policies can continue using configuration layouts where semantically appropriate.
+
+But audit their UX.
+
+Do not redesign stable business logic unnecessarily.
+
+Holiday Management MUST be purpose-built because calendar/year semantics differ.
+
+==================================================
+PART U — ROUTING
+==================================================
+
+Keep existing meaningful routes where possible.
+
+Current:
+
+/app/leave
+
+/app/leave/my-requests
+
+/app/leave/request
+
+/app/leave/requests/:id
+
+/app/leave/team
+
+/app/leave/all
+
+/app/leave/approvals
+
+/app/leave/balances
+
+/app/leave/calendar
+
+/app/leave/employee/:employeeId
+
+/app/settings/leave-types
+
+/app/settings/leave-policies
+
+/app/settings/holidays
+
+Keep them stable.
+
+==================================================
+OPTIONAL NEW HOLIDAY ROUTES
+==================================================
+
+If Holiday Calendar entity/year management needs routes:
+
+/app/settings/holidays
+
+/app/settings/holidays/new
+
+/app/settings/holidays/:holidayId
+
+/app/settings/holidays/:holidayId/edit
+
+Optional:
+
+/app/settings/holidays/import
+
+/app/settings/holidays/setup-year
+
+Do not encode year in awkward role-derived routes.
+
+==================================================
+PART V — MAIN NAVIGATION
+==================================================
+
+Keep ONE primary:
+
+Leave
+
+Do NOT add:
+
+Holidays
+Approvals
+Balances
+Team Leave
+
+as top-level drawer items.
+
+Holiday management remains nested.
+
+==================================================
+PART W — RESPONSIVE LAYOUT
+==================================================
+
+Test all Leave/Holiday pages at:
+
+360
+390
+430
+600
+768
+900
+1024
+1280
+1440
+1920
+
+==================================================
+DESKTOP EXPECTATION
+==================================================
+
+Use screen space.
+
+No huge empty right side.
+
+No grid of tiny 200px shortcut cards floating in a 1440px page.
+
+Use:
+
+responsive metrics
+
+operational 2-column sections
+
+tables
+
+calendar workspace
+
+focused panels.
+
+==================================================
+MOBILE EXPECTATION
+==================================================
+
+Purpose-built.
+
+No desktop table squeezing.
+
+No six-chip horizontal subnav.
+
+No huge filter card.
+
+No month calendar with unreadable 7 tiny cells as the only view.
+
+==================================================
+PART X — VISUAL DIRECTION
+==================================================
+
+Leave/Holiday should feel:
+
+calm
+
+human
+
+professional
+
+premium enterprise
+
+2026 SaaS
+
+not:
+
+generic Material demo
+
+dashboard card explosion
+
+rainbow HR software
+
+==================================================
+COLORS
+==================================================
+
+Use centralized semantic tokens.
+
+Leave Types may have subtle category color.
+
+Holidays use a distinct calm holiday semantic.
+
+Do not hardcode random colors.
+
+==================================================
+CARD USAGE
+==================================================
+
+Avoid:
+
+card inside card inside card.
+
+Sections can exist through spacing and headings.
+
+Use cards only where the surface genuinely needs containment.
+
+==================================================
+METRIC RESPONSIVENESS
+==================================================
+
+Replace hardcoded:
+
+SizedBox(width: 190)
+
+SizedBox(width: 210)
+
+SizedBox(width: 220)
+
+where it causes awkward composition.
+
+Prefer:
+
+AppResponsiveGrid
+
+or responsive grid calculations.
+
+==================================================
+PART Y — LOCALIZATION
+==================================================
+
+Add English + Arabic terms including:
+
+Holiday Calendar
+
+Set Up Holiday Calendar
+
+Add Holiday
+
+Manage Holidays
+
+Government Holiday
+
+Public Holiday
+
+Festival Holiday
+
+Regional Holiday
+
+Company Holiday
+
+Special Closure
+
+Optional Holiday
+
+Holiday Year
+
+Copy Previous Year
+
+Import Holidays
+
+Start Blank
+
+Apply To
+
+Company Wide
+
+Specific Work Locations
+
+Next Holiday
+
+No Holidays Configured
+
+Verify Festival Dates
+
+Leave & Holiday Calendar
+
+and all new UX strings.
+
+No hardcoded visible text.
+
+==================================================
+RTL
+==================================================
+
+Audit:
+
+Leave subnav
+
+filters
+
+holiday form
+
+holiday table
+
+calendar
+
+day agenda
+
+employee balance
+
+approval pages.
+
+==================================================
+PART Z — ACCESSIBILITY
+==================================================
+
+Calendar events need semantic labels.
+
+Holiday type not color-only.
+
+Approval actions accessible.
+
+Desktop keyboard navigation.
+
+Mobile touch targets.
+
+==================================================
+TESTS — PERMISSIONS
+==================================================
+
+Add explicit regression test:
+
+HR default permissions:
+
+holidayView = true
+holidayManage = true
+
+Company Admin:
+view/manage according to expected template.
+
+Employee:
+holidayManage = false.
+
+Manager:
+holidayManage = false unless explicit.
+
+==================================================
+TEST MANAGE IMPLIES VIEW
+==================================================
+
+Permission configuration cannot result in unusable:
+
+holidayManage without holidayView.
+
+Do same audit for:
+
+Leave Type
+
+Leave Policy.
+
+==================================================
+TEST — HR HOLIDAY MANAGEMENT
+==================================================
+
+Login HR.
+
+Settings
+→ Leave & Holidays
+→ Holidays
+
+Holiday page visible.
+
+Add Holiday visible.
+
+Create:
+
+Festival Holiday
+
+Save.
+
+Holiday appears in list and calendar.
+
+==================================================
+TEST — COMPANY ADMIN
+==================================================
+
+Company Admin:
+
+manage Holiday according to permissions.
+
+No Employee linkage required.
+
+==================================================
+TEST — EMPLOYEE
+==================================================
+
+Employee:
+
+can view applicable holidays in calendar.
+
+Cannot see Add/Edit/Delete/Deactivate.
+
+==================================================
+TEST — LOCATION SCOPE
+==================================================
+
+Create holiday:
+
+specific Hyderabad location.
+
+Hyderabad employee:
+sees Holiday.
+
+Other location employee:
+does not.
+
+==================================================
+TEST — MULTI-DAY
+==================================================
+
+Create:
+
+24–26 Dec closure.
+
+All three dates appear correctly.
+
+==================================================
+TEST — OPTIONAL
+==================================================
+
+Optional holiday is displayed as Optional.
+
+Do not automatically treat it as mandatory non-working day unless current domain rules explicitly support selection.
+
+==================================================
+TEST — COPY YEAR
+==================================================
+
+Copy previous year's holidays.
+
+No duplicate IDs.
+
+Dates/year updated according to defined workflow.
+
+Entries remain reviewable before confirmation.
+
+==================================================
+TEST — IMPORT
+==================================================
+
+Valid CSV imports.
+
+Invalid dates rejected.
+
+Duplicates identified.
+
+Cross-company locations rejected.
+
+==================================================
+TEST — CALENDAR
+==================================================
+
+Desktop:
+
+multiple events in one day.
+
+Mobile:
+
+agenda readable.
+
+Event route opens correctly.
+
+==================================================
+TEST — LEAVE HOME
+==================================================
+
+Employee sees:
+
+balances
+upcoming leave
+next holiday
+pending request
+recent requests.
+
+==================================================
+TEST — HR LANDING
+==================================================
+
+HR sees:
+
+on leave today
+pending approvals
+upcoming leave
+holiday calendar status.
+
+==================================================
+TEST — MANAGER LANDING
+==================================================
+
+Manager sees:
+
+team leave
+pending approvals
+upcoming team leave.
+
+==================================================
+TEST — TIME
+==================================================
+
+Company timezone differs from device.
+
+Today/This Week/This Month
+
+approval starting soon
+
+leave year
+
+upcoming holiday
+
+remain company-correct.
+
+==================================================
+TEST — MIDNIGHT
+==================================================
+
+App remains open across company midnight.
+
+"Today" calculations update correctly.
+
+No static cached day.
+
+==================================================
+TEST — ROUTES
+==================================================
+
+Direct:
+
+/app/leave/calendar
+
+/app/settings/holidays
+
+/app/settings/holidays/new
+
+refresh correctly.
+
+Back/Forward correctly.
+
+==================================================
+TEST — MOBILE
+==================================================
+
+390px:
+
+Employee Leave
+
+HR All Leave
+
+Approvals
+
+Calendar
+
+Holiday Management
+
+Holiday Form
+
+No overflow.
+
+==================================================
+TEST — DESKTOP
+==================================================
+
+1440px:
+
+Leave landing uses width intelligently.
+
+Holiday table/calendars look like desktop ERP.
+
+No mobile card-only layout.
+
+==================================================
+TEST — ARABIC
+==================================================
+
+All redesigned surfaces RTL/localized.
+
+==================================================
+DO NOT ADD FAKE FEATURES
+==================================================
+
+Do NOT add:
+
+Payroll calculation
+
+Leave encashment
+
+performance scoring
+
+automatic legal compliance claims
+
+automatic government holiday download
+
+fake medical attachments
+
+unless separately implemented.
+
+==================================================
+DOCUMENTATION
+==================================================
+
+Update:
+
+docs/phase_15_leave.md
+
+Add:
+
+Complete Persona Matrix
+
+Holiday Administration
+
+Government/Festival Holiday Process
+
+Holiday Year Setup
+
+Holiday Permission Rules
+
+Leave UX Architecture
+
+Calendar UX
+
+Company-Time Rules
+
+Clearly document:
+
+HR/Company Admin maintain company holidays.
+
+Employees/Managers consume applicable calendars.
+
+==================================================
+QUALITY GATE
 ==================================================
 
 Run:
@@ -2233,7 +2480,7 @@ Run:
 flutter gen-l10n
 
 dart run build_runner build --delete-conflicting-outputs
-if required
+if needed
 
 dart format .
 
@@ -2241,165 +2488,185 @@ flutter analyze
 
 flutter test
 
+flutter build web --release --dart-define=DEMO_AUTH=true
+
 ==================================================
-129. COMPLETION REPORT
+FINAL COMPLETION REPORT
 ==================================================
 
-At completion provide:
+Report:
 
-1. probation domain architecture
+1. exact HR holiday permission bug fixed
 
-2. default company probation policy
+2. final Holiday permission model
 
-3. Employee probation storage
+3. Holiday domain/schema changes
 
-4. probation status model
+4. schema migration version
 
-5. expected-end calculation
+5. Government/Public holiday support
 
-6. employee override behavior
+6. Festival holiday support
 
-7. extension workflow
+7. Regional holiday support
 
-8. confirmation workflow
+8. optional holiday normalization
 
-9. audit history
+9. annual Holiday Calendar architecture
 
-10. permissions/capabilities
+10. Add Holiday flow
 
-11. My Profile integration
+11. Holiday Management screen
 
-12. Employee Details integration
+12. Copy Previous Year
 
-13. Employee list filters
+13. Import flow
 
-14. HR dashboard integration
+14. WorkLocation scope
 
-15. notifications
+15. Leave Calendar redesign
 
-16. LeaveEligibilityResolver
+16. Employee Leave redesign
 
-17. probation Leave rules
+17. Manager Leave redesign
 
-18. minimum-service rules
+18. HR/Admin Leave redesign
 
-19. Leave balance behavior
+19. approval UX changes
 
-20. confirmation entitlement transition
+20. filters redesign
 
-21. idempotency protections
+21. request list redesign
 
-22. policy snapshot behavior
+22. balance UX
 
-23. pending/approved Leave handling through confirmation
+23. secondary Leave navigation redesign
 
-24. company isolation
+24. raw DateTime.now usages removed/fixed
 
-25. timezone/date behavior
+25. company-time behavior
 
 26. English/Arabic/RTL
 
-27. tests added
+27. responsive QA
 
-28. flutter analyze result
+28. permission tests
 
-29. flutter test result
+29. holiday tests
 
-30. remaining limitations
+30. leave UI tests
+
+31. flutter analyze result
+
+32. flutter test count
+
+33. Web release result
+
+34. genuine remaining limitations
 
 ==================================================
-130. STOP CONDITION
+STOP CONDITION
 ==================================================
 
-THIS ADD-ON IS COMPLETE ONLY WHEN:
+DO NOT CALL THIS COMPLETE UNTIL:
 
-✓ Probation is modeled independently from EmploymentStatus
+✓ HR can actually VIEW Holidays
 
-✓ Employee can have probation not applicable
+✓ HR can actually ADD Holidays
 
-✓ Company default probation duration is configurable
+✓ Company Admin can manage Holidays when permitted
 
-✓ Employment Type can influence probation policy
+✓ Holiday Manage cannot become inaccessible because View is absent
 
-✓ Employee-specific override works if permitted
+✓ Employees can view applicable Holidays
 
-✓ probation uses calendar-safe date calculations
+✓ Managers can view applicable Holidays
 
-✓ start date is stored
+✓ Government/Public Holidays can be configured
 
-✓ expected end date is stored
+✓ Festival Holidays can be configured
 
-✓ actual confirmation date is stored
+✓ Regional Holidays can be configured
 
-✓ extension history is retained
+✓ Company Holidays can be configured
 
-✓ early confirmation is supported where allowed
+✓ multi-day Holidays work
 
-✓ expected end passing does not silently imply confirmation unless configured
+✓ location-specific Holidays work
 
-✓ confirmation due/overdue can be identified
+✓ optional Holiday semantics are not duplicated/conflicting
 
-✓ HR can confirm according to permission
+✓ Holiday management is year-aware
 
-✓ HR can extend according to permission
+✓ new year can be initialized
 
-✓ self/team/company scope is enforced
+✓ previous year can be copied
 
-✓ Company isolation works
+✓ bulk import has validation/preview
 
-✓ My Profile shows appropriate probation info
+✓ no external government API is required
 
-✓ Employee Details shows full probation management information
+✓ Holidays are discoverable from Leave Calendar
 
-✓ unlinked Admin does not get fake probation self data
+✓ HR/Admin see Add Holiday from relevant workflow
 
-✓ probation is NOT an Attendance status
+✓ Settings still provides canonical Holiday management
 
-✓ probation is NOT a Leave Type
+✓ Holiday list no longer shows meaningless generic Assigned Employee UI
 
-✓ Leave eligibility is resolved centrally
+✓ Employee Leave home is substantially redesigned
 
-✓ Annual Leave can be blocked during probation
+✓ Manager Leave workspace is substantially redesigned
 
-✓ Sick/Emergency Leave can independently be allowed
+✓ HR/Admin Leave workspace is substantially redesigned
 
-✓ limited probation Leave is supported
+✓ Leave navigation is no longer a row of FilterChips
 
-✓ minimum service days are supported independently
+✓ desktop filters are compact
 
-✓ probation balance is ledger-based
+✓ mobile filters use appropriate sheet/page
 
-✓ confirmation does not directly overwrite balances
+✓ self requests use desktop-appropriate table/list
 
-✓ confirmation entitlement transition is idempotent
+✓ Calendar is a real Leave + Holiday calendar
 
-✓ double confirmation cannot double-credit Leave
+✓ desktop calendar shows actual events
 
-✓ probation extension keeps probation leave rules active
+✓ mobile calendar has useful agenda experience
 
-✓ existing approved Leave is not rewritten after confirmation
+✓ multiple events/day are handled
 
-✓ pending requests preserve submitted policy snapshot
+✓ privacy rules remain intact
 
-✓ existing Employee probation snapshot is not changed by later company policy edits
+✓ Team/All Attendance Leave/Holiday classification remains correct
 
-✓ Holidays remain unaffected
+✓ no fake AttendanceDay is created
 
-✓ Attendance Punch In/Out remains unaffected by probation itself
+✓ raw DateTime.now business logic is removed from Leave presentation/domain flows
 
-✓ HR dashboard can surface confirmation-due employees
+✓ company business date is used
 
-✓ notifications work where enabled
+✓ Leave year is resolved centrally
+
+✓ no static cached "today" survives midnight incorrectly
+
+✓ routing/deep links remain correct
+
+✓ mobile works
+
+✓ tablet works
+
+✓ desktop/web works
 
 ✓ English works
 
 ✓ Arabic/RTL works
 
-✓ responsive layouts work
-
 ✓ flutter analyze passes
 
-✓ tests pass
+✓ all tests pass
 
-Then STOP.
+✓ Web release build succeeds
+
+THEN STOP.
 ```

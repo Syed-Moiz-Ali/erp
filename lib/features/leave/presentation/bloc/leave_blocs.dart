@@ -126,8 +126,8 @@ class LeaveRequestFormBloc
         LeaveRequestFormState(
           draft: LeaveRequestDraft(
             leaveTypeId: '',
-            startDate: _today,
-            endDate: _today,
+            startDate: DateTime.utc(1970),
+            endDate: DateTime.utc(1970),
           ),
         ),
       ) {
@@ -135,11 +135,6 @@ class LeaveRequestFormBloc
       _handle,
       transformer: (events, mapper) => events.asyncExpand(mapper),
     );
-  }
-  static final DateTime _today = _utcToday();
-  static DateTime _utcToday() {
-    final now = DateTime.now().toUtc();
-    return DateTime.utc(now.year, now.month, now.day);
   }
 
   final LeaveRepository repository;
@@ -183,9 +178,14 @@ class LeaveRequestFormBloc
           return;
         }
         final types = (result as Success<List<LeaveType>>).value;
-        final draft = state.draft.leaveTypeId.isEmpty && types.isNotEmpty
-            ? state.draft.copyWith(leaveTypeId: types.first.id)
-            : state.draft;
+        final today = repository.companyToday(context);
+        var draft = state.draft;
+        if (draft.startDate.year < 2000) {
+          draft = draft.copyWith(startDate: today, endDate: today);
+        }
+        if (draft.leaveTypeId.isEmpty && types.isNotEmpty) {
+          draft = draft.copyWith(leaveTypeId: types.first.id);
+        }
         emit(
           LeaveRequestFormState(
             draft: draft,
@@ -436,20 +436,21 @@ class LeaveBalancesState {
 
 class LeaveCalendarCubit extends Cubit<LeaveCalendarState> {
   LeaveCalendarCubit(this.repository, this.context)
-    : super(
-        LeaveCalendarState(from: _monthStart(_today), to: _monthEnd(_today)),
-      );
-  static final DateTime _today = DateTime.now().toUtc();
-  static DateTime _monthStart(DateTime d) => DateTime.utc(d.year, d.month, 1);
-  static DateTime _monthEnd(DateTime d) => DateTime.utc(d.year, d.month + 1, 0);
+    : super(const LeaveCalendarState(from: null, to: null));
   final LeaveRepository repository;
   final AuthContext context;
 
-  LeaveCalendarState next({DateTime? from, DateTime? to}) =>
-      LeaveCalendarState(from: from ?? state.from, to: to ?? state.to);
+  static DateTime _monthStart(DateTime d) => DateTime.utc(d.year, d.month, 1);
+  static DateTime _monthEnd(DateTime d) => DateTime.utc(d.year, d.month + 1, 0);
+
+  DateTime get _companyToday => repository.companyToday(context);
 
   Future<void> load({DateTime? from, DateTime? to}) async {
-    final range = next(from: from, to: to);
+    final anchor = _companyToday;
+    final range = (
+      from: from ?? _monthStart(state.from ?? anchor),
+      to: to ?? _monthEnd(state.to ?? anchor),
+    );
     emit(LeaveCalendarState(from: range.from, to: range.to, loading: true));
     final result = await repository.calendar(context, range.from, range.to);
     switch (result) {
@@ -483,8 +484,107 @@ class LeaveCalendarState {
     this.entries = const [],
     this.failure,
   });
-  final DateTime from, to;
+  final DateTime? from, to;
   final bool loading;
   final List<LeaveCalendarEntry> entries;
   final Failure? failure;
+}
+
+// ---- employee leave home ---------------------------------------------------
+
+class LeaveHomeState {
+  const LeaveHomeState({
+    this.loading = true,
+    this.balances = const [],
+    this.requests = const [],
+    this.nextHoliday,
+    this.failure,
+  });
+  final bool loading;
+  final List<LeaveBalanceSummary> balances;
+  final List<LeaveRequestRow> requests;
+  final Holiday? nextHoliday;
+  final Failure? failure;
+}
+
+/// Aggregates the employee's balances, requests and next holiday for the My
+/// Leave home. All dates come from the repository (company time).
+class LeaveHomeCubit extends Cubit<LeaveHomeState> {
+  LeaveHomeCubit(this.repository, this.context, this.employeeId)
+    : super(const LeaveHomeState()) {
+    load();
+  }
+  final LeaveRepository repository;
+  final AuthContext context;
+  final String employeeId;
+  StreamSubscription<Result<List<LeaveBalanceSummary>>>? _balances;
+  StreamSubscription<Result<List<LeaveRequestRow>>>? _requests;
+
+  Future<void> load() async {
+    emit(const LeaveHomeState());
+    await _balances?.cancel();
+    await _requests?.cancel();
+    _balances = repository
+        .watchBalances(context, employeeId)
+        .listen(
+          (result) => _emit(
+            balances: result is Success<List<LeaveBalanceSummary>>
+                ? result.value
+                : null,
+            failure: result is Failed<List<LeaveBalanceSummary>>
+                ? result.failure
+                : null,
+          ),
+          onError: (Object _) {},
+        );
+    _requests = repository
+        .watchRequests(context, scope: LeaveRequestScope.self)
+        .listen(
+          (result) => _emit(
+            requests: result is Success<List<LeaveRequestRow>>
+                ? result.value
+                : null,
+            failure: result is Failed<List<LeaveRequestRow>>
+                ? result.failure
+                : null,
+          ),
+          onError: (Object _) {},
+        );
+    final holiday = await repository.nextHoliday(
+      context,
+      employeeId,
+      repository.companyToday(context),
+    );
+    if (holiday is Success<Holiday?>) {
+      emit(
+        LeaveHomeState(
+          loading: false,
+          balances: state.balances,
+          requests: state.requests,
+          nextHoliday: holiday.value,
+        ),
+      );
+    }
+  }
+
+  void _emit({
+    List<LeaveBalanceSummary>? balances,
+    List<LeaveRequestRow>? requests,
+    Failure? failure,
+  }) => emit(
+    LeaveHomeState(
+      loading: false,
+      balances: balances ?? state.balances,
+      requests: requests ?? state.requests,
+      nextHoliday: state.nextHoliday,
+      failure: failure,
+    ),
+  );
+
+  @override
+  Future<void> close() async {
+    await _balances?.cancel();
+    await _requests?.cancel();
+    return super.close();
+  }
 }

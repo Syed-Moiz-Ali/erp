@@ -739,9 +739,16 @@ void main() {
             ),
           );
           await settleDb(t);
+          // Manage implies view, so the saved record's details are shown.
           expect(
-            h.router(t).routeInformationProvider.value.uri.path,
-            AppRoutes.dashboard,
+            h
+                .router(t)
+                .routeInformationProvider
+                .value
+                .uri
+                .path
+                .startsWith('${AppRoutes.shifts}/'),
+            isTrue,
           );
         } else {
           expect(find.byType(ShiftListPage), findsOneWidget);

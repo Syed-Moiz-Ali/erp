@@ -110,6 +110,7 @@ void configureDependencies() {
       services(),
       clock: services(),
       time: services(),
+      leave: services(),
     ),
   );
   services.registerLazySingleton<AttendanceReportRepository>(
@@ -207,6 +208,7 @@ void configureDependencies() {
       services(),
       services(),
       notifications: services(),
+      time: services(),
     ),
   );
   services.registerLazySingleton(() => leaveTypeConfiguration(services()));

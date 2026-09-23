@@ -3907,4 +3907,427 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get settingsLeaveCategoryDesc =>
       'اضبط أنواع الإجازات وسياساتها والعطلات.';
+
+  @override
+  String get leaveUpcoming => 'القادمة';
+
+  @override
+  String get leavePendingApproval => 'بانتظار الاعتماد';
+
+  @override
+  String get leaveApprovedThisMonth => 'المعتمدة هذا الشهر';
+
+  @override
+  String get leaveTeamMembers => 'أعضاء الفريق';
+
+  @override
+  String get leaveNoEmployeesOnLeave => 'لا يوجد موظفون في إجازة اليوم.';
+
+  @override
+  String get leaveNoUpcoming => 'لا توجد إجازات قادمة.';
+
+  @override
+  String get leaveHalfDay => 'نصف يوم';
+
+  @override
+  String get leaveFullDay => 'يوم كامل';
+
+  @override
+  String get leaveReturnDate => 'تاريخ العودة';
+
+  @override
+  String get leaveStatusField => 'الحالة';
+
+  @override
+  String get leaveReviewRequest => 'مراجعة الطلب';
+
+  @override
+  String get leaveCompanyLeave => 'إجازات الشركة';
+
+  @override
+  String get leaveApprovalsTitle => 'اعتمادات الإجازات';
+
+  @override
+  String get leaveApprovalsSubtitle =>
+      'راجع طلبات إجازات الموظفين التي تتطلب إجراءك.';
+
+  @override
+  String get leaveTeamSubtitle =>
+      'اعرض الإجازات القادمة وتوفر الفريق والطلبات.';
+
+  @override
+  String get leaveAllSubtitle => 'راقب إجازات الشركة والتوفر والطلبات.';
+
+  @override
+  String get leaveOverviewSubtitle => 'إجازاتك وتوفر الفريق والطلبات.';
+
+  @override
+  String get leavePendingRequests => 'الطلبات المعلّقة';
+
+  @override
+  String get leaveStartingSoon => 'تبدأ قريباً';
+
+  @override
+  String get leaveTeamRequests => 'طلبات الفريق';
+
+  @override
+  String get leaveCompanyRequests => 'طلبات الشركة';
+
+  @override
+  String get leaveAvailableBalance => 'الرصيد المتاح';
+
+  @override
+  String get leaveBalanceAfterApproval => 'الرصيد بعد الموافقة';
+
+  @override
+  String get leaveViewEmployeeLeave => 'عرض إجازات الموظف';
+
+  @override
+  String get leaveEmployeeLeave => 'إجازات الموظف';
+
+  @override
+  String get leaveNoPendingApprovals => 'لا توجد طلبات تتطلب اعتمادك.';
+
+  @override
+  String get leaveSearchEmployee => 'بحث عن موظف';
+
+  @override
+  String get leavePeriodAll => 'الكل';
+
+  @override
+  String get leavePeriodToday => 'اليوم';
+
+  @override
+  String get leavePeriodThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get leavePeriodThisMonth => 'هذا الشهر';
+
+  @override
+  String get leavePeriodNext30 => 'الأيام الثلاثون القادمة';
+
+  @override
+  String get leavePeriodCustom => 'مخصص';
+
+  @override
+  String get leaveClearFilters => 'مسح الفلاتر';
+
+  @override
+  String get leaveActiveFilters => 'الفلاتر النشطة';
+
+  @override
+  String get leaveManageSettings => 'إدارة إعدادات الإجازات';
+
+  @override
+  String get leaveViewAllLeave => 'عرض كل الإجازات';
+
+  @override
+  String get leaveReviewQueue => 'قائمة المراجعة';
+
+  @override
+  String get leaveNoBalanceForFilters => 'لا يوجد رصيد إجازات للفلاتر المحددة.';
+
+  @override
+  String get leaveRequestSection => 'الطلب';
+
+  @override
+  String get leaveEmployeeSection => 'الموظف';
+
+  @override
+  String get leaveBalanceSection => 'الرصيد';
+
+  @override
+  String get leaveDecisionSection => 'القرار';
+
+  @override
+  String get leaveWorkingDays => 'أيام العمل للإجازة';
+
+  @override
+  String get leavePortion => 'الجزء';
+
+  @override
+  String get leaveStart => 'البداية';
+
+  @override
+  String get leaveReturn => 'العودة';
+
+  @override
+  String get leaveOnLeave => 'في إجازة';
+
+  @override
+  String get leaveUpcomingHoliday => 'العطلة القادمة';
+
+  @override
+  String get leaveUpcomingTeamLeave => 'إجازات الفريق القادمة';
+
+  @override
+  String get leavePendingApprovals => 'الاعتمادات المعلّقة';
+
+  @override
+  String get leaveMyLeaveOverview => 'إجازاتي';
+
+  @override
+  String get leaveTeamOverview => 'إجازات الفريق';
+
+  @override
+  String get leaveCompanyOverview => 'إجازات الشركة';
+
+  @override
+  String get leaveEmployeeUnavailable => 'معلومات إجازات هذا الموظف غير متاحة.';
+
+  @override
+  String get leaveScopeDenied =>
+      'ليس لديك صلاحية الوصول إلى نطاق الإجازات هذا.';
+
+  @override
+  String get leaveRecentRequests => 'الطلبات الأخيرة';
+
+  @override
+  String get leaveBalanceLedger => 'سجل الرصيد';
+
+  @override
+  String get leaveAdjustmentAdded => 'أُضيف إلى الرصيد';
+
+  @override
+  String get leaveAdjustmentDeducted => 'خُصم من الرصيد';
+
+  @override
+  String get leaveEffectiveDate => 'تاريخ السريان';
+
+  @override
+  String get leaveCurrentAvailable => 'المتاح الحالي';
+
+  @override
+  String get leavePreviewNewAvailable => 'الرصيد المتاح الجديد';
+
+  @override
+  String get leaveNoTeam => 'لا يوجد فريق متاح لهذا الحساب.';
+
+  @override
+  String get leaveApprovalsEmptyQueue => 'لا توجد طلبات بانتظار مراجعتك.';
+
+  @override
+  String get leaveRequestedPeriod => 'الفترة المطلوبة';
+
+  @override
+  String get holidayTypeFestival => 'عطلة مهرجان';
+
+  @override
+  String get holidayTypeRegional => 'عطلة إقليمية';
+
+  @override
+  String get holidaySourceManual => 'يدوي';
+
+  @override
+  String get holidaySourceCopied => 'منسوخ من العام السابق';
+
+  @override
+  String get holidaySourceImported => 'مستورد';
+
+  @override
+  String get holidaySourceTemplate => 'قالب الشركة';
+
+  @override
+  String get holidayCalendarTitle => 'تقويم العطلات';
+
+  @override
+  String get holidayCalendarSubtitle =>
+      'أدر العطلات الرسمية والمهرجانات والإقليمية وعطلات الشركة.';
+
+  @override
+  String get holidayYearLabel => 'سنة العطلات';
+
+  @override
+  String get addHoliday => 'إضافة عطلة';
+
+  @override
+  String get editHoliday => 'تعديل العطلة';
+
+  @override
+  String get manageHolidays => 'إدارة العطلات';
+
+  @override
+  String get copyPreviousYear => 'نسخ العام السابق';
+
+  @override
+  String get importHolidays => 'استيراد العطلات';
+
+  @override
+  String get setUpHolidayCalendar => 'إعداد تقويم العطلات';
+
+  @override
+  String get startBlank => 'البدء فارغاً';
+
+  @override
+  String get holidayCalendarStatus => 'حالة تقويم العطلات';
+
+  @override
+  String get activeHolidays => 'العطلات النشطة';
+
+  @override
+  String get nextHoliday => 'العطلة القادمة';
+
+  @override
+  String get holidayNotConfigured => 'غير مُعد';
+
+  @override
+  String get noHolidaysConfigured => 'لا توجد عطلات مُعدة لهذه السنة.';
+
+  @override
+  String get holidayPublishedEmpty => 'لم تُنشر أي عطلات للشركة في هذه الفترة.';
+
+  @override
+  String get applyTo => 'تنطبق على';
+
+  @override
+  String get holidayMultiDay => 'عطلة متعددة الأيام';
+
+  @override
+  String get holidayBasicInfo => 'المعلومات الأساسية';
+
+  @override
+  String get holidayApplicability => 'النطاق';
+
+  @override
+  String get holidayOptionality => 'الاختيارية';
+
+  @override
+  String get holidaySourceField => 'المصدر';
+
+  @override
+  String get holidayDuplicateWarning =>
+      'توجد عطلة بنفس الاسم والتاريخ والنطاق بالفعل.';
+
+  @override
+  String get holidayImportPreview => 'معاينة الاستيراد';
+
+  @override
+  String get holidayImportPaste => 'لصق CSV';
+
+  @override
+  String get holidayImportHint =>
+      'الأعمدة: name, date, endDate, type, optional, scope, workLocations, description';
+
+  @override
+  String get holidayImportConfirm => 'استيراد';
+
+  @override
+  String get holidayImportImported => 'تم استيرادها';
+
+  @override
+  String get holidayImportSkipped => 'تم تخطيها';
+
+  @override
+  String get holidayCopyNote =>
+      'تحتفظ الإدخالات المنسوخة بالشهر واليوم — تحقق من تواريخ المهرجانات قبل التأكيد.';
+
+  @override
+  String get verifyFestivalDates =>
+      'منسوخ من العام السابق — تحقق من تواريخ المهرجانات.';
+
+  @override
+  String get holidaySelectLocations => 'اختر أماكن العمل';
+
+  @override
+  String get holidaySearchLocations => 'بحث في أماكن العمل';
+
+  @override
+  String get holidayTypeHelperPublic => 'العطلات الرسمية/الحكومية';
+
+  @override
+  String get holidayTypeHelperFestival => 'العطلات الدينية أو المهرجانات';
+
+  @override
+  String get holidayTypeHelperRegional => 'العطلات المحلية/الإقليمية';
+
+  @override
+  String get holidayTypeHelperCompany => 'العطلات التي تعلنها الشركة';
+
+  @override
+  String get holidayTypeHelperClosure => 'الإغلاقات الخاصة';
+
+  @override
+  String get nextHolidayDaysAway => 'يوم متبقٍ';
+
+  @override
+  String get upcomingLeave => 'الإجازات القادمة';
+
+  @override
+  String get pendingRequest => 'طلب معلّق';
+
+  @override
+  String get teamCalendar => 'تقويم الفريق';
+
+  @override
+  String get reviewRequests => 'مراجعة الطلبات';
+
+  @override
+  String get filters => 'الفلاتر';
+
+  @override
+  String get moreFilters => 'مزيد من الفلاتر';
+
+  @override
+  String get resetFilters => 'إعادة تعيين';
+
+  @override
+  String get periodLabel => 'الفترة';
+
+  @override
+  String get viewRequests => 'الطلبات';
+
+  @override
+  String get viewUpcoming => 'القادمة';
+
+  @override
+  String get viewToday => 'اليوم';
+
+  @override
+  String get selectedDay => 'اليوم المحدد';
+
+  @override
+  String get dayAgenda => 'جدول اليوم';
+
+  @override
+  String get noEventsOnDay => 'لا توجد إجازات أو عطلات في هذا اليوم.';
+
+  @override
+  String get leaveAndHolidayCalendar => 'تقويم الإجازات والعطلات';
+
+  @override
+  String get leaveViewMode => 'العرض';
+
+  @override
+  String get leaveBalanceAvailableLabel => 'متاح';
+
+  @override
+  String get leaveBalanceUsedLabel => 'مستخدم';
+
+  @override
+  String get leaveBalancePendingLabel => 'معلّق';
+
+  @override
+  String get leaveBalanceEntitlementLabel => 'الاستحقاق';
+
+  @override
+  String get leaveHolidayThisYear => 'عطلات هذه السنة';
+
+  @override
+  String get leaveManageHolidaysHint =>
+      'أدر تقويم العطلات الرسمية والمهرجانات وعطلات الشركة السنوي.';
+
+  @override
+  String get leaveSearchOrFilter => 'بحث';
+
+  @override
+  String get leaveAllTypes => 'كل الأنواع';
+
+  @override
+  String get leaveAllStatuses => 'كل الحالات';
+
+  @override
+  String get leaveAllPeriods => 'كل الفترات';
+
+  @override
+  String get leaveDayOne => 'يوم';
 }

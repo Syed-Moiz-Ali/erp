@@ -3965,4 +3965,432 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsLeaveCategoryDesc =>
       'Configure leave types, policies and holidays.';
+
+  @override
+  String get leaveUpcoming => 'Upcoming';
+
+  @override
+  String get leavePendingApproval => 'Pending approval';
+
+  @override
+  String get leaveApprovedThisMonth => 'Approved this month';
+
+  @override
+  String get leaveTeamMembers => 'Team members';
+
+  @override
+  String get leaveNoEmployeesOnLeave => 'No employees are on leave today.';
+
+  @override
+  String get leaveNoUpcoming => 'No upcoming leave.';
+
+  @override
+  String get leaveHalfDay => 'Half day';
+
+  @override
+  String get leaveFullDay => 'Full day';
+
+  @override
+  String get leaveReturnDate => 'Return date';
+
+  @override
+  String get leaveStatusField => 'Status';
+
+  @override
+  String get leaveReviewRequest => 'Review request';
+
+  @override
+  String get leaveCompanyLeave => 'Company leave';
+
+  @override
+  String get leaveApprovalsTitle => 'Leave approvals';
+
+  @override
+  String get leaveApprovalsSubtitle =>
+      'Review employee leave requests that require your action.';
+
+  @override
+  String get leaveTeamSubtitle =>
+      'View upcoming leave, team availability and leave requests.';
+
+  @override
+  String get leaveAllSubtitle =>
+      'Monitor company leave, availability and leave requests.';
+
+  @override
+  String get leaveOverviewSubtitle =>
+      'Your leave, team availability and requests.';
+
+  @override
+  String get leavePendingRequests => 'Pending requests';
+
+  @override
+  String get leaveStartingSoon => 'Starting soon';
+
+  @override
+  String get leaveTeamRequests => 'Team requests';
+
+  @override
+  String get leaveCompanyRequests => 'Company requests';
+
+  @override
+  String get leaveAvailableBalance => 'Available balance';
+
+  @override
+  String get leaveBalanceAfterApproval => 'Balance after approval';
+
+  @override
+  String get leaveViewEmployeeLeave => 'View employee leave';
+
+  @override
+  String get leaveEmployeeLeave => 'Employee leave';
+
+  @override
+  String get leaveNoPendingApprovals => 'No requests need your approval.';
+
+  @override
+  String get leaveSearchEmployee => 'Search employee';
+
+  @override
+  String get leavePeriodAll => 'All';
+
+  @override
+  String get leavePeriodToday => 'Today';
+
+  @override
+  String get leavePeriodThisWeek => 'This week';
+
+  @override
+  String get leavePeriodThisMonth => 'This month';
+
+  @override
+  String get leavePeriodNext30 => 'Next 30 days';
+
+  @override
+  String get leavePeriodCustom => 'Custom';
+
+  @override
+  String get leaveClearFilters => 'Clear filters';
+
+  @override
+  String get leaveActiveFilters => 'Active filters';
+
+  @override
+  String get leaveManageSettings => 'Manage leave settings';
+
+  @override
+  String get leaveViewAllLeave => 'View all leave';
+
+  @override
+  String get leaveReviewQueue => 'Review queue';
+
+  @override
+  String get leaveNoBalanceForFilters =>
+      'No leave balance found for selected filters.';
+
+  @override
+  String get leaveRequestSection => 'Request';
+
+  @override
+  String get leaveEmployeeSection => 'Employee';
+
+  @override
+  String get leaveBalanceSection => 'Balance';
+
+  @override
+  String get leaveDecisionSection => 'Decision';
+
+  @override
+  String get leaveWorkingDays => 'Working leave days';
+
+  @override
+  String get leavePortion => 'Portion';
+
+  @override
+  String get leaveStart => 'Start';
+
+  @override
+  String get leaveReturn => 'Return';
+
+  @override
+  String get leaveOnLeave => 'On leave';
+
+  @override
+  String get leaveUpcomingHoliday => 'Upcoming holiday';
+
+  @override
+  String get leaveUpcomingTeamLeave => 'Upcoming team leave';
+
+  @override
+  String get leavePendingApprovals => 'Pending approvals';
+
+  @override
+  String get leaveMyLeaveOverview => 'My leave';
+
+  @override
+  String get leaveTeamOverview => 'Team leave';
+
+  @override
+  String get leaveCompanyOverview => 'Company leave';
+
+  @override
+  String get leaveEmployeeUnavailable =>
+      'This employee\'s leave information is unavailable.';
+
+  @override
+  String get leaveScopeDenied => 'You do not have access to this leave scope.';
+
+  @override
+  String get leaveRecentRequests => 'Recent requests';
+
+  @override
+  String get leaveBalanceLedger => 'Balance history';
+
+  @override
+  String get leaveAdjustmentAdded => 'Added to balance';
+
+  @override
+  String get leaveAdjustmentDeducted => 'Deducted from balance';
+
+  @override
+  String get leaveEffectiveDate => 'Effective date';
+
+  @override
+  String get leaveCurrentAvailable => 'Current available';
+
+  @override
+  String get leavePreviewNewAvailable => 'New available balance';
+
+  @override
+  String get leaveNoTeam => 'No team is available for this account.';
+
+  @override
+  String get leaveApprovalsEmptyQueue =>
+      'You have no requests waiting for review.';
+
+  @override
+  String get leaveRequestedPeriod => 'Requested period';
+
+  @override
+  String get holidayTypeFestival => 'Festival holiday';
+
+  @override
+  String get holidayTypeRegional => 'Regional holiday';
+
+  @override
+  String get holidaySourceManual => 'Manual';
+
+  @override
+  String get holidaySourceCopied => 'Copied from previous year';
+
+  @override
+  String get holidaySourceImported => 'Imported';
+
+  @override
+  String get holidaySourceTemplate => 'Company template';
+
+  @override
+  String get holidayCalendarTitle => 'Holiday calendar';
+
+  @override
+  String get holidayCalendarSubtitle =>
+      'Manage public, festival, regional and company holidays.';
+
+  @override
+  String get holidayYearLabel => 'Holiday year';
+
+  @override
+  String get addHoliday => 'Add holiday';
+
+  @override
+  String get editHoliday => 'Edit holiday';
+
+  @override
+  String get manageHolidays => 'Manage holidays';
+
+  @override
+  String get copyPreviousYear => 'Copy previous year';
+
+  @override
+  String get importHolidays => 'Import holidays';
+
+  @override
+  String get setUpHolidayCalendar => 'Set up holiday calendar';
+
+  @override
+  String get startBlank => 'Start blank';
+
+  @override
+  String get holidayCalendarStatus => 'Holiday calendar status';
+
+  @override
+  String get activeHolidays => 'Active holidays';
+
+  @override
+  String get nextHoliday => 'Next holiday';
+
+  @override
+  String get holidayNotConfigured => 'Not configured';
+
+  @override
+  String get noHolidaysConfigured => 'No holidays configured for this year.';
+
+  @override
+  String get holidayPublishedEmpty =>
+      'No company holidays have been published for this period.';
+
+  @override
+  String get applyTo => 'Applies to';
+
+  @override
+  String get holidayMultiDay => 'Multi-day holiday';
+
+  @override
+  String get holidayBasicInfo => 'Basic information';
+
+  @override
+  String get holidayApplicability => 'Applicability';
+
+  @override
+  String get holidayOptionality => 'Optionality';
+
+  @override
+  String get holidaySourceField => 'Source';
+
+  @override
+  String get holidayDuplicateWarning =>
+      'A holiday with the same name, date and scope already exists.';
+
+  @override
+  String get holidayImportPreview => 'Import preview';
+
+  @override
+  String get holidayImportPaste => 'Paste CSV';
+
+  @override
+  String get holidayImportHint =>
+      'Columns: name, date, endDate, type, optional, scope, workLocations, description';
+
+  @override
+  String get holidayImportConfirm => 'Import';
+
+  @override
+  String get holidayImportImported => 'Imported';
+
+  @override
+  String get holidayImportSkipped => 'Skipped';
+
+  @override
+  String get holidayCopyNote =>
+      'Copied entries keep their month and day — verify festival dates before confirming.';
+
+  @override
+  String get verifyFestivalDates =>
+      'Copied from previous year — verify festival dates.';
+
+  @override
+  String get holidaySelectLocations => 'Select work locations';
+
+  @override
+  String get holidaySearchLocations => 'Search work locations';
+
+  @override
+  String get holidayTypeHelperPublic => 'Government/public holidays';
+
+  @override
+  String get holidayTypeHelperFestival => 'Religious or festival holidays';
+
+  @override
+  String get holidayTypeHelperRegional => 'State/regional holidays';
+
+  @override
+  String get holidayTypeHelperCompany => 'Company-declared holidays';
+
+  @override
+  String get holidayTypeHelperClosure => 'Special closures and shutdowns';
+
+  @override
+  String get nextHolidayDaysAway => 'days away';
+
+  @override
+  String get upcomingLeave => 'Upcoming leave';
+
+  @override
+  String get pendingRequest => 'Pending request';
+
+  @override
+  String get teamCalendar => 'Team calendar';
+
+  @override
+  String get reviewRequests => 'Review requests';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get moreFilters => 'More filters';
+
+  @override
+  String get resetFilters => 'Reset';
+
+  @override
+  String get periodLabel => 'Period';
+
+  @override
+  String get viewRequests => 'Requests';
+
+  @override
+  String get viewUpcoming => 'Upcoming';
+
+  @override
+  String get viewToday => 'Today';
+
+  @override
+  String get selectedDay => 'Selected day';
+
+  @override
+  String get dayAgenda => 'Agenda';
+
+  @override
+  String get noEventsOnDay => 'No leave or holidays on this day.';
+
+  @override
+  String get leaveAndHolidayCalendar => 'Leave & holiday calendar';
+
+  @override
+  String get leaveViewMode => 'View';
+
+  @override
+  String get leaveBalanceAvailableLabel => 'available';
+
+  @override
+  String get leaveBalanceUsedLabel => 'used';
+
+  @override
+  String get leaveBalancePendingLabel => 'pending';
+
+  @override
+  String get leaveBalanceEntitlementLabel => 'entitlement';
+
+  @override
+  String get leaveHolidayThisYear => 'Holidays this year';
+
+  @override
+  String get leaveManageHolidaysHint =>
+      'Manage the company\'s annual public, festival and company holiday calendar.';
+
+  @override
+  String get leaveSearchOrFilter => 'Search';
+
+  @override
+  String get leaveAllTypes => 'All types';
+
+  @override
+  String get leaveAllStatuses => 'All statuses';
+
+  @override
+  String get leaveAllPeriods => 'All periods';
+
+  @override
+  String get leaveDayOne => 'day';
 }

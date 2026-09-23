@@ -65,6 +65,7 @@ PermissionSet permissionsForRole(AppRole role) {
       AppPermission.leaveTypeManage,
       AppPermission.leavePolicyView,
       AppPermission.leavePolicyManage,
+      AppPermission.holidayView,
       AppPermission.holidayManage,
       AppPermission.leaveReportView,
     },

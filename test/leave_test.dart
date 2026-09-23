@@ -47,7 +47,7 @@ void main() {
       final types = await repo.watchLeaveTypes(manager).first;
       expect((types as Success<List<LeaveType>>).value.length, 4);
       final holidays = await repo.watchHolidays(manager).first;
-      expect((holidays as Success<List<Holiday>>).value.length, 3);
+      expect((holidays as Success<List<Holiday>>).value.length, 6);
       final employeeId = manager.employeeReference!.id;
       final balances = await repo.watchBalances(manager, employeeId).first;
       final list = (balances as Success<List<LeaveBalanceSummary>>).value;

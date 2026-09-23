@@ -649,7 +649,7 @@ as RecordSyncStatus,
 /// @nodoc
 mixin _$Holiday {
 
- String get id; String get companyId; String get name; DateTime get date; DateTime? get endDate; HolidayType get type; HolidayScope get scope; Set<String> get workLocationIds; String get description; bool get isOptional; ConfigurationStatus get status; DateTime get createdAt; DateTime get updatedAt; RecordSyncStatus get syncStatus;
+ String get id; String get companyId; String get name; DateTime get date; DateTime? get endDate; HolidayType get type; HolidayScope get scope; Set<String> get workLocationIds; String get description; bool get isOptional; HolidaySource get source; String? get calendarId; String? get countryCode; String? get regionCode; ConfigurationStatus get status; DateTime get createdAt; DateTime get updatedAt; RecordSyncStatus get syncStatus;
 /// Create a copy of Holiday
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -662,16 +662,16 @@ $HolidayCopyWith<Holiday> get copyWith => _$HolidayCopyWithImpl<Holiday>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Holiday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other.workLocationIds, workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Holiday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other.workLocationIds, workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.source, source) || other.source == source)&&(identical(other.calendarId, calendarId) || other.calendarId == calendarId)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.regionCode, regionCode) || other.regionCode == regionCode)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,name,date,endDate,type,scope,const DeepCollectionEquality().hash(workLocationIds),description,isOptional,status,createdAt,updatedAt,syncStatus);
+int get hashCode => Object.hash(runtimeType,id,companyId,name,date,endDate,type,scope,const DeepCollectionEquality().hash(workLocationIds),description,isOptional,source,calendarId,countryCode,regionCode,status,createdAt,updatedAt,syncStatus);
 
 @override
 String toString() {
-  return 'Holiday(id: $id, companyId: $companyId, name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
+  return 'Holiday(id: $id, companyId: $companyId, name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, source: $source, calendarId: $calendarId, countryCode: $countryCode, regionCode: $regionCode, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
 }
 
 
@@ -682,7 +682,7 @@ abstract mixin class $HolidayCopyWith<$Res>  {
   factory $HolidayCopyWith(Holiday value, $Res Function(Holiday) _then) = _$HolidayCopyWithImpl;
 @useResult
 $Res call({
- String id, String companyId, String name, DateTime date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
+ String id, String companyId, String name, DateTime date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, HolidaySource source, String? calendarId, String? countryCode, String? regionCode, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
 });
 
 
@@ -699,7 +699,7 @@ class _$HolidayCopyWithImpl<$Res>
 
 /// Create a copy of Holiday
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? date = null,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? date = null,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? source = null,Object? calendarId = freezed,Object? countryCode = freezed,Object? regionCode = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
@@ -711,7 +711,11 @@ as HolidayType,scope: null == scope ? _self.scope : scope // ignore: cast_nullab
 as HolidayScope,workLocationIds: null == workLocationIds ? _self.workLocationIds : workLocationIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,isOptional: null == isOptional ? _self.isOptional : isOptional // ignore: cast_nullable_to_non_nullable
-as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as HolidaySource,calendarId: freezed == calendarId ? _self.calendarId : calendarId // ignore: cast_nullable_to_non_nullable
+as String?,countryCode: freezed == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
+as String?,regionCode: freezed == regionCode ? _self.regionCode : regionCode // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ConfigurationStatus,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,syncStatus: null == syncStatus ? _self.syncStatus : syncStatus // ignore: cast_nullable_to_non_nullable
@@ -800,10 +804,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Holiday() when $default != null:
-return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   return orElse();
 
 }
@@ -821,10 +825,10 @@ return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)  $default,) {final _that = this;
 switch (_that) {
 case _Holiday():
-return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -841,10 +845,10 @@ return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String name,  DateTime date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,) {final _that = this;
 switch (_that) {
 case _Holiday() when $default != null:
-return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   return null;
 
 }
@@ -856,7 +860,7 @@ return $default(_that.id,_that.companyId,_that.name,_that.date,_that.endDate,_th
 @JsonSerializable()
 
 class _Holiday implements Holiday {
-  const _Holiday({required this.id, required this.companyId, required this.name, required this.date, this.endDate, this.type = HolidayType.companyHoliday, this.scope = HolidayScope.companyWide, final  Set<String> workLocationIds = const <String>{}, this.description = '', this.isOptional = false, this.status = ConfigurationStatus.active, required this.createdAt, required this.updatedAt, this.syncStatus = RecordSyncStatus.pending}): _workLocationIds = workLocationIds;
+  const _Holiday({required this.id, required this.companyId, required this.name, required this.date, this.endDate, this.type = HolidayType.companyHoliday, this.scope = HolidayScope.companyWide, final  Set<String> workLocationIds = const <String>{}, this.description = '', this.isOptional = false, this.source = HolidaySource.manual, this.calendarId, this.countryCode, this.regionCode, this.status = ConfigurationStatus.active, required this.createdAt, required this.updatedAt, this.syncStatus = RecordSyncStatus.pending}): _workLocationIds = workLocationIds;
   factory _Holiday.fromJson(Map<String, dynamic> json) => _$HolidayFromJson(json);
 
 @override final  String id;
@@ -875,6 +879,10 @@ class _Holiday implements Holiday {
 
 @override@JsonKey() final  String description;
 @override@JsonKey() final  bool isOptional;
+@override@JsonKey() final  HolidaySource source;
+@override final  String? calendarId;
+@override final  String? countryCode;
+@override final  String? regionCode;
 @override@JsonKey() final  ConfigurationStatus status;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
@@ -893,16 +901,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Holiday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other._workLocationIds, _workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Holiday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other._workLocationIds, _workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.source, source) || other.source == source)&&(identical(other.calendarId, calendarId) || other.calendarId == calendarId)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.regionCode, regionCode) || other.regionCode == regionCode)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,name,date,endDate,type,scope,const DeepCollectionEquality().hash(_workLocationIds),description,isOptional,status,createdAt,updatedAt,syncStatus);
+int get hashCode => Object.hash(runtimeType,id,companyId,name,date,endDate,type,scope,const DeepCollectionEquality().hash(_workLocationIds),description,isOptional,source,calendarId,countryCode,regionCode,status,createdAt,updatedAt,syncStatus);
 
 @override
 String toString() {
-  return 'Holiday(id: $id, companyId: $companyId, name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
+  return 'Holiday(id: $id, companyId: $companyId, name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, source: $source, calendarId: $calendarId, countryCode: $countryCode, regionCode: $regionCode, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
 }
 
 
@@ -913,7 +921,7 @@ abstract mixin class _$HolidayCopyWith<$Res> implements $HolidayCopyWith<$Res> {
   factory _$HolidayCopyWith(_Holiday value, $Res Function(_Holiday) _then) = __$HolidayCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String companyId, String name, DateTime date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
+ String id, String companyId, String name, DateTime date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, HolidaySource source, String? calendarId, String? countryCode, String? regionCode, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
 });
 
 
@@ -930,7 +938,7 @@ class __$HolidayCopyWithImpl<$Res>
 
 /// Create a copy of Holiday
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? date = null,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? date = null,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? source = null,Object? calendarId = freezed,Object? countryCode = freezed,Object? regionCode = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
   return _then(_Holiday(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
@@ -942,7 +950,11 @@ as HolidayType,scope: null == scope ? _self.scope : scope // ignore: cast_nullab
 as HolidayScope,workLocationIds: null == workLocationIds ? _self._workLocationIds : workLocationIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,isOptional: null == isOptional ? _self.isOptional : isOptional // ignore: cast_nullable_to_non_nullable
-as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as HolidaySource,calendarId: freezed == calendarId ? _self.calendarId : calendarId // ignore: cast_nullable_to_non_nullable
+as String?,countryCode: freezed == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
+as String?,regionCode: freezed == regionCode ? _self.regionCode : regionCode // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ConfigurationStatus,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,syncStatus: null == syncStatus ? _self.syncStatus : syncStatus // ignore: cast_nullable_to_non_nullable
@@ -2783,7 +2795,7 @@ as ConfigurationStatus,
 /// @nodoc
 mixin _$HolidayDraft {
 
- String get name; DateTime? get date; DateTime? get endDate; HolidayType get type; HolidayScope get scope; Set<String> get workLocationIds; String get description; bool get isOptional; ConfigurationStatus get status;
+ String get name; DateTime? get date; DateTime? get endDate; HolidayType get type; HolidayScope get scope; Set<String> get workLocationIds; String get description; bool get isOptional; HolidaySource get source; String? get calendarId; String? get countryCode; String? get regionCode; ConfigurationStatus get status;
 /// Create a copy of HolidayDraft
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2794,16 +2806,16 @@ $HolidayDraftCopyWith<HolidayDraft> get copyWith => _$HolidayDraftCopyWithImpl<H
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HolidayDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other.workLocationIds, workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HolidayDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other.workLocationIds, workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.source, source) || other.source == source)&&(identical(other.calendarId, calendarId) || other.calendarId == calendarId)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.regionCode, regionCode) || other.regionCode == regionCode)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,date,endDate,type,scope,const DeepCollectionEquality().hash(workLocationIds),description,isOptional,status);
+int get hashCode => Object.hash(runtimeType,name,date,endDate,type,scope,const DeepCollectionEquality().hash(workLocationIds),description,isOptional,source,calendarId,countryCode,regionCode,status);
 
 @override
 String toString() {
-  return 'HolidayDraft(name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, status: $status)';
+  return 'HolidayDraft(name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, source: $source, calendarId: $calendarId, countryCode: $countryCode, regionCode: $regionCode, status: $status)';
 }
 
 
@@ -2814,7 +2826,7 @@ abstract mixin class $HolidayDraftCopyWith<$Res>  {
   factory $HolidayDraftCopyWith(HolidayDraft value, $Res Function(HolidayDraft) _then) = _$HolidayDraftCopyWithImpl;
 @useResult
 $Res call({
- String name, DateTime? date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, ConfigurationStatus status
+ String name, DateTime? date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, HolidaySource source, String? calendarId, String? countryCode, String? regionCode, ConfigurationStatus status
 });
 
 
@@ -2831,7 +2843,7 @@ class _$HolidayDraftCopyWithImpl<$Res>
 
 /// Create a copy of HolidayDraft
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? date = freezed,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? date = freezed,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? source = null,Object? calendarId = freezed,Object? countryCode = freezed,Object? regionCode = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
@@ -2841,7 +2853,11 @@ as HolidayType,scope: null == scope ? _self.scope : scope // ignore: cast_nullab
 as HolidayScope,workLocationIds: null == workLocationIds ? _self.workLocationIds : workLocationIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,isOptional: null == isOptional ? _self.isOptional : isOptional // ignore: cast_nullable_to_non_nullable
-as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as HolidaySource,calendarId: freezed == calendarId ? _self.calendarId : calendarId // ignore: cast_nullable_to_non_nullable
+as String?,countryCode: freezed == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
+as String?,regionCode: freezed == regionCode ? _self.regionCode : regionCode // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ConfigurationStatus,
   ));
 }
@@ -2927,10 +2943,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HolidayDraft() when $default != null:
-return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status);case _:
+return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status);case _:
   return orElse();
 
 }
@@ -2948,10 +2964,10 @@ return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _HolidayDraft():
-return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status);case _:
+return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2968,10 +2984,10 @@ return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  ConfigurationStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  DateTime? date,  DateTime? endDate,  HolidayType type,  HolidayScope scope,  Set<String> workLocationIds,  String description,  bool isOptional,  HolidaySource source,  String? calendarId,  String? countryCode,  String? regionCode,  ConfigurationStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _HolidayDraft() when $default != null:
-return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.status);case _:
+return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that.workLocationIds,_that.description,_that.isOptional,_that.source,_that.calendarId,_that.countryCode,_that.regionCode,_that.status);case _:
   return null;
 
 }
@@ -2983,7 +2999,7 @@ return $default(_that.name,_that.date,_that.endDate,_that.type,_that.scope,_that
 
 
 class _HolidayDraft extends HolidayDraft {
-  const _HolidayDraft({this.name = '', this.date, this.endDate, this.type = HolidayType.companyHoliday, this.scope = HolidayScope.companyWide, final  Set<String> workLocationIds = const <String>{}, this.description = '', this.isOptional = false, this.status = ConfigurationStatus.active}): _workLocationIds = workLocationIds,super._();
+  const _HolidayDraft({this.name = '', this.date, this.endDate, this.type = HolidayType.companyHoliday, this.scope = HolidayScope.companyWide, final  Set<String> workLocationIds = const <String>{}, this.description = '', this.isOptional = false, this.source = HolidaySource.manual, this.calendarId, this.countryCode, this.regionCode, this.status = ConfigurationStatus.active}): _workLocationIds = workLocationIds,super._();
   
 
 @override@JsonKey() final  String name;
@@ -3000,6 +3016,10 @@ class _HolidayDraft extends HolidayDraft {
 
 @override@JsonKey() final  String description;
 @override@JsonKey() final  bool isOptional;
+@override@JsonKey() final  HolidaySource source;
+@override final  String? calendarId;
+@override final  String? countryCode;
+@override final  String? regionCode;
 @override@JsonKey() final  ConfigurationStatus status;
 
 /// Create a copy of HolidayDraft
@@ -3012,16 +3032,16 @@ _$HolidayDraftCopyWith<_HolidayDraft> get copyWith => __$HolidayDraftCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HolidayDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other._workLocationIds, _workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HolidayDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.date, date) || other.date == date)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.type, type) || other.type == type)&&(identical(other.scope, scope) || other.scope == scope)&&const DeepCollectionEquality().equals(other._workLocationIds, _workLocationIds)&&(identical(other.description, description) || other.description == description)&&(identical(other.isOptional, isOptional) || other.isOptional == isOptional)&&(identical(other.source, source) || other.source == source)&&(identical(other.calendarId, calendarId) || other.calendarId == calendarId)&&(identical(other.countryCode, countryCode) || other.countryCode == countryCode)&&(identical(other.regionCode, regionCode) || other.regionCode == regionCode)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,date,endDate,type,scope,const DeepCollectionEquality().hash(_workLocationIds),description,isOptional,status);
+int get hashCode => Object.hash(runtimeType,name,date,endDate,type,scope,const DeepCollectionEquality().hash(_workLocationIds),description,isOptional,source,calendarId,countryCode,regionCode,status);
 
 @override
 String toString() {
-  return 'HolidayDraft(name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, status: $status)';
+  return 'HolidayDraft(name: $name, date: $date, endDate: $endDate, type: $type, scope: $scope, workLocationIds: $workLocationIds, description: $description, isOptional: $isOptional, source: $source, calendarId: $calendarId, countryCode: $countryCode, regionCode: $regionCode, status: $status)';
 }
 
 
@@ -3032,7 +3052,7 @@ abstract mixin class _$HolidayDraftCopyWith<$Res> implements $HolidayDraftCopyWi
   factory _$HolidayDraftCopyWith(_HolidayDraft value, $Res Function(_HolidayDraft) _then) = __$HolidayDraftCopyWithImpl;
 @override @useResult
 $Res call({
- String name, DateTime? date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, ConfigurationStatus status
+ String name, DateTime? date, DateTime? endDate, HolidayType type, HolidayScope scope, Set<String> workLocationIds, String description, bool isOptional, HolidaySource source, String? calendarId, String? countryCode, String? regionCode, ConfigurationStatus status
 });
 
 
@@ -3049,7 +3069,7 @@ class __$HolidayDraftCopyWithImpl<$Res>
 
 /// Create a copy of HolidayDraft
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? date = freezed,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? date = freezed,Object? endDate = freezed,Object? type = null,Object? scope = null,Object? workLocationIds = null,Object? description = null,Object? isOptional = null,Object? source = null,Object? calendarId = freezed,Object? countryCode = freezed,Object? regionCode = freezed,Object? status = null,}) {
   return _then(_HolidayDraft(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
@@ -3059,7 +3079,11 @@ as HolidayType,scope: null == scope ? _self.scope : scope // ignore: cast_nullab
 as HolidayScope,workLocationIds: null == workLocationIds ? _self._workLocationIds : workLocationIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,isOptional: null == isOptional ? _self.isOptional : isOptional // ignore: cast_nullable_to_non_nullable
-as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as HolidaySource,calendarId: freezed == calendarId ? _self.calendarId : calendarId // ignore: cast_nullable_to_non_nullable
+as String?,countryCode: freezed == countryCode ? _self.countryCode : countryCode // ignore: cast_nullable_to_non_nullable
+as String?,regionCode: freezed == regionCode ? _self.regionCode : regionCode // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ConfigurationStatus,
   ));
 }

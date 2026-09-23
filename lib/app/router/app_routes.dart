@@ -42,15 +42,19 @@ abstract final class AppRoutes {
   static String attendanceDayDetails(String id) =>
       '$attendanceHistory/${Uri.encodeComponent(id)}';
   static const employeeNew = '/app/employees/new';
-  static const leaveNew = '$leave/new';
-  static const leaveRequests = '$leave/requests';
+  static const leaveRequest = '$leave/request';
+  static const leaveMyRequests = '$leave/my-requests';
+  static const leaveRequestBase = '$leave/requests';
   static const leaveApprovals = '$leave/approvals';
   static const leaveTeam = '$leave/team';
   static const leaveAll = '$leave/all';
   static const leaveBalances = '$leave/balances';
   static const leaveCalendar = '$leave/calendar';
   static String leaveRequestDetails(String id) =>
-      '$leaveRequests/${Uri.encodeComponent(id)}';
+      '$leaveRequestBase/${Uri.encodeComponent(id)}';
+  static const leaveEmployeeBase = '$leave/employee';
+  static String leaveEmployee(String id) =>
+      '$leaveEmployeeBase/${Uri.encodeComponent(id)}';
   static const leaveTypes = '/app/settings/leave-types';
   static const leaveTypesNew = '$leaveTypes/new';
   static String leaveTypesDetails(String id) =>
@@ -64,6 +68,7 @@ abstract final class AppRoutes {
       '${leavePoliciesDetails(id)}/edit';
   static const holidays = '/app/settings/holidays';
   static const holidaysNew = '$holidays/new';
+  static const holidaysImport = '$holidays/import';
   static String holidaysDetails(String id) =>
       '$holidays/${Uri.encodeComponent(id)}';
   static String holidaysEdit(String id) => '${holidaysDetails(id)}/edit';

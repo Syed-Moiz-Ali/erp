@@ -6,6 +6,24 @@ import '../domain/leave_models.dart';
 String leaveDaysCount(BuildContext c, num value) =>
     '${configurationNumber(c, value)} ${c.l10n.days}';
 
+String leaveDaysValue(BuildContext c, num value) {
+  final number = configurationNumber(c, value);
+  final unit = value == 1 ? c.l10n.leaveDayOne : c.l10n.days;
+  return '$number $unit';
+}
+
+String leaveDateRange(BuildContext c, DateTime from, DateTime to) =>
+    '${configurationDate(c, from)} – ${configurationDate(c, to)}';
+
+String leaveReturnLabel(BuildContext c, DateTime returnDate) =>
+    '${c.l10n.leaveReturnDate}: ${configurationDate(c, returnDate)}';
+
+String leaveDepartmentType(String department, String typeName) =>
+    '$department · $typeName';
+
+String leavePeriodDays(BuildContext c, DateTime from, DateTime to, num days) =>
+    '${leaveDateRange(c, from, to)} · ${leaveDaysCount(c, days)}';
+
 String leaveCompensationLabel(
   LeaveCompensationType value,
   AppLocalizations l,
@@ -33,9 +51,18 @@ String leaveDayPortionLabel(LeaveDayPortion value, AppLocalizations l) =>
 String holidayTypeLabel(HolidayType value, AppLocalizations l) =>
     switch (value) {
       HolidayType.publicHoliday => l.holidayTypePublic,
+      HolidayType.festivalHoliday => l.holidayTypeFestival,
+      HolidayType.regionalHoliday => l.holidayTypeRegional,
       HolidayType.companyHoliday => l.holidayTypeCompany,
-      HolidayType.optionalHoliday => l.holidayTypeOptional,
       HolidayType.specialClosure => l.holidayTypeSpecial,
+    };
+
+String holidaySourceLabel(HolidaySource value, AppLocalizations l) =>
+    switch (value) {
+      HolidaySource.manual => l.holidaySourceManual,
+      HolidaySource.copiedFromPreviousYear => l.holidaySourceCopied,
+      HolidaySource.imported => l.holidaySourceImported,
+      HolidaySource.companyTemplate => l.holidaySourceTemplate,
     };
 
 String holidayScopeLabel(HolidayScope value, AppLocalizations l) =>
@@ -67,3 +94,18 @@ String leavePolicySummary(LeavePolicy policy, AppLocalizations l) =>
 
 String holidaySummary(Holiday holiday, AppLocalizations l) =>
     holidayTypeLabel(holiday.type, l);
+
+String leaveBalanceTypeLabel(
+  LeaveBalanceTransactionType type,
+  AppLocalizations l,
+) => switch (type) {
+  LeaveBalanceTransactionType.entitlement => l.leaveEntitlement,
+  LeaveBalanceTransactionType.adjustmentAdd => l.leaveAdjustmentAdded,
+  LeaveBalanceTransactionType.adjustmentSubtract => l.leaveAdjustmentDeducted,
+  LeaveBalanceTransactionType.leaveReserved => l.leavePendingBalance,
+  LeaveBalanceTransactionType.leaveReleased => l.leaveAvailable,
+  LeaveBalanceTransactionType.leaveConsumed => l.leaveUsed,
+  LeaveBalanceTransactionType.carryForward => l.leavePolicyCarryForward,
+  LeaveBalanceTransactionType.expiry => l.leaveStatusCancelled,
+  LeaveBalanceTransactionType.migration => l.leaveEntitlement,
+};

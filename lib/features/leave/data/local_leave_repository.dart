@@ -7,6 +7,7 @@ import '../../../core/models/configuration_record.dart';
 import '../../../core/security/app_permission.dart';
 import '../../../core/utils/app_clock.dart';
 import '../../../app/app_config.dart';
+import '../../attendance/domain/shift_workday_resolver.dart';
 import '../../auth/domain/entities/auth_context.dart';
 import '../../auth/domain/repositories/auth_repository.dart';
 import '../../employees/domain/employee.dart';
@@ -25,6 +26,7 @@ class LocalLeaveRepository implements LeaveRepository {
     this.demoEnabled = AppConfig.demoAuthEnabled,
     this.calculator = const LeaveDayCalculator(),
     this.yearResolver = const LeaveYearResolver(),
+    this.time = const FixedOffsetCompanyTimeService(),
   });
 
   final AppDatabase db;
@@ -34,6 +36,7 @@ class LocalLeaveRepository implements LeaveRepository {
   final bool demoEnabled;
   final LeaveDayCalculator calculator;
   final LeaveYearResolver yearResolver;
+  final CompanyTimeService time;
 
   Failed<T> _fail<T>(
     String code, {
@@ -43,10 +46,26 @@ class LocalLeaveRepository implements LeaveRepository {
   bool _can(AuthContext actor, AppPermission permission) =>
       PermissionChecker(actor.user.permissions).can(permission);
 
-  DateTime get _companyToday {
+  /// Company business date (UTC midnight) resolved through the company time
+  /// zone, never the device's local date.
+  @override
+  DateTime companyToday(AuthContext context) {
+    final wall = time.localWallTime(
+      clock.now().toUtc(),
+      context.company.timezone,
+    );
+    if (wall is Success<DateTime>) {
+      final value = wall.value;
+      return DateTime.utc(value.year, value.month, value.day);
+    }
     final now = clock.now().toUtc();
     return DateTime.utc(now.year, now.month, now.day);
   }
+
+  @override
+  int leaveYearFor(DateTime date) => yearResolver.yearFor(date);
+
+  DateTime _companyTodayFor(AuthContext context) => companyToday(context);
 
   String _d(DateTime value) =>
       '${value.year.toString().padLeft(4, '0')}-'
@@ -301,6 +320,10 @@ class LocalLeaveRepository implements LeaveRepository {
         workLocationIds: Value(jsonEncode(draft.workLocationIds.toList())),
         description: Value(draft.description.trim()),
         isOptional: Value(draft.isOptional),
+        source: Value(draft.source.name),
+        calendarId: Value(draft.calendarId),
+        countryCode: Value(draft.countryCode),
+        regionCode: Value(draft.regionCode),
         createdMilliseconds:
             existing?.createdMilliseconds ?? now.millisecondsSinceEpoch,
         updatedMilliseconds: now.millisecondsSinceEpoch,
@@ -346,7 +369,364 @@ class LocalLeaveRepository implements LeaveRepository {
     return const Success(null);
   }
 
-  // ---- request support -----------------------------------------------------
+  // ---- holiday calendars / yearly management -------------------------------
+
+  @override
+  Stream<Result<List<Holiday>>> watchHolidaysForYear(
+    AuthContext context,
+    int year, {
+    bool includeInactive = false,
+  }) => watchHolidays(context, includeInactive: includeInactive).map((result) {
+    if (result is Failed<List<Holiday>>) return result;
+    final from = DateTime.utc(year, 1, 1), to = DateTime.utc(year, 12, 31);
+    return Success(
+      (result as Success<List<Holiday>>).value.where((holiday) {
+        final end = holiday.endDate ?? holiday.date;
+        return !end.isBefore(from) && !holiday.date.isAfter(to);
+      }).toList(),
+    );
+  });
+
+  @override
+  Stream<Result<List<HolidayCalendar>>> watchHolidayCalendars(
+    AuthContext context,
+  ) {
+    final p = PermissionChecker(context.user.permissions);
+    if (!p.canAny([AppPermission.holidayView, AppPermission.holidayManage])) {
+      return Stream.value(_fail('leavePermissionDenied'));
+    }
+    return (db.select(db.holidayCalendars)
+          ..where((t) => t.companyId.equals(context.company.id))
+          ..orderBy([(t) => OrderingTerm.desc(t.year)]))
+        .watch()
+        .map((rows) => Success(rows.map(_mapCalendar).toList()));
+  }
+
+  @override
+  Future<Result<HolidayCalendar>> saveHolidayCalendar(
+    AuthContext context,
+    HolidayCalendarDraft draft,
+  ) async {
+    if (!_can(context, AppPermission.holidayManage)) {
+      return _fail('leavePermissionDenied');
+    }
+    if (draft.name.trim().isEmpty || draft.year < 2000 || draft.year > 2200) {
+      return _fail('leaveInvalidQuantity');
+    }
+    try {
+      final now = clock.now().toUtc();
+      return await db.transaction(() async {
+        final existing =
+            await (db.select(db.holidayCalendars)..where(
+                  (t) =>
+                      t.companyId.equals(context.company.id) &
+                      t.year.equals(draft.year) &
+                      t.name.equals(draft.name.trim()),
+                ))
+                .getSingleOrNull();
+        final id = existing?.id ?? const Uuid().v4();
+        final count =
+            (await (db.select(db.holidayCalendars)..where(
+                      (t) =>
+                          t.companyId.equals(context.company.id) &
+                          t.year.equals(draft.year),
+                    ))
+                    .get())
+                .length;
+        final makeDefault = draft.isDefault || count == 0;
+        if (makeDefault) {
+          await (db.update(db.holidayCalendars)..where(
+                (t) =>
+                    t.companyId.equals(context.company.id) &
+                    t.year.equals(draft.year),
+              ))
+              .write(const HolidayCalendarsCompanion(isDefault: Value(false)));
+        }
+        final companion = HolidayCalendarsCompanion.insert(
+          id: id,
+          companyId: context.company.id,
+          name: draft.name.trim(),
+          year: draft.year,
+          countryCode: Value(draft.countryCode),
+          regionCode: Value(draft.regionCode),
+          isDefault: Value(makeDefault),
+          createdMilliseconds:
+              existing?.createdMilliseconds ?? now.millisecondsSinceEpoch,
+          updatedMilliseconds: now.millisecondsSinceEpoch,
+        );
+        if (existing == null) {
+          await db.into(db.holidayCalendars).insert(companion);
+        } else {
+          await (db.update(
+            db.holidayCalendars,
+          )..where((t) => t.id.equals(id))).write(companion);
+        }
+        final row = await (db.select(
+          db.holidayCalendars,
+        )..where((t) => t.id.equals(id))).getSingle();
+        return Success(_mapCalendar(row));
+      });
+    } catch (_) {
+      return _fail('leaveStorageError', kind: FailureKind.storageWrite);
+    }
+  }
+
+  @override
+  Future<Result<int>> copyHolidaysToYear(
+    AuthContext context, {
+    required int fromYear,
+    required int toYear,
+  }) async {
+    if (!_can(context, AppPermission.holidayManage)) {
+      return _fail('leavePermissionDenied');
+    }
+    if (fromYear == toYear) return _fail('leaveInvalidQuantity');
+    try {
+      final now = clock.now().toUtc();
+      return await db.transaction(() async {
+        final source = await _holidayRowsForYear(context.company.id, fromYear);
+        final calendarId = await _ensureYearCalendar(
+          context.company.id,
+          toYear,
+          now,
+        );
+        final existing = await _holidayRowsForYear(context.company.id, toYear);
+        final existingKeys = {
+          for (final row in existing) '${row.date}|${row.name}',
+        };
+        var copied = 0;
+        for (final row in source) {
+          final shifted = _shiftYear(_parseDate(row.date), toYear);
+          if (existingKeys.contains('${_d(shifted)}|${row.name}')) continue;
+          await db
+              .into(db.holidays)
+              .insert(
+                HolidaysCompanion.insert(
+                  id: const Uuid().v4(),
+                  companyId: context.company.id,
+                  name: row.name,
+                  date: _d(shifted),
+                  endDate: Value(
+                    row.endDate == null
+                        ? null
+                        : _d(_shiftYear(_parseDate(row.endDate!), toYear)),
+                  ),
+                  type: Value(row.type),
+                  scope: Value(row.scope),
+                  workLocationIds: Value(row.workLocationIds),
+                  description: Value(row.description),
+                  isOptional: Value(row.isOptional),
+                  source: Value(HolidaySource.copiedFromPreviousYear.name),
+                  calendarId: Value(calendarId),
+                  countryCode: Value(row.countryCode),
+                  regionCode: Value(row.regionCode),
+                  createdMilliseconds: now.millisecondsSinceEpoch,
+                  updatedMilliseconds: now.millisecondsSinceEpoch,
+                ),
+              );
+          copied++;
+        }
+        return Success(copied);
+      });
+    } catch (_) {
+      return _fail('leaveStorageError', kind: FailureKind.storageWrite);
+    }
+  }
+
+  @override
+  Future<Result<HolidayImportResult>> importHolidays(
+    AuthContext context,
+    List<HolidayImportRow> rows,
+  ) async {
+    if (!_can(context, AppPermission.holidayManage)) {
+      return _fail('leavePermissionDenied');
+    }
+    try {
+      final now = clock.now().toUtc();
+      return await db.transaction(() async {
+        final allowedLocations = {
+          for (final row in await (db.select(
+            db.workLocationRecords,
+          )..where((t) => t.companyId.equals(context.company.id))).get())
+            row.id,
+        };
+        final existing = <String>{};
+        final all = await (db.select(
+          db.holidays,
+        )..where((t) => t.companyId.equals(context.company.id))).get();
+        for (final holiday in all) {
+          existing.add(
+            '${holiday.date}|${holiday.isOptional}|${holiday.scope}|${holiday.name}',
+          );
+        }
+        final errors = <String>[];
+        var imported = 0, skipped = 0;
+        for (final row in rows) {
+          if (!row.isValid) {
+            skipped++;
+            errors.add(row.error ?? 'invalid');
+            continue;
+          }
+          final draft = row.draft;
+          final date = draft.date;
+          if (date == null) {
+            skipped++;
+            errors.add('invalidDate');
+            continue;
+          }
+          if (draft.scope == HolidayScope.specificWorkLocations &&
+              !draft.workLocationIds.every(allowedLocations.contains)) {
+            skipped++;
+            errors.add('${draft.name}: invalidWorkLocation');
+            continue;
+          }
+          final key =
+              '${_d(date)}|${draft.isOptional}|${draft.scope.name}|${draft.name.trim()}';
+          if (existing.contains(key)) {
+            skipped++;
+            errors.add('${draft.name}: duplicate');
+            continue;
+          }
+          await db
+              .into(db.holidays)
+              .insert(
+                HolidaysCompanion.insert(
+                  id: const Uuid().v4(),
+                  companyId: context.company.id,
+                  name: draft.name.trim(),
+                  date: _d(date),
+                  endDate: Value(
+                    draft.endDate == null ? null : _d(draft.endDate!),
+                  ),
+                  type: Value(draft.type.name),
+                  scope: Value(draft.scope.name),
+                  workLocationIds: Value(
+                    jsonEncode(draft.workLocationIds.toList()),
+                  ),
+                  description: Value(draft.description.trim()),
+                  isOptional: Value(draft.isOptional),
+                  source: Value(HolidaySource.imported.name),
+                  calendarId: Value(draft.calendarId),
+                  countryCode: Value(draft.countryCode),
+                  regionCode: Value(draft.regionCode),
+                  createdMilliseconds: now.millisecondsSinceEpoch,
+                  updatedMilliseconds: now.millisecondsSinceEpoch,
+                ),
+              );
+          existing.add(key);
+          imported++;
+        }
+        return Success(
+          HolidayImportResult(
+            imported: imported,
+            skipped: skipped,
+            errors: errors,
+          ),
+        );
+      });
+    } catch (_) {
+      return _fail('leaveStorageError', kind: FailureKind.storageWrite);
+    }
+  }
+
+  @override
+  Future<Result<Holiday?>> nextHoliday(
+    AuthContext context,
+    String employeeId,
+    DateTime from,
+  ) async {
+    final result = await applicableHolidays(
+      context,
+      employeeId,
+      leaveDate(from),
+      leaveDate(from).add(const Duration(days: 400)),
+    );
+    if (result is Failed<List<Holiday>>) return Failed(result.failure);
+    final holidays = (result as Success<List<Holiday>>).value;
+    final upcoming =
+        holidays
+            .where((h) => !(h.endDate ?? h.date).isBefore(leaveDate(from)))
+            .toList()
+          ..sort((a, b) => a.date.compareTo(b.date));
+    return Success(upcoming.isEmpty ? null : upcoming.first);
+  }
+
+  Future<List<HolidayData>> _holidayRowsForYear(
+    String companyId,
+    int year,
+  ) async {
+    final rows =
+        await (db.select(db.holidays)..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.date.isSmallerOrEqualValue('$year-12-31'),
+            ))
+            .get();
+    final from = DateTime.utc(year, 1, 1), to = DateTime.utc(year, 12, 31);
+    return rows.where((row) {
+      final end = row.endDate == null
+          ? _parseDate(row.date)
+          : _parseDate(row.endDate!);
+      return !end.isBefore(from) && !_parseDate(row.date).isAfter(to);
+    }).toList();
+  }
+
+  Future<String?> _ensureYearCalendar(
+    String companyId,
+    int year,
+    DateTime now,
+  ) async {
+    final existing =
+        await (db.select(db.holidayCalendars)..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.year.equals(year) &
+                  t.isDefault.equals(true),
+            ))
+            .getSingleOrNull();
+    if (existing != null) return existing.id;
+    final id = const Uuid().v4();
+    await db
+        .into(db.holidayCalendars)
+        .insert(
+          HolidayCalendarsCompanion.insert(
+            id: id,
+            companyId: companyId,
+            name: '$year Calendar',
+            year: year,
+            isDefault: const Value(true),
+            createdMilliseconds: now.millisecondsSinceEpoch,
+            updatedMilliseconds: now.millisecondsSinceEpoch,
+          ),
+        );
+    return id;
+  }
+
+  DateTime _shiftYear(DateTime date, int year) {
+    final shifted = DateTime.utc(year, date.month, date.day);
+    return shifted;
+  }
+
+  HolidayCalendar _mapCalendar(HolidayCalendarData row) => HolidayCalendar(
+    id: row.id,
+    companyId: row.companyId,
+    name: row.name,
+    year: row.year,
+    countryCode: row.countryCode,
+    regionCode: row.regionCode,
+    isDefault: row.isDefault,
+    status: row.status == 'inactive'
+        ? ConfigurationStatus.inactive
+        : ConfigurationStatus.active,
+    createdAt: DateTime.fromMillisecondsSinceEpoch(
+      row.createdMilliseconds,
+      isUtc: true,
+    ),
+    updatedAt: DateTime.fromMillisecondsSinceEpoch(
+      row.updatedMilliseconds,
+      isUtc: true,
+    ),
+  );
 
   Future<Set<int>> _workingWeekdays(String companyId, String? shiftId) async {
     if (shiftId == null) return const {1, 2, 3, 4, 5};
@@ -603,7 +983,7 @@ class LocalLeaveRepository implements LeaveRepository {
           employeeId,
           draft.leaveTypeId,
         );
-        final today = _companyToday;
+        final today = _companyTodayFor(actor);
         if (policy != null &&
             !policy.allowPastRequest &&
             start.isBefore(today)) {
@@ -1073,79 +1453,630 @@ class LocalLeaveRepository implements LeaveRepository {
 
   // ---- request lists -------------------------------------------------------
 
-  @override
-  Stream<Result<List<LeaveRequestRow>>> watchRequests(
-    AuthContext context, {
-    required LeaveRequestScope scope,
-    LeaveRequestStatus? status,
-    int limit = 50,
-  }) {
-    final p = PermissionChecker(context.user.permissions);
-    String scopeClause = '';
-    final vars = <Variable<Object>>[Variable(context.company.id)];
-    switch (scope) {
-      case LeaveRequestScope.self:
-        final employeeId = context.employeeReference?.id;
-        if (employeeId == null || !p.can(AppPermission.leaveViewSelf)) {
-          return Stream.value(_fail('leavePermissionDenied'));
-        }
-        scopeClause = ' AND r.employee_id = ?';
-        vars.add(Variable(employeeId));
-      case LeaveRequestScope.team:
-        if (context.employeeReference == null ||
-            !p.can(AppPermission.leaveViewTeam)) {
-          return Stream.value(_fail('leavePermissionDenied'));
-        }
-        scopeClause = ' AND e.manager_id = ?';
-        vars.add(Variable(context.employeeReference!.id));
-      case LeaveRequestScope.company:
-        if (!p.can(AppPermission.leaveViewAll)) {
-          return Stream.value(_fail('leavePermissionDenied'));
-        }
-      case LeaveRequestScope.approvals:
-        if (!p.can(AppPermission.leaveApproveTeam) &&
-            !p.can(AppPermission.leaveApproveAll)) {
-          return Stream.value(_fail('leavePermissionDenied'));
-        }
-        if (p.can(AppPermission.leaveApproveAll)) {
-          // company-wide approvals
-        } else {
-          scopeClause = ' AND e.manager_id = ?';
-          vars.add(Variable(context.employeeReference!.id));
-        }
-        status = LeaveRequestStatus.pending;
-    }
-    final statusClause = status == null ? '' : ' AND r.status = ?';
-    if (status != null) vars.add(Variable(status.name));
-    final sql =
-        '''SELECT r.id, r.company_id, r.employee_id, r.type_snapshot,
+  static const String _requestSelect =
+      '''SELECT r.id, r.company_id, r.employee_id, r.type_snapshot,
  r.policy_snapshot, r.start_date, r.end_date, r.start_portion, r.end_portion,
  r.requested_days, r.reason, r.attachment_name, r.status,
  r.submitted_milliseconds, r.reviewed_milliseconds, r.reviewed_by,
  r.review_note, r.cancelled_milliseconds, r.cancelled_by,
  r.cancellation_reason, r.created_milliseconds, r.updated_milliseconds,
  r.request_id, r.sync_status,
- e.first_name || ' ' || e.middle_name || ' ' || e.last_name employee_name,
- e.employee_code, COALESCE(d.name,'') department
+ e.first_name, e.middle_name, e.last_name, e.employee_code, e.department_id,
+ COALESCE(d.name,'') department, COALESCE(g.name,'') designation,
+ COALESCE(m.first_name || ' ' || m.last_name,'') manager_name
 FROM leave_requests r
 JOIN workforce_employees e ON e.id = r.employee_id AND e.company_id = r.company_id
 LEFT JOIN workforce_departments d ON d.id = e.department_id AND d.company_id = e.company_id
-WHERE r.company_id = ?$scopeClause$statusClause
-ORDER BY r.start_date DESC, r.created_milliseconds DESC
-LIMIT ?''';
+LEFT JOIN workforce_designations g ON g.id = e.designation_id AND g.company_id = e.company_id
+LEFT JOIN workforce_employees m ON m.id = e.manager_id AND m.company_id = e.company_id''';
+
+  static const String _requestOrder =
+      'ORDER BY r.start_date DESC, r.created_milliseconds DESC';
+
+  /// Returns the scope predicate for [scope] and appends its bind variables, or
+  /// `null` when the actor lacks the capability. Company/approve-all return ''.
+  String? _scopeClause(
+    AuthContext context,
+    LeaveRequestScope scope,
+    PermissionChecker p,
+    List<Variable<Object>> vars,
+  ) {
+    switch (scope) {
+      case LeaveRequestScope.self:
+        final id = context.employeeReference?.id;
+        if (id == null || !p.can(AppPermission.leaveViewSelf)) return null;
+        vars.add(Variable(id));
+        return 'r.employee_id = ?';
+      case LeaveRequestScope.team:
+        final id = context.employeeReference?.id;
+        if (id == null || !p.can(AppPermission.leaveViewTeam)) return null;
+        vars.add(Variable(id));
+        return 'e.manager_id = ?';
+      case LeaveRequestScope.company:
+        if (!p.can(AppPermission.leaveViewAll)) return null;
+        return '';
+      case LeaveRequestScope.approvals:
+        if (p.can(AppPermission.leaveApproveAll)) return '';
+        final id = context.employeeReference?.id;
+        if (p.can(AppPermission.leaveApproveTeam) && id != null) {
+          vars.add(Variable(id));
+          return 'e.manager_id = ?';
+        }
+        return null;
+    }
+  }
+
+  LeaveRequestRow _rowFromQuery(QueryRow row) {
+    final data = LeaveRequestData(
+      id: row.read<String>('id'),
+      companyId: row.read<String>('company_id'),
+      employeeId: row.read<String>('employee_id'),
+      typeSnapshot: row.read<String>('type_snapshot'),
+      policySnapshot: row.readNullable<String>('policy_snapshot'),
+      startDate: row.read<String>('start_date'),
+      endDate: row.read<String>('end_date'),
+      startPortion: row.read<String>('start_portion'),
+      endPortion: row.read<String>('end_portion'),
+      requestedDays: row.read<double>('requested_days'),
+      reason: row.read<String>('reason'),
+      attachmentName: row.readNullable<String>('attachment_name'),
+      status: row.read<String>('status'),
+      submittedMilliseconds: row.readNullable<int>('submitted_milliseconds'),
+      reviewedMilliseconds: row.readNullable<int>('reviewed_milliseconds'),
+      reviewedBy: row.readNullable<String>('reviewed_by'),
+      reviewNote: row.readNullable<String>('review_note'),
+      cancelledMilliseconds: row.readNullable<int>('cancelled_milliseconds'),
+      cancelledBy: row.readNullable<String>('cancelled_by'),
+      cancellationReason: row.readNullable<String>('cancellation_reason'),
+      createdMilliseconds: row.read<int>('created_milliseconds'),
+      updatedMilliseconds: row.read<int>('updated_milliseconds'),
+      requestId: row.read<String>('request_id'),
+      syncStatus: row.read<String>('sync_status'),
+    );
+    final name = [
+      row.read<String>('first_name'),
+      row.readNullable<String>('middle_name') ?? '',
+      row.read<String>('last_name'),
+    ].where((s) => s.isNotEmpty).join(' ');
+    return LeaveRequestRow(
+      request: _mapRequest(data),
+      employeeName: name,
+      employeeCode: row.read<String>('employee_code'),
+      department: row.read<String>('department'),
+      departmentId: row.read<String>('department_id'),
+      designation: row.read<String>('designation'),
+      managerName: row.read<String>('manager_name'),
+    );
+  }
+
+  Stream<Result<List<LeaveRequestRow>>> _scopedRows(
+    AuthContext context,
+    LeaveRequestScope scope, {
+    int limit = 1000,
+  }) {
+    final p = PermissionChecker(context.user.permissions);
+    final vars = <Variable<Object>>[Variable(context.company.id)];
+    final scopeClause = _scopeClause(context, scope, p, vars);
+    if (scopeClause == null) {
+      return Stream.value(_fail('leavePermissionDenied'));
+    }
+    final where = scopeClause.isEmpty ? '' : ' AND $scopeClause';
     vars.add(Variable(limit));
     return db
         .customSelect(
-          sql,
+          '$_requestSelect WHERE r.company_id = ?$where $_requestOrder LIMIT ?',
           variables: vars,
           readsFrom: {
             db.leaveRequests,
             db.workforceEmployees,
             db.workforceDepartments,
+            db.workforceDesignations,
           },
         )
         .watch()
-        .map((rows) => Success(rows.map(_mapRequestRow).toList()));
+        .map((rows) => Success(rows.map(_rowFromQuery).toList()));
+  }
+
+  bool _matchesFilter(LeaveRequestRow row, LeaveRequestFilter filter) {
+    final request = row.request;
+    if (filter.status != null && request.status != filter.status) return false;
+    if (filter.leaveTypeId != null &&
+        request.typeSnapshot.typeId != filter.leaveTypeId) {
+      return false;
+    }
+    if (filter.employeeId != null && request.employeeId != filter.employeeId) {
+      return false;
+    }
+    if (filter.departmentId != null &&
+        row.departmentId != filter.departmentId) {
+      return false;
+    }
+    if (filter.from != null &&
+        request.endDate.isBefore(leaveDate(filter.from!))) {
+      return false;
+    }
+    if (filter.to != null && request.startDate.isAfter(leaveDate(filter.to!))) {
+      return false;
+    }
+    final q = filter.search.trim().toLowerCase();
+    if (q.isNotEmpty &&
+        !row.employeeName.toLowerCase().contains(q) &&
+        !row.employeeCode.toLowerCase().contains(q)) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<int> _scopedEmployeeCount(
+    AuthContext context,
+    LeaveRequestScope scope,
+  ) async {
+    final team = scope == LeaveRequestScope.team;
+    final row = await db
+        .customSelect(
+          'SELECT COUNT(*) n FROM workforce_employees WHERE company_id = ? AND status = ?${team ? ' AND manager_id = ?' : ''}',
+          variables: [
+            Variable(context.company.id),
+            Variable('active'),
+            if (team) Variable(context.employeeReference!.id),
+          ],
+        )
+        .getSingle();
+    return row.read<int>('n');
+  }
+
+  @override
+  Stream<Result<List<LeaveRequestRow>>> watchRequests(
+    AuthContext context, {
+    required LeaveRequestScope scope,
+    LeaveRequestStatus? status,
+    LeaveRequestFilter filter = const LeaveRequestFilter(),
+    int limit = 200,
+  }) {
+    final effective = status == null ? filter : filter.copyWith(status: status);
+    return _scopedRows(context, scope, limit: limit).map((result) {
+      switch (result) {
+        case Success<List<LeaveRequestRow>>(:final value):
+          return Success(
+            value.where((r) => _matchesFilter(r, effective)).toList(),
+          );
+        case Failed<List<LeaveRequestRow>>():
+          return result;
+      }
+    });
+  }
+
+  @override
+  Stream<Result<LeaveOperationsData>> watchOperations(
+    AuthContext context, {
+    required LeaveRequestScope scope,
+    LeaveRequestFilter filter = const LeaveRequestFilter(),
+    int upcomingDays = 30,
+  }) {
+    return _scopedRows(context, scope).asyncMap((result) async {
+      if (result is Failed<List<LeaveRequestRow>>) {
+        return Failed<LeaveOperationsData>(result.failure);
+      }
+      final rows = (result as Success<List<LeaveRequestRow>>).value;
+      final today = _companyTodayFor(context);
+      final horizon = today.add(Duration(days: upcomingDays));
+      final onLeaveToday = <LeaveTodayItem>[];
+      final upcoming = <UpcomingLeaveItem>[];
+      var pending = 0;
+      var approvedThisMonth = 0;
+      for (final row in rows) {
+        final request = row.request;
+        if (request.status == LeaveRequestStatus.approved) {
+          if (!request.startDate.isAfter(today) &&
+              !request.endDate.isBefore(today)) {
+            onLeaveToday.add(
+              LeaveTodayItem(
+                row: row,
+                returnDate: request.endDate.add(const Duration(days: 1)),
+                designation: row.designation,
+              ),
+            );
+          } else if (request.startDate.isAfter(today) &&
+              !request.startDate.isAfter(horizon)) {
+            upcoming.add(
+              UpcomingLeaveItem(row: row, workingDays: request.requestedDays),
+            );
+          }
+          if (request.startDate.year == today.year &&
+              request.startDate.month == today.month) {
+            approvedThisMonth++;
+          }
+        } else if (request.status == LeaveRequestStatus.pending) {
+          pending++;
+        }
+      }
+      upcoming.sort(
+        (a, b) => a.row.request.startDate.compareTo(b.row.request.startDate),
+      );
+      onLeaveToday.sort(
+        (a, b) => a.row.employeeName.compareTo(b.row.employeeName),
+      );
+      final teamMembers = await _scopedEmployeeCount(context, scope);
+      return Success(
+        LeaveOperationsData(
+          summary: LeaveOperationsSummary(
+            onLeaveToday: onLeaveToday.length,
+            upcoming: upcoming.length,
+            pending: pending,
+            approvedThisMonth: approvedThisMonth,
+            teamMembers: teamMembers,
+          ),
+          today: onLeaveToday,
+          upcoming: upcoming,
+          requests: rows.where((r) => _matchesFilter(r, filter)).toList(),
+        ),
+      );
+    });
+  }
+
+  @override
+  Stream<Result<List<LeaveApprovalItem>>> watchApprovalQueue(
+    AuthContext context,
+  ) {
+    return _scopedRows(context, LeaveRequestScope.approvals).asyncMap((
+      result,
+    ) async {
+      if (result is Failed<List<LeaveRequestRow>>) {
+        return Failed<List<LeaveApprovalItem>>(result.failure);
+      }
+      final pending = (result as Success<List<LeaveRequestRow>>).value
+          .where((r) => r.request.isPending)
+          .toList();
+      final cache = <String, List<double>>{};
+      final items = <LeaveApprovalItem>[];
+      for (final row in pending) {
+        final request = row.request;
+        final year = yearResolver.yearFor(request.startDate);
+        final key =
+            '${request.employeeId}|${request.typeSnapshot.typeId}|$year';
+        final totals = cache[key] ??= await _balanceTotals(
+          context.company.id,
+          request.employeeId,
+          request.typeSnapshot.typeId,
+          year,
+        );
+        items.add(
+          LeaveApprovalItem(
+            row: row,
+            entitlement: totals[0],
+            used: totals[1],
+            pending: totals[2],
+          ),
+        );
+      }
+      items.sort((a, b) {
+        final start = a.row.request.startDate.compareTo(
+          b.row.request.startDate,
+        );
+        if (start != 0) return start;
+        final aSubmitted = a.row.request.submittedAt ?? a.row.request.createdAt;
+        final bSubmitted = b.row.request.submittedAt ?? b.row.request.createdAt;
+        return aSubmitted.compareTo(bSubmitted);
+      });
+      return Success(items);
+    });
+  }
+
+  /// Returns [entitlement, used, pending] for one employee/type/year.
+  Future<List<double>> _balanceTotals(
+    String companyId,
+    String employeeId,
+    String leaveTypeId,
+    int year,
+  ) async {
+    final ledger =
+        await (db.select(db.leaveBalanceTransactions)..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.employeeId.equals(employeeId) &
+                  t.leaveTypeId.equals(leaveTypeId) &
+                  t.leaveYear.equals(year),
+            ))
+            .get();
+    var entitlement = 0.0;
+    for (final t in ledger) {
+      entitlement += switch (t.type) {
+        'entitlement' ||
+        'carryForward' ||
+        'migration' ||
+        'adjustmentAdd' => t.quantityDays,
+        'adjustmentSubtract' || 'expiry' => -t.quantityDays,
+        _ => 0.0,
+      };
+    }
+    final yearPrefix = year.toString().padLeft(4, '0');
+    final requests =
+        await (db.select(db.leaveRequests)..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.employeeId.equals(employeeId) &
+                  t.status.isIn(['approved', 'pending']) &
+                  t.startDate.like('$yearPrefix%'),
+            ))
+            .get();
+    var used = 0.0, pending = 0.0;
+    for (final r in requests) {
+      final snapshot = LeaveTypeSnapshot.fromJson(
+        jsonDecode(r.typeSnapshot) as Map<String, dynamic>,
+      );
+      if (snapshot.typeId != leaveTypeId) continue;
+      if (r.status == 'approved') {
+        used += r.requestedDays;
+      } else {
+        pending += r.requestedDays;
+      }
+    }
+    return [entitlement, used, pending];
+  }
+
+  @override
+  Stream<Result<EmployeeLeaveSummary?>> watchEmployeeLeave(
+    AuthContext context,
+    String employeeId,
+  ) {
+    final p = PermissionChecker(context.user.permissions);
+    final isSelf = context.employeeReference?.id == employeeId;
+    final canViewAll = p.can(AppPermission.leaveViewAll);
+    final allowed = isSelf
+        ? p.can(AppPermission.leaveViewSelf)
+        : canViewAll ||
+              (p.can(AppPermission.leaveViewTeam) &&
+                  context.employeeReference != null);
+    if (!allowed) {
+      return Stream.value(_fail('leavePermissionDenied'));
+    }
+    final scope = isSelf
+        ? LeaveRequestScope.self
+        : (canViewAll ? LeaveRequestScope.company : LeaveRequestScope.team);
+    return _scopedRows(context, scope).asyncMap((result) async {
+      if (result is Failed<List<LeaveRequestRow>>) {
+        return Failed<EmployeeLeaveSummary?>(result.failure);
+      }
+      final rows = (result as Success<List<LeaveRequestRow>>).value
+          .where((r) => r.request.employeeId == employeeId)
+          .toList();
+      final employee = await _employeeIdentity(context.company.id, employeeId);
+      if (employee == null) return const Success(null);
+      final today = _companyTodayFor(context);
+      final year = yearResolver.yearFor(today);
+      final balancesResult = await _balanceSummaries(context, employeeId, year);
+      final balances = balancesResult is Success<List<LeaveBalanceSummary>>
+          ? balancesResult.value
+          : const <LeaveBalanceSummary>[];
+      final upcoming =
+          rows
+              .where(
+                (r) =>
+                    r.request.status == LeaveRequestStatus.approved &&
+                    r.request.startDate.isAfter(today),
+              )
+              .toList()
+            ..sort(
+              (a, b) => a.request.startDate.compareTo(b.request.startDate),
+            );
+      final recent = rows.toList()
+        ..sort(
+          (a, b) => (b.request.submittedAt ?? b.request.createdAt).compareTo(
+            a.request.submittedAt ?? a.request.createdAt,
+          ),
+        );
+      return Success(
+        EmployeeLeaveSummary(
+          employeeId: employeeId,
+          employeeName: employee.name,
+          employeeCode: employee.code,
+          department: employee.department,
+          designation: employee.designation,
+          managerName: employee.managerName,
+          balances: balances,
+          upcoming: upcoming,
+          recent: recent,
+        ),
+      );
+    });
+  }
+
+  Future<
+    ({
+      String name,
+      String code,
+      String department,
+      String designation,
+      String managerName,
+    })?
+  >
+  _employeeIdentity(String companyId, String employeeId) async {
+    final row = await db
+        .customSelect(
+          '''SELECT e.first_name, e.middle_name, e.last_name, e.employee_code,
+ COALESCE(d.name,'') department, COALESCE(g.name,'') designation,
+ COALESCE(m.first_name || ' ' || m.last_name,'') manager_name
+FROM workforce_employees e
+LEFT JOIN workforce_departments d ON d.id = e.department_id AND d.company_id = e.company_id
+LEFT JOIN workforce_designations g ON g.id = e.designation_id AND g.company_id = e.company_id
+LEFT JOIN workforce_employees m ON m.id = e.manager_id AND m.company_id = e.company_id
+WHERE e.company_id = ? AND e.id = ?''',
+          variables: [Variable(companyId), Variable(employeeId)],
+        )
+        .getSingleOrNull();
+    if (row == null) return null;
+    final name = [
+      row.read<String>('first_name'),
+      row.readNullable<String>('middle_name') ?? '',
+      row.read<String>('last_name'),
+    ].where((s) => s.isNotEmpty).join(' ');
+    return (
+      name: name,
+      code: row.read<String>('employee_code'),
+      department: row.read<String>('department'),
+      designation: row.read<String>('designation'),
+      managerName: row.read<String>('manager_name'),
+    );
+  }
+
+  @override
+  Stream<Result<List<LeaveBalanceRow>>> watchBalanceTable(
+    AuthContext context, {
+    int? year,
+    String? departmentId,
+    String? leaveTypeId,
+    String search = '',
+  }) {
+    final p = PermissionChecker(context.user.permissions);
+    final canAll = p.can(AppPermission.leaveBalanceViewAll);
+    final canTeam = p.can(AppPermission.leaveBalanceViewTeam);
+    if (!canAll && !canTeam) {
+      return Stream.value(_fail('leavePermissionDenied'));
+    }
+    final leaveYear = year ?? yearResolver.yearFor(_companyTodayFor(context));
+    final scope = canAll ? LeaveRequestScope.company : LeaveRequestScope.team;
+    return _scopedRows(context, scope).asyncMap((_) async {
+      try {
+        final team = !canAll;
+        final employees = await db
+            .customSelect(
+              '''SELECT e.id, e.first_name, e.middle_name, e.last_name,
+ e.employee_code, e.department_id, COALESCE(d.name,'') department
+FROM workforce_employees e
+LEFT JOIN workforce_departments d ON d.id = e.department_id AND d.company_id = e.company_id
+WHERE e.company_id = ? AND e.status = ?${team ? ' AND e.manager_id = ?' : ''}
+ORDER BY e.first_name''',
+              variables: [
+                Variable(context.company.id),
+                Variable('active'),
+                if (team) Variable(context.employeeReference!.id),
+              ],
+            )
+            .get();
+        final types =
+            await (db.select(db.leaveTypes)..where(
+                  (t) =>
+                      t.companyId.equals(context.company.id) &
+                      t.status.equals('active'),
+                ))
+                .get();
+        final ledger =
+            await (db.select(db.leaveBalanceTransactions)..where(
+                  (t) =>
+                      t.companyId.equals(context.company.id) &
+                      t.leaveYear.equals(leaveYear),
+                ))
+                .get();
+        final requests =
+            await (db.select(db.leaveRequests)..where(
+                  (t) =>
+                      t.companyId.equals(context.company.id) &
+                      t.status.isIn(['approved', 'pending']) &
+                      t.startDate.like(
+                        '${leaveYear.toString().padLeft(4, '0')}%',
+                      ),
+                ))
+                .get();
+        final entitlement = <String, double>{};
+        for (final t in ledger) {
+          final key = '${t.employeeId}|${t.leaveTypeId}';
+          entitlement[key] =
+              (entitlement[key] ?? 0) +
+              switch (t.type) {
+                'entitlement' ||
+                'carryForward' ||
+                'migration' ||
+                'adjustmentAdd' => t.quantityDays,
+                'adjustmentSubtract' || 'expiry' => -t.quantityDays,
+                _ => 0.0,
+              };
+        }
+        final used = <String, double>{};
+        final pending = <String, double>{};
+        for (final r in requests) {
+          final snapshot = LeaveTypeSnapshot.fromJson(
+            jsonDecode(r.typeSnapshot) as Map<String, dynamic>,
+          );
+          final key = '${r.employeeId}|${snapshot.typeId}';
+          if (r.status == 'approved') {
+            used[key] = (used[key] ?? 0) + r.requestedDays;
+          } else {
+            pending[key] = (pending[key] ?? 0) + r.requestedDays;
+          }
+        }
+        final q = search.trim().toLowerCase();
+        final rows = <LeaveBalanceRow>[];
+        for (final employee in employees) {
+          final name = [
+            employee.read<String>('first_name'),
+            employee.readNullable<String>('middle_name') ?? '',
+            employee.read<String>('last_name'),
+          ].where((s) => s.isNotEmpty).join(' ');
+          if (q.isNotEmpty &&
+              !name.toLowerCase().contains(q) &&
+              !employee
+                  .read<String>('employee_code')
+                  .toLowerCase()
+                  .contains(q)) {
+            continue;
+          }
+          if (departmentId != null &&
+              employee.read<String>('department_id') != departmentId) {
+            continue;
+          }
+          for (final type in types) {
+            if (leaveTypeId != null && type.id != leaveTypeId) continue;
+            final key = '${employee.read<String>('id')}|${type.id}';
+            rows.add(
+              LeaveBalanceRow(
+                employeeId: employee.read<String>('id'),
+                employeeName: name,
+                employeeCode: employee.read<String>('employee_code'),
+                department: employee.read<String>('department'),
+                leaveTypeId: type.id,
+                leaveTypeName: type.name,
+                entitlement: entitlement[key] ?? 0,
+                used: used[key] ?? 0,
+                pending: pending[key] ?? 0,
+              ),
+            );
+          }
+        }
+        return Success(rows);
+      } catch (_) {
+        return _fail('leaveStorageError');
+      }
+    });
+  }
+
+  @override
+  Stream<Result<List<LeaveDepartmentOption>>> watchDepartments(
+    AuthContext context,
+  ) {
+    final p = PermissionChecker(context.user.permissions);
+    if (!p.canAny([
+      AppPermission.leaveViewAll,
+      AppPermission.leaveBalanceViewAll,
+      AppPermission.leaveBalanceViewTeam,
+    ])) {
+      return Stream.value(_fail('leavePermissionDenied'));
+    }
+    return db
+        .customSelect(
+          'SELECT id, name FROM workforce_departments WHERE company_id = ? AND active = ? ORDER BY name',
+          variables: [Variable(context.company.id), Variable(true)],
+          readsFrom: {db.workforceDepartments},
+        )
+        .watch()
+        .map(
+          (rows) => Success([
+            for (final row in rows)
+              LeaveDepartmentOption(
+                row.read<String>('id'),
+                row.read<String>('name'),
+              ),
+          ]),
+        );
   }
 
   @override
@@ -1154,43 +2085,22 @@ LIMIT ?''';
     String id,
   ) async {
     try {
-      final row =
-          await (db.select(db.leaveRequests)..where(
-                (t) => t.id.equals(id) & t.companyId.equals(context.company.id),
-              ))
-              .getSingleOrNull();
-      if (row == null) return const Success(null);
+      final rows = await db
+          .customSelect(
+            '$_requestSelect WHERE r.company_id = ? AND r.id = ?',
+            variables: [Variable(context.company.id), Variable(id)],
+          )
+          .get();
+      if (rows.isEmpty) return const Success(null);
+      final row = _rowFromQuery(rows.single);
       final p = PermissionChecker(context.user.permissions);
-      final isSelf = context.employeeReference?.id == row.employeeId;
-      final canTeam = isSelf
+      final isSelf = context.employeeReference?.id == row.request.employeeId;
+      final canView = isSelf
           ? p.can(AppPermission.leaveViewSelf)
-          : await _canReview(context, row.employeeId) ||
-                p.can(AppPermission.leaveViewAll);
-      if (!isSelf && !canTeam) return _fail('leavePermissionDenied');
-      final employee = await (db.select(
-        db.workforceEmployees,
-      )..where((t) => t.id.equals(row.employeeId))).getSingleOrNull();
-      final department = employee == null
-          ? ''
-          : (await (db.select(db.workforceDepartments)
-                          ..where((t) => t.id.equals(employee.departmentId)))
-                        .getSingleOrNull())
-                    ?.name ??
-                '';
-      return Success(
-        LeaveRequestRow(
-          request: _mapRequest(row),
-          employeeName: employee == null
-              ? ''
-              : [
-                  employee.firstName,
-                  employee.middleName,
-                  employee.lastName,
-                ].where((s) => s.isNotEmpty).join(' '),
-          employeeCode: employee?.employeeCode ?? '',
-          department: department,
-        ),
-      );
+          : p.can(AppPermission.leaveViewAll) ||
+                await _canReview(context, row.request.employeeId);
+      if (!canView) return _fail('leavePermissionDenied');
+      return Success(row);
     } catch (_) {
       return _fail('leaveStorageError', kind: FailureKind.unknown);
     }
@@ -1212,7 +2122,7 @@ LIMIT ?''';
         : p.can(AppPermission.leaveBalanceViewAll) ||
               p.can(AppPermission.leaveBalanceViewTeam);
     if (!allowed) return Stream.value(_fail('leavePermissionDenied'));
-    final leaveYear = year ?? yearResolver.yearFor(_companyToday);
+    final leaveYear = year ?? yearResolver.yearFor(_companyTodayFor(context));
     return db
         .customSelect(
           'SELECT * FROM leave_balance_transactions WHERE company_id=? AND employee_id=? AND leave_year=?',
@@ -1422,6 +2332,7 @@ LIMIT ?''';
               employeeName: employeeName,
               leaveTypeName: request.typeSnapshot.name,
               status: request.status,
+              requestId: request.id,
             ),
           );
         }
@@ -1572,6 +2483,64 @@ LIMIT ?''';
         }
       }
       return const Success(null);
+    } catch (_) {
+      return _fail('leaveStorageError');
+    }
+  }
+
+  @override
+  Future<Result<Set<String>>> employeesOnApprovedLeave(
+    AuthContext context,
+    DateTime date, {
+    required List<String> employeeIds,
+  }) async {
+    if (employeeIds.isEmpty) return const Success(<String>{});
+    try {
+      final day = leaveDate(date);
+      final rows =
+          await (db.select(db.leaveRequests)..where(
+                (t) =>
+                    t.companyId.equals(context.company.id) &
+                    t.status.equals('approved') &
+                    t.startDate.isSmallerOrEqualValue(_d(day)) &
+                    t.endDate.isBiggerOrEqualValue(_d(day)),
+              ))
+              .get();
+      final ids = employeeIds.toSet();
+      return Success({
+        for (final row in rows)
+          if (ids.contains(row.employeeId)) row.employeeId,
+      });
+    } catch (_) {
+      return _fail('leaveStorageError');
+    }
+  }
+
+  @override
+  Future<Result<bool>> companyHolidayOn(
+    AuthContext context,
+    DateTime date,
+  ) async {
+    try {
+      final day = leaveDate(date);
+      final rows =
+          await (db.select(db.holidays)..where(
+                (t) =>
+                    t.companyId.equals(context.company.id) &
+                    t.status.equals('active') &
+                    t.isOptional.equals(false) &
+                    t.scope.equals(HolidayScope.companyWide.name) &
+                    t.date.isSmallerOrEqualValue(_d(day)),
+              ))
+              .get();
+      for (final row in rows) {
+        final start = _parseDate(row.date);
+        final end = row.endDate == null ? start : _parseDate(row.endDate!);
+        if (!end.isBefore(day) && !start.isAfter(day)) {
+          return const Success(true);
+        }
+      }
+      return const Success(false);
     } catch (_) {
       return _fail('leaveStorageError');
     }
@@ -1803,6 +2772,13 @@ LIMIT ?''';
     },
     description: row.description,
     isOptional: row.isOptional,
+    source: HolidaySource.values.firstWhere(
+      (s) => s.name == row.source,
+      orElse: () => HolidaySource.manual,
+    ),
+    calendarId: row.calendarId,
+    countryCode: row.countryCode,
+    regionCode: row.regionCode,
     status: row.status == 'inactive'
         ? ConfigurationStatus.inactive
         : ConfigurationStatus.active,
@@ -1860,41 +2836,6 @@ LIMIT ?''';
     requestId: row.requestId,
     syncStatus: row.syncStatus,
   );
-
-  LeaveRequestRow _mapRequestRow(QueryRow row) {
-    final data = LeaveRequestData(
-      id: row.read<String>('id'),
-      companyId: row.read<String>('company_id'),
-      employeeId: row.read<String>('employee_id'),
-      typeSnapshot: row.read<String>('type_snapshot'),
-      policySnapshot: row.readNullable<String>('policy_snapshot'),
-      startDate: row.read<String>('start_date'),
-      endDate: row.read<String>('end_date'),
-      startPortion: row.read<String>('start_portion'),
-      endPortion: row.read<String>('end_portion'),
-      requestedDays: row.read<double>('requested_days'),
-      reason: row.read<String>('reason'),
-      attachmentName: row.readNullable<String>('attachment_name'),
-      status: row.read<String>('status'),
-      submittedMilliseconds: row.readNullable<int>('submitted_milliseconds'),
-      reviewedMilliseconds: row.readNullable<int>('reviewed_milliseconds'),
-      reviewedBy: row.readNullable<String>('reviewed_by'),
-      reviewNote: row.readNullable<String>('review_note'),
-      cancelledMilliseconds: row.readNullable<int>('cancelled_milliseconds'),
-      cancelledBy: row.readNullable<String>('cancelled_by'),
-      cancellationReason: row.readNullable<String>('cancellation_reason'),
-      createdMilliseconds: row.read<int>('created_milliseconds'),
-      updatedMilliseconds: row.read<int>('updated_milliseconds'),
-      requestId: row.read<String>('request_id'),
-      syncStatus: row.read<String>('sync_status'),
-    );
-    return LeaveRequestRow(
-      request: _mapRequest(data),
-      employeeName: row.read<String>('employee_name'),
-      employeeCode: row.read<String>('employee_code'),
-      department: row.read<String>('department'),
-    );
-  }
 
   LeaveBalanceTransaction _mapTransaction(LeaveBalanceTransactionData row) =>
       LeaveBalanceTransaction(

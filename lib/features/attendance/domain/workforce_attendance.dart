@@ -1,4 +1,5 @@
 import 'attendance_models.dart';
+import '../../leave/domain/leave_models.dart';
 
 enum AttendanceScope { self, team, company }
 
@@ -68,6 +69,7 @@ class WorkforceAttendanceItem {
     this.hasIssue = false,
     this.hasPendingCorrection = false,
     this.syncStatus,
+    this.classification,
   });
   final String employeeId, employeeCode, employeeName;
   final String? department,
@@ -82,6 +84,10 @@ class WorkforceAttendanceItem {
   final Duration workDuration, breakDuration;
   final bool isLate, hasIssue, hasPendingCorrection;
   final AttendanceSyncStatus? syncStatus;
+
+  /// Leave/Holiday overlay for the workday, when applicable. Attendance state
+  /// itself is never rewritten by leave.
+  final WorkdayClassification? classification;
 }
 
 class WorkforceAttendancePage {
