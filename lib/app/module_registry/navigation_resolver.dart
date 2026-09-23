@@ -136,12 +136,17 @@ class NavigationResolver {
       if (path.endsWith('/edit') && !p.can(AppPermission.employeeUpdate)) {
         return RouteAccess.unauthorized;
       }
+      final idIndex = path.endsWith('/edit')
+          ? segments.length - 2
+          : segments.length - 1;
+      final employeeId = idIndex >= 0 && idIndex < segments.length
+          ? segments[idIndex]
+          : null;
       if (!p.canAny([
             AppPermission.employeeViewAll,
             AppPermission.employeeViewTeam,
           ]) &&
-          segments.length >= 3 &&
-          segments[2] != context.employeeReference?.id) {
+          employeeId != context.employeeReference?.id) {
         return RouteAccess.unauthorized;
       }
       return RouteAccess.allowed;

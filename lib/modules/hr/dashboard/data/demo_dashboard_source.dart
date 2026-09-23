@@ -1,4 +1,4 @@
-import 'package:modular_erp/platform/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
 
 /// Deterministic, display-only fixtures. No employees or attendance records
 /// are created, and no writes/remote requests occur.

@@ -217,15 +217,18 @@ void main() {
     () {
       final employee = account(AppRole.employee);
       expect(
-        resolver.routeAccess('/app/employees/123', employee),
+        resolver.routeAccess('${AppRoutes.employees}/123', employee),
         RouteAccess.unauthorized,
       );
       expect(
         resolver.routeAccess(AppRoutes.changePassword, employee),
         RouteAccess.allowed,
       );
-      expect(registry.ownerOf('/app/employees/123')!.id, 'employees');
-      expect(registry.ownerOf('/app/employees-extra'), isNull);
+      expect(registry.ownerOf('${AppRoutes.employees}/123')!.id, 'employees');
+      expect(
+        registry.ownerOf('${AppRoutes.employees}-extra')?.id,
+        isNot('employees'),
+      );
     },
   );
   test(
@@ -297,10 +300,13 @@ void main() {
       expect(
         authRedirect(
           const AuthState(AuthStatus.unauthenticated),
-          Uri.parse('/app/employees?view=team'),
+          Uri.parse('${AppRoutes.employees}?view=team'),
           navigation: resolver,
         ),
-        '/login?from=%2Fapp%2Femployees%3Fview%3Dteam',
+        Uri(
+          path: AppRoutes.login,
+          queryParameters: {'from': '${AppRoutes.employees}?view=team'},
+        ).toString(),
       );
       expect(
         Uri.parse(
@@ -323,10 +329,10 @@ void main() {
       expect(
         authRedirect(
           employee,
-          Uri.parse('/login?from=/app/attendance?view=history'),
+          Uri.parse('/login?from=${AppRoutes.attendance}?view=history'),
           navigation: resolver,
         ),
-        '/app/attendance?view=history',
+        '${AppRoutes.attendance}?view=history',
       );
     },
   );
@@ -554,7 +560,7 @@ void main() {
       await ui_test.pump(tester);
       expect(find.byType(UnauthorizedPage), findsOneWidget);
       expect(find.byType(EmployeeListPage), findsNothing);
-      r.go('/app/employees/123');
+      r.go('${AppRoutes.employees}/123');
       await ui_test.pump(tester);
       expect(find.byType(UnauthorizedPage), findsOneWidget);
       final ctx = h.auth.state.context!;
@@ -636,7 +642,7 @@ void main() {
       final r = ui_test.router(tester);
       Finder item(String id) =>
           find.byWidgetPredicate((w) => w is AppSidebarItem && w.item.id == id);
-      r.go('/app/employees/preview');
+      r.go('${AppRoutes.employees}/preview');
       await ui_test.pump(tester);
       await tester.enterText(find.byType(TextFormField), 'retained draft');
       expect(tester.widget<AppSidebarItem>(item('employees')).selected, true);
@@ -645,14 +651,14 @@ void main() {
       // even from a nested route inside the same branch (Phase 13.5).
       await tester.tap(item('attendance'));
       await ui_test.pump(tester);
-      expect(r.routeInformationProvider.value.uri.path, '/app/attendance');
+      expect(r.routeInformationProvider.value.uri.path, AppRoutes.attendance);
       await tester.tap(item('employees'));
       await ui_test.pump(tester);
-      expect(r.routeInformationProvider.value.uri.path, '/app/employees');
+      expect(r.routeInformationProvider.value.uri.path, AppRoutes.employees);
       expect(find.text('retained draft'), findsNothing);
 
       // Reopen a nested route: locale change and resize preserve it in place.
-      r.go('/app/employees/preview');
+      r.go('${AppRoutes.employees}/preview');
       await ui_test.pump(tester);
       await tester.enterText(find.byType(TextFormField), 'retained draft');
       final saved = h.locale.changeLanguage(AppLanguage.arabic);
@@ -660,7 +666,7 @@ void main() {
       await saved;
       expect(
         r.routeInformationProvider.value.uri.path,
-        '/app/employees/preview',
+        '${AppRoutes.employees}/preview',
       );
       expect(find.text('retained draft'), findsOneWidget);
       tester.view.physicalSize = const Size(390, 900);
@@ -676,7 +682,7 @@ void main() {
       await ui_test.pump(tester);
       h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
       await ui_test.pump(tester);
-      r.go('/app/employees/preview');
+      r.go('${AppRoutes.employees}/preview');
       await ui_test.pump(tester);
       expect(find.text('retained draft'), findsNothing);
       expect(tester.takeException(), isNull);

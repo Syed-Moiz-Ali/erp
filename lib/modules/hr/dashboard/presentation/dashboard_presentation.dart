@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/l10n/l10n.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
 
 abstract final class DashboardPresentation {
   static String greeting(AppLocalizations l, DateTime now, String name) =>

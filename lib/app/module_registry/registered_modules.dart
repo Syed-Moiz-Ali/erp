@@ -14,14 +14,15 @@ import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_module_registration.dart';
+import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/services/module/services_module_registration.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
-import 'package:modular_erp/platform/dashboard/data/local_dashboard_repository.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/platform/module/platform_registration.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
 import 'package:modular_erp/shared/presentation/configuration_landing_page.dart';
@@ -56,11 +57,11 @@ ModuleRegistry createErpRegistry(
   final platformModules = buildPlatformModules(
     registry: () => registry,
     authRepository: authRepository,
-    dashboard: dashboard,
     employeeRepository: employeeRepository,
   );
   final hr = buildHrModules(
     registry: () => registry,
+    dashboardRepository: dashboard,
     employeeRepository: employeeRepository,
     shiftRepository: shiftRepository,
     workLocationRepository: workLocationRepository,
@@ -91,6 +92,9 @@ ModuleRegistry createErpRegistry(
             icon: Icons.settings_outlined,
             selectedIcon: Icons.settings,
             route: AppRoutes.settings,
+            // HR configuration now lives under /app/hr/settings; the Settings
+            // hub keeps owning that subtree for active-state purposes.
+            routeAliases: {HrRoutes.settings},
             navigationGroup: NavigationGroup.configuration,
             order: 40,
             anyPermissions: {

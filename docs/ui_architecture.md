@@ -97,7 +97,7 @@ page padding or marquee titles.
 
 ## 10. Localization & RTL
 
-- Every visible string lives in `lib/l10n/app_en.arb` / `app_ar.arb`
+- Every visible string lives in the per-module localization sources under `lib/l10n`, `lib/platform/l10n` and `lib/modules/*/l10n` (merged into `lib/l10n/generated`)
   (`flutter gen-l10n`). No hardcoded UI text.
 - Use directional APIs: `EdgeInsetsDirectional`, `AlignmentDirectional`,
   `PositionedDirectional`, `BorderDirectional`. The automated test

@@ -16,6 +16,7 @@ import 'package:modular_erp/platform/notifications/domain/notification_repositor
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_services.dart';
+import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 
 class LocalLeaveRepository implements LeaveRepository {
   const LocalLeaveRepository(
@@ -1153,7 +1154,7 @@ class LocalLeaveRepository implements LeaveRepository {
         type: AppNotificationType.leaveApprovalRequired,
         priority: AppNotificationPriority.normal,
         dedupeKey: 'leaveApproval:${request.id}',
-        route: '/app/leave/requests/${request.id}',
+        route: HrRoutes.leaveRequestDetails(request.id),
         payload: {'requestId': request.id},
         createdAt: clock.now().toUtc(),
       ),
@@ -1444,7 +1445,7 @@ class LocalLeaveRepository implements LeaveRepository {
         type: type,
         priority: AppNotificationPriority.normal,
         dedupeKey: 'leave:${type.name}:$requestId',
-        route: '/app/leave/requests/$requestId',
+        route: HrRoutes.leaveRequestDetails(requestId),
         payload: {'requestId': requestId},
         createdAt: clock.now().toUtc(),
       ),

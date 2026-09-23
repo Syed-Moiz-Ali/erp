@@ -792,7 +792,13 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        8,
+        9,
+      );
+      expect(await upgraded.select(upgraded.documentSequences).get(), isEmpty);
+      expect(await upgraded.select(upgraded.attachmentRecords).get(), isEmpty);
+      expect(
+        await upgraded.select(upgraded.businessActivityEvents).get(),
+        isEmpty,
       );
       await seedAttendanceConfiguration(upgraded);
       final sr = LocalShiftRepository(upgraded);

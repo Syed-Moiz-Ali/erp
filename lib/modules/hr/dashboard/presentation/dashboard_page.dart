@@ -13,9 +13,9 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_models.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_repository.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_scope_resolver.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_scope_resolver.dart';
 import 'bloc/dashboard_bloc.dart';
 import 'dashboard_presentation.dart';
 

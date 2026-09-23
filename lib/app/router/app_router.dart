@@ -31,6 +31,7 @@ import 'package:modular_erp/app/shell/app_shell.dart';
 import 'package:modular_erp/app/shell/pages/more_page.dart';
 import 'package:modular_erp/app/shell/pages/route_status_pages.dart';
 import 'app_routes.dart';
+import 'legacy_routes.dart';
 
 T? _providerOrNull<T>(BuildContext context) {
   try {
@@ -58,7 +59,30 @@ class AuthRouterRefresh extends ChangeNotifier {
   }
 }
 
+/// Applies legacy-route compatibility, then the normal authentication,
+/// module and permission redirects.
+///
+/// Legacy URLs are rewritten to their canonical module-first form and the
+/// remaining rules run against that location, so an unauthenticated deep link
+/// carries the canonical `from` target and an authorized visit is redirected to
+/// the canonical URL.
 String? authRedirect(
+  AuthState auth,
+  Uri uri, {
+  required NavigationResolver navigation,
+  bool enablePreview = false,
+}) {
+  final legacy = LegacyRoutes.rewrite(uri);
+  final redirect = _authRedirect(
+    auth,
+    legacy == null ? uri : Uri.parse(legacy),
+    navigation: navigation,
+    enablePreview: enablePreview,
+  );
+  return redirect ?? legacy;
+}
+
+String? _authRedirect(
   AuthState auth,
   Uri uri, {
   required NavigationResolver navigation,

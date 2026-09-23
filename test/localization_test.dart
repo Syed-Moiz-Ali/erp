@@ -38,10 +38,10 @@ void main() {
     'Arabic resources have complete key parity and genuine translations',
     () {
       final en =
-          jsonDecode(File('lib/l10n/app_en.arb').readAsStringSync())
+          jsonDecode(File('lib/l10n/generated/app_en.arb').readAsStringSync())
               as Map<String, dynamic>;
       final ar =
-          jsonDecode(File('lib/l10n/app_ar.arb').readAsStringSync())
+          jsonDecode(File('lib/l10n/generated/app_ar.arb').readAsStringSync())
               as Map<String, dynamic>;
       final keys = en.keys.where((key) => !key.startsWith('@')).toSet();
       expect(ar.keys.where((key) => !key.startsWith('@')).toSet(), keys);

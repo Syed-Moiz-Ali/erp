@@ -18,18 +18,48 @@ class HrWorkforceDirectory implements WorkforceDirectory {
     return result is Success<AuthContext?> ? result.value : null;
   }
 
+  WorkforcePersonRef _ref(Employee employee) => WorkforcePersonRef(
+    id: employee.id,
+    name: employee.displayName,
+    employeeCode: employee.employeeCode,
+    departmentId: employee.departmentId,
+    designationId: employee.designationId,
+    workLocationId: employee.workLocationId,
+    avatarReference: employee.avatarUrl,
+    isActive: employee.status == EmploymentStatus.active,
+  );
+
   @override
-  Future<WorkforcePersonRef?> getEmployeeReference(String employeeId) async {
+  Future<WorkforcePersonRef?> getEmployeeReference(
+    String employeeId, {
+    bool includeInactive = false,
+  }) async {
     final context = await _context();
     if (context == null) return null;
     final result = await employees.getEmployeeById(context, employeeId);
     if (result is! Success<Employee?> || result.value == null) return null;
     final employee = result.value!;
-    return WorkforcePersonRef(
-      id: employee.id,
-      name: employee.displayName,
-      employeeCode: employee.employeeCode,
-    );
+    if (!includeInactive && employee.status != EmploymentStatus.active) {
+      return null;
+    }
+    return _ref(employee);
+  }
+
+  @override
+  Future<List<WorkforcePersonRef>> searchAssignable({
+    String query = '',
+    int limit = 50,
+  }) async {
+    final context = await _context();
+    if (context == null) return const [];
+    final result = await employees
+        .watchEmployees(context, query: query, pageSize: limit)
+        .first;
+    if (result is! Success<EmployeePageData>) return const [];
+    return [
+      for (final employee in result.value.employees)
+        if (employee.status == EmploymentStatus.active) _ref(employee),
+    ];
   }
 
   @override
@@ -49,13 +79,14 @@ class HrWorkforceDirectory implements WorkforceDirectory {
       if (result is Success<EmployeePageData>) {
         yield [
           for (final employee in result.value.employees)
-            AssignableEmployeeSummary(
-              id: employee.id,
-              name: employee.displayName,
-              employeeCode: employee.employeeCode,
-              departmentId: employee.departmentId,
-              designationId: employee.designationId,
-            ),
+            if (employee.status == EmploymentStatus.active)
+              AssignableEmployeeSummary(
+                id: employee.id,
+                name: employee.displayName,
+                employeeCode: employee.employeeCode,
+                departmentId: employee.departmentId,
+                designationId: employee.designationId,
+              ),
         ];
       }
     }

@@ -74,6 +74,17 @@ class AppShell extends StatelessWidget {
           );
           final owner = registry.ownerOf(route);
           final primary = navigation.mobilePrimary;
+          // Select the most specific primary module that owns the current
+          // route, so `/app/hr/employees/...` selects Employees rather than the
+          // broader `/app/hr` HR root.
+          ErpModule? primaryOwner;
+          for (final module in primary) {
+            if (module.owns(route) &&
+                (primaryOwner == null ||
+                    module.route.length > primaryOwner.route.length)) {
+              primaryOwner = module;
+            }
+          }
           // Primary navigation always targets the module's canonical root.
           // `goBranch` would restore that branch's preserved nested location,
           // so an explicit module click from a detail screen would look like a
@@ -115,12 +126,7 @@ class AppShell extends StatelessWidget {
               onToggleSidebar: () =>
                   unawaited(context.read<AppShellCubit>().toggle()),
               bottomModules: navigation.mobileDestinations,
-              bottomSelectedRoute:
-                  primary
-                      .where((module) => module.owns(route))
-                      .map((module) => module.route)
-                      .firstOrNull ??
-                  AppRoutes.more,
+              bottomSelectedRoute: primaryOwner?.route ?? AppRoutes.more,
               onNavigate: navigate,
               topBar: AppTopBar(
                 title: title,

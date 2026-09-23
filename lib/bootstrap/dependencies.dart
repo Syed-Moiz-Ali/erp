@@ -5,6 +5,7 @@ import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
+import 'package:modular_erp/shared/transactions/transactions_dependencies.dart';
 
 final services = GetIt.instance;
 
@@ -12,6 +13,7 @@ final services = GetIt.instance;
 /// composition boundaries, then wires the module registry.
 void configureDependencies() {
   configureCoreDependencies(services);
+  configureTransactionDependencies(services);
   configurePlatformDependencies(services);
   configureHrDependencies(services);
   configureServicesDependencies(services);

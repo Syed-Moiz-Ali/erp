@@ -9,8 +9,6 @@ import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_sourc
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/platform/dashboard/data/local_dashboard_repository.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/platform/notifications/application/attendance_reminder_service.dart';
 import 'package:modular_erp/platform/notifications/application/reminder_context.dart';
 import 'package:modular_erp/platform/notifications/data/local_notification_repository.dart';
@@ -19,7 +17,7 @@ import 'package:modular_erp/platform/notifications/domain/device_notification_se
 import 'package:modular_erp/platform/notifications/domain/notification_repository.dart';
 
 /// Platform (cross-module application) dependencies: authentication, session,
-/// shell, dashboard, notifications and app lifecycle.
+/// shell, notifications and app lifecycle.
 void configurePlatformDependencies(GetIt services) {
   if (AppConfig.demoAuthEnabled) {
     services.registerLazySingleton(DemoAuthSource.new);
@@ -39,13 +37,6 @@ void configurePlatformDependencies(GetIt services) {
   services.registerLazySingleton(
     () => AppShellCubit(services()),
     dispose: (cubit) => cubit.close(),
-  );
-  services.registerLazySingleton<DashboardRepository>(
-    () => LocalDashboardRepository(
-      demoEnabled: AppConfig.demoAuthEnabled,
-      workforce: services(),
-      corrections: services(),
-    ),
   );
   services.registerLazySingleton<NotificationRepository>(
     () => LocalNotificationRepository(services()),

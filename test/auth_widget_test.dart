@@ -496,7 +496,7 @@ void main() {
     expect(r.routeInformationProvider.value.uri.path, '/app/change-password');
     r.go('/login');
     await pump(tester);
-    expect(r.routeInformationProvider.value.uri.path, '/app/dashboard');
+    expect(r.routeInformationProvider.value.uri.path, '/app/hr');
     await unmount(tester, h);
   });
   testWidgets(

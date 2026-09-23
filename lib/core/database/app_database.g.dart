@@ -19038,6 +19038,2422 @@ class HolidayCalendarsCompanion extends UpdateCompanion<HolidayCalendarData> {
   }
 }
 
+class $DocumentSequencesTable extends DocumentSequences
+    with TableInfo<$DocumentSequencesTable, DocumentSequence> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DocumentSequencesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sequenceKeyMeta = const VerificationMeta(
+    'sequenceKey',
+  );
+  @override
+  late final GeneratedColumn<String> sequenceKey = GeneratedColumn<String>(
+    'sequence_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prefixMeta = const VerificationMeta('prefix');
+  @override
+  late final GeneratedColumn<String> prefix = GeneratedColumn<String>(
+    'prefix',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nextValueMeta = const VerificationMeta(
+    'nextValue',
+  );
+  @override
+  late final GeneratedColumn<int> nextValue = GeneratedColumn<int>(
+    'next_value',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _paddingMeta = const VerificationMeta(
+    'padding',
+  );
+  @override
+  late final GeneratedColumn<int> padding = GeneratedColumn<int>(
+    'padding',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(6),
+  );
+  static const VerificationMeta _separatorMeta = const VerificationMeta(
+    'separator',
+  );
+  @override
+  late final GeneratedColumn<String> separator = GeneratedColumn<String>(
+    'separator',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('-'),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    sequenceKey,
+    prefix,
+    nextValue,
+    padding,
+    separator,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'document_sequences';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DocumentSequence> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('sequence_key')) {
+      context.handle(
+        _sequenceKeyMeta,
+        sequenceKey.isAcceptableOrUnknown(
+          data['sequence_key']!,
+          _sequenceKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sequenceKeyMeta);
+    }
+    if (data.containsKey('prefix')) {
+      context.handle(
+        _prefixMeta,
+        prefix.isAcceptableOrUnknown(data['prefix']!, _prefixMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_prefixMeta);
+    }
+    if (data.containsKey('next_value')) {
+      context.handle(
+        _nextValueMeta,
+        nextValue.isAcceptableOrUnknown(data['next_value']!, _nextValueMeta),
+      );
+    }
+    if (data.containsKey('padding')) {
+      context.handle(
+        _paddingMeta,
+        padding.isAcceptableOrUnknown(data['padding']!, _paddingMeta),
+      );
+    }
+    if (data.containsKey('separator')) {
+      context.handle(
+        _separatorMeta,
+        separator.isAcceptableOrUnknown(data['separator']!, _separatorMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DocumentSequence map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DocumentSequence(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      sequenceKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sequence_key'],
+      )!,
+      prefix: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prefix'],
+      )!,
+      nextValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}next_value'],
+      )!,
+      padding: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}padding'],
+      )!,
+      separator: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}separator'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DocumentSequencesTable createAlias(String alias) {
+    return $DocumentSequencesTable(attachedDatabase, alias);
+  }
+}
+
+class DocumentSequence extends DataClass
+    implements Insertable<DocumentSequence> {
+  final String id;
+  final String companyId;
+  final String sequenceKey;
+  final String prefix;
+  final int nextValue;
+  final int padding;
+  final String separator;
+  final DateTime updatedAt;
+  const DocumentSequence({
+    required this.id,
+    required this.companyId,
+    required this.sequenceKey,
+    required this.prefix,
+    required this.nextValue,
+    required this.padding,
+    required this.separator,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['sequence_key'] = Variable<String>(sequenceKey);
+    map['prefix'] = Variable<String>(prefix);
+    map['next_value'] = Variable<int>(nextValue);
+    map['padding'] = Variable<int>(padding);
+    map['separator'] = Variable<String>(separator);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  DocumentSequencesCompanion toCompanion(bool nullToAbsent) {
+    return DocumentSequencesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      sequenceKey: Value(sequenceKey),
+      prefix: Value(prefix),
+      nextValue: Value(nextValue),
+      padding: Value(padding),
+      separator: Value(separator),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory DocumentSequence.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DocumentSequence(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      sequenceKey: serializer.fromJson<String>(json['sequenceKey']),
+      prefix: serializer.fromJson<String>(json['prefix']),
+      nextValue: serializer.fromJson<int>(json['nextValue']),
+      padding: serializer.fromJson<int>(json['padding']),
+      separator: serializer.fromJson<String>(json['separator']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'sequenceKey': serializer.toJson<String>(sequenceKey),
+      'prefix': serializer.toJson<String>(prefix),
+      'nextValue': serializer.toJson<int>(nextValue),
+      'padding': serializer.toJson<int>(padding),
+      'separator': serializer.toJson<String>(separator),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  DocumentSequence copyWith({
+    String? id,
+    String? companyId,
+    String? sequenceKey,
+    String? prefix,
+    int? nextValue,
+    int? padding,
+    String? separator,
+    DateTime? updatedAt,
+  }) => DocumentSequence(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    sequenceKey: sequenceKey ?? this.sequenceKey,
+    prefix: prefix ?? this.prefix,
+    nextValue: nextValue ?? this.nextValue,
+    padding: padding ?? this.padding,
+    separator: separator ?? this.separator,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  DocumentSequence copyWithCompanion(DocumentSequencesCompanion data) {
+    return DocumentSequence(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      sequenceKey: data.sequenceKey.present
+          ? data.sequenceKey.value
+          : this.sequenceKey,
+      prefix: data.prefix.present ? data.prefix.value : this.prefix,
+      nextValue: data.nextValue.present ? data.nextValue.value : this.nextValue,
+      padding: data.padding.present ? data.padding.value : this.padding,
+      separator: data.separator.present ? data.separator.value : this.separator,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DocumentSequence(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('sequenceKey: $sequenceKey, ')
+          ..write('prefix: $prefix, ')
+          ..write('nextValue: $nextValue, ')
+          ..write('padding: $padding, ')
+          ..write('separator: $separator, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    sequenceKey,
+    prefix,
+    nextValue,
+    padding,
+    separator,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DocumentSequence &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.sequenceKey == this.sequenceKey &&
+          other.prefix == this.prefix &&
+          other.nextValue == this.nextValue &&
+          other.padding == this.padding &&
+          other.separator == this.separator &&
+          other.updatedAt == this.updatedAt);
+}
+
+class DocumentSequencesCompanion extends UpdateCompanion<DocumentSequence> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> sequenceKey;
+  final Value<String> prefix;
+  final Value<int> nextValue;
+  final Value<int> padding;
+  final Value<String> separator;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const DocumentSequencesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.sequenceKey = const Value.absent(),
+    this.prefix = const Value.absent(),
+    this.nextValue = const Value.absent(),
+    this.padding = const Value.absent(),
+    this.separator = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DocumentSequencesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String sequenceKey,
+    required String prefix,
+    this.nextValue = const Value.absent(),
+    this.padding = const Value.absent(),
+    this.separator = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       sequenceKey = Value(sequenceKey),
+       prefix = Value(prefix),
+       updatedAt = Value(updatedAt);
+  static Insertable<DocumentSequence> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? sequenceKey,
+    Expression<String>? prefix,
+    Expression<int>? nextValue,
+    Expression<int>? padding,
+    Expression<String>? separator,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (sequenceKey != null) 'sequence_key': sequenceKey,
+      if (prefix != null) 'prefix': prefix,
+      if (nextValue != null) 'next_value': nextValue,
+      if (padding != null) 'padding': padding,
+      if (separator != null) 'separator': separator,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DocumentSequencesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? sequenceKey,
+    Value<String>? prefix,
+    Value<int>? nextValue,
+    Value<int>? padding,
+    Value<String>? separator,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return DocumentSequencesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      sequenceKey: sequenceKey ?? this.sequenceKey,
+      prefix: prefix ?? this.prefix,
+      nextValue: nextValue ?? this.nextValue,
+      padding: padding ?? this.padding,
+      separator: separator ?? this.separator,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (sequenceKey.present) {
+      map['sequence_key'] = Variable<String>(sequenceKey.value);
+    }
+    if (prefix.present) {
+      map['prefix'] = Variable<String>(prefix.value);
+    }
+    if (nextValue.present) {
+      map['next_value'] = Variable<int>(nextValue.value);
+    }
+    if (padding.present) {
+      map['padding'] = Variable<int>(padding.value);
+    }
+    if (separator.present) {
+      map['separator'] = Variable<String>(separator.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DocumentSequencesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('sequenceKey: $sequenceKey, ')
+          ..write('prefix: $prefix, ')
+          ..write('nextValue: $nextValue, ')
+          ..write('padding: $padding, ')
+          ..write('separator: $separator, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttachmentRecordsTable extends AttachmentRecords
+    with TableInfo<$AttachmentRecordsTable, AttachmentRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttachmentRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ownerTypeMeta = const VerificationMeta(
+    'ownerType',
+  );
+  @override
+  late final GeneratedColumn<String> ownerType = GeneratedColumn<String>(
+    'owner_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ownerIdMeta = const VerificationMeta(
+    'ownerId',
+  );
+  @override
+  late final GeneratedColumn<String> ownerId = GeneratedColumn<String>(
+    'owner_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fileNameMeta = const VerificationMeta(
+    'fileName',
+  );
+  @override
+  late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
+    'file_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _mimeTypeMeta = const VerificationMeta(
+    'mimeType',
+  );
+  @override
+  late final GeneratedColumn<String> mimeType = GeneratedColumn<String>(
+    'mime_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sizeBytesMeta = const VerificationMeta(
+    'sizeBytes',
+  );
+  @override
+  late final GeneratedColumn<int> sizeBytes = GeneratedColumn<int>(
+    'size_bytes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _localPathMeta = const VerificationMeta(
+    'localPath',
+  );
+  @override
+  late final GeneratedColumn<String> localPath = GeneratedColumn<String>(
+    'local_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _remoteUrlMeta = const VerificationMeta(
+    'remoteUrl',
+  );
+  @override
+  late final GeneratedColumn<String> remoteUrl = GeneratedColumn<String>(
+    'remote_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _storageKeyMeta = const VerificationMeta(
+    'storageKey',
+  );
+  @override
+  late final GeneratedColumn<String> storageKey = GeneratedColumn<String>(
+    'storage_key',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _thumbnailPathMeta = const VerificationMeta(
+    'thumbnailPath',
+  );
+  @override
+  late final GeneratedColumn<String> thumbnailPath = GeneratedColumn<String>(
+    'thumbnail_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _uploadStatusMeta = const VerificationMeta(
+    'uploadStatus',
+  );
+  @override
+  late final GeneratedColumn<String> uploadStatus = GeneratedColumn<String>(
+    'upload_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    ownerType,
+    ownerId,
+    category,
+    fileName,
+    displayName,
+    mimeType,
+    sizeBytes,
+    localPath,
+    remoteUrl,
+    storageKey,
+    thumbnailPath,
+    checksum,
+    uploadStatus,
+    syncStatus,
+    createdByUserId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attachment_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttachmentRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('owner_type')) {
+      context.handle(
+        _ownerTypeMeta,
+        ownerType.isAcceptableOrUnknown(data['owner_type']!, _ownerTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerTypeMeta);
+    }
+    if (data.containsKey('owner_id')) {
+      context.handle(
+        _ownerIdMeta,
+        ownerId.isAcceptableOrUnknown(data['owner_id']!, _ownerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerIdMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
+    }
+    if (data.containsKey('file_name')) {
+      context.handle(
+        _fileNameMeta,
+        fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileNameMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('mime_type')) {
+      context.handle(
+        _mimeTypeMeta,
+        mimeType.isAcceptableOrUnknown(data['mime_type']!, _mimeTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mimeTypeMeta);
+    }
+    if (data.containsKey('size_bytes')) {
+      context.handle(
+        _sizeBytesMeta,
+        sizeBytes.isAcceptableOrUnknown(data['size_bytes']!, _sizeBytesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sizeBytesMeta);
+    }
+    if (data.containsKey('local_path')) {
+      context.handle(
+        _localPathMeta,
+        localPath.isAcceptableOrUnknown(data['local_path']!, _localPathMeta),
+      );
+    }
+    if (data.containsKey('remote_url')) {
+      context.handle(
+        _remoteUrlMeta,
+        remoteUrl.isAcceptableOrUnknown(data['remote_url']!, _remoteUrlMeta),
+      );
+    }
+    if (data.containsKey('storage_key')) {
+      context.handle(
+        _storageKeyMeta,
+        storageKey.isAcceptableOrUnknown(data['storage_key']!, _storageKeyMeta),
+      );
+    }
+    if (data.containsKey('thumbnail_path')) {
+      context.handle(
+        _thumbnailPathMeta,
+        thumbnailPath.isAcceptableOrUnknown(
+          data['thumbnail_path']!,
+          _thumbnailPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    }
+    if (data.containsKey('upload_status')) {
+      context.handle(
+        _uploadStatusMeta,
+        uploadStatus.isAcceptableOrUnknown(
+          data['upload_status']!,
+          _uploadStatusMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_uploadStatusMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AttachmentRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttachmentRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      ownerType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner_type'],
+      )!,
+      ownerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner_id'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      fileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_name'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      mimeType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mime_type'],
+      )!,
+      sizeBytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}size_bytes'],
+      )!,
+      localPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_path'],
+      ),
+      remoteUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remote_url'],
+      ),
+      storageKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_key'],
+      ),
+      thumbnailPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}thumbnail_path'],
+      ),
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      ),
+      uploadStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}upload_status'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+    );
+  }
+
+  @override
+  $AttachmentRecordsTable createAlias(String alias) {
+    return $AttachmentRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class AttachmentRecord extends DataClass
+    implements Insertable<AttachmentRecord> {
+  final String id;
+  final String companyId;
+  final String ownerType;
+  final String ownerId;
+  final String category;
+  final String fileName;
+  final String displayName;
+  final String mimeType;
+  final int sizeBytes;
+  final String? localPath;
+  final String? remoteUrl;
+  final String? storageKey;
+  final String? thumbnailPath;
+  final String? checksum;
+  final String uploadStatus;
+  final String syncStatus;
+  final String createdByUserId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  const AttachmentRecord({
+    required this.id,
+    required this.companyId,
+    required this.ownerType,
+    required this.ownerId,
+    required this.category,
+    required this.fileName,
+    required this.displayName,
+    required this.mimeType,
+    required this.sizeBytes,
+    this.localPath,
+    this.remoteUrl,
+    this.storageKey,
+    this.thumbnailPath,
+    this.checksum,
+    required this.uploadStatus,
+    required this.syncStatus,
+    required this.createdByUserId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['owner_type'] = Variable<String>(ownerType);
+    map['owner_id'] = Variable<String>(ownerId);
+    map['category'] = Variable<String>(category);
+    map['file_name'] = Variable<String>(fileName);
+    map['display_name'] = Variable<String>(displayName);
+    map['mime_type'] = Variable<String>(mimeType);
+    map['size_bytes'] = Variable<int>(sizeBytes);
+    if (!nullToAbsent || localPath != null) {
+      map['local_path'] = Variable<String>(localPath);
+    }
+    if (!nullToAbsent || remoteUrl != null) {
+      map['remote_url'] = Variable<String>(remoteUrl);
+    }
+    if (!nullToAbsent || storageKey != null) {
+      map['storage_key'] = Variable<String>(storageKey);
+    }
+    if (!nullToAbsent || thumbnailPath != null) {
+      map['thumbnail_path'] = Variable<String>(thumbnailPath);
+    }
+    if (!nullToAbsent || checksum != null) {
+      map['checksum'] = Variable<String>(checksum);
+    }
+    map['upload_status'] = Variable<String>(uploadStatus);
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    return map;
+  }
+
+  AttachmentRecordsCompanion toCompanion(bool nullToAbsent) {
+    return AttachmentRecordsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      ownerType: Value(ownerType),
+      ownerId: Value(ownerId),
+      category: Value(category),
+      fileName: Value(fileName),
+      displayName: Value(displayName),
+      mimeType: Value(mimeType),
+      sizeBytes: Value(sizeBytes),
+      localPath: localPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(localPath),
+      remoteUrl: remoteUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteUrl),
+      storageKey: storageKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(storageKey),
+      thumbnailPath: thumbnailPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(thumbnailPath),
+      checksum: checksum == null && nullToAbsent
+          ? const Value.absent()
+          : Value(checksum),
+      uploadStatus: Value(uploadStatus),
+      syncStatus: Value(syncStatus),
+      createdByUserId: Value(createdByUserId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+    );
+  }
+
+  factory AttachmentRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttachmentRecord(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      ownerType: serializer.fromJson<String>(json['ownerType']),
+      ownerId: serializer.fromJson<String>(json['ownerId']),
+      category: serializer.fromJson<String>(json['category']),
+      fileName: serializer.fromJson<String>(json['fileName']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      mimeType: serializer.fromJson<String>(json['mimeType']),
+      sizeBytes: serializer.fromJson<int>(json['sizeBytes']),
+      localPath: serializer.fromJson<String?>(json['localPath']),
+      remoteUrl: serializer.fromJson<String?>(json['remoteUrl']),
+      storageKey: serializer.fromJson<String?>(json['storageKey']),
+      thumbnailPath: serializer.fromJson<String?>(json['thumbnailPath']),
+      checksum: serializer.fromJson<String?>(json['checksum']),
+      uploadStatus: serializer.fromJson<String>(json['uploadStatus']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'ownerType': serializer.toJson<String>(ownerType),
+      'ownerId': serializer.toJson<String>(ownerId),
+      'category': serializer.toJson<String>(category),
+      'fileName': serializer.toJson<String>(fileName),
+      'displayName': serializer.toJson<String>(displayName),
+      'mimeType': serializer.toJson<String>(mimeType),
+      'sizeBytes': serializer.toJson<int>(sizeBytes),
+      'localPath': serializer.toJson<String?>(localPath),
+      'remoteUrl': serializer.toJson<String?>(remoteUrl),
+      'storageKey': serializer.toJson<String?>(storageKey),
+      'thumbnailPath': serializer.toJson<String?>(thumbnailPath),
+      'checksum': serializer.toJson<String?>(checksum),
+      'uploadStatus': serializer.toJson<String>(uploadStatus),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+    };
+  }
+
+  AttachmentRecord copyWith({
+    String? id,
+    String? companyId,
+    String? ownerType,
+    String? ownerId,
+    String? category,
+    String? fileName,
+    String? displayName,
+    String? mimeType,
+    int? sizeBytes,
+    Value<String?> localPath = const Value.absent(),
+    Value<String?> remoteUrl = const Value.absent(),
+    Value<String?> storageKey = const Value.absent(),
+    Value<String?> thumbnailPath = const Value.absent(),
+    Value<String?> checksum = const Value.absent(),
+    String? uploadStatus,
+    String? syncStatus,
+    String? createdByUserId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+  }) => AttachmentRecord(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    ownerType: ownerType ?? this.ownerType,
+    ownerId: ownerId ?? this.ownerId,
+    category: category ?? this.category,
+    fileName: fileName ?? this.fileName,
+    displayName: displayName ?? this.displayName,
+    mimeType: mimeType ?? this.mimeType,
+    sizeBytes: sizeBytes ?? this.sizeBytes,
+    localPath: localPath.present ? localPath.value : this.localPath,
+    remoteUrl: remoteUrl.present ? remoteUrl.value : this.remoteUrl,
+    storageKey: storageKey.present ? storageKey.value : this.storageKey,
+    thumbnailPath: thumbnailPath.present
+        ? thumbnailPath.value
+        : this.thumbnailPath,
+    checksum: checksum.present ? checksum.value : this.checksum,
+    uploadStatus: uploadStatus ?? this.uploadStatus,
+    syncStatus: syncStatus ?? this.syncStatus,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+  );
+  AttachmentRecord copyWithCompanion(AttachmentRecordsCompanion data) {
+    return AttachmentRecord(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      ownerType: data.ownerType.present ? data.ownerType.value : this.ownerType,
+      ownerId: data.ownerId.present ? data.ownerId.value : this.ownerId,
+      category: data.category.present ? data.category.value : this.category,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      mimeType: data.mimeType.present ? data.mimeType.value : this.mimeType,
+      sizeBytes: data.sizeBytes.present ? data.sizeBytes.value : this.sizeBytes,
+      localPath: data.localPath.present ? data.localPath.value : this.localPath,
+      remoteUrl: data.remoteUrl.present ? data.remoteUrl.value : this.remoteUrl,
+      storageKey: data.storageKey.present
+          ? data.storageKey.value
+          : this.storageKey,
+      thumbnailPath: data.thumbnailPath.present
+          ? data.thumbnailPath.value
+          : this.thumbnailPath,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      uploadStatus: data.uploadStatus.present
+          ? data.uploadStatus.value
+          : this.uploadStatus,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttachmentRecord(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('ownerType: $ownerType, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('category: $category, ')
+          ..write('fileName: $fileName, ')
+          ..write('displayName: $displayName, ')
+          ..write('mimeType: $mimeType, ')
+          ..write('sizeBytes: $sizeBytes, ')
+          ..write('localPath: $localPath, ')
+          ..write('remoteUrl: $remoteUrl, ')
+          ..write('storageKey: $storageKey, ')
+          ..write('thumbnailPath: $thumbnailPath, ')
+          ..write('checksum: $checksum, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    ownerType,
+    ownerId,
+    category,
+    fileName,
+    displayName,
+    mimeType,
+    sizeBytes,
+    localPath,
+    remoteUrl,
+    storageKey,
+    thumbnailPath,
+    checksum,
+    uploadStatus,
+    syncStatus,
+    createdByUserId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttachmentRecord &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.ownerType == this.ownerType &&
+          other.ownerId == this.ownerId &&
+          other.category == this.category &&
+          other.fileName == this.fileName &&
+          other.displayName == this.displayName &&
+          other.mimeType == this.mimeType &&
+          other.sizeBytes == this.sizeBytes &&
+          other.localPath == this.localPath &&
+          other.remoteUrl == this.remoteUrl &&
+          other.storageKey == this.storageKey &&
+          other.thumbnailPath == this.thumbnailPath &&
+          other.checksum == this.checksum &&
+          other.uploadStatus == this.uploadStatus &&
+          other.syncStatus == this.syncStatus &&
+          other.createdByUserId == this.createdByUserId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt);
+}
+
+class AttachmentRecordsCompanion extends UpdateCompanion<AttachmentRecord> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> ownerType;
+  final Value<String> ownerId;
+  final Value<String> category;
+  final Value<String> fileName;
+  final Value<String> displayName;
+  final Value<String> mimeType;
+  final Value<int> sizeBytes;
+  final Value<String?> localPath;
+  final Value<String?> remoteUrl;
+  final Value<String?> storageKey;
+  final Value<String?> thumbnailPath;
+  final Value<String?> checksum;
+  final Value<String> uploadStatus;
+  final Value<String> syncStatus;
+  final Value<String> createdByUserId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> rowid;
+  const AttachmentRecordsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.ownerType = const Value.absent(),
+    this.ownerId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.fileName = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.mimeType = const Value.absent(),
+    this.sizeBytes = const Value.absent(),
+    this.localPath = const Value.absent(),
+    this.remoteUrl = const Value.absent(),
+    this.storageKey = const Value.absent(),
+    this.thumbnailPath = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.uploadStatus = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttachmentRecordsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String ownerType,
+    required String ownerId,
+    required String category,
+    required String fileName,
+    required String displayName,
+    required String mimeType,
+    required int sizeBytes,
+    this.localPath = const Value.absent(),
+    this.remoteUrl = const Value.absent(),
+    this.storageKey = const Value.absent(),
+    this.thumbnailPath = const Value.absent(),
+    this.checksum = const Value.absent(),
+    required String uploadStatus,
+    required String syncStatus,
+    required String createdByUserId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       ownerType = Value(ownerType),
+       ownerId = Value(ownerId),
+       category = Value(category),
+       fileName = Value(fileName),
+       displayName = Value(displayName),
+       mimeType = Value(mimeType),
+       sizeBytes = Value(sizeBytes),
+       uploadStatus = Value(uploadStatus),
+       syncStatus = Value(syncStatus),
+       createdByUserId = Value(createdByUserId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<AttachmentRecord> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? ownerType,
+    Expression<String>? ownerId,
+    Expression<String>? category,
+    Expression<String>? fileName,
+    Expression<String>? displayName,
+    Expression<String>? mimeType,
+    Expression<int>? sizeBytes,
+    Expression<String>? localPath,
+    Expression<String>? remoteUrl,
+    Expression<String>? storageKey,
+    Expression<String>? thumbnailPath,
+    Expression<String>? checksum,
+    Expression<String>? uploadStatus,
+    Expression<String>? syncStatus,
+    Expression<String>? createdByUserId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (ownerType != null) 'owner_type': ownerType,
+      if (ownerId != null) 'owner_id': ownerId,
+      if (category != null) 'category': category,
+      if (fileName != null) 'file_name': fileName,
+      if (displayName != null) 'display_name': displayName,
+      if (mimeType != null) 'mime_type': mimeType,
+      if (sizeBytes != null) 'size_bytes': sizeBytes,
+      if (localPath != null) 'local_path': localPath,
+      if (remoteUrl != null) 'remote_url': remoteUrl,
+      if (storageKey != null) 'storage_key': storageKey,
+      if (thumbnailPath != null) 'thumbnail_path': thumbnailPath,
+      if (checksum != null) 'checksum': checksum,
+      if (uploadStatus != null) 'upload_status': uploadStatus,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttachmentRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? ownerType,
+    Value<String>? ownerId,
+    Value<String>? category,
+    Value<String>? fileName,
+    Value<String>? displayName,
+    Value<String>? mimeType,
+    Value<int>? sizeBytes,
+    Value<String?>? localPath,
+    Value<String?>? remoteUrl,
+    Value<String?>? storageKey,
+    Value<String?>? thumbnailPath,
+    Value<String?>? checksum,
+    Value<String>? uploadStatus,
+    Value<String>? syncStatus,
+    Value<String>? createdByUserId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? rowid,
+  }) {
+    return AttachmentRecordsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      ownerType: ownerType ?? this.ownerType,
+      ownerId: ownerId ?? this.ownerId,
+      category: category ?? this.category,
+      fileName: fileName ?? this.fileName,
+      displayName: displayName ?? this.displayName,
+      mimeType: mimeType ?? this.mimeType,
+      sizeBytes: sizeBytes ?? this.sizeBytes,
+      localPath: localPath ?? this.localPath,
+      remoteUrl: remoteUrl ?? this.remoteUrl,
+      storageKey: storageKey ?? this.storageKey,
+      thumbnailPath: thumbnailPath ?? this.thumbnailPath,
+      checksum: checksum ?? this.checksum,
+      uploadStatus: uploadStatus ?? this.uploadStatus,
+      syncStatus: syncStatus ?? this.syncStatus,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (ownerType.present) {
+      map['owner_type'] = Variable<String>(ownerType.value);
+    }
+    if (ownerId.present) {
+      map['owner_id'] = Variable<String>(ownerId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (fileName.present) {
+      map['file_name'] = Variable<String>(fileName.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (mimeType.present) {
+      map['mime_type'] = Variable<String>(mimeType.value);
+    }
+    if (sizeBytes.present) {
+      map['size_bytes'] = Variable<int>(sizeBytes.value);
+    }
+    if (localPath.present) {
+      map['local_path'] = Variable<String>(localPath.value);
+    }
+    if (remoteUrl.present) {
+      map['remote_url'] = Variable<String>(remoteUrl.value);
+    }
+    if (storageKey.present) {
+      map['storage_key'] = Variable<String>(storageKey.value);
+    }
+    if (thumbnailPath.present) {
+      map['thumbnail_path'] = Variable<String>(thumbnailPath.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (uploadStatus.present) {
+      map['upload_status'] = Variable<String>(uploadStatus.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttachmentRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('ownerType: $ownerType, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('category: $category, ')
+          ..write('fileName: $fileName, ')
+          ..write('displayName: $displayName, ')
+          ..write('mimeType: $mimeType, ')
+          ..write('sizeBytes: $sizeBytes, ')
+          ..write('localPath: $localPath, ')
+          ..write('remoteUrl: $remoteUrl, ')
+          ..write('storageKey: $storageKey, ')
+          ..write('thumbnailPath: $thumbnailPath, ')
+          ..write('checksum: $checksum, ')
+          ..write('uploadStatus: $uploadStatus, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BusinessActivityEventsTable extends BusinessActivityEvents
+    with TableInfo<$BusinessActivityEventsTable, BusinessActivityEventRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BusinessActivityEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _moduleKeyMeta = const VerificationMeta(
+    'moduleKey',
+  );
+  @override
+  late final GeneratedColumn<String> moduleKey = GeneratedColumn<String>(
+    'module_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityTypeMeta = const VerificationMeta(
+    'entityType',
+  );
+  @override
+  late final GeneratedColumn<String> entityType = GeneratedColumn<String>(
+    'entity_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityIdMeta = const VerificationMeta(
+    'entityId',
+  );
+  @override
+  late final GeneratedColumn<String> entityId = GeneratedColumn<String>(
+    'entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _eventTypeMeta = const VerificationMeta(
+    'eventType',
+  );
+  @override
+  late final GeneratedColumn<String> eventType = GeneratedColumn<String>(
+    'event_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurredAtMeta = const VerificationMeta(
+    'occurredAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> occurredAt = GeneratedColumn<DateTime>(
+    'occurred_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actorUserIdMeta = const VerificationMeta(
+    'actorUserId',
+  );
+  @override
+  late final GeneratedColumn<String> actorUserId = GeneratedColumn<String>(
+    'actor_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actorEmployeeIdMeta = const VerificationMeta(
+    'actorEmployeeId',
+  );
+  @override
+  late final GeneratedColumn<String> actorEmployeeId = GeneratedColumn<String>(
+    'actor_employee_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _summaryKeyMeta = const VerificationMeta(
+    'summaryKey',
+  );
+  @override
+  late final GeneratedColumn<String> summaryKey = GeneratedColumn<String>(
+    'summary_key',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _metadataJsonMeta = const VerificationMeta(
+    'metadataJson',
+  );
+  @override
+  late final GeneratedColumn<String> metadataJson = GeneratedColumn<String>(
+    'metadata_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    moduleKey,
+    entityType,
+    entityId,
+    eventType,
+    occurredAt,
+    actorUserId,
+    actorEmployeeId,
+    summaryKey,
+    metadataJson,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'business_activity_events';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BusinessActivityEventRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('module_key')) {
+      context.handle(
+        _moduleKeyMeta,
+        moduleKey.isAcceptableOrUnknown(data['module_key']!, _moduleKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_moduleKeyMeta);
+    }
+    if (data.containsKey('entity_type')) {
+      context.handle(
+        _entityTypeMeta,
+        entityType.isAcceptableOrUnknown(data['entity_type']!, _entityTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityTypeMeta);
+    }
+    if (data.containsKey('entity_id')) {
+      context.handle(
+        _entityIdMeta,
+        entityId.isAcceptableOrUnknown(data['entity_id']!, _entityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityIdMeta);
+    }
+    if (data.containsKey('event_type')) {
+      context.handle(
+        _eventTypeMeta,
+        eventType.isAcceptableOrUnknown(data['event_type']!, _eventTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_eventTypeMeta);
+    }
+    if (data.containsKey('occurred_at')) {
+      context.handle(
+        _occurredAtMeta,
+        occurredAt.isAcceptableOrUnknown(data['occurred_at']!, _occurredAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_occurredAtMeta);
+    }
+    if (data.containsKey('actor_user_id')) {
+      context.handle(
+        _actorUserIdMeta,
+        actorUserId.isAcceptableOrUnknown(
+          data['actor_user_id']!,
+          _actorUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_actorUserIdMeta);
+    }
+    if (data.containsKey('actor_employee_id')) {
+      context.handle(
+        _actorEmployeeIdMeta,
+        actorEmployeeId.isAcceptableOrUnknown(
+          data['actor_employee_id']!,
+          _actorEmployeeIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('summary_key')) {
+      context.handle(
+        _summaryKeyMeta,
+        summaryKey.isAcceptableOrUnknown(data['summary_key']!, _summaryKeyMeta),
+      );
+    }
+    if (data.containsKey('metadata_json')) {
+      context.handle(
+        _metadataJsonMeta,
+        metadataJson.isAcceptableOrUnknown(
+          data['metadata_json']!,
+          _metadataJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BusinessActivityEventRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BusinessActivityEventRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      moduleKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}module_key'],
+      )!,
+      entityType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_type'],
+      )!,
+      entityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_id'],
+      )!,
+      eventType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}event_type'],
+      )!,
+      occurredAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}occurred_at'],
+      )!,
+      actorUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actor_user_id'],
+      )!,
+      actorEmployeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actor_employee_id'],
+      ),
+      summaryKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}summary_key'],
+      ),
+      metadataJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}metadata_json'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $BusinessActivityEventsTable createAlias(String alias) {
+    return $BusinessActivityEventsTable(attachedDatabase, alias);
+  }
+}
+
+class BusinessActivityEventRow extends DataClass
+    implements Insertable<BusinessActivityEventRow> {
+  final String id;
+  final String companyId;
+  final String moduleKey;
+  final String entityType;
+  final String entityId;
+  final String eventType;
+  final DateTime occurredAt;
+  final String actorUserId;
+  final String? actorEmployeeId;
+  final String? summaryKey;
+  final String metadataJson;
+  final String? requestId;
+  final String syncStatus;
+  const BusinessActivityEventRow({
+    required this.id,
+    required this.companyId,
+    required this.moduleKey,
+    required this.entityType,
+    required this.entityId,
+    required this.eventType,
+    required this.occurredAt,
+    required this.actorUserId,
+    this.actorEmployeeId,
+    this.summaryKey,
+    required this.metadataJson,
+    this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['module_key'] = Variable<String>(moduleKey);
+    map['entity_type'] = Variable<String>(entityType);
+    map['entity_id'] = Variable<String>(entityId);
+    map['event_type'] = Variable<String>(eventType);
+    map['occurred_at'] = Variable<DateTime>(occurredAt);
+    map['actor_user_id'] = Variable<String>(actorUserId);
+    if (!nullToAbsent || actorEmployeeId != null) {
+      map['actor_employee_id'] = Variable<String>(actorEmployeeId);
+    }
+    if (!nullToAbsent || summaryKey != null) {
+      map['summary_key'] = Variable<String>(summaryKey);
+    }
+    map['metadata_json'] = Variable<String>(metadataJson);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  BusinessActivityEventsCompanion toCompanion(bool nullToAbsent) {
+    return BusinessActivityEventsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      moduleKey: Value(moduleKey),
+      entityType: Value(entityType),
+      entityId: Value(entityId),
+      eventType: Value(eventType),
+      occurredAt: Value(occurredAt),
+      actorUserId: Value(actorUserId),
+      actorEmployeeId: actorEmployeeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actorEmployeeId),
+      summaryKey: summaryKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(summaryKey),
+      metadataJson: Value(metadataJson),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory BusinessActivityEventRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BusinessActivityEventRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      moduleKey: serializer.fromJson<String>(json['moduleKey']),
+      entityType: serializer.fromJson<String>(json['entityType']),
+      entityId: serializer.fromJson<String>(json['entityId']),
+      eventType: serializer.fromJson<String>(json['eventType']),
+      occurredAt: serializer.fromJson<DateTime>(json['occurredAt']),
+      actorUserId: serializer.fromJson<String>(json['actorUserId']),
+      actorEmployeeId: serializer.fromJson<String?>(json['actorEmployeeId']),
+      summaryKey: serializer.fromJson<String?>(json['summaryKey']),
+      metadataJson: serializer.fromJson<String>(json['metadataJson']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'moduleKey': serializer.toJson<String>(moduleKey),
+      'entityType': serializer.toJson<String>(entityType),
+      'entityId': serializer.toJson<String>(entityId),
+      'eventType': serializer.toJson<String>(eventType),
+      'occurredAt': serializer.toJson<DateTime>(occurredAt),
+      'actorUserId': serializer.toJson<String>(actorUserId),
+      'actorEmployeeId': serializer.toJson<String?>(actorEmployeeId),
+      'summaryKey': serializer.toJson<String?>(summaryKey),
+      'metadataJson': serializer.toJson<String>(metadataJson),
+      'requestId': serializer.toJson<String?>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  BusinessActivityEventRow copyWith({
+    String? id,
+    String? companyId,
+    String? moduleKey,
+    String? entityType,
+    String? entityId,
+    String? eventType,
+    DateTime? occurredAt,
+    String? actorUserId,
+    Value<String?> actorEmployeeId = const Value.absent(),
+    Value<String?> summaryKey = const Value.absent(),
+    String? metadataJson,
+    Value<String?> requestId = const Value.absent(),
+    String? syncStatus,
+  }) => BusinessActivityEventRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    moduleKey: moduleKey ?? this.moduleKey,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    eventType: eventType ?? this.eventType,
+    occurredAt: occurredAt ?? this.occurredAt,
+    actorUserId: actorUserId ?? this.actorUserId,
+    actorEmployeeId: actorEmployeeId.present
+        ? actorEmployeeId.value
+        : this.actorEmployeeId,
+    summaryKey: summaryKey.present ? summaryKey.value : this.summaryKey,
+    metadataJson: metadataJson ?? this.metadataJson,
+    requestId: requestId.present ? requestId.value : this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  BusinessActivityEventRow copyWithCompanion(
+    BusinessActivityEventsCompanion data,
+  ) {
+    return BusinessActivityEventRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      moduleKey: data.moduleKey.present ? data.moduleKey.value : this.moduleKey,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
+      entityId: data.entityId.present ? data.entityId.value : this.entityId,
+      eventType: data.eventType.present ? data.eventType.value : this.eventType,
+      occurredAt: data.occurredAt.present
+          ? data.occurredAt.value
+          : this.occurredAt,
+      actorUserId: data.actorUserId.present
+          ? data.actorUserId.value
+          : this.actorUserId,
+      actorEmployeeId: data.actorEmployeeId.present
+          ? data.actorEmployeeId.value
+          : this.actorEmployeeId,
+      summaryKey: data.summaryKey.present
+          ? data.summaryKey.value
+          : this.summaryKey,
+      metadataJson: data.metadataJson.present
+          ? data.metadataJson.value
+          : this.metadataJson,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BusinessActivityEventRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('moduleKey: $moduleKey, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('eventType: $eventType, ')
+          ..write('occurredAt: $occurredAt, ')
+          ..write('actorUserId: $actorUserId, ')
+          ..write('actorEmployeeId: $actorEmployeeId, ')
+          ..write('summaryKey: $summaryKey, ')
+          ..write('metadataJson: $metadataJson, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    moduleKey,
+    entityType,
+    entityId,
+    eventType,
+    occurredAt,
+    actorUserId,
+    actorEmployeeId,
+    summaryKey,
+    metadataJson,
+    requestId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BusinessActivityEventRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.moduleKey == this.moduleKey &&
+          other.entityType == this.entityType &&
+          other.entityId == this.entityId &&
+          other.eventType == this.eventType &&
+          other.occurredAt == this.occurredAt &&
+          other.actorUserId == this.actorUserId &&
+          other.actorEmployeeId == this.actorEmployeeId &&
+          other.summaryKey == this.summaryKey &&
+          other.metadataJson == this.metadataJson &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class BusinessActivityEventsCompanion
+    extends UpdateCompanion<BusinessActivityEventRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> moduleKey;
+  final Value<String> entityType;
+  final Value<String> entityId;
+  final Value<String> eventType;
+  final Value<DateTime> occurredAt;
+  final Value<String> actorUserId;
+  final Value<String?> actorEmployeeId;
+  final Value<String?> summaryKey;
+  final Value<String> metadataJson;
+  final Value<String?> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const BusinessActivityEventsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.moduleKey = const Value.absent(),
+    this.entityType = const Value.absent(),
+    this.entityId = const Value.absent(),
+    this.eventType = const Value.absent(),
+    this.occurredAt = const Value.absent(),
+    this.actorUserId = const Value.absent(),
+    this.actorEmployeeId = const Value.absent(),
+    this.summaryKey = const Value.absent(),
+    this.metadataJson = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BusinessActivityEventsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String moduleKey,
+    required String entityType,
+    required String entityId,
+    required String eventType,
+    required DateTime occurredAt,
+    required String actorUserId,
+    this.actorEmployeeId = const Value.absent(),
+    this.summaryKey = const Value.absent(),
+    this.metadataJson = const Value.absent(),
+    this.requestId = const Value.absent(),
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       moduleKey = Value(moduleKey),
+       entityType = Value(entityType),
+       entityId = Value(entityId),
+       eventType = Value(eventType),
+       occurredAt = Value(occurredAt),
+       actorUserId = Value(actorUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<BusinessActivityEventRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? moduleKey,
+    Expression<String>? entityType,
+    Expression<String>? entityId,
+    Expression<String>? eventType,
+    Expression<DateTime>? occurredAt,
+    Expression<String>? actorUserId,
+    Expression<String>? actorEmployeeId,
+    Expression<String>? summaryKey,
+    Expression<String>? metadataJson,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (moduleKey != null) 'module_key': moduleKey,
+      if (entityType != null) 'entity_type': entityType,
+      if (entityId != null) 'entity_id': entityId,
+      if (eventType != null) 'event_type': eventType,
+      if (occurredAt != null) 'occurred_at': occurredAt,
+      if (actorUserId != null) 'actor_user_id': actorUserId,
+      if (actorEmployeeId != null) 'actor_employee_id': actorEmployeeId,
+      if (summaryKey != null) 'summary_key': summaryKey,
+      if (metadataJson != null) 'metadata_json': metadataJson,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BusinessActivityEventsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? moduleKey,
+    Value<String>? entityType,
+    Value<String>? entityId,
+    Value<String>? eventType,
+    Value<DateTime>? occurredAt,
+    Value<String>? actorUserId,
+    Value<String?>? actorEmployeeId,
+    Value<String?>? summaryKey,
+    Value<String>? metadataJson,
+    Value<String?>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return BusinessActivityEventsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      moduleKey: moduleKey ?? this.moduleKey,
+      entityType: entityType ?? this.entityType,
+      entityId: entityId ?? this.entityId,
+      eventType: eventType ?? this.eventType,
+      occurredAt: occurredAt ?? this.occurredAt,
+      actorUserId: actorUserId ?? this.actorUserId,
+      actorEmployeeId: actorEmployeeId ?? this.actorEmployeeId,
+      summaryKey: summaryKey ?? this.summaryKey,
+      metadataJson: metadataJson ?? this.metadataJson,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (moduleKey.present) {
+      map['module_key'] = Variable<String>(moduleKey.value);
+    }
+    if (entityType.present) {
+      map['entity_type'] = Variable<String>(entityType.value);
+    }
+    if (entityId.present) {
+      map['entity_id'] = Variable<String>(entityId.value);
+    }
+    if (eventType.present) {
+      map['event_type'] = Variable<String>(eventType.value);
+    }
+    if (occurredAt.present) {
+      map['occurred_at'] = Variable<DateTime>(occurredAt.value);
+    }
+    if (actorUserId.present) {
+      map['actor_user_id'] = Variable<String>(actorUserId.value);
+    }
+    if (actorEmployeeId.present) {
+      map['actor_employee_id'] = Variable<String>(actorEmployeeId.value);
+    }
+    if (summaryKey.present) {
+      map['summary_key'] = Variable<String>(summaryKey.value);
+    }
+    if (metadataJson.present) {
+      map['metadata_json'] = Variable<String>(metadataJson.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BusinessActivityEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('moduleKey: $moduleKey, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('eventType: $eventType, ')
+          ..write('occurredAt: $occurredAt, ')
+          ..write('actorUserId: $actorUserId, ')
+          ..write('actorEmployeeId: $actorEmployeeId, ')
+          ..write('summaryKey: $summaryKey, ')
+          ..write('metadataJson: $metadataJson, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -19079,6 +21495,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HolidayCalendarsTable holidayCalendars = $HolidayCalendarsTable(
     this,
   );
+  late final $DocumentSequencesTable documentSequences =
+      $DocumentSequencesTable(this);
+  late final $AttachmentRecordsTable attachmentRecords =
+      $AttachmentRecordsTable(this);
+  late final $BusinessActivityEventsTable businessActivityEvents =
+      $BusinessActivityEventsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -19106,6 +21528,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     leaveRequestEvents,
     holidays,
     holidayCalendars,
+    documentSequences,
+    attachmentRecords,
+    businessActivityEvents,
   ];
 }
 
@@ -28950,6 +31375,1173 @@ typedef $$HolidayCalendarsTableProcessedTableManager =
       HolidayCalendarData,
       PrefetchHooks Function()
     >;
+typedef $$DocumentSequencesTableCreateCompanionBuilder =
+    DocumentSequencesCompanion Function({
+      required String id,
+      required String companyId,
+      required String sequenceKey,
+      required String prefix,
+      Value<int> nextValue,
+      Value<int> padding,
+      Value<String> separator,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$DocumentSequencesTableUpdateCompanionBuilder =
+    DocumentSequencesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> sequenceKey,
+      Value<String> prefix,
+      Value<int> nextValue,
+      Value<int> padding,
+      Value<String> separator,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$DocumentSequencesTableFilterComposer
+    extends Composer<_$AppDatabase, $DocumentSequencesTable> {
+  $$DocumentSequencesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sequenceKey => $composableBuilder(
+    column: $table.sequenceKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prefix => $composableBuilder(
+    column: $table.prefix,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get nextValue => $composableBuilder(
+    column: $table.nextValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get padding => $composableBuilder(
+    column: $table.padding,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get separator => $composableBuilder(
+    column: $table.separator,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DocumentSequencesTableOrderingComposer
+    extends Composer<_$AppDatabase, $DocumentSequencesTable> {
+  $$DocumentSequencesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sequenceKey => $composableBuilder(
+    column: $table.sequenceKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prefix => $composableBuilder(
+    column: $table.prefix,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get nextValue => $composableBuilder(
+    column: $table.nextValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get padding => $composableBuilder(
+    column: $table.padding,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get separator => $composableBuilder(
+    column: $table.separator,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DocumentSequencesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DocumentSequencesTable> {
+  $$DocumentSequencesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get sequenceKey => $composableBuilder(
+    column: $table.sequenceKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prefix =>
+      $composableBuilder(column: $table.prefix, builder: (column) => column);
+
+  GeneratedColumn<int> get nextValue =>
+      $composableBuilder(column: $table.nextValue, builder: (column) => column);
+
+  GeneratedColumn<int> get padding =>
+      $composableBuilder(column: $table.padding, builder: (column) => column);
+
+  GeneratedColumn<String> get separator =>
+      $composableBuilder(column: $table.separator, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$DocumentSequencesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DocumentSequencesTable,
+          DocumentSequence,
+          $$DocumentSequencesTableFilterComposer,
+          $$DocumentSequencesTableOrderingComposer,
+          $$DocumentSequencesTableAnnotationComposer,
+          $$DocumentSequencesTableCreateCompanionBuilder,
+          $$DocumentSequencesTableUpdateCompanionBuilder,
+          (
+            DocumentSequence,
+            BaseReferences<
+              _$AppDatabase,
+              $DocumentSequencesTable,
+              DocumentSequence
+            >,
+          ),
+          DocumentSequence,
+          PrefetchHooks Function()
+        > {
+  $$DocumentSequencesTableTableManager(
+    _$AppDatabase db,
+    $DocumentSequencesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DocumentSequencesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DocumentSequencesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DocumentSequencesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> sequenceKey = const Value.absent(),
+                Value<String> prefix = const Value.absent(),
+                Value<int> nextValue = const Value.absent(),
+                Value<int> padding = const Value.absent(),
+                Value<String> separator = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentSequencesCompanion(
+                id: id,
+                companyId: companyId,
+                sequenceKey: sequenceKey,
+                prefix: prefix,
+                nextValue: nextValue,
+                padding: padding,
+                separator: separator,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String sequenceKey,
+                required String prefix,
+                Value<int> nextValue = const Value.absent(),
+                Value<int> padding = const Value.absent(),
+                Value<String> separator = const Value.absent(),
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => DocumentSequencesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                sequenceKey: sequenceKey,
+                prefix: prefix,
+                nextValue: nextValue,
+                padding: padding,
+                separator: separator,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DocumentSequencesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DocumentSequencesTable,
+      DocumentSequence,
+      $$DocumentSequencesTableFilterComposer,
+      $$DocumentSequencesTableOrderingComposer,
+      $$DocumentSequencesTableAnnotationComposer,
+      $$DocumentSequencesTableCreateCompanionBuilder,
+      $$DocumentSequencesTableUpdateCompanionBuilder,
+      (
+        DocumentSequence,
+        BaseReferences<
+          _$AppDatabase,
+          $DocumentSequencesTable,
+          DocumentSequence
+        >,
+      ),
+      DocumentSequence,
+      PrefetchHooks Function()
+    >;
+typedef $$AttachmentRecordsTableCreateCompanionBuilder =
+    AttachmentRecordsCompanion Function({
+      required String id,
+      required String companyId,
+      required String ownerType,
+      required String ownerId,
+      required String category,
+      required String fileName,
+      required String displayName,
+      required String mimeType,
+      required int sizeBytes,
+      Value<String?> localPath,
+      Value<String?> remoteUrl,
+      Value<String?> storageKey,
+      Value<String?> thumbnailPath,
+      Value<String?> checksum,
+      required String uploadStatus,
+      required String syncStatus,
+      required String createdByUserId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> rowid,
+    });
+typedef $$AttachmentRecordsTableUpdateCompanionBuilder =
+    AttachmentRecordsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> ownerType,
+      Value<String> ownerId,
+      Value<String> category,
+      Value<String> fileName,
+      Value<String> displayName,
+      Value<String> mimeType,
+      Value<int> sizeBytes,
+      Value<String?> localPath,
+      Value<String?> remoteUrl,
+      Value<String?> storageKey,
+      Value<String?> thumbnailPath,
+      Value<String?> checksum,
+      Value<String> uploadStatus,
+      Value<String> syncStatus,
+      Value<String> createdByUserId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> rowid,
+    });
+
+class $$AttachmentRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $AttachmentRecordsTable> {
+  $$AttachmentRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ownerType => $composableBuilder(
+    column: $table.ownerType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ownerId => $composableBuilder(
+    column: $table.ownerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get mimeType => $composableBuilder(
+    column: $table.mimeType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sizeBytes => $composableBuilder(
+    column: $table.sizeBytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localPath => $composableBuilder(
+    column: $table.localPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get remoteUrl => $composableBuilder(
+    column: $table.remoteUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get storageKey => $composableBuilder(
+    column: $table.storageKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get thumbnailPath => $composableBuilder(
+    column: $table.thumbnailPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AttachmentRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttachmentRecordsTable> {
+  $$AttachmentRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ownerType => $composableBuilder(
+    column: $table.ownerType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ownerId => $composableBuilder(
+    column: $table.ownerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get mimeType => $composableBuilder(
+    column: $table.mimeType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sizeBytes => $composableBuilder(
+    column: $table.sizeBytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get localPath => $composableBuilder(
+    column: $table.localPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get remoteUrl => $composableBuilder(
+    column: $table.remoteUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get storageKey => $composableBuilder(
+    column: $table.storageKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get thumbnailPath => $composableBuilder(
+    column: $table.thumbnailPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AttachmentRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttachmentRecordsTable> {
+  $$AttachmentRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get ownerType =>
+      $composableBuilder(column: $table.ownerType, builder: (column) => column);
+
+  GeneratedColumn<String> get ownerId =>
+      $composableBuilder(column: $table.ownerId, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get fileName =>
+      $composableBuilder(column: $table.fileName, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get mimeType =>
+      $composableBuilder(column: $table.mimeType, builder: (column) => column);
+
+  GeneratedColumn<int> get sizeBytes =>
+      $composableBuilder(column: $table.sizeBytes, builder: (column) => column);
+
+  GeneratedColumn<String> get localPath =>
+      $composableBuilder(column: $table.localPath, builder: (column) => column);
+
+  GeneratedColumn<String> get remoteUrl =>
+      $composableBuilder(column: $table.remoteUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get storageKey => $composableBuilder(
+    column: $table.storageKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get thumbnailPath => $composableBuilder(
+    column: $table.thumbnailPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<String> get uploadStatus => $composableBuilder(
+    column: $table.uploadStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+}
+
+class $$AttachmentRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttachmentRecordsTable,
+          AttachmentRecord,
+          $$AttachmentRecordsTableFilterComposer,
+          $$AttachmentRecordsTableOrderingComposer,
+          $$AttachmentRecordsTableAnnotationComposer,
+          $$AttachmentRecordsTableCreateCompanionBuilder,
+          $$AttachmentRecordsTableUpdateCompanionBuilder,
+          (
+            AttachmentRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $AttachmentRecordsTable,
+              AttachmentRecord
+            >,
+          ),
+          AttachmentRecord,
+          PrefetchHooks Function()
+        > {
+  $$AttachmentRecordsTableTableManager(
+    _$AppDatabase db,
+    $AttachmentRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttachmentRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttachmentRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttachmentRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> ownerType = const Value.absent(),
+                Value<String> ownerId = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<String> fileName = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<String> mimeType = const Value.absent(),
+                Value<int> sizeBytes = const Value.absent(),
+                Value<String?> localPath = const Value.absent(),
+                Value<String?> remoteUrl = const Value.absent(),
+                Value<String?> storageKey = const Value.absent(),
+                Value<String?> thumbnailPath = const Value.absent(),
+                Value<String?> checksum = const Value.absent(),
+                Value<String> uploadStatus = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttachmentRecordsCompanion(
+                id: id,
+                companyId: companyId,
+                ownerType: ownerType,
+                ownerId: ownerId,
+                category: category,
+                fileName: fileName,
+                displayName: displayName,
+                mimeType: mimeType,
+                sizeBytes: sizeBytes,
+                localPath: localPath,
+                remoteUrl: remoteUrl,
+                storageKey: storageKey,
+                thumbnailPath: thumbnailPath,
+                checksum: checksum,
+                uploadStatus: uploadStatus,
+                syncStatus: syncStatus,
+                createdByUserId: createdByUserId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String ownerType,
+                required String ownerId,
+                required String category,
+                required String fileName,
+                required String displayName,
+                required String mimeType,
+                required int sizeBytes,
+                Value<String?> localPath = const Value.absent(),
+                Value<String?> remoteUrl = const Value.absent(),
+                Value<String?> storageKey = const Value.absent(),
+                Value<String?> thumbnailPath = const Value.absent(),
+                Value<String?> checksum = const Value.absent(),
+                required String uploadStatus,
+                required String syncStatus,
+                required String createdByUserId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttachmentRecordsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                ownerType: ownerType,
+                ownerId: ownerId,
+                category: category,
+                fileName: fileName,
+                displayName: displayName,
+                mimeType: mimeType,
+                sizeBytes: sizeBytes,
+                localPath: localPath,
+                remoteUrl: remoteUrl,
+                storageKey: storageKey,
+                thumbnailPath: thumbnailPath,
+                checksum: checksum,
+                uploadStatus: uploadStatus,
+                syncStatus: syncStatus,
+                createdByUserId: createdByUserId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AttachmentRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttachmentRecordsTable,
+      AttachmentRecord,
+      $$AttachmentRecordsTableFilterComposer,
+      $$AttachmentRecordsTableOrderingComposer,
+      $$AttachmentRecordsTableAnnotationComposer,
+      $$AttachmentRecordsTableCreateCompanionBuilder,
+      $$AttachmentRecordsTableUpdateCompanionBuilder,
+      (
+        AttachmentRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $AttachmentRecordsTable,
+          AttachmentRecord
+        >,
+      ),
+      AttachmentRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$BusinessActivityEventsTableCreateCompanionBuilder =
+    BusinessActivityEventsCompanion Function({
+      required String id,
+      required String companyId,
+      required String moduleKey,
+      required String entityType,
+      required String entityId,
+      required String eventType,
+      required DateTime occurredAt,
+      required String actorUserId,
+      Value<String?> actorEmployeeId,
+      Value<String?> summaryKey,
+      Value<String> metadataJson,
+      Value<String?> requestId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$BusinessActivityEventsTableUpdateCompanionBuilder =
+    BusinessActivityEventsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> moduleKey,
+      Value<String> entityType,
+      Value<String> entityId,
+      Value<String> eventType,
+      Value<DateTime> occurredAt,
+      Value<String> actorUserId,
+      Value<String?> actorEmployeeId,
+      Value<String?> summaryKey,
+      Value<String> metadataJson,
+      Value<String?> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$BusinessActivityEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $BusinessActivityEventsTable> {
+  $$BusinessActivityEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get moduleKey => $composableBuilder(
+    column: $table.moduleKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actorUserId => $composableBuilder(
+    column: $table.actorUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actorEmployeeId => $composableBuilder(
+    column: $table.actorEmployeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get summaryKey => $composableBuilder(
+    column: $table.summaryKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BusinessActivityEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $BusinessActivityEventsTable> {
+  $$BusinessActivityEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get moduleKey => $composableBuilder(
+    column: $table.moduleKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actorUserId => $composableBuilder(
+    column: $table.actorUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actorEmployeeId => $composableBuilder(
+    column: $table.actorEmployeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get summaryKey => $composableBuilder(
+    column: $table.summaryKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BusinessActivityEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BusinessActivityEventsTable> {
+  $$BusinessActivityEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get moduleKey =>
+      $composableBuilder(column: $table.moduleKey, builder: (column) => column);
+
+  GeneratedColumn<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get entityId =>
+      $composableBuilder(column: $table.entityId, builder: (column) => column);
+
+  GeneratedColumn<String> get eventType =>
+      $composableBuilder(column: $table.eventType, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get occurredAt => $composableBuilder(
+    column: $table.occurredAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actorUserId => $composableBuilder(
+    column: $table.actorUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actorEmployeeId => $composableBuilder(
+    column: $table.actorEmployeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get summaryKey => $composableBuilder(
+    column: $table.summaryKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$BusinessActivityEventsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BusinessActivityEventsTable,
+          BusinessActivityEventRow,
+          $$BusinessActivityEventsTableFilterComposer,
+          $$BusinessActivityEventsTableOrderingComposer,
+          $$BusinessActivityEventsTableAnnotationComposer,
+          $$BusinessActivityEventsTableCreateCompanionBuilder,
+          $$BusinessActivityEventsTableUpdateCompanionBuilder,
+          (
+            BusinessActivityEventRow,
+            BaseReferences<
+              _$AppDatabase,
+              $BusinessActivityEventsTable,
+              BusinessActivityEventRow
+            >,
+          ),
+          BusinessActivityEventRow,
+          PrefetchHooks Function()
+        > {
+  $$BusinessActivityEventsTableTableManager(
+    _$AppDatabase db,
+    $BusinessActivityEventsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BusinessActivityEventsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$BusinessActivityEventsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$BusinessActivityEventsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> moduleKey = const Value.absent(),
+                Value<String> entityType = const Value.absent(),
+                Value<String> entityId = const Value.absent(),
+                Value<String> eventType = const Value.absent(),
+                Value<DateTime> occurredAt = const Value.absent(),
+                Value<String> actorUserId = const Value.absent(),
+                Value<String?> actorEmployeeId = const Value.absent(),
+                Value<String?> summaryKey = const Value.absent(),
+                Value<String> metadataJson = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BusinessActivityEventsCompanion(
+                id: id,
+                companyId: companyId,
+                moduleKey: moduleKey,
+                entityType: entityType,
+                entityId: entityId,
+                eventType: eventType,
+                occurredAt: occurredAt,
+                actorUserId: actorUserId,
+                actorEmployeeId: actorEmployeeId,
+                summaryKey: summaryKey,
+                metadataJson: metadataJson,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String moduleKey,
+                required String entityType,
+                required String entityId,
+                required String eventType,
+                required DateTime occurredAt,
+                required String actorUserId,
+                Value<String?> actorEmployeeId = const Value.absent(),
+                Value<String?> summaryKey = const Value.absent(),
+                Value<String> metadataJson = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => BusinessActivityEventsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                moduleKey: moduleKey,
+                entityType: entityType,
+                entityId: entityId,
+                eventType: eventType,
+                occurredAt: occurredAt,
+                actorUserId: actorUserId,
+                actorEmployeeId: actorEmployeeId,
+                summaryKey: summaryKey,
+                metadataJson: metadataJson,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BusinessActivityEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BusinessActivityEventsTable,
+      BusinessActivityEventRow,
+      $$BusinessActivityEventsTableFilterComposer,
+      $$BusinessActivityEventsTableOrderingComposer,
+      $$BusinessActivityEventsTableAnnotationComposer,
+      $$BusinessActivityEventsTableCreateCompanionBuilder,
+      $$BusinessActivityEventsTableUpdateCompanionBuilder,
+      (
+        BusinessActivityEventRow,
+        BaseReferences<
+          _$AppDatabase,
+          $BusinessActivityEventsTable,
+          BusinessActivityEventRow
+        >,
+      ),
+      BusinessActivityEventRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -29012,4 +32604,13 @@ class $AppDatabaseManager {
       $$HolidaysTableTableManager(_db, _db.holidays);
   $$HolidayCalendarsTableTableManager get holidayCalendars =>
       $$HolidayCalendarsTableTableManager(_db, _db.holidayCalendars);
+  $$DocumentSequencesTableTableManager get documentSequences =>
+      $$DocumentSequencesTableTableManager(_db, _db.documentSequences);
+  $$AttachmentRecordsTableTableManager get attachmentRecords =>
+      $$AttachmentRecordsTableTableManager(_db, _db.attachmentRecords);
+  $$BusinessActivityEventsTableTableManager get businessActivityEvents =>
+      $$BusinessActivityEventsTableTableManager(
+        _db,
+        _db.businessActivityEvents,
+      );
 }

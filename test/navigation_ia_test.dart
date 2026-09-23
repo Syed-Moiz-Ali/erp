@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/module_registry/navigation_resolver.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
+import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
@@ -63,18 +64,15 @@ void main() {
     final resolverInstance = resolver();
     // Shifts route remains authorized while locations/policies are not.
     expect(
-      resolverInstance.routeAccess('/app/settings/shifts', onlyShifts),
+      resolverInstance.routeAccess(AppRoutes.shifts, onlyShifts),
       RouteAccess.allowed,
     );
     expect(
-      resolverInstance.routeAccess('/app/settings/work-locations', onlyShifts),
+      resolverInstance.routeAccess(AppRoutes.workLocations, onlyShifts),
       RouteAccess.unauthorized,
     );
     expect(
-      resolverInstance.routeAccess(
-        '/app/settings/attendance-policies',
-        onlyShifts,
-      ),
+      resolverInstance.routeAccess(AppRoutes.attendancePolicies, onlyShifts),
       RouteAccess.unauthorized,
     );
   });
@@ -85,15 +83,15 @@ void main() {
       DemoAuthRepository(MemorySessionStorage()),
     );
     expect(registry.ownerOf('/app/settings')!.id, 'settings');
-    expect(registry.ownerOf('/app/settings/shifts/shift-1')!.id, 'shifts');
+    expect(registry.ownerOf('${AppRoutes.shifts}/shift-1')!.id, 'shifts');
     final nav = NavigationResolver(
       registry,
     ).resolve(hr.company, hr.user.permissions, employee: hr.employeeReference);
-    // Shifts is owned by the settings module family for active-state purposes.
-    expect(
-      nav.desktop.where((m) => m.owns('/app/settings/shifts')).map((m) => m.id),
-      ['settings'],
-    );
+    // Shifts is owned by the settings module family for active-state purposes;
+    // the most specific visible owner wins over the broader `/app/hr` root.
+    final owners = nav.desktop.where((m) => m.owns(AppRoutes.shifts)).toList()
+      ..sort((a, b) => b.route.length.compareTo(a.route.length));
+    expect(owners.first.id, 'settings');
   });
 
   test('attendance primary is gated by any attendance capability', () {

@@ -1,1841 +1,2723 @@
 ```text
-SERVICES PHASE 0.1 — DASHBOARD OWNERSHIP & ERP MODULE BOUNDARY CORRECTION
+PHASE 0.5 — ERP PERMISSION, SCOPE & MODULE ACCESS ADMINISTRATION
 
-Continue working on the EXISTING Flutter ERP project.
+PERMISSION-DRIVEN ERP ACCESS
+NO BUSINESS ROLE-BASED AUTHORIZATION
+DEDICATED USERS & ACCESS UI
+MODULE / SUBMODULE / ACTION / SCOPE ARCHITECTURE
 
-Phase 0 file movement has already started.
+Continue working on the EXISTING Flutter ERP application after:
 
-CURRENT STRUCTURE AFTER THE MOVE:
+Phase 0
+→ ERP module architecture
 
-lib/modules/hr/
-  attendance/
-  attendance_policies/
-  employees/
-  leave/
-  reports/
-  shifts/
-  work_locations/
+Phase 0.1
+→ Dashboard ownership correction
 
-lib/platform/
-  auth/
-  dashboard/
-  design_system_preview/
-  notifications/
-  profile/
-  sync/
-  workspace/
+Phase 0.2
+→ modular localization
 
-THIS NEEDS ONE IMPORTANT CORRECTION.
+Phase 0.3
+→ module-first routes
 
-==================================================
-1. PROBLEM
-==================================================
-
-The current Dashboard implementation was moved to:
-
-lib/platform/dashboard/
-
-but the ACTUAL current Dashboard is HR-specific.
-
-It currently contains information related to:
-
-- Employees
-- Attendance
-- Leave
-- Workforce
-- Attendance summaries
-- Leave summaries
-- HR persona dashboards
-- HR operational metrics
-
-It is NOT yet a generic ERP-wide Dashboard framework.
-
-Therefore:
-
-CURRENT dashboard implementation belongs to:
-
-lib/modules/hr/dashboard/
-
-NOT:
-
-lib/platform/dashboard/
-
-==================================================
-2. FIX THE FILE LOCATION
-==================================================
-
-Move:
-
-lib/platform/dashboard/
-
-to:
-
-lib/modules/hr/dashboard/
-
-Result:
-
-lib/modules/hr/
-  dashboard/
-  employees/
-  attendance/
-  leave/
-  shifts/
-  work_locations/
-  attendance_policies/
-  reports/
-
-==================================================
-3. DO NOT CHANGE DASHBOARD URL
-==================================================
-
-IMPORTANT:
-
-Source-code ownership and URL architecture are different.
-
-Keep current route:
-
-/app/dashboard
-
-DO NOT change to:
-
-/app/hr/dashboard
-
-DO NOT change browser/deep-link behavior.
-
-Existing route names/constants remain compatible.
-
-==================================================
-4. DO NOT CHANGE DASHBOARD BEHAVIOR
-==================================================
-
-This phase is ownership correction only.
-
-Do NOT redesign Dashboard.
-
-Do NOT change:
-
-- widgets
-- metrics
-- role/persona content
-- permissions
-- capabilities
-- cards
-- queries
-- layout
-- responsive behavior
-- localization
-
-The Dashboard should render exactly as before.
-
-==================================================
-5. WHY DASHBOARD BELONGS TO HR CURRENTLY
-==================================================
-
-Use this ownership rule:
-
-A feature belongs to a business module when most/all of its current business
-data and use cases belong to that module.
-
-Current Dashboard consumes only HR/workforce concerns.
-
-Therefore:
-
-HR Dashboard → modules/hr/dashboard
-
-Later Services may have:
-
-modules/services/dashboard/
-
-with metrics such as:
-
-- Open Service Enquiries
-- Scheduled Jobs
-- Pending Inspections
-- Material Requests
-- Work In Progress
-- Completed Jobs
-- Overdue Jobs
-
-DO NOT put future Services metrics into:
-
-modules/hr/dashboard/
-
-==================================================
-6. FUTURE GLOBAL DASHBOARD
-==================================================
-
-DO NOT build a global dashboard framework prematurely.
-
-However document the intended future direction.
-
-If the application later needs one combined ERP landing dashboard:
-
-platform/dashboard/
-
-may eventually contain ONLY a thin composition layer.
-
-Conceptually:
-
-platform/dashboard/
-  dashboard_shell.dart
-  dashboard_contributor.dart
-
-modules/hr/dashboard/
-  hr_dashboard_contributor.dart
-
-modules/services/dashboard/
-  services_dashboard_contributor.dart
-
-But:
-
-DO NOT implement this now unless necessary.
-
-For Phase 0.1:
-
-the whole CURRENT Dashboard remains HR-owned.
-
-==================================================
-7. DO NOT LEAVE DUPLICATE DASHBOARD CODE
-==================================================
-
-After moving:
-
-lib/platform/dashboard/
-
-should NOT contain duplicate:
-
-domain
-data
-application
-presentation
-
-implementations.
-
-There must be ONE current Dashboard implementation:
-
-lib/modules/hr/dashboard/
-
-==================================================
-8. UPDATE IMPORTS
-==================================================
-
-Search entire project for:
-
-/platform/dashboard/
-
-and update imports to:
-
-/modules/hr/dashboard/
-
-where referring to the current HR Dashboard.
-
-Examples to audit:
-
-registered_modules.dart
-
-bootstrap/dependencies.dart
-
-router
-
-dashboard BLoC providers
-
-dashboard repository
-
-dashboard tests
-
-navigation tests
-
-widget tests
-
-demo seed wiring
-
-==================================================
-9. REGISTRY OWNERSHIP
-==================================================
-
-Dashboard registration should be reviewed carefully.
-
-Even though the Dashboard source lives in:
-
-modules/hr/dashboard/
-
-the destination remains:
-
-/app/dashboard
-
-For CURRENT product state, HR module registration may own the Dashboard
-destination because the page itself is HR-specific.
-
-Do NOT create fake platform ownership only because route is `/app/dashboard`.
-
-==================================================
-10. DASHBOARD VISIBILITY
-==================================================
-
-Preserve current behavior.
-
-Employee
-Manager
-HR
-Company Admin
-Super Admin
-
-must still receive the same Dashboard experience they had before this move.
-
-Do NOT expose Services.
-
-==================================================
-11. SUPER ADMIN NOTE
-==================================================
-
-If current Super Admin Dashboard already uses the same HR Dashboard framework,
-preserve behavior for now.
-
-Do not redesign platform/admin dashboards during Phase 0.1.
-
-If future platform-wide Super Admin dashboard is needed,
-that is separate future architecture.
-
-==================================================
-12. PROFILE REMAINS PLATFORM
-==================================================
-
-DO NOT move Profile into HR.
-
-Current:
-
-lib/platform/profile/
-
-is correct.
-
-Reason:
-
-My Profile represents the authenticated UserAccount.
-
-HR employment information is optional linked content.
-
-Future Services permissions/context may also be shown there.
-
-==================================================
-13. NOTIFICATIONS REMAIN PLATFORM
-==================================================
-
-Keep:
-
-lib/platform/notifications/
-
-Notifications are cross-module.
-
-HR creates:
-
-Attendance notifications
-Leave notifications
-Holiday notifications
-
-Services will later create:
-
-Service assignment
-Inspection
-Material
-Execution notifications.
-
-Therefore notification infrastructure stays platform.
-
-==================================================
-14. AUTH REMAINS PLATFORM
-==================================================
-
-Keep:
-
-lib/platform/auth/
-
-Authentication/session/company/permission foundation is cross-module.
-
-==================================================
-15. SYNC REMAINS PLATFORM
-==================================================
-
-Keep:
-
-lib/platform/sync/
-
-Generic outbox/sync infrastructure supports all ERP modules.
-
-HR-specific sync payload handlers may remain inside HR where appropriate,
-but infrastructure stays platform.
-
-==================================================
-16. WORKSPACE REMAINS PLATFORM
-==================================================
+Phase 0.4
+→ shared transaction foundation
 
-Keep:
+DO NOT start Services Phase 1 yet.
 
-lib/platform/workspace/
+This phase replaces the remaining ROLE-CENTRIC authorization assumptions with
+a scalable PERMISSION + SCOPE architecture and provides a dedicated UI through
+which authorized administrators assign access to employees/users.
 
-if it represents global application workspace/shell behavior.
-
-==================================================
-17. DESIGN SYSTEM PREVIEW
-==================================================
-
-Keep:
-
-lib/platform/design_system_preview/
-
-or move to design_system/dev if that is cleaner.
-
-Do NOT move into HR.
-
-==================================================
-18. FINAL EXPECTED TOP-LEVEL STRUCTURE
-==================================================
-
-Preferred after Phase 0.1:
-
-lib/
-  app/
-  bootstrap/
-  core/
-  design_system/
-  l10n/
-  shared/
-
-  platform/
-    auth/
-    notifications/
-    profile/
-    sync/
-    workspace/
-    design_system_preview/
-
-  modules/
-    hr/
-      dashboard/
-      employees/
-      attendance/
-      leave/
-      shifts/
-      work_locations/
-      attendance_policies/
-      reports/
-
-    services/
-
-==================================================
-19. OWNERSHIP RULE TO DOCUMENT
-==================================================
-
-Add/update architecture documentation with this rule:
-
-PLATFORM
-
-Cross-module technical/product concerns.
-
-Examples:
-
-Auth
-Profile
-Notifications
-Sync
-Workspace
-
-BUSINESS MODULE
-
-Domain-specific business functionality.
-
-Examples:
-
-HR Dashboard
-Employees
-Attendance
-Leave
-Services
-Finance
-Inventory
-
-==================================================
-20. DO NOT USE SCREEN NAME TO DETERMINE OWNERSHIP
-==================================================
-
-A folder called:
-
-dashboard
-
-does NOT automatically mean Platform.
-
-Ownership depends on what business domain the code represents.
-
-Likewise:
-
-reports
-
-does NOT automatically mean global Reports.
-
-Current Reports are Attendance/HR reports,
-so they belong to HR.
-
-==================================================
-21. REPORTS CONFIRMATION
-==================================================
-
-Keep:
-
-modules/hr/reports/
-
-because current reporting implementation is:
-
-Attendance / Workforce reporting.
-
-Future:
-
-modules/services/reports/
-
-will contain Service analytics.
-
-Later a global Reports shell may compose both.
-
-Do not create that shell now.
-
-==================================================
-22. FUTURE SERVICE DASHBOARD
-==================================================
-
-Reserve conceptual ownership:
-
-modules/services/dashboard/
-
-but DO NOT create it until there is actual Services dashboard functionality.
-
-Avoid empty-folder architecture.
-
-==================================================
-23. NO SERVICE IMPLEMENTATION
-==================================================
-
-Do NOT implement:
-
-Service Overview
-Service Enquiry
-Scheduling
-Inspection
-Material Request
-Work Execution
-
-in Phase 0.1.
-
-==================================================
-24. NO DASHBOARD CONTRIBUTOR FRAMEWORK YET
-==================================================
-
-Do not prematurely create:
-
-DashboardContributor
-DashboardPlugin
-DashboardWidgetRegistry
-
-unless the current code genuinely requires it to compile.
-
-We will introduce composition when Services needs to contribute data.
-
-==================================================
-25. DEPENDENCY INJECTION
-==================================================
-
-If Dashboard repository/BLoC registrations were moved toward platform DI
-during Phase 0:
-
-correct ownership.
-
-HR-specific Dashboard dependencies should be registered from:
-
-hr_dependencies.dart
-
-where appropriate.
-
-Generic platform dependencies remain global/platform.
-
 ==================================================
-26. DASHBOARD REPOSITORY
+0. FINAL PRODUCT DECISION
 ==================================================
 
-If current LocalDashboardRepository directly queries:
+LOCK THIS RULE:
 
-Attendance
-Employees
-Leave
+Business users are NOT fundamentally:
 
-it belongs to:
+HR User
+Manager User
+Service Manager User
+Technician User
+Inspector User
 
-modules/hr/dashboard/data/
+They are:
 
-Do not leave HR repository in Platform.
+USER ACCOUNT
++
+COMPANY MEMBERSHIP
++
+OPTIONAL/EXPECTED EMPLOYEE LINK
++
+PERMISSION GRANTS
++
+SCOPES
++
+ORGANIZATIONAL / TEAM / ASSIGNMENT RELATIONSHIPS
 
-==================================================
-27. DASHBOARD DOMAIN MODELS
-==================================================
-
-If models are specifically:
-
-Attendance metrics
-Leave metrics
-Employee workforce data
-
-they remain HR Dashboard domain models.
-
-Do not move them to shared/core.
-
-==================================================
-28. GENERIC UI PRIMITIVES
-==================================================
-
-Widgets such as:
-
-AppMetricCard
-AppSectionHeader
-AppChartCard
-
-belong in design_system/shared if already generic.
-
-Do not duplicate them inside HR Dashboard.
-
-==================================================
-29. TEST PATHS
-==================================================
-
-Update tests referencing:
-
-platform/dashboard
-
-to:
-
-modules/hr/dashboard
-
-without changing assertions.
-
-==================================================
-30. IMPORT AUDIT
-==================================================
-
-Run a project-wide search:
-
-platform/dashboard
-
-Expected final result:
-
-ZERO imports/references to the old HR Dashboard location.
-
-Exception:
-
-architecture documentation discussing the future global dashboard,
-if explicitly intentional.
-
-==================================================
-31. DIRECTORY AUDIT
-==================================================
-
-Verify:
-
-lib/platform/dashboard
-
-does not remain as an empty or duplicated folder.
-
-Remove it for now.
-
-Do not create future placeholder folders.
-
-==================================================
-32. ROUTING AUDIT
-==================================================
-
-Ensure:
-
-/app/dashboard
-
-still loads.
-
-Refresh:
-
-/app/dashboard
-
-still loads.
-
-Browser Back/Forward still works.
-
-Mobile navigation still selects Dashboard/Home correctly.
-
-Desktop navigation still selects Dashboard.
-
-==================================================
-33. PERSONA REGRESSION TESTS
-==================================================
-
-Check Dashboard for:
-
-Employee
-
-Manager
-
-HR
-
-Company Admin
-
-Super Admin
-
-No changes to visible content caused by folder move.
+The difference between two employees is their ACCESS GRANTS.
 
-==================================================
-34. HR MODULE IMPORT BOUNDARY
-==================================================
-
-It is acceptable for:
-
-modules/hr/dashboard/
-
-to import public contracts/domain APIs from:
-
-employees
-attendance
-leave
-
-because they are all inside HR.
-
-Prefer domain/repository contracts.
-
-Do not import random presentation widgets simply to access data.
-
-==================================================
-35. PLATFORM MUST NOT DEPEND ON HR DASHBOARD IMPLEMENTATION
-==================================================
-
-After correction:
-
-platform/
-
-should not import:
+DO NOT build future features using:
 
-modules/hr/dashboard/presentation
+if (role == Role.hr)
 
-unless there is a very explicit composition reason.
-
-Current AppRegistry/app route composition can reference it.
-
-Platform infrastructure should not.
-
-==================================================
-36. ARCHITECTURE DOCUMENTATION
-==================================================
+if (role == Role.manager)
 
-Update:
+if (role == Role.technician)
 
-docs/architecture/modules.md
+if (role == Role.serviceManager)
 
 or equivalent.
 
-Explicitly include:
-
-CURRENT STATE
-
-HR owns Dashboard because Dashboard is workforce-specific.
-
-FUTURE STATE
-
-If multiple ERP modules contribute to one landing Dashboard,
-create thin platform composition later.
-
-Do not do it prematurely.
-
 ==================================================
-37. DO NOT REVERSE OTHER VALID MOVES
+1. ONE LOGIN MODEL
 ==================================================
 
-Keep current correct moves:
+All company users use the same login system.
 
-auth → platform
+Example:
 
-notifications → platform
+Email / Phone
+Password
+      ↓
+UserAccount
+      ↓
+Active Company Membership
+      ↓
+Permission Grants
+      ↓
+Employee Link / Team / Assignment Context
+      ↓
+UserCapabilityContext
+      ↓
+Navigation + Routes + Actions + Record Scope
 
-profile → platform
+Do NOT introduce:
 
-sync → platform
-
-workspace → platform
-
-design_system_preview → platform
-
-Employees → HR
-
-Attendance → HR
-
-Leave → HR
-
-Shifts → HR
-
-Work Locations → HR
-
-Attendance Policies → HR
-
-Attendance Reports → HR
-
-Only Dashboard ownership is being corrected.
+HR Login
+Services Login
+Technician Login
+Manager Login.
 
 ==================================================
-38. PHASE 0 CONTINUATION
+2. PLATFORM SUPER ADMIN
 ==================================================
 
-After completing this correction:
+Platform/Super Admin may remain a special platform-level authority/account
+according to the existing application architecture.
 
-continue the remaining original Services Phase 0 tasks:
+However:
 
-- HR dependency composition
-- ModuleRegistry splitting
-- Services registration foundation
-- Workforce cross-module contract
-- documentation
-- tests
+SUPER ADMIN STATUS MUST NOT BE USED AS A SHORTCUT FOR BUSINESS OPERATIONS.
 
-Do NOT restart Phase 0 from scratch.
+Being Super Admin must not automatically mean:
 
-==================================================
-39. QUALITY GATE
-==================================================
+can Punch Attendance
 
-Run:
+can Request Leave
 
-dart format .
+can Approve Leave
 
-flutter analyze
+can Complete Inspection
 
-flutter test
+can Complete Service Work
 
-At the final Phase 0 boundary also run:
+can Issue Materials
 
-flutter build web --release --dart-define=DEMO_AUTH=true
+inside every company.
+
+Operational company access remains permission based.
 
 ==================================================
-40. COMPLETION REPORT
+3. COMPANY EMPLOYEES
 ==================================================
 
-Provide:
+Company operational users should normally be linked to an Employee.
 
-1. Dashboard's previous incorrect location
+Examples:
 
-2. final Dashboard location
+normal worker
 
-3. number of Dashboard files moved
+HR staff
 
-4. imports updated
+team manager
 
-5. DI ownership updated
+service coordinator
 
-6. registry ownership updated
+technician
 
-7. route confirmation
+inspector
 
-8. persona Dashboard regression status
+service operations head
 
-9. platform folders remaining
+all remain Employees.
 
-10. HR module folders remaining
+The app does NOT create separate person entities such as:
 
-11. architecture documentation updated
+HrPerson
 
-12. flutter analyze result
+TechnicianPerson
 
-13. flutter test result
+InspectorPerson
 
-14. whether original Phase 0 can safely continue
+ServiceManagerPerson.
 
 ==================================================
-41. STOP CONDITION
+4. ACCOUNT VS EMPLOYEE
 ==================================================
 
-PHASE 0.1 IS COMPLETE ONLY WHEN:
+Keep these concepts separate:
 
-✓ current Dashboard is located under modules/hr/dashboard
+UserAccount
+→ login/security identity.
 
-✓ Dashboard is no longer under platform/dashboard
+Employee
+→ employment/workforce identity.
 
-✓ no duplicate Dashboard implementation exists
+A company Employee may or may not have login access.
 
-✓ /app/dashboard route remains unchanged
+A user receiving self/assigned work capabilities usually requires a valid,
+active Employee link.
 
-✓ current Dashboard UI remains unchanged
+Platform/Super Admin may exist without Employee linkage.
 
-✓ Employee Dashboard remains unchanged
+Do not duplicate Employee data into access-control tables.
 
-✓ Manager Dashboard remains unchanged
+==================================================
+5. REMOVE BUSINESS ROLE AUTHORIZATION
+==================================================
 
-✓ HR Dashboard remains unchanged
+Audit the current codebase for:
 
-✓ Company Admin Dashboard remains unchanged
+AccountRole
 
-✓ Super Admin existing behavior remains unchanged
+RoleTemplate
 
-✓ Attendance/Leave/Employee Dashboard data still loads
+role ==
 
-✓ Dashboard repository ownership is HR-correct
+roles.contains(...)
 
-✓ Dashboard BLoCs/controllers are HR-correct
+role-derived navigation
 
-✓ HR-specific Dashboard DI is HR-owned where appropriate
+role-derived route guards
 
-✓ Profile remains Platform
+role-derived action visibility.
 
-✓ Auth remains Platform
+Business authorization must be moved to:
 
-✓ Notifications remain Platform
+PermissionSet / PermissionGrant
 
-✓ Sync remains Platform
+Scope
 
-✓ Workspace remains Platform
+Capability Resolver.
 
-✓ Attendance Reports remain HR
+==================================================
+6. LEGACY ROLE DATA
+==================================================
 
-✓ no premature global Dashboard contributor system was built
+If the current database/API/demo architecture contains role fields,
+do NOT destroy data recklessly.
 
-✓ no Services functionality was implemented
+Use a controlled migration strategy.
 
-✓ architecture docs explain current vs future Dashboard ownership
+Existing roles may temporarily remain:
 
-✓ flutter analyze passes
+- legacy metadata
+- migration source
+- optional human-readable label
 
-✓ flutter test passes
+BUT:
 
-Then continue the remaining Services Phase 0 work.
-```
+they must no longer be the authoritative source for:
 
+navigation
 
+routes
 
+actions
 
+record visibility.
 
+==================================================
+7. OPTIONAL ACCESS PRESETS
+==================================================
 
-```text
-SERVICES PHASE 0.2 — MODULAR LOCALIZATION ARCHITECTURE
-SPLIT ARB SOURCES BY ERP MODULE WHILE PRESERVING ONE AppLocalizations API
+Do NOT implement traditional roles as runtime authorization.
 
-Continue working on the EXISTING Flutter ERP project after Services Phase 0 / 0.1.
+If administrators later need convenience bundles, call them:
 
-DO NOT begin Services Phase 1 yet.
+Access Presets
 
-CURRENT LOCALIZATION ARCHITECTURE:
+Examples could eventually be:
 
-lib/l10n/
-  app_en.arb
-  app_ar.arb
+HR Staff
 
-or equivalent current English/Arabic ARB files.
+Service Technician
 
-The application already uses:
+Service Coordinator
 
-Flutter gen_l10n
-AppLocalizations
-context.l10n
-English
-Arabic
-RTL
+But a preset only means:
 
-This works today but will not scale well as we add:
+"select these permissions for me."
 
+Applying a preset writes real Permission Grants.
+
+After that:
+
+runtime authorization evaluates PERMISSIONS,
+not preset name.
+
+Do NOT implement presets now unless needed to migrate legacy demo users.
+
+==================================================
+8. PERMISSION ARCHITECTURE
+==================================================
+
+Introduce/standardize a module-owned Permission Catalog.
+
+Conceptually:
+
+PermissionCatalog
+  ├── HR
+  │    ├── Employees
+  │    ├── Attendance
+  │    ├── Leave
+  │    ├── Reports
+  │    └── HR Settings
+  │
+  ├── Services
+  │    └── future definitions
+  │
+  ├── Inventory
+  │    └── future definitions
+  │
+  └── Finance
+       └── future definitions
+
+The Access UI reads this catalog.
+
+DO NOT hardcode every module and checkbox directly in the page widget.
+
+==================================================
+9. MODULE PERMISSION CONTRIBUTIONS
+==================================================
+
+Each business module owns its permission definitions.
+
+Example:
+
+modules/hr/access/
+  hr_permission_catalog.dart
+
+modules/services/access/
+  services_permission_catalog.dart
+
+Future:
+
+modules/inventory/access/
+  inventory_permission_catalog.dart
+
+modules/finance/access/
+  finance_permission_catalog.dart
+
+The global access-management screen composes them.
+
+==================================================
+10. PERMISSION DEFINITION
+==================================================
+
+Create a typed definition similar to:
+
+PermissionDefinition
+
+Suggested metadata:
+
+key
+
+moduleId
+
+submoduleId
+
+localizedNameKey
+
+localizedDescriptionKey
+
+action
+
+supportedScopes
+
+requiresEmployeeLink
+
+delegation policy
+
+dependencies
+
+risk level optional
+
+display order
+
+status.
+
+Use the current architecture/style.
+
+==================================================
+11. STABLE PERMISSION KEYS
+==================================================
+
+Permission identity must NOT depend on translated strings.
+
+Use stable namespaced keys.
+
+Examples:
+
+hr.employees.view
+
+hr.employees.create
+
+hr.employees.edit
+
+hr.attendance.self.use
+
+hr.attendance.records.view
+
+hr.attendance.corrections.review
+
+hr.leave.self.request
+
+hr.leave.records.view
+
+hr.leave.requests.review
+
+services.jobs.view
+
+services.jobs.assign
+
+services.execution.update
+
+Do NOT store:
+
+"View Employees"
+
+as the identity.
+
+==================================================
+12. PERMISSION SCOPES
+==================================================
+
+Introduce a typed scope model.
+
+Supported conceptual scopes:
+
+NONE
+
+SELF
+
+ASSIGNED
+
+TEAM
+
+ALL
+
+Not every permission supports every scope.
+
+==================================================
+13. SCOPE SEMANTICS
+==================================================
+
+SELF
+
+Records belonging to the user's linked Employee.
+
+Examples:
+
+My Attendance
+
+My Leave.
+
+ASSIGNED
+
+Operational record explicitly assigned to:
+
+Employee
+
+or eligible team according to module scope policy.
+
+Mostly Services.
+
+TEAM
+
+Records inside a resolved organizational/service-team scope.
+
+ALL
+
+Company-wide records within the active company.
+
+==================================================
+14. SCOPE IS NOT A ROLE
+==================================================
+
+Example:
+
+Employee A:
+
+hr.leave.records.view
+scope = TEAM
+
+does not become "Manager Role."
+
+It simply means the employee is allowed to view Leave records resolved by their
+team scope.
+
+==================================================
+15. MODULE-SPECIFIC SCOPE RESOLVER
+==================================================
+
+Do NOT assume TEAM means the same relationship in every module.
+
+HR TEAM may come from:
+
+employee reporting hierarchy.
+
+Services TEAM may later come from:
+
+ServiceTeam membership/supervision.
+
+Define clean scope-resolution contracts.
+
+The Permission framework supplies the granted scope.
+
+The module determines which records belong to that scope.
+
+==================================================
+16. SCOPE CONTAINMENT
+==================================================
+
+Do not implement dangerous universal assumptions like:
+
+ALL automatically grants SELF actions.
+
+Example:
+
+HR administrator with company-wide Leave visibility
+does NOT automatically gain:
+
+Request My Leave
+
+Punch My Attendance
+
+unless:
+
+valid Employee link
++
+self permission
+
+exist.
+
+Keep self-service capabilities explicit.
+
+==================================================
+17. ACTION PERMISSIONS
+==================================================
+
+Some permissions don't need record scope.
+
+Examples:
+
+hr.employees.create
+
+hr.settings.holidays.manage
+
+access.users.manage
+
+They can use:
+
+scope = NONE
+
+or equivalent.
+
+==================================================
+18. PERMISSION GRANT MODEL
+==================================================
+
+Create a persistent company-scoped grant model.
+
+Suggested:
+
+UserPermissionGrant
+
+Fields conceptually:
+
+id
+
+companyId
+
+userId / companyMembershipId
+
+permissionKey
+
+scope
+
+grantedByUserId
+
+grantedAt
+
+updatedAt
+
+expiresAt optional future-safe
+
+requestId
+
+syncStatus
+
+active.
+
+Use current project conventions.
+
+==================================================
+19. ADDITIVE ACCESS MODEL
+==================================================
+
+V1 uses additive grants.
+
+Permission exists
+→ allowed.
+
+No grant
+→ not allowed.
+
+Do NOT introduce:
+
+ALLOW vs DENY conflict resolution
+
+role priority
+
+negative permissions
+
+deny overrides
+
+inheritance chains.
+
+Keep the system predictable.
+
+==================================================
+20. ONE EFFECTIVE GRANT PER PERMISSION
+==================================================
+
+Prefer one effective grant per:
+
+company
+user
+permissionKey
+
+with one selected scope when the permission is scoped.
+
+Example:
+
+hr.attendance.records.view
+scope = TEAM
+
+rather than three simultaneous rows:
+
+SELF
+TEAM
+ALL.
+
+If legacy permissions use separate scope keys,
+provide a migration/compatibility adapter.
+
+==================================================
+21. CURRENT LEGACY AppPermission
+==================================================
+
+Inspect the actual existing:
+
+AppPermission
+
+PermissionSet
+
+UserCapability
+
+AccountRole templates.
+
+DO NOT blindly replace them.
+
+Design a safe migration.
+
+Possible approach:
+
+LEGACY
+
+leaveViewSelf
+leaveViewTeam
+leaveViewAll
+
+NEW
+
+hr.leave.records.view
+scope = SELF / TEAM / ALL
+
+BUT:
+
+preserve semantics carefully.
+
+Some existing permissions intentionally separate personal self-service from
+organizational records.
+
+Do not collapse permissions that represent different actions.
+
+==================================================
+22. MIGRATION RULE
+==================================================
+
+Create an explicit migration table in documentation/code tests.
+
+Example concept only:
+
+leaveRequestSelf
+→ hr.leave.self.request / SELF
+
+leaveViewTeam
+→ hr.leave.records.view / TEAM
+
+leaveViewAll
+→ hr.leave.records.view / ALL
+
+holidayManage
+→ hr.settings.holidays.manage / NONE
+
+Do this for ALL existing permissions.
+
+Do not guess based only on naming.
+
+==================================================
+23. HR PERMISSION CATALOG
+==================================================
+
+Migrate current HR permissions into grouped definitions.
+
+At minimum organize:
+
+HR
+├── Employees
+├── Attendance
+├── Leave & Holidays
+├── Reports
+└── Configuration
+
+==================================================
+24. EMPLOYEES ACCESS
+==================================================
+
+Examples based on existing functionality:
+
+hr.employees.view
+supported scopes:
+TEAM where supported
+ALL
+
+hr.employees.create
+
+hr.employees.edit
+scoped if current architecture supports team edits
+
+hr.employees.deactivate
+
+hr.employees.accountAccess.manage
+
+hr.employees.security.view
+if currently supported.
+
+Do not invent features absent from the app.
+
+Map current behavior exactly.
+
+==================================================
+25. ATTENDANCE SELF
+==================================================
+
+Separate self operation permissions such as:
+
+hr.attendance.self.view
+
+hr.attendance.self.punch
+
+hr.attendance.self.history
+
+hr.attendance.self.correctionRequest
+
+These require:
+
+active linked Employee.
+
+==================================================
+26. ATTENDANCE ORGANIZATIONAL
+==================================================
+
+Examples:
+
+hr.attendance.records.view
+
+scopes:
+
+TEAM
+ALL
+
+hr.attendance.corrections.review
+
+scopes:
+
+TEAM
+ALL
+
+hr.attendance.reports.view
+
+scopes according to current capability.
+
+==================================================
+27. LEAVE SELF
+==================================================
+
+Examples:
+
+hr.leave.self.view
+
+hr.leave.self.request
+
+hr.leave.self.cancel
+
+hr.leave.self.balanceView
+
+These require:
+
+active linked Employee.
+
+==================================================
+28. LEAVE ORGANIZATIONAL
+==================================================
+
+Examples:
+
+hr.leave.records.view
+
+scopes:
+
+TEAM
+ALL
+
+hr.leave.requests.review
+
+scopes:
+
+TEAM
+ALL
+
+hr.leave.balances.view
+
+scopes:
+
+TEAM
+ALL
+
+hr.leave.balances.adjust
+likely ALL or controlled scope according to current implementation.
+
+==================================================
+29. LEAVE CONFIGURATION
+==================================================
+
+Examples:
+
+hr.leave.types.view
+
+hr.leave.types.manage
+
+hr.leave.policies.view
+
+hr.leave.policies.manage
+
+hr.holidays.view
+
+hr.holidays.manage
+
+Keep manage/view dependency behavior.
+
+==================================================
+30. HR REPORTS
+==================================================
+
+Examples:
+
+hr.reports.attendance.view
+
+hr.reports.leave.view if currently available
+
+hr.reports.export
+
+with scopes according to existing behavior.
+
+==================================================
+31. SERVICES PERMISSION CATALOG
+==================================================
+
+Create the module contribution architecture now.
+
+Do NOT fabricate complete Services permissions before the feature exists.
+
+For Phase 0.5:
+
+Services catalog may be empty/minimal.
+
+When Services Phase 1/2 introduces:
+
+Enquiries
+
+Jobs
+
+Inspections
+
+Materials
+
+Execution
+
+it registers its permissions.
+
+The Access UI must pick them up AUTOMATICALLY.
+
+==================================================
+32. FUTURE EXAMPLE ONLY
+==================================================
+
+Document expected future style:
+
+services.enquiries.view
+scope:
+ASSIGNED / TEAM / ALL as appropriate
+
+services.enquiries.create
+
+services.jobs.view
+scope:
+ASSIGNED / TEAM / ALL
+
+services.jobs.assign
+scope:
+TEAM / ALL
+
+services.inspections.update
+scope:
+ASSIGNED / TEAM / ALL
+
+Do NOT make these active grants until actual features exist.
+
+==================================================
+33. COMPANY MODULE ENABLEMENT
+==================================================
+
+KEEP THIS SEPARATE FROM USER PERMISSIONS.
+
+Two different concepts:
+
+A) COMPANY MODULE ENTITLEMENT
+
+Does the company have HR / Services / Inventory / Finance enabled?
+
+B) USER ACCESS
+
+What can this employee/user do within the enabled module?
+
+Do NOT mix them into one boolean.
+
+==================================================
+34. MODULE ACCESS RULE
+==================================================
+
+Effective access requires:
+
+Company module enabled
++
+permission granted
++
+scope resolvable
++
+required Employee link
++
+record inside allowed scope.
+
+==================================================
+35. COMPANY MODULE ADMINISTRATION
+==================================================
+
+Create/retain a dedicated screen for module availability.
+
+Suggested:
+
+/app/settings/modules
+
+This screen answers:
+
+Which ERP modules are enabled for this company?
+
+Examples eventually:
+
+HR
 Services
-CRM
 Inventory
-Finance
-Purchase
-Sales
-Rental
-Production
-etc.
-
-The purpose of this phase is to SPLIT LOCALIZATION SOURCE FILES BY MODULE
-without changing the runtime localization API.
+Finance.
 
 ==================================================
-1. CRITICAL DESIGN DECISION
+36. WHO CAN ENABLE MODULES
 ==================================================
 
-DO NOT create separate runtime localization delegates such as:
+Module enablement is NOT the same as ordinary access assignment.
 
-HrLocalizations
+Prefer:
 
-ServicesLocalizations
+Platform/Super Admin
+→ can enable/disable licensed modules for company.
 
-AttendanceLocalizations
+Company Access Administrator
+→ may view enabled modules.
 
-LeaveLocalizations
+Whether Company Admin can enable modules should follow product/commercial policy.
 
-DO NOT force widgets to use:
-
-context.hrL10n
-
-context.servicesL10n
-
-context.leaveL10n
-
-Keep ONE public localization API:
-
-context.l10n
-
-backed by:
-
-AppLocalizations
-
-This preserves the current application architecture.
+Do not let a random user grant themselves a disabled module.
 
 ==================================================
-2. WHY A MERGE STEP IS REQUIRED
+37. MODULE DISABLED BEHAVIOR
 ==================================================
 
-Flutter gen_l10n expects localization inputs under one configured:
+If Services is disabled:
 
-arb-dir
+Services permissions may remain stored historically,
+but:
 
-with a template ARB file.
+navigation hidden
 
-It does not automatically recursively combine arbitrary module-specific ARB
-directories into one AppLocalizations class.
+routes blocked
 
-Therefore use:
+actions unavailable.
 
-MODULAR SOURCE ARBs
-        ↓
-DETERMINISTIC BUILD-TIME MERGE
-        ↓
-GENERATED APP ARBs
-        ↓
-flutter gen-l10n
-        ↓
-AppLocalizations
+Enabling module later can restore applicable grants.
+
+Do not destructively delete permissions merely because module is disabled.
 
 ==================================================
-3. TARGET STRUCTURE
+38. DEDICATED ACCESS MANAGEMENT AREA
 ==================================================
 
-Create a structure similar to:
+Create a global Settings section:
 
-lib/l10n/
-  source/
+ACCESS & MODULES
 
-    common/
-      common_en.arb
-      common_ar.arb
+Destinations:
 
-    platform/
-      platform_en.arb
-      platform_ar.arb
+Users & Access
 
-    hr/
-      hr_en.arb
-      hr_ar.arb
+Company Modules
 
-    services/
-      services_en.arb
-      services_ar.arb
+Use concise naming.
 
-  generated/
-    app_en.arb
-    app_ar.arb
-    app_localizations.dart
-    app_localizations_en.dart
-    app_localizations_ar.dart
+Do NOT create:
 
-Exact generated Dart filenames may follow current gen_l10n output.
+Roles & Permissions
 
-Do not manually edit generated merged ARBs.
+as the primary architecture anymore.
 
 ==================================================
-4. CURRENT HR STRINGS
+39. ROUTES
 ==================================================
 
-Move existing HR-specific localization messages into:
+Canonical:
 
-source/hr/hr_en.arb
+/app/settings/access
 
-source/hr/hr_ar.arb
+/app/settings/access/users/:userId
 
-HR includes strings belonging to:
+/app/settings/modules
 
-Dashboard
-Employees
-Attendance
-Attendance Corrections
-Attendance Reports
-Shifts
-Work Locations
-Attendance Policies
-Leave
-Leave Balances
-Leave Requests
-Leave Approvals
-Holidays
-Holiday Calendars
+Optional:
 
-Do not split HR into 15 tiny ARB files yet.
+/app/settings/access/users/:userId/history
 
-One HR English + one HR Arabic source file is sufficient.
+if audit timeline warrants it.
+
+Do NOT put access management under:
+
+/app/hr/settings
+
+because permissions span ALL modules.
 
 ==================================================
-5. PLATFORM STRINGS
-==================================================
-
-Move platform-level strings into:
-
-source/platform/platform_en.arb
-
-source/platform/platform_ar.arb
-
-Examples:
-
-Login
-Forgot Password
-Profile
-Security
-Notifications
-Sync
-Workspace
-Session
-Account
-Preferences
-global navigation related to platform behavior
-
-==================================================
-6. COMMON STRINGS
-==================================================
-
-Use:
-
-source/common/common_en.arb
-source/common/common_ar.arb
-
-only for truly generic reusable UI vocabulary.
-
-Examples:
-
-Save
-Cancel
-Delete
-Edit
-Create
-Update
-Search
-Filter
-Reset
-Apply
-Back
-Next
-Close
-Confirm
-Retry
-Loading
-No Results
-Yes
-No
-Active
-Inactive
-Status
-Date
-From
-To
-
-Do NOT dump business-specific text into Common.
-
-==================================================
-7. SERVICES STRINGS
+40. USERS & ACCESS PAGE
 ==================================================
 
 Create:
 
-source/services/services_en.arb
-source/services/services_ar.arb
+UsersAccessPage
 
-For Phase 0.2 these can contain ONLY genuine Services foundation strings if
-any already exist.
+Purpose:
 
-Do NOT invent hundreds of future Service translations yet.
+Find company users/employees and manage their ERP access.
 
-Services Phase 1+ will add strings here.
+Desktop layout:
 
-==================================================
-8. FUTURE MODULE PATTERN
-==================================================
+HEADER
 
-Future modules follow:
+Users & Access
 
-source/crm/
-  crm_en.arb
-  crm_ar.arb
+Subtitle:
+Control what each user can access and what records they can work with.
 
-source/inventory/
-  inventory_en.arb
-  inventory_ar.arb
+[Search]
 
-source/finance/
-  finance_en.arb
-  finance_ar.arb
+[Filters]
 
-etc.
+USER TABLE
 
-==================================================
-9. DO NOT SPLIT BY SCREEN
-==================================================
+Employee/User
 
-Avoid:
-
-attendance_today_en.arb
-attendance_history_en.arb
-leave_home_en.arb
-leave_request_en.arb
-holiday_form_en.arb
-
-This becomes fragmentation.
-
-Boundary should initially be ERP MODULE.
-
-==================================================
-10. KEY NAMES
-==================================================
-
-Existing localization keys should remain unchanged wherever possible.
-
-DO NOT rename hundreds of keys merely because files are moving.
-
-For NEW keys, adopt a predictable naming convention.
-
-Recommended examples:
-
-commonSave
-
-platformProfileTitle
-
-hrEmployeeTitle
-
-hrAttendanceTodayTitle
-
-hrLeaveRequestTitle
-
-hrHolidayCalendarTitle
-
-servicesEnquiryTitle
-
-servicesInspectionTitle
-
-servicesWorkExecutionTitle
-
-However:
-
-do NOT forcibly rename all legacy keys now.
-
-Compatibility and low-risk migration matter more.
-
-==================================================
-11. KEY UNIQUENESS
-==================================================
-
-The merge process must guarantee globally unique localization keys.
-
-Example invalid:
-
-common_en.arb:
-"title": "Settings"
-
-hr_en.arb:
-"title": "Employees"
-
-This must fail.
-
-Duplicate message key across modules must cause:
-
-BUILD/MERGE FAILURE
-
-with a clear message containing:
-
-duplicate key
-first source file
-second source file
-
-Do NOT silently overwrite.
-
-==================================================
-12. METADATA KEYS
-==================================================
-
-ARB metadata such as:
-
-"@someMessage"
-
-must stay paired with:
-
-"someMessage"
-
-during merge.
-
-Do not lose:
-
-descriptions
-placeholders
-plural metadata
-select metadata.
-
-==================================================
-13. ARB LOCALE METADATA
-==================================================
-
-The merged files should contain appropriate:
-
-@@locale
-
-Example:
-
-app_en.arb:
-"@@locale": "en"
-
-app_ar.arb:
-"@@locale": "ar"
-
-Module source files may contain @@locale if useful,
-but merger must validate consistency.
-
-==================================================
-14. MERGE TOOL
-==================================================
-
-Create a small deterministic Dart tool.
-
-Recommended location:
-
-tool/l10n/merge_arb.dart
-
-or:
-
-tool/merge_l10n.dart
-
-Do NOT add a large third-party localization framework.
-
-Use Dart:
-
-dart:convert
-dart:io
-
-and existing dependencies where sufficient.
-
-==================================================
-15. MERGE TOOL INPUT
-==================================================
-
-The tool should know the source order explicitly.
-
-Example:
-
-common
-platform
-hr
-services
-
-Do NOT rely on filesystem enumeration order.
-
-Order should only affect generated file readability.
-
-Duplicate keys still fail regardless of order.
-
-==================================================
-16. MERGE ENGLISH
-==================================================
-
-Merge:
-
-common_en.arb
-platform_en.arb
-hr_en.arb
-services_en.arb
-
-into:
-
-generated/app_en.arb
-
-==================================================
-17. MERGE ARABIC
-==================================================
-
-Merge:
-
-common_ar.arb
-platform_ar.arb
-hr_ar.arb
-services_ar.arb
-
-into:
-
-generated/app_ar.arb
-
-==================================================
-18. LANGUAGE PARITY VALIDATION
-==================================================
-
-The merge tool must verify English/Arabic key parity.
-
-If English contains:
-
-servicesEnquiryTitle
-
-but Arabic does not:
-
-FAIL.
-
-Do not silently fall back during development.
-
-Report:
-
-Missing Arabic keys:
-- servicesEnquiryTitle
-
-and vice versa.
-
-==================================================
-19. EXCLUDE METADATA FROM PARITY
-==================================================
-
-Compare actual message keys properly.
-
-Do not treat:
-
-@messageName
-
-as a separate translated message.
-
-==================================================
-20. PLACEHOLDER VALIDATION
-==================================================
-
-Where feasible validate that corresponding locale messages preserve required
-placeholder names.
-
-Example English:
-
-"welcomeUser": "Welcome {name}"
-
-Arabic must still contain:
-
-{name}
-
-If not:
-fail validation.
-
-Do not attempt full ICU parser if unnecessary,
-but catch obvious placeholder drift safely.
-
-==================================================
-21. GENERATED FILES
-==================================================
-
-Generated merged ARBs must contain a header/comment strategy if supported
-indicating:
-
-AUTO-GENERATED — DO NOT EDIT
-Generated from lib/l10n/source/*
-
-If ARB JSON comments are unsuitable, document it via README and file generation.
-
-==================================================
-22. l10n.yaml
-==================================================
-
-Update:
-
-l10n.yaml
-
-to use:
-
-arb-dir: lib/l10n/generated
-
-template-arb-file: app_en.arb
-
-output-localization-file: app_localizations.dart
-
-Set output directory according to current architecture.
-
-Keep generated source inside the application source tree as supported by
-modern Flutter gen_l10n.
-
-==================================================
-23. PUBLIC IMPORT STABILITY
-==================================================
-
-If current code imports:
-
-lib/l10n/app_localizations.dart
-
-or an existing stable package path,
-
-prefer keeping a stable exported entry point.
-
-Possible:
-
-lib/l10n/app_localizations.dart
-→ exports generated/app_localizations.dart
-
-ONLY if this prevents project-wide import churn cleanly.
-
-Otherwise update imports systematically once.
-
-Do not create confusing duplicate generated classes.
-
-==================================================
-24. context.l10n MUST REMAIN
-==================================================
-
-Existing:
-
-context.l10n
-
-helper must continue working unchanged from widget perspective.
-
-This is a hard requirement.
-
-Example before:
-
-Text(context.l10n.save)
-
-After:
-
-Text(context.l10n.save)
-
-No module-specific localization accessor.
-
-==================================================
-25. MaterialApp CONFIGURATION
-==================================================
-
-Continue using ONE:
-
-AppLocalizations.delegate
-
-and:
-
-AppLocalizations.supportedLocales
-
-Do NOT register:
-
-CommonLocalizations.delegate
-HrLocalizations.delegate
-ServicesLocalizations.delegate
-
-etc.
-
-==================================================
-26. CURRENT LANGUAGE SUPPORT
-==================================================
-
-Preserve exactly:
-
-English
-
-Arabic
-
-Do not add new languages in Phase 0.2.
-
-Architecture should make future locale addition straightforward.
-
-==================================================
-27. FUTURE LANGUAGE ADDITION
-==================================================
-
-Example future Hindi:
-
-common_hi.arb
-platform_hi.arb
-hr_hi.arb
-services_hi.arb
-
-merge:
-
-app_hi.arb
-
-This should not require changing app feature code.
-
-==================================================
-28. SOURCE FILE OWNERSHIP
-==================================================
-
-Document:
-
-Common team vocabulary
-→ common ARB
-
-Platform
-→ platform ARB
-
-HR
-→ hr ARB
-
-Services
-→ services ARB
-
-This should align with the new code module boundaries.
-
-==================================================
-29. MODULE SOURCE LOCATION ALTERNATIVE
-==================================================
-
-If architectural ownership is clearer, module ARBs MAY live with the modules:
-
-modules/hr/l10n/hr_en.arb
-modules/hr/l10n/hr_ar.arb
-
-modules/services/l10n/services_en.arb
-modules/services/l10n/services_ar.arb
-
-platform/l10n/platform_en.arb
-platform/l10n/platform_ar.arb
-
-l10n/common/common_en.arb
-l10n/common/common_ar.arb
-
-This is also acceptable.
-
-Choose ONE approach.
-
-==================================================
-30. RECOMMENDED APPROACH
-==================================================
-
-Prefer collocated ownership if it fits the repository:
-
-lib/
-  l10n/
-    common/
-
-  platform/
-    l10n/
-
-  modules/
-    hr/
-      l10n/
-
-    services/
-      l10n/
-
-Then merge into:
-
-lib/l10n/generated/
-
-This makes it obvious which module owns each string.
-
-==================================================
-31. DO NOT SCATTER L10N FILES DEEPLY
-==================================================
-
-Even with collocation, keep one localization folder per MODULE.
-
-Good:
-
-modules/hr/l10n/
-
-Bad:
-
-modules/hr/attendance/presentation/l10n/
-modules/hr/leave/presentation/l10n/
-modules/hr/employees/presentation/l10n/
-
-==================================================
-32. MIGRATE CURRENT ARB DATA
-==================================================
-
-Parse the current existing:
-
-app_en.arb
-app_ar.arb
-
-Classify EVERY key into:
-
-common
-platform
-hr
-
-Do not drop keys.
-
-Do not leave duplicate source copies.
-
-==================================================
-33. SERVICES SOURCE
-==================================================
-
-Create Services ARB source ready for future use.
-
-It is acceptable for it to initially contain only:
-
-@@locale
-
-or a small number of real strings.
-
-Do not invent future copy.
-
-==================================================
-34. MIGRATION SCRIPT OPTIONAL
-==================================================
-
-Because the current ARBs may be large, it is acceptable to write a one-time
-migration helper.
-
-But final source ownership should be human-readable.
-
-Do not keep a fragile runtime classification algorithm.
-
-==================================================
-35. NO STRING VALUE CHANGES
-==================================================
-
-Phase 0.2 is architectural.
-
-Do NOT rewrite English copy unless fixing a real localization issue.
-
-Do NOT rewrite Arabic translations unnecessarily.
-
-The rendered application should look the same.
-
-==================================================
-36. ARABIC MUST NOT REGRESS
-==================================================
-
-Maintain existing:
-
-Arabic text
-RTL
-plurals/placeholders
-date/number formatting behavior.
-
-==================================================
-37. BUILD WORKFLOW
-==================================================
-
-Create a canonical localization generation command/workflow.
-
-Concept:
-
-dart run tool/l10n/merge_arb.dart
-flutter gen-l10n
-
-==================================================
-38. SINGLE COMMAND
-==================================================
-
-Prefer developer convenience.
-
-Add a tool such as:
-
-tool/l10n/generate.dart
-
-that:
-
-1. merges module ARBs
-2. validates
-3. invokes or prepares gen_l10n
-
-If invoking Flutter subprocess from Dart is undesirable,
-document two explicit commands.
-
-Keep it simple and cross-platform.
-
-==================================================
-39. WINDOWS SUPPORT
-==================================================
-
-The developer environment uses Windows/PowerShell.
-
-Do NOT depend on:
-
-bash
-grep
-sed
-Unix shell-only scripts.
-
-Dart tooling is preferred.
-
-==================================================
-40. CI / QUALITY GATE
-==================================================
-
-Localization validation should be runnable in tests/CI.
-
-At minimum add:
-
-dart test / flutter test for merger
-
-or a localization architecture test.
-
-==================================================
-41. TEST — DUPLICATE KEY
-==================================================
-
-Given:
-
-common_en:
-save
-
-hr_en:
-save
-
-merger should fail with useful error.
-
-==================================================
-42. TEST — MISSING TRANSLATION
-==================================================
-
-English has key:
-foo
-
-Arabic missing:
-foo
-
-validation fails.
-
-==================================================
-43. TEST — EXTRA TRANSLATION
-==================================================
-
-Arabic has orphan key not in English.
-
-Validation fails.
-
-==================================================
-44. TEST — PLACEHOLDER
-==================================================
-
-English:
-
-"hello": "Hello {name}"
-
-Arabic:
-
-missing {name}
-
-validation should fail where supported.
-
-==================================================
-45. TEST — SUCCESSFUL MERGE
-==================================================
-
-All module files valid.
-
-Merged app_en/app_ar contain every source message exactly once.
-
-==================================================
-46. TEST — GENERATED APP
-==================================================
-
-Run:
-
-flutter gen-l10n
-
-and verify existing code compiles.
-
-==================================================
-47. TEST — EXISTING HR SCREENS
-==================================================
-
-Verify localization still works for:
+Employee Code
 
 Login
 
-Dashboard
+Access Summary
+
+Modules
+
+Status
+
+Last Updated
+
+Action:
+Manage Access
+
+==================================================
+41. USER LIST SOURCE
+==================================================
+
+Use:
+
+UserAccount
++
+linked Employee
+
+Do not create a new duplicate AccessUser entity containing copied employee data.
+
+A read model is acceptable:
+
+AccessUserListItem
+
+==================================================
+42. USER WITHOUT LOGIN
+==================================================
+
+If Employee exists but has no UserAccount:
+
+show:
+
+No Login
+
+Do not display permission editor as though grants can take effect.
+
+If existing account-provisioning architecture supports it:
+
+Provide:
+
+Enable Login / Create Account
+
+through established workflow.
+
+Do not reinvent account creation.
+
+==================================================
+43. USER ACCESS DETAIL PAGE
+==================================================
+
+Route:
+
+/app/settings/access/users/:userId
+
+Create a dedicated professional editor.
+
+==================================================
+44. ACCESS DETAIL HEADER
+==================================================
+
+Show:
+
+Avatar
+
+Employee/User name
+
+Employee code
+
+Designation
+
+Department
+
+Login identifier where authorized
+
+Account status
+
+Last access update.
+
+Actions:
+
+Save Changes
+
+Reset Changes
+
+More if needed.
+
+==================================================
+45. ACCESS SUMMARY
+==================================================
+
+Show compact summary:
+
+Enabled modules with granted access
+
+Number of granted capabilities/permissions
+
+Employee linkage status
+
+Any access warnings.
+
+Do not show meaningless "Role: Employee".
+
+==================================================
+46. MODULE ACCESS EDITOR
+==================================================
+
+Main content is grouped by MODULE.
+
+Example:
+
+HR
+[Access configured]
+
+Services
+[No access]
+
+Future:
+
+Inventory
+Finance.
+
+Do NOT render 100 permissions in one giant flat checkbox list.
+
+==================================================
+47. MODULE EXPANSION
+==================================================
+
+When HR expands:
+
+EMPLOYEES
+
+ATTENDANCE
+
+LEAVE & HOLIDAYS
+
+REPORTS
+
+CONFIGURATION
+
+When Services later expands:
+
+ENQUIRIES
+
+JOBS & SCHEDULING
+
+INSPECTIONS
+
+MATERIAL REQUESTS
+
+WORK EXECUTION
+
+REPORTS
+
+CONFIGURATION
+
+The UI is generated from PermissionCatalog.
+
+==================================================
+48. SUBMODULE ACCESS UX
+==================================================
+
+Each submodule presents meaningful ACTIONS.
+
+Example:
+
+ATTENDANCE
+
+Personal Attendance
+[View]
+[Punch]
+[History]
+[Request Correction]
+
+Workforce Attendance
+View Records: [No Access | Team | All]
+
+Correction Review:
+[No Access | Team | All]
+
+Reports:
+[No Access | Team | All]
+
+Do NOT expose technical permission keys to normal administrators.
+
+==================================================
+49. SCOPE SELECTOR
+==================================================
+
+Use a clear segmented/dropdown control according to supported scopes.
+
+Example:
+
+View Attendance Records
+
+○ No Access
+○ Team
+○ All
+
+Service future:
+
+View Jobs
+
+○ No Access
+○ Assigned
+○ Team
+○ All
+
+Only show scopes supported by the permission definition.
+
+==================================================
+50. SELF PERMISSIONS
+==================================================
+
+Self permissions should use normal toggles/checkboxes.
+
+Example:
+
+Personal Leave
+
+[x] View My Leave
+
+[x] Request Leave
+
+[x] Cancel My Pending Leave
+
+[x] View My Balance
+
+Do not make admin choose "Self" from a dropdown when permission is inherently self-only.
+
+==================================================
+51. ACTION PERMISSIONS
+==================================================
+
+Example:
+
+Employees
+
+[x] Create Employee
+
+[x] Edit Employee
+
+[ ] Deactivate Employee
+
+View Employee Records:
+[Team | All]
+
+==================================================
+52. MODULE QUICK CONTROL
+==================================================
+
+At module header provide useful actions:
+
+No Access
+
+Select Existing Access / Custom
+
+Clear Module Access
+
+Do NOT provide:
+
+"Full Access"
+
+as a careless single click without confirmation.
+
+If full access exists:
+
+show confirmation
+explain scope
+exclude non-delegable/high-risk permissions.
+
+==================================================
+53. SUBMODULE QUICK CONTROL
+==================================================
+
+Optional:
+
+Enable Submodule
+
+Clear Submodule Access.
+
+Still write explicit grants.
+
+No hidden role state.
+
+==================================================
+54. SEARCH PERMISSIONS
+==================================================
+
+For large future catalogs:
+
+provide:
+
+Search permissions
+
+Example search:
+
+"holiday"
+
+shows matching:
+
+HR → Leave & Holidays → Manage Holidays.
+
+==================================================
+55. DESCRIPTIONS
+==================================================
+
+Every permission should have plain-language copy.
+
+Bad:
+
+hr.leave.requests.review
+
+Good UI:
+
+Review Leave Requests
+
+"Approve or reject leave requests within the selected scope."
+
+==================================================
+56. DANGEROUS ACTIONS
+==================================================
+
+High-impact permissions should have visual caution.
+
+Examples:
+
+Manage User Access
+
+Adjust Leave Balances
+
+Manage Company Configuration
+
+Future:
+Issue Inventory
+Approve Payments.
+
+Do not use alarming design everywhere.
+
+Only genuinely high-risk actions.
+
+==================================================
+57. SAVE MODEL
+==================================================
+
+Do NOT save every checkbox immediately.
+
+Use an edit session.
+
+Administrator changes access.
+
+Page becomes dirty.
+
+Then:
+
+Save Changes.
+
+Show confirmation summarizing important changes.
+
+==================================================
+58. SAVE SUMMARY
+==================================================
+
+Example:
+
+Update access for Ahmed Khan?
+
+Added:
+- HR → Leave → Review Requests: Team
+- HR → Reports → Attendance: All
+
+Removed:
+- HR → Employees → Edit
+
+[Cancel]
+[Update Access]
+
+==================================================
+59. ATOMIC ACCESS UPDATE
+==================================================
+
+Saving permission changes should be transactional locally.
+
+Update:
+
+permission grants
+
+access activity/audit event
+
+outbox mutation
+
+atomically where appropriate.
+
+Reuse Phase 0.4 infrastructure.
+
+==================================================
+60. ACCESS AUDIT EVENT
+==================================================
+
+Record structured events such as:
+
+access.permission.added
+
+access.permission.updated
+
+access.permission.removed
+
+module access changes where applicable.
+
+Store:
+
+actor
+
+target user
+
+permission key
+
+old scope
+
+new scope
+
+time.
+
+Do not store only English sentences.
+
+==================================================
+61. ACCESS HISTORY
+==================================================
+
+On User Access page show optional compact:
+
+Access History
+
+Examples:
+
+Attendance Records changed Team → All
+
+Holiday Management granted
+
+Leave Approval removed
+
+by Admin Name
+date/time.
+
+Do not build a massive audit product.
+
+==================================================
+62. WHO CAN MANAGE ACCESS
+==================================================
+
+Introduce explicit permission:
+
+access.users.view
+
+access.permissions.manage
+
+or equivalent namespaced platform/company permission.
+
+Do NOT determine access editor visibility from "Company Admin role".
+
+==================================================
+63. GRANT AUTHORITY
+==================================================
+
+Create:
+
+GrantAuthorityResolver
+
+or equivalent.
+
+It determines what permissions the current administrator can grant.
+
+Do not let any access administrator automatically grant every platform permission.
+
+==================================================
+64. COMPANY ADMIN DELEGATION
+==================================================
+
+Company-level access manager can grant:
+
+company-delegable permissions
+
+inside their current company
+
+inside enabled modules.
+
+They cannot grant:
+
+platform-only permissions
+
+permissions marked non-delegable
+
+cross-company permissions.
+
+==================================================
+65. SUPER ADMIN DELEGATION
+==================================================
+
+Authorized Platform/Super Admin can administer:
+
+company module entitlements
+
+company-level permission grants
+
+according to platform access policy.
+
+Still company-scoped when assigning company permissions.
+
+==================================================
+66. SELF-ESCALATION
+==================================================
+
+By default:
+
+A user MUST NOT modify their own access grants.
+
+Even if they can manage other users.
+
+This prevents accidental/self privilege escalation.
+
+Platform Super Admin emergency behavior may be handled explicitly if required.
+
+==================================================
+67. LAST ACCESS ADMIN GUARD
+==================================================
+
+Do not allow removing the final user capable of managing company access
+without an explicit safe recovery path.
+
+Example:
+
+Company currently has one access administrator.
+
+They attempt to remove:
+
+access.permissions.manage
+
+from themselves/the final admin.
+
+Block with clear message.
+
+==================================================
+68. LAST COMPANY ADMIN CONCEPT
+==================================================
+
+If the existing system still distinguishes a company ownership/admin concept
+needed for account recovery, preserve the necessary safety guard.
+
+But do NOT use that designation for ordinary business authorization.
+
+==================================================
+69. GRANT CEILING
+==================================================
+
+An access administrator must not delegate beyond their authority.
+
+Example:
+
+User has ability to manage HR access but no Services delegation authority.
+
+They should not be able to grant Services permissions.
+
+Implement clean delegation rules.
+
+==================================================
+70. MODULE ENABLEMENT CEILING
+==================================================
+
+Permission editor only shows/grants permissions for modules enabled in
+the current company.
+
+Optionally show disabled modules read-only:
+
+Services
+Not enabled for this company
+
+depending on admin UX.
+
+==================================================
+71. EMPLOYEE LINK REQUIREMENTS
+==================================================
+
+PermissionDefinition can declare:
+
+requiresEmployeeLink.
+
+Examples:
+
+Personal Attendance Punch
+→ yes.
+
+Personal Leave Request
+→ yes.
+
+Future Service Assigned Work
+→ yes.
+
+Company-wide Employee View
+→ no.
+
+==================================================
+72. INVALID GRANT PREVENTION
+==================================================
+
+If user has no linked active Employee:
+
+disable/deny grants requiring Employee identity.
+
+Explain:
+
+"This access requires a linked active employee record."
+
+Do not silently grant unusable permissions.
+
+==================================================
+73. ACTIVE EMPLOYEE REQUIREMENT
+==================================================
+
+If Employee becomes inactive/terminated:
+
+self and assigned capabilities should become unavailable.
+
+Do not delete historical grants automatically.
+
+Capability resolution considers active Employee state.
+
+==================================================
+74. RECORD SCOPE SECURITY
+==================================================
+
+Navigation visibility is NOT security.
+
+Every repository/use-case query must enforce:
+
+company scope
+
+permission
+
+resolved access scope.
+
+A user manually entering another Employee/Job/Leave ID must not bypass access.
+
+==================================================
+75. USER CAPABILITY CONTEXT
+==================================================
+
+Refactor/extend existing:
+
+UserCapabilityContext
+
+so effective capabilities derive from:
+
+active company
+
+enabled modules
+
+permission grants
+
+permission scopes
+
+Employee link/state
+
+organization/team relationships
+
+record assignment where applicable.
+
+Do NOT derive business capability from role names.
+
+==================================================
+76. PERMISSION SET
+==================================================
+
+Refactor existing PermissionSet as needed.
+
+It should answer things like:
+
+has(permissionKey)
+
+scopeFor(permissionKey)
+
+can(permissionKey, requiredScope?)
+
+Do not expose raw DB grant rows to presentation.
+
+==================================================
+77. NAVIGATION RESOLVER
+==================================================
+
+Navigation becomes permission-driven.
+
+Examples:
+
+Employees:
+show if user has meaningful Employees access.
+
+Attendance:
+show if any Attendance capability is usable.
+
+Leave:
+show if any Leave capability is usable.
+
+Services:
+show when:
+services module enabled
+AND
+user has usable Services permission.
+
+No role-specific navigation maps.
+
+==================================================
+78. EMPTY MODULE ACCESS
+==================================================
+
+If company has module enabled but user has zero permissions in it:
+
+do NOT show module.
+
+Example:
+
+Company has Services.
+
+Ahmed has only HR permissions.
+
+Ahmed sees no Services navigation.
+
+==================================================
+79. NESTED NAVIGATION
+==================================================
+
+Inside a module, sub-navigation resolves from access.
+
+Example HR:
+
+Employee with self only:
+Attendance
+Leave
+
+HR operations user:
+Employees
+Attendance
+Leave
+Reports
+
+Configuration destinations only if configuration permissions exist.
+
+==================================================
+80. ROUTE GUARDS
+==================================================
+
+All canonical routes from Phase 0.3 must use the same permission/capability source.
+
+No:
+
+route visible = capability
+but direct URL = role.
+
+One source of truth.
+
+==================================================
+81. ACTION VISIBILITY
+==================================================
+
+Buttons use capabilities.
+
+Examples:
+
+Create Employee
+
+Approve Leave
+
+Adjust Balance
+
+Manage Holiday
+
+must appear only when effective permission permits it.
+
+==================================================
+82. ACTION ENFORCEMENT
+==================================================
+
+Hiding the button is insufficient.
+
+Use case/repository/domain layer must reject unauthorized mutation.
+
+==================================================
+83. PERMISSION DEPENDENCIES
+==================================================
+
+Support definitions such as:
+
+manage implies view
+
+review implies view
+
+edit requires view.
+
+Normalize grants or resolve dependencies centrally.
+
+Do not duplicate:
+
+if manage then view
+
+inside widgets.
+
+==================================================
+84. MODULE CATALOG
+==================================================
+
+Create a global:
+
+ErpAccessCatalog
+
+or equivalent.
+
+It composes:
+
+Platform access definitions
+
+HR access definitions
+
+Services access definitions
+
+future module definitions.
+
+==================================================
+85. MODULE REGISTRY INTEGRATION
+==================================================
+
+Where practical, let an ERP module contribute:
+
+navigation
+
+routes
+
+permissions/access metadata
+
+without central giant switches.
+
+Do not create another competing module system.
+
+Integrate with existing AppModule/ModuleRegistry architecture.
+
+==================================================
+86. FUTURE MODULE ADDITION
+==================================================
+
+Adding Inventory later should conceptually require:
+
+1. register Inventory module
+2. register Inventory permissions
+3. add Inventory routes/navigation
+4. implement Inventory scope resolver
+
+The global Access UI should automatically render:
+
+Inventory
+
+without editing dozens of access-screen widgets.
+
+THIS IS A HARD REQUIREMENT.
+
+==================================================
+87. DATABASE
+==================================================
+
+Inspect the latest DB schema.
+
+Add persistent permission-grant tables if they do not exist in sufficient form.
+
+Potential:
+
+UserPermissionGrants
+
+Do not assume exact schema number from previous prompts.
+
+==================================================
+88. TABLE FIELDS
+==================================================
+
+Possible:
+
+id
+
+companyId
+
+userId
+
+permissionKey
+
+scopeKey nullable
+
+grantedByUserId
+
+grantedAt
+
+updatedAt
+
+expiresAt nullable
+
+isActive
+
+requestId
+
+syncStatus.
+
+Follow existing database conventions.
+
+==================================================
+89. UNIQUE CONSTRAINT
+==================================================
+
+Prevent duplicate effective grant for:
+
+companyId
+userId
+permissionKey.
+
+==================================================
+90. COMPANY MODULE STORAGE
+==================================================
+
+Preserve existing:
+
+CompanyContext.enabledModules
+
+or equivalent module-entitlement architecture.
+
+Do not duplicate module state unnecessarily.
+
+==================================================
+91. LEGACY PERMISSION MIGRATION
+==================================================
+
+Existing demo/local accounts currently receive permission bundles from role templates.
+
+Migrate them to explicit grants.
+
+Existing personas should behave identically after migration.
+
+==================================================
+92. DEMO ACCESS SEED
+==================================================
+
+Replace demo authorization assumptions like:
+
+HR role → these permissions
+
+with:
+
+seed employee/user
++
+seed explicit permission grants.
+
+You may keep named demo scenarios for testing:
+
+HR-like access
+
+Manager-like access
+
+Employee self-service access
+
+but those names are test fixtures, NOT runtime authorization.
+
+==================================================
+93. CURRENT HR BEHAVIOR MUST REMAIN
+==================================================
+
+After migration existing scenarios must still work:
+
+self Employee
+
+team manager
+
+HR operations user
+
+company access administrator
+
+platform admin.
+
+But implementation is permission/scope-based.
+
+==================================================
+94. SETTINGS NAVIGATION
+==================================================
+
+Update global Settings.
+
+Suggested:
+
+ACCOUNT / PERSONAL
+
+Profile/preferences as current architecture dictates.
+
+ACCESS & MODULES
+
+Users & Access
+
+Company Modules
+
+HR configuration remains:
+
+/app/hr/settings/...
+
+Future Service configuration remains:
+
+/app/services/settings/...
+
+==================================================
+95. REMOVE "ROLES & PERMISSIONS" LABEL
+==================================================
+
+If current Settings contains:
+
+Roles & Permissions
+
+replace it with:
+
+Users & Access
+
+unless role templates still genuinely exist as optional presets.
+
+Do not mislead administrators into thinking runtime access is role-based.
+
+==================================================
+96. COMPANY MODULES PAGE UX
+==================================================
+
+Route:
+
+/app/settings/modules
+
+Desktop/mobile responsive.
+
+Show module cards/rows:
+
+HR
+
+Services
+
+future modules.
+
+Each displays:
+
+Enabled / Disabled
+
+description
+
+availability/licensing status if known
+
+who can manage.
+
+Do not fabricate commercial subscription behavior if backend does not exist.
+
+==================================================
+97. USERS ACCESS LIST FILTERS
+==================================================
+
+Useful filters:
+
+Search name/email/employee code
+
+Department
+
+Account status
+
+Has login
+
+Module access
+
+Active/Inactive employee.
+
+Do not create twenty filters.
+
+==================================================
+98. ACCESS SUMMARY CHIP
+==================================================
+
+Example on user row:
+
+HR
+
+Services
+
+or:
+
+HR + Services
+
+Do not show:
+
+Role: Manager.
+
+==================================================
+99. NO ACCESS STATE
+==================================================
+
+User with login but no ERP grants:
+
+No business access assigned.
+
+Authorized admin can configure access.
+
+==================================================
+100. MOBILE USERS LIST
+==================================================
+
+360–430px:
+
+Use compact employee/user cards.
+
+Show:
+
+name
+
+employee code
+
+login status
+
+module chips
+
+Manage Access.
+
+Do not squeeze desktop table.
+
+==================================================
+101. MOBILE ACCESS EDITOR
+==================================================
+
+Module accordion/list.
+
+Tap:
+
+HR
+
+then submodules.
+
+Use full-width scope selectors.
+
+Sticky:
+
+Save Changes
+
+when dirty.
+
+No tiny permission grid.
+
+==================================================
+102. DESKTOP ACCESS EDITOR
+==================================================
+
+Use space intelligently.
+
+Possible:
+
+left:
+module/submodule navigation
+
+right:
+permission editor
+
+or:
+
+stacked expandable module sections.
+
+Do NOT render a massive spreadsheet with 100 permission columns.
+
+==================================================
+103. TABLET
+==================================================
+
+Use two-pane where space allows,
+otherwise accordion.
+
+==================================================
+104. ACCESS EDITOR STATE
+==================================================
+
+Create a dedicated BLoC/Cubit following project conventions.
+
+It owns:
+
+loaded permission catalog
+
+current grants
+
+draft grants
+
+validation
+
+dirty state
+
+save
+
+failure
+
+success.
+
+Widgets do not compute effective grants.
+
+==================================================
+105. ACCESS REPOSITORY
+==================================================
+
+Create:
+
+AccessRepository
+
+or adapt current account/access repository.
+
+Responsibilities:
+
+watchUsers
+
+getUserGrants
+
+replace/update grants atomically
+
+watchPermissionChanges
+
+query access history if supported.
+
+==================================================
+106. REMOTE READY
+==================================================
+
+Local repository is source of truth now.
+
+Keep API/backend-ready architecture.
+
+Do not hard-wire access editor directly to Drift DAO.
+
+==================================================
+107. SYNC / OUTBOX
+==================================================
+
+Reuse existing outbox.
+
+Operations might include:
+
+ACCESS_GRANT_SET
+
+ACCESS_GRANT_REMOVE
+
+or a batched:
+
+ACCESS_GRANTS_REPLACE
+
+according to existing sync conventions.
+
+Do not create a second sync engine.
+
+==================================================
+108. IDEMPOTENCY
+==================================================
+
+Saving the same access update twice must not create duplicate grants.
+
+Use request IDs according to existing infrastructure.
+
+==================================================
+109. PERMISSION CHANGE REACTIVITY
+==================================================
+
+CRITICAL.
+
+When permissions for the CURRENT logged-in user change:
+
+UserCapabilityContext updates.
+
+Navigation updates.
+
+Actions update.
+
+If current route becomes unauthorized:
+
+redirect to safe allowed landing.
+
+Do not require full app restart.
+
+==================================================
+110. OTHER USER UPDATE
+==================================================
+
+When Admin edits Ahmed's permissions,
+Admin's UI remains stable.
+
+Ahmed's active session should update once the synchronized permission state
+reaches that session/backend architecture.
+
+For local single-session demo, document limitations honestly.
+
+==================================================
+111. CURRENT ROUTE BECOMES UNAUTHORIZED
+==================================================
+
+Example:
+
+Employee currently on:
+
+/app/hr/reports
+
+Their report permission is removed.
+
+Capability refresh:
+
+Reports disappears.
+
+Current route resolves to:
+
+safe accessible landing.
+
+No blank screen.
+
+No redirect loop.
+
+==================================================
+112. MODULE REMOVAL
+==================================================
+
+If Services module is disabled while user is inside it in the future:
+
+resolve safe landing.
+
+Stored permissions may remain but become ineffective.
+
+==================================================
+113. COMPANY SWITCH
+==================================================
+
+Permissions are company-scoped.
+
+Example:
+
+Ahmed:
+
+Company A:
+HR access.
+
+Company B:
+Services access.
+
+Switch company:
+
+navigation and permissions completely recompute.
+
+No grant leakage.
+
+==================================================
+114. URL SECURITY
+==================================================
+
+User cannot use a URL from Company A after switching to Company B
+to access Company A entity.
+
+Existing tenant isolation rules remain.
+
+==================================================
+115. ACCESS PRIVACY
+==================================================
+
+Ordinary users should not see other users' permissions.
+
+Access-management screen itself requires permission.
+
+==================================================
+116. ACCOUNT SECURITY DATA
+==================================================
+
+Do not expose:
+
+password hashes
+
+tokens
+
+security secrets
+
+inside Users & Access.
+
+Only safe login/account metadata.
+
+==================================================
+117. PERMISSION EXPORT
+==================================================
+
+Do NOT build complex permission export/import yet.
+
+Not required.
+
+==================================================
+118. BULK ACCESS
+==================================================
+
+Do NOT build mass permission assignment initially unless easy and safe.
+
+Per-user editor correctness first.
+
+Future presets/bulk editing can be added later.
+
+==================================================
+119. PLATFORM PERMISSIONS
+==================================================
+
+Separate platform-level permissions from company business permissions.
+
+Examples:
+
+platform.companies.manage
+
+platform.modules.manage
+
+should not appear as normal company-delegable permissions unless appropriate.
+
+==================================================
+120. COMPANY ACCESS PERMISSIONS
+==================================================
+
+Examples:
+
+company.access.users.view
+
+company.access.permissions.manage
+
+company.modules.view
+
+Use naming aligned with chosen architecture.
+
+==================================================
+121. ACCESS CATALOG LOCALIZATION
+==================================================
+
+Permission names/descriptions must be localized.
+
+Common/platform access strings:
+platform/common ARBs.
+
+HR permission labels:
+HR ARB.
+
+Future Services permission labels:
+Services ARB.
+
+Access UI composes them.
+
+No hardcoded English.
+
+==================================================
+122. ARABIC / RTL
+==================================================
+
+Full Access screen must support Arabic/RTL.
+
+Audit:
+
+module tree
+
+submodule sections
+
+scope selectors
+
+permission descriptions
+
+confirmation dialogs
+
+history timeline.
+
+==================================================
+123. ACCESSIBILITY
+==================================================
+
+Checkboxes/toggles/scopes need semantic labels.
+
+Do not communicate grant state only by color.
+
+Keyboard navigation on Desktop/Web.
+
+==================================================
+124. TEST — NO ROLE AUTHORIZATION
+==================================================
+
+Add tests proving:
+
+Changing a legacy role label without changing grants
+does NOT change effective capability.
+
+Permission grants do.
+
+==================================================
+125. TEST — EMPLOYEE SELF
+==================================================
+
+Employee granted:
+
+attendance self
+leave self
+
+sees:
+
+Attendance
+Leave
+
+and self actions.
+
+No company organizational access.
+
+==================================================
+126. TEST — TEAM ACCESS
+==================================================
+
+Employee granted:
+
+hr.attendance.records.view / TEAM
+
+can see resolved team.
+
+Cannot see unrelated employees.
+
+==================================================
+127. TEST — ALL ACCESS
+==================================================
+
+Employee granted:
+
+hr.leave.records.view / ALL
+
+can see company Leave records.
+
+Cannot cross company.
+
+==================================================
+128. TEST — ALL DOES NOT CREATE SELF ACTION
+==================================================
+
+Unlinked organizational user with:
+
+hr.leave.records.view / ALL
+
+does NOT automatically gain:
+
+Request My Leave.
+
+==================================================
+129. TEST — EMPLOYEE LINK
+==================================================
+
+User without linked Employee cannot receive/use permission marked:
+
+requiresEmployeeLink.
+
+==================================================
+130. TEST — MODULE DISABLED
+==================================================
+
+Permission stored for Services.
+
+Company Services disabled.
+
+Services hidden and inaccessible.
+
+==================================================
+131. TEST — MODULE ENABLED + NO GRANT
+==================================================
+
+Company Services enabled.
+
+User has no Services permissions.
+
+Services hidden.
+
+==================================================
+132. TEST — MULTIPLE MODULES
+==================================================
+
+User has:
+
+HR grants
++
+Services grants
+
+sees both modules after Services is implemented.
+
+No role switch required.
+
+==================================================
+133. TEST — MULTIPLE PERMISSIONS
+==================================================
+
+Permissions combine additively.
+
+No conflicting role priority.
+
+==================================================
+134. TEST — COMPANY SWITCH
+==================================================
+
+Company A and Company B grants remain isolated.
+
+==================================================
+135. TEST — SELF ESCALATION
+==================================================
+
+Access administrator cannot grant themselves additional access by default.
+
+==================================================
+136. TEST — LAST ADMIN
+==================================================
+
+Final access administrator cannot be accidentally stripped of access-management capability.
+
+==================================================
+137. TEST — GRANT CEILING
+==================================================
+
+Company administrator cannot grant platform-only permission.
+
+==================================================
+138. TEST — DIRECT URL
+==================================================
+
+Hidden module route remains blocked when typed manually.
+
+==================================================
+139. TEST — LIVE PERMISSION REMOVAL
+==================================================
+
+Current user loses permission.
+
+Navigation updates.
+
+Unauthorized current route resolves safely.
+
+==================================================
+140. TEST — HR REGRESSION
+==================================================
+
+All existing HR flows remain green:
 
 Employees
 
@@ -1847,457 +2729,310 @@ Holiday
 
 Reports
 
-Settings
-
-Profile
-
-Notifications.
+Dashboard.
 
 ==================================================
-48. TEST — ARABIC
+141. TEST — ACCESS UI DESKTOP
 ==================================================
 
-Run representative RTL widget/localization tests.
+At 1440px:
 
-Existing tests must remain green.
+Users table appropriate.
 
-==================================================
-49. GENERATED ARB VERSION CONTROL
-==================================================
+Access editor uses desktop layout.
 
-Choose and document one policy.
-
-Recommended for this project:
-
-COMMIT source module ARBs.
-
-Generated merged ARBs can also remain committed if current Flutter workflow
-expects them and this improves reproducibility.
-
-Generated Dart localization files follow current project convention.
-
-Do not create contradictory rules.
+No huge empty regions.
 
 ==================================================
-50. SOURCE OF TRUTH
+142. TEST — ACCESS UI MOBILE
 ==================================================
 
-After Phase 0.2:
+390px:
 
-module/source ARBs are the SOURCE OF TRUTH.
+user list
 
-Generated:
+access detail
 
-app_en.arb
-app_ar.arb
+module/submodule expansion
 
-must never be manually edited.
+scope selectors
 
-==================================================
-51. README
-==================================================
+Save
 
-Create:
-
-lib/l10n/README.md
-
-Explain:
-
-where to add new translation
-
-which module file to edit
-
-how to generate
-
-duplicate key rule
-
-English/Arabic parity
-
-future module convention.
+no overflow.
 
 ==================================================
-52. SERVICES DEVELOPER EXAMPLE
+143. TEST — ARABIC
 ==================================================
+
+Users & Access works in RTL.
+
+==================================================
+144. ARCHITECTURE DOCUMENTATION
+==================================================
+
+Create/update:
+
+docs/architecture/access_control.md
 
 Document:
 
-When Services Phase 1 needs:
+UserAccount
 
-"Service Types"
+Employee link
 
-add:
+Company membership
 
-servicesServiceTypesTitle
+module entitlements
 
-to:
+permission catalog
 
-Services English ARB
+permission grants
 
-and:
+scopes
 
-Services Arabic ARB
+capability resolver
 
-Then run merge + gen-l10n.
+delegation
 
-Do NOT edit app_en.arb directly.
+record-scope enforcement
 
-==================================================
-53. COMMON STRING REUSE
-==================================================
-
-If Services needs:
-
-Save
-
-Cancel
-
-Search
-
-use existing common localization key.
-
-Do not create:
-
-servicesSave
-servicesCancel
-
-unless meaning genuinely differs.
+future module integration.
 
 ==================================================
-54. BUSINESS TERM OWNERSHIP
+145. INCLUDE A SIMPLE FORMULA
 ==================================================
 
-Examples:
+Document effective access as:
 
-Employee
-Attendance
-Leave
-Holiday
+EFFECTIVE ACCESS =
 
-→ HR
+Company Module Enabled
 
-Service Enquiry
-Inspection
-Work Execution
+AND
 
-→ Services
+Permission Granted
 
-Profile
-Password
-Notification
+AND
 
-→ Platform
+Required Employee Context Valid
 
-Save
-Cancel
-Search
+AND
 
-→ Common.
+Requested Record Within Granted Scope
+
+AND
+
+Company/Tenant Match
 
 ==================================================
-55. NO CROSS-MODULE DUPLICATION
+146. FUTURE MODULE GUIDE
 ==================================================
 
-Do not duplicate identical global keys across modules.
+Document exactly how a new module integrates.
 
-If a term becomes truly cross-module:
+Example Inventory:
 
-move it to Common.
+1. create Inventory permission catalog
 
-==================================================
-56. MOVING A KEY
-==================================================
+2. define submodules/actions/scopes
 
-Moving localization source ownership must not require renaming its key.
+3. register catalog contribution
 
-Example:
+4. implement Inventory scope resolver
 
-"status"
+5. use UserCapabilityContext
 
-can move from HR source → Common source while staying:
+6. routes/navigation use capabilities
 
-status
+7. Access UI automatically displays Inventory.
 
-if that is already the public key.
+No Access UI rewrite.
 
 ==================================================
-57. GENERATED CLASS SIZE
+147. SERVICES GUIDE
 ==================================================
 
-It is acceptable for:
+Services Phase 1 onward must:
 
-AppLocalizations
+register each real Services permission as functionality is implemented.
 
-to eventually contain many generated getters.
+Do NOT define role checks.
 
-The maintenance problem being solved is the HUMAN source ARB organization,
-not necessarily generated Dart class size.
+Example eventual user experiences are consequences of grants:
 
-Do not over-engineer multiple delegates solely to reduce generated getter count.
+Technician-like access
+→ Assigned jobs permissions.
 
-==================================================
-58. WEB BUNDLE NOTE
-==================================================
+Coordinator-like access
+→ Enquiry + scheduling permissions.
 
-Flutter supports deferred locale loading for Web if desired,
-but do NOT introduce it merely because ARBs are module-split.
+Manager-like access
+→ company/team operational permissions.
 
-This phase is about source organization.
-
-==================================================
-59. SERVICES MODULE ARCHITECTURE INTEGRATION
-==================================================
-
-After Phase 0.2:
-
-Services code owns:
-
-modules/services/l10n/
-
-or the chosen equivalent source/services folder.
-
-Services Phase 1 must add new translations there.
-
-Update the Phase 1 architectural docs accordingly.
+These are NOT hardcoded user types.
 
 ==================================================
-60. HR MODULE ARCHITECTURE INTEGRATION
+148. REMOVE BUSINESS ROLE LANGUAGE FROM UI
 ==================================================
 
-HR code and HR translations should now share clear module ownership.
-
-Do not move generated AppLocalizations into HR.
-
-Generated localization remains app-level.
-
-==================================================
-61. PLATFORM OWNERSHIP
-==================================================
-
-Platform translations remain separate source inputs,
-but their merged output still belongs to app-level localization.
-
-==================================================
-62. APP-LEVEL STRINGS
-==================================================
-
-If there are a handful of strings representing the whole product rather than
-Platform/Common, an optional:
-
-app_en.arb
-app_ar.arb
-
-SOURCE category may exist:
-
-source/app/
-
-Examples:
-
-product name
-global app title
-
-Do not misuse it as another dumping ground.
-
-==================================================
-63. IDE EXPERIENCE
-==================================================
-
-Ensure developers can easily locate translations.
-
-A developer working in:
-
-modules/services/
-
-should know immediately:
-
-modules/services/l10n/services_en.arb
-modules/services/l10n/services_ar.arb
-
-if collocated architecture is selected.
-
-This is the preferred outcome.
-
-==================================================
-64. ARB FORMATTING
-==================================================
-
-Generated merged ARB output should be deterministic.
+Audit user-facing management pages.
 
 Prefer:
 
-stable source/module order
-stable key order
+Access
 
-so Git diffs are understandable.
+Permissions
+
+Scope
+
+Modules
+
+instead of:
+
+Role
+
+Role Type
+
+Login As.
+
+If designation/job title exists,
+continue showing it as employment information.
+
+Do not confuse it with access.
 
 ==================================================
-65. JSON VALIDATION
+149. DESIGNATION IS NOT ACCESS
 ==================================================
-
-Malformed ARB must produce a clear file-specific error.
 
 Example:
 
-Invalid ARB JSON:
-modules/services/l10n/services_ar.arb
+Designation:
+Senior HVAC Technician
 
-Do not fail with vague FormatException only.
+does not grant anything automatically.
 
-==================================================
-66. DUPLICATE METADATA
-==================================================
-
-Validate message metadata pairing.
-
-If:
-
-@foo
-
-exists without:
-
-foo
-
-warn/fail appropriately.
+Access must be explicitly assigned.
 
 ==================================================
-67. UNKNOWN FILES
+150. DEPARTMENT IS NOT ACCESS
 ==================================================
 
-Merge tool should only include explicitly recognized locale/module files.
+Being in HR Department does not automatically grant HR administration.
 
-Do not accidentally merge:
+Being in Service Department does not automatically grant Services operations.
 
-backup_en.arb
-old_en.arb
-test_en.arb.
+Permissions remain explicit.
 
 ==================================================
-68. MODULE REGISTRATION
+151. MANAGER RELATIONSHIP IS NOT ACCESS
 ==================================================
 
-Localization source registration should be centralized in the merge tool/config.
+An Employee may manage people organizationally.
 
-Potential configuration:
+That relationship defines potential TEAM scope.
 
-const modules = [
-  L10nSource('common', ...),
-  L10nSource('platform', ...),
-  L10nSource('hr', ...),
-  L10nSource('services', ...),
-];
-
-Future module addition is one clear change.
+But they only receive team screens/actions when appropriate TEAM permission is granted.
 
 ==================================================
-69. OPTIONAL AUTO-DISCOVERY
+152. SERVICE TEAM RELATIONSHIP FUTURE
 ==================================================
 
-Auto-discovery is acceptable only if strict:
+Future ServiceTeam membership defines ASSIGNED/TEAM record relationships.
 
-each registered module/l10n directory
-contains expected locales.
+It does not automatically grant application access.
 
-Explicit registration is safer for V1.
-
-==================================================
-70. NO RUNTIME FILE READING
-==================================================
-
-Do NOT load ARB JSON dynamically at runtime.
-
-Everything remains compile-time generated via gen_l10n.
+Permissions still required.
 
 ==================================================
-71. PERFORMANCE
+153. NO AUTOMATIC PERMISSION FROM EMPLOYMENT FIELD
 ==================================================
 
-There should be no runtime performance regression.
+Do NOT implement:
 
-Same:
+if designation contains "Manager"
 
-AppLocalizations
+if department == HR
 
-same locale resolution.
+if department == Services
 
-==================================================
-72. ARCHITECTURE DOC
-==================================================
+then grant access.
 
-Update:
-
-docs/architecture/modules.md
-
-with Localization Ownership.
-
-Also create:
-
-docs/architecture/localization.md
-
-covering:
-
-source modules
-merge process
-generated output
-key ownership
-new module procedure.
+Never.
 
 ==================================================
-73. UPDATE CONTRIBUTOR WORKFLOW
+154. CURRENT DEMO PERSONAS
 ==================================================
 
-Document steps:
+For current demos/tests it is acceptable to describe users as:
 
-Adding a Services localization:
+Employee-like
 
-1. add English key to Services source ARB
-2. add Arabic key
-3. run localization generation
-4. use context.l10n.key
+Manager-like
 
-==================================================
-74. DO NOT START SERVICES BUSINESS LOGIC
-==================================================
+HR-like
 
-No Service Type
+Admin-like
 
-No Complaint Type
-
-No Service Enquiry
-
-No Job Assignment
-
-No Inspection
-
-No Material Request
-
-No Work Execution
-
-business implementation in this phase.
-
-Localization architecture only.
+but their behavior must come entirely from seeded permissions/scopes.
 
 ==================================================
-75. PRESERVE PHASE 0 ARCHITECTURE
+155. DO NOT START SERVICES FEATURES
 ==================================================
 
-Do not undo:
+No:
 
-modules/hr
+Service Type CRUD
 
-modules/services
+Enquiry
 
-platform boundaries.
+Scheduling
 
-Localization should align with them.
+Inspection
+
+Material Request
+
+Work Execution
+
+in this phase.
+
+Only the generic Services permission-registration seam.
 
 ==================================================
-76. QUALITY COMMANDS
+156. DATABASE MIGRATION
 ==================================================
 
-Run localization merge tool.
+If permission grants require DB changes:
 
-Then:
+inspect current latest schema version
+
+increment exactly once
+
+write migration
+
+preserve all current data
+
+test old → new.
+
+Do not reset DB.
+
+==================================================
+157. CODEGEN
+==================================================
+
+Run required:
 
 flutter gen-l10n
+
+build_runner
+
+after model/schema changes.
+
+==================================================
+158. QUALITY GATE
+==================================================
+
+Run:
 
 dart format .
 
@@ -2308,104 +3043,198 @@ flutter test
 flutter build web --release --dart-define=DEMO_AUTH=true
 
 ==================================================
-77. COMPLETION REPORT
+159. FINAL COMPLETION REPORT
 ==================================================
 
-Provide:
+Report:
 
-1. previous ARB architecture
+1. previous role-based architecture discovered
 
-2. final source localization tree
+2. remaining role dependencies removed
 
-3. Common key count
+3. final identity/access architecture
 
-4. Platform key count
+4. UserPermissionGrant model
 
-5. HR key count
+5. PermissionDefinition model
 
-6. Services key count
+6. Scope model
 
-7. generated English total
+7. HR permission catalog
 
-8. generated Arabic total
+8. Services registration seam
 
-9. duplicate validation behavior
+9. future-module registration mechanism
 
-10. missing translation validation behavior
+10. company module enablement behavior
 
-11. placeholder validation
+11. Users & Access route
 
-12. l10n.yaml changes
+12. Users & Access desktop UI
 
-13. merge tool location
+13. Users & Access mobile UI
 
-14. generation command
+14. user access editor
 
-15. context.l10n compatibility
+15. submodule editor
 
-16. AppLocalizations compatibility
+16. scope selector
 
-17. imports changed if any
+17. grant authority resolver
 
-18. Arabic/RTL regression result
+18. self-escalation protection
 
-19. flutter analyze result
+19. last-access-admin protection
 
-20. flutter test result/count
+20. employee-link validation
 
-21. Web build result
+21. PermissionSet changes
+
+22. UserCapabilityContext changes
+
+23. NavigationResolver changes
+
+24. route guard changes
+
+25. repository/object-scope enforcement
+
+26. role-template migration
+
+27. demo access migration
+
+28. live permission refresh behavior
+
+29. company switch behavior
+
+30. audit/activity integration
+
+31. database migration/version
+
+32. localization
+
+33. Arabic/RTL
+
+34. tests added
+
+35. flutter analyze result
+
+36. flutter test result/count
+
+37. Web release build result
+
+38. genuine remaining limitations.
 
 ==================================================
-78. STOP CONDITION
+160. HARD STOP CONDITION
 ==================================================
 
-PHASE 0.2 IS COMPLETE ONLY WHEN:
+PHASE 0.5 IS COMPLETE ONLY WHEN:
 
-✓ localization source is split by ERP module
+✓ business authorization no longer depends on hardcoded role checks
 
-✓ HR translations have their own source ARBs
+✓ every company user uses the same login architecture
 
-✓ Platform translations have their own source ARBs
+✓ Employee remains the employment identity
 
-✓ Common translations have their own source ARBs
+✓ Technician is NOT a separate person entity
 
-✓ Services has its own localization source ready
+✓ Inspector is NOT a separate person entity
 
-✓ future modules can add their own source ARBs
+✓ Service Manager is NOT a special user type
 
-✓ only one runtime AppLocalizations API exists
+✓ HR user is NOT a special user type
 
-✓ context.l10n still works
+✓ Manager is NOT a special authorization type
 
-✓ only one AppLocalizations.delegate is required
+✓ access is permission driven
+
+✓ record visibility is scope driven
+
+✓ supported scopes include SELF / ASSIGNED / TEAM / ALL as needed
+
+✓ scopes are module-resolved correctly
+
+✓ company module enablement is separate from user permission
+
+✓ dedicated Users & Access screen exists
+
+✓ dedicated user Access Detail screen exists
+
+✓ permissions are grouped Module → Submodule → Action
+
+✓ administrators see friendly labels, not permission keys
+
+✓ scoped permissions have proper scope selectors
+
+✓ self-only permissions use appropriate controls
+
+✓ Access UI is generated from PermissionCatalog
+
+✓ future modules can register permissions without rewriting Access UI
+
+✓ HR permission catalog is fully migrated
+
+✓ Services can add its permission catalog later
+
+✓ Inventory/Finance/etc. can follow same pattern
+
+✓ global Settings contains Users & Access
+
+✓ Company Modules is separately visible where authorized
+
+✓ disabled company module cannot be accessed through stored grants
+
+✓ enabled module with zero user grant remains hidden
+
+✓ access grants are company scoped
+
+✓ employee-required grants validate Employee linkage
+
+✓ inactive Employee loses self/assigned capabilities appropriately
+
+✓ navigation is permission/capability driven
+
+✓ routes are permission/capability driven
+
+✓ actions are permission/capability driven
+
+✓ repositories/use cases enforce object scope
+
+✓ direct URL cannot bypass permissions
+
+✓ designation does NOT grant permissions
+
+✓ department does NOT grant permissions
+
+✓ manager relationship does NOT itself grant permissions
+
+✓ access administrator cannot self-escalate by default
+
+✓ final company access administrator cannot be accidentally removed
+
+✓ company administrator cannot grant platform-only permission
+
+✓ access changes are audited
+
+✓ access updates use existing outbox/idempotency architecture
+
+✓ permission changes refresh capability/navigation safely
+
+✓ company switching recomputes access
+
+✓ existing HR behavior remains correct
+
+✓ no Services business functionality was started
 
 ✓ English works
 
-✓ Arabic works
+✓ Arabic/RTL works
 
-✓ RTL works
+✓ mobile Access UI works
 
-✓ no existing localization key was lost
+✓ desktop Access UI works
 
-✓ no existing visible copy changed accidentally
-
-✓ duplicate keys across modules fail generation
-
-✓ missing Arabic translation fails validation
-
-✓ missing English counterpart fails validation
-
-✓ placeholders remain valid
-
-✓ merged ARBs are deterministic
-
-✓ generated ARBs are not the manual source of truth
-
-✓ source ownership is documented
-
-✓ Windows-compatible generation workflow exists
-
-✓ flutter gen-l10n succeeds
+✓ migration preserves existing users/data
 
 ✓ flutter analyze passes
 
@@ -2415,5 +3244,12 @@ PHASE 0.2 IS COMPLETE ONLY WHEN:
 
 THEN STOP.
 
-DO NOT START SERVICES PHASE 1 AUTOMATICALLY.
+AFTER THIS IS GREEN:
+
+START SERVICES PHASE 1.
+
+FROM THAT POINT FORWARD:
+
+NEVER ADD A NEW BUSINESS FEATURE WITHOUT REGISTERING ITS
+PERMISSIONS + SUPPORTED SCOPES IN THE MODULE PERMISSION CATALOG.
 ```

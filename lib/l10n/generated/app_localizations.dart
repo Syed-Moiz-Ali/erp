@@ -260,65 +260,11 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
-  /// Common/Phase 0 UI: dashboard.
-  ///
-  /// In en, this message translates to:
-  /// **'Dashboard'**
-  String get dashboard;
-
-  /// Common/Phase 0 UI: employees.
-  ///
-  /// In en, this message translates to:
-  /// **'Employees'**
-  String get employees;
-
-  /// Common/Phase 0 UI: attendance.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance'**
-  String get attendance;
-
-  /// Common/Phase 0 UI: requests.
-  ///
-  /// In en, this message translates to:
-  /// **'Requests'**
-  String get requests;
-
-  /// Common/Phase 0 UI: reports.
-  ///
-  /// In en, this message translates to:
-  /// **'Reports'**
-  String get reports;
-
-  /// Common/Phase 0 UI: settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// Common/Phase 0 UI: profile.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get profile;
-
   /// Common/Phase 0 UI: more.
   ///
   /// In en, this message translates to:
   /// **'More'**
   String get more;
-
-  /// Common/Phase 0 UI: login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
-
-  /// Common/Phase 0 UI: logout.
-  ///
-  /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
 
   /// Common/Phase 0 UI: email.
   ///
@@ -343,24 +289,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
-
-  /// Common/Phase 0 UI: forgotPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgot password'**
-  String get forgotPassword;
-
-  /// Common/Phase 0 UI: changePassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Change password'**
-  String get changePassword;
-
-  /// Common/Phase 0 UI: welcomeBack.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome back'**
-  String get welcomeBack;
 
   /// Common/Phase 0 UI: language.
   ///
@@ -433,6 +361,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scheduled'**
   String get scheduled;
+
+  /// Common/Phase 0 UI: actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actions;
+
+  /// Common/Phase 0 UI: primaryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary action'**
+  String get primaryAction;
+
+  /// Common/Phase 0 UI: previewActionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview action complete'**
+  String get previewActionComplete;
+
+  /// Common/Phase 0 UI: secondaryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary'**
+  String get secondaryAction;
+
+  /// Common/Phase 0 UI: textAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Text action'**
+  String get textAction;
+
+  /// Common/Phase 0 UI: moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// Common/Phase 0 UI: disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// Common/Phase 0 UI: saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get saving;
+
+  /// Common/Phase 0 UI: fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// Common/Phase 0 UI: enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name'**
+  String get enterName;
+
+  /// Common/Phase 0 UI: validationExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Validation example'**
+  String get validationExample;
+
+  /// Common/Phase 0 UI: informationCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Information card'**
+  String get informationCard;
+
+  /// Common/Phase 0 UI: informationCardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a concise explanation to help people make a decision.'**
+  String get informationCardMessage;
+
+  /// Common/Phase 0 UI: statusAndFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Status & feedback'**
+  String get statusAndFeedback;
+
+  /// Common/Phase 0 UI: localChangesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Your changes are available on this device.'**
+  String get localChangesAvailable;
+
+  /// Common/Phase 0 UI: recordsNeedAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Some records need your attention.'**
+  String get recordsNeedAttention;
+
+  /// Common/Phase 0 UI: actionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to complete this action.'**
+  String get actionFailed;
+
+  /// Common/Phase 0 UI: loadingRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading records...'**
+  String get loadingRecords;
+
+  /// Common/Phase 0 UI: noRecordsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No records yet'**
+  String get noRecordsYet;
+
+  /// Common/Phase 0 UI: noRecordsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Records will appear here when your team gets started.'**
+  String get noRecordsMessage;
+
+  /// Common/Phase 0 UI: retryWhenConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again when a connection is available.'**
+  String get retryWhenConnected;
+
+  /// Common/Phase 0 UI: filtersAndTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters & table'**
+  String get filtersAndTable;
+
+  /// Common/Phase 0 UI: status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// Common/Phase 0 UI: pageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This page could not be found.'**
+  String get pageNotFound;
+
+  /// Common/Phase 0 UI: showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// Common/Phase 0 UI: hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
+
+  /// Common/Phase 0 UI: searchRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Search records'**
+  String get searchRecords;
+
+  /// Common/Phase 0 UI: selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
+  /// Common/Phase 0 UI: selectTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select time'**
+  String get selectTime;
+
+  /// Common/Phase 0 UI: unableToLoadRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load records'**
+  String get unableToLoadRecords;
+
+  /// Common/Phase 0 UI: noRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'No records'**
+  String get noRecords;
+
+  /// Common/Phase 0 UI: previousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get previousPage;
+
+  /// Common/Phase 0 UI: nextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get nextPage;
+
+  /// Common/Phase 0 UI: fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// Common/Phase 0 UI: emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// Common/Phase 0 UI: emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get emailInvalid;
+
+  /// Common/Phase 0 UI: failureTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The request timed out. Please try again.'**
+  String get failureTimeout;
+
+  /// Common/Phase 0 UI: failureOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection unavailable. Your local data is still available.'**
+  String get failureOffline;
+
+  /// Common/Phase 0 UI: failureCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Request cancelled.'**
+  String get failureCancelled;
+
+  /// Common/Phase 0 UI: failureSessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired.'**
+  String get failureSessionExpired;
+
+  /// Common/Phase 0 UI: failureRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to complete the request.'**
+  String get failureRequest;
+
+  /// Common/Phase 0 UI: failureInvalidData.
+  ///
+  /// In en, this message translates to:
+  /// **'The response could not be read.'**
+  String get failureInvalidData;
+
+  /// Common/Phase 0 UI: failureLocationDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable location services to continue.'**
+  String get failureLocationDisabled;
+
+  /// Common/Phase 0 UI: failureLocationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required for this action.'**
+  String get failureLocationPermission;
+
+  /// Common/Phase 0 UI: failureLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to determine your location.'**
+  String get failureLocationUnavailable;
+
+  /// Common/Phase 0 UI: failureStorageWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to save changes on this device.'**
+  String get failureStorageWrite;
+
+  /// Common/Phase 0 UI: failureStorageUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to update local changes.'**
+  String get failureStorageUpdate;
+
+  /// Common/Phase 0 UI: failureSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Some changes could not be synchronized.'**
+  String get failureSync;
+
+  /// Common/Phase 0 UI: failurePreferencesWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed for this session, but could not be saved.'**
+  String get failurePreferencesWrite;
+
+  /// Common/Phase 0 UI: failurePreferencesRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved language could not be restored.'**
+  String get failurePreferencesRead;
+
+  /// Common/Phase 0 UI: formattingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Locale-aware formatting'**
+  String get formattingTitle;
+
+  /// Common/Phase 0 UI: date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// Common/Phase 0 UI: time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// Common/Phase 0 UI: duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// Common/Phase 0 UI: number.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get number;
+
+  /// Common/Phase 0 UI: percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage'**
+  String get percentage;
+
+  /// Common/Phase 0 UI: currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// Common/Phase 0 UI: month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// paginationSummary
+  ///
+  /// In en, this message translates to:
+  /// **'{start}–{end} of {total}'**
+  String paginationSummary(String start, String end, String total);
+
+  /// durationHoursMinutes
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String durationHoursMinutes(String hours, String minutes);
+
+  /// No description provided for @durationHoursOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h'**
+  String durationHoursOnly(String hours);
+
+  /// No description provided for @selectOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an option'**
+  String get selectOption;
+
+  /// No description provided for @noSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get noSelection;
+
+  /// No description provided for @timeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} → {end}'**
+  String timeRange(String start, String end);
+
+  /// No description provided for @dateTimeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {time}'**
+  String dateTimeValue(String date, String time);
+
+  /// No description provided for @labeledValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String labeledValue(String label, String value);
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @moreFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'More filters'**
+  String get moreFilters;
+
+  /// No description provided for @resetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetFilters;
+
+  /// No description provided for @periodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get periodLabel;
+
+  /// Common/Phase 0 UI: settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Common/Phase 0 UI: profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Common/Phase 0 UI: login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// Common/Phase 0 UI: logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// Common/Phase 0 UI: forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password'**
+  String get forgotPassword;
+
+  /// Common/Phase 0 UI: changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePassword;
+
+  /// Common/Phase 0 UI: welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
 
   /// Common/Phase 0 UI: workspace.
   ///
@@ -698,54 +1094,6 @@ abstract class AppLocalizations {
   /// **'Info'**
   String get colorInfo;
 
-  /// Common/Phase 0 UI: actions.
-  ///
-  /// In en, this message translates to:
-  /// **'Actions'**
-  String get actions;
-
-  /// Common/Phase 0 UI: primaryAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Primary action'**
-  String get primaryAction;
-
-  /// Common/Phase 0 UI: previewActionComplete.
-  ///
-  /// In en, this message translates to:
-  /// **'Preview action complete'**
-  String get previewActionComplete;
-
-  /// Common/Phase 0 UI: secondaryAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Secondary'**
-  String get secondaryAction;
-
-  /// Common/Phase 0 UI: textAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Text action'**
-  String get textAction;
-
-  /// Common/Phase 0 UI: moreOptions.
-  ///
-  /// In en, this message translates to:
-  /// **'More options'**
-  String get moreOptions;
-
-  /// Common/Phase 0 UI: disabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Disabled'**
-  String get disabled;
-
-  /// Common/Phase 0 UI: saving.
-  ///
-  /// In en, this message translates to:
-  /// **'Saving'**
-  String get saving;
-
   /// Common/Phase 0 UI: formControls.
   ///
   /// In en, this message translates to:
@@ -757,120 +1105,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shared field styling, validation and accessible labels.'**
   String get formControlsSubtitle;
-
-  /// Common/Phase 0 UI: fullName.
-  ///
-  /// In en, this message translates to:
-  /// **'Full name'**
-  String get fullName;
-
-  /// Common/Phase 0 UI: enterName.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a name'**
-  String get enterName;
-
-  /// Common/Phase 0 UI: workLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Work location'**
-  String get workLocation;
-
-  /// Common/Phase 0 UI: office.
-  ///
-  /// In en, this message translates to:
-  /// **'Office'**
-  String get office;
-
-  /// Common/Phase 0 UI: remote.
-  ///
-  /// In en, this message translates to:
-  /// **'Remote'**
-  String get remote;
-
-  /// Common/Phase 0 UI: effectiveDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Effective date'**
-  String get effectiveDate;
-
-  /// Common/Phase 0 UI: startTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Start time'**
-  String get startTime;
-
-  /// Common/Phase 0 UI: validationExample.
-  ///
-  /// In en, this message translates to:
-  /// **'Validation example'**
-  String get validationExample;
-
-  /// Common/Phase 0 UI: informationCard.
-  ///
-  /// In en, this message translates to:
-  /// **'Information card'**
-  String get informationCard;
-
-  /// Common/Phase 0 UI: informationCardMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Use a concise explanation to help people make a decision.'**
-  String get informationCardMessage;
-
-  /// Common/Phase 0 UI: statusAndFeedback.
-  ///
-  /// In en, this message translates to:
-  /// **'Status & feedback'**
-  String get statusAndFeedback;
-
-  /// Common/Phase 0 UI: localChangesAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Your changes are available on this device.'**
-  String get localChangesAvailable;
-
-  /// Common/Phase 0 UI: recordsNeedAttention.
-  ///
-  /// In en, this message translates to:
-  /// **'Some records need your attention.'**
-  String get recordsNeedAttention;
-
-  /// Common/Phase 0 UI: actionFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to complete this action.'**
-  String get actionFailed;
-
-  /// Common/Phase 0 UI: loadingRecords.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading records...'**
-  String get loadingRecords;
-
-  /// Common/Phase 0 UI: noRecordsYet.
-  ///
-  /// In en, this message translates to:
-  /// **'No records yet'**
-  String get noRecordsYet;
-
-  /// Common/Phase 0 UI: noRecordsMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Records will appear here when your team gets started.'**
-  String get noRecordsMessage;
-
-  /// Common/Phase 0 UI: retryWhenConnected.
-  ///
-  /// In en, this message translates to:
-  /// **'Please try again when a connection is available.'**
-  String get retryWhenConnected;
-
-  /// Common/Phase 0 UI: filtersAndTable.
-  ///
-  /// In en, this message translates to:
-  /// **'Filters & table'**
-  String get filtersAndTable;
 
   /// Common/Phase 0 UI: illustrativeRecords.
   ///
@@ -889,24 +1123,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear filters'**
   String get clearFilters;
-
-  /// Common/Phase 0 UI: employee.
-  ///
-  /// In en, this message translates to:
-  /// **'Employee'**
-  String get employee;
-
-  /// Common/Phase 0 UI: location.
-  ///
-  /// In en, this message translates to:
-  /// **'Location'**
-  String get location;
-
-  /// Common/Phase 0 UI: status.
-  ///
-  /// In en, this message translates to:
-  /// **'Status'**
-  String get status;
 
   /// Common/Phase 0 UI: sampleAlex.
   ///
@@ -1040,216 +1256,6 @@ abstract class AppLocalizations {
   /// **'Phase 0 / Foundation ready'**
   String get phaseReady;
 
-  /// Common/Phase 0 UI: pageNotFound.
-  ///
-  /// In en, this message translates to:
-  /// **'This page could not be found.'**
-  String get pageNotFound;
-
-  /// Common/Phase 0 UI: showPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Show password'**
-  String get showPassword;
-
-  /// Common/Phase 0 UI: hidePassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide password'**
-  String get hidePassword;
-
-  /// Common/Phase 0 UI: searchRecords.
-  ///
-  /// In en, this message translates to:
-  /// **'Search records'**
-  String get searchRecords;
-
-  /// Common/Phase 0 UI: selectDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Select date'**
-  String get selectDate;
-
-  /// Common/Phase 0 UI: selectTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Select time'**
-  String get selectTime;
-
-  /// Common/Phase 0 UI: unableToLoadRecords.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to load records'**
-  String get unableToLoadRecords;
-
-  /// Common/Phase 0 UI: noRecords.
-  ///
-  /// In en, this message translates to:
-  /// **'No records'**
-  String get noRecords;
-
-  /// Common/Phase 0 UI: previousPage.
-  ///
-  /// In en, this message translates to:
-  /// **'Previous page'**
-  String get previousPage;
-
-  /// Common/Phase 0 UI: nextPage.
-  ///
-  /// In en, this message translates to:
-  /// **'Next page'**
-  String get nextPage;
-
-  /// Common/Phase 0 UI: fieldRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'This field is required'**
-  String get fieldRequired;
-
-  /// Common/Phase 0 UI: emailRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Email is required'**
-  String get emailRequired;
-
-  /// Common/Phase 0 UI: emailInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email address'**
-  String get emailInvalid;
-
-  /// Common/Phase 0 UI: failureTimeout.
-  ///
-  /// In en, this message translates to:
-  /// **'The request timed out. Please try again.'**
-  String get failureTimeout;
-
-  /// Common/Phase 0 UI: failureOffline.
-  ///
-  /// In en, this message translates to:
-  /// **'Connection unavailable. Your local data is still available.'**
-  String get failureOffline;
-
-  /// Common/Phase 0 UI: failureCancelled.
-  ///
-  /// In en, this message translates to:
-  /// **'Request cancelled.'**
-  String get failureCancelled;
-
-  /// Common/Phase 0 UI: failureSessionExpired.
-  ///
-  /// In en, this message translates to:
-  /// **'Your session has expired.'**
-  String get failureSessionExpired;
-
-  /// Common/Phase 0 UI: failureRequest.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to complete the request.'**
-  String get failureRequest;
-
-  /// Common/Phase 0 UI: failureInvalidData.
-  ///
-  /// In en, this message translates to:
-  /// **'The response could not be read.'**
-  String get failureInvalidData;
-
-  /// Common/Phase 0 UI: failureLocationDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable location services to continue.'**
-  String get failureLocationDisabled;
-
-  /// Common/Phase 0 UI: failureLocationPermission.
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission is required for this action.'**
-  String get failureLocationPermission;
-
-  /// Common/Phase 0 UI: failureLocationUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to determine your location.'**
-  String get failureLocationUnavailable;
-
-  /// Common/Phase 0 UI: failureStorageWrite.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to save changes on this device.'**
-  String get failureStorageWrite;
-
-  /// Common/Phase 0 UI: failureStorageUpdate.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to update local changes.'**
-  String get failureStorageUpdate;
-
-  /// Common/Phase 0 UI: failureSync.
-  ///
-  /// In en, this message translates to:
-  /// **'Some changes could not be synchronized.'**
-  String get failureSync;
-
-  /// Common/Phase 0 UI: failurePreferencesWrite.
-  ///
-  /// In en, this message translates to:
-  /// **'Language changed for this session, but could not be saved.'**
-  String get failurePreferencesWrite;
-
-  /// Common/Phase 0 UI: failurePreferencesRead.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved language could not be restored.'**
-  String get failurePreferencesRead;
-
-  /// Common/Phase 0 UI: formattingTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Locale-aware formatting'**
-  String get formattingTitle;
-
-  /// Common/Phase 0 UI: date.
-  ///
-  /// In en, this message translates to:
-  /// **'Date'**
-  String get date;
-
-  /// Common/Phase 0 UI: time.
-  ///
-  /// In en, this message translates to:
-  /// **'Time'**
-  String get time;
-
-  /// Common/Phase 0 UI: duration.
-  ///
-  /// In en, this message translates to:
-  /// **'Duration'**
-  String get duration;
-
-  /// Common/Phase 0 UI: number.
-  ///
-  /// In en, this message translates to:
-  /// **'Number'**
-  String get number;
-
-  /// Common/Phase 0 UI: percentage.
-  ///
-  /// In en, this message translates to:
-  /// **'Percentage'**
-  String get percentage;
-
-  /// Common/Phase 0 UI: currency.
-  ///
-  /// In en, this message translates to:
-  /// **'Currency'**
-  String get currency;
-
-  /// Common/Phase 0 UI: month.
-  ///
-  /// In en, this message translates to:
-  /// **'Month'**
-  String get month;
-
   /// Common/Phase 0 UI: languageSubtitle.
   ///
   /// In en, this message translates to:
@@ -1273,18 +1279,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{level} / Built for clarity'**
   String typographySample(String level);
-
-  /// paginationSummary
-  ///
-  /// In en, this message translates to:
-  /// **'{start}–{end} of {total}'**
-  String paginationSummary(String start, String end, String total);
-
-  /// durationHoursMinutes
-  ///
-  /// In en, this message translates to:
-  /// **'{hours}h {minutes}m'**
-  String durationHoursMinutes(String hours, String minutes);
 
   /// No description provided for @authWelcomeBack.
   ///
@@ -1862,132 +1856,6 @@ abstract class AppLocalizations {
   /// **'Welcome, {name}'**
   String authGreeting(String name);
 
-  /// No description provided for @permissionEmployeeViewSelf.
-  ///
-  /// In en, this message translates to:
-  /// **'View own employee record'**
-  String get permissionEmployeeViewSelf;
-
-  /// No description provided for @permissionEmployeeViewTeam.
-  ///
-  /// In en, this message translates to:
-  /// **'View team employees'**
-  String get permissionEmployeeViewTeam;
-
-  /// No description provided for @permissionEmployeeViewAll.
-  ///
-  /// In en, this message translates to:
-  /// **'View all employees'**
-  String get permissionEmployeeViewAll;
-
-  /// No description provided for @permissionEmployeeCreate.
-  ///
-  /// In en, this message translates to:
-  /// **'Create employees'**
-  String get permissionEmployeeCreate;
-
-  /// No description provided for @permissionEmployeeUpdate.
-  ///
-  /// In en, this message translates to:
-  /// **'Update employees'**
-  String get permissionEmployeeUpdate;
-
-  /// No description provided for @permissionEmployeeDeactivate.
-  ///
-  /// In en, this message translates to:
-  /// **'Deactivate employees'**
-  String get permissionEmployeeDeactivate;
-
-  /// No description provided for @permissionAttendanceViewSelf.
-  ///
-  /// In en, this message translates to:
-  /// **'View own attendance'**
-  String get permissionAttendanceViewSelf;
-
-  /// No description provided for @permissionAttendanceViewTeam.
-  ///
-  /// In en, this message translates to:
-  /// **'View team attendance'**
-  String get permissionAttendanceViewTeam;
-
-  /// No description provided for @permissionAttendanceViewAll.
-  ///
-  /// In en, this message translates to:
-  /// **'View all attendance'**
-  String get permissionAttendanceViewAll;
-
-  /// No description provided for @permissionAttendancePunchIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Punch in'**
-  String get permissionAttendancePunchIn;
-
-  /// No description provided for @permissionAttendancePunchOut.
-  ///
-  /// In en, this message translates to:
-  /// **'Punch out'**
-  String get permissionAttendancePunchOut;
-
-  /// No description provided for @permissionAttendanceBreak.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage own breaks'**
-  String get permissionAttendanceBreak;
-
-  /// No description provided for @permissionAttendanceRequestCorrection.
-  ///
-  /// In en, this message translates to:
-  /// **'Request attendance corrections'**
-  String get permissionAttendanceRequestCorrection;
-
-  /// No description provided for @permissionAttendanceCorrect.
-  ///
-  /// In en, this message translates to:
-  /// **'Correct attendance'**
-  String get permissionAttendanceCorrect;
-
-  /// No description provided for @permissionAttendanceApprove.
-  ///
-  /// In en, this message translates to:
-  /// **'Approve attendance'**
-  String get permissionAttendanceApprove;
-
-  /// No description provided for @permissionShiftView.
-  ///
-  /// In en, this message translates to:
-  /// **'View shifts'**
-  String get permissionShiftView;
-
-  /// No description provided for @permissionShiftManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage shifts'**
-  String get permissionShiftManage;
-
-  /// No description provided for @permissionWorkLocationView.
-  ///
-  /// In en, this message translates to:
-  /// **'View work locations'**
-  String get permissionWorkLocationView;
-
-  /// No description provided for @permissionWorkLocationManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage work locations'**
-  String get permissionWorkLocationManage;
-
-  /// No description provided for @permissionAttendancePolicyView.
-  ///
-  /// In en, this message translates to:
-  /// **'View attendance policies'**
-  String get permissionAttendancePolicyView;
-
-  /// No description provided for @permissionAttendancePolicyManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage attendance policies'**
-  String get permissionAttendancePolicyManage;
-
   /// No description provided for @permissionCompanyManage.
   ///
   /// In en, this message translates to:
@@ -2005,12 +1873,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage roles'**
   String get permissionRoleManage;
-
-  /// No description provided for @permissionAttendanceReportView.
-  ///
-  /// In en, this message translates to:
-  /// **'View attendance reports'**
-  String get permissionAttendanceReportView;
 
   /// No description provided for @shellDashboard.
   ///
@@ -2257,6 +2119,864 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No workspace areas are available for this account. Contact your administrator.'**
   String get shellNoDestinationsMessage;
+
+  /// No description provided for @syncOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get syncOfflineTitle;
+
+  /// No description provided for @syncOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes will sync when your connection returns.'**
+  String get syncOfflineMessage;
+
+  /// No description provided for @syncServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Service temporarily unavailable'**
+  String get syncServiceUnavailable;
+
+  /// No description provided for @syncSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing'**
+  String get syncSyncing;
+
+  /// No description provided for @syncAllChangesSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'All changes synced'**
+  String get syncAllChangesSynced;
+
+  /// No description provided for @syncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sync'**
+  String get syncPending;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed'**
+  String get syncFailed;
+
+  /// No description provided for @syncNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync needs attention'**
+  String get syncNeedsAttention;
+
+  /// No description provided for @syncRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get syncRetry;
+
+  /// No description provided for @syncRetryNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry now'**
+  String get syncRetryNow;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @syncLastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync'**
+  String get syncLastSync;
+
+  /// No description provided for @syncNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced'**
+  String get syncNever;
+
+  /// No description provided for @syncChangesWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes waiting to sync'**
+  String get syncChangesWaiting;
+
+  /// No description provided for @syncDataAndSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Data and sync'**
+  String get syncDataAndSync;
+
+  /// No description provided for @syncNoPendingChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes waiting'**
+  String get syncNoPendingChanges;
+
+  /// No description provided for @syncSyncSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get syncSyncSucceeded;
+
+  /// No description provided for @syncStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync status'**
+  String get syncStatusTitle;
+
+  /// No description provided for @syncPendingOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending operations'**
+  String get syncPendingOperations;
+
+  /// No description provided for @syncFailedOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed operations'**
+  String get syncFailedOperations;
+
+  /// No description provided for @syncSwitchAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync'**
+  String get syncSwitchAccount;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsNoItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get notificationsNoItems;
+
+  /// No description provided for @notificationsNoItemsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You are all caught up.'**
+  String get notificationsNoItemsMessage;
+
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get notificationsToday;
+
+  /// No description provided for @notificationsEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get notificationsEarlier;
+
+  /// No description provided for @notificationsUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsUnread;
+
+  /// No description provided for @notificationsReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications and reminders'**
+  String get notificationsReminders;
+
+  /// No description provided for @notificationsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open notifications'**
+  String get notificationsOpen;
+
+  /// No description provided for @reminderAttendanceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance reminders'**
+  String get reminderAttendanceSection;
+
+  /// No description provided for @reminderShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift reminder'**
+  String get reminderShift;
+
+  /// No description provided for @reminderPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out reminder'**
+  String get reminderPunchOut;
+
+  /// No description provided for @reminderNotifyBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify before shift'**
+  String get reminderNotifyBefore;
+
+  /// No description provided for @reminderMinutesBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes before'**
+  String get reminderMinutesBefore;
+
+  /// No description provided for @reminderNotificationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission'**
+  String get reminderNotificationPermission;
+
+  /// No description provided for @reminderPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission required'**
+  String get reminderPermissionRequired;
+
+  /// No description provided for @reminderNotificationsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get reminderNotificationsDisabled;
+
+  /// No description provided for @reminderNotificationsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders enabled in the app'**
+  String get reminderNotificationsEnabled;
+
+  /// No description provided for @reminderOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get reminderOpenSettings;
+
+  /// No description provided for @reminderSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder settings saved'**
+  String get reminderSaved;
+
+  /// No description provided for @reminderSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save reminder settings'**
+  String get reminderSaveFailed;
+
+  /// No description provided for @reminderPermissionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminders to receive shift notifications.'**
+  String get reminderPermissionHint;
+
+  /// No description provided for @notifShiftSoonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift starts soon'**
+  String get notifShiftSoonTitle;
+
+  /// No description provided for @notifShiftSoonBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift is about to start. Open attendance to check in.'**
+  String get notifShiftSoonBody;
+
+  /// No description provided for @notifPunchOutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember to punch out'**
+  String get notifPunchOutTitle;
+
+  /// No description provided for @notifPunchOutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift has ended. Remember to punch out.'**
+  String get notifPunchOutBody;
+
+  /// No description provided for @notifShiftEndingOnBreakBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shift is ending. Review your attendance before leaving.'**
+  String get notifShiftEndingOnBreakBody;
+
+  /// No description provided for @notifCorrectionApprovedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance correction approved'**
+  String get notifCorrectionApprovedTitle;
+
+  /// No description provided for @notifCorrectionApprovedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance correction was approved and applied.'**
+  String get notifCorrectionApprovedBody;
+
+  /// No description provided for @notifCorrectionRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance correction rejected'**
+  String get notifCorrectionRejectedTitle;
+
+  /// No description provided for @notifCorrectionRejectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance correction request was not approved.'**
+  String get notifCorrectionRejectedBody;
+
+  /// No description provided for @notifSyncFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs attention'**
+  String get notifSyncFailedTitle;
+
+  /// No description provided for @notifSyncFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Some attendance changes could not be synced.'**
+  String get notifSyncFailedBody;
+
+  /// No description provided for @notifConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance needs review'**
+  String get notifConflictTitle;
+
+  /// No description provided for @notifConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your local attendance does not match the latest server record.'**
+  String get notifConflictBody;
+
+  /// No description provided for @notifPendingReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New attendance correction request'**
+  String get notifPendingReviewTitle;
+
+  /// No description provided for @notifPendingReviewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A correction request is waiting for review.'**
+  String get notifPendingReviewBody;
+
+  /// No description provided for @notifLeaveSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request submitted'**
+  String get notifLeaveSubmittedTitle;
+
+  /// No description provided for @notifLeaveSubmittedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was submitted for approval.'**
+  String get notifLeaveSubmittedBody;
+
+  /// No description provided for @notifLeaveApprovedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request approved'**
+  String get notifLeaveApprovedTitle;
+
+  /// No description provided for @notifLeaveApprovedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was approved.'**
+  String get notifLeaveApprovedBody;
+
+  /// No description provided for @notifLeaveRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request rejected'**
+  String get notifLeaveRejectedTitle;
+
+  /// No description provided for @notifLeaveRejectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your leave request was not approved.'**
+  String get notifLeaveRejectedBody;
+
+  /// No description provided for @notifLeaveCancelledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request cancelled'**
+  String get notifLeaveCancelledTitle;
+
+  /// No description provided for @notifLeaveCancelledBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A leave request was cancelled.'**
+  String get notifLeaveCancelledBody;
+
+  /// No description provided for @notifLeaveApprovalRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave approval required'**
+  String get notifLeaveApprovalRequiredTitle;
+
+  /// No description provided for @notifLeaveApprovalRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A team leave request is waiting for your review.'**
+  String get notifLeaveApprovalRequiredBody;
+
+  /// No description provided for @notifUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notifUnknownTitle;
+
+  /// No description provided for @notifUnknownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a new notification.'**
+  String get notifUnknownBody;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String timeMinutesAgo(Object count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String timeHoursAgo(Object count);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @profileMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get profileMyProfile;
+
+  /// No description provided for @profileOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get profileOverview;
+
+  /// No description provided for @profileWorkInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work information'**
+  String get profileWorkInformation;
+
+  /// No description provided for @profileAccountAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account and access'**
+  String get profileAccountAccess;
+
+  /// No description provided for @profileSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get profileSecurity;
+
+  /// No description provided for @profilePreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get profilePreferences;
+
+  /// No description provided for @profileAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access'**
+  String get profileAccess;
+
+  /// No description provided for @profileAdministrativeAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative access'**
+  String get profileAdministrativeAccess;
+
+  /// No description provided for @profileRoles.
+  ///
+  /// In en, this message translates to:
+  /// **'Roles'**
+  String get profileRoles;
+
+  /// No description provided for @profileEmploymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment status'**
+  String get profileEmploymentStatus;
+
+  /// No description provided for @profileLoginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Login email'**
+  String get profileLoginEmail;
+
+  /// No description provided for @profileWorkEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Work email'**
+  String get profileWorkEmail;
+
+  /// No description provided for @profileMyAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'My attendance'**
+  String get profileMyAttendance;
+
+  /// No description provided for @profileViewEmployeeRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'View employment details'**
+  String get profileViewEmployeeRecord;
+
+  /// No description provided for @profileNoEmployeeLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'No employee profile is linked to this account.'**
+  String get profileNoEmployeeLinked;
+
+  /// No description provided for @profileTeamUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Team access cannot be resolved.'**
+  String get profileTeamUnavailable;
+
+  /// No description provided for @profileEmploymentUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment information is currently unavailable.'**
+  String get profileEmploymentUnavailable;
+
+  /// No description provided for @profileCurrentCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Current company'**
+  String get profileCurrentCompany;
+
+  /// No description provided for @profileManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get profileManage;
+
+  /// No description provided for @settingsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your organization, attendance configuration and preferences.'**
+  String get settingsIntro;
+
+  /// No description provided for @settingsAttendanceCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance configuration'**
+  String get settingsAttendanceCategory;
+
+  /// No description provided for @settingsAttendanceCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure how employees work and record attendance.'**
+  String get settingsAttendanceCategoryDesc;
+
+  /// No description provided for @settingsPreferencesCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal preferences'**
+  String get settingsPreferencesCategory;
+
+  /// No description provided for @settingsPreferencesCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust your own app preferences.'**
+  String get settingsPreferencesCategoryDesc;
+
+  /// No description provided for @settingsSystemCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsSystemCategory;
+
+  /// No description provided for @settingsSystemCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync and application status.'**
+  String get settingsSystemCategoryDesc;
+
+  /// No description provided for @settingsShiftDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Set working hours, working days and break defaults.'**
+  String get settingsShiftDesc;
+
+  /// No description provided for @settingsLocationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage workplaces and attendance location rules.'**
+  String get settingsLocationDesc;
+
+  /// No description provided for @settingsPolicyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Define attendance, break and correction rules.'**
+  String get settingsPolicyDesc;
+
+  /// No description provided for @settingsLanguageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred application language.'**
+  String get settingsLanguageDesc;
+
+  /// No description provided for @settingsNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Control attendance reminders for your account.'**
+  String get settingsNotificationsDesc;
+
+  /// No description provided for @settingsSyncDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View sync status and retry failed changes.'**
+  String get settingsSyncDesc;
+
+  /// No description provided for @shellLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get shellLeave;
+
+  /// No description provided for @settingsLeaveCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave & holidays'**
+  String get settingsLeaveCategory;
+
+  /// No description provided for @settingsLeaveCategoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure leave types, policies and holidays.'**
+  String get settingsLeaveCategoryDesc;
+
+  /// Common/Phase 0 UI: dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// Common/Phase 0 UI: employees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get employees;
+
+  /// Common/Phase 0 UI: attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get attendance;
+
+  /// Common/Phase 0 UI: requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get requests;
+
+  /// Common/Phase 0 UI: reports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reports;
+
+  /// Common/Phase 0 UI: workLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Work location'**
+  String get workLocation;
+
+  /// Common/Phase 0 UI: office.
+  ///
+  /// In en, this message translates to:
+  /// **'Office'**
+  String get office;
+
+  /// Common/Phase 0 UI: remote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote'**
+  String get remote;
+
+  /// Common/Phase 0 UI: effectiveDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective date'**
+  String get effectiveDate;
+
+  /// Common/Phase 0 UI: startTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get startTime;
+
+  /// Common/Phase 0 UI: employee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get employee;
+
+  /// Common/Phase 0 UI: location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @permissionEmployeeViewSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'View own employee record'**
+  String get permissionEmployeeViewSelf;
+
+  /// No description provided for @permissionEmployeeViewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'View team employees'**
+  String get permissionEmployeeViewTeam;
+
+  /// No description provided for @permissionEmployeeViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all employees'**
+  String get permissionEmployeeViewAll;
+
+  /// No description provided for @permissionEmployeeCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create employees'**
+  String get permissionEmployeeCreate;
+
+  /// No description provided for @permissionEmployeeUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update employees'**
+  String get permissionEmployeeUpdate;
+
+  /// No description provided for @permissionEmployeeDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate employees'**
+  String get permissionEmployeeDeactivate;
+
+  /// No description provided for @permissionAttendanceViewSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'View own attendance'**
+  String get permissionAttendanceViewSelf;
+
+  /// No description provided for @permissionAttendanceViewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'View team attendance'**
+  String get permissionAttendanceViewTeam;
+
+  /// No description provided for @permissionAttendanceViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all attendance'**
+  String get permissionAttendanceViewAll;
+
+  /// No description provided for @permissionAttendancePunchIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in'**
+  String get permissionAttendancePunchIn;
+
+  /// No description provided for @permissionAttendancePunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out'**
+  String get permissionAttendancePunchOut;
+
+  /// No description provided for @permissionAttendanceBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage own breaks'**
+  String get permissionAttendanceBreak;
+
+  /// No description provided for @permissionAttendanceRequestCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Request attendance corrections'**
+  String get permissionAttendanceRequestCorrection;
+
+  /// No description provided for @permissionAttendanceCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct attendance'**
+  String get permissionAttendanceCorrect;
+
+  /// No description provided for @permissionAttendanceApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve attendance'**
+  String get permissionAttendanceApprove;
+
+  /// No description provided for @permissionShiftView.
+  ///
+  /// In en, this message translates to:
+  /// **'View shifts'**
+  String get permissionShiftView;
+
+  /// No description provided for @permissionShiftManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage shifts'**
+  String get permissionShiftManage;
+
+  /// No description provided for @permissionWorkLocationView.
+  ///
+  /// In en, this message translates to:
+  /// **'View work locations'**
+  String get permissionWorkLocationView;
+
+  /// No description provided for @permissionWorkLocationManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage work locations'**
+  String get permissionWorkLocationManage;
+
+  /// No description provided for @permissionAttendancePolicyView.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance policies'**
+  String get permissionAttendancePolicyView;
+
+  /// No description provided for @permissionAttendancePolicyManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage attendance policies'**
+  String get permissionAttendancePolicyManage;
+
+  /// No description provided for @permissionAttendanceReportView.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance reports'**
+  String get permissionAttendanceReportView;
 
   /// No description provided for @dashboardMorning.
   ///
@@ -2635,12 +3355,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{start} – {end}'**
   String dashboardTimeRange(String start, String end);
-
-  /// No description provided for @durationHoursOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'{hours}h'**
-  String durationHoursOnly(String hours);
 
   /// No description provided for @empAdd.
   ///
@@ -3097,18 +3811,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Filters ({count})'**
   String empFilterCount(String count);
-
-  /// No description provided for @selectOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Select an option'**
-  String get selectOption;
-
-  /// No description provided for @noSelection.
-  ///
-  /// In en, this message translates to:
-  /// **'Not assigned'**
-  String get noSelection;
 
   /// No description provided for @cfgConfiguration.
   ///
@@ -5012,24 +5714,6 @@ abstract class AppLocalizations {
   /// **'No breaks recorded'**
   String get historyNoBreaks;
 
-  /// No description provided for @timeRange.
-  ///
-  /// In en, this message translates to:
-  /// **'{start} → {end}'**
-  String timeRange(String start, String end);
-
-  /// No description provided for @dateTimeValue.
-  ///
-  /// In en, this message translates to:
-  /// **'{date} · {time}'**
-  String dateTimeValue(String date, String time);
-
-  /// No description provided for @labeledValue.
-  ///
-  /// In en, this message translates to:
-  /// **'{label}: {value}'**
-  String labeledValue(String label, String value);
-
   /// No description provided for @historyFilterCount.
   ///
   /// In en, this message translates to:
@@ -5792,132 +6476,6 @@ abstract class AppLocalizations {
   /// **'Applied filters'**
   String get reportFiltersApplied;
 
-  /// No description provided for @syncOfflineTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re offline'**
-  String get syncOfflineTitle;
-
-  /// No description provided for @syncOfflineMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Changes will sync when your connection returns.'**
-  String get syncOfflineMessage;
-
-  /// No description provided for @syncServiceUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Service temporarily unavailable'**
-  String get syncServiceUnavailable;
-
-  /// No description provided for @syncSyncing.
-  ///
-  /// In en, this message translates to:
-  /// **'Syncing'**
-  String get syncSyncing;
-
-  /// No description provided for @syncAllChangesSynced.
-  ///
-  /// In en, this message translates to:
-  /// **'All changes synced'**
-  String get syncAllChangesSynced;
-
-  /// No description provided for @syncPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending sync'**
-  String get syncPending;
-
-  /// No description provided for @syncFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync failed'**
-  String get syncFailed;
-
-  /// No description provided for @syncNeedsAttention.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync needs attention'**
-  String get syncNeedsAttention;
-
-  /// No description provided for @syncRetry.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get syncRetry;
-
-  /// No description provided for @syncRetryNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry now'**
-  String get syncRetryNow;
-
-  /// No description provided for @syncNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync now'**
-  String get syncNow;
-
-  /// No description provided for @syncLastSync.
-  ///
-  /// In en, this message translates to:
-  /// **'Last sync'**
-  String get syncLastSync;
-
-  /// No description provided for @syncNever.
-  ///
-  /// In en, this message translates to:
-  /// **'Not yet synced'**
-  String get syncNever;
-
-  /// No description provided for @syncChangesWaiting.
-  ///
-  /// In en, this message translates to:
-  /// **'Changes waiting to sync'**
-  String get syncChangesWaiting;
-
-  /// No description provided for @syncDataAndSync.
-  ///
-  /// In en, this message translates to:
-  /// **'Data and sync'**
-  String get syncDataAndSync;
-
-  /// No description provided for @syncNoPendingChanges.
-  ///
-  /// In en, this message translates to:
-  /// **'No changes waiting'**
-  String get syncNoPendingChanges;
-
-  /// No description provided for @syncSyncSucceeded.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync complete'**
-  String get syncSyncSucceeded;
-
-  /// No description provided for @syncStatusTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync status'**
-  String get syncStatusTitle;
-
-  /// No description provided for @syncPendingOperations.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending operations'**
-  String get syncPendingOperations;
-
-  /// No description provided for @syncFailedOperations.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed operations'**
-  String get syncFailedOperations;
-
-  /// No description provided for @syncSwitchAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in to sync'**
-  String get syncSwitchAccount;
-
   /// No description provided for @attendanceNeedsReview.
   ///
   /// In en, this message translates to:
@@ -5947,522 +6505,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attendance needs attention'**
   String get attendanceNeedsAttention;
-
-  /// No description provided for @viewDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'View details'**
-  String get viewDetails;
-
-  /// No description provided for @notificationsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get notificationsTitle;
-
-  /// No description provided for @notificationsNoItems.
-  ///
-  /// In en, this message translates to:
-  /// **'No notifications'**
-  String get notificationsNoItems;
-
-  /// No description provided for @notificationsNoItemsMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You are all caught up.'**
-  String get notificationsNoItemsMessage;
-
-  /// No description provided for @notificationsMarkAllRead.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark all as read'**
-  String get notificationsMarkAllRead;
-
-  /// No description provided for @notificationsToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get notificationsToday;
-
-  /// No description provided for @notificationsEarlier.
-  ///
-  /// In en, this message translates to:
-  /// **'Earlier'**
-  String get notificationsEarlier;
-
-  /// No description provided for @notificationsUnread.
-  ///
-  /// In en, this message translates to:
-  /// **'Unread'**
-  String get notificationsUnread;
-
-  /// No description provided for @notificationsReminders.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications and reminders'**
-  String get notificationsReminders;
-
-  /// No description provided for @notificationsOpen.
-  ///
-  /// In en, this message translates to:
-  /// **'Open notifications'**
-  String get notificationsOpen;
-
-  /// No description provided for @reminderAttendanceSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance reminders'**
-  String get reminderAttendanceSection;
-
-  /// No description provided for @reminderShift.
-  ///
-  /// In en, this message translates to:
-  /// **'Shift reminder'**
-  String get reminderShift;
-
-  /// No description provided for @reminderPunchOut.
-  ///
-  /// In en, this message translates to:
-  /// **'Punch out reminder'**
-  String get reminderPunchOut;
-
-  /// No description provided for @reminderNotifyBefore.
-  ///
-  /// In en, this message translates to:
-  /// **'Notify before shift'**
-  String get reminderNotifyBefore;
-
-  /// No description provided for @reminderMinutesBefore.
-  ///
-  /// In en, this message translates to:
-  /// **'Minutes before'**
-  String get reminderMinutesBefore;
-
-  /// No description provided for @reminderNotificationPermission.
-  ///
-  /// In en, this message translates to:
-  /// **'Notification permission'**
-  String get reminderNotificationPermission;
-
-  /// No description provided for @reminderPermissionRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Notification permission required'**
-  String get reminderPermissionRequired;
-
-  /// No description provided for @reminderNotificationsDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications disabled'**
-  String get reminderNotificationsDisabled;
-
-  /// No description provided for @reminderNotificationsEnabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders enabled in the app'**
-  String get reminderNotificationsEnabled;
-
-  /// No description provided for @reminderOpenSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Open settings'**
-  String get reminderOpenSettings;
-
-  /// No description provided for @reminderSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder settings saved'**
-  String get reminderSaved;
-
-  /// No description provided for @reminderSaveFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not save reminder settings'**
-  String get reminderSaveFailed;
-
-  /// No description provided for @reminderPermissionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable reminders to receive shift notifications.'**
-  String get reminderPermissionHint;
-
-  /// No description provided for @notifShiftSoonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your shift starts soon'**
-  String get notifShiftSoonTitle;
-
-  /// No description provided for @notifShiftSoonBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your shift is about to start. Open attendance to check in.'**
-  String get notifShiftSoonBody;
-
-  /// No description provided for @notifPunchOutTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Remember to punch out'**
-  String get notifPunchOutTitle;
-
-  /// No description provided for @notifPunchOutBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your shift has ended. Remember to punch out.'**
-  String get notifPunchOutBody;
-
-  /// No description provided for @notifShiftEndingOnBreakBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your shift is ending. Review your attendance before leaving.'**
-  String get notifShiftEndingOnBreakBody;
-
-  /// No description provided for @notifCorrectionApprovedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance correction approved'**
-  String get notifCorrectionApprovedTitle;
-
-  /// No description provided for @notifCorrectionApprovedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your attendance correction was approved and applied.'**
-  String get notifCorrectionApprovedBody;
-
-  /// No description provided for @notifCorrectionRejectedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance correction rejected'**
-  String get notifCorrectionRejectedTitle;
-
-  /// No description provided for @notifCorrectionRejectedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your attendance correction request was not approved.'**
-  String get notifCorrectionRejectedBody;
-
-  /// No description provided for @notifSyncFailedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance needs attention'**
-  String get notifSyncFailedTitle;
-
-  /// No description provided for @notifSyncFailedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Some attendance changes could not be synced.'**
-  String get notifSyncFailedBody;
-
-  /// No description provided for @notifConflictTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance needs review'**
-  String get notifConflictTitle;
-
-  /// No description provided for @notifConflictBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your local attendance does not match the latest server record.'**
-  String get notifConflictBody;
-
-  /// No description provided for @notifPendingReviewTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'New attendance correction request'**
-  String get notifPendingReviewTitle;
-
-  /// No description provided for @notifPendingReviewBody.
-  ///
-  /// In en, this message translates to:
-  /// **'A correction request is waiting for review.'**
-  String get notifPendingReviewBody;
-
-  /// No description provided for @notifLeaveSubmittedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave request submitted'**
-  String get notifLeaveSubmittedTitle;
-
-  /// No description provided for @notifLeaveSubmittedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your leave request was submitted for approval.'**
-  String get notifLeaveSubmittedBody;
-
-  /// No description provided for @notifLeaveApprovedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave request approved'**
-  String get notifLeaveApprovedTitle;
-
-  /// No description provided for @notifLeaveApprovedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your leave request was approved.'**
-  String get notifLeaveApprovedBody;
-
-  /// No description provided for @notifLeaveRejectedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave request rejected'**
-  String get notifLeaveRejectedTitle;
-
-  /// No description provided for @notifLeaveRejectedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your leave request was not approved.'**
-  String get notifLeaveRejectedBody;
-
-  /// No description provided for @notifLeaveCancelledTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave request cancelled'**
-  String get notifLeaveCancelledTitle;
-
-  /// No description provided for @notifLeaveCancelledBody.
-  ///
-  /// In en, this message translates to:
-  /// **'A leave request was cancelled.'**
-  String get notifLeaveCancelledBody;
-
-  /// No description provided for @notifLeaveApprovalRequiredTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave approval required'**
-  String get notifLeaveApprovalRequiredTitle;
-
-  /// No description provided for @notifLeaveApprovalRequiredBody.
-  ///
-  /// In en, this message translates to:
-  /// **'A team leave request is waiting for your review.'**
-  String get notifLeaveApprovalRequiredBody;
-
-  /// No description provided for @notifUnknownTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Notification'**
-  String get notifUnknownTitle;
-
-  /// No description provided for @notifUnknownBody.
-  ///
-  /// In en, this message translates to:
-  /// **'You have a new notification.'**
-  String get notifUnknownBody;
-
-  /// No description provided for @timeJustNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Just now'**
-  String get timeJustNow;
-
-  /// No description provided for @timeMinutesAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} min ago'**
-  String timeMinutesAgo(Object count);
-
-  /// No description provided for @timeHoursAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} h ago'**
-  String timeHoursAgo(Object count);
-
-  /// No description provided for @timeYesterday.
-  ///
-  /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get timeYesterday;
-
-  /// No description provided for @profileMyProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'My profile'**
-  String get profileMyProfile;
-
-  /// No description provided for @profileOverview.
-  ///
-  /// In en, this message translates to:
-  /// **'Overview'**
-  String get profileOverview;
-
-  /// No description provided for @profileWorkInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'Work information'**
-  String get profileWorkInformation;
-
-  /// No description provided for @profileAccountAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Account and access'**
-  String get profileAccountAccess;
-
-  /// No description provided for @profileSecurity.
-  ///
-  /// In en, this message translates to:
-  /// **'Security'**
-  String get profileSecurity;
-
-  /// No description provided for @profilePreferences.
-  ///
-  /// In en, this message translates to:
-  /// **'Preferences'**
-  String get profilePreferences;
-
-  /// No description provided for @profileAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Access'**
-  String get profileAccess;
-
-  /// No description provided for @profileAdministrativeAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Administrative access'**
-  String get profileAdministrativeAccess;
-
-  /// No description provided for @profileRoles.
-  ///
-  /// In en, this message translates to:
-  /// **'Roles'**
-  String get profileRoles;
-
-  /// No description provided for @profileEmploymentStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Employment status'**
-  String get profileEmploymentStatus;
-
-  /// No description provided for @profileLoginEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Login email'**
-  String get profileLoginEmail;
-
-  /// No description provided for @profileWorkEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Work email'**
-  String get profileWorkEmail;
-
-  /// No description provided for @profileMyAttendance.
-  ///
-  /// In en, this message translates to:
-  /// **'My attendance'**
-  String get profileMyAttendance;
-
-  /// No description provided for @profileViewEmployeeRecord.
-  ///
-  /// In en, this message translates to:
-  /// **'View employment details'**
-  String get profileViewEmployeeRecord;
-
-  /// No description provided for @profileNoEmployeeLinked.
-  ///
-  /// In en, this message translates to:
-  /// **'No employee profile is linked to this account.'**
-  String get profileNoEmployeeLinked;
-
-  /// No description provided for @profileTeamUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Team access cannot be resolved.'**
-  String get profileTeamUnavailable;
-
-  /// No description provided for @profileEmploymentUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Employment information is currently unavailable.'**
-  String get profileEmploymentUnavailable;
-
-  /// No description provided for @profileCurrentCompany.
-  ///
-  /// In en, this message translates to:
-  /// **'Current company'**
-  String get profileCurrentCompany;
-
-  /// No description provided for @profileManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage'**
-  String get profileManage;
-
-  /// No description provided for @settingsIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage your organization, attendance configuration and preferences.'**
-  String get settingsIntro;
-
-  /// No description provided for @settingsAttendanceCategory.
-  ///
-  /// In en, this message translates to:
-  /// **'Attendance configuration'**
-  String get settingsAttendanceCategory;
-
-  /// No description provided for @settingsAttendanceCategoryDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Configure how employees work and record attendance.'**
-  String get settingsAttendanceCategoryDesc;
-
-  /// No description provided for @settingsPreferencesCategory.
-  ///
-  /// In en, this message translates to:
-  /// **'Personal preferences'**
-  String get settingsPreferencesCategory;
-
-  /// No description provided for @settingsPreferencesCategoryDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Adjust your own app preferences.'**
-  String get settingsPreferencesCategoryDesc;
-
-  /// No description provided for @settingsSystemCategory.
-  ///
-  /// In en, this message translates to:
-  /// **'System'**
-  String get settingsSystemCategory;
-
-  /// No description provided for @settingsSystemCategoryDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync and application status.'**
-  String get settingsSystemCategoryDesc;
-
-  /// No description provided for @settingsShiftDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Set working hours, working days and break defaults.'**
-  String get settingsShiftDesc;
-
-  /// No description provided for @settingsLocationDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage workplaces and attendance location rules.'**
-  String get settingsLocationDesc;
-
-  /// No description provided for @settingsPolicyDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Define attendance, break and correction rules.'**
-  String get settingsPolicyDesc;
-
-  /// No description provided for @settingsLanguageDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose your preferred application language.'**
-  String get settingsLanguageDesc;
-
-  /// No description provided for @settingsNotificationsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Control attendance reminders for your account.'**
-  String get settingsNotificationsDesc;
-
-  /// No description provided for @settingsSyncDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'View sync status and retry failed changes.'**
-  String get settingsSyncDesc;
 
   /// No description provided for @reportSubtitle.
   ///
@@ -6733,12 +6775,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View leave reports'**
   String get permissionLeaveReportView;
-
-  /// No description provided for @shellLeave.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave'**
-  String get shellLeave;
 
   /// No description provided for @leaveMyLeave.
   ///
@@ -7574,18 +7610,6 @@ abstract class AppLocalizations {
   /// **'Include inactive'**
   String get leaveIncludeInactive;
 
-  /// No description provided for @settingsLeaveCategory.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave & holidays'**
-  String get settingsLeaveCategory;
-
-  /// No description provided for @settingsLeaveCategoryDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Configure leave types, policies and holidays.'**
-  String get settingsLeaveCategoryDesc;
-
   /// No description provided for @leaveUpcoming.
   ///
   /// In en, this message translates to:
@@ -8275,30 +8299,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Review requests'**
   String get reviewRequests;
-
-  /// No description provided for @filters.
-  ///
-  /// In en, this message translates to:
-  /// **'Filters'**
-  String get filters;
-
-  /// No description provided for @moreFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'More filters'**
-  String get moreFilters;
-
-  /// No description provided for @resetFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get resetFilters;
-
-  /// No description provided for @periodLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Period'**
-  String get periodLabel;
 
   /// No description provided for @viewRequests.
   ///

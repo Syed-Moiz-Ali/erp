@@ -1,98 +1,98 @@
+import 'package:modular_erp/app/router/platform_routes.dart';
+import 'package:modular_erp/modules/hr/module/hr_routes.dart';
+import 'package:modular_erp/modules/services/module/services_routes.dart';
+
+/// Public route facade used across the application.
+///
+/// Ownership lives in the module route classes (`HrRoutes`, `ServicesRoutes`,
+/// `PlatformRoutes`); this facade keeps stable names for existing callers while
+/// the canonical module-first values are defined in one place. New code should
+/// prefer the module route class directly.
 abstract final class AppRoutes {
   static const root = '/',
       bootstrap = '/bootstrap',
       login = '/login',
       forgotPassword = '/forgot-password',
-      app = '/app',
-      dashboard = '/app/dashboard',
-      employees = '/app/employees',
-      attendance = '/app/attendance',
-      leave = '/app/leave',
-      services = '/app/services',
-      reports = '/app/reports',
-      settings = '/app/settings',
-      profile = '/app/profile',
-      changePassword = '/app/change-password',
+      app = PlatformRoutes.app,
+      dashboard = HrRoutes.root,
+      employees = HrRoutes.employees,
+      attendance = HrRoutes.attendance,
+      leave = HrRoutes.leave,
+      services = ServicesRoutes.root,
+      reports = HrRoutes.reports,
+      settings = PlatformRoutes.settings,
+      profile = PlatformRoutes.profile,
+      changePassword = PlatformRoutes.changePassword,
       more = '/app/more',
-      notifications = '/app/notifications',
-      reminderSettings = '/app/settings/notifications',
-      syncSettings = '/app/settings/sync',
+      notifications = PlatformRoutes.notifications,
+      reminderSettings = PlatformRoutes.reminderSettings,
+      syncSettings = PlatformRoutes.syncSettings,
       syncInspector = '/app/sync-inspector',
       unauthorized = '/app/access-denied',
       unavailable = '/app/module-unavailable',
       notFound = '/app/not-found',
       noDestinations = '/app/no-destinations',
       designSystem = '/design-system';
-  static const attendanceHistory = '$attendance/history';
-  static const attendanceCorrections = '$attendance/corrections';
-  static const attendanceRequests = '$attendance/requests';
-  static const attendanceTeam = '$attendance/team';
-  static const attendanceAll = '$attendance/all';
+  static const attendanceHistory = HrRoutes.attendanceHistory;
+  static const attendanceCorrections = HrRoutes.attendanceCorrections;
+  static const attendanceRequests = HrRoutes.attendanceRequests;
+  static const attendanceTeam = HrRoutes.attendanceTeam;
+  static const attendanceAll = HrRoutes.attendanceAll;
   static String attendanceCorrectionForm(String dayId) =>
-      '$attendanceCorrections/new/${Uri.encodeComponent(dayId)}';
+      HrRoutes.attendanceCorrectionForm(dayId);
   static String attendanceCorrectionDetails(String id) =>
-      '$attendanceCorrections/${Uri.encodeComponent(id)}';
+      HrRoutes.attendanceCorrectionDetails(id);
   static String attendanceReviewDetails(String id) =>
-      '$attendanceRequests/${Uri.encodeComponent(id)}';
+      HrRoutes.attendanceReviewDetails(id);
   static String attendanceWorkforceDetails(
     String employeeId,
     String dayId, {
     bool team = false,
-  }) =>
-      '${team ? attendanceTeam : attendanceAll}/${Uri.encodeComponent(employeeId)}/${Uri.encodeComponent(dayId)}';
+  }) => HrRoutes.attendanceWorkforceDetails(employeeId, dayId, team: team);
   static String attendanceDayDetails(String id) =>
-      '$attendanceHistory/${Uri.encodeComponent(id)}';
-  static const employeeNew = '/app/employees/new';
-  static const leaveRequest = '$leave/request';
-  static const leaveMyRequests = '$leave/my-requests';
-  static const leaveRequestBase = '$leave/requests';
-  static const leaveApprovals = '$leave/approvals';
-  static const leaveTeam = '$leave/team';
-  static const leaveAll = '$leave/all';
-  static const leaveBalances = '$leave/balances';
-  static const leaveCalendar = '$leave/calendar';
+      HrRoutes.attendanceDayDetails(id);
+  static const employeeNew = HrRoutes.employeesNew;
+  static const leaveRequest = HrRoutes.leaveRequest;
+  static const leaveMyRequests = HrRoutes.leaveMyRequests;
+  static const leaveRequestBase = HrRoutes.leaveRequestBase;
+  static const leaveApprovals = HrRoutes.leaveApprovals;
+  static const leaveTeam = HrRoutes.leaveTeam;
+  static const leaveAll = HrRoutes.leaveAll;
+  static const leaveBalances = HrRoutes.leaveBalances;
+  static const leaveCalendar = HrRoutes.leaveCalendar;
   static String leaveRequestDetails(String id) =>
-      '$leaveRequestBase/${Uri.encodeComponent(id)}';
-  static const leaveEmployeeBase = '$leave/employee';
-  static String leaveEmployee(String id) =>
-      '$leaveEmployeeBase/${Uri.encodeComponent(id)}';
-  static const leaveTypes = '/app/settings/leave-types';
-  static const leaveTypesNew = '$leaveTypes/new';
-  static String leaveTypesDetails(String id) =>
-      '$leaveTypes/${Uri.encodeComponent(id)}';
-  static String leaveTypesEdit(String id) => '${leaveTypesDetails(id)}/edit';
-  static const leavePolicies = '/app/settings/leave-policies';
-  static const leavePoliciesNew = '$leavePolicies/new';
-  static String leavePoliciesDetails(String id) =>
-      '$leavePolicies/${Uri.encodeComponent(id)}';
-  static String leavePoliciesEdit(String id) =>
-      '${leavePoliciesDetails(id)}/edit';
-  static const holidays = '/app/settings/holidays';
-  static const holidaysNew = '$holidays/new';
-  static const holidaysImport = '$holidays/import';
-  static String holidaysDetails(String id) =>
-      '$holidays/${Uri.encodeComponent(id)}';
-  static String holidaysEdit(String id) => '${holidaysDetails(id)}/edit';
-  static String employeeDetails(String id) =>
-      '$employees/${Uri.encodeComponent(id)}';
-  static String employeeEdit(String id) => '${employeeDetails(id)}/edit';
-  static const shifts = '/app/settings/shifts';
-  static const shiftsNew = '$shifts/new';
-  static String shiftsDetails(String id) =>
-      '$shifts/${Uri.encodeComponent(id)}';
-  static String shiftsEdit(String id) => '${shiftsDetails(id)}/edit';
-  static const workLocations = '/app/settings/work-locations';
-  static const workLocationsNew = '$workLocations/new';
-  static String workLocationsDetails(String id) =>
-      '$workLocations/${Uri.encodeComponent(id)}';
-  static String workLocationsEdit(String id) =>
-      '${workLocationsDetails(id)}/edit';
-  static const attendancePolicies = '/app/settings/attendance-policies';
-  static const attendancePoliciesNew = '$attendancePolicies/new';
+      HrRoutes.leaveRequestDetails(id);
+  static const leaveEmployeeBase = HrRoutes.leaveEmployeeBase;
+  static String leaveEmployee(String id) => HrRoutes.leaveEmployee(id);
+  static const leaveTypes = HrRoutes.leaveTypes;
+  static const leaveTypesNew = HrRoutes.leaveTypesNew;
+  static String leaveTypesDetails(String id) => HrRoutes.leaveType(id);
+  static String leaveTypesEdit(String id) => HrRoutes.leaveTypeEdit(id);
+  static const leavePolicies = HrRoutes.leavePolicies;
+  static const leavePoliciesNew = HrRoutes.leavePoliciesNew;
+  static String leavePoliciesDetails(String id) => HrRoutes.leavePolicy(id);
+  static String leavePoliciesEdit(String id) => HrRoutes.leavePolicyEdit(id);
+  static const holidays = HrRoutes.holidays;
+  static const holidaysNew = HrRoutes.holidaysNew;
+  static const holidaysImport = HrRoutes.holidaysImport;
+  static String holidaysDetails(String id) => HrRoutes.holiday(id);
+  static String holidaysEdit(String id) => HrRoutes.holidayEdit(id);
+  static String employeeDetails(String id) => HrRoutes.employee(id);
+  static String employeeEdit(String id) => HrRoutes.employeeEdit(id);
+  static const shifts = HrRoutes.shifts;
+  static const shiftsNew = HrRoutes.shiftsNew;
+  static String shiftsDetails(String id) => HrRoutes.shift(id);
+  static String shiftsEdit(String id) => HrRoutes.shiftEdit(id);
+  static const workLocations = HrRoutes.workLocations;
+  static const workLocationsNew = HrRoutes.workLocationsNew;
+  static String workLocationsDetails(String id) => HrRoutes.workLocation(id);
+  static String workLocationsEdit(String id) => HrRoutes.workLocationEdit(id);
+  static const attendancePolicies = HrRoutes.attendancePolicies;
+  static const attendancePoliciesNew = HrRoutes.attendancePoliciesNew;
   static String attendancePoliciesDetails(String id) =>
-      '$attendancePolicies/${Uri.encodeComponent(id)}';
+      HrRoutes.attendancePolicy(id);
   static String attendancePoliciesEdit(String id) =>
-      '${attendancePoliciesDetails(id)}/edit';
+      HrRoutes.attendancePolicyEdit(id);
   static const utilityPaths = {
     more,
     notifications,

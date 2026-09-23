@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_models.dart';
-import 'package:modular_erp/platform/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 
 sealed class DashboardEvent {
   const DashboardEvent();

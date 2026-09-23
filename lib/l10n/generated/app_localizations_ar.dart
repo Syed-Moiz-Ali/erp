@@ -90,34 +90,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home => 'الرئيسية';
 
   @override
-  String get dashboard => 'لوحة المعلومات';
-
-  @override
-  String get employees => 'الموظفون';
-
-  @override
-  String get attendance => 'الحضور';
-
-  @override
-  String get requests => 'الطلبات';
-
-  @override
-  String get reports => 'التقارير';
-
-  @override
-  String get settings => 'الإعدادات';
-
-  @override
-  String get profile => 'الملف الشخصي';
-
-  @override
   String get more => 'المزيد';
-
-  @override
-  String get login => 'تسجيل الدخول';
-
-  @override
-  String get logout => 'تسجيل الخروج';
 
   @override
   String get email => 'البريد الإلكتروني';
@@ -130,15 +103,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get password => 'كلمة المرور';
-
-  @override
-  String get forgotPassword => 'نسيت كلمة المرور';
-
-  @override
-  String get changePassword => 'تغيير كلمة المرور';
-
-  @override
-  String get welcomeBack => 'مرحبًا بعودتك';
 
   @override
   String get language => 'اللغة';
@@ -175,6 +139,256 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get scheduled => 'مجدول';
+
+  @override
+  String get actions => 'الإجراءات';
+
+  @override
+  String get primaryAction => 'الإجراء الرئيسي';
+
+  @override
+  String get previewActionComplete => 'اكتمل إجراء المعاينة';
+
+  @override
+  String get secondaryAction => 'إجراء ثانوي';
+
+  @override
+  String get textAction => 'إجراء نصي';
+
+  @override
+  String get moreOptions => 'خيارات إضافية';
+
+  @override
+  String get disabled => 'غير متاح';
+
+  @override
+  String get saving => 'جارٍ الحفظ';
+
+  @override
+  String get fullName => 'الاسم الكامل';
+
+  @override
+  String get enterName => 'أدخل الاسم';
+
+  @override
+  String get validationExample => 'مثال على التحقق';
+
+  @override
+  String get informationCard => 'بطاقة معلومات';
+
+  @override
+  String get informationCardMessage =>
+      'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
+
+  @override
+  String get statusAndFeedback => 'الحالة والملاحظات';
+
+  @override
+  String get localChangesAvailable => 'تغييراتك متاحة على هذا الجهاز.';
+
+  @override
+  String get recordsNeedAttention => 'بعض السجلات تحتاج إلى اهتمامك.';
+
+  @override
+  String get actionFailed => 'تعذر إكمال هذا الإجراء.';
+
+  @override
+  String get loadingRecords => 'جارٍ تحميل السجلات…';
+
+  @override
+  String get noRecordsYet => 'لا توجد سجلات بعد';
+
+  @override
+  String get noRecordsMessage => 'ستظهر السجلات هنا عندما يبدأ فريقك العمل.';
+
+  @override
+  String get retryWhenConnected => 'يرجى إعادة المحاولة عند توفر الاتصال.';
+
+  @override
+  String get filtersAndTable => 'الفلاتر والجدول';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get pageNotFound => 'تعذر العثور على هذه الصفحة.';
+
+  @override
+  String get showPassword => 'إظهار كلمة المرور';
+
+  @override
+  String get hidePassword => 'إخفاء كلمة المرور';
+
+  @override
+  String get searchRecords => 'البحث في السجلات';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get selectTime => 'اختر الوقت';
+
+  @override
+  String get unableToLoadRecords => 'تعذر تحميل السجلات';
+
+  @override
+  String get noRecords => 'لا توجد سجلات';
+
+  @override
+  String get previousPage => 'الصفحة السابقة';
+
+  @override
+  String get nextPage => 'الصفحة التالية';
+
+  @override
+  String get fieldRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get emailInvalid => 'أدخل عنوان بريد إلكتروني صحيحًا';
+
+  @override
+  String get failureTimeout => 'انتهت مهلة الطلب. يرجى إعادة المحاولة.';
+
+  @override
+  String get failureOffline =>
+      'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
+
+  @override
+  String get failureCancelled => 'تم إلغاء الطلب.';
+
+  @override
+  String get failureSessionExpired => 'انتهت صلاحية جلستك.';
+
+  @override
+  String get failureRequest => 'تعذر إكمال الطلب.';
+
+  @override
+  String get failureInvalidData => 'تعذر قراءة الاستجابة.';
+
+  @override
+  String get failureLocationDisabled => 'فعّل خدمات الموقع للمتابعة.';
+
+  @override
+  String get failureLocationPermission =>
+      'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
+
+  @override
+  String get failureLocationUnavailable => 'تعذر تحديد موقعك.';
+
+  @override
+  String get failureStorageWrite => 'تعذر حفظ التغييرات على هذا الجهاز.';
+
+  @override
+  String get failureStorageUpdate => 'تعذر تحديث التغييرات المحلية.';
+
+  @override
+  String get failureSync => 'تعذرت مزامنة بعض التغييرات.';
+
+  @override
+  String get failurePreferencesWrite =>
+      'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
+
+  @override
+  String get failurePreferencesRead => 'تعذر استعادة اللغة المحفوظة.';
+
+  @override
+  String get formattingTitle => 'تنسيق حسب اللغة';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get time => 'الوقت';
+
+  @override
+  String get duration => 'المدة';
+
+  @override
+  String get number => 'العدد';
+
+  @override
+  String get percentage => 'النسبة المئوية';
+
+  @override
+  String get currency => 'العملة';
+
+  @override
+  String get month => 'الشهر';
+
+  @override
+  String paginationSummary(String start, String end, String total) {
+    return '$start–$end من $total';
+  }
+
+  @override
+  String durationHoursMinutes(String hours, String minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String durationHoursOnly(String hours) {
+    return '$hours س';
+  }
+
+  @override
+  String get selectOption => 'اختر خيارًا';
+
+  @override
+  String get noSelection => 'غير محدد';
+
+  @override
+  String timeRange(String start, String end) {
+    return '$start ← $end';
+  }
+
+  @override
+  String dateTimeValue(String date, String time) {
+    return '$date · $time';
+  }
+
+  @override
+  String labeledValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String get viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get filters => 'الفلاتر';
+
+  @override
+  String get moreFilters => 'مزيد من الفلاتر';
+
+  @override
+  String get resetFilters => 'إعادة تعيين';
+
+  @override
+  String get periodLabel => 'الفترة';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get forgotPassword => 'نسيت كلمة المرور';
+
+  @override
+  String get changePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get welcomeBack => 'مرحبًا بعودتك';
 
   @override
   String get workspace => 'مساحة العمل';
@@ -310,93 +524,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get colorInfo => 'معلومات';
 
   @override
-  String get actions => 'الإجراءات';
-
-  @override
-  String get primaryAction => 'الإجراء الرئيسي';
-
-  @override
-  String get previewActionComplete => 'اكتمل إجراء المعاينة';
-
-  @override
-  String get secondaryAction => 'إجراء ثانوي';
-
-  @override
-  String get textAction => 'إجراء نصي';
-
-  @override
-  String get moreOptions => 'خيارات إضافية';
-
-  @override
-  String get disabled => 'غير متاح';
-
-  @override
-  String get saving => 'جارٍ الحفظ';
-
-  @override
   String get formControls => 'عناصر النموذج';
 
   @override
   String get formControlsSubtitle =>
       'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
-
-  @override
-  String get fullName => 'الاسم الكامل';
-
-  @override
-  String get enterName => 'أدخل الاسم';
-
-  @override
-  String get workLocation => 'موقع العمل';
-
-  @override
-  String get office => 'المكتب';
-
-  @override
-  String get remote => 'عن بُعد';
-
-  @override
-  String get effectiveDate => 'تاريخ السريان';
-
-  @override
-  String get startTime => 'وقت البدء';
-
-  @override
-  String get validationExample => 'مثال على التحقق';
-
-  @override
-  String get informationCard => 'بطاقة معلومات';
-
-  @override
-  String get informationCardMessage =>
-      'استخدم شرحًا موجزًا لمساعدة المستخدمين على اتخاذ القرار.';
-
-  @override
-  String get statusAndFeedback => 'الحالة والملاحظات';
-
-  @override
-  String get localChangesAvailable => 'تغييراتك متاحة على هذا الجهاز.';
-
-  @override
-  String get recordsNeedAttention => 'بعض السجلات تحتاج إلى اهتمامك.';
-
-  @override
-  String get actionFailed => 'تعذر إكمال هذا الإجراء.';
-
-  @override
-  String get loadingRecords => 'جارٍ تحميل السجلات…';
-
-  @override
-  String get noRecordsYet => 'لا توجد سجلات بعد';
-
-  @override
-  String get noRecordsMessage => 'ستظهر السجلات هنا عندما يبدأ فريقك العمل.';
-
-  @override
-  String get retryWhenConnected => 'يرجى إعادة المحاولة عند توفر الاتصال.';
-
-  @override
-  String get filtersAndTable => 'الفلاتر والجدول';
 
   @override
   String get illustrativeRecords =>
@@ -407,15 +539,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clearFilters => 'مسح الفلاتر';
-
-  @override
-  String get employee => 'الموظف';
-
-  @override
-  String get location => 'الموقع';
-
-  @override
-  String get status => 'الحالة';
 
   @override
   String get sampleAlex => 'أليكس مورغان';
@@ -485,114 +608,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get phaseReady => 'المرحلة صفر / الأساس جاهز';
 
   @override
-  String get pageNotFound => 'تعذر العثور على هذه الصفحة.';
-
-  @override
-  String get showPassword => 'إظهار كلمة المرور';
-
-  @override
-  String get hidePassword => 'إخفاء كلمة المرور';
-
-  @override
-  String get searchRecords => 'البحث في السجلات';
-
-  @override
-  String get selectDate => 'اختر التاريخ';
-
-  @override
-  String get selectTime => 'اختر الوقت';
-
-  @override
-  String get unableToLoadRecords => 'تعذر تحميل السجلات';
-
-  @override
-  String get noRecords => 'لا توجد سجلات';
-
-  @override
-  String get previousPage => 'الصفحة السابقة';
-
-  @override
-  String get nextPage => 'الصفحة التالية';
-
-  @override
-  String get fieldRequired => 'هذا الحقل مطلوب';
-
-  @override
-  String get emailRequired => 'البريد الإلكتروني مطلوب';
-
-  @override
-  String get emailInvalid => 'أدخل عنوان بريد إلكتروني صحيحًا';
-
-  @override
-  String get failureTimeout => 'انتهت مهلة الطلب. يرجى إعادة المحاولة.';
-
-  @override
-  String get failureOffline =>
-      'الاتصال غير متاح. لا تزال بياناتك المحلية متاحة.';
-
-  @override
-  String get failureCancelled => 'تم إلغاء الطلب.';
-
-  @override
-  String get failureSessionExpired => 'انتهت صلاحية جلستك.';
-
-  @override
-  String get failureRequest => 'تعذر إكمال الطلب.';
-
-  @override
-  String get failureInvalidData => 'تعذر قراءة الاستجابة.';
-
-  @override
-  String get failureLocationDisabled => 'فعّل خدمات الموقع للمتابعة.';
-
-  @override
-  String get failureLocationPermission =>
-      'يتطلب هذا الإجراء إذن الوصول إلى الموقع.';
-
-  @override
-  String get failureLocationUnavailable => 'تعذر تحديد موقعك.';
-
-  @override
-  String get failureStorageWrite => 'تعذر حفظ التغييرات على هذا الجهاز.';
-
-  @override
-  String get failureStorageUpdate => 'تعذر تحديث التغييرات المحلية.';
-
-  @override
-  String get failureSync => 'تعذرت مزامنة بعض التغييرات.';
-
-  @override
-  String get failurePreferencesWrite =>
-      'تغيّرت لغة هذه الجلسة، لكن تعذر حفظ التفضيل.';
-
-  @override
-  String get failurePreferencesRead => 'تعذر استعادة اللغة المحفوظة.';
-
-  @override
-  String get formattingTitle => 'تنسيق حسب اللغة';
-
-  @override
-  String get date => 'التاريخ';
-
-  @override
-  String get time => 'الوقت';
-
-  @override
-  String get duration => 'المدة';
-
-  @override
-  String get number => 'العدد';
-
-  @override
-  String get percentage => 'النسبة المئوية';
-
-  @override
-  String get currency => 'العملة';
-
-  @override
-  String get month => 'الشهر';
-
-  @override
   String get languageSubtitle => 'تتغير اللغة واتجاه العرض فورًا.';
 
   @override
@@ -604,16 +619,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String typographySample(String level) {
     return '$level / مصمم للوضوح';
-  }
-
-  @override
-  String paginationSummary(String start, String end, String total) {
-    return '$start–$end من $total';
-  }
-
-  @override
-  String durationHoursMinutes(String hours, String minutes) {
-    return '$hours س $minutes د';
   }
 
   @override
@@ -926,69 +931,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get permissionEmployeeViewSelf => 'عرض سجل الموظف الخاص بك';
-
-  @override
-  String get permissionEmployeeViewTeam => 'عرض موظفي الفريق';
-
-  @override
-  String get permissionEmployeeViewAll => 'عرض جميع الموظفين';
-
-  @override
-  String get permissionEmployeeCreate => 'إضافة موظفين';
-
-  @override
-  String get permissionEmployeeUpdate => 'تحديث بيانات الموظفين';
-
-  @override
-  String get permissionEmployeeDeactivate => 'إيقاف حسابات الموظفين';
-
-  @override
-  String get permissionAttendanceViewSelf => 'عرض حضورك';
-
-  @override
-  String get permissionAttendanceViewTeam => 'عرض حضور الفريق';
-
-  @override
-  String get permissionAttendanceViewAll => 'عرض جميع سجلات الحضور';
-
-  @override
-  String get permissionAttendancePunchIn => 'تسجيل بدء العمل';
-
-  @override
-  String get permissionAttendancePunchOut => 'تسجيل انتهاء العمل';
-
-  @override
-  String get permissionAttendanceBreak => 'إدارة استراحاتك';
-
-  @override
-  String get permissionAttendanceRequestCorrection => 'طلب تصحيح الحضور';
-
-  @override
-  String get permissionAttendanceCorrect => 'تصحيح الحضور';
-
-  @override
-  String get permissionAttendanceApprove => 'اعتماد الحضور';
-
-  @override
-  String get permissionShiftView => 'عرض الورديات';
-
-  @override
-  String get permissionShiftManage => 'إدارة الورديات';
-
-  @override
-  String get permissionWorkLocationView => 'عرض مواقع العمل';
-
-  @override
-  String get permissionWorkLocationManage => 'إدارة مواقع العمل';
-
-  @override
-  String get permissionAttendancePolicyView => 'عرض سياسات الحضور';
-
-  @override
-  String get permissionAttendancePolicyManage => 'إدارة سياسات الحضور';
-
-  @override
   String get permissionCompanyManage => 'إدارة الشركة';
 
   @override
@@ -996,9 +938,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get permissionRoleManage => 'إدارة الأدوار';
-
-  @override
-  String get permissionAttendanceReportView => 'عرض تقارير الحضور';
 
   @override
   String get shellDashboard => 'لوحة التحكم';
@@ -1125,6 +1064,452 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get shellNoDestinationsMessage =>
       'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
+
+  @override
+  String get syncOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get syncOfflineMessage => 'ستتم المزامنة عند عودة الاتصال.';
+
+  @override
+  String get syncServiceUnavailable => 'الخدمة غير متاحة مؤقتاً';
+
+  @override
+  String get syncSyncing => 'جارٍ المزامنة';
+
+  @override
+  String get syncAllChangesSynced => 'تمت مزامنة كل التغييرات';
+
+  @override
+  String get syncPending => 'بانتظار المزامنة';
+
+  @override
+  String get syncFailed => 'فشلت المزامنة';
+
+  @override
+  String get syncNeedsAttention => 'المزامنة تحتاج إلى مراجعة';
+
+  @override
+  String get syncRetry => 'إعادة المحاولة';
+
+  @override
+  String get syncRetryNow => 'إعادة المحاولة الآن';
+
+  @override
+  String get syncNow => 'المزامنة الآن';
+
+  @override
+  String get syncLastSync => 'آخر مزامنة';
+
+  @override
+  String get syncNever => 'لم تتم المزامنة بعد';
+
+  @override
+  String get syncChangesWaiting => 'تغييرات بانتظار المزامنة';
+
+  @override
+  String get syncDataAndSync => 'البيانات والمزامنة';
+
+  @override
+  String get syncNoPendingChanges => 'لا توجد تغييرات معلقة';
+
+  @override
+  String get syncSyncSucceeded => 'اكتملت المزامنة';
+
+  @override
+  String get syncStatusTitle => 'حالة المزامنة';
+
+  @override
+  String get syncPendingOperations => 'العمليات المعلقة';
+
+  @override
+  String get syncFailedOperations => 'العمليات الفاشلة';
+
+  @override
+  String get syncSwitchAccount => 'سجّل الدخول للمزامنة';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsNoItems => 'لا توجد إشعارات';
+
+  @override
+  String get notificationsNoItemsMessage => 'لا يوجد جديد لديك.';
+
+  @override
+  String get notificationsMarkAllRead => 'تحديد الكل كمقروء';
+
+  @override
+  String get notificationsToday => 'اليوم';
+
+  @override
+  String get notificationsEarlier => 'سابقاً';
+
+  @override
+  String get notificationsUnread => 'غير مقروء';
+
+  @override
+  String get notificationsReminders => 'الإشعارات والتذكيرات';
+
+  @override
+  String get notificationsOpen => 'فتح الإشعارات';
+
+  @override
+  String get reminderAttendanceSection => 'تذكيرات الحضور';
+
+  @override
+  String get reminderShift => 'تذكير الوردية';
+
+  @override
+  String get reminderPunchOut => 'تذكير تسجيل الانصراف';
+
+  @override
+  String get reminderNotifyBefore => 'التنبيه قبل الوردية';
+
+  @override
+  String get reminderMinutesBefore => 'دقائق قبل';
+
+  @override
+  String get reminderNotificationPermission => 'إذن الإشعارات';
+
+  @override
+  String get reminderPermissionRequired => 'مطلوب إذن الإشعارات';
+
+  @override
+  String get reminderNotificationsDisabled => 'الإشعارات معطلة';
+
+  @override
+  String get reminderNotificationsEnabled => 'التذكيرات مفعلة في التطبيق';
+
+  @override
+  String get reminderOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get reminderSaved => 'تم حفظ إعدادات التذكير';
+
+  @override
+  String get reminderSaveFailed => 'تعذر حفظ إعدادات التذكير';
+
+  @override
+  String get reminderPermissionHint => 'فعّل التذكيرات لتلقي تنبيهات الوردية.';
+
+  @override
+  String get notifShiftSoonTitle => 'ورديتك تبدأ قريباً';
+
+  @override
+  String get notifShiftSoonBody =>
+      'ورديتك على وشك البدء. افتح الحضور لتسجيل الدخول.';
+
+  @override
+  String get notifPunchOutTitle => 'تذكّر تسجيل الانصراف';
+
+  @override
+  String get notifPunchOutBody => 'انتهت ورديتك. تذكّر تسجيل الانصراف.';
+
+  @override
+  String get notifShiftEndingOnBreakBody =>
+      'ورديتك تنتهي. راجع حضورك قبل المغادرة.';
+
+  @override
+  String get notifCorrectionApprovedTitle => 'تمت الموافقة على تصحيح الحضور';
+
+  @override
+  String get notifCorrectionApprovedBody =>
+      'تمت الموافقة على تصحيح حضورك وتطبيقه.';
+
+  @override
+  String get notifCorrectionRejectedTitle => 'تم رفض تصحيح الحضور';
+
+  @override
+  String get notifCorrectionRejectedBody =>
+      'لم تتم الموافقة على طلب تصحيح حضورك.';
+
+  @override
+  String get notifSyncFailedTitle => 'الحضور يحتاج إلى انتباه';
+
+  @override
+  String get notifSyncFailedBody => 'تعذرت مزامنة بعض تغييرات الحضور.';
+
+  @override
+  String get notifConflictTitle => 'الحضور يحتاج إلى مراجعة';
+
+  @override
+  String get notifConflictBody => 'لا يطابق حضورك المحلي أحدث سجل على الخادم.';
+
+  @override
+  String get notifPendingReviewTitle => 'طلب تصحيح حضور جديد';
+
+  @override
+  String get notifPendingReviewBody => 'يوجد طلب تصحيح بانتظار المراجعة.';
+
+  @override
+  String get notifLeaveSubmittedTitle => 'تم إرسال طلب الإجازة';
+
+  @override
+  String get notifLeaveSubmittedBody =>
+      'تم إرسال طلب الإجازة الخاص بك للموافقة.';
+
+  @override
+  String get notifLeaveApprovedTitle => 'تمت الموافقة على طلب الإجازة';
+
+  @override
+  String get notifLeaveApprovedBody => 'تمت الموافقة على طلب الإجازة الخاص بك.';
+
+  @override
+  String get notifLeaveRejectedTitle => 'تم رفض طلب الإجازة';
+
+  @override
+  String get notifLeaveRejectedBody =>
+      'لم تتم الموافقة على طلب الإجازة الخاص بك.';
+
+  @override
+  String get notifLeaveCancelledTitle => 'تم إلغاء طلب الإجازة';
+
+  @override
+  String get notifLeaveCancelledBody => 'تم إلغاء طلب إجازة.';
+
+  @override
+  String get notifLeaveApprovalRequiredTitle => 'مطلوب موافقة على إجازة';
+
+  @override
+  String get notifLeaveApprovalRequiredBody =>
+      'يوجد طلب إجازة لفريقك بانتظار مراجعتك.';
+
+  @override
+  String get notifUnknownTitle => 'إشعار';
+
+  @override
+  String get notifUnknownBody => 'لديك إشعار جديد.';
+
+  @override
+  String get timeJustNow => 'الآن';
+
+  @override
+  String timeMinutesAgo(Object count) {
+    return 'قبل $count دقيقة';
+  }
+
+  @override
+  String timeHoursAgo(Object count) {
+    return 'قبل $count ساعة';
+  }
+
+  @override
+  String get timeYesterday => 'أمس';
+
+  @override
+  String get profileMyProfile => 'ملفي الشخصي';
+
+  @override
+  String get profileOverview => 'نظرة عامة';
+
+  @override
+  String get profileWorkInformation => 'معلومات العمل';
+
+  @override
+  String get profileAccountAccess => 'الحساب والصلاحيات';
+
+  @override
+  String get profileSecurity => 'الأمان';
+
+  @override
+  String get profilePreferences => 'التفضيلات';
+
+  @override
+  String get profileAccess => 'الصلاحيات';
+
+  @override
+  String get profileAdministrativeAccess => 'صلاحيات إدارية';
+
+  @override
+  String get profileRoles => 'الأدوار';
+
+  @override
+  String get profileEmploymentStatus => 'حالة التوظيف';
+
+  @override
+  String get profileLoginEmail => 'بريد تسجيل الدخول';
+
+  @override
+  String get profileWorkEmail => 'بريد العمل';
+
+  @override
+  String get profileMyAttendance => 'حضوري';
+
+  @override
+  String get profileViewEmployeeRecord => 'عرض تفاصيل التوظيف';
+
+  @override
+  String get profileNoEmployeeLinked => 'لا يوجد ملف موظف مرتبط بهذا الحساب.';
+
+  @override
+  String get profileTeamUnavailable => 'تعذر تحديد نطاق الفريق.';
+
+  @override
+  String get profileEmploymentUnavailable =>
+      'معلومات التوظيف غير متاحة حالياً.';
+
+  @override
+  String get profileCurrentCompany => 'الشركة الحالية';
+
+  @override
+  String get profileManage => 'إدارة';
+
+  @override
+  String get settingsIntro => 'إدارة مؤسستك وإعدادات الحضور والتفضيلات.';
+
+  @override
+  String get settingsAttendanceCategory => 'إعدادات الحضور';
+
+  @override
+  String get settingsAttendanceCategoryDesc =>
+      'ضبط كيفية عمل الموظفين وتسجيلهم للحضور.';
+
+  @override
+  String get settingsPreferencesCategory => 'التفضيلات الشخصية';
+
+  @override
+  String get settingsPreferencesCategoryDesc =>
+      'عدّل تفضيلات التطبيق الخاصة بك.';
+
+  @override
+  String get settingsSystemCategory => 'النظام';
+
+  @override
+  String get settingsSystemCategoryDesc => 'حالة المزامنة والتطبيق.';
+
+  @override
+  String get settingsShiftDesc =>
+      'حدد ساعات العمل وأيام العمل والاستراحات الافتراضية.';
+
+  @override
+  String get settingsLocationDesc => 'أدر أماكن العمل وقواعد التحقق من الموقع.';
+
+  @override
+  String get settingsPolicyDesc => 'حدد قواعد الحضور والاستراحة والتصحيح.';
+
+  @override
+  String get settingsLanguageDesc => 'اختر لغة التطبيق المفضلة لديك.';
+
+  @override
+  String get settingsNotificationsDesc => 'تحكم في تذكيرات الحضور لحسابك.';
+
+  @override
+  String get settingsSyncDesc =>
+      'اعرض حالة المزامنة وأعد محاولة التغييرات الفاشلة.';
+
+  @override
+  String get shellLeave => 'الإجازات';
+
+  @override
+  String get settingsLeaveCategory => 'الإجازات والعطلات';
+
+  @override
+  String get settingsLeaveCategoryDesc =>
+      'اضبط أنواع الإجازات وسياساتها والعطلات.';
+
+  @override
+  String get dashboard => 'لوحة المعلومات';
+
+  @override
+  String get employees => 'الموظفون';
+
+  @override
+  String get attendance => 'الحضور';
+
+  @override
+  String get requests => 'الطلبات';
+
+  @override
+  String get reports => 'التقارير';
+
+  @override
+  String get workLocation => 'موقع العمل';
+
+  @override
+  String get office => 'المكتب';
+
+  @override
+  String get remote => 'عن بُعد';
+
+  @override
+  String get effectiveDate => 'تاريخ السريان';
+
+  @override
+  String get startTime => 'وقت البدء';
+
+  @override
+  String get employee => 'الموظف';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get permissionEmployeeViewSelf => 'عرض سجل الموظف الخاص بك';
+
+  @override
+  String get permissionEmployeeViewTeam => 'عرض موظفي الفريق';
+
+  @override
+  String get permissionEmployeeViewAll => 'عرض جميع الموظفين';
+
+  @override
+  String get permissionEmployeeCreate => 'إضافة موظفين';
+
+  @override
+  String get permissionEmployeeUpdate => 'تحديث بيانات الموظفين';
+
+  @override
+  String get permissionEmployeeDeactivate => 'إيقاف حسابات الموظفين';
+
+  @override
+  String get permissionAttendanceViewSelf => 'عرض حضورك';
+
+  @override
+  String get permissionAttendanceViewTeam => 'عرض حضور الفريق';
+
+  @override
+  String get permissionAttendanceViewAll => 'عرض جميع سجلات الحضور';
+
+  @override
+  String get permissionAttendancePunchIn => 'تسجيل بدء العمل';
+
+  @override
+  String get permissionAttendancePunchOut => 'تسجيل انتهاء العمل';
+
+  @override
+  String get permissionAttendanceBreak => 'إدارة استراحاتك';
+
+  @override
+  String get permissionAttendanceRequestCorrection => 'طلب تصحيح الحضور';
+
+  @override
+  String get permissionAttendanceCorrect => 'تصحيح الحضور';
+
+  @override
+  String get permissionAttendanceApprove => 'اعتماد الحضور';
+
+  @override
+  String get permissionShiftView => 'عرض الورديات';
+
+  @override
+  String get permissionShiftManage => 'إدارة الورديات';
+
+  @override
+  String get permissionWorkLocationView => 'عرض مواقع العمل';
+
+  @override
+  String get permissionWorkLocationManage => 'إدارة مواقع العمل';
+
+  @override
+  String get permissionAttendancePolicyView => 'عرض سياسات الحضور';
+
+  @override
+  String get permissionAttendancePolicyManage => 'إدارة سياسات الحضور';
+
+  @override
+  String get permissionAttendanceReportView => 'عرض تقارير الحضور';
 
   @override
   String dashboardMorning(String name) {
@@ -1337,11 +1722,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String dashboardTimeRange(String start, String end) {
     return 'من $start إلى $end';
-  }
-
-  @override
-  String durationHoursOnly(String hours) {
-    return '$hours س';
   }
 
   @override
@@ -1580,12 +1960,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String empFilterCount(String count) {
     return 'عوامل التصفية ($count)';
   }
-
-  @override
-  String get selectOption => 'اختر خيارًا';
-
-  @override
-  String get noSelection => 'غير محدد';
 
   @override
   String get cfgConfiguration => 'الإعدادات';
@@ -2589,21 +2963,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get historyNoBreaks => 'لا توجد استراحات مسجّلة';
 
   @override
-  String timeRange(String start, String end) {
-    return '$start ← $end';
-  }
-
-  @override
-  String dateTimeValue(String date, String time) {
-    return '$date · $time';
-  }
-
-  @override
-  String labeledValue(String label, String value) {
-    return '$label: $value';
-  }
-
-  @override
   String historyFilterCount(String count) {
     return 'تصفية الحالات ($count)';
   }
@@ -2988,69 +3347,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportFiltersApplied => 'المرشحات المطبقة';
 
   @override
-  String get syncOfflineTitle => 'أنت غير متصل';
-
-  @override
-  String get syncOfflineMessage => 'ستتم المزامنة عند عودة الاتصال.';
-
-  @override
-  String get syncServiceUnavailable => 'الخدمة غير متاحة مؤقتاً';
-
-  @override
-  String get syncSyncing => 'جارٍ المزامنة';
-
-  @override
-  String get syncAllChangesSynced => 'تمت مزامنة كل التغييرات';
-
-  @override
-  String get syncPending => 'بانتظار المزامنة';
-
-  @override
-  String get syncFailed => 'فشلت المزامنة';
-
-  @override
-  String get syncNeedsAttention => 'المزامنة تحتاج إلى مراجعة';
-
-  @override
-  String get syncRetry => 'إعادة المحاولة';
-
-  @override
-  String get syncRetryNow => 'إعادة المحاولة الآن';
-
-  @override
-  String get syncNow => 'المزامنة الآن';
-
-  @override
-  String get syncLastSync => 'آخر مزامنة';
-
-  @override
-  String get syncNever => 'لم تتم المزامنة بعد';
-
-  @override
-  String get syncChangesWaiting => 'تغييرات بانتظار المزامنة';
-
-  @override
-  String get syncDataAndSync => 'البيانات والمزامنة';
-
-  @override
-  String get syncNoPendingChanges => 'لا توجد تغييرات معلقة';
-
-  @override
-  String get syncSyncSucceeded => 'اكتملت المزامنة';
-
-  @override
-  String get syncStatusTitle => 'حالة المزامنة';
-
-  @override
-  String get syncPendingOperations => 'العمليات المعلقة';
-
-  @override
-  String get syncFailedOperations => 'العمليات الفاشلة';
-
-  @override
-  String get syncSwitchAccount => 'سجّل الدخول للمزامنة';
-
-  @override
   String get attendanceNeedsReview => 'الحضور يحتاج إلى مراجعة';
 
   @override
@@ -3065,280 +3361,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get attendanceNeedsAttention => 'الحضور يحتاج إلى انتباه';
-
-  @override
-  String get viewDetails => 'عرض التفاصيل';
-
-  @override
-  String get notificationsTitle => 'الإشعارات';
-
-  @override
-  String get notificationsNoItems => 'لا توجد إشعارات';
-
-  @override
-  String get notificationsNoItemsMessage => 'لا يوجد جديد لديك.';
-
-  @override
-  String get notificationsMarkAllRead => 'تحديد الكل كمقروء';
-
-  @override
-  String get notificationsToday => 'اليوم';
-
-  @override
-  String get notificationsEarlier => 'سابقاً';
-
-  @override
-  String get notificationsUnread => 'غير مقروء';
-
-  @override
-  String get notificationsReminders => 'الإشعارات والتذكيرات';
-
-  @override
-  String get notificationsOpen => 'فتح الإشعارات';
-
-  @override
-  String get reminderAttendanceSection => 'تذكيرات الحضور';
-
-  @override
-  String get reminderShift => 'تذكير الوردية';
-
-  @override
-  String get reminderPunchOut => 'تذكير تسجيل الانصراف';
-
-  @override
-  String get reminderNotifyBefore => 'التنبيه قبل الوردية';
-
-  @override
-  String get reminderMinutesBefore => 'دقائق قبل';
-
-  @override
-  String get reminderNotificationPermission => 'إذن الإشعارات';
-
-  @override
-  String get reminderPermissionRequired => 'مطلوب إذن الإشعارات';
-
-  @override
-  String get reminderNotificationsDisabled => 'الإشعارات معطلة';
-
-  @override
-  String get reminderNotificationsEnabled => 'التذكيرات مفعلة في التطبيق';
-
-  @override
-  String get reminderOpenSettings => 'فتح الإعدادات';
-
-  @override
-  String get reminderSaved => 'تم حفظ إعدادات التذكير';
-
-  @override
-  String get reminderSaveFailed => 'تعذر حفظ إعدادات التذكير';
-
-  @override
-  String get reminderPermissionHint => 'فعّل التذكيرات لتلقي تنبيهات الوردية.';
-
-  @override
-  String get notifShiftSoonTitle => 'ورديتك تبدأ قريباً';
-
-  @override
-  String get notifShiftSoonBody =>
-      'ورديتك على وشك البدء. افتح الحضور لتسجيل الدخول.';
-
-  @override
-  String get notifPunchOutTitle => 'تذكّر تسجيل الانصراف';
-
-  @override
-  String get notifPunchOutBody => 'انتهت ورديتك. تذكّر تسجيل الانصراف.';
-
-  @override
-  String get notifShiftEndingOnBreakBody =>
-      'ورديتك تنتهي. راجع حضورك قبل المغادرة.';
-
-  @override
-  String get notifCorrectionApprovedTitle => 'تمت الموافقة على تصحيح الحضور';
-
-  @override
-  String get notifCorrectionApprovedBody =>
-      'تمت الموافقة على تصحيح حضورك وتطبيقه.';
-
-  @override
-  String get notifCorrectionRejectedTitle => 'تم رفض تصحيح الحضور';
-
-  @override
-  String get notifCorrectionRejectedBody =>
-      'لم تتم الموافقة على طلب تصحيح حضورك.';
-
-  @override
-  String get notifSyncFailedTitle => 'الحضور يحتاج إلى انتباه';
-
-  @override
-  String get notifSyncFailedBody => 'تعذرت مزامنة بعض تغييرات الحضور.';
-
-  @override
-  String get notifConflictTitle => 'الحضور يحتاج إلى مراجعة';
-
-  @override
-  String get notifConflictBody => 'لا يطابق حضورك المحلي أحدث سجل على الخادم.';
-
-  @override
-  String get notifPendingReviewTitle => 'طلب تصحيح حضور جديد';
-
-  @override
-  String get notifPendingReviewBody => 'يوجد طلب تصحيح بانتظار المراجعة.';
-
-  @override
-  String get notifLeaveSubmittedTitle => 'تم إرسال طلب الإجازة';
-
-  @override
-  String get notifLeaveSubmittedBody =>
-      'تم إرسال طلب الإجازة الخاص بك للموافقة.';
-
-  @override
-  String get notifLeaveApprovedTitle => 'تمت الموافقة على طلب الإجازة';
-
-  @override
-  String get notifLeaveApprovedBody => 'تمت الموافقة على طلب الإجازة الخاص بك.';
-
-  @override
-  String get notifLeaveRejectedTitle => 'تم رفض طلب الإجازة';
-
-  @override
-  String get notifLeaveRejectedBody =>
-      'لم تتم الموافقة على طلب الإجازة الخاص بك.';
-
-  @override
-  String get notifLeaveCancelledTitle => 'تم إلغاء طلب الإجازة';
-
-  @override
-  String get notifLeaveCancelledBody => 'تم إلغاء طلب إجازة.';
-
-  @override
-  String get notifLeaveApprovalRequiredTitle => 'مطلوب موافقة على إجازة';
-
-  @override
-  String get notifLeaveApprovalRequiredBody =>
-      'يوجد طلب إجازة لفريقك بانتظار مراجعتك.';
-
-  @override
-  String get notifUnknownTitle => 'إشعار';
-
-  @override
-  String get notifUnknownBody => 'لديك إشعار جديد.';
-
-  @override
-  String get timeJustNow => 'الآن';
-
-  @override
-  String timeMinutesAgo(Object count) {
-    return 'قبل $count دقيقة';
-  }
-
-  @override
-  String timeHoursAgo(Object count) {
-    return 'قبل $count ساعة';
-  }
-
-  @override
-  String get timeYesterday => 'أمس';
-
-  @override
-  String get profileMyProfile => 'ملفي الشخصي';
-
-  @override
-  String get profileOverview => 'نظرة عامة';
-
-  @override
-  String get profileWorkInformation => 'معلومات العمل';
-
-  @override
-  String get profileAccountAccess => 'الحساب والصلاحيات';
-
-  @override
-  String get profileSecurity => 'الأمان';
-
-  @override
-  String get profilePreferences => 'التفضيلات';
-
-  @override
-  String get profileAccess => 'الصلاحيات';
-
-  @override
-  String get profileAdministrativeAccess => 'صلاحيات إدارية';
-
-  @override
-  String get profileRoles => 'الأدوار';
-
-  @override
-  String get profileEmploymentStatus => 'حالة التوظيف';
-
-  @override
-  String get profileLoginEmail => 'بريد تسجيل الدخول';
-
-  @override
-  String get profileWorkEmail => 'بريد العمل';
-
-  @override
-  String get profileMyAttendance => 'حضوري';
-
-  @override
-  String get profileViewEmployeeRecord => 'عرض تفاصيل التوظيف';
-
-  @override
-  String get profileNoEmployeeLinked => 'لا يوجد ملف موظف مرتبط بهذا الحساب.';
-
-  @override
-  String get profileTeamUnavailable => 'تعذر تحديد نطاق الفريق.';
-
-  @override
-  String get profileEmploymentUnavailable =>
-      'معلومات التوظيف غير متاحة حالياً.';
-
-  @override
-  String get profileCurrentCompany => 'الشركة الحالية';
-
-  @override
-  String get profileManage => 'إدارة';
-
-  @override
-  String get settingsIntro => 'إدارة مؤسستك وإعدادات الحضور والتفضيلات.';
-
-  @override
-  String get settingsAttendanceCategory => 'إعدادات الحضور';
-
-  @override
-  String get settingsAttendanceCategoryDesc =>
-      'ضبط كيفية عمل الموظفين وتسجيلهم للحضور.';
-
-  @override
-  String get settingsPreferencesCategory => 'التفضيلات الشخصية';
-
-  @override
-  String get settingsPreferencesCategoryDesc =>
-      'عدّل تفضيلات التطبيق الخاصة بك.';
-
-  @override
-  String get settingsSystemCategory => 'النظام';
-
-  @override
-  String get settingsSystemCategoryDesc => 'حالة المزامنة والتطبيق.';
-
-  @override
-  String get settingsShiftDesc =>
-      'حدد ساعات العمل وأيام العمل والاستراحات الافتراضية.';
-
-  @override
-  String get settingsLocationDesc => 'أدر أماكن العمل وقواعد التحقق من الموقع.';
-
-  @override
-  String get settingsPolicyDesc => 'حدد قواعد الحضور والاستراحة والتصحيح.';
-
-  @override
-  String get settingsLanguageDesc => 'اختر لغة التطبيق المفضلة لديك.';
-
-  @override
-  String get settingsNotificationsDesc => 'تحكم في تذكيرات الحضور لحسابك.';
-
-  @override
-  String get settingsSyncDesc =>
-      'اعرض حالة المزامنة وأعد محاولة التغييرات الفاشلة.';
 
   @override
   String get reportSubtitle =>
@@ -3475,9 +3497,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get permissionLeaveReportView => 'عرض تقارير الإجازات';
-
-  @override
-  String get shellLeave => 'الإجازات';
 
   @override
   String get leaveMyLeave => 'إجازاتي';
@@ -3902,13 +3921,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get leaveIncludeInactive => 'تضمين غير النشط';
 
   @override
-  String get settingsLeaveCategory => 'الإجازات والعطلات';
-
-  @override
-  String get settingsLeaveCategoryDesc =>
-      'اضبط أنواع الإجازات وسياساتها والعطلات.';
-
-  @override
   String get leaveUpcoming => 'القادمة';
 
   @override
@@ -4260,18 +4272,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reviewRequests => 'مراجعة الطلبات';
-
-  @override
-  String get filters => 'الفلاتر';
-
-  @override
-  String get moreFilters => 'مزيد من الفلاتر';
-
-  @override
-  String get resetFilters => 'إعادة تعيين';
-
-  @override
-  String get periodLabel => 'الفترة';
 
   @override
   String get viewRequests => 'الطلبات';

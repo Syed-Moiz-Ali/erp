@@ -4,11 +4,11 @@ English and Arabic use [Flutter's official localization system](https://docs.flu
 
 ## Resources and generation
 
-`lib/l10n/app_en.arb` is the template; `app_ar.arb` contains the Arabic translations. `l10n.yaml` generates typed `AppLocalizations` into `lib/l10n/generated`. Do not edit generated files. `flutter: generate: true` integrates generation with normal builds.
+Translation sources are split by ERP module (`lib/l10n/common`, `lib/platform/l10n`, `lib/modules/hr/l10n`, `lib/modules/services/l10n`); the merge tool combines them into the generated `app_en.arb` / `app_ar.arb` template under `lib/l10n/generated`, and `l10n.yaml` generates typed `AppLocalizations` there. Do not edit generated files. See [architecture/localization.md](architecture/localization.md) for the source tree, ownership rules and validation. `flutter: generate: true` integrates generation with normal builds.
 
 ```sh
 flutter pub get
-flutter gen-l10n
+dart run tool/l10n/generate.dart
 dart run build_runner build --delete-conflicting-outputs
 flutter analyze
 flutter test
@@ -82,7 +82,7 @@ Confirmation title/message/confirm-label parameters use LocalizedText functions.
 
 ## Adding another language
 
-1. Add `app_<code>.arb`, matching template keys and placeholder contracts.
+1. Add `<module>_<code>.arb` to every registered module source, matching template keys and placeholder contracts.
 2. Add its `AppLanguage` entry and translated display/native-name metadata. Generated supportedLocales updates automatically.
 3. Validate the centrally selected font/fallback for the script; bundle a family and adjust only AppTypography if needed.
 4. Regenerate and run translation/layout checks, including direction and larger text.

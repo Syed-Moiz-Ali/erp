@@ -420,7 +420,7 @@ void main() {
         context: source.accounts.first.context,
       );
       expect(redirect(guest, Uri.parse('/app')), '/login?from=%2Fapp');
-      expect(redirect(member, Uri.parse('/login')), '/app/dashboard');
+      expect(redirect(member, Uri.parse('/login')), '/app/hr');
       expect(
         redirect(const AuthState(AuthStatus.bootstrapping), Uri.parse('/app')),
         '/bootstrap?from=%2Fapp',
@@ -430,10 +430,10 @@ void main() {
         redirect(guest, Uri.parse('/bootstrap?from=/forgot-password')),
         '/forgot-password',
       );
-      expect(redirect(member, Uri.parse('/app')), '/app/dashboard');
+      expect(redirect(member, Uri.parse('/app')), '/app/hr');
       expect(
         redirect(member, Uri.parse('/login?from=https://bad.example')),
-        '/app/dashboard',
+        '/app/hr',
       );
       expect(
         redirect(member, Uri.parse('/login?from=/app/change-password')),

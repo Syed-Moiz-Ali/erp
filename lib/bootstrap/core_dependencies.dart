@@ -30,7 +30,10 @@ void configureCoreDependencies(GetIt services) {
       storage: services(),
     ),
   );
-  services.registerLazySingleton(() => AppDatabase(), dispose: (db) => db.close());
+  services.registerLazySingleton(
+    () => AppDatabase(),
+    dispose: (db) => db.close(),
+  );
   services.registerLazySingleton(() => OutboxLocalDataSource(services()));
   services.registerLazySingleton<OutboxRepository>(
     () => LocalOutboxRepository(services()),

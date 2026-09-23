@@ -8,6 +8,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_tables.dart';
 import 'package:modular_erp/core/sync/sync_conflicts_table.dart';
+import 'package:modular_erp/shared/transactions/data/transactions_tables.dart';
 part 'app_database.g.dart';
 
 class SyncOutbox extends Table {
@@ -58,6 +59,9 @@ class SyncOutbox extends Table {
     LeaveRequestEvents,
     Holidays,
     HolidayCalendars,
+    DocumentSequences,
+    AttachmentRecords,
+    BusinessActivityEvents,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -73,7 +77,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -109,7 +113,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 7 || to != 8) {
+      if (from < 1 || from > 8 || to != 9) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -166,6 +170,12 @@ class AppDatabase extends _$AppDatabase {
         await customStatement(
           "UPDATE holidays SET type='companyHoliday', is_optional=1 WHERE type='optionalHoliday'",
         );
+      }
+      if (from < 9) {
+        // Phase 0.4 shared transaction foundation.
+        await _ensureTable(m, documentSequences);
+        await _ensureTable(m, attachmentRecords);
+        await _ensureTable(m, businessActivityEvents);
       }
     },
     beforeOpen: (details) async {
@@ -266,6 +276,15 @@ class AppDatabase extends _$AppDatabase {
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS workforce_company_status ON workforce_employees(company_id, status, department_id, designation_id, employment_type)',
+      );
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS document_sequences_company_key ON document_sequences(company_id, sequence_key)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS attachment_company_owner ON attachment_records(company_id, owner_type, owner_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS activity_company_entity ON business_activity_events(company_id, entity_type, entity_id, occurred_at)',
       );
     },
   );
