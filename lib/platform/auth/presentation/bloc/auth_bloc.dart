@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
@@ -37,6 +39,13 @@ final class AuthSessionUpdated extends AuthEvent {
   final AuthContext context;
 }
 
+/// Internal: the current user's grants changed and effective permissions must
+/// be refreshed without a re-login.
+final class AuthPermissionsRefreshed extends AuthEvent {
+  const AuthPermissionsRefreshed(this.permissions);
+  final PermissionSet permissions;
+}
+
 enum AuthStatus {
   initial,
   bootstrapping,
@@ -64,7 +73,8 @@ class AuthState {
 
 /// One application-level Bloc. Tokens stay in the repository, never in state.
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(this.repository) : super(const AuthState(AuthStatus.initial)) {
+  AuthBloc(this.repository, {this.grants})
+    : super(const AuthState(AuthStatus.initial)) {
     // A single sequential event bucket prevents restore/login/logout races.
     on<AuthEvent>(
       _handle,
@@ -79,8 +89,72 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
   final AuthRepository repository;
+
+  /// Optional grants source. When present, effective permissions come from
+  /// persisted grants and refresh live (Phase 0.6). When absent (unit tests),
+  /// the repository-provided permission set is used unchanged.
+  final UserGrantsController? grants;
   late final StreamSubscription<AuthContext?> _subscription;
+  StreamSubscription<PermissionSet>? _grantsSub;
+  String? _grantsKey;
   bool _loginQueued = false;
+
+  Future<void> _persistPermissions(PermissionSet permissions) async {
+    final repo = repository;
+    if (repo is SessionPermissionSink) {
+      await (repo as SessionPermissionSink).applyEffectivePermissions(
+        permissions,
+      );
+    }
+  }
+
+  Future<AuthContext> _applyGrants(AuthContext context) async {
+    final controller = grants;
+    if (controller == null) return context;
+    try {
+      final permissions = await controller.permissionsFor(context);
+      await _persistPermissions(permissions);
+      return context.copyWith(
+        user: context.user.copyWith(permissions: permissions),
+      );
+    } catch (_) {
+      return context;
+    }
+  }
+
+  void _watchGrants(AuthContext context) {
+    final controller = grants;
+    if (controller == null) return;
+    final key = '${context.company.id}:${context.user.id}';
+    if (_grantsKey == key) return;
+    _grantsKey = key;
+    unawaited(_grantsSub?.cancel());
+    _grantsSub = controller.watch(context).listen((permissions) {
+      final current = state.context;
+      if (current == null ||
+          current.company.id != context.company.id ||
+          current.user.id != context.user.id) {
+        return;
+      }
+      add(AuthPermissionsRefreshed(permissions));
+    });
+  }
+
+  void _stopGrants() {
+    _grantsKey = null;
+    unawaited(_grantsSub?.cancel());
+    _grantsSub = null;
+  }
+
+  Future<void> _emitAuthenticated(
+    Emitter<AuthState> emit,
+    AuthContext context,
+  ) async {
+    final effective = await _applyGrants(context);
+    emit(AuthState(AuthStatus.authenticated, context: effective));
+    _watchGrants(effective);
+  }
+
   @override
   void add(AuthEvent event) {
     if (event is AuthLoginRequested) {
@@ -98,11 +172,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final result = await repository.restoreSession();
         switch (result) {
           case Success<AuthContext?>(:final value):
-            emit(
-              value == null
-                  ? const AuthState(AuthStatus.unauthenticated)
-                  : AuthState(AuthStatus.authenticated, context: value),
-            );
+            if (value == null) {
+              emit(const AuthState(AuthStatus.unauthenticated));
+            } else {
+              await _emitAuthenticated(emit, value);
+            }
           case Failed<AuthContext?>(:final failure):
             emit(AuthState(AuthStatus.unauthenticated, failure: failure));
         }
@@ -111,18 +185,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final result = await repository.checkSession();
         switch (result) {
           case Success<AuthContext?>(:final value):
-            emit(
-              value == null
-                  ? const AuthState(
-                      AuthStatus.unauthenticated,
-                      failure: Failure(
-                        code: 'session_expired',
-                        kind: FailureKind.sessionExpired,
-                      ),
-                    )
-                  : AuthState(AuthStatus.authenticated, context: value),
-            );
+            if (value == null) {
+              _stopGrants();
+              emit(
+                const AuthState(
+                  AuthStatus.unauthenticated,
+                  failure: Failure(
+                    code: 'session_expired',
+                    kind: FailureKind.sessionExpired,
+                  ),
+                ),
+              );
+            } else {
+              await _emitAuthenticated(emit, value);
+            }
           case Failed<AuthContext?>(:final failure):
+            _stopGrants();
             emit(AuthState(AuthStatus.unauthenticated, failure: failure));
         }
       case AuthLoginRequested(:final identifier, :final password):
@@ -145,7 +223,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final result = await repository.login(parsed, password);
           switch (result) {
             case Success<AuthContext>(:final value):
-              emit(AuthState(AuthStatus.authenticated, context: value));
+              await _emitAuthenticated(emit, value);
             case Failed<AuthContext>(:final failure):
               emit(AuthState(AuthStatus.unauthenticated, failure: failure));
           }
@@ -163,6 +241,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         final result = await repository.logout();
+        _stopGrants();
         switch (result) {
           case Success<void>():
             emit(const AuthState(AuthStatus.unauthenticated));
@@ -176,6 +255,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             );
         }
       case AuthSessionExpired():
+        _stopGrants();
         emit(
           const AuthState(
             AuthStatus.unauthenticated,
@@ -188,13 +268,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // Forced invalidation also purges otherwise-unexpired secure tokens.
         await repository.logout();
       case AuthSessionUpdated(:final context):
-        emit(AuthState(AuthStatus.authenticated, context: context));
+        await _emitAuthenticated(emit, context);
+      case AuthPermissionsRefreshed(:final permissions):
+        final current = state.context;
+        if (current == null) return;
+        await _persistPermissions(permissions);
+        emit(
+          AuthState(
+            AuthStatus.authenticated,
+            context: current.copyWith(
+              user: current.user.copyWith(permissions: permissions),
+            ),
+          ),
+        );
     }
   }
 
   @override
   Future<void> close() async {
     await _subscription.cancel();
+    await _grantsSub?.cancel();
     await super.close();
   }
 }

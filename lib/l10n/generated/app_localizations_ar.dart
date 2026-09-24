@@ -1410,6 +1410,291 @@ class AppLocalizationsAr extends AppLocalizations {
       'اضبط أنواع الإجازات وسياساتها والعطلات.';
 
   @override
+  String get permissionAccessUsersView => 'عرض المستخدمين والوصول';
+
+  @override
+  String get permissionAccessPermissionsManage => 'إدارة وصول المستخدمين';
+
+  @override
+  String get permissionCompanyModulesView => 'عرض وحدات الشركة';
+
+  @override
+  String get permissionPlatformModulesManage => 'إدارة وحدات المنصة';
+
+  @override
+  String get accessModulePlatform => 'الإدارة';
+
+  @override
+  String get accessSubAccess => 'الوصول والوحدات';
+
+  @override
+  String get accessUsersView => 'عرض المستخدمين والوصول';
+
+  @override
+  String get accessUsersViewDesc => 'فتح منطقة إدارة المستخدمين والوصول.';
+
+  @override
+  String get accessPermissionsManage => 'إدارة وصول المستخدمين';
+
+  @override
+  String get accessPermissionsManageDesc =>
+      'منح وإلغاء صلاحيات ونطاقات النظام.';
+
+  @override
+  String get accessModulesView => 'عرض وحدات الشركة';
+
+  @override
+  String get accessModulesViewDesc =>
+      'الاطلاع على وحدات النظام المفعّلة للشركة.';
+
+  @override
+  String get accessCompanyUsersManage => 'إدارة مستخدمي الشركة';
+
+  @override
+  String get accessCompanyUsersManageDesc => 'إدارة حسابات مستخدمي الشركة.';
+
+  @override
+  String get accessCompanyRolesManage => 'إدارة أدوار الشركة';
+
+  @override
+  String get accessCompanyRolesManageDesc => 'إدارة بيانات أدوار الشركة.';
+
+  @override
+  String get accessPlatformCompaniesManage => 'إدارة شركات المنصة';
+
+  @override
+  String get accessPlatformCompaniesManageDesc =>
+      'خاص بالمنصة: إدارة الشركات على مستوى المنصة.';
+
+  @override
+  String get accessPlatformModulesManage => 'إدارة وحدات المنصة';
+
+  @override
+  String get accessPlatformModulesManageDesc =>
+      'خاص بالمنصة: تفعيل أو تعطيل الوحدات للشركات.';
+
+  @override
+  String get usersAccessTitle => 'المستخدمون والوصول';
+
+  @override
+  String get usersAccessSubtitle =>
+      'تحكم في ما يمكن لكل مستخدم الوصول إليه والسجلات التي يعمل عليها.';
+
+  @override
+  String get accessCompanyModules => 'وحدات الشركة';
+
+  @override
+  String get accessCompanyModulesSubtitle =>
+      'وحدات النظام المفعّلة لهذه الشركة.';
+
+  @override
+  String get accessManage => 'إدارة الوصول';
+
+  @override
+  String get accessNoLogin => 'لا يوجد تسجيل دخول';
+
+  @override
+  String get accessNoBusinessAccess => 'لم يتم تعيين وصول وظيفي.';
+
+  @override
+  String get accessModuleHr => 'الموارد البشرية';
+
+  @override
+  String get accessModuleServices => 'الخدمات';
+
+  @override
+  String get accessScopeNone => 'لا وصول';
+
+  @override
+  String get accessScopeSelf => 'ذاتي (سجلاتي)';
+
+  @override
+  String get accessScopeAssigned => 'المُسند إليّ';
+
+  @override
+  String get accessScopeTeam => 'الفريق (فريقي)';
+
+  @override
+  String get accessScopeAll => 'الشركة (الكل)';
+
+  @override
+  String get accessSaveChanges => 'حفظ التغييرات';
+
+  @override
+  String get accessResetChanges => 'إعادة تعيين';
+
+  @override
+  String get accessSaved => 'تم تحديث الوصول.';
+
+  @override
+  String get accessSaveFailed => 'تعذّر تحديث الوصول.';
+
+  @override
+  String get accessConfirmTitle => 'تحديث الوصول؟';
+
+  @override
+  String get accessConfirmMessage =>
+      'هل تريد تطبيق تغييرات الوصول لهذا المستخدم؟';
+
+  @override
+  String get accessAdded => 'تمت الإضافة';
+
+  @override
+  String get accessRemoved => 'تمت الإزالة';
+
+  @override
+  String get accessChanged => 'تم التغيير';
+
+  @override
+  String get accessNoChanges => 'لا تغييرات';
+
+  @override
+  String get accessSummary => 'ملخص الوصول';
+
+  @override
+  String get accessGrantedPermissions => 'الصلاحيات الممنوحة';
+
+  @override
+  String get accessEmployeeLinked => 'مرتبط بموظف';
+
+  @override
+  String get accessEmployeeNotLinked => 'لا يوجد موظف مرتبط';
+
+  @override
+  String get accessEmployeeLinkRequired =>
+      'يتطلب هذا الوصول سجل موظف نشط مرتبط.';
+
+  @override
+  String get accessSelfEscalation => 'لا يمكنك تغيير وصولك الخاص.';
+
+  @override
+  String get accessLastAdmin => 'لا يمكن إزالة آخر مسؤول وصول.';
+
+  @override
+  String get accessNotPermitted => 'ليس لديك صلاحية للقيام بذلك.';
+
+  @override
+  String get accessModuleDisabled => 'هذه الوحدة غير مفعّلة للشركة.';
+
+  @override
+  String get accessPlatformOnly => 'يمكن لمسؤول المنصة فقط منح هذا.';
+
+  @override
+  String get accessHistory => 'سجل الوصول';
+
+  @override
+  String get accessNoHistory => 'لا توجد تغييرات وصول بعد.';
+
+  @override
+  String get accessSearchUsers => 'البحث عن مستخدمين';
+
+  @override
+  String get accessFilterAll => 'الكل';
+
+  @override
+  String get accessEnabled => 'مفعّل';
+
+  @override
+  String get accessDisabled => 'معطّل';
+
+  @override
+  String get accessModulesReadOnly =>
+      'تتم إدارة توفر الوحدات على مستوى المنصة في هذا العرض.';
+
+  @override
+  String get accessStatusActive => 'نشط';
+
+  @override
+  String get accessStatusInactive => 'غير نشط';
+
+  @override
+  String get accessLogin => 'تسجيل الدخول';
+
+  @override
+  String get accessEmployee => 'الموظف';
+
+  @override
+  String get accessDesignation => 'المسمى الوظيفي';
+
+  @override
+  String get accessDepartment => 'القسم';
+
+  @override
+  String get accessClearModule => 'مسح وصول الوحدة';
+
+  @override
+  String get accessNoAccessAssigned => 'لا وصول';
+
+  @override
+  String get accessPlatformOnlyBadge => 'خاص بالمنصة';
+
+  @override
+  String get accessEmployeeRequiredBadge => 'يتطلب موظفًا';
+
+  @override
+  String get accessGrantView => 'منح العرض';
+
+  @override
+  String get accessGrantFull => 'منح الكل';
+
+  @override
+  String get accessClear => 'مسح';
+
+  @override
+  String get accessHasAccess => 'تم ضبط الوصول';
+
+  @override
+  String get accessFullConfirmTitle => 'منح وصول كامل للوحدة؟';
+
+  @override
+  String get accessFullConfirmMessage =>
+      'يمنح هذا كل صلاحية قابلة للتفويض لهذه الوحدة. يمكنك تعديل النطاقات لاحقًا.';
+
+  @override
+  String get accessModuleAccess => 'وصول الوحدات';
+
+  @override
+  String get accessGranted => 'ممنوح';
+
+  @override
+  String get accessNotGranted => 'غير ممنوح';
+
+  @override
+  String get accessExpandAll => 'توسيع الكل';
+
+  @override
+  String get accessCollapseAll => 'طي الكل';
+
+  @override
+  String accessUsersSummary(Object count, Object withAccess) {
+    return 'عرض $count مستخدمًا · $withAccess لديهم وصول';
+  }
+
+  @override
+  String get accessScopeHint =>
+      'يحدد النطاق السجلات التي تنطبق عليها الصلاحية: ذاتي = سجلات المستخدم نفسه، الفريق = فريقه، الشركة = كل سجلات الشركة.';
+
+  @override
+  String get accessScopeLabel => 'النطاق';
+
+  @override
+  String get accessSelfRequiresEmployee =>
+      'تتطلب الصلاحيات الشخصية موظفًا مرتبطًا. لا يوجد موظف مرتبط بهذا المستخدم، لذا تبقى معطّلة.';
+
+  @override
+  String get accessNoLinkedEmployeeTitle => 'لا يوجد موظف مرتبط';
+
+  @override
+  String get accessLinkEmployeeHint =>
+      'تنطبق الصلاحيات الشخصية (تسجيل الحضور، حضوري، إجازاتي) على سجل موظف. لتفعيلها، اربط هذا المستخدم بموظف من الموارد البشرية ← الموظفون ← فتح الموظف ← وصول الحساب.';
+
+  @override
+  String get accessLinkedEmployee => 'موظف مرتبط';
+
+  @override
+  String get accessNotLinked => 'غير مرتبط';
+
+  @override
   String get dashboard => 'لوحة المعلومات';
 
   @override
@@ -4330,4 +4615,245 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get leaveDayOne => 'يوم';
+
+  @override
+  String get hrPermModuleHr => 'الموارد البشرية';
+
+  @override
+  String get hrPermSubEmployees => 'الموظفون';
+
+  @override
+  String get hrPermSubAttendance => 'الحضور';
+
+  @override
+  String get hrPermSubLeave => 'الإجازات والعطلات';
+
+  @override
+  String get hrPermSubReports => 'التقارير';
+
+  @override
+  String get hrPermSubConfiguration => 'الإعدادات';
+
+  @override
+  String get hrPermEmployeesView => 'عرض سجلات الموظفين';
+
+  @override
+  String get hrPermEmployeesViewDesc =>
+      'الاطلاع على سجلات الموظفين ضمن النطاق المحدد.';
+
+  @override
+  String get hrPermEmployeesCreate => 'إضافة موظف';
+
+  @override
+  String get hrPermEmployeesCreateDesc => 'إضافة موظفين جدد إلى الشركة.';
+
+  @override
+  String get hrPermEmployeesEdit => 'تعديل موظف';
+
+  @override
+  String get hrPermEmployeesEditDesc => 'تحديث بيانات الموظف وإسناداته.';
+
+  @override
+  String get hrPermEmployeesDeactivate => 'إيقاف موظف';
+
+  @override
+  String get hrPermEmployeesDeactivateDesc =>
+      'إيقاف أو إعادة تنشيط سجلات الموظفين.';
+
+  @override
+  String get hrPermAttendanceSelfView => 'عرض حضوري';
+
+  @override
+  String get hrPermAttendanceSelfViewDesc => 'عرض الحضور والسجل الشخصي.';
+
+  @override
+  String get hrPermAttendanceSelfPunch => 'تسجيل الحضور';
+
+  @override
+  String get hrPermAttendanceSelfPunchDesc => 'بدء يوم العمل.';
+
+  @override
+  String get hrPermAttendanceSelfPunchOut => 'تسجيل الانصراف';
+
+  @override
+  String get hrPermAttendanceSelfPunchOutDesc => 'إنهاء يوم العمل.';
+
+  @override
+  String get hrPermAttendanceSelfBreak => 'أخذ استراحة';
+
+  @override
+  String get hrPermAttendanceSelfBreakDesc => 'بدء وإنهاء الاستراحات.';
+
+  @override
+  String get hrPermAttendanceSelfCorrection => 'طلب تصحيح الحضور';
+
+  @override
+  String get hrPermAttendanceSelfCorrectionDesc => 'إرسال طلبات تصحيح الحضور.';
+
+  @override
+  String get hrPermAttendanceRecordsView => 'عرض سجلات الحضور';
+
+  @override
+  String get hrPermAttendanceRecordsViewDesc =>
+      'الاطلاع على حضور الفريق ضمن النطاق المحدد.';
+
+  @override
+  String get hrPermAttendanceCorrectionsReview => 'مراجعة تصحيحات الحضور';
+
+  @override
+  String get hrPermAttendanceCorrectionsReviewDesc =>
+      'الموافقة على طلبات تصحيح الحضور أو رفضها.';
+
+  @override
+  String get hrPermAttendanceCorrectionsApply => 'تطبيق تصحيحات الحضور';
+
+  @override
+  String get hrPermAttendanceCorrectionsApplyDesc =>
+      'تصحيح سجلات الحضور مباشرة.';
+
+  @override
+  String get hrPermAttendanceReportsView => 'عرض تقارير الحضور';
+
+  @override
+  String get hrPermAttendanceReportsViewDesc =>
+      'الاطلاع على تقارير وتحليلات الحضور.';
+
+  @override
+  String get hrPermLeaveSelfView => 'عرض إجازاتي';
+
+  @override
+  String get hrPermLeaveSelfViewDesc => 'عرض طلبات الإجازة الشخصية.';
+
+  @override
+  String get hrPermLeaveSelfRequest => 'طلب إجازة';
+
+  @override
+  String get hrPermLeaveSelfRequestDesc => 'تقديم طلبات إجازة جديدة.';
+
+  @override
+  String get hrPermLeaveSelfCancel => 'إلغاء إجازتي';
+
+  @override
+  String get hrPermLeaveSelfCancelDesc =>
+      'إلغاء طلبات الإجازة الشخصية المعلقة.';
+
+  @override
+  String get hrPermLeaveSelfBalance => 'عرض رصيدي';
+
+  @override
+  String get hrPermLeaveSelfBalanceDesc => 'عرض أرصدة الإجازات الشخصية.';
+
+  @override
+  String get hrPermLeaveRecordsView => 'عرض سجلات الإجازات';
+
+  @override
+  String get hrPermLeaveRecordsViewDesc =>
+      'الاطلاع على سجلات الإجازات ضمن النطاق المحدد.';
+
+  @override
+  String get hrPermLeaveRequestsReview => 'مراجعة طلبات الإجازة';
+
+  @override
+  String get hrPermLeaveRequestsReviewDesc =>
+      'الموافقة على طلبات الإجازة أو رفضها ضمن النطاق المحدد.';
+
+  @override
+  String get hrPermLeaveBalancesView => 'عرض أرصدة الإجازات';
+
+  @override
+  String get hrPermLeaveBalancesViewDesc =>
+      'الاطلاع على أرصدة الإجازات ضمن النطاق المحدد.';
+
+  @override
+  String get hrPermLeaveBalancesAdjust => 'تعديل أرصدة الإجازات';
+
+  @override
+  String get hrPermLeaveBalancesAdjustDesc =>
+      'إضافة أو خصم رصيد الإجازات للموظفين.';
+
+  @override
+  String get hrPermLeaveSettingsManage => 'إدارة إعدادات الإجازات';
+
+  @override
+  String get hrPermLeaveSettingsManageDesc =>
+      'إدارة إعدادات الإجازات بشكل عام.';
+
+  @override
+  String get hrPermLeaveTypesView => 'عرض أنواع الإجازات';
+
+  @override
+  String get hrPermLeaveTypesViewDesc => 'الاطلاع على أنواع الإجازات.';
+
+  @override
+  String get hrPermLeaveTypesManage => 'إدارة أنواع الإجازات';
+
+  @override
+  String get hrPermLeaveTypesManageDesc => 'إنشاء وتعديل أنواع الإجازات.';
+
+  @override
+  String get hrPermLeavePoliciesView => 'عرض سياسات الإجازات';
+
+  @override
+  String get hrPermLeavePoliciesViewDesc => 'الاطلاع على سياسات الإجازات.';
+
+  @override
+  String get hrPermLeavePoliciesManage => 'إدارة سياسات الإجازات';
+
+  @override
+  String get hrPermLeavePoliciesManageDesc => 'إنشاء وتعديل سياسات الإجازات.';
+
+  @override
+  String get hrPermHolidaysView => 'عرض العطلات';
+
+  @override
+  String get hrPermHolidaysViewDesc => 'الاطلاع على تقويم العطلات.';
+
+  @override
+  String get hrPermHolidaysManage => 'إدارة العطلات';
+
+  @override
+  String get hrPermHolidaysManageDesc => 'إعداد العطلات والتقاويم.';
+
+  @override
+  String get hrPermReportsLeaveView => 'عرض تقارير الإجازات';
+
+  @override
+  String get hrPermReportsLeaveViewDesc =>
+      'الاطلاع على تقارير وتحليلات الإجازات.';
+
+  @override
+  String get hrPermShiftsView => 'عرض الورديات';
+
+  @override
+  String get hrPermShiftsViewDesc => 'الاطلاع على إعدادات الورديات.';
+
+  @override
+  String get hrPermShiftsManage => 'إدارة الورديات';
+
+  @override
+  String get hrPermShiftsManageDesc => 'إنشاء وتعديل الورديات.';
+
+  @override
+  String get hrPermLocationsView => 'عرض مواقع العمل';
+
+  @override
+  String get hrPermLocationsViewDesc => 'الاطلاع على إعدادات مواقع العمل.';
+
+  @override
+  String get hrPermLocationsManage => 'إدارة مواقع العمل';
+
+  @override
+  String get hrPermLocationsManageDesc => 'إنشاء وتعديل مواقع العمل.';
+
+  @override
+  String get hrPermPoliciesView => 'عرض سياسات الحضور';
+
+  @override
+  String get hrPermPoliciesViewDesc => 'الاطلاع على إعدادات سياسات الحضور.';
+
+  @override
+  String get hrPermPoliciesManage => 'إدارة سياسات الحضور';
+
+  @override
+  String get hrPermPoliciesManageDesc => 'إنشاء وتعديل سياسات الحضور.';
 }

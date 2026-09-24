@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:modular_erp/core/security/permission_scope.dart';
+
 enum AppPermission {
   employeeViewSelf,
   employeeViewTeam,
@@ -43,6 +46,11 @@ enum AppPermission {
   holidayView,
   holidayManage,
   leaveReportView,
+  // Platform / company access administration.
+  accessUsersView,
+  accessPermissionsManage,
+  companyModulesView,
+  platformModulesManage,
 }
 
 /// Manage authority implies the matching view authority so a manage-only grant
@@ -68,12 +76,27 @@ Set<AppPermission> normalizePermissionGrants(Iterable<AppPermission> values) {
 }
 
 /// Immutable explicit grants; roles never confer implicit authorization.
+///
+/// [scopes] optionally records the granted record scope per permission (used by
+/// the access editor and record-scope checks). Legacy construction without
+/// scopes keeps working; `scopeFor` then returns null.
 class PermissionSet {
-  PermissionSet(Iterable<AppPermission> values)
-    : values = Set.unmodifiable(normalizePermissionGrants(values));
+  PermissionSet(
+    Iterable<AppPermission> values, {
+    Map<AppPermission, PermissionScope> scopes = const {},
+  }) : values = Set.unmodifiable(normalizePermissionGrants(values)),
+       scopes = Map.unmodifiable(scopes);
   final Set<AppPermission> values;
+  final Map<AppPermission, PermissionScope> scopes;
   bool contains(AppPermission permission) => values.contains(permission);
+  PermissionScope? scopeFor(AppPermission permission) => scopes[permission];
   int get length => values.length;
+
+  @override
+  bool operator ==(Object other) =>
+      other is PermissionSet && setEquals(other.values, values);
+  @override
+  int get hashCode => Object.hashAllUnordered(values);
 }
 
 class PermissionChecker {

@@ -236,6 +236,23 @@ class ConfigurationLandingPage extends StatelessWidget {
                   onPressed: () => context.push(AppRoutes.holidays),
                 ),
             ];
+            final accessRows = <Widget>[
+              if (permissions.can(AppPermission.accessUsersView) ||
+                  permissions.can(AppPermission.accessPermissionsManage))
+                AppSettingsRow(
+                  title: l.usersAccessTitle,
+                  description: l.usersAccessSubtitle,
+                  icon: Icons.manage_accounts_outlined,
+                  onPressed: () => context.push(AppRoutes.access),
+                ),
+              if (permissions.can(AppPermission.companyModulesView))
+                AppSettingsRow(
+                  title: l.accessCompanyModules,
+                  description: l.accessCompanyModulesSubtitle,
+                  icon: Icons.widgets_outlined,
+                  onPressed: () => context.push(AppRoutes.modules),
+                ),
+            ];
             final preferenceRows = <Widget>[
               AppSettingsRow(
                 title: l.language,
@@ -298,6 +315,13 @@ class ConfigurationLandingPage extends StatelessWidget {
                       title: l.settingsLeaveCategory,
                       description: l.settingsLeaveCategoryDesc,
                       children: leaveRows,
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                  ],
+                  if (accessRows.isNotEmpty) ...[
+                    AppSettingsSection(
+                      title: l.accessSubAccess,
+                      children: accessRows,
                     ),
                     const SizedBox(height: AppSpacing.xl),
                   ],

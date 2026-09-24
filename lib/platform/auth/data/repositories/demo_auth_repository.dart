@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/storage/secure_session_storage.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
@@ -11,7 +12,7 @@ import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.da
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/dto/auth_session_dto.dart';
 
-class DemoAuthRepository implements AuthRepository {
+class DemoAuthRepository implements AuthRepository, SessionPermissionSink {
   DemoAuthRepository(
     this.storage, {
     this.source,
@@ -84,6 +85,27 @@ class DemoAuthRepository implements AuthRepository {
 
   @override
   Stream<AuthContext?> get sessionChanges => _changes.stream;
+
+  /// Persists the effective permission set into the stored session and notifies
+  /// listeners. Idempotent: an unchanged set performs no write or emit.
+  @override
+  Future<void> applyEffectivePermissions(PermissionSet permissions) =>
+      _serial(() async {
+        final current = _session;
+        if (current == null || _disposed) return;
+        final user = current.context.user.copyWith(permissions: permissions);
+        if (user.permissions == current.context.user.permissions) return;
+        final updated = _withUser(current, user);
+        try {
+          await storage.saveSession(
+            jsonEncode(AuthSessionMapper.encode(updated).toJson()),
+          );
+        } catch (_) {
+          /* Session remains usable in memory for this process. */
+        }
+        _accept(updated);
+        if (!_disposed) _changes.add(updated.context);
+      });
   void _accept(AuthSession session) {
     if (_disposed) return;
     _session = session;

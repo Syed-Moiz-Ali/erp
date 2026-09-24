@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
+import 'package:modular_erp/shared/transactions/transactions_dependencies.dart';
 import 'package:modular_erp/bootstrap/dependencies.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/location/location_service.dart';
@@ -21,6 +22,7 @@ import 'package:modular_erp/modules/hr/reports/domain/attendance_report_reposito
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
+import 'package:modular_erp/platform/access/access_dependencies.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
@@ -75,6 +77,8 @@ void main() {
     final db = AppDatabase(NativeDatabase.memory());
     sl.registerSingleton<AppDatabase>(db);
     configurePlatformDependencies(sl);
+    configureTransactionDependencies(sl);
+    configureAccessDependencies(sl);
     configureHrDependencies(sl);
     configureServicesDependencies(sl);
     configureApplicationComposition(sl);

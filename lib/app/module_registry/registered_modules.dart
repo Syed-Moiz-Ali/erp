@@ -6,6 +6,12 @@ import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/permission_catalog.dart';
+import 'package:modular_erp/platform/access/domain/access_repository.dart';
+import 'package:modular_erp/platform/access/domain/grant_authority.dart';
+import 'package:modular_erp/platform/access/presentation/company_modules_page.dart';
+import 'package:modular_erp/platform/access/presentation/user_access_detail_page.dart';
+import 'package:modular_erp/platform/access/presentation/users_access_page.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
@@ -48,6 +54,9 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository,
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
+  AccessRepository? accessRepository,
+  PermissionCatalog? accessCatalog,
+  GrantAuthorityResolver? accessAuthority,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -107,6 +116,9 @@ ModuleRegistry createErpRegistry(
               AppPermission.companyManage,
               AppPermission.userManage,
               AppPermission.roleManage,
+              AppPermission.accessUsersView,
+              AppPermission.accessPermissionsManage,
+              AppPermission.companyModulesView,
             },
           ),
           routes: [
@@ -128,6 +140,71 @@ ModuleRegistry createErpRegistry(
             ),
           ],
         ),
+        if (accessRepository != null &&
+            accessCatalog != null &&
+            accessAuthority != null) ...[
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'access-users',
+              moduleId: AppModuleIds.settings,
+              name: (l) => l.usersAccessTitle,
+              icon: Icons.manage_accounts_outlined,
+              route: AppRoutes.access,
+              navigationGroup: NavigationGroup.configuration,
+              order: 47,
+              desktopVisible: false,
+              mobileVisible: false,
+              anyPermissions: {
+                AppPermission.accessUsersView,
+                AppPermission.accessPermissionsManage,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.access,
+                name: 'access',
+                builder: (context, state) => UsersAccessPage(
+                  repository: accessRepository,
+                  catalog: accessCatalog,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'users/:userId',
+                    name: 'access-user',
+                    builder: (context, state) => UserAccessDetailPage(
+                      repository: accessRepository,
+                      catalog: accessCatalog,
+                      authority: accessAuthority,
+                      userId: state.pathParameters['userId']!,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'company-modules',
+              moduleId: AppModuleIds.settings,
+              name: (l) => l.accessCompanyModules,
+              icon: Icons.widgets_outlined,
+              route: AppRoutes.modules,
+              navigationGroup: NavigationGroup.configuration,
+              order: 48,
+              desktopVisible: false,
+              mobileVisible: false,
+              requiredPermissions: {AppPermission.companyModulesView},
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.modules,
+                name: 'company-modules',
+                builder: (context, state) =>
+                    CompanyModulesPage(catalog: accessCatalog),
+              ),
+            ],
+          ),
+        ],
         ...hr.settingsDestinations,
       ],
     ),

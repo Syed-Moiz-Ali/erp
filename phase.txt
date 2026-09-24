@@ -1,414 +1,416 @@
 ```text
-PHASE 0.5 — ERP PERMISSION, SCOPE & MODULE ACCESS ADMINISTRATION
+TASK — GENERATE COMPLETE BACKEND API REQUIREMENT DOCUMENT
+FOR THE EXISTING FLUTTER ERP
 
-PERMISSION-DRIVEN ERP ACCESS
-NO BUSINESS ROLE-BASED AUTHORIZATION
-DEDICATED USERS & ACCESS UI
-MODULE / SUBMODULE / ACTION / SCOPE ARCHITECTURE
+You are acting as a:
 
-Continue working on the EXISTING Flutter ERP application after:
+SENIOR BACKEND ARCHITECT
+API CONTRACT DESIGNER
+FLUTTER/BACKEND INTEGRATION ARCHITECT
 
-Phase 0
-→ ERP module architecture
+The Flutter ERP frontend is already implemented.
 
-Phase 0.1
-→ Dashboard ownership correction
+YOUR JOB IS NOT TO BUILD THE BACKEND.
 
-Phase 0.2
-→ modular localization
-
-Phase 0.3
-→ module-first routes
-
-Phase 0.4
-→ shared transaction foundation
-
-DO NOT start Services Phase 1 yet.
-
-This phase replaces the remaining ROLE-CENTRIC authorization assumptions with
-a scalable PERMISSION + SCOPE architecture and provides a dedicated UI through
-which authorized administrators assign access to employees/users.
+YOUR JOB IS TO INSPECT THE ACTUAL CURRENT FLUTTER CODEBASE AND GENERATE
+A COMPLETE, BACKEND-DEVELOPER-READY API REQUIREMENT DOCUMENT.
 
 ==================================================
-0. FINAL PRODUCT DECISION
+ABSOLUTE OUTPUT REQUIREMENT
 ==================================================
 
-LOCK THIS RULE:
+Create:
 
-Business users are NOT fundamentally:
+docs/backend/hr_backend_api_requirements.md
 
-HR User
-Manager User
-Service Manager User
-Technician User
-Inspector User
+This file will be handed directly to the backend developer.
 
-They are:
+It must be detailed enough that the backend developer can understand:
 
-USER ACCOUNT
-+
-COMPANY MEMBERSHIP
-+
-OPTIONAL/EXPECTED EMPLOYEE LINK
-+
-PERMISSION GRANTS
-+
-SCOPES
-+
-ORGANIZATIONAL / TEAM / ASSIGNMENT RELATIONSHIPS
+- what APIs must exist
+- exact endpoint purpose
+- HTTP method
+- URL
+- required headers
+- query parameters
+- request body
+- request field types
+- request validation
+- response body
+- response field types
+- pagination
+- sorting
+- filtering
+- error responses
+- permission required
+- permission scope required
+- company/tenant behavior
+- employee-link requirements
+- idempotency
+- concurrency behavior
+- backend business validations
+- upload/download behavior
+- date/time behavior
+- sync/offline behavior
+- notification effects
+- audit requirements
+- examples
 
-The difference between two employees is their ACCESS GRANTS.
+DO NOT implement API clients.
 
-DO NOT build future features using:
+DO NOT implement backend code.
 
-if (role == Role.hr)
+DO NOT modify Flutter business functionality.
 
-if (role == Role.manager)
-
-if (role == Role.technician)
-
-if (role == Role.serviceManager)
-
-or equivalent.
+ONLY GENERATE THE REQUIREMENT DOCUMENT.
 
 ==================================================
-1. ONE LOGIN MODEL
+1. INSPECT THE REAL CODE FIRST
 ==================================================
 
-All company users use the same login system.
+Before writing the document, inspect the ACTUAL CURRENT project.
 
-Example:
+Do NOT work from assumptions.
 
-Email / Phone
-Password
-      ↓
-UserAccount
-      ↓
-Active Company Membership
-      ↓
-Permission Grants
-      ↓
-Employee Link / Team / Assignment Context
-      ↓
+Inspect at minimum:
+
+lib/app/
+
+lib/bootstrap/
+
+lib/core/
+
+lib/platform/auth/
+
+lib/platform/profile/
+
+lib/platform/notifications/
+
+lib/platform/sync/
+
+lib/modules/hr/
+
+lib/shared/
+
+Drift database/tables
+
+repository interfaces
+
+local repository implementations
+
+domain models
+
+Freezed models
+
+enums
+
+use cases
+
+BLoCs/Cubits
+
+route definitions
+
+permission catalogs
+
+permission scope resolvers
+
 UserCapabilityContext
-      ↓
-Navigation + Routes + Actions + Record Scope
 
-Do NOT introduce:
+NavigationResolver
 
-HR Login
-Services Login
-Technician Login
-Manager Login.
+outbox operations
 
-==================================================
-2. PLATFORM SUPER ADMIN
-==================================================
+notification types
 
-Platform/Super Admin may remain a special platform-level authority/account
-according to the existing application architecture.
+dashboard repositories
 
-However:
+report repositories
 
-SUPER ADMIN STATUS MUST NOT BE USED AS A SHORTCUT FOR BUSINESS OPERATIONS.
+attachment infrastructure
 
-Being Super Admin must not automatically mean:
+transaction/audit infrastructure
 
-can Punch Attendance
+localization where it reveals business terminology
 
-can Request Leave
+and architecture documentation.
 
-can Approve Leave
+Also inspect:
 
-can Complete Inspection
+docs/architecture/access_control.md
 
-can Complete Service Work
+docs/architecture/permission_coverage.md
 
-can Issue Materials
+docs/architecture/routing.md
 
-inside every company.
+docs/architecture/transaction_foundation.md
 
-Operational company access remains permission based.
+and any current HR/Leave/Attendance architecture documents.
 
 ==================================================
-3. COMPANY EMPLOYEES
+2. SOURCE OF TRUTH
 ==================================================
 
-Company operational users should normally be linked to an Employee.
+The Flutter implementation is the source of truth.
 
-Examples:
+DO NOT invent request fields based only on what a typical ERP might use.
 
-normal worker
+If Flutter has:
 
-HR staff
+EmployeeDraft
 
-team manager
+LeaveRequestDraft
 
-service coordinator
+AttendancePolicy
 
-technician
+HolidayCalendar
 
-inspector
+PermissionGrant
 
-service operations head
+etc.
 
-all remain Employees.
+derive API fields from those actual models.
 
-The app does NOT create separate person entities such as:
+If the frontend currently needs information not represented cleanly in models,
+identify it explicitly.
 
-HrPerson
+If something is uncertain, write:
 
-TechnicianPerson
+TBD — BACKEND/PRODUCT CONFIRMATION REQUIRED
 
-InspectorPerson
-
-ServiceManagerPerson.
-
-==================================================
-4. ACCOUNT VS EMPLOYEE
-==================================================
-
-Keep these concepts separate:
-
-UserAccount
-→ login/security identity.
-
-Employee
-→ employment/workforce identity.
-
-A company Employee may or may not have login access.
-
-A user receiving self/assigned work capabilities usually requires a valid,
-active Employee link.
-
-Platform/Super Admin may exist without Employee linkage.
-
-Do not duplicate Employee data into access-control tables.
+Do NOT silently guess.
 
 ==================================================
-5. REMOVE BUSINESS ROLE AUTHORIZATION
+3. CURRENT SCOPE ONLY
 ==================================================
 
-Audit the current codebase for:
+Generate backend requirements for everything implemented BEFORE the Services
+business module starts.
 
-AccountRole
+INCLUDE:
 
-RoleTemplate
+PLATFORM
 
-role ==
+Authentication
 
-roles.contains(...)
+Session
 
-role-derived navigation
+Refresh token
 
-role-derived route guards
+Logout
 
-role-derived action visibility.
+Current account
 
-Business authorization must be moved to:
+Current company
 
-PermissionSet / PermissionGrant
+Company switching
 
-Scope
+Application bootstrap
 
-Capability Resolver.
+Profile
+
+Preferences
+
+Notifications
+
+Sync/outbox requirements
+
+Company module entitlement
+
+Users & Access
+
+Permission grants
+
+Permission scopes
+
+Access history/audit
+
+HR
+
+HR dashboard
+
+Employees
+
+Employee details
+
+Employee create
+
+Employee edit
+
+Employee activation/deactivation if implemented
+
+Employee account/login provisioning if implemented
+
+Departments
+
+Designations
+
+Manager relationships
+
+Shifts
+
+Work Locations
+
+Attendance Policies
+
+Attendance Today
+
+Punch In
+
+Break
+
+Resume
+
+Punch Out
+
+Attendance History
+
+Attendance Day details
+
+Team Attendance
+
+All Attendance
+
+Attendance Corrections
+
+Attendance Correction review/approval/rejection
+
+Attendance Reports
+
+Report filters
+
+Report exports
+
+Leave Types
+
+Leave Policies
+
+Leave policy assignments if present
+
+Leave balances
+
+Leave ledger
+
+Leave request preview
+
+Leave request submission
+
+Leave request details
+
+Leave cancellation
+
+Leave approval
+
+Leave rejection
+
+Team Leave
+
+All Leave
+
+Leave approvals queue
+
+Employee Leave profile
+
+Leave Calendar
+
+Holiday Calendars
+
+Holidays
+
+Public/Government Holiday
+
+Festival Holiday
+
+Regional Holiday
+
+Company Holiday
+
+Special Closure
+
+Optional Holiday
+
+Holiday create/edit
+
+Holiday year setup
+
+Copy previous year
+
+Holiday CSV import
+
+Holiday applicability/work-location scope
+
+Dashboard Leave/Holiday integrations
+
+Attendance Leave/Holiday classification
+
+Leave Reports if currently implemented
+
+DO NOT DESIGN SERVICES BUSINESS APIs.
 
 ==================================================
-6. LEGACY ROLE DATA
+4. USE CURRENT CANONICAL ROUTING/NAMING
 ==================================================
 
-If the current database/API/demo architecture contains role fields,
-do NOT destroy data recklessly.
+Frontend canonical routes now follow module boundaries such as:
 
-Use a controlled migration strategy.
+/app/hr/...
 
-Existing roles may temporarily remain:
+Do NOT confuse frontend routes with backend REST endpoints.
 
-- legacy metadata
-- migration source
-- optional human-readable label
+Backend should use an API namespace such as:
 
-BUT:
+/api/v1/...
 
-they must no longer be the authoritative source for:
+Recommended domain style:
 
-navigation
+/api/v1/hr/employees
 
-routes
+/api/v1/hr/attendance/...
 
-actions
+/api/v1/hr/leave/...
 
-record visibility.
+/api/v1/hr/holidays/...
 
-==================================================
-7. OPTIONAL ACCESS PRESETS
-==================================================
-
-Do NOT implement traditional roles as runtime authorization.
-
-If administrators later need convenience bundles, call them:
-
-Access Presets
-
-Examples could eventually be:
-
-HR Staff
-
-Service Technician
-
-Service Coordinator
-
-But a preset only means:
-
-"select these permissions for me."
-
-Applying a preset writes real Permission Grants.
-
-After that:
-
-runtime authorization evaluates PERMISSIONS,
-not preset name.
-
-Do NOT implement presets now unless needed to migrate legacy demo users.
+but derive the final endpoint organization based on the actual domain model.
 
 ==================================================
-8. PERMISSION ARCHITECTURE
+5. AUTHORIZATION MODEL — CRITICAL
 ==================================================
 
-Introduce/standardize a module-owned Permission Catalog.
+The current ERP is NOT business-role-driven.
 
-Conceptually:
+DO NOT design APIs around:
 
-PermissionCatalog
-  ├── HR
-  │    ├── Employees
-  │    ├── Attendance
-  │    ├── Leave
-  │    ├── Reports
-  │    └── HR Settings
-  │
-  ├── Services
-  │    └── future definitions
-  │
-  ├── Inventory
-  │    └── future definitions
-  │
-  └── Finance
-       └── future definitions
+HR role
 
-The Access UI reads this catalog.
+Manager role
 
-DO NOT hardcode every module and checkbox directly in the page widget.
+Employee role
 
-==================================================
-9. MODULE PERMISSION CONTRIBUTIONS
-==================================================
+Technician role
 
-Each business module owns its permission definitions.
+Service Manager role.
 
-Example:
+Runtime access is:
 
-modules/hr/access/
-  hr_permission_catalog.dart
+COMPANY MODULE ENABLED
 
-modules/services/access/
-  services_permission_catalog.dart
+AND
 
-Future:
+PERMISSION GRANTED
 
-modules/inventory/access/
-  inventory_permission_catalog.dart
+AND
 
-modules/finance/access/
-  finance_permission_catalog.dart
+REQUIRED EMPLOYEE CONTEXT VALID
 
-The global access-management screen composes them.
+AND
 
-==================================================
-10. PERMISSION DEFINITION
-==================================================
+RECORD IS INSIDE GRANTED SCOPE
 
-Create a typed definition similar to:
+AND
 
-PermissionDefinition
+COMPANY/TENANT MATCH.
 
-Suggested metadata:
-
-key
-
-moduleId
-
-submoduleId
-
-localizedNameKey
-
-localizedDescriptionKey
-
-action
-
-supportedScopes
-
-requiresEmployeeLink
-
-delegation policy
-
-dependencies
-
-risk level optional
-
-display order
-
-status.
-
-Use the current architecture/style.
-
-==================================================
-11. STABLE PERMISSION KEYS
-==================================================
-
-Permission identity must NOT depend on translated strings.
-
-Use stable namespaced keys.
-
-Examples:
-
-hr.employees.view
-
-hr.employees.create
-
-hr.employees.edit
-
-hr.attendance.self.use
-
-hr.attendance.records.view
-
-hr.attendance.corrections.review
-
-hr.leave.self.request
-
-hr.leave.records.view
-
-hr.leave.requests.review
-
-services.jobs.view
-
-services.jobs.assign
-
-services.execution.update
-
-Do NOT store:
-
-"View Employees"
-
-as the identity.
-
-==================================================
-12. PERMISSION SCOPES
-==================================================
-
-Introduce a typed scope model.
-
-Supported conceptual scopes:
+Current supported scopes include:
 
 NONE
 
@@ -420,2836 +422,2724 @@ TEAM
 
 ALL
 
-Not every permission supports every scope.
-
-==================================================
-13. SCOPE SEMANTICS
-==================================================
+For current HR, mostly:
 
 SELF
 
-Records belonging to the user's linked Employee.
-
-Examples:
-
-My Attendance
-
-My Leave.
-
-ASSIGNED
-
-Operational record explicitly assigned to:
-
-Employee
-
-or eligible team according to module scope policy.
-
-Mostly Services.
-
 TEAM
 
-Records inside a resolved organizational/service-team scope.
-
-ALL
-
-Company-wide records within the active company.
-
-==================================================
-14. SCOPE IS NOT A ROLE
-==================================================
-
-Example:
-
-Employee A:
-
-hr.leave.records.view
-scope = TEAM
-
-does not become "Manager Role."
-
-It simply means the employee is allowed to view Leave records resolved by their
-team scope.
-
-==================================================
-15. MODULE-SPECIFIC SCOPE RESOLVER
-==================================================
-
-Do NOT assume TEAM means the same relationship in every module.
-
-HR TEAM may come from:
-
-employee reporting hierarchy.
-
-Services TEAM may later come from:
-
-ServiceTeam membership/supervision.
-
-Define clean scope-resolution contracts.
-
-The Permission framework supplies the granted scope.
-
-The module determines which records belong to that scope.
-
-==================================================
-16. SCOPE CONTAINMENT
-==================================================
-
-Do not implement dangerous universal assumptions like:
-
-ALL automatically grants SELF actions.
-
-Example:
-
-HR administrator with company-wide Leave visibility
-does NOT automatically gain:
-
-Request My Leave
-
-Punch My Attendance
-
-unless:
-
-valid Employee link
-+
-self permission
-
-exist.
-
-Keep self-service capabilities explicit.
-
-==================================================
-17. ACTION PERMISSIONS
-==================================================
-
-Some permissions don't need record scope.
-
-Examples:
-
-hr.employees.create
-
-hr.settings.holidays.manage
-
-access.users.manage
-
-They can use:
-
-scope = NONE
-
-or equivalent.
-
-==================================================
-18. PERMISSION GRANT MODEL
-==================================================
-
-Create a persistent company-scoped grant model.
-
-Suggested:
-
-UserPermissionGrant
-
-Fields conceptually:
-
-id
-
-companyId
-
-userId / companyMembershipId
-
-permissionKey
-
-scope
-
-grantedByUserId
-
-grantedAt
-
-updatedAt
-
-expiresAt optional future-safe
-
-requestId
-
-syncStatus
-
-active.
-
-Use current project conventions.
-
-==================================================
-19. ADDITIVE ACCESS MODEL
-==================================================
-
-V1 uses additive grants.
-
-Permission exists
-→ allowed.
-
-No grant
-→ not allowed.
-
-Do NOT introduce:
-
-ALLOW vs DENY conflict resolution
-
-role priority
-
-negative permissions
-
-deny overrides
-
-inheritance chains.
-
-Keep the system predictable.
-
-==================================================
-20. ONE EFFECTIVE GRANT PER PERMISSION
-==================================================
-
-Prefer one effective grant per:
-
-company
-user
-permissionKey
-
-with one selected scope when the permission is scoped.
-
-Example:
-
-hr.attendance.records.view
-scope = TEAM
-
-rather than three simultaneous rows:
-
-SELF
-TEAM
 ALL.
 
-If legacy permissions use separate scope keys,
-provide a migration/compatibility adapter.
+Document the required permission and supported scope for EVERY protected API.
 
 ==================================================
-21. CURRENT LEGACY AppPermission
+6. PERMISSION KEYS
 ==================================================
 
-Inspect the actual existing:
+Read actual stable permission keys from the current permission catalog.
 
-AppPermission
-
-PermissionSet
-
-UserCapability
-
-AccountRole templates.
-
-DO NOT blindly replace them.
-
-Design a safe migration.
-
-Possible approach:
-
-LEGACY
-
-leaveViewSelf
-leaveViewTeam
-leaveViewAll
-
-NEW
-
-hr.leave.records.view
-scope = SELF / TEAM / ALL
-
-BUT:
-
-preserve semantics carefully.
-
-Some existing permissions intentionally separate personal self-service from
-organizational records.
-
-Do not collapse permissions that represent different actions.
-
-==================================================
-22. MIGRATION RULE
-==================================================
-
-Create an explicit migration table in documentation/code tests.
-
-Example concept only:
-
-leaveRequestSelf
-→ hr.leave.self.request / SELF
-
-leaveViewTeam
-→ hr.leave.records.view / TEAM
-
-leaveViewAll
-→ hr.leave.records.view / ALL
-
-holidayManage
-→ hr.settings.holidays.manage / NONE
-
-Do this for ALL existing permissions.
-
-Do not guess based only on naming.
-
-==================================================
-23. HR PERMISSION CATALOG
-==================================================
-
-Migrate current HR permissions into grouped definitions.
-
-At minimum organize:
-
-HR
-├── Employees
-├── Attendance
-├── Leave & Holidays
-├── Reports
-└── Configuration
-
-==================================================
-24. EMPLOYEES ACCESS
-==================================================
-
-Examples based on existing functionality:
+Examples may include:
 
 hr.employees.view
-supported scopes:
-TEAM where supported
-ALL
 
 hr.employees.create
 
 hr.employees.edit
-scoped if current architecture supports team edits
-
-hr.employees.deactivate
-
-hr.employees.accountAccess.manage
-
-hr.employees.security.view
-if currently supported.
-
-Do not invent features absent from the app.
-
-Map current behavior exactly.
-
-==================================================
-25. ATTENDANCE SELF
-==================================================
-
-Separate self operation permissions such as:
 
 hr.attendance.self.view
 
 hr.attendance.self.punch
 
-hr.attendance.self.history
-
-hr.attendance.self.correctionRequest
-
-These require:
-
-active linked Employee.
-
-==================================================
-26. ATTENDANCE ORGANIZATIONAL
-==================================================
-
-Examples:
-
 hr.attendance.records.view
 
-scopes:
-
-TEAM
-ALL
-
 hr.attendance.corrections.review
-
-scopes:
-
-TEAM
-ALL
-
-hr.attendance.reports.view
-
-scopes according to current capability.
-
-==================================================
-27. LEAVE SELF
-==================================================
-
-Examples:
 
 hr.leave.self.view
 
 hr.leave.self.request
 
-hr.leave.self.cancel
-
-hr.leave.self.balanceView
-
-These require:
-
-active linked Employee.
-
-==================================================
-28. LEAVE ORGANIZATIONAL
-==================================================
-
-Examples:
-
 hr.leave.records.view
 
-scopes:
-
-TEAM
-ALL
-
 hr.leave.requests.review
-
-scopes:
-
-TEAM
-ALL
-
-hr.leave.balances.view
-
-scopes:
-
-TEAM
-ALL
-
-hr.leave.balances.adjust
-likely ALL or controlled scope according to current implementation.
-
-==================================================
-29. LEAVE CONFIGURATION
-==================================================
-
-Examples:
-
-hr.leave.types.view
-
-hr.leave.types.manage
-
-hr.leave.policies.view
-
-hr.leave.policies.manage
 
 hr.holidays.view
 
 hr.holidays.manage
 
-Keep manage/view dependency behavior.
-
-==================================================
-30. HR REPORTS
-==================================================
-
-Examples:
-
-hr.reports.attendance.view
-
-hr.reports.leave.view if currently available
-
-hr.reports.export
-
-with scopes according to existing behavior.
-
-==================================================
-31. SERVICES PERMISSION CATALOG
-==================================================
-
-Create the module contribution architecture now.
-
-Do NOT fabricate complete Services permissions before the feature exists.
-
-For Phase 0.5:
-
-Services catalog may be empty/minimal.
-
-When Services Phase 1/2 introduces:
-
-Enquiries
-
-Jobs
-
-Inspections
-
-Materials
-
-Execution
-
-it registers its permissions.
-
-The Access UI must pick them up AUTOMATICALLY.
-
-==================================================
-32. FUTURE EXAMPLE ONLY
-==================================================
-
-Document expected future style:
-
-services.enquiries.view
-scope:
-ASSIGNED / TEAM / ALL as appropriate
-
-services.enquiries.create
-
-services.jobs.view
-scope:
-ASSIGNED / TEAM / ALL
-
-services.jobs.assign
-scope:
-TEAM / ALL
-
-services.inspections.update
-scope:
-ASSIGNED / TEAM / ALL
-
-Do NOT make these active grants until actual features exist.
-
-==================================================
-33. COMPANY MODULE ENABLEMENT
-==================================================
-
-KEEP THIS SEPARATE FROM USER PERMISSIONS.
-
-Two different concepts:
-
-A) COMPANY MODULE ENTITLEMENT
-
-Does the company have HR / Services / Inventory / Finance enabled?
-
-B) USER ACCESS
-
-What can this employee/user do within the enabled module?
-
-Do NOT mix them into one boolean.
-
-==================================================
-34. MODULE ACCESS RULE
-==================================================
-
-Effective access requires:
-
-Company module enabled
-+
-permission granted
-+
-scope resolvable
-+
-required Employee link
-+
-record inside allowed scope.
-
-==================================================
-35. COMPANY MODULE ADMINISTRATION
-==================================================
-
-Create/retain a dedicated screen for module availability.
-
-Suggested:
-
-/app/settings/modules
-
-This screen answers:
-
-Which ERP modules are enabled for this company?
-
-Examples eventually:
-
-HR
-Services
-Inventory
-Finance.
-
-==================================================
-36. WHO CAN ENABLE MODULES
-==================================================
-
-Module enablement is NOT the same as ordinary access assignment.
-
-Prefer:
-
-Platform/Super Admin
-→ can enable/disable licensed modules for company.
-
-Company Access Administrator
-→ may view enabled modules.
-
-Whether Company Admin can enable modules should follow product/commercial policy.
-
-Do not let a random user grant themselves a disabled module.
-
-==================================================
-37. MODULE DISABLED BEHAVIOR
-==================================================
-
-If Services is disabled:
-
-Services permissions may remain stored historically,
-but:
-
-navigation hidden
-
-routes blocked
-
-actions unavailable.
-
-Enabling module later can restore applicable grants.
-
-Do not destructively delete permissions merely because module is disabled.
-
-==================================================
-38. DEDICATED ACCESS MANAGEMENT AREA
-==================================================
-
-Create a global Settings section:
-
-ACCESS & MODULES
-
-Destinations:
-
-Users & Access
-
-Company Modules
-
-Use concise naming.
-
-Do NOT create:
-
-Roles & Permissions
-
-as the primary architecture anymore.
-
-==================================================
-39. ROUTES
-==================================================
-
-Canonical:
-
-/app/settings/access
-
-/app/settings/access/users/:userId
-
-/app/settings/modules
-
-Optional:
-
-/app/settings/access/users/:userId/history
-
-if audit timeline warrants it.
-
-Do NOT put access management under:
-
-/app/hr/settings
-
-because permissions span ALL modules.
-
-==================================================
-40. USERS & ACCESS PAGE
-==================================================
-
-Create:
-
-UsersAccessPage
-
-Purpose:
-
-Find company users/employees and manage their ERP access.
-
-Desktop layout:
-
-HEADER
-
-Users & Access
-
-Subtitle:
-Control what each user can access and what records they can work with.
-
-[Search]
-
-[Filters]
-
-USER TABLE
-
-Employee/User
-
-Employee Code
-
-Login
-
-Access Summary
-
-Modules
-
-Status
-
-Last Updated
-
-Action:
-Manage Access
-
-==================================================
-41. USER LIST SOURCE
-==================================================
-
-Use:
-
-UserAccount
-+
-linked Employee
-
-Do not create a new duplicate AccessUser entity containing copied employee data.
-
-A read model is acceptable:
-
-AccessUserListItem
-
-==================================================
-42. USER WITHOUT LOGIN
-==================================================
-
-If Employee exists but has no UserAccount:
-
-show:
-
-No Login
-
-Do not display permission editor as though grants can take effect.
-
-If existing account-provisioning architecture supports it:
-
-Provide:
-
-Enable Login / Create Account
-
-through established workflow.
-
-Do not reinvent account creation.
-
-==================================================
-43. USER ACCESS DETAIL PAGE
-==================================================
-
-Route:
-
-/app/settings/access/users/:userId
-
-Create a dedicated professional editor.
-
-==================================================
-44. ACCESS DETAIL HEADER
-==================================================
-
-Show:
-
-Avatar
-
-Employee/User name
-
-Employee code
-
-Designation
-
-Department
-
-Login identifier where authorized
-
-Account status
-
-Last access update.
-
-Actions:
-
-Save Changes
-
-Reset Changes
-
-More if needed.
-
-==================================================
-45. ACCESS SUMMARY
-==================================================
-
-Show compact summary:
-
-Enabled modules with granted access
-
-Number of granted capabilities/permissions
-
-Employee linkage status
-
-Any access warnings.
-
-Do not show meaningless "Role: Employee".
-
-==================================================
-46. MODULE ACCESS EDITOR
-==================================================
-
-Main content is grouped by MODULE.
-
-Example:
-
-HR
-[Access configured]
-
-Services
-[No access]
-
-Future:
-
-Inventory
-Finance.
-
-Do NOT render 100 permissions in one giant flat checkbox list.
-
-==================================================
-47. MODULE EXPANSION
-==================================================
-
-When HR expands:
-
-EMPLOYEES
-
-ATTENDANCE
-
-LEAVE & HOLIDAYS
-
-REPORTS
-
-CONFIGURATION
-
-When Services later expands:
-
-ENQUIRIES
-
-JOBS & SCHEDULING
-
-INSPECTIONS
-
-MATERIAL REQUESTS
-
-WORK EXECUTION
-
-REPORTS
-
-CONFIGURATION
-
-The UI is generated from PermissionCatalog.
-
-==================================================
-48. SUBMODULE ACCESS UX
-==================================================
-
-Each submodule presents meaningful ACTIONS.
-
-Example:
-
-ATTENDANCE
-
-Personal Attendance
-[View]
-[Punch]
-[History]
-[Request Correction]
-
-Workforce Attendance
-View Records: [No Access | Team | All]
-
-Correction Review:
-[No Access | Team | All]
-
-Reports:
-[No Access | Team | All]
-
-Do NOT expose technical permission keys to normal administrators.
-
-==================================================
-49. SCOPE SELECTOR
-==================================================
-
-Use a clear segmented/dropdown control according to supported scopes.
-
-Example:
-
-View Attendance Records
-
-○ No Access
-○ Team
-○ All
-
-Service future:
-
-View Jobs
-
-○ No Access
-○ Assigned
-○ Team
-○ All
-
-Only show scopes supported by the permission definition.
-
-==================================================
-50. SELF PERMISSIONS
-==================================================
-
-Self permissions should use normal toggles/checkboxes.
-
-Example:
-
-Personal Leave
-
-[x] View My Leave
-
-[x] Request Leave
-
-[x] Cancel My Pending Leave
-
-[x] View My Balance
-
-Do not make admin choose "Self" from a dropdown when permission is inherently self-only.
-
-==================================================
-51. ACTION PERMISSIONS
-==================================================
-
-Example:
-
-Employees
-
-[x] Create Employee
-
-[x] Edit Employee
-
-[ ] Deactivate Employee
-
-View Employee Records:
-[Team | All]
-
-==================================================
-52. MODULE QUICK CONTROL
-==================================================
-
-At module header provide useful actions:
-
-No Access
-
-Select Existing Access / Custom
-
-Clear Module Access
-
-Do NOT provide:
-
-"Full Access"
-
-as a careless single click without confirmation.
-
-If full access exists:
-
-show confirmation
-explain scope
-exclude non-delegable/high-risk permissions.
-
-==================================================
-53. SUBMODULE QUICK CONTROL
-==================================================
-
-Optional:
-
-Enable Submodule
-
-Clear Submodule Access.
-
-Still write explicit grants.
-
-No hidden role state.
-
-==================================================
-54. SEARCH PERMISSIONS
-==================================================
-
-For large future catalogs:
-
-provide:
-
-Search permissions
-
-Example search:
-
-"holiday"
-
-shows matching:
-
-HR → Leave & Holidays → Manage Holidays.
-
-==================================================
-55. DESCRIPTIONS
-==================================================
-
-Every permission should have plain-language copy.
-
-Bad:
-
-hr.leave.requests.review
-
-Good UI:
-
-Review Leave Requests
-
-"Approve or reject leave requests within the selected scope."
-
-==================================================
-56. DANGEROUS ACTIONS
-==================================================
-
-High-impact permissions should have visual caution.
-
-Examples:
-
-Manage User Access
-
-Adjust Leave Balances
-
-Manage Company Configuration
-
-Future:
-Issue Inventory
-Approve Payments.
-
-Do not use alarming design everywhere.
-
-Only genuinely high-risk actions.
-
-==================================================
-57. SAVE MODEL
-==================================================
-
-Do NOT save every checkbox immediately.
-
-Use an edit session.
-
-Administrator changes access.
-
-Page becomes dirty.
-
-Then:
-
-Save Changes.
-
-Show confirmation summarizing important changes.
-
-==================================================
-58. SAVE SUMMARY
-==================================================
-
-Example:
-
-Update access for Ahmed Khan?
-
-Added:
-- HR → Leave → Review Requests: Team
-- HR → Reports → Attendance: All
-
-Removed:
-- HR → Employees → Edit
-
-[Cancel]
-[Update Access]
-
-==================================================
-59. ATOMIC ACCESS UPDATE
-==================================================
-
-Saving permission changes should be transactional locally.
-
-Update:
-
-permission grants
-
-access activity/audit event
-
-outbox mutation
-
-atomically where appropriate.
-
-Reuse Phase 0.4 infrastructure.
-
-==================================================
-60. ACCESS AUDIT EVENT
-==================================================
-
-Record structured events such as:
-
-access.permission.added
-
-access.permission.updated
-
-access.permission.removed
-
-module access changes where applicable.
-
-Store:
-
-actor
-
-target user
-
-permission key
-
-old scope
-
-new scope
-
-time.
-
-Do not store only English sentences.
-
-==================================================
-61. ACCESS HISTORY
-==================================================
-
-On User Access page show optional compact:
-
-Access History
-
-Examples:
-
-Attendance Records changed Team → All
-
-Holiday Management granted
-
-Leave Approval removed
-
-by Admin Name
-date/time.
-
-Do not build a massive audit product.
-
-==================================================
-62. WHO CAN MANAGE ACCESS
-==================================================
-
-Introduce explicit permission:
-
-access.users.view
-
-access.permissions.manage
-
-or equivalent namespaced platform/company permission.
-
-Do NOT determine access editor visibility from "Company Admin role".
-
-==================================================
-63. GRANT AUTHORITY
-==================================================
-
-Create:
-
-GrantAuthorityResolver
-
-or equivalent.
-
-It determines what permissions the current administrator can grant.
-
-Do not let any access administrator automatically grant every platform permission.
-
-==================================================
-64. COMPANY ADMIN DELEGATION
-==================================================
-
-Company-level access manager can grant:
-
-company-delegable permissions
-
-inside their current company
-
-inside enabled modules.
-
-They cannot grant:
-
-platform-only permissions
-
-permissions marked non-delegable
-
-cross-company permissions.
-
-==================================================
-65. SUPER ADMIN DELEGATION
-==================================================
-
-Authorized Platform/Super Admin can administer:
-
-company module entitlements
-
-company-level permission grants
-
-according to platform access policy.
-
-Still company-scoped when assigning company permissions.
-
-==================================================
-66. SELF-ESCALATION
-==================================================
-
-By default:
-
-A user MUST NOT modify their own access grants.
-
-Even if they can manage other users.
-
-This prevents accidental/self privilege escalation.
-
-Platform Super Admin emergency behavior may be handled explicitly if required.
-
-==================================================
-67. LAST ACCESS ADMIN GUARD
-==================================================
-
-Do not allow removing the final user capable of managing company access
-without an explicit safe recovery path.
-
-Example:
-
-Company currently has one access administrator.
-
-They attempt to remove:
-
-access.permissions.manage
-
-from themselves/the final admin.
-
-Block with clear message.
-
-==================================================
-68. LAST COMPANY ADMIN CONCEPT
-==================================================
-
-If the existing system still distinguishes a company ownership/admin concept
-needed for account recovery, preserve the necessary safety guard.
-
-But do NOT use that designation for ordinary business authorization.
-
-==================================================
-69. GRANT CEILING
-==================================================
-
-An access administrator must not delegate beyond their authority.
-
-Example:
-
-User has ability to manage HR access but no Services delegation authority.
-
-They should not be able to grant Services permissions.
-
-Implement clean delegation rules.
-
-==================================================
-70. MODULE ENABLEMENT CEILING
-==================================================
-
-Permission editor only shows/grants permissions for modules enabled in
-the current company.
-
-Optionally show disabled modules read-only:
-
-Services
-Not enabled for this company
-
-depending on admin UX.
-
-==================================================
-71. EMPLOYEE LINK REQUIREMENTS
-==================================================
-
-PermissionDefinition can declare:
-
-requiresEmployeeLink.
-
-Examples:
-
-Personal Attendance Punch
-→ yes.
-
-Personal Leave Request
-→ yes.
-
-Future Service Assigned Work
-→ yes.
-
-Company-wide Employee View
-→ no.
-
-==================================================
-72. INVALID GRANT PREVENTION
-==================================================
-
-If user has no linked active Employee:
-
-disable/deny grants requiring Employee identity.
-
-Explain:
-
-"This access requires a linked active employee record."
-
-Do not silently grant unusable permissions.
-
-==================================================
-73. ACTIVE EMPLOYEE REQUIREMENT
-==================================================
-
-If Employee becomes inactive/terminated:
-
-self and assigned capabilities should become unavailable.
-
-Do not delete historical grants automatically.
-
-Capability resolution considers active Employee state.
-
-==================================================
-74. RECORD SCOPE SECURITY
-==================================================
-
-Navigation visibility is NOT security.
-
-Every repository/use-case query must enforce:
-
-company scope
-
-permission
-
-resolved access scope.
-
-A user manually entering another Employee/Job/Leave ID must not bypass access.
-
-==================================================
-75. USER CAPABILITY CONTEXT
-==================================================
-
-Refactor/extend existing:
-
-UserCapabilityContext
-
-so effective capabilities derive from:
-
-active company
-
-enabled modules
-
-permission grants
-
-permission scopes
-
-Employee link/state
-
-organization/team relationships
-
-record assignment where applicable.
-
-Do NOT derive business capability from role names.
-
-==================================================
-76. PERMISSION SET
-==================================================
-
-Refactor existing PermissionSet as needed.
-
-It should answer things like:
-
-has(permissionKey)
-
-scopeFor(permissionKey)
-
-can(permissionKey, requiredScope?)
-
-Do not expose raw DB grant rows to presentation.
-
-==================================================
-77. NAVIGATION RESOLVER
-==================================================
-
-Navigation becomes permission-driven.
-
-Examples:
-
-Employees:
-show if user has meaningful Employees access.
-
-Attendance:
-show if any Attendance capability is usable.
-
-Leave:
-show if any Leave capability is usable.
-
-Services:
-show when:
-services module enabled
-AND
-user has usable Services permission.
-
-No role-specific navigation maps.
-
-==================================================
-78. EMPTY MODULE ACCESS
-==================================================
-
-If company has module enabled but user has zero permissions in it:
-
-do NOT show module.
-
-Example:
-
-Company has Services.
-
-Ahmed has only HR permissions.
-
-Ahmed sees no Services navigation.
-
-==================================================
-79. NESTED NAVIGATION
-==================================================
-
-Inside a module, sub-navigation resolves from access.
-
-Example HR:
-
-Employee with self only:
-Attendance
-Leave
-
-HR operations user:
-Employees
-Attendance
-Leave
-Reports
-
-Configuration destinations only if configuration permissions exist.
-
-==================================================
-80. ROUTE GUARDS
-==================================================
-
-All canonical routes from Phase 0.3 must use the same permission/capability source.
-
-No:
-
-route visible = capability
-but direct URL = role.
-
-One source of truth.
-
-==================================================
-81. ACTION VISIBILITY
-==================================================
-
-Buttons use capabilities.
-
-Examples:
-
-Create Employee
-
-Approve Leave
-
-Adjust Balance
-
-Manage Holiday
-
-must appear only when effective permission permits it.
-
-==================================================
-82. ACTION ENFORCEMENT
-==================================================
-
-Hiding the button is insufficient.
-
-Use case/repository/domain layer must reject unauthorized mutation.
-
-==================================================
-83. PERMISSION DEPENDENCIES
-==================================================
-
-Support definitions such as:
-
-manage implies view
-
-review implies view
-
-edit requires view.
-
-Normalize grants or resolve dependencies centrally.
-
-Do not duplicate:
-
-if manage then view
-
-inside widgets.
-
-==================================================
-84. MODULE CATALOG
-==================================================
-
-Create a global:
-
-ErpAccessCatalog
-
-or equivalent.
-
-It composes:
-
-Platform access definitions
-
-HR access definitions
-
-Services access definitions
-
-future module definitions.
-
-==================================================
-85. MODULE REGISTRY INTEGRATION
-==================================================
-
-Where practical, let an ERP module contribute:
-
-navigation
-
-routes
-
-permissions/access metadata
-
-without central giant switches.
-
-Do not create another competing module system.
-
-Integrate with existing AppModule/ModuleRegistry architecture.
-
-==================================================
-86. FUTURE MODULE ADDITION
-==================================================
-
-Adding Inventory later should conceptually require:
-
-1. register Inventory module
-2. register Inventory permissions
-3. add Inventory routes/navigation
-4. implement Inventory scope resolver
-
-The global Access UI should automatically render:
-
-Inventory
-
-without editing dozens of access-screen widgets.
-
-THIS IS A HARD REQUIREMENT.
-
-==================================================
-87. DATABASE
-==================================================
-
-Inspect the latest DB schema.
-
-Add persistent permission-grant tables if they do not exist in sufficient form.
-
-Potential:
-
-UserPermissionGrants
-
-Do not assume exact schema number from previous prompts.
-
-==================================================
-88. TABLE FIELDS
-==================================================
-
-Possible:
-
-id
-
-companyId
-
-userId
-
-permissionKey
-
-scopeKey nullable
-
-grantedByUserId
-
-grantedAt
-
-updatedAt
-
-expiresAt nullable
-
-isActive
-
-requestId
-
-syncStatus.
-
-Follow existing database conventions.
-
-==================================================
-89. UNIQUE CONSTRAINT
-==================================================
-
-Prevent duplicate effective grant for:
-
-companyId
-userId
-permissionKey.
-
-==================================================
-90. COMPANY MODULE STORAGE
-==================================================
-
-Preserve existing:
-
-CompanyContext.enabledModules
-
-or equivalent module-entitlement architecture.
-
-Do not duplicate module state unnecessarily.
-
-==================================================
-91. LEGACY PERMISSION MIGRATION
-==================================================
-
-Existing demo/local accounts currently receive permission bundles from role templates.
-
-Migrate them to explicit grants.
-
-Existing personas should behave identically after migration.
-
-==================================================
-92. DEMO ACCESS SEED
-==================================================
-
-Replace demo authorization assumptions like:
-
-HR role → these permissions
-
-with:
-
-seed employee/user
-+
-seed explicit permission grants.
-
-You may keep named demo scenarios for testing:
-
-HR-like access
-
-Manager-like access
-
-Employee self-service access
-
-but those names are test fixtures, NOT runtime authorization.
-
-==================================================
-93. CURRENT HR BEHAVIOR MUST REMAIN
-==================================================
-
-After migration existing scenarios must still work:
-
-self Employee
-
-team manager
-
-HR operations user
-
-company access administrator
-
-platform admin.
-
-But implementation is permission/scope-based.
-
-==================================================
-94. SETTINGS NAVIGATION
-==================================================
-
-Update global Settings.
-
-Suggested:
-
-ACCOUNT / PERSONAL
-
-Profile/preferences as current architecture dictates.
-
-ACCESS & MODULES
-
-Users & Access
-
-Company Modules
-
-HR configuration remains:
-
-/app/hr/settings/...
-
-Future Service configuration remains:
-
-/app/services/settings/...
-
-==================================================
-95. REMOVE "ROLES & PERMISSIONS" LABEL
-==================================================
-
-If current Settings contains:
-
-Roles & Permissions
-
-replace it with:
-
-Users & Access
-
-unless role templates still genuinely exist as optional presets.
-
-Do not mislead administrators into thinking runtime access is role-based.
-
-==================================================
-96. COMPANY MODULES PAGE UX
-==================================================
-
-Route:
-
-/app/settings/modules
-
-Desktop/mobile responsive.
-
-Show module cards/rows:
-
-HR
-
-Services
-
-future modules.
-
-Each displays:
-
-Enabled / Disabled
-
-description
-
-availability/licensing status if known
-
-who can manage.
-
-Do not fabricate commercial subscription behavior if backend does not exist.
-
-==================================================
-97. USERS ACCESS LIST FILTERS
-==================================================
-
-Useful filters:
-
-Search name/email/employee code
-
-Department
-
-Account status
-
-Has login
-
-Module access
-
-Active/Inactive employee.
-
-Do not create twenty filters.
-
-==================================================
-98. ACCESS SUMMARY CHIP
-==================================================
-
-Example on user row:
-
-HR
-
-Services
-
-or:
-
-HR + Services
-
-Do not show:
-
-Role: Manager.
-
-==================================================
-99. NO ACCESS STATE
-==================================================
-
-User with login but no ERP grants:
-
-No business access assigned.
-
-Authorized admin can configure access.
-
-==================================================
-100. MOBILE USERS LIST
-==================================================
-
-360–430px:
-
-Use compact employee/user cards.
-
-Show:
-
-name
-
-employee code
-
-login status
-
-module chips
-
-Manage Access.
-
-Do not squeeze desktop table.
-
-==================================================
-101. MOBILE ACCESS EDITOR
-==================================================
-
-Module accordion/list.
-
-Tap:
-
-HR
-
-then submodules.
-
-Use full-width scope selectors.
-
-Sticky:
-
-Save Changes
-
-when dirty.
-
-No tiny permission grid.
-
-==================================================
-102. DESKTOP ACCESS EDITOR
-==================================================
-
-Use space intelligently.
-
-Possible:
-
-left:
-module/submodule navigation
-
-right:
-permission editor
-
-or:
-
-stacked expandable module sections.
-
-Do NOT render a massive spreadsheet with 100 permission columns.
-
-==================================================
-103. TABLET
-==================================================
-
-Use two-pane where space allows,
-otherwise accordion.
-
-==================================================
-104. ACCESS EDITOR STATE
-==================================================
-
-Create a dedicated BLoC/Cubit following project conventions.
-
-It owns:
-
-loaded permission catalog
-
-current grants
-
-draft grants
-
-validation
-
-dirty state
-
-save
-
-failure
-
-success.
-
-Widgets do not compute effective grants.
-
-==================================================
-105. ACCESS REPOSITORY
-==================================================
-
-Create:
-
-AccessRepository
-
-or adapt current account/access repository.
-
-Responsibilities:
-
-watchUsers
-
-getUserGrants
-
-replace/update grants atomically
-
-watchPermissionChanges
-
-query access history if supported.
-
-==================================================
-106. REMOTE READY
-==================================================
-
-Local repository is source of truth now.
-
-Keep API/backend-ready architecture.
-
-Do not hard-wire access editor directly to Drift DAO.
-
-==================================================
-107. SYNC / OUTBOX
-==================================================
-
-Reuse existing outbox.
-
-Operations might include:
-
-ACCESS_GRANT_SET
-
-ACCESS_GRANT_REMOVE
-
-or a batched:
-
-ACCESS_GRANTS_REPLACE
-
-according to existing sync conventions.
-
-Do not create a second sync engine.
-
-==================================================
-108. IDEMPOTENCY
-==================================================
-
-Saving the same access update twice must not create duplicate grants.
-
-Use request IDs according to existing infrastructure.
-
-==================================================
-109. PERMISSION CHANGE REACTIVITY
-==================================================
-
-CRITICAL.
-
-When permissions for the CURRENT logged-in user change:
-
-UserCapabilityContext updates.
-
-Navigation updates.
-
-Actions update.
-
-If current route becomes unauthorized:
-
-redirect to safe allowed landing.
-
-Do not require full app restart.
-
-==================================================
-110. OTHER USER UPDATE
-==================================================
-
-When Admin edits Ahmed's permissions,
-Admin's UI remains stable.
-
-Ahmed's active session should update once the synchronized permission state
-reaches that session/backend architecture.
-
-For local single-session demo, document limitations honestly.
-
-==================================================
-111. CURRENT ROUTE BECOMES UNAUTHORIZED
-==================================================
-
-Example:
-
-Employee currently on:
-
-/app/hr/reports
-
-Their report permission is removed.
-
-Capability refresh:
-
-Reports disappears.
-
-Current route resolves to:
-
-safe accessible landing.
-
-No blank screen.
-
-No redirect loop.
-
-==================================================
-112. MODULE REMOVAL
-==================================================
-
-If Services module is disabled while user is inside it in the future:
-
-resolve safe landing.
-
-Stored permissions may remain but become ineffective.
-
-==================================================
-113. COMPANY SWITCH
-==================================================
-
-Permissions are company-scoped.
-
-Example:
-
-Ahmed:
-
-Company A:
-HR access.
-
-Company B:
-Services access.
-
-Switch company:
-
-navigation and permissions completely recompute.
-
-No grant leakage.
-
-==================================================
-114. URL SECURITY
-==================================================
-
-User cannot use a URL from Company A after switching to Company B
-to access Company A entity.
-
-Existing tenant isolation rules remain.
-
-==================================================
-115. ACCESS PRIVACY
-==================================================
-
-Ordinary users should not see other users' permissions.
-
-Access-management screen itself requires permission.
-
-==================================================
-116. ACCOUNT SECURITY DATA
-==================================================
-
-Do not expose:
-
-password hashes
-
-tokens
-
-security secrets
-
-inside Users & Access.
-
-Only safe login/account metadata.
-
-==================================================
-117. PERMISSION EXPORT
-==================================================
-
-Do NOT build complex permission export/import yet.
-
-Not required.
-
-==================================================
-118. BULK ACCESS
-==================================================
-
-Do NOT build mass permission assignment initially unless easy and safe.
-
-Per-user editor correctness first.
-
-Future presets/bulk editing can be added later.
-
-==================================================
-119. PLATFORM PERMISSIONS
-==================================================
-
-Separate platform-level permissions from company business permissions.
-
-Examples:
-
-platform.companies.manage
-
-platform.modules.manage
-
-should not appear as normal company-delegable permissions unless appropriate.
-
-==================================================
-120. COMPANY ACCESS PERMISSIONS
-==================================================
-
-Examples:
-
 company.access.users.view
 
 company.access.permissions.manage
 
-company.modules.view
+etc.
 
-Use naming aligned with chosen architecture.
+DO NOT rely on these examples alone.
 
-==================================================
-121. ACCESS CATALOG LOCALIZATION
-==================================================
-
-Permission names/descriptions must be localized.
-
-Common/platform access strings:
-platform/common ARBs.
-
-HR permission labels:
-HR ARB.
-
-Future Services permission labels:
-Services ARB.
-
-Access UI composes them.
-
-No hardcoded English.
+Inspect the real permission catalog and list every current permission.
 
 ==================================================
-122. ARABIC / RTL
+7. PERMISSION/API MATRIX
 ==================================================
 
-Full Access screen must support Arabic/RTL.
+Inside the generated document create a section:
 
-Audit:
+API AUTHORIZATION MATRIX
 
-module tree
+For every API endpoint show:
 
-submodule sections
+Endpoint
 
-scope selectors
+Method
 
-permission descriptions
+Module
 
-confirmation dialogs
+Permission key
 
-history timeline.
+Required/allowed scope
 
-==================================================
-123. ACCESSIBILITY
-==================================================
+Employee link required?
 
-Checkboxes/toggles/scopes need semantic labels.
+Company module required?
 
-Do not communicate grant state only by color.
-
-Keyboard navigation on Desktop/Web.
-
-==================================================
-124. TEST — NO ROLE AUTHORIZATION
-==================================================
-
-Add tests proving:
-
-Changing a legacy role label without changing grants
-does NOT change effective capability.
-
-Permission grants do.
-
-==================================================
-125. TEST — EMPLOYEE SELF
-==================================================
-
-Employee granted:
-
-attendance self
-leave self
-
-sees:
-
-Attendance
-Leave
-
-and self actions.
-
-No company organizational access.
-
-==================================================
-126. TEST — TEAM ACCESS
-==================================================
-
-Employee granted:
-
-hr.attendance.records.view / TEAM
-
-can see resolved team.
-
-Cannot see unrelated employees.
-
-==================================================
-127. TEST — ALL ACCESS
-==================================================
-
-Employee granted:
-
-hr.leave.records.view / ALL
-
-can see company Leave records.
-
-Cannot cross company.
-
-==================================================
-128. TEST — ALL DOES NOT CREATE SELF ACTION
-==================================================
-
-Unlinked organizational user with:
-
-hr.leave.records.view / ALL
-
-does NOT automatically gain:
-
-Request My Leave.
-
-==================================================
-129. TEST — EMPLOYEE LINK
-==================================================
-
-User without linked Employee cannot receive/use permission marked:
-
-requiresEmployeeLink.
-
-==================================================
-130. TEST — MODULE DISABLED
-==================================================
-
-Permission stored for Services.
-
-Company Services disabled.
-
-Services hidden and inaccessible.
-
-==================================================
-131. TEST — MODULE ENABLED + NO GRANT
-==================================================
-
-Company Services enabled.
-
-User has no Services permissions.
-
-Services hidden.
-
-==================================================
-132. TEST — MULTIPLE MODULES
-==================================================
-
-User has:
-
-HR grants
-+
-Services grants
-
-sees both modules after Services is implemented.
-
-No role switch required.
-
-==================================================
-133. TEST — MULTIPLE PERMISSIONS
-==================================================
-
-Permissions combine additively.
-
-No conflicting role priority.
-
-==================================================
-134. TEST — COMPANY SWITCH
-==================================================
-
-Company A and Company B grants remain isolated.
-
-==================================================
-135. TEST — SELF ESCALATION
-==================================================
-
-Access administrator cannot grant themselves additional access by default.
-
-==================================================
-136. TEST — LAST ADMIN
-==================================================
-
-Final access administrator cannot be accidentally stripped of access-management capability.
-
-==================================================
-137. TEST — GRANT CEILING
-==================================================
-
-Company administrator cannot grant platform-only permission.
-
-==================================================
-138. TEST — DIRECT URL
-==================================================
-
-Hidden module route remains blocked when typed manually.
-
-==================================================
-139. TEST — LIVE PERMISSION REMOVAL
-==================================================
-
-Current user loses permission.
-
-Navigation updates.
-
-Unauthorized current route resolves safely.
-
-==================================================
-140. TEST — HR REGRESSION
-==================================================
-
-All existing HR flows remain green:
-
-Employees
-
-Attendance
-
-Leave
-
-Holiday
-
-Reports
-
-Dashboard.
-
-==================================================
-141. TEST — ACCESS UI DESKTOP
-==================================================
-
-At 1440px:
-
-Users table appropriate.
-
-Access editor uses desktop layout.
-
-No huge empty regions.
-
-==================================================
-142. TEST — ACCESS UI MOBILE
-==================================================
-
-390px:
-
-user list
-
-access detail
-
-module/submodule expansion
-
-scope selectors
-
-Save
-
-no overflow.
-
-==================================================
-143. TEST — ARABIC
-==================================================
-
-Users & Access works in RTL.
-
-==================================================
-144. ARCHITECTURE DOCUMENTATION
-==================================================
-
-Create/update:
-
-docs/architecture/access_control.md
-
-Document:
-
-UserAccount
-
-Employee link
-
-Company membership
-
-module entitlements
-
-permission catalog
-
-permission grants
-
-scopes
-
-capability resolver
-
-delegation
-
-record-scope enforcement
-
-future module integration.
-
-==================================================
-145. INCLUDE A SIMPLE FORMULA
-==================================================
-
-Document effective access as:
-
-EFFECTIVE ACCESS =
-
-Company Module Enabled
-
-AND
-
-Permission Granted
-
-AND
-
-Required Employee Context Valid
-
-AND
-
-Requested Record Within Granted Scope
-
-AND
-
-Company/Tenant Match
-
-==================================================
-146. FUTURE MODULE GUIDE
-==================================================
-
-Document exactly how a new module integrates.
-
-Example Inventory:
-
-1. create Inventory permission catalog
-
-2. define submodules/actions/scopes
-
-3. register catalog contribution
-
-4. implement Inventory scope resolver
-
-5. use UserCapabilityContext
-
-6. routes/navigation use capabilities
-
-7. Access UI automatically displays Inventory.
-
-No Access UI rewrite.
-
-==================================================
-147. SERVICES GUIDE
-==================================================
-
-Services Phase 1 onward must:
-
-register each real Services permission as functionality is implemented.
-
-Do NOT define role checks.
-
-Example eventual user experiences are consequences of grants:
-
-Technician-like access
-→ Assigned jobs permissions.
-
-Coordinator-like access
-→ Enquiry + scheduling permissions.
-
-Manager-like access
-→ company/team operational permissions.
-
-These are NOT hardcoded user types.
-
-==================================================
-148. REMOVE BUSINESS ROLE LANGUAGE FROM UI
-==================================================
-
-Audit user-facing management pages.
-
-Prefer:
-
-Access
-
-Permissions
-
-Scope
-
-Modules
-
-instead of:
-
-Role
-
-Role Type
-
-Login As.
-
-If designation/job title exists,
-continue showing it as employment information.
-
-Do not confuse it with access.
-
-==================================================
-149. DESIGNATION IS NOT ACCESS
-==================================================
+Record-scope rule
 
 Example:
 
-Designation:
-Senior HVAC Technician
+GET /api/v1/hr/leave/requests
 
-does not grant anything automatically.
+Permission:
+hr.leave.records.view
 
-Access must be explicitly assigned.
+Scope:
+TEAM or ALL
 
-==================================================
-150. DEPARTMENT IS NOT ACCESS
-==================================================
+TEAM:
+server returns only leave requests within resolved team.
 
-Being in HR Department does not automatically grant HR administration.
+ALL:
+server returns company-wide requests.
 
-Being in Service Department does not automatically grant Services operations.
-
-Permissions remain explicit.
-
-==================================================
-151. MANAGER RELATIONSHIP IS NOT ACCESS
-==================================================
-
-An Employee may manage people organizationally.
-
-That relationship defines potential TEAM scope.
-
-But they only receive team screens/actions when appropriate TEAM permission is granted.
+Do this for ALL protected APIs.
 
 ==================================================
-152. SERVICE TEAM RELATIONSHIP FUTURE
+8. SERVER AUTHORIZATION
 ==================================================
 
-Future ServiceTeam membership defines ASSIGNED/TEAM record relationships.
+The backend MUST NOT trust the Flutter UI to enforce permissions.
 
-It does not automatically grant application access.
+Even if Flutter hides:
 
-Permissions still required.
+Add Employee
 
-==================================================
-153. NO AUTOMATIC PERMISSION FROM EMPLOYMENT FIELD
-==================================================
+Approve Leave
 
-Do NOT implement:
+Punch In
 
-if designation contains "Manager"
+Manage Holiday
 
-if department == HR
+the backend must independently enforce authorization.
 
-if department == Services
-
-then grant access.
-
-Never.
+Document this rule prominently.
 
 ==================================================
-154. CURRENT DEMO PERSONAS
+9. COMPANY/TENANT ISOLATION
 ==================================================
 
-For current demos/tests it is acceptable to describe users as:
+Every company-owned record must be tenant scoped.
 
-Employee-like
+Document exactly how active company is selected.
 
-Manager-like
+Preferred:
 
-HR-like
+Authorization: Bearer <token>
 
-Admin-like
+X-Company-Id: <companyId>
 
-but their behavior must come entirely from seeded permissions/scopes.
+Server must verify:
+
+user belongs to company
+
+membership active
+
+company active
+
+module enabled
+
+permission valid
+
+record belongs to same company.
+
+Never trust companyId from request body alone.
 
 ==================================================
-155. DO NOT START SERVICES FEATURES
+10. SELF OPERATIONS
 ==================================================
 
-No:
+For SELF APIs, backend derives employee identity from:
 
-Service Type CRUD
+authenticated user
 
-Enquiry
++
+
+active company membership
+
++
+
+linked Employee.
+
+Example:
+
+POST /attendance/punch-in
+
+must NOT accept arbitrary employeeId for normal self punch.
+
+Same for:
+
+My Attendance
+
+My Leave
+
+Request Leave
+
+My Balance.
+
+Document this clearly.
+
+==================================================
+11. API VERSIONING
+==================================================
+
+Use:
+
+/api/v1
+
+Document future versioning expectation.
+
+==================================================
+12. STANDARD REQUEST HEADERS
+==================================================
+
+Define a standard header contract.
+
+Document which are mandatory/optional.
+
+Consider:
+
+Authorization: Bearer <accessToken>
+
+X-Company-Id: <uuid>
+
+X-Request-Id: <uuid>
+
+Idempotency-Key: <uuid>
+
+Accept-Language: en | ar
+
+X-Client-Platform: android | ios | web
+
+X-Client-Version: <version>
+
+Content-Type: application/json
+
+If different headers are appropriate, explain why.
+
+==================================================
+13. LOGIN HEADERS
+==================================================
+
+Login occurs before company context.
+
+Therefore do not require:
+
+X-Company-Id
+
+for login.
+
+Specify exact login headers separately.
+
+==================================================
+14. STANDARD SUCCESS RESPONSE
+==================================================
+
+Define ONE consistent success envelope.
+
+Example style:
+
+{
+  "success": true,
+  "data": {},
+  "meta": {
+    "requestId": "uuid",
+    "serverTimeUtc": "2026-09-24T06:00:00Z"
+  }
+}
+
+Use actual recommendation consistently throughout the document.
+
+==================================================
+15. PAGINATED RESPONSE
+==================================================
+
+Define exact pagination response.
+
+Example:
+
+{
+  "success": true,
+  "data": [],
+  "meta": {
+    "page": 1,
+    "pageSize": 25,
+    "totalItems": 120,
+    "totalPages": 5,
+    "requestId": "...",
+    "serverTimeUtc": "..."
+  }
+}
+
+Document:
+
+default page size
+
+maximum page size
+
+zero/one-based page behavior.
+
+==================================================
+16. STANDARD ERROR RESPONSE
+==================================================
+
+Define exact shape.
+
+Example:
+
+{
+  "success": false,
+  "error": {
+    "code": "LEAVE_INSUFFICIENT_BALANCE",
+    "message": "Insufficient leave balance.",
+    "fieldErrors": {},
+    "details": {}
+  },
+  "meta": {
+    "requestId": "...",
+    "serverTimeUtc": "..."
+  }
+}
+
+The backend must provide stable error codes.
+
+Flutter must not need to parse English text.
+
+==================================================
+17. HTTP STATUS CODES
+==================================================
+
+Define usage for:
+
+200
+
+201
+
+204
+
+400
+
+401
+
+403
+
+404
+
+409
+
+422
+
+429
+
+500
+
+Also explain when to choose:
+
+403 vs 404
+
+409 vs 422.
+
+==================================================
+18. FIELD VALIDATION
+==================================================
+
+For EVERY mutation endpoint document validation.
+
+Example Employee create:
+
+required fields
+
+format
+
+max lengths
+
+valid reference IDs
+
+company ownership
+
+duplicate employee code behavior
+
+email rules
+
+phone rules
+
+manager rules
+
+shift/work-location validation.
+
+Do this using the actual Flutter validators/domain rules.
+
+==================================================
+19. DATE / TIME CONTRACT
+==================================================
+
+The current frontend has:
+
+AppClock
+
+CompanyTimeService.
+
+Backend must also follow a deterministic time contract.
+
+Document:
+
+UTC storage for absolute timestamps
+
+ISO-8601 UTC response timestamps
+
+company timezone
+
+business date handling
+
+date-only values
+
+time-only values
+
+overnight shifts
+
+holiday dates
+
+leave dates
+
+attendance event timestamps.
+
+Never use server-local timezone as business truth.
+
+==================================================
+20. ENUM CONTRACT
+==================================================
+
+Inspect ALL current enums.
+
+For each API-relevant enum document:
+
+name
+
+allowed wire values
+
+meaning
+
+transitions where applicable.
+
+Examples:
+
+Attendance status
+
+Leave request status
+
+Holiday type
+
+sync status if exposed
+
+Employee status
+
+configuration status.
+
+Do not send localized enum values.
+
+==================================================
+21. ID CONTRACT
+==================================================
+
+Document:
+
+internal UUID
+
+business display code where applicable
+
+foreign reference IDs.
+
+Do not use names/emails as IDs.
+
+==================================================
+22. IDEMPOTENCY
+==================================================
+
+Identify every mutation that must be idempotent.
+
+Examples:
+
+Punch In
+
+Punch Out
+
+Leave submit
+
+Leave approve
+
+Leave reject
+
+Balance adjustment
+
+Holiday import
+
+Permission replacement
+
+Employee create if request retried.
+
+Document:
+
+Idempotency-Key usage
+
+duplicate request behavior
+
+response behavior.
+
+==================================================
+23. OPTIMISTIC CONCURRENCY
+==================================================
+
+Inspect whether current domain needs revision/version handling.
+
+At minimum consider:
+
+Leave approval concurrency
+
+correction review concurrency
+
+permission editing
+
+configuration editing
+
+holiday editing.
+
+Document recommended:
+
+version field
+
+ETag
+
+updatedAt check
+
+or equivalent.
+
+Example:
+
+two reviewers approve same Leave request.
+
+Only first transition succeeds.
+
+Second receives:
+
+409 LEAVE_ALREADY_REVIEWED.
+
+==================================================
+24. AUTHENTICATION SECTION
+==================================================
+
+Document full APIs for:
+
+Login
+
+Refresh token
+
+Logout
+
+Current account
+
+Company memberships
+
+Current company bootstrap
+
+Password change if present
+
+Password reset if present
+
+Account/session validation.
+
+For EACH endpoint provide:
+
+method
+
+URL
+
+headers
+
+body
+
+field table
+
+success response
+
+error responses
+
+security requirements.
+
+==================================================
+25. LOGIN CONTRACT
+==================================================
+
+Derive exact login fields from Flutter.
+
+If frontend supports:
+
+email/phone + password
+
+document that.
+
+Example should be based on actual model.
+
+Do not invent MFA if not implemented.
+
+==================================================
+26. BOOTSTRAP CONTRACT — VERY IMPORTANT
+==================================================
+
+Define one company-session bootstrap API.
+
+Example conceptual:
+
+GET /api/v1/me/bootstrap
+
+It should return what Flutter needs after login/company selection:
+
+account
+
+company
+
+company timezone
+
+company locale
+
+enabled modules/features
+
+linked Employee if any
+
+permission grants + scopes
+
+permission/catalog version if useful
+
+feature/config versions if useful
+
+server time.
+
+DO NOT return role name as authorization truth.
+
+==================================================
+27. COMPANY SWITCH
+==================================================
+
+Document exact process.
+
+Example:
+
+change X-Company-Id
+
+fetch bootstrap
+
+clear/partition stale tenant state
+
+load new company context.
+
+Backend must reject unauthorized company IDs.
+
+==================================================
+28. PROFILE APIs
+==================================================
+
+Inspect current Profile implementation.
+
+Document exact required APIs.
+
+Examples potentially:
+
+GET /me/profile
+
+PATCH /me/preferences
+
+PATCH /me/profile
+
+POST /auth/change-password
+
+but ONLY include functionality actually supported by Flutter.
+
+==================================================
+29. NOTIFICATION APIs
+==================================================
+
+Inspect notification architecture.
+
+Document APIs for:
+
+list notifications
+
+unread count
+
+mark read
+
+mark all read if supported
+
+notification details/deep-link payload
+
+notification preferences if implemented.
+
+Permission must be rechecked when target record is accessed.
+
+==================================================
+30. ACCESS MANAGEMENT APIs
+==================================================
+
+Document full Users & Access backend contract.
+
+Include:
+
+list access users
+
+get access user
+
+get grants
+
+replace/update grants
+
+access history
+
+permission catalog if backend provides it
+
+company module view.
+
+Respect:
+
+self-escalation protection
+
+grant authority
+
+platform-only permissions
+
+non-delegable permissions
+
+employee-link requirements
+
+module enabled requirements
+
+last access admin protection.
+
+==================================================
+31. PERMISSION GRANT RESPONSE
+==================================================
+
+Document exact grant representation.
+
+Example conceptual:
+
+{
+  "key": "hr.leave.requests.review",
+  "scope": "TEAM",
+  "expiresAt": null
+}
+
+Use actual model fields.
+
+==================================================
+32. PERMISSION UPDATE CONTRACT
+==================================================
+
+Prefer an atomic replacement/update contract matching current frontend.
+
+Document:
+
+request
+
+validation
+
+grant authority
+
+audit events
+
+idempotency
+
+response.
+
+==================================================
+33. COMPANY MODULE API
+==================================================
+
+Current local demo may expose module availability read-only.
+
+Document current required API:
+
+GET company modules/entitlements.
+
+If module mutation belongs to platform backend but not current Flutter,
+mark mutation endpoint as:
+
+FUTURE / NOT REQUIRED BY CURRENT FRONTEND.
+
+==================================================
+34. EMPLOYEE API SECTION
+==================================================
+
+Create complete backend specification for Employees.
+
+Include every API required by current screens.
+
+Likely:
+
+list
+
+detail
+
+create
+
+edit
+
+activation/deactivation
+
+reference search
+
+manager reference search
+
+account provisioning where applicable.
+
+Do not assume.
+
+Read repository interfaces and screens.
+
+==================================================
+35. EMPLOYEE LIST
+==================================================
+
+Document:
+
+GET endpoint
+
+search
+
+pagination
+
+department filter
+
+designation filter
+
+work location
+
+status
+
+manager if used
+
+sorting.
+
+Also document scope:
+
+TEAM
+
+ALL
+
+and how server resolves TEAM.
+
+==================================================
+36. EMPLOYEE LIST RESPONSE
+==================================================
+
+Do NOT return giant full Employee aggregates unnecessarily.
+
+Define:
+
+EmployeeListItemDto
+
+based on fields actually shown in list/cards.
+
+Then detail endpoint can return richer DTO.
+
+==================================================
+37. EMPLOYEE DETAIL
+==================================================
+
+Document:
+
+GET detail endpoint
+
+object-scope authorization
+
+safe field visibility
+
+account/security sections.
+
+If some sensitive fields require extra permission,
+document field-level behavior.
+
+==================================================
+38. EMPLOYEE CREATE/EDIT
+==================================================
+
+Document exact request body based on:
+
+EmployeeDraft
+
+Employee model
+
+form validators.
+
+Include reference IDs for:
+
+department
+
+designation
+
+manager
+
+shift
+
+work location
+
+etc. where currently used.
+
+==================================================
+39. REFERENCE DATA
+==================================================
+
+Document reference/search APIs required by selectors.
+
+Examples:
+
+departments
+
+designations
+
+managers/employees
+
+shifts
+
+work locations.
+
+Avoid forcing Flutter to download enormous full lists for every dropdown.
+
+Specify search/reference DTOs where useful.
+
+==================================================
+40. SHIFTS
+==================================================
+
+Document:
+
+list
+
+detail
+
+create
+
+edit
+
+activate/deactivate
+
+validation
+
+overnight shift behavior
+
+permissions.
+
+==================================================
+41. WORK LOCATIONS
+==================================================
+
+Document complete API.
+
+Include actual current fields such as:
+
+name
+
+coordinates
+
+radius/geofence
+
+status
+
+etc.
+
+Derive from models.
+
+==================================================
+42. ATTENDANCE POLICIES
+==================================================
+
+Document complete API.
+
+Explain interaction between:
+
+policy
+
+shift
+
+work location.
+
+Use actual model.
+
+==================================================
+43. ATTENDANCE TODAY API
+==================================================
+
+Define API Flutter should use to render today's attendance.
+
+It should provide enough data for:
+
+state
+
+Punch In availability
+
+Break/Resume
+
+Punch Out
+
+shift/context
+
+policy warnings
+
+location requirements
+
+pending sync/server status if needed.
+
+Do NOT force Flutter to infer server business rules from multiple unrelated APIs
+unless current architecture explicitly requires it.
+
+==================================================
+44. ATTENDANCE ACTION APIs
+==================================================
+
+Document individually or as one command-style endpoint:
+
+Punch In
+
+Break
+
+Resume
+
+Punch Out.
+
+For each specify:
+
+request
+
+GPS/location evidence
+
+accuracy if current frontend sends it
+
+request ID
+
+timestamp/evidence rules
+
+business validations
+
+possible errors
+
+response.
+
+==================================================
+45. SERVER AUTHORITATIVE ATTENDANCE
+==================================================
+
+Backend must ultimately validate:
+
+Employee link
+
+shift
+
+policy
+
+action transition
+
+location/geofence
+
+duplicate event
+
+company timezone
+
+overnight day ownership
+
+permissions.
+
+Flutter UI is not authority.
+
+==================================================
+46. ATTENDANCE STATE MACHINE
+==================================================
+
+Document existing state machine exactly from Flutter.
+
+Do not invent another one.
+
+Include allowed transitions.
+
+==================================================
+47. ATTENDANCE HISTORY
+==================================================
+
+Document:
+
+self history
+
+date filters
+
+pagination if used
+
+monthly summary
+
+day detail.
+
+==================================================
+48. TEAM / ALL ATTENDANCE
+==================================================
+
+Document APIs and scope behavior.
+
+TEAM grant:
+
+server returns only resolved HR team.
+
+ALL:
+
+company-wide.
+
+Never send unrestricted company data to TEAM user and expect Flutter to filter.
+
+==================================================
+49. ATTENDANCE CORRECTIONS
+==================================================
+
+Document:
+
+create correction request
+
+list own corrections if present
+
+review queue
+
+detail
+
+approve/apply
+
+reject.
+
+Use current actual workflow.
+
+==================================================
+50. ATTENDANCE CORRECTION CONCURRENCY
+==================================================
+
+Document:
+
+reviewed request cannot be reviewed twice
+
+self-review restriction
+
+immutable original Attendance events
+
+correction overlay/effective attendance behavior.
+
+==================================================
+51. ATTENDANCE REPORTS
+==================================================
+
+Inspect report implementation.
+
+Document endpoints for report data with:
+
+mode
+
+date range
+
+employee
+
+department
+
+location
+
+shift
+
+issues
+
+pagination
+
+scope.
+
+==================================================
+52. REPORT EXPORT
+==================================================
+
+Document:
+
+CSV
+
+PDF
+
+or current supported export formats.
+
+Export must use same authorization and filters as on-screen report.
+
+No scope bypass.
+
+==================================================
+53. LEAVE TYPE APIs
+==================================================
+
+Document:
+
+list
+
+detail
+
+create
+
+edit
+
+activate/deactivate
+
+fields
+
+validation
+
+permissions.
+
+==================================================
+54. LEAVE POLICY APIs
+==================================================
+
+Document complete current model.
+
+Include:
+
+entitlements
+
+half-day rules
+
+minimum service
+
+advance notice
+
+carry forward fields if model exists
+
+negative balance
+
+probation fields if they are CURRENTLY implemented
+
+etc.
+
+Do not invent future functionality.
+
+==================================================
+55. LEAVE POLICY ASSIGNMENTS
+==================================================
+
+If current repository/domain has employee policy assignments,
+document endpoints.
+
+If UI is deferred but backend data is required,
+mark:
+
+BACKEND REQUIRED / CURRENT UI DEFERRED
+
+rather than omitting it.
+
+==================================================
+56. LEAVE BALANCE MODEL
+==================================================
+
+The current architecture uses a ledger.
+
+Backend must preserve this principle.
+
+Do NOT design:
+
+employee.leaveBalance = 15
+
+as a directly overwritten mutable number.
+
+Document:
+
+balance account
+
+ledger transactions
+
+entitlement
+
+used
+
+pending/reserved
+
+available.
+
+==================================================
+57. LEAVE LEDGER APIs
+==================================================
+
+Document APIs required for:
+
+view balance
+
+view Employee balances
+
+view ledger
+
+adjust balance.
+
+Balance adjustment creates ledger transaction.
+
+No direct overwrite.
+
+==================================================
+58. LEAVE PREVIEW
+==================================================
+
+Document request preview API if needed.
+
+It should calculate server-side:
+
+working leave days
+
+excluded weekends/non-working days
+
+excluded holidays
+
+half-day handling
+
+balance impact
+
+eligibility
+
+warnings.
+
+Use actual LeaveDayCalculator behavior.
+
+==================================================
+59. LEAVE SUBMIT
+==================================================
+
+Document:
+
+POST leave request
+
+body
+
+validation
+
+overlap
+
+balance validation
+
+policy eligibility
+
+holiday exclusion
+
+date calculation
+
+idempotency
+
+response.
+
+==================================================
+60. LEAVE REQUEST STATUS
+==================================================
+
+Document actual enum and valid transitions.
+
+Example based on current implementation:
+
+PENDING
+
+APPROVED
+
+REJECTED
+
+CANCELLED
+
+but verify code.
+
+==================================================
+61. LEAVE APPROVAL
+==================================================
+
+Document:
+
+approve
+
+reject
+
+cancel.
+
+Approval must be transactional:
+
+status transition
+
+ledger reservation/consumption change
+
+event/audit
+
+notification
+
+outbox/event as backend architecture requires.
+
+==================================================
+62. TEAM LEAVE
+==================================================
+
+Document TEAM scope APIs.
+
+==================================================
+63. ALL LEAVE
+==================================================
+
+Document ALL scope APIs.
+
+==================================================
+64. APPROVAL QUEUE
+==================================================
+
+Document:
+
+pending filters
+
+starting soon
+
+employee
+
+leave type
+
+period
+
+department
+
+pagination
+
+scope.
+
+==================================================
+65. EMPLOYEE LEAVE PROFILE
+==================================================
+
+Document backend data needed for:
+
+employee identity
+
+balances
+
+upcoming leave
+
+recent requests
+
+ledger where permitted.
+
+Consider one composed endpoint vs multiple calls.
+
+Recommend based on actual frontend architecture.
+
+==================================================
+66. LEAVE CALENDAR
+==================================================
+
+Document:
+
+period
+
+scope
+
+employee/team/company
+
+Leave events
+
+Holiday events
+
+privacy rules.
+
+Do not include leave reasons broadly in calendar responses unless permission
+actually requires it.
+
+==================================================
+67. HOLIDAY CALENDAR
+==================================================
+
+Document current annual Holiday Calendar model.
+
+Include APIs for:
+
+list years/calendars
+
+calendar detail
+
+year setup
+
+default/applicable calendar if current model uses it.
+
+==================================================
+68. HOLIDAY CRUD
+==================================================
+
+Document:
+
+list
+
+detail
+
+create
+
+edit
+
+activate/deactivate/cancel as actual domain supports.
+
+Fields must come from current Holiday model.
+
+==================================================
+69. HOLIDAY TYPES
+==================================================
+
+Document current actual enum.
+
+Likely concepts include:
+
+PUBLIC/GOVERNMENT
+
+FESTIVAL
+
+REGIONAL
+
+COMPANY
+
+SPECIAL CLOSURE
+
+and independent optionality.
+
+Verify actual implementation.
+
+==================================================
+70. HOLIDAY SCOPE
+==================================================
+
+Document:
+
+company-wide
+
+specific Work Locations
+
+and how applicability is resolved server-side.
+
+==================================================
+71. HOLIDAY COPY YEAR
+==================================================
+
+Document exact API required to:
+
+preview copy
+
+copy previous year's Holidays
+
+validate duplicates
+
+mark source metadata
+
+allow festival dates to be reviewed.
+
+If frontend currently uses different flow,
+follow it.
+
+==================================================
+72. HOLIDAY CSV IMPORT
+==================================================
+
+Document:
+
+multipart/form-data endpoint
+
+file field name
+
+accepted file type
+
+maximum size
+
+preview/validation response
+
+row errors
+
+duplicate warnings
+
+confirmation/final import behavior.
+
+Do not use one opaque "upload and hope" API.
+
+==================================================
+73. ATTENDANCE + LEAVE + HOLIDAY CLASSIFICATION
+==================================================
+
+Backend must support the same workday truth as frontend.
+
+Document classification semantics such as:
+
+working
+
+on break
+
+completed
+
+incomplete
+
+approved Leave
+
+Holiday
+
+non-working day
+
+no record
+
+issue
+
+based on actual code.
+
+Do NOT automatically call missing Attendance "Absent"
+unless current backend requirement explicitly supports an absence engine.
+
+==================================================
+74. HR DASHBOARD
+==================================================
+
+Inspect current dashboard.
+
+List every card/metric/section and the data required.
+
+Then recommend API design.
+
+Possible approaches:
+
+one composed HR dashboard endpoint
+
+or grouped module summary APIs.
+
+Prefer minimizing excessive network calls while keeping module ownership clean.
+
+Document exact response DTO.
+
+==================================================
+75. DASHBOARD SECURITY
+==================================================
+
+Dashboard must not leak metrics outside user scope.
+
+Example:
+
+TEAM Leave permission:
+team metrics only.
+
+No employee visibility:
+do not return company-wide employee counts.
+
+Server shapes data according to effective permissions.
+
+==================================================
+76. NOTIFICATIONS CAUSED BY HR ACTIONS
+==================================================
+
+Map current notifications.
+
+Examples:
+
+Leave submitted
+
+Leave approval required
+
+Leave approved
+
+Leave rejected
+
+Attendance correction requested
+
+correction reviewed
+
+holiday-related notifications if implemented.
+
+For each document:
+
+trigger
+
+recipient selection
+
+deep-link target
+
+payload
+
+permission considerations.
+
+==================================================
+77. AUDIT / ACTIVITY
+==================================================
+
+Current transaction foundation has structured events.
+
+Document backend requirements for:
+
+createdBy
+
+updatedBy
+
+activity history
+
+permission change audit
+
+Leave events
+
+correction events
+
+configuration actions where relevant.
+
+Do not store only English sentences.
+
+==================================================
+78. ATTACHMENTS
+==================================================
+
+Inspect actual current HR usage.
+
+If current HR features support attachment metadata,
+document required APIs.
+
+If attachment capability exists only as shared foundation for future Services,
+state:
+
+NO CURRENT HR ATTACHMENT ENDPOINT REQUIRED
+
+rather than inventing APIs.
+
+==================================================
+79. SYNC / OFFLINE — IMPORTANT
+==================================================
+
+The Flutter application is local-first and has an outbox.
+
+Inspect actual sync architecture.
+
+Generate backend requirements to support it.
+
+Document whether backend integration should use:
+
+normal resource endpoints per mutation
+
+plus retry/idempotency
+
+OR
+
+a batch sync endpoint.
+
+Recommend based on the existing code.
+
+==================================================
+80. OUTBOX OPERATION MATRIX
+==================================================
+
+List every CURRENT outbox operation key from code.
+
+For each map:
+
+operation key
+
+entity
+
+corresponding API endpoint
+
+request payload
+
+idempotency behavior
+
+server response
+
+conflict behavior.
+
+Do not omit current operations.
+
+==================================================
+81. SYNC CONFLICTS
+==================================================
+
+Define behavior for:
+
+duplicate request
+
+server newer version
+
+resource deleted/deactivated
+
+already reviewed
+
+permission removed
+
+company disabled
+
+validation changed.
+
+Map to stable error codes.
+
+==================================================
+82. SOFT DELETE / DEACTIVATION
+==================================================
+
+Inspect each configuration entity.
+
+Document whether backend should:
+
+hard delete
+
+soft delete
+
+deactivate/archive.
+
+Follow current frontend semantics.
+
+==================================================
+83. STANDARD REFERENCE DTO
+==================================================
+
+Where many forms require lightweight references,
+define appropriate DTOs.
+
+Example:
+
+EmployeeReferenceDto
+
+{
+  "id": "...",
+  "employeeCode": "EMP-001",
+  "displayName": "Ahmed Khan"
+}
+
+Do not return full Employee aggregate in selectors.
+
+==================================================
+84. DATA MINIMIZATION
+==================================================
+
+For every endpoint avoid returning data Flutter does not need.
+
+List DTO
+
+Detail DTO
+
+Reference DTO
+
+may differ.
+
+Document them explicitly.
+
+==================================================
+85. FIELD TABLES
+==================================================
+
+For every request/response DTO include a field table:
+
+Field
+
+Type
+
+Required
+
+Nullable
+
+Example
+
+Description
+
+Validation.
+
+Example:
+
+| Field | Type | Required | Nullable | Example | Description |
+| id | UUID | yes | no | ... | Employee ID |
+
+Do this throughout the document.
+
+==================================================
+86. ENDPOINT FORMAT
+==================================================
+
+For EVERY endpoint use this exact documentation template:
+
+### <Endpoint Name>
+
+PURPOSE
+
+METHOD
+
+PATH
+
+AUTHENTICATION
+
+REQUIRED PERMISSION
+
+ALLOWED SCOPE
+
+REQUIRED HEADERS
+
+PATH PARAMETERS
+
+QUERY PARAMETERS
+
+REQUEST BODY
+
+REQUEST FIELD TABLE
+
+BUSINESS VALIDATIONS
+
+SUCCESS RESPONSE
+
+RESPONSE FIELD TABLE
+
+ERROR RESPONSES
+
+IDEMPOTENCY
+
+CONCURRENCY
+
+AUDIT / NOTIFICATION EFFECTS
+
+FLUTTER CONSUMER
+
+Example Flutter repository/use case that consumes it.
+
+==================================================
+87. FLUTTER CONSUMER MAPPING
+==================================================
+
+For every backend endpoint identify which frontend interface consumes it.
+
+Example:
+
+GET /api/v1/hr/employees
+
+Flutter consumer:
+
+EmployeeRepository.watchEmployees(...)
+
+Current local implementation:
+
+LocalEmployeeRepository
+
+This helps backend and frontend teams verify completeness.
+
+==================================================
+88. REPOSITORY → API MATRIX
+==================================================
+
+Create a major section:
+
+FRONTEND REPOSITORY TO BACKEND API MATRIX
+
+For every current repository interface:
+
+Repository
+
+Method
+
+Current local implementation
+
+Required backend endpoint
+
+HTTP method
+
+Permission
+
+Scope.
+
+This is one of the MOST IMPORTANT sections.
+
+==================================================
+89. BLOC / SCREEN COVERAGE
+==================================================
+
+Create:
+
+SCREEN → REQUIRED API MATRIX
+
+Examples:
+
+Login Screen
+
+HR Dashboard
+
+Employee List
+
+Employee Details
+
+Attendance Today
+
+Attendance History
+
+Team Attendance
+
+Leave Home
+
+Leave Approvals
+
+Holiday Management
+
+Users & Access
+
+etc.
+
+For each list all APIs required to render and perform actions.
+
+This catches missing backend endpoints.
+
+==================================================
+90. API COMPLETENESS AUDIT
+==================================================
+
+At the end, compare:
+
+every current route
+
+every repository method
+
+every use case
+
+every mutation
+
+every outbox operation
+
+every report
+
+every notification
+
+against the proposed backend contract.
+
+No current frontend functionality should be left without a backend path.
+
+==================================================
+91. PERFORMANCE / NETWORK DESIGN
+==================================================
+
+Identify places where naive backend integration would cause N+1 requests.
+
+Examples:
+
+Employee list resolving departments one by one
+
+Leave list resolving employee one by one
+
+Dashboard loading 15 independent endpoints
+
+Calendar fetching each day separately.
+
+Recommend composed/list read models where appropriate.
+
+==================================================
+92. CACHING
+==================================================
+
+Document appropriate caching semantics for:
+
+permission catalog
+
+company bootstrap
+
+configuration/master lists
+
+holidays
+
+reference data.
+
+Do not cache volatile Attendance mutations incorrectly.
+
+==================================================
+93. RATE LIMITING
+==================================================
+
+Recommend basic rate limits especially for:
+
+login
+
+password/reset if present
+
+file import
+
+repeated Attendance mutation.
+
+Do not over-design exact infrastructure if backend stack is unknown.
+
+==================================================
+94. SECURITY REQUIREMENTS
+==================================================
+
+Include a backend security section covering:
+
+token validation
+
+tenant isolation
+
+permission enforcement
+
+scope enforcement
+
+mass assignment prevention
+
+input validation
+
+SQL injection protection
+
+file upload validation
+
+PII exposure
+
+audit actor source
+
+rate limits
+
+secure refresh token handling
+
+HTTPS
+
+CORS
+
+CSRF where relevant for Web/cookies.
+
+==================================================
+95. DO NOT TRUST createdBy / updatedBy
+==================================================
+
+Backend derives actor from authenticated session.
+
+Do not accept editable:
+
+createdByUserId
+
+updatedByUserId
+
+from normal mutation body.
+
+==================================================
+96. DO NOT TRUST PERMISSION/SCOPE FROM REQUEST BODY
+==================================================
+
+Normal business request must not send:
+
+"I have ALL scope."
+
+Server resolves it from stored grants.
+
+==================================================
+97. OPENAPI READINESS
+==================================================
+
+The Markdown requirement should be structured so it can later be converted to:
+
+OpenAPI 3.1
+
+but DO NOT generate backend code.
+
+Optionally include a final section:
+
+OPENAPI IMPLEMENTATION NOTES.
+
+==================================================
+98. BACKEND STACK NEUTRAL
+==================================================
+
+Do not assume:
+
+Node
+
+.NET
+
+Java
+
+Laravel
+
+Django
+
+unless repository already contains backend requirements.
+
+The requirement document should be backend-stack-neutral.
+
+==================================================
+99. DATABASE DESIGN
+==================================================
+
+This is primarily an API requirements document.
+
+Do NOT turn it into a giant backend database design.
+
+However where API correctness depends on persistence semantics,
+state requirements.
+
+Examples:
+
+Leave ledger append-only
+
+activity events
+
+permission grant uniqueness
+
+Attendance immutable events
+
+holiday work-location scope
+
+idempotency records.
+
+==================================================
+100. RESPONSE EXAMPLES
+==================================================
+
+Include realistic JSON examples for EVERY important endpoint.
+
+Especially:
+
+Login
+
+Bootstrap
+
+Employee list/detail/create
+
+Attendance Today
+
+Punch In
+
+Punch Out
+
+Team Attendance
+
+Leave preview
+
+Leave submit
+
+Leave approval
+
+Leave balance
+
+Leave calendar
+
+Holiday list/create/import
+
+Users & Access
+
+permission update
+
+Dashboard
+
+Notifications.
+
+==================================================
+101. COMPLETE ERROR CATALOG
+==================================================
+
+Create a section:
+
+ERROR CODE CATALOG
+
+Group by:
+
+AUTH
+
+ACCESS
+
+EMPLOYEE
+
+ATTENDANCE
+
+LEAVE
+
+HOLIDAY
+
+CONFIGURATION
+
+SYNC
+
+VALIDATION.
+
+Derive business errors from current domain failures.
+
+Do not invent hundreds of speculative errors.
+
+==================================================
+102. BACKEND RESPONSIBILITY VS FRONTEND RESPONSIBILITY
+==================================================
+
+Create a table clarifying authority.
+
+Examples:
+
+Permission enforcement
+→ Backend authoritative.
+
+Attendance transition validity
+→ Backend authoritative.
+
+Leave day calculation
+→ Backend authoritative; Flutter may preview.
+
+Leave balance
+→ Backend authoritative.
+
+UI navigation
+→ Flutter.
+
+Localization labels
+→ Flutter.
+
+Company timezone
+→ Backend configuration and Flutter rendering.
+
+This avoids duplicated business authority.
+
+==================================================
+103. MIGRATION FROM LOCAL REPOSITORIES
+==================================================
+
+Document how backend integration should replace current local-only behavior.
+
+Preferred architecture remains:
+
+Flutter UI
+→ BLoC/Cubit
+→ Use Case
+→ Repository
+→ Local/Remote data source
+
+Remote response updates local Drift.
+
+Drift remains frontend source of truth where current architecture requires it.
+
+Do NOT instruct backend developer to rewrite Flutter architecture.
+
+==================================================
+104. REMOTE REPOSITORY CONTRACT
+==================================================
+
+Identify which current repositories need remote data sources.
+
+List them explicitly.
+
+Example categories:
+
+Auth
+
+Employee
+
+Attendance
+
+Leave
+
+Configuration
+
+Reports
+
+Notifications
+
+Access.
+
+==================================================
+105. BOOTSTRAP ORDER
+==================================================
+
+Document recommended application boot API order:
+
+login
+
+company selection if necessary
+
+bootstrap
+
+initial sync/config load
+
+dashboard/current screen.
+
+Avoid unnecessary calls before bootstrap.
+
+==================================================
+106. BACKEND EVENTUAL AUTHORITY
+==================================================
+
+For local/demo current values,
+identify what server becomes authoritative for.
+
+Examples:
+
+permission grants
+
+attendance timestamps
+
+company timezone
+
+leave balances
+
+leave approval state
+
+holiday calendar
+
+employee records.
+
+==================================================
+107. QUESTIONS / GAPS SECTION
+==================================================
+
+At the end create:
+
+BACKEND QUESTIONS / PRODUCT CONFIRMATIONS
+
+Only include genuine uncertainties discovered from code.
+
+For each:
+
+Question
+
+Why it matters
+
+Affected APIs
+
+Recommended safe default if one exists.
+
+Do NOT silently resolve uncertainty.
+
+==================================================
+108. NO SERVICES
+==================================================
+
+Do not add APIs for:
+
+Service Enquiry
+
+Service Jobs
 
 Scheduling
 
 Inspection
 
-Material Request
+Material Requests
 
 Work Execution
 
-in this phase.
+Service Reports
 
-Only the generic Services permission-registration seam.
+Service Teams.
 
-==================================================
-156. DATABASE MIGRATION
-==================================================
+They will have their own future backend API requirement increment.
 
-If permission grants require DB changes:
+The current document is:
 
-inspect current latest schema version
-
-increment exactly once
-
-write migration
-
-preserve all current data
-
-test old → new.
-
-Do not reset DB.
+PLATFORM + ACCESS + COMPLETE HR.
 
 ==================================================
-157. CODEGEN
+109. DOCUMENT ORGANIZATION
 ==================================================
 
-Run required:
+The generated Markdown should use this approximate structure:
 
-flutter gen-l10n
+1. Document Purpose
 
-build_runner
+2. Current Flutter Architecture Summary
 
-after model/schema changes.
+3. API Design Standards
 
-==================================================
-158. QUALITY GATE
-==================================================
+4. Authentication & Session
 
-Run:
+5. Company Context & Bootstrap
 
-dart format .
+6. Profile
 
-flutter analyze
+7. Permission & Access Control
 
-flutter test
+8. Company Modules
 
-flutter build web --release --dart-define=DEMO_AUTH=true
+9. Employees
 
-==================================================
-159. FINAL COMPLETION REPORT
-==================================================
+10. HR Configuration
+    - Departments/Designations if required
+    - Shifts
+    - Work Locations
+    - Attendance Policies
 
-Report:
+11. Attendance
+    - Today
+    - Actions
+    - History
+    - Team/All
+    - Corrections
+    - Reports
 
-1. previous role-based architecture discovered
+12. Leave
+    - Types
+    - Policies
+    - Balance/Ledger
+    - Requests
+    - Approval
+    - Team/All
+    - Employee Leave
+    - Calendar
+    - Reports
 
-2. remaining role dependencies removed
+13. Holidays
+    - Calendar
+    - CRUD
+    - Work-location scope
+    - Copy Year
+    - Import
 
-3. final identity/access architecture
+14. Dashboard
 
-4. UserPermissionGrant model
+15. Notifications
 
-5. PermissionDefinition model
+16. Sync / Outbox / Offline
 
-6. Scope model
+17. Audit / Activity
 
-7. HR permission catalog
+18. Standard DTOs
 
-8. Services registration seam
+19. Error Catalog
 
-9. future-module registration mechanism
+20. Permission → API Matrix
 
-10. company module enablement behavior
+21. Repository → API Matrix
 
-11. Users & Access route
+22. Screen → API Matrix
 
-12. Users & Access desktop UI
+23. Backend vs Frontend Authority
 
-13. Users & Access mobile UI
+24. Security Requirements
 
-14. user access editor
+25. Performance/Caching Requirements
 
-15. submodule editor
+26. OpenAPI Implementation Notes
 
-16. scope selector
+27. Product Questions / TBDs
 
-17. grant authority resolver
-
-18. self-escalation protection
-
-19. last-access-admin protection
-
-20. employee-link validation
-
-21. PermissionSet changes
-
-22. UserCapabilityContext changes
-
-23. NavigationResolver changes
-
-24. route guard changes
-
-25. repository/object-scope enforcement
-
-26. role-template migration
-
-27. demo access migration
-
-28. live permission refresh behavior
-
-29. company switch behavior
-
-30. audit/activity integration
-
-31. database migration/version
-
-32. localization
-
-33. Arabic/RTL
-
-34. tests added
-
-35. flutter analyze result
-
-36. flutter test result/count
-
-37. Web release build result
-
-38. genuine remaining limitations.
+28. API Completeness Checklist
 
 ==================================================
-160. HARD STOP CONDITION
+110. API COMPLETENESS CHECKLIST
 ==================================================
 
-PHASE 0.5 IS COMPLETE ONLY WHEN:
+End the document with checkboxes verifying:
 
-✓ business authorization no longer depends on hardcoded role checks
+Authentication covered
 
-✓ every company user uses the same login architecture
+Company bootstrap covered
 
-✓ Employee remains the employment identity
+Company switch covered
 
-✓ Technician is NOT a separate person entity
+Profile covered
 
-✓ Inspector is NOT a separate person entity
+Permissions covered
 
-✓ Service Manager is NOT a special user type
+Access editor covered
 
-✓ HR user is NOT a special user type
+Module entitlement covered
 
-✓ Manager is NOT a special authorization type
+Employee CRUD covered
 
-✓ access is permission driven
+Employee references covered
 
-✓ record visibility is scope driven
+Shift CRUD covered
 
-✓ supported scopes include SELF / ASSIGNED / TEAM / ALL as needed
+Work Location CRUD covered
 
-✓ scopes are module-resolved correctly
+Attendance Policy CRUD covered
 
-✓ company module enablement is separate from user permission
+Attendance Today covered
 
-✓ dedicated Users & Access screen exists
+Punch In covered
 
-✓ dedicated user Access Detail screen exists
+Break covered
 
-✓ permissions are grouped Module → Submodule → Action
+Resume covered
 
-✓ administrators see friendly labels, not permission keys
+Punch Out covered
 
-✓ scoped permissions have proper scope selectors
+Attendance History covered
 
-✓ self-only permissions use appropriate controls
+Team Attendance covered
 
-✓ Access UI is generated from PermissionCatalog
+All Attendance covered
 
-✓ future modules can register permissions without rewriting Access UI
+Corrections covered
 
-✓ HR permission catalog is fully migrated
+Correction review covered
 
-✓ Services can add its permission catalog later
+Attendance Reports covered
 
-✓ Inventory/Finance/etc. can follow same pattern
+Attendance export covered
 
-✓ global Settings contains Users & Access
+Leave Types covered
 
-✓ Company Modules is separately visible where authorized
+Leave Policies covered
 
-✓ disabled company module cannot be accessed through stored grants
+Balance covered
 
-✓ enabled module with zero user grant remains hidden
+Ledger covered
 
-✓ access grants are company scoped
+Leave preview covered
 
-✓ employee-required grants validate Employee linkage
+Leave submit covered
 
-✓ inactive Employee loses self/assigned capabilities appropriately
+Leave cancel covered
 
-✓ navigation is permission/capability driven
+Leave approval covered
 
-✓ routes are permission/capability driven
+Leave rejection covered
 
-✓ actions are permission/capability driven
+Team Leave covered
 
-✓ repositories/use cases enforce object scope
+All Leave covered
 
-✓ direct URL cannot bypass permissions
+Approvals queue covered
 
-✓ designation does NOT grant permissions
+Employee Leave covered
 
-✓ department does NOT grant permissions
+Leave Calendar covered
 
-✓ manager relationship does NOT itself grant permissions
+Holiday Calendars covered
 
-✓ access administrator cannot self-escalate by default
+Holiday CRUD covered
 
-✓ final company access administrator cannot be accidentally removed
+Holiday Import covered
 
-✓ company administrator cannot grant platform-only permission
+Holiday Copy Year covered
 
-✓ access changes are audited
+Holiday scope covered
 
-✓ access updates use existing outbox/idempotency architecture
+Dashboard covered
 
-✓ permission changes refresh capability/navigation safely
+Notifications covered
 
-✓ company switching recomputes access
+Sync/outbox covered
 
-✓ existing HR behavior remains correct
+audit covered
 
-✓ no Services business functionality was started
+permission matrix complete
 
-✓ English works
+repository matrix complete
 
-✓ Arabic/RTL works
+screen matrix complete.
 
-✓ mobile Access UI works
+==================================================
+111. DO NOT CHANGE APPLICATION CODE
+==================================================
 
-✓ desktop Access UI works
+This task should NOT make functional Flutter changes.
 
-✓ migration preserves existing users/data
+Only create/update backend requirement documentation.
 
-✓ flutter analyze passes
+If helper analysis files are needed temporarily,
+do not leave junk files in production source.
 
-✓ flutter test passes
+==================================================
+112. OUTPUT QUALITY
+==================================================
 
-✓ Web release build succeeds
+The document must NOT be a high-level summary.
 
-THEN STOP.
+Bad:
 
-AFTER THIS IS GREEN:
+"Create an employee API."
 
-START SERVICES PHASE 1.
+Good:
 
-FROM THAT POINT FORWARD:
+METHOD:
+POST
 
-NEVER ADD A NEW BUSINESS FEATURE WITHOUT REGISTERING ITS
-PERMISSIONS + SUPPORTED SCOPES IN THE MODULE PERMISSION CATALOG.
+PATH:
+/api/v1/hr/employees
+
+PERMISSION:
+hr.employees.create
+
+HEADERS:
+...
+
+REQUEST:
+{ ... }
+
+FIELD TABLE:
+...
+
+VALIDATIONS:
+...
+
+SUCCESS:
+201
+{ ... }
+
+ERRORS:
+...
+
+AUDIT:
+...
+
+IDEMPOTENCY:
+...
+
+FLUTTER CONSUMER:
+EmployeeRepository.save(...)
+
+Do this level of detail.
+
+==================================================
+113. FINAL SELF-AUDIT
+==================================================
+
+Before finishing:
+
+Search the codebase again for all repository methods.
+
+Search all current routes.
+
+Search all mutation use cases.
+
+Search all outbox operation keys.
+
+Search all permission definitions.
+
+Search all current notification types.
+
+Search all report modes.
+
+Search all configuration repositories.
+
+Compare all of them against the document.
+
+If something has no API requirement:
+
+ADD IT
+
+or explicitly explain:
+
+NO BACKEND API REQUIRED — <reason>.
+
+==================================================
+114. FINAL RESPONSE
+==================================================
+
+After generating:
+
+docs/backend/hr_backend_api_requirements.md
+
+respond with a concise completion summary containing:
+
+- file generated
+- total API endpoints documented
+- modules covered
+- repository interfaces covered
+- permission definitions covered
+- outbox operations covered
+- unresolved TBDs
+- confirmation that Services was excluded
+- confirmation that no application behavior was modified.
+
+DO NOT START BACKEND IMPLEMENTATION.
+
+STOP AFTER THE REQUIREMENT DOCUMENT IS COMPLETE.
 ```

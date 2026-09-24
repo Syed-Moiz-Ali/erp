@@ -1432,6 +1432,294 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configure leave types, policies and holidays.';
 
   @override
+  String get permissionAccessUsersView => 'View Users & Access';
+
+  @override
+  String get permissionAccessPermissionsManage => 'Manage user access';
+
+  @override
+  String get permissionCompanyModulesView => 'View company modules';
+
+  @override
+  String get permissionPlatformModulesManage => 'Manage platform modules';
+
+  @override
+  String get accessModulePlatform => 'Administration';
+
+  @override
+  String get accessSubAccess => 'Access & modules';
+
+  @override
+  String get accessUsersView => 'View users & access';
+
+  @override
+  String get accessUsersViewDesc =>
+      'Open the Users & Access administration area.';
+
+  @override
+  String get accessPermissionsManage => 'Manage user access';
+
+  @override
+  String get accessPermissionsManageDesc =>
+      'Grant and revoke ERP permissions and scopes.';
+
+  @override
+  String get accessModulesView => 'View company modules';
+
+  @override
+  String get accessModulesViewDesc =>
+      'See which ERP modules are enabled for the company.';
+
+  @override
+  String get accessCompanyUsersManage => 'Manage company users';
+
+  @override
+  String get accessCompanyUsersManageDesc => 'Manage company user accounts.';
+
+  @override
+  String get accessCompanyRolesManage => 'Manage company roles';
+
+  @override
+  String get accessCompanyRolesManageDesc => 'Manage company role metadata.';
+
+  @override
+  String get accessPlatformCompaniesManage => 'Manage platform companies';
+
+  @override
+  String get accessPlatformCompaniesManageDesc =>
+      'Platform-only: manage companies across the platform.';
+
+  @override
+  String get accessPlatformModulesManage => 'Manage platform modules';
+
+  @override
+  String get accessPlatformModulesManageDesc =>
+      'Platform-only: enable or disable modules for companies.';
+
+  @override
+  String get usersAccessTitle => 'Users & access';
+
+  @override
+  String get usersAccessSubtitle =>
+      'Control what each user can access and what records they can work with.';
+
+  @override
+  String get accessCompanyModules => 'Company modules';
+
+  @override
+  String get accessCompanyModulesSubtitle =>
+      'Which ERP modules are enabled for this company.';
+
+  @override
+  String get accessManage => 'Manage access';
+
+  @override
+  String get accessNoLogin => 'No login';
+
+  @override
+  String get accessNoBusinessAccess => 'No business access assigned.';
+
+  @override
+  String get accessModuleHr => 'HR';
+
+  @override
+  String get accessModuleServices => 'Services';
+
+  @override
+  String get accessScopeNone => 'No access';
+
+  @override
+  String get accessScopeSelf => 'Self (own records)';
+
+  @override
+  String get accessScopeAssigned => 'Assigned to me';
+
+  @override
+  String get accessScopeTeam => 'Team (my team)';
+
+  @override
+  String get accessScopeAll => 'Company (all)';
+
+  @override
+  String get accessSaveChanges => 'Save changes';
+
+  @override
+  String get accessResetChanges => 'Reset';
+
+  @override
+  String get accessSaved => 'Access updated.';
+
+  @override
+  String get accessSaveFailed => 'Could not update access.';
+
+  @override
+  String get accessConfirmTitle => 'Update access?';
+
+  @override
+  String get accessConfirmMessage => 'Apply the access changes for this user?';
+
+  @override
+  String get accessAdded => 'Added';
+
+  @override
+  String get accessRemoved => 'Removed';
+
+  @override
+  String get accessChanged => 'Changed';
+
+  @override
+  String get accessNoChanges => 'No changes';
+
+  @override
+  String get accessSummary => 'Access summary';
+
+  @override
+  String get accessGrantedPermissions => 'Granted permissions';
+
+  @override
+  String get accessEmployeeLinked => 'Employee linked';
+
+  @override
+  String get accessEmployeeNotLinked => 'No linked employee';
+
+  @override
+  String get accessEmployeeLinkRequired =>
+      'This access requires a linked active employee record.';
+
+  @override
+  String get accessSelfEscalation => 'You cannot change your own access.';
+
+  @override
+  String get accessLastAdmin =>
+      'The final access administrator cannot be removed.';
+
+  @override
+  String get accessNotPermitted => 'You do not have permission to do this.';
+
+  @override
+  String get accessModuleDisabled =>
+      'This module is not enabled for the company.';
+
+  @override
+  String get accessPlatformOnly =>
+      'Only a platform administrator can grant this.';
+
+  @override
+  String get accessHistory => 'Access history';
+
+  @override
+  String get accessNoHistory => 'No access changes yet.';
+
+  @override
+  String get accessSearchUsers => 'Search users';
+
+  @override
+  String get accessFilterAll => 'All';
+
+  @override
+  String get accessEnabled => 'Enabled';
+
+  @override
+  String get accessDisabled => 'Disabled';
+
+  @override
+  String get accessModulesReadOnly =>
+      'Module availability is managed at platform level in this demo.';
+
+  @override
+  String get accessStatusActive => 'Active';
+
+  @override
+  String get accessStatusInactive => 'Inactive';
+
+  @override
+  String get accessLogin => 'Login';
+
+  @override
+  String get accessEmployee => 'Employee';
+
+  @override
+  String get accessDesignation => 'Designation';
+
+  @override
+  String get accessDepartment => 'Department';
+
+  @override
+  String get accessClearModule => 'Clear module access';
+
+  @override
+  String get accessNoAccessAssigned => 'No access';
+
+  @override
+  String get accessPlatformOnlyBadge => 'Platform only';
+
+  @override
+  String get accessEmployeeRequiredBadge => 'Requires employee';
+
+  @override
+  String get accessGrantView => 'Grant view';
+
+  @override
+  String get accessGrantFull => 'Grant full';
+
+  @override
+  String get accessClear => 'Clear';
+
+  @override
+  String get accessHasAccess => 'Access configured';
+
+  @override
+  String get accessFullConfirmTitle => 'Grant full module access?';
+
+  @override
+  String get accessFullConfirmMessage =>
+      'This grants every delegable permission for this module. You can refine scopes afterwards.';
+
+  @override
+  String get accessModuleAccess => 'Module access';
+
+  @override
+  String get accessGranted => 'Granted';
+
+  @override
+  String get accessNotGranted => 'Not granted';
+
+  @override
+  String get accessExpandAll => 'Expand all';
+
+  @override
+  String get accessCollapseAll => 'Collapse all';
+
+  @override
+  String accessUsersSummary(Object count, Object withAccess) {
+    return 'Showing $count users · $withAccess with access';
+  }
+
+  @override
+  String get accessScopeHint =>
+      'Scope sets which records a permission applies to: Self = the user’s own records, Team = their team, Company = all records in the company.';
+
+  @override
+  String get accessScopeLabel => 'Scope';
+
+  @override
+  String get accessSelfRequiresEmployee =>
+      'Personal (self) permissions need a linked employee. This user has no linked employee, so they stay off.';
+
+  @override
+  String get accessNoLinkedEmployeeTitle => 'No linked employee';
+
+  @override
+  String get accessLinkEmployeeHint =>
+      'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR → Employees → open the employee → Account access.';
+
+  @override
+  String get accessLinkedEmployee => 'Linked employee';
+
+  @override
+  String get accessNotLinked => 'Not linked';
+
+  @override
   String get dashboard => 'Dashboard';
 
   @override
@@ -4393,4 +4681,248 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get leaveDayOne => 'day';
+
+  @override
+  String get hrPermModuleHr => 'Human resources';
+
+  @override
+  String get hrPermSubEmployees => 'Employees';
+
+  @override
+  String get hrPermSubAttendance => 'Attendance';
+
+  @override
+  String get hrPermSubLeave => 'Leave & holidays';
+
+  @override
+  String get hrPermSubReports => 'Reports';
+
+  @override
+  String get hrPermSubConfiguration => 'Configuration';
+
+  @override
+  String get hrPermEmployeesView => 'View employee records';
+
+  @override
+  String get hrPermEmployeesViewDesc =>
+      'See employee records within the selected scope.';
+
+  @override
+  String get hrPermEmployeesCreate => 'Create employee';
+
+  @override
+  String get hrPermEmployeesCreateDesc => 'Add new employees to the company.';
+
+  @override
+  String get hrPermEmployeesEdit => 'Edit employee';
+
+  @override
+  String get hrPermEmployeesEditDesc =>
+      'Update employee details and assignments.';
+
+  @override
+  String get hrPermEmployeesDeactivate => 'Deactivate employee';
+
+  @override
+  String get hrPermEmployeesDeactivateDesc =>
+      'Deactivate or reactivate employee records.';
+
+  @override
+  String get hrPermAttendanceSelfView => 'View my attendance';
+
+  @override
+  String get hrPermAttendanceSelfViewDesc =>
+      'View personal attendance and history.';
+
+  @override
+  String get hrPermAttendanceSelfPunch => 'Punch in';
+
+  @override
+  String get hrPermAttendanceSelfPunchDesc => 'Start the workday.';
+
+  @override
+  String get hrPermAttendanceSelfPunchOut => 'Punch out';
+
+  @override
+  String get hrPermAttendanceSelfPunchOutDesc => 'End the workday.';
+
+  @override
+  String get hrPermAttendanceSelfBreak => 'Take a break';
+
+  @override
+  String get hrPermAttendanceSelfBreakDesc => 'Start and end breaks.';
+
+  @override
+  String get hrPermAttendanceSelfCorrection => 'Request attendance correction';
+
+  @override
+  String get hrPermAttendanceSelfCorrectionDesc =>
+      'Submit attendance correction requests.';
+
+  @override
+  String get hrPermAttendanceRecordsView => 'View attendance records';
+
+  @override
+  String get hrPermAttendanceRecordsViewDesc =>
+      'See workforce attendance within the selected scope.';
+
+  @override
+  String get hrPermAttendanceCorrectionsReview =>
+      'Review attendance corrections';
+
+  @override
+  String get hrPermAttendanceCorrectionsReviewDesc =>
+      'Approve or reject attendance correction requests.';
+
+  @override
+  String get hrPermAttendanceCorrectionsApply => 'Apply attendance corrections';
+
+  @override
+  String get hrPermAttendanceCorrectionsApplyDesc =>
+      'Directly correct attendance records.';
+
+  @override
+  String get hrPermAttendanceReportsView => 'View attendance reports';
+
+  @override
+  String get hrPermAttendanceReportsViewDesc =>
+      'See attendance reports and analytics.';
+
+  @override
+  String get hrPermLeaveSelfView => 'View my leave';
+
+  @override
+  String get hrPermLeaveSelfViewDesc => 'View personal leave requests.';
+
+  @override
+  String get hrPermLeaveSelfRequest => 'Request leave';
+
+  @override
+  String get hrPermLeaveSelfRequestDesc => 'Submit new leave requests.';
+
+  @override
+  String get hrPermLeaveSelfCancel => 'Cancel my leave';
+
+  @override
+  String get hrPermLeaveSelfCancelDesc =>
+      'Cancel personal pending leave requests.';
+
+  @override
+  String get hrPermLeaveSelfBalance => 'View my balance';
+
+  @override
+  String get hrPermLeaveSelfBalanceDesc => 'View personal leave balances.';
+
+  @override
+  String get hrPermLeaveRecordsView => 'View leave records';
+
+  @override
+  String get hrPermLeaveRecordsViewDesc =>
+      'See leave records within the selected scope.';
+
+  @override
+  String get hrPermLeaveRequestsReview => 'Review leave requests';
+
+  @override
+  String get hrPermLeaveRequestsReviewDesc =>
+      'Approve or reject leave requests within the selected scope.';
+
+  @override
+  String get hrPermLeaveBalancesView => 'View leave balances';
+
+  @override
+  String get hrPermLeaveBalancesViewDesc =>
+      'See leave balances within the selected scope.';
+
+  @override
+  String get hrPermLeaveBalancesAdjust => 'Adjust leave balances';
+
+  @override
+  String get hrPermLeaveBalancesAdjustDesc =>
+      'Add or deduct leave balance for employees.';
+
+  @override
+  String get hrPermLeaveSettingsManage => 'Manage leave settings';
+
+  @override
+  String get hrPermLeaveSettingsManageDesc =>
+      'Manage leave configuration overall.';
+
+  @override
+  String get hrPermLeaveTypesView => 'View leave types';
+
+  @override
+  String get hrPermLeaveTypesViewDesc => 'See leave types.';
+
+  @override
+  String get hrPermLeaveTypesManage => 'Manage leave types';
+
+  @override
+  String get hrPermLeaveTypesManageDesc => 'Create and edit leave types.';
+
+  @override
+  String get hrPermLeavePoliciesView => 'View leave policies';
+
+  @override
+  String get hrPermLeavePoliciesViewDesc => 'See leave policies.';
+
+  @override
+  String get hrPermLeavePoliciesManage => 'Manage leave policies';
+
+  @override
+  String get hrPermLeavePoliciesManageDesc => 'Create and edit leave policies.';
+
+  @override
+  String get hrPermHolidaysView => 'View holidays';
+
+  @override
+  String get hrPermHolidaysViewDesc => 'See the holiday calendar.';
+
+  @override
+  String get hrPermHolidaysManage => 'Manage holidays';
+
+  @override
+  String get hrPermHolidaysManageDesc => 'Configure holidays and calendars.';
+
+  @override
+  String get hrPermReportsLeaveView => 'View leave reports';
+
+  @override
+  String get hrPermReportsLeaveViewDesc => 'See leave reports and analytics.';
+
+  @override
+  String get hrPermShiftsView => 'View shifts';
+
+  @override
+  String get hrPermShiftsViewDesc => 'See shift configuration.';
+
+  @override
+  String get hrPermShiftsManage => 'Manage shifts';
+
+  @override
+  String get hrPermShiftsManageDesc => 'Create and edit shifts.';
+
+  @override
+  String get hrPermLocationsView => 'View work locations';
+
+  @override
+  String get hrPermLocationsViewDesc => 'See work location configuration.';
+
+  @override
+  String get hrPermLocationsManage => 'Manage work locations';
+
+  @override
+  String get hrPermLocationsManageDesc => 'Create and edit work locations.';
+
+  @override
+  String get hrPermPoliciesView => 'View attendance policies';
+
+  @override
+  String get hrPermPoliciesViewDesc => 'See attendance policy configuration.';
+
+  @override
+  String get hrPermPoliciesManage => 'Manage attendance policies';
+
+  @override
+  String get hrPermPoliciesManageDesc => 'Create and edit attendance policies.';
 }

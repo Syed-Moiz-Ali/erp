@@ -21,6 +21,8 @@ abstract final class AppRoutes {
       services = ServicesRoutes.root,
       reports = HrRoutes.reports,
       settings = PlatformRoutes.settings,
+      access = '$settings/access',
+      modules = '$settings/modules',
       profile = PlatformRoutes.profile,
       changePassword = PlatformRoutes.changePassword,
       more = '/app/more',
@@ -93,6 +95,8 @@ abstract final class AppRoutes {
       HrRoutes.attendancePolicy(id);
   static String attendancePoliciesEdit(String id) =>
       HrRoutes.attendancePolicyEdit(id);
+  static String accessUser(String id) =>
+      '$access/users/${Uri.encodeComponent(id)}';
   static const utilityPaths = {
     more,
     notifications,

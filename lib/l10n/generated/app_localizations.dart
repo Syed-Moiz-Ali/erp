@@ -2774,6 +2774,546 @@ abstract class AppLocalizations {
   /// **'Configure leave types, policies and holidays.'**
   String get settingsLeaveCategoryDesc;
 
+  /// No description provided for @permissionAccessUsersView.
+  ///
+  /// In en, this message translates to:
+  /// **'View Users & Access'**
+  String get permissionAccessUsersView;
+
+  /// No description provided for @permissionAccessPermissionsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage user access'**
+  String get permissionAccessPermissionsManage;
+
+  /// No description provided for @permissionCompanyModulesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View company modules'**
+  String get permissionCompanyModulesView;
+
+  /// No description provided for @permissionPlatformModulesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage platform modules'**
+  String get permissionPlatformModulesManage;
+
+  /// No description provided for @accessModulePlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'Administration'**
+  String get accessModulePlatform;
+
+  /// No description provided for @accessSubAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access & modules'**
+  String get accessSubAccess;
+
+  /// No description provided for @accessUsersView.
+  ///
+  /// In en, this message translates to:
+  /// **'View users & access'**
+  String get accessUsersView;
+
+  /// No description provided for @accessUsersViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Users & Access administration area.'**
+  String get accessUsersViewDesc;
+
+  /// No description provided for @accessPermissionsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage user access'**
+  String get accessPermissionsManage;
+
+  /// No description provided for @accessPermissionsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant and revoke ERP permissions and scopes.'**
+  String get accessPermissionsManageDesc;
+
+  /// No description provided for @accessModulesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View company modules'**
+  String get accessModulesView;
+
+  /// No description provided for @accessModulesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See which ERP modules are enabled for the company.'**
+  String get accessModulesViewDesc;
+
+  /// No description provided for @accessCompanyUsersManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company users'**
+  String get accessCompanyUsersManage;
+
+  /// No description provided for @accessCompanyUsersManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company user accounts.'**
+  String get accessCompanyUsersManageDesc;
+
+  /// No description provided for @accessCompanyRolesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company roles'**
+  String get accessCompanyRolesManage;
+
+  /// No description provided for @accessCompanyRolesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company role metadata.'**
+  String get accessCompanyRolesManageDesc;
+
+  /// No description provided for @accessPlatformCompaniesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage platform companies'**
+  String get accessPlatformCompaniesManage;
+
+  /// No description provided for @accessPlatformCompaniesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform-only: manage companies across the platform.'**
+  String get accessPlatformCompaniesManageDesc;
+
+  /// No description provided for @accessPlatformModulesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage platform modules'**
+  String get accessPlatformModulesManage;
+
+  /// No description provided for @accessPlatformModulesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform-only: enable or disable modules for companies.'**
+  String get accessPlatformModulesManageDesc;
+
+  /// No description provided for @usersAccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Users & access'**
+  String get usersAccessTitle;
+
+  /// No description provided for @usersAccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control what each user can access and what records they can work with.'**
+  String get usersAccessSubtitle;
+
+  /// No description provided for @accessCompanyModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Company modules'**
+  String get accessCompanyModules;
+
+  /// No description provided for @accessCompanyModulesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which ERP modules are enabled for this company.'**
+  String get accessCompanyModulesSubtitle;
+
+  /// No description provided for @accessManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage access'**
+  String get accessManage;
+
+  /// No description provided for @accessNoLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'No login'**
+  String get accessNoLogin;
+
+  /// No description provided for @accessNoBusinessAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'No business access assigned.'**
+  String get accessNoBusinessAccess;
+
+  /// No description provided for @accessModuleHr.
+  ///
+  /// In en, this message translates to:
+  /// **'HR'**
+  String get accessModuleHr;
+
+  /// No description provided for @accessModuleServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get accessModuleServices;
+
+  /// No description provided for @accessScopeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No access'**
+  String get accessScopeNone;
+
+  /// No description provided for @accessScopeSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Self (own records)'**
+  String get accessScopeSelf;
+
+  /// No description provided for @accessScopeAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to me'**
+  String get accessScopeAssigned;
+
+  /// No description provided for @accessScopeTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team (my team)'**
+  String get accessScopeTeam;
+
+  /// No description provided for @accessScopeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Company (all)'**
+  String get accessScopeAll;
+
+  /// No description provided for @accessSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get accessSaveChanges;
+
+  /// No description provided for @accessResetChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get accessResetChanges;
+
+  /// No description provided for @accessSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Access updated.'**
+  String get accessSaved;
+
+  /// No description provided for @accessSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update access.'**
+  String get accessSaveFailed;
+
+  /// No description provided for @accessConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update access?'**
+  String get accessConfirmTitle;
+
+  /// No description provided for @accessConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply the access changes for this user?'**
+  String get accessConfirmMessage;
+
+  /// No description provided for @accessAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get accessAdded;
+
+  /// No description provided for @accessRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get accessRemoved;
+
+  /// No description provided for @accessChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed'**
+  String get accessChanged;
+
+  /// No description provided for @accessNoChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes'**
+  String get accessNoChanges;
+
+  /// No description provided for @accessSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Access summary'**
+  String get accessSummary;
+
+  /// No description provided for @accessGrantedPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted permissions'**
+  String get accessGrantedPermissions;
+
+  /// No description provided for @accessEmployeeLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee linked'**
+  String get accessEmployeeLinked;
+
+  /// No description provided for @accessEmployeeNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked employee'**
+  String get accessEmployeeNotLinked;
+
+  /// No description provided for @accessEmployeeLinkRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This access requires a linked active employee record.'**
+  String get accessEmployeeLinkRequired;
+
+  /// No description provided for @accessSelfEscalation.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot change your own access.'**
+  String get accessSelfEscalation;
+
+  /// No description provided for @accessLastAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'The final access administrator cannot be removed.'**
+  String get accessLastAdmin;
+
+  /// No description provided for @accessNotPermitted.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to do this.'**
+  String get accessNotPermitted;
+
+  /// No description provided for @accessModuleDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This module is not enabled for the company.'**
+  String get accessModuleDisabled;
+
+  /// No description provided for @accessPlatformOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a platform administrator can grant this.'**
+  String get accessPlatformOnly;
+
+  /// No description provided for @accessHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Access history'**
+  String get accessHistory;
+
+  /// No description provided for @accessNoHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No access changes yet.'**
+  String get accessNoHistory;
+
+  /// No description provided for @accessSearchUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Search users'**
+  String get accessSearchUsers;
+
+  /// No description provided for @accessFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get accessFilterAll;
+
+  /// No description provided for @accessEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get accessEnabled;
+
+  /// No description provided for @accessDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get accessDisabled;
+
+  /// No description provided for @accessModulesReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Module availability is managed at platform level in this demo.'**
+  String get accessModulesReadOnly;
+
+  /// No description provided for @accessStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get accessStatusActive;
+
+  /// No description provided for @accessStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get accessStatusInactive;
+
+  /// No description provided for @accessLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get accessLogin;
+
+  /// No description provided for @accessEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get accessEmployee;
+
+  /// No description provided for @accessDesignation.
+  ///
+  /// In en, this message translates to:
+  /// **'Designation'**
+  String get accessDesignation;
+
+  /// No description provided for @accessDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get accessDepartment;
+
+  /// No description provided for @accessClearModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear module access'**
+  String get accessClearModule;
+
+  /// No description provided for @accessNoAccessAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No access'**
+  String get accessNoAccessAssigned;
+
+  /// No description provided for @accessPlatformOnlyBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform only'**
+  String get accessPlatformOnlyBadge;
+
+  /// No description provided for @accessEmployeeRequiredBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires employee'**
+  String get accessEmployeeRequiredBadge;
+
+  /// No description provided for @accessGrantView.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant view'**
+  String get accessGrantView;
+
+  /// No description provided for @accessGrantFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant full'**
+  String get accessGrantFull;
+
+  /// No description provided for @accessClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get accessClear;
+
+  /// No description provided for @accessHasAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access configured'**
+  String get accessHasAccess;
+
+  /// No description provided for @accessFullConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant full module access?'**
+  String get accessFullConfirmTitle;
+
+  /// No description provided for @accessFullConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This grants every delegable permission for this module. You can refine scopes afterwards.'**
+  String get accessFullConfirmMessage;
+
+  /// No description provided for @accessModuleAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Module access'**
+  String get accessModuleAccess;
+
+  /// No description provided for @accessGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get accessGranted;
+
+  /// No description provided for @accessNotGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not granted'**
+  String get accessNotGranted;
+
+  /// No description provided for @accessExpandAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand all'**
+  String get accessExpandAll;
+
+  /// No description provided for @accessCollapseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse all'**
+  String get accessCollapseAll;
+
+  /// No description provided for @accessUsersSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {count} users · {withAccess} with access'**
+  String accessUsersSummary(Object count, Object withAccess);
+
+  /// No description provided for @accessScopeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope sets which records a permission applies to: Self = the user’s own records, Team = their team, Company = all records in the company.'**
+  String get accessScopeHint;
+
+  /// No description provided for @accessScopeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope'**
+  String get accessScopeLabel;
+
+  /// No description provided for @accessSelfRequiresEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal (self) permissions need a linked employee. This user has no linked employee, so they stay off.'**
+  String get accessSelfRequiresEmployee;
+
+  /// No description provided for @accessNoLinkedEmployeeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked employee'**
+  String get accessNoLinkedEmployeeTitle;
+
+  /// No description provided for @accessLinkEmployeeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR → Employees → open the employee → Account access.'**
+  String get accessLinkEmployeeHint;
+
+  /// No description provided for @accessLinkedEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked employee'**
+  String get accessLinkedEmployee;
+
+  /// No description provided for @accessNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not linked'**
+  String get accessNotLinked;
+
   /// Common/Phase 0 UI: dashboard.
   ///
   /// In en, this message translates to:
@@ -8413,6 +8953,462 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'day'**
   String get leaveDayOne;
+
+  /// No description provided for @hrPermModuleHr.
+  ///
+  /// In en, this message translates to:
+  /// **'Human resources'**
+  String get hrPermModuleHr;
+
+  /// No description provided for @hrPermSubEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get hrPermSubEmployees;
+
+  /// No description provided for @hrPermSubAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get hrPermSubAttendance;
+
+  /// No description provided for @hrPermSubLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave & holidays'**
+  String get hrPermSubLeave;
+
+  /// No description provided for @hrPermSubReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get hrPermSubReports;
+
+  /// No description provided for @hrPermSubConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration'**
+  String get hrPermSubConfiguration;
+
+  /// No description provided for @hrPermEmployeesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View employee records'**
+  String get hrPermEmployeesView;
+
+  /// No description provided for @hrPermEmployeesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See employee records within the selected scope.'**
+  String get hrPermEmployeesViewDesc;
+
+  /// No description provided for @hrPermEmployeesCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create employee'**
+  String get hrPermEmployeesCreate;
+
+  /// No description provided for @hrPermEmployeesCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new employees to the company.'**
+  String get hrPermEmployeesCreateDesc;
+
+  /// No description provided for @hrPermEmployeesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit employee'**
+  String get hrPermEmployeesEdit;
+
+  /// No description provided for @hrPermEmployeesEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update employee details and assignments.'**
+  String get hrPermEmployeesEditDesc;
+
+  /// No description provided for @hrPermEmployeesDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate employee'**
+  String get hrPermEmployeesDeactivate;
+
+  /// No description provided for @hrPermEmployeesDeactivateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate or reactivate employee records.'**
+  String get hrPermEmployeesDeactivateDesc;
+
+  /// No description provided for @hrPermAttendanceSelfView.
+  ///
+  /// In en, this message translates to:
+  /// **'View my attendance'**
+  String get hrPermAttendanceSelfView;
+
+  /// No description provided for @hrPermAttendanceSelfViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View personal attendance and history.'**
+  String get hrPermAttendanceSelfViewDesc;
+
+  /// No description provided for @hrPermAttendanceSelfPunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch in'**
+  String get hrPermAttendanceSelfPunch;
+
+  /// No description provided for @hrPermAttendanceSelfPunchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the workday.'**
+  String get hrPermAttendanceSelfPunchDesc;
+
+  /// No description provided for @hrPermAttendanceSelfPunchOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch out'**
+  String get hrPermAttendanceSelfPunchOut;
+
+  /// No description provided for @hrPermAttendanceSelfPunchOutDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'End the workday.'**
+  String get hrPermAttendanceSelfPunchOutDesc;
+
+  /// No description provided for @hrPermAttendanceSelfBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a break'**
+  String get hrPermAttendanceSelfBreak;
+
+  /// No description provided for @hrPermAttendanceSelfBreakDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start and end breaks.'**
+  String get hrPermAttendanceSelfBreakDesc;
+
+  /// No description provided for @hrPermAttendanceSelfCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Request attendance correction'**
+  String get hrPermAttendanceSelfCorrection;
+
+  /// No description provided for @hrPermAttendanceSelfCorrectionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit attendance correction requests.'**
+  String get hrPermAttendanceSelfCorrectionDesc;
+
+  /// No description provided for @hrPermAttendanceRecordsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance records'**
+  String get hrPermAttendanceRecordsView;
+
+  /// No description provided for @hrPermAttendanceRecordsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See workforce attendance within the selected scope.'**
+  String get hrPermAttendanceRecordsViewDesc;
+
+  /// No description provided for @hrPermAttendanceCorrectionsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review attendance corrections'**
+  String get hrPermAttendanceCorrectionsReview;
+
+  /// No description provided for @hrPermAttendanceCorrectionsReviewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve or reject attendance correction requests.'**
+  String get hrPermAttendanceCorrectionsReviewDesc;
+
+  /// No description provided for @hrPermAttendanceCorrectionsApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply attendance corrections'**
+  String get hrPermAttendanceCorrectionsApply;
+
+  /// No description provided for @hrPermAttendanceCorrectionsApplyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Directly correct attendance records.'**
+  String get hrPermAttendanceCorrectionsApplyDesc;
+
+  /// No description provided for @hrPermAttendanceReportsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance reports'**
+  String get hrPermAttendanceReportsView;
+
+  /// No description provided for @hrPermAttendanceReportsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See attendance reports and analytics.'**
+  String get hrPermAttendanceReportsViewDesc;
+
+  /// No description provided for @hrPermLeaveSelfView.
+  ///
+  /// In en, this message translates to:
+  /// **'View my leave'**
+  String get hrPermLeaveSelfView;
+
+  /// No description provided for @hrPermLeaveSelfViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View personal leave requests.'**
+  String get hrPermLeaveSelfViewDesc;
+
+  /// No description provided for @hrPermLeaveSelfRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request leave'**
+  String get hrPermLeaveSelfRequest;
+
+  /// No description provided for @hrPermLeaveSelfRequestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit new leave requests.'**
+  String get hrPermLeaveSelfRequestDesc;
+
+  /// No description provided for @hrPermLeaveSelfCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel my leave'**
+  String get hrPermLeaveSelfCancel;
+
+  /// No description provided for @hrPermLeaveSelfCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel personal pending leave requests.'**
+  String get hrPermLeaveSelfCancelDesc;
+
+  /// No description provided for @hrPermLeaveSelfBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'View my balance'**
+  String get hrPermLeaveSelfBalance;
+
+  /// No description provided for @hrPermLeaveSelfBalanceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View personal leave balances.'**
+  String get hrPermLeaveSelfBalanceDesc;
+
+  /// No description provided for @hrPermLeaveRecordsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave records'**
+  String get hrPermLeaveRecordsView;
+
+  /// No description provided for @hrPermLeaveRecordsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See leave records within the selected scope.'**
+  String get hrPermLeaveRecordsViewDesc;
+
+  /// No description provided for @hrPermLeaveRequestsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review leave requests'**
+  String get hrPermLeaveRequestsReview;
+
+  /// No description provided for @hrPermLeaveRequestsReviewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve or reject leave requests within the selected scope.'**
+  String get hrPermLeaveRequestsReviewDesc;
+
+  /// No description provided for @hrPermLeaveBalancesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave balances'**
+  String get hrPermLeaveBalancesView;
+
+  /// No description provided for @hrPermLeaveBalancesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See leave balances within the selected scope.'**
+  String get hrPermLeaveBalancesViewDesc;
+
+  /// No description provided for @hrPermLeaveBalancesAdjust.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust leave balances'**
+  String get hrPermLeaveBalancesAdjust;
+
+  /// No description provided for @hrPermLeaveBalancesAdjustDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add or deduct leave balance for employees.'**
+  String get hrPermLeaveBalancesAdjustDesc;
+
+  /// No description provided for @hrPermLeaveSettingsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave settings'**
+  String get hrPermLeaveSettingsManage;
+
+  /// No description provided for @hrPermLeaveSettingsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave configuration overall.'**
+  String get hrPermLeaveSettingsManageDesc;
+
+  /// No description provided for @hrPermLeaveTypesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave types'**
+  String get hrPermLeaveTypesView;
+
+  /// No description provided for @hrPermLeaveTypesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See leave types.'**
+  String get hrPermLeaveTypesViewDesc;
+
+  /// No description provided for @hrPermLeaveTypesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave types'**
+  String get hrPermLeaveTypesManage;
+
+  /// No description provided for @hrPermLeaveTypesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit leave types.'**
+  String get hrPermLeaveTypesManageDesc;
+
+  /// No description provided for @hrPermLeavePoliciesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave policies'**
+  String get hrPermLeavePoliciesView;
+
+  /// No description provided for @hrPermLeavePoliciesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See leave policies.'**
+  String get hrPermLeavePoliciesViewDesc;
+
+  /// No description provided for @hrPermLeavePoliciesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage leave policies'**
+  String get hrPermLeavePoliciesManage;
+
+  /// No description provided for @hrPermLeavePoliciesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit leave policies.'**
+  String get hrPermLeavePoliciesManageDesc;
+
+  /// No description provided for @hrPermHolidaysView.
+  ///
+  /// In en, this message translates to:
+  /// **'View holidays'**
+  String get hrPermHolidaysView;
+
+  /// No description provided for @hrPermHolidaysViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See the holiday calendar.'**
+  String get hrPermHolidaysViewDesc;
+
+  /// No description provided for @hrPermHolidaysManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage holidays'**
+  String get hrPermHolidaysManage;
+
+  /// No description provided for @hrPermHolidaysManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure holidays and calendars.'**
+  String get hrPermHolidaysManageDesc;
+
+  /// No description provided for @hrPermReportsLeaveView.
+  ///
+  /// In en, this message translates to:
+  /// **'View leave reports'**
+  String get hrPermReportsLeaveView;
+
+  /// No description provided for @hrPermReportsLeaveViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See leave reports and analytics.'**
+  String get hrPermReportsLeaveViewDesc;
+
+  /// No description provided for @hrPermShiftsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View shifts'**
+  String get hrPermShiftsView;
+
+  /// No description provided for @hrPermShiftsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See shift configuration.'**
+  String get hrPermShiftsViewDesc;
+
+  /// No description provided for @hrPermShiftsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage shifts'**
+  String get hrPermShiftsManage;
+
+  /// No description provided for @hrPermShiftsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit shifts.'**
+  String get hrPermShiftsManageDesc;
+
+  /// No description provided for @hrPermLocationsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View work locations'**
+  String get hrPermLocationsView;
+
+  /// No description provided for @hrPermLocationsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See work location configuration.'**
+  String get hrPermLocationsViewDesc;
+
+  /// No description provided for @hrPermLocationsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage work locations'**
+  String get hrPermLocationsManage;
+
+  /// No description provided for @hrPermLocationsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit work locations.'**
+  String get hrPermLocationsManageDesc;
+
+  /// No description provided for @hrPermPoliciesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance policies'**
+  String get hrPermPoliciesView;
+
+  /// No description provided for @hrPermPoliciesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See attendance policy configuration.'**
+  String get hrPermPoliciesViewDesc;
+
+  /// No description provided for @hrPermPoliciesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage attendance policies'**
+  String get hrPermPoliciesManage;
+
+  /// No description provided for @hrPermPoliciesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit attendance policies.'**
+  String get hrPermPoliciesManageDesc;
 }
 
 class _AppLocalizationsDelegate

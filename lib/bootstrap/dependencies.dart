@@ -5,6 +5,7 @@ import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
+import 'package:modular_erp/platform/access/access_dependencies.dart';
 import 'package:modular_erp/shared/transactions/transactions_dependencies.dart';
 
 final services = GetIt.instance;
@@ -15,6 +16,7 @@ void configureDependencies() {
   configureCoreDependencies(services);
   configureTransactionDependencies(services);
   configurePlatformDependencies(services);
+  configureAccessDependencies(services);
   configureHrDependencies(services);
   configureServicesDependencies(services);
   configureApplicationComposition(services);
@@ -39,6 +41,9 @@ void configureApplicationComposition(GetIt services) {
       leaveTypeRepository: services(),
       leavePolicyRepository: services(),
       holidayRepository: services(),
+      accessRepository: services(),
+      accessCatalog: services(),
+      accessAuthority: services(),
     ),
   );
 }

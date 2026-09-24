@@ -2,6 +2,8 @@ import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_b
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/modules/hr/demo/hr_demo_seed.dart';
+import 'package:modular_erp/app/access/erp_access_catalog.dart';
+import 'package:modular_erp/platform/access/data/access_seed.dart';
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/app_config.dart';
@@ -44,6 +46,12 @@ Future<void> bootstrap() async {
       services<AppDatabase>(),
       clock: services<AppClock>(),
       time: services<CompanyTimeService>(),
+    );
+    await seedAccessDemoData(
+      services<AppDatabase>(),
+      erpAccessCatalog,
+      services<DemoAuthSource>(),
+      services<AppClock>(),
     );
   }
   final localeCubit = services<LocaleCubit>();

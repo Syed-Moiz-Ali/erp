@@ -4,7 +4,9 @@ import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/models/configuration_record.dart';
+import 'package:modular_erp/core/security/access_scope_resolver.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
@@ -1146,6 +1148,7 @@ class LocalLeaveRepository implements LeaveRepository {
     )..where((t) => t.id.equals(managerId))).getSingleOrNull();
     final userId = manager?.linkedUserId;
     if (userId == null) return;
+    if (!await _canReceiveReviewNotification(actor.company.id, userId)) return;
     await repository.createLocal(
       AppNotification(
         id: const Uuid().v4(),
@@ -1161,14 +1164,38 @@ class LocalLeaveRepository implements LeaveRepository {
     );
   }
 
+  /// Only notify a reviewer who can actually act on the request (§54). Users
+  /// with no grant rows at all (legacy/demo linkage) keep the prior behaviour.
+  Future<bool> _canReceiveReviewNotification(
+    String companyId,
+    String userId,
+  ) async {
+    final rows =
+        await (db.select(db.userPermissionGrants)..where(
+              (t) => t.companyId.equals(companyId) & t.userId.equals(userId),
+            ))
+            .get();
+    if (rows.isEmpty) return true;
+    final now = clock.now();
+    return rows.any(
+      (row) =>
+          row.isActive &&
+          row.permissionKey == 'hr.leave.requests.review' &&
+          (row.expiresAt == null || row.expiresAt!.isAfter(now)),
+    );
+  }
+
   // ---- review --------------------------------------------------------------
 
   Future<bool> _canReview(AuthContext actor, String employeeId) async {
-    final p = PermissionChecker(actor.user.permissions);
     if (actor.employeeReference?.id == employeeId) return false; // self
-    if (p.can(AppPermission.leaveApproveAll)) return true;
-    if (p.can(AppPermission.leaveApproveTeam) &&
-        actor.employeeReference != null) {
+    final scope = const AccessScopeResolver().resolve(
+      actor.user.permissions,
+      all: AppPermission.leaveApproveAll,
+      team: AppPermission.leaveApproveTeam,
+    );
+    if (scope == PermissionScope.all) return true;
+    if (scope == PermissionScope.team && actor.employeeReference != null) {
       final employee =
           await (db.select(db.workforceEmployees)..where(
                 (t) =>

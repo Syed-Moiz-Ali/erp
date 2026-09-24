@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/access_scope_resolver.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_models.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
@@ -39,15 +41,19 @@ class LocalAttendanceReportRepository implements AttendanceReportRepository {
         !actor.company.enabledModules.contains('attendance')) {
       return _fail('reportUnavailable');
     }
-    final permissions = PermissionChecker(actor.user.permissions);
-    if (!permissions.can(AppPermission.attendanceReportView)) {
+    final permissions = actor.user.permissions;
+    if (!permissions.contains(AppPermission.attendanceReportView)) {
       return _fail('reportPermissionDenied');
     }
-    final scope = permissions.can(AppPermission.attendanceViewAll)
-        ? AttendanceScope.company
-        : permissions.can(AppPermission.attendanceViewTeam)
-        ? AttendanceScope.team
-        : null;
+    final scope = switch (const AccessScopeResolver().resolve(
+      permissions,
+      all: AppPermission.attendanceViewAll,
+      team: AppPermission.attendanceViewTeam,
+    )) {
+      PermissionScope.all => AttendanceScope.company,
+      PermissionScope.team => AttendanceScope.team,
+      _ => null,
+    };
     if (scope == null ||
         (scope == AttendanceScope.team && actor.employeeReference == null)) {
       return _fail('reportPermissionDenied');

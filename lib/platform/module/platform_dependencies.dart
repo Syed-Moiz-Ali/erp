@@ -31,7 +31,7 @@ void configurePlatformDependencies(GetIt services) {
     dispose: (repo) => repo.dispose(),
   );
   services.registerLazySingleton(
-    () => AuthBloc(services()),
+    () => AuthBloc(services(), grants: services()),
     dispose: (bloc) => bloc.close(),
   );
   services.registerLazySingleton(

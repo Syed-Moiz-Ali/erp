@@ -68,5 +68,10 @@ extension AppPermissionLocalization on AppPermission {
     AppPermission.holidayView => l10n.permissionHolidayView,
     AppPermission.holidayManage => l10n.permissionHolidayManage,
     AppPermission.leaveReportView => l10n.permissionLeaveReportView,
+    AppPermission.accessUsersView => l10n.permissionAccessUsersView,
+    AppPermission.accessPermissionsManage =>
+      l10n.permissionAccessPermissionsManage,
+    AppPermission.companyModulesView => l10n.permissionCompanyModulesView,
+    AppPermission.platformModulesManage => l10n.permissionPlatformModulesManage,
   };
 }

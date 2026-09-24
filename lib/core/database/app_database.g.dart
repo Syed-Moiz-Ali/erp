@@ -21454,6 +21454,725 @@ class BusinessActivityEventsCompanion
   }
 }
 
+class $UserPermissionGrantsTable extends UserPermissionGrants
+    with TableInfo<$UserPermissionGrantsTable, UserPermissionGrantRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserPermissionGrantsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _permissionKeyMeta = const VerificationMeta(
+    'permissionKey',
+  );
+  @override
+  late final GeneratedColumn<String> permissionKey = GeneratedColumn<String>(
+    'permission_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _scopeKeyMeta = const VerificationMeta(
+    'scopeKey',
+  );
+  @override
+  late final GeneratedColumn<String> scopeKey = GeneratedColumn<String>(
+    'scope_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _grantedByUserIdMeta = const VerificationMeta(
+    'grantedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> grantedByUserId = GeneratedColumn<String>(
+    'granted_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _grantedAtMeta = const VerificationMeta(
+    'grantedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> grantedAt = GeneratedColumn<DateTime>(
+    'granted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expiresAtMeta = const VerificationMeta(
+    'expiresAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> expiresAt = GeneratedColumn<DateTime>(
+    'expires_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    userId,
+    permissionKey,
+    scopeKey,
+    grantedByUserId,
+    grantedAt,
+    updatedAt,
+    expiresAt,
+    isActive,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_permission_grants';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserPermissionGrantRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('permission_key')) {
+      context.handle(
+        _permissionKeyMeta,
+        permissionKey.isAcceptableOrUnknown(
+          data['permission_key']!,
+          _permissionKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_permissionKeyMeta);
+    }
+    if (data.containsKey('scope_key')) {
+      context.handle(
+        _scopeKeyMeta,
+        scopeKey.isAcceptableOrUnknown(data['scope_key']!, _scopeKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_scopeKeyMeta);
+    }
+    if (data.containsKey('granted_by_user_id')) {
+      context.handle(
+        _grantedByUserIdMeta,
+        grantedByUserId.isAcceptableOrUnknown(
+          data['granted_by_user_id']!,
+          _grantedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_grantedByUserIdMeta);
+    }
+    if (data.containsKey('granted_at')) {
+      context.handle(
+        _grantedAtMeta,
+        grantedAt.isAcceptableOrUnknown(data['granted_at']!, _grantedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_grantedAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('expires_at')) {
+      context.handle(
+        _expiresAtMeta,
+        expiresAt.isAcceptableOrUnknown(data['expires_at']!, _expiresAtMeta),
+      );
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserPermissionGrantRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserPermissionGrantRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      permissionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}permission_key'],
+      )!,
+      scopeKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scope_key'],
+      )!,
+      grantedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}granted_by_user_id'],
+      )!,
+      grantedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}granted_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      expiresAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}expires_at'],
+      ),
+      isActive: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_active'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $UserPermissionGrantsTable createAlias(String alias) {
+    return $UserPermissionGrantsTable(attachedDatabase, alias);
+  }
+}
+
+class UserPermissionGrantRow extends DataClass
+    implements Insertable<UserPermissionGrantRow> {
+  final String id;
+  final String companyId;
+  final String userId;
+  final String permissionKey;
+  final String scopeKey;
+  final String grantedByUserId;
+  final DateTime grantedAt;
+  final DateTime updatedAt;
+  final DateTime? expiresAt;
+  final bool isActive;
+  final String? requestId;
+  final String syncStatus;
+  const UserPermissionGrantRow({
+    required this.id,
+    required this.companyId,
+    required this.userId,
+    required this.permissionKey,
+    required this.scopeKey,
+    required this.grantedByUserId,
+    required this.grantedAt,
+    required this.updatedAt,
+    this.expiresAt,
+    required this.isActive,
+    this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['user_id'] = Variable<String>(userId);
+    map['permission_key'] = Variable<String>(permissionKey);
+    map['scope_key'] = Variable<String>(scopeKey);
+    map['granted_by_user_id'] = Variable<String>(grantedByUserId);
+    map['granted_at'] = Variable<DateTime>(grantedAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || expiresAt != null) {
+      map['expires_at'] = Variable<DateTime>(expiresAt);
+    }
+    map['is_active'] = Variable<bool>(isActive);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  UserPermissionGrantsCompanion toCompanion(bool nullToAbsent) {
+    return UserPermissionGrantsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      userId: Value(userId),
+      permissionKey: Value(permissionKey),
+      scopeKey: Value(scopeKey),
+      grantedByUserId: Value(grantedByUserId),
+      grantedAt: Value(grantedAt),
+      updatedAt: Value(updatedAt),
+      expiresAt: expiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiresAt),
+      isActive: Value(isActive),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory UserPermissionGrantRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserPermissionGrantRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      userId: serializer.fromJson<String>(json['userId']),
+      permissionKey: serializer.fromJson<String>(json['permissionKey']),
+      scopeKey: serializer.fromJson<String>(json['scopeKey']),
+      grantedByUserId: serializer.fromJson<String>(json['grantedByUserId']),
+      grantedAt: serializer.fromJson<DateTime>(json['grantedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      expiresAt: serializer.fromJson<DateTime?>(json['expiresAt']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'userId': serializer.toJson<String>(userId),
+      'permissionKey': serializer.toJson<String>(permissionKey),
+      'scopeKey': serializer.toJson<String>(scopeKey),
+      'grantedByUserId': serializer.toJson<String>(grantedByUserId),
+      'grantedAt': serializer.toJson<DateTime>(grantedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'expiresAt': serializer.toJson<DateTime?>(expiresAt),
+      'isActive': serializer.toJson<bool>(isActive),
+      'requestId': serializer.toJson<String?>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  UserPermissionGrantRow copyWith({
+    String? id,
+    String? companyId,
+    String? userId,
+    String? permissionKey,
+    String? scopeKey,
+    String? grantedByUserId,
+    DateTime? grantedAt,
+    DateTime? updatedAt,
+    Value<DateTime?> expiresAt = const Value.absent(),
+    bool? isActive,
+    Value<String?> requestId = const Value.absent(),
+    String? syncStatus,
+  }) => UserPermissionGrantRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    userId: userId ?? this.userId,
+    permissionKey: permissionKey ?? this.permissionKey,
+    scopeKey: scopeKey ?? this.scopeKey,
+    grantedByUserId: grantedByUserId ?? this.grantedByUserId,
+    grantedAt: grantedAt ?? this.grantedAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    expiresAt: expiresAt.present ? expiresAt.value : this.expiresAt,
+    isActive: isActive ?? this.isActive,
+    requestId: requestId.present ? requestId.value : this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  UserPermissionGrantRow copyWithCompanion(UserPermissionGrantsCompanion data) {
+    return UserPermissionGrantRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      permissionKey: data.permissionKey.present
+          ? data.permissionKey.value
+          : this.permissionKey,
+      scopeKey: data.scopeKey.present ? data.scopeKey.value : this.scopeKey,
+      grantedByUserId: data.grantedByUserId.present
+          ? data.grantedByUserId.value
+          : this.grantedByUserId,
+      grantedAt: data.grantedAt.present ? data.grantedAt.value : this.grantedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      expiresAt: data.expiresAt.present ? data.expiresAt.value : this.expiresAt,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPermissionGrantRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('userId: $userId, ')
+          ..write('permissionKey: $permissionKey, ')
+          ..write('scopeKey: $scopeKey, ')
+          ..write('grantedByUserId: $grantedByUserId, ')
+          ..write('grantedAt: $grantedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('isActive: $isActive, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    userId,
+    permissionKey,
+    scopeKey,
+    grantedByUserId,
+    grantedAt,
+    updatedAt,
+    expiresAt,
+    isActive,
+    requestId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserPermissionGrantRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.userId == this.userId &&
+          other.permissionKey == this.permissionKey &&
+          other.scopeKey == this.scopeKey &&
+          other.grantedByUserId == this.grantedByUserId &&
+          other.grantedAt == this.grantedAt &&
+          other.updatedAt == this.updatedAt &&
+          other.expiresAt == this.expiresAt &&
+          other.isActive == this.isActive &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class UserPermissionGrantsCompanion
+    extends UpdateCompanion<UserPermissionGrantRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> userId;
+  final Value<String> permissionKey;
+  final Value<String> scopeKey;
+  final Value<String> grantedByUserId;
+  final Value<DateTime> grantedAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> expiresAt;
+  final Value<bool> isActive;
+  final Value<String?> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const UserPermissionGrantsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.permissionKey = const Value.absent(),
+    this.scopeKey = const Value.absent(),
+    this.grantedByUserId = const Value.absent(),
+    this.grantedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserPermissionGrantsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String userId,
+    required String permissionKey,
+    required String scopeKey,
+    required String grantedByUserId,
+    required DateTime grantedAt,
+    required DateTime updatedAt,
+    this.expiresAt = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.requestId = const Value.absent(),
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       userId = Value(userId),
+       permissionKey = Value(permissionKey),
+       scopeKey = Value(scopeKey),
+       grantedByUserId = Value(grantedByUserId),
+       grantedAt = Value(grantedAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<UserPermissionGrantRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? userId,
+    Expression<String>? permissionKey,
+    Expression<String>? scopeKey,
+    Expression<String>? grantedByUserId,
+    Expression<DateTime>? grantedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? expiresAt,
+    Expression<bool>? isActive,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (userId != null) 'user_id': userId,
+      if (permissionKey != null) 'permission_key': permissionKey,
+      if (scopeKey != null) 'scope_key': scopeKey,
+      if (grantedByUserId != null) 'granted_by_user_id': grantedByUserId,
+      if (grantedAt != null) 'granted_at': grantedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (expiresAt != null) 'expires_at': expiresAt,
+      if (isActive != null) 'is_active': isActive,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserPermissionGrantsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? userId,
+    Value<String>? permissionKey,
+    Value<String>? scopeKey,
+    Value<String>? grantedByUserId,
+    Value<DateTime>? grantedAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? expiresAt,
+    Value<bool>? isActive,
+    Value<String?>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return UserPermissionGrantsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      userId: userId ?? this.userId,
+      permissionKey: permissionKey ?? this.permissionKey,
+      scopeKey: scopeKey ?? this.scopeKey,
+      grantedByUserId: grantedByUserId ?? this.grantedByUserId,
+      grantedAt: grantedAt ?? this.grantedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      expiresAt: expiresAt ?? this.expiresAt,
+      isActive: isActive ?? this.isActive,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (permissionKey.present) {
+      map['permission_key'] = Variable<String>(permissionKey.value);
+    }
+    if (scopeKey.present) {
+      map['scope_key'] = Variable<String>(scopeKey.value);
+    }
+    if (grantedByUserId.present) {
+      map['granted_by_user_id'] = Variable<String>(grantedByUserId.value);
+    }
+    if (grantedAt.present) {
+      map['granted_at'] = Variable<DateTime>(grantedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (expiresAt.present) {
+      map['expires_at'] = Variable<DateTime>(expiresAt.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPermissionGrantsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('userId: $userId, ')
+          ..write('permissionKey: $permissionKey, ')
+          ..write('scopeKey: $scopeKey, ')
+          ..write('grantedByUserId: $grantedByUserId, ')
+          ..write('grantedAt: $grantedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('isActive: $isActive, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -21501,6 +22220,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $AttachmentRecordsTable(this);
   late final $BusinessActivityEventsTable businessActivityEvents =
       $BusinessActivityEventsTable(this);
+  late final $UserPermissionGrantsTable userPermissionGrants =
+      $UserPermissionGrantsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -21531,6 +22252,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     documentSequences,
     attachmentRecords,
     businessActivityEvents,
+    userPermissionGrants,
   ];
 }
 
@@ -32542,6 +33264,361 @@ typedef $$BusinessActivityEventsTableProcessedTableManager =
       BusinessActivityEventRow,
       PrefetchHooks Function()
     >;
+typedef $$UserPermissionGrantsTableCreateCompanionBuilder =
+    UserPermissionGrantsCompanion Function({
+      required String id,
+      required String companyId,
+      required String userId,
+      required String permissionKey,
+      required String scopeKey,
+      required String grantedByUserId,
+      required DateTime grantedAt,
+      required DateTime updatedAt,
+      Value<DateTime?> expiresAt,
+      Value<bool> isActive,
+      Value<String?> requestId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$UserPermissionGrantsTableUpdateCompanionBuilder =
+    UserPermissionGrantsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> userId,
+      Value<String> permissionKey,
+      Value<String> scopeKey,
+      Value<String> grantedByUserId,
+      Value<DateTime> grantedAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> expiresAt,
+      Value<bool> isActive,
+      Value<String?> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$UserPermissionGrantsTableFilterComposer
+    extends Composer<_$AppDatabase, $UserPermissionGrantsTable> {
+  $$UserPermissionGrantsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get permissionKey => $composableBuilder(
+    column: $table.permissionKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scopeKey => $composableBuilder(
+    column: $table.scopeKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get grantedByUserId => $composableBuilder(
+    column: $table.grantedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get grantedAt => $composableBuilder(
+    column: $table.grantedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UserPermissionGrantsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserPermissionGrantsTable> {
+  $$UserPermissionGrantsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get permissionKey => $composableBuilder(
+    column: $table.permissionKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scopeKey => $composableBuilder(
+    column: $table.scopeKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get grantedByUserId => $composableBuilder(
+    column: $table.grantedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get grantedAt => $composableBuilder(
+    column: $table.grantedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UserPermissionGrantsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserPermissionGrantsTable> {
+  $$UserPermissionGrantsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get permissionKey => $composableBuilder(
+    column: $table.permissionKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get scopeKey =>
+      $composableBuilder(column: $table.scopeKey, builder: (column) => column);
+
+  GeneratedColumn<String> get grantedByUserId => $composableBuilder(
+    column: $table.grantedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get grantedAt =>
+      $composableBuilder(column: $table.grantedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get expiresAt =>
+      $composableBuilder(column: $table.expiresAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$UserPermissionGrantsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserPermissionGrantsTable,
+          UserPermissionGrantRow,
+          $$UserPermissionGrantsTableFilterComposer,
+          $$UserPermissionGrantsTableOrderingComposer,
+          $$UserPermissionGrantsTableAnnotationComposer,
+          $$UserPermissionGrantsTableCreateCompanionBuilder,
+          $$UserPermissionGrantsTableUpdateCompanionBuilder,
+          (
+            UserPermissionGrantRow,
+            BaseReferences<
+              _$AppDatabase,
+              $UserPermissionGrantsTable,
+              UserPermissionGrantRow
+            >,
+          ),
+          UserPermissionGrantRow,
+          PrefetchHooks Function()
+        > {
+  $$UserPermissionGrantsTableTableManager(
+    _$AppDatabase db,
+    $UserPermissionGrantsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserPermissionGrantsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserPermissionGrantsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UserPermissionGrantsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> permissionKey = const Value.absent(),
+                Value<String> scopeKey = const Value.absent(),
+                Value<String> grantedByUserId = const Value.absent(),
+                Value<DateTime> grantedAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> expiresAt = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UserPermissionGrantsCompanion(
+                id: id,
+                companyId: companyId,
+                userId: userId,
+                permissionKey: permissionKey,
+                scopeKey: scopeKey,
+                grantedByUserId: grantedByUserId,
+                grantedAt: grantedAt,
+                updatedAt: updatedAt,
+                expiresAt: expiresAt,
+                isActive: isActive,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String userId,
+                required String permissionKey,
+                required String scopeKey,
+                required String grantedByUserId,
+                required DateTime grantedAt,
+                required DateTime updatedAt,
+                Value<DateTime?> expiresAt = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => UserPermissionGrantsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                userId: userId,
+                permissionKey: permissionKey,
+                scopeKey: scopeKey,
+                grantedByUserId: grantedByUserId,
+                grantedAt: grantedAt,
+                updatedAt: updatedAt,
+                expiresAt: expiresAt,
+                isActive: isActive,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UserPermissionGrantsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserPermissionGrantsTable,
+      UserPermissionGrantRow,
+      $$UserPermissionGrantsTableFilterComposer,
+      $$UserPermissionGrantsTableOrderingComposer,
+      $$UserPermissionGrantsTableAnnotationComposer,
+      $$UserPermissionGrantsTableCreateCompanionBuilder,
+      $$UserPermissionGrantsTableUpdateCompanionBuilder,
+      (
+        UserPermissionGrantRow,
+        BaseReferences<
+          _$AppDatabase,
+          $UserPermissionGrantsTable,
+          UserPermissionGrantRow
+        >,
+      ),
+      UserPermissionGrantRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -32613,4 +33690,6 @@ class $AppDatabaseManager {
         _db,
         _db.businessActivityEvents,
       );
+  $$UserPermissionGrantsTableTableManager get userPermissionGrants =>
+      $$UserPermissionGrantsTableTableManager(_db, _db.userPermissionGrants);
 }

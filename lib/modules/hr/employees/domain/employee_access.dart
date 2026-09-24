@@ -1,5 +1,7 @@
 import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/core/security/access_scope_resolver.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'employee.dart';
 
@@ -9,11 +11,17 @@ class EmployeeScopeResolver {
     if (!context.company.enabledModules.contains('employees')) {
       return EmployeeScope.none;
     }
-    final can = PermissionChecker(context.user.permissions).can;
-    if (can(AppPermission.employeeViewAll)) return EmployeeScope.all;
-    if (can(AppPermission.employeeViewTeam)) return EmployeeScope.team;
-    if (can(AppPermission.employeeViewSelf)) return EmployeeScope.self;
-    return EmployeeScope.none;
+    return switch (const AccessScopeResolver().resolve(
+      context.user.permissions,
+      all: AppPermission.employeeViewAll,
+      team: AppPermission.employeeViewTeam,
+      self: AppPermission.employeeViewSelf,
+    )) {
+      PermissionScope.all => EmployeeScope.all,
+      PermissionScope.team => EmployeeScope.team,
+      PermissionScope.self => EmployeeScope.self,
+      _ => EmployeeScope.none,
+    };
   }
 }
 
