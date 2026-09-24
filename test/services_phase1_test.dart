@@ -14,12 +14,14 @@ import 'package:modular_erp/modules/services/configuration/domain/service_master
 import 'package:modular_erp/modules/services/customers/data/local_service_customer_repository.dart';
 import 'package:modular_erp/modules/services/customers/domain/service_customer.dart';
 import 'package:modular_erp/modules/services/domain/contracts/workforce_directory.dart';
+import 'package:modular_erp/modules/services/enquiries/data/local_service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
 import 'package:modular_erp/modules/services/teams/domain/service_team.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
+import 'package:modular_erp/shared/transactions/data/local_attachment_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_document_number_service.dart';
 
@@ -107,6 +109,7 @@ void main() {
   late LocalServiceSiteRepository sites;
   late LocalServiceTeamRepository teams;
   late LocalServiceMasterRepository masters;
+  late LocalServiceEnquiryRepository enquiries;
   const clock = SystemAppClock();
 
   setUp(() {
@@ -134,6 +137,13 @@ void main() {
       }),
     );
     masters = LocalServiceMasterRepository(db, clock, activity);
+    enquiries = LocalServiceEnquiryRepository(
+      db,
+      clock,
+      numbers,
+      activity,
+      LocalAttachmentRepository(db, clock),
+    );
   });
   tearDown(() => db.close());
 
@@ -298,6 +308,7 @@ void main() {
       serviceSiteRepository: sites,
       serviceTeamRepository: teams,
       serviceMasterRepository: masters,
+      serviceEnquiryRepository: enquiries,
       workforceDirectory: _MockDirectory(const {}),
       activityRepository: LocalActivityRepository(db),
     );
@@ -363,6 +374,49 @@ void main() {
           (d) => d.section == NavigationSection.hr,
         ),
         isTrue,
+      );
+    });
+
+    test('enquiry routes are permission guarded and cannot be bypassed', () {
+      final resolver = NavigationResolver(registry());
+      const base = '/app/services/enquiries';
+
+      final viewOnly = _context(
+        permissions: {AppPermission.serviceEnquiryView},
+      );
+      expect(resolver.routeAccess(base, viewOnly), RouteAccess.allowed);
+      expect(resolver.routeAccess('$base/abc', viewOnly), RouteAccess.allowed);
+      expect(
+        resolver.routeAccess('$base/new', viewOnly),
+        RouteAccess.unauthorized,
+      );
+      expect(
+        resolver.routeAccess('$base/abc/edit', viewOnly),
+        RouteAccess.unauthorized,
+      );
+
+      final createOnly = _context(
+        permissions: {AppPermission.serviceEnquiryCreate},
+      );
+      expect(
+        resolver.routeAccess('$base/new', createOnly),
+        RouteAccess.allowed,
+      );
+      expect(
+        resolver.routeAccess('$base/abc', createOnly),
+        RouteAccess.unauthorized,
+      );
+
+      final none = _context(permissions: const {});
+      expect(resolver.routeAccess(base, none), RouteAccess.unauthorized);
+
+      // The Enquiries destination is visible with view or create only.
+      expect(
+        resolver
+            .resolve(createOnly.company, createOnly.user.permissions)
+            .destinations
+            .map((d) => d.id),
+        contains('services-enquiries'),
       );
     });
   });

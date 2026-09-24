@@ -16,7 +16,6 @@ class ReminderSettingsPage extends StatelessWidget {
           final cubit = context.read<ReminderSettingsCubit>();
           final prefs = state.preferences;
           return AppPage(
-            maxWidth: AppDimensions.details,
             header: AppPageHeader(title: l.notificationsReminders),
             child: state.loading
                 ? const AppSkeleton(height: 200)

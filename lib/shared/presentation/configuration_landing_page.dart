@@ -292,7 +292,6 @@ class ConfigurationLandingPage extends StatelessWidget {
               ),
             ];
             return AppPage(
-              maxWidth: AppDimensions.details,
               header: AppPageHeader(
                 title: l.cfgConfiguration,
                 subtitle: l.settingsIntro,

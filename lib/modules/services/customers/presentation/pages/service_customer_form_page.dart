@@ -9,8 +9,16 @@ import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
 
 class ServiceCustomerFormPage extends StatelessWidget {
-  const ServiceCustomerFormPage({super.key, this.customerId});
+  const ServiceCustomerFormPage({
+    super.key,
+    this.customerId,
+    this.returnSelection = false,
+  });
   final String? customerId;
+
+  /// When true the page was opened in-context from another form (for example the
+  /// Service Enquiry form) and pops the created id instead of leaving the flow.
+  final bool returnSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,11 @@ class ServiceCustomerFormPage extends StatelessWidget {
           context,
           message: (l) => l.servicesCustomerSaved,
         );
-        context.go(ServicesRoutes.customers);
+        if (returnSelection) {
+          context.pop(state.savedId);
+        } else {
+          context.go(ServicesRoutes.customers);
+        }
       },
       builder: (context, state) {
         final d = state.draft;
@@ -33,7 +45,6 @@ class ServiceCustomerFormPage extends StatelessWidget {
             ? serviceFailureMessage(state.failure, l)
             : null;
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: customerId == null
                 ? l.servicesCustomerAdd

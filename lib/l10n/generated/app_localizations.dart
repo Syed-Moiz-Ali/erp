@@ -10771,6 +10771,1608 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You do not have permission to perform this action.'**
   String get servicesDenied;
+
+  /// No description provided for @permissionServiceEnquiryView.
+  ///
+  /// In en, this message translates to:
+  /// **'View enquiries'**
+  String get permissionServiceEnquiryView;
+
+  /// No description provided for @permissionServiceEnquiryCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create enquiry'**
+  String get permissionServiceEnquiryCreate;
+
+  /// No description provided for @permissionServiceEnquiryEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit enquiry'**
+  String get permissionServiceEnquiryEdit;
+
+  /// No description provided for @permissionServiceEnquiryCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel enquiry'**
+  String get permissionServiceEnquiryCancel;
+
+  /// No description provided for @servicesPermSubEnquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiries'**
+  String get servicesPermSubEnquiries;
+
+  /// No description provided for @servicesPermEnquiriesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View enquiries'**
+  String get servicesPermEnquiriesView;
+
+  /// No description provided for @servicesPermEnquiriesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the company service enquiry queue and enquiry details.'**
+  String get servicesPermEnquiriesViewDesc;
+
+  /// No description provided for @servicesPermEnquiriesCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create enquiry'**
+  String get servicesPermEnquiriesCreate;
+
+  /// No description provided for @servicesPermEnquiriesCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a new service enquiry, including restricted customer and site reference lookup.'**
+  String get servicesPermEnquiriesCreateDesc;
+
+  /// No description provided for @servicesPermEnquiriesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit enquiry'**
+  String get servicesPermEnquiriesEdit;
+
+  /// No description provided for @servicesPermEnquiriesEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit an open service enquiry.'**
+  String get servicesPermEnquiriesEditDesc;
+
+  /// No description provided for @servicesPermEnquiriesCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel enquiry'**
+  String get servicesPermEnquiriesCancel;
+
+  /// No description provided for @servicesPermEnquiriesCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel an open service enquiry (kept historically).'**
+  String get servicesPermEnquiriesCancelDesc;
+
+  /// No description provided for @servicesNavEnquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiries'**
+  String get servicesNavEnquiries;
+
+  /// No description provided for @servicesEnquiriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service enquiries'**
+  String get servicesEnquiriesTitle;
+
+  /// No description provided for @servicesEnquiryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} enquiries'**
+  String servicesEnquiryCount(String filtered, String total);
+
+  /// No description provided for @servicesEnquirySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by number, customer, mobile, site, building or unit'**
+  String get servicesEnquirySearch;
+
+  /// No description provided for @servicesEnquiryAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesEnquiryAllStatuses;
+
+  /// No description provided for @servicesEnquiryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No service enquiries yet.'**
+  String get servicesEnquiryEmpty;
+
+  /// No description provided for @servicesEnquiryEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Log the first service enquiry to start the operational queue.'**
+  String get servicesEnquiryEmptyMessage;
+
+  /// No description provided for @servicesEnquiryNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No enquiries match your filters.'**
+  String get servicesEnquiryNoResults;
+
+  /// No description provided for @servicesEnquiryAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New enquiry'**
+  String get servicesEnquiryAdd;
+
+  /// No description provided for @servicesEnquiryColumnEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesEnquiryColumnEnquiry;
+
+  /// No description provided for @servicesEnquiryColumnCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get servicesEnquiryColumnCustomer;
+
+  /// No description provided for @servicesEnquiryColumnSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Site'**
+  String get servicesEnquiryColumnSite;
+
+  /// No description provided for @servicesEnquiryColumnService.
+  ///
+  /// In en, this message translates to:
+  /// **'Service / complaint'**
+  String get servicesEnquiryColumnService;
+
+  /// No description provided for @servicesEnquiryColumnPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesEnquiryColumnPriority;
+
+  /// No description provided for @servicesEnquiryColumnTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket type'**
+  String get servicesEnquiryColumnTicket;
+
+  /// No description provided for @servicesEnquiryColumnStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesEnquiryColumnStatus;
+
+  /// No description provided for @servicesEnquiryColumnCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesEnquiryColumnCreated;
+
+  /// No description provided for @servicesEnquiryStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get servicesEnquiryStatusOpen;
+
+  /// No description provided for @servicesEnquiryStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesEnquiryStatusCancelled;
+
+  /// No description provided for @servicesEnquiryFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get servicesEnquiryFilterTitle;
+
+  /// No description provided for @servicesEnquiryFilterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesEnquiryFilterStatus;
+
+  /// No description provided for @servicesEnquiryFilterServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type'**
+  String get servicesEnquiryFilterServiceType;
+
+  /// No description provided for @servicesEnquiryFilterComplaintType.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint type'**
+  String get servicesEnquiryFilterComplaintType;
+
+  /// No description provided for @servicesEnquiryFilterPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesEnquiryFilterPriority;
+
+  /// No description provided for @servicesEnquiryFilterTicketType.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket type'**
+  String get servicesEnquiryFilterTicketType;
+
+  /// No description provided for @servicesEnquiryFilterCreatedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Created from'**
+  String get servicesEnquiryFilterCreatedFrom;
+
+  /// No description provided for @servicesEnquiryFilterCreatedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Created to'**
+  String get servicesEnquiryFilterCreatedTo;
+
+  /// No description provided for @servicesEnquiryDetailCustomerSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & location'**
+  String get servicesEnquiryDetailCustomerSection;
+
+  /// No description provided for @servicesEnquiryDetailServiceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Service details'**
+  String get servicesEnquiryDetailServiceSection;
+
+  /// No description provided for @servicesEnquiryDetailComplaintSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint'**
+  String get servicesEnquiryDetailComplaintSection;
+
+  /// No description provided for @servicesEnquiryDetailRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesEnquiryDetailRecord;
+
+  /// No description provided for @servicesEnquiryDetailActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesEnquiryDetailActivity;
+
+  /// No description provided for @servicesEnquiryCustomerCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer code'**
+  String get servicesEnquiryCustomerCode;
+
+  /// No description provided for @servicesEnquiryCustomerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get servicesEnquiryCustomerName;
+
+  /// No description provided for @servicesEnquiryCustomerMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer mobile'**
+  String get servicesEnquiryCustomerMobile;
+
+  /// No description provided for @servicesEnquirySite.
+  ///
+  /// In en, this message translates to:
+  /// **'Service site'**
+  String get servicesEnquirySite;
+
+  /// No description provided for @servicesEnquiryTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get servicesEnquiryTenant;
+
+  /// No description provided for @servicesEnquiryBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get servicesEnquiryBuilding;
+
+  /// No description provided for @servicesEnquiryUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get servicesEnquiryUnit;
+
+  /// No description provided for @servicesEnquiryAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get servicesEnquiryAddress;
+
+  /// No description provided for @servicesEnquiryContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get servicesEnquiryContact;
+
+  /// No description provided for @servicesEnquiryServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type'**
+  String get servicesEnquiryServiceType;
+
+  /// No description provided for @servicesEnquiryComplaintType.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint type'**
+  String get servicesEnquiryComplaintType;
+
+  /// No description provided for @servicesEnquiryPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesEnquiryPriority;
+
+  /// No description provided for @servicesEnquiryTicketType.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket type'**
+  String get servicesEnquiryTicketType;
+
+  /// No description provided for @servicesEnquiryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint details'**
+  String get servicesEnquiryDescription;
+
+  /// No description provided for @servicesEnquiryCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get servicesEnquiryCreatedBy;
+
+  /// No description provided for @servicesEnquiryCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get servicesEnquiryCreatedAt;
+
+  /// No description provided for @servicesEnquiryUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesEnquiryUpdatedBy;
+
+  /// No description provided for @servicesEnquiryUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get servicesEnquiryUpdatedAt;
+
+  /// No description provided for @servicesEnquiryVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get servicesEnquiryVersion;
+
+  /// No description provided for @servicesEnquiryCancelledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled at'**
+  String get servicesEnquiryCancelledAt;
+
+  /// No description provided for @servicesEnquiryCancelReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation reason'**
+  String get servicesEnquiryCancelReason;
+
+  /// No description provided for @servicesEnquiryNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesEnquiryNoActivity;
+
+  /// No description provided for @servicesEnquiryEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit enquiry'**
+  String get servicesEnquiryEdit;
+
+  /// No description provided for @servicesEnquiryCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel enquiry'**
+  String get servicesEnquiryCancel;
+
+  /// No description provided for @servicesEnquiryCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create enquiry'**
+  String get servicesEnquiryCreate;
+
+  /// No description provided for @servicesEnquiryCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel enquiry?'**
+  String get servicesEnquiryCancelConfirmTitle;
+
+  /// No description provided for @servicesEnquiryCancelConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cancelled enquiry stays available historically and cannot be edited afterwards.'**
+  String get servicesEnquiryCancelConfirmMessage;
+
+  /// No description provided for @servicesEnquiryCancelReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional cancellation reason'**
+  String get servicesEnquiryCancelReasonHint;
+
+  /// No description provided for @servicesEnquiryCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry created.'**
+  String get servicesEnquiryCreated;
+
+  /// No description provided for @servicesEnquiryUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry updated.'**
+  String get servicesEnquiryUpdated;
+
+  /// No description provided for @servicesEnquiryCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry cancelled.'**
+  String get servicesEnquiryCancelled;
+
+  /// No description provided for @servicesEnquiryFormNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New enquiry'**
+  String get servicesEnquiryFormNew;
+
+  /// No description provided for @servicesEnquiryFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit enquiry'**
+  String get servicesEnquiryFormEdit;
+
+  /// No description provided for @servicesEnquirySectionCustomerLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & location'**
+  String get servicesEnquirySectionCustomerLocation;
+
+  /// No description provided for @servicesEnquirySectionService.
+  ///
+  /// In en, this message translates to:
+  /// **'Service details'**
+  String get servicesEnquirySectionService;
+
+  /// No description provided for @servicesEnquirySectionComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint'**
+  String get servicesEnquirySectionComplaint;
+
+  /// No description provided for @servicesEnquirySectionSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get servicesEnquirySectionSummary;
+
+  /// No description provided for @servicesEnquirySelectCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a customer'**
+  String get servicesEnquirySelectCustomer;
+
+  /// No description provided for @servicesEnquirySelectSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a service site'**
+  String get servicesEnquirySelectSite;
+
+  /// No description provided for @servicesEnquiryChangeCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Change customer'**
+  String get servicesEnquiryChangeCustomer;
+
+  /// No description provided for @servicesEnquiryChangeSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Change site'**
+  String get servicesEnquiryChangeSite;
+
+  /// No description provided for @servicesEnquiryCreateCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Create customer'**
+  String get servicesEnquiryCreateCustomer;
+
+  /// No description provided for @servicesEnquiryCreateSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Add site'**
+  String get servicesEnquiryCreateSite;
+
+  /// No description provided for @servicesEnquiryNoSitesForCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'No active sites for this customer.'**
+  String get servicesEnquiryNoSitesForCustomer;
+
+  /// No description provided for @servicesEnquiryNoComplaintTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'No complaint types are available for this service type.'**
+  String get servicesEnquiryNoComplaintTypes;
+
+  /// No description provided for @servicesEnquiryDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the complaint or service request'**
+  String get servicesEnquiryDescriptionHint;
+
+  /// No description provided for @servicesEnquiryCustomerRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a customer.'**
+  String get servicesEnquiryCustomerRequired;
+
+  /// No description provided for @servicesEnquirySiteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a service site.'**
+  String get servicesEnquirySiteRequired;
+
+  /// No description provided for @servicesEnquiryServiceTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a service type.'**
+  String get servicesEnquiryServiceTypeRequired;
+
+  /// No description provided for @servicesEnquiryComplaintTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a complaint type.'**
+  String get servicesEnquiryComplaintTypeRequired;
+
+  /// No description provided for @servicesEnquiryPriorityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a priority.'**
+  String get servicesEnquiryPriorityRequired;
+
+  /// No description provided for @servicesEnquiryTicketTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a ticket type.'**
+  String get servicesEnquiryTicketTypeRequired;
+
+  /// No description provided for @servicesEnquiryDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the complaint details.'**
+  String get servicesEnquiryDescriptionRequired;
+
+  /// No description provided for @servicesEnquiryDescriptionTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'The complaint details are too long.'**
+  String get servicesEnquiryDescriptionTooLong;
+
+  /// No description provided for @servicesEnquiryDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesEnquiryDenied;
+
+  /// No description provided for @servicesEnquiryNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry not found.'**
+  String get servicesEnquiryNotFound;
+
+  /// No description provided for @servicesEnquiryNotEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only open enquiries can be edited.'**
+  String get servicesEnquiryNotEditable;
+
+  /// No description provided for @servicesEnquiryAlreadyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This enquiry is already cancelled.'**
+  String get servicesEnquiryAlreadyCancelled;
+
+  /// No description provided for @servicesEnquiryCustomerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer not found.'**
+  String get servicesEnquiryCustomerNotFound;
+
+  /// No description provided for @servicesEnquiryCustomerInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected customer is inactive.'**
+  String get servicesEnquiryCustomerInactive;
+
+  /// No description provided for @servicesEnquirySiteNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Service site not found.'**
+  String get servicesEnquirySiteNotFound;
+
+  /// No description provided for @servicesEnquirySiteInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected service site is inactive.'**
+  String get servicesEnquirySiteInactive;
+
+  /// No description provided for @servicesEnquirySiteCustomerMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected site does not belong to the selected customer.'**
+  String get servicesEnquirySiteCustomerMismatch;
+
+  /// No description provided for @servicesEnquiryServiceTypeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected service type is not available.'**
+  String get servicesEnquiryServiceTypeInvalid;
+
+  /// No description provided for @servicesEnquiryComplaintTypeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected complaint type is not available.'**
+  String get servicesEnquiryComplaintTypeInvalid;
+
+  /// No description provided for @servicesEnquiryComplaintTypeMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The complaint type does not match the selected service type.'**
+  String get servicesEnquiryComplaintTypeMismatch;
+
+  /// No description provided for @servicesEnquiryPriorityInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected priority is not available.'**
+  String get servicesEnquiryPriorityInvalid;
+
+  /// No description provided for @servicesEnquiryTicketTypeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected ticket type is not available.'**
+  String get servicesEnquiryTicketTypeInvalid;
+
+  /// No description provided for @servicesEnquirySequenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not allocate an enquiry number.'**
+  String get servicesEnquirySequenceFailed;
+
+  /// No description provided for @servicesEnquiryStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the enquiry. Please try again.'**
+  String get servicesEnquiryStorageError;
+
+  /// No description provided for @servicesActivityCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesActivityCancelled;
+
+  /// No description provided for @servicesOverviewEnquiriesOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open enquiries'**
+  String get servicesOverviewEnquiriesOpen;
+
+  /// No description provided for @servicesOverviewEnquiriesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiries today'**
+  String get servicesOverviewEnquiriesToday;
+
+  /// No description provided for @servicesOverviewEnquiriesHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High / urgent open'**
+  String get servicesOverviewEnquiriesHigh;
+
+  /// No description provided for @servicesOverviewRecentEnquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent enquiries'**
+  String get servicesOverviewRecentEnquiries;
+
+  /// No description provided for @servicesOverviewNewEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'New enquiry'**
+  String get servicesOverviewNewEnquiry;
+
+  /// No description provided for @servicesOverviewNoEnquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'No enquiries yet.'**
+  String get servicesOverviewNoEnquiries;
+
+  /// No description provided for @servicesEnquiryRecentForCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent enquiries'**
+  String get servicesEnquiryRecentForCustomer;
+
+  /// No description provided for @servicesEnquiryRecentForSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent enquiries'**
+  String get servicesEnquiryRecentForSite;
+
+  /// No description provided for @servicesEnquiryNoneForCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'No enquiries for this customer yet.'**
+  String get servicesEnquiryNoneForCustomer;
+
+  /// No description provided for @servicesEnquiryNoneForSite.
+  ///
+  /// In en, this message translates to:
+  /// **'No enquiries for this site yet.'**
+  String get servicesEnquiryNoneForSite;
+
+  /// No description provided for @servicesEnquiryDetailsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry details'**
+  String get servicesEnquiryDetailsSection;
+
+  /// No description provided for @servicesEnquiryAddDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another issue'**
+  String get servicesEnquiryAddDetail;
+
+  /// No description provided for @servicesEnquiryRemoveDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove issue'**
+  String get servicesEnquiryRemoveDetail;
+
+  /// No description provided for @servicesEnquiryDetailLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue {index}'**
+  String servicesEnquiryDetailLine(String index);
+
+  /// No description provided for @servicesEnquiryDetailDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesEnquiryDetailDescription;
+
+  /// No description provided for @servicesEnquiryDetailStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesEnquiryDetailStatus;
+
+  /// No description provided for @servicesEnquiryDetailStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get servicesEnquiryDetailStatusOpen;
+
+  /// No description provided for @servicesEnquiryDetailStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get servicesEnquiryDetailStatusClosed;
+
+  /// No description provided for @servicesEnquiryPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get servicesEnquiryPhotos;
+
+  /// No description provided for @servicesEnquiryAddPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get servicesEnquiryAddPhotos;
+
+  /// No description provided for @servicesEnquiryMaterialReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Material received'**
+  String get servicesEnquiryMaterialReceived;
+
+  /// No description provided for @servicesEnquiryMaterialReceivedYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get servicesEnquiryMaterialReceivedYes;
+
+  /// No description provided for @servicesEnquiryMaterialReceivedNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get servicesEnquiryMaterialReceivedNo;
+
+  /// No description provided for @servicesEnquiryNoDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'No details recorded.'**
+  String get servicesEnquiryNoDetails;
+
+  /// No description provided for @servicesEnquiryDetailsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one enquiry detail.'**
+  String get servicesEnquiryDetailsRequired;
+
+  /// No description provided for @servicesEnquiryDetailDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a description for each enquiry detail.'**
+  String get servicesEnquiryDetailDescriptionRequired;
+
+  /// No description provided for @servicesEnquiryAttachmentUnsupportedType.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported file type.'**
+  String get servicesEnquiryAttachmentUnsupportedType;
+
+  /// No description provided for @servicesEnquiryAttachmentTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'File is too large.'**
+  String get servicesEnquiryAttachmentTooLarge;
+
+  /// No description provided for @servicesEnquiryAttachmentLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment limit reached.'**
+  String get servicesEnquiryAttachmentLimitReached;
+
+  /// No description provided for @servicesEnquiryAttachmentFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not attach the file.'**
+  String get servicesEnquiryAttachmentFailure;
+
+  /// No description provided for @attachmentUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded'**
+  String get attachmentUploaded;
+
+  /// No description provided for @attachmentLocalOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Local'**
+  String get attachmentLocalOnly;
+
+  /// No description provided for @attachmentPendingUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get attachmentPendingUpload;
+
+  /// No description provided for @attachmentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get attachmentFailed;
+
+  /// No description provided for @attachmentPendingDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting'**
+  String get attachmentPendingDelete;
+
+  /// No description provided for @attachmentDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get attachmentDeleted;
+
+  /// No description provided for @servicesNavJobAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignments'**
+  String get servicesNavJobAssignments;
+
+  /// No description provided for @servicesPermSubJobAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignments'**
+  String get servicesPermSubJobAssignments;
+
+  /// No description provided for @servicesPermJobAssignmentsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View job assignments'**
+  String get servicesPermJobAssignmentsView;
+
+  /// No description provided for @servicesPermJobAssignmentsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the company job assignment queue within your record scope.'**
+  String get servicesPermJobAssignmentsViewDesc;
+
+  /// No description provided for @servicesPermJobAssignmentsCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesPermJobAssignmentsCreate;
+
+  /// No description provided for @servicesPermJobAssignmentsCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign work from an eligible enquiry, including restricted enquiry, employee and team reference lookup.'**
+  String get servicesPermJobAssignmentsCreateDesc;
+
+  /// No description provided for @servicesPermJobAssignmentsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit job assignment'**
+  String get servicesPermJobAssignmentsEdit;
+
+  /// No description provided for @servicesPermJobAssignmentsEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit or reassign an active job assignment.'**
+  String get servicesPermJobAssignmentsEditDesc;
+
+  /// No description provided for @servicesPermJobAssignmentsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel job assignment'**
+  String get servicesPermJobAssignmentsCancel;
+
+  /// No description provided for @servicesPermJobAssignmentsCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel an active job assignment (kept historically).'**
+  String get servicesPermJobAssignmentsCancelDesc;
+
+  /// No description provided for @permissionServiceJobAssignmentView.
+  ///
+  /// In en, this message translates to:
+  /// **'View job assignments'**
+  String get permissionServiceJobAssignmentView;
+
+  /// No description provided for @permissionServiceJobAssignmentCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get permissionServiceJobAssignmentCreate;
+
+  /// No description provided for @permissionServiceJobAssignmentEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit job assignment'**
+  String get permissionServiceJobAssignmentEdit;
+
+  /// No description provided for @permissionServiceJobAssignmentCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel job assignment'**
+  String get permissionServiceJobAssignmentCancel;
+
+  /// No description provided for @servicesJobAssignmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignments'**
+  String get servicesJobAssignmentsTitle;
+
+  /// No description provided for @servicesJobAssignmentCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} job assignments'**
+  String servicesJobAssignmentCount(String filtered, String total);
+
+  /// No description provided for @servicesJobAssignmentSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by assignment, enquiry, customer, mobile, site, employee or team'**
+  String get servicesJobAssignmentSearch;
+
+  /// No description provided for @servicesJobAssignmentAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesJobAssignmentAllStatuses;
+
+  /// No description provided for @servicesJobAssignmentStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get servicesJobAssignmentStatusActive;
+
+  /// No description provided for @servicesJobAssignmentStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesJobAssignmentStatusCancelled;
+
+  /// No description provided for @servicesJobAssignmentEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No job assignments yet.'**
+  String get servicesJobAssignmentEmpty;
+
+  /// No description provided for @servicesJobAssignmentEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a job assignment from an open service enquiry.'**
+  String get servicesJobAssignmentEmptyMessage;
+
+  /// No description provided for @servicesJobAssignmentNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No job assignments match your filters.'**
+  String get servicesJobAssignmentNoResults;
+
+  /// No description provided for @servicesJobAssignmentAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New job assignment'**
+  String get servicesJobAssignmentAdd;
+
+  /// No description provided for @servicesJobAssignmentColumnAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignment'**
+  String get servicesJobAssignmentColumnAssignment;
+
+  /// No description provided for @servicesJobAssignmentColumnEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesJobAssignmentColumnEnquiry;
+
+  /// No description provided for @servicesJobAssignmentColumnCustomerSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer / site'**
+  String get servicesJobAssignmentColumnCustomerSite;
+
+  /// No description provided for @servicesJobAssignmentColumnVisitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit date'**
+  String get servicesJobAssignmentColumnVisitDate;
+
+  /// No description provided for @servicesJobAssignmentColumnAssignedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to'**
+  String get servicesJobAssignmentColumnAssignedTo;
+
+  /// No description provided for @servicesJobAssignmentColumnPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesJobAssignmentColumnPriority;
+
+  /// No description provided for @servicesJobAssignmentColumnStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesJobAssignmentColumnStatus;
+
+  /// No description provided for @servicesJobAssignmentColumnCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesJobAssignmentColumnCreated;
+
+  /// No description provided for @servicesJobAssignmentFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get servicesJobAssignmentFilterTitle;
+
+  /// No description provided for @servicesJobAssignmentFilterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesJobAssignmentFilterStatus;
+
+  /// No description provided for @servicesJobAssignmentFilterPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesJobAssignmentFilterPriority;
+
+  /// No description provided for @servicesJobAssignmentFilterVisitFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit from'**
+  String get servicesJobAssignmentFilterVisitFrom;
+
+  /// No description provided for @servicesJobAssignmentFilterVisitTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit to'**
+  String get servicesJobAssignmentFilterVisitTo;
+
+  /// No description provided for @servicesJobAssignmentFormNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New job assignment'**
+  String get servicesJobAssignmentFormNew;
+
+  /// No description provided for @servicesJobAssignmentFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit job assignment'**
+  String get servicesJobAssignmentFormEdit;
+
+  /// No description provided for @servicesJobAssignmentCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesJobAssignmentCreate;
+
+  /// No description provided for @servicesJobAssignmentSectionJobContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Job context'**
+  String get servicesJobAssignmentSectionJobContext;
+
+  /// No description provided for @servicesJobAssignmentSectionSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get servicesJobAssignmentSectionSchedule;
+
+  /// No description provided for @servicesJobAssignmentSectionCustomerLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & location'**
+  String get servicesJobAssignmentSectionCustomerLocation;
+
+  /// No description provided for @servicesJobAssignmentSectionServiceContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Service context'**
+  String get servicesJobAssignmentSectionServiceContext;
+
+  /// No description provided for @servicesJobAssignmentSectionSourceIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Source enquiry issues'**
+  String get servicesJobAssignmentSectionSourceIssues;
+
+  /// No description provided for @servicesJobAssignmentSectionWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work assignment'**
+  String get servicesJobAssignmentSectionWork;
+
+  /// No description provided for @servicesJobAssignmentNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignment no'**
+  String get servicesJobAssignmentNo;
+
+  /// No description provided for @servicesJobAssignmentDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignment date'**
+  String get servicesJobAssignmentDate;
+
+  /// No description provided for @servicesJobAssignmentVisitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit date'**
+  String get servicesJobAssignmentVisitDate;
+
+  /// No description provided for @servicesJobAssignmentEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesJobAssignmentEnquiry;
+
+  /// No description provided for @servicesJobAssignmentSelectEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an eligible enquiry'**
+  String get servicesJobAssignmentSelectEnquiry;
+
+  /// No description provided for @servicesJobAssignmentChangeEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Change enquiry'**
+  String get servicesJobAssignmentChangeEnquiry;
+
+  /// No description provided for @servicesJobAssignmentNoIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'No enquiry issues recorded.'**
+  String get servicesJobAssignmentNoIssues;
+
+  /// No description provided for @servicesJobAssignmentMaterialReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Material received'**
+  String get servicesJobAssignmentMaterialReceived;
+
+  /// No description provided for @servicesJobAssignmentWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get servicesJobAssignmentWork;
+
+  /// No description provided for @servicesJobAssignmentTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician'**
+  String get servicesJobAssignmentTechnician;
+
+  /// No description provided for @servicesJobAssignmentServiceTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Service team'**
+  String get servicesJobAssignmentServiceTeam;
+
+  /// No description provided for @servicesJobAssignmentLineStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesJobAssignmentLineStatus;
+
+  /// No description provided for @servicesJobAssignmentLineStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get servicesJobAssignmentLineStatusPending;
+
+  /// No description provided for @servicesJobAssignmentDescriptionForWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Description for work'**
+  String get servicesJobAssignmentDescriptionForWork;
+
+  /// No description provided for @servicesJobAssignmentAddLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add work item'**
+  String get servicesJobAssignmentAddLine;
+
+  /// No description provided for @servicesJobAssignmentRemoveLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove work item'**
+  String get servicesJobAssignmentRemoveLine;
+
+  /// No description provided for @servicesJobAssignmentLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work item {index}'**
+  String servicesJobAssignmentLineTitle(String index);
+
+  /// No description provided for @servicesJobAssignmentNoTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign an employee, a service team, or both.'**
+  String get servicesJobAssignmentNoTargets;
+
+  /// No description provided for @servicesJobAssignmentDetailContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry context'**
+  String get servicesJobAssignmentDetailContext;
+
+  /// No description provided for @servicesJobAssignmentDetailWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work items'**
+  String get servicesJobAssignmentDetailWork;
+
+  /// No description provided for @servicesJobAssignmentDetailAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesJobAssignmentDetailAudit;
+
+  /// No description provided for @servicesJobAssignmentDetailActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesJobAssignmentDetailActivity;
+
+  /// No description provided for @servicesJobAssignmentEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit assignment'**
+  String get servicesJobAssignmentEdit;
+
+  /// No description provided for @servicesJobAssignmentCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel assignment'**
+  String get servicesJobAssignmentCancel;
+
+  /// No description provided for @servicesJobAssignmentCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel assignment?'**
+  String get servicesJobAssignmentCancelConfirmTitle;
+
+  /// No description provided for @servicesJobAssignmentCancelConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cancelled assignment stays available historically and cannot be edited afterwards.'**
+  String get servicesJobAssignmentCancelConfirmMessage;
+
+  /// No description provided for @servicesJobAssignmentCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment created.'**
+  String get servicesJobAssignmentCreated;
+
+  /// No description provided for @servicesJobAssignmentUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment updated.'**
+  String get servicesJobAssignmentUpdated;
+
+  /// No description provided for @servicesJobAssignmentCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment cancelled.'**
+  String get servicesJobAssignmentCancelled;
+
+  /// No description provided for @servicesJobAssignmentNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesJobAssignmentNoActivity;
+
+  /// No description provided for @servicesJobAssignmentCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get servicesJobAssignmentCreatedBy;
+
+  /// No description provided for @servicesJobAssignmentCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get servicesJobAssignmentCreatedAt;
+
+  /// No description provided for @servicesJobAssignmentUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesJobAssignmentUpdatedBy;
+
+  /// No description provided for @servicesJobAssignmentUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get servicesJobAssignmentUpdatedAt;
+
+  /// No description provided for @servicesJobAssignmentVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get servicesJobAssignmentVersion;
+
+  /// No description provided for @servicesJobAssignmentCancelledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled at'**
+  String get servicesJobAssignmentCancelledAt;
+
+  /// No description provided for @servicesJobAssignmentEnquiryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an enquiry.'**
+  String get servicesJobAssignmentEnquiryRequired;
+
+  /// No description provided for @servicesJobAssignmentVisitDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a visit date.'**
+  String get servicesJobAssignmentVisitDateRequired;
+
+  /// No description provided for @servicesJobAssignmentLinesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one work item.'**
+  String get servicesJobAssignmentLinesRequired;
+
+  /// No description provided for @servicesJobAssignmentWorkRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the work for each item.'**
+  String get servicesJobAssignmentWorkRequired;
+
+  /// No description provided for @servicesJobAssignmentWorkTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'The work text is too long.'**
+  String get servicesJobAssignmentWorkTooLong;
+
+  /// No description provided for @servicesJobAssignmentDescriptionTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'The description is too long.'**
+  String get servicesJobAssignmentDescriptionTooLong;
+
+  /// No description provided for @servicesJobAssignmentTargetRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign an employee, a service team, or both.'**
+  String get servicesJobAssignmentTargetRequired;
+
+  /// No description provided for @servicesJobAssignmentEnquiryNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry not found.'**
+  String get servicesJobAssignmentEnquiryNotFound;
+
+  /// No description provided for @servicesJobAssignmentEnquiryNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Only open enquiries can be assigned.'**
+  String get servicesJobAssignmentEnquiryNotOpen;
+
+  /// No description provided for @servicesJobAssignmentAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This enquiry already has an active job assignment.'**
+  String get servicesJobAssignmentAlreadyActive;
+
+  /// No description provided for @servicesJobAssignmentNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment not found.'**
+  String get servicesJobAssignmentNotFound;
+
+  /// No description provided for @servicesJobAssignmentNotEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only active job assignments can be edited.'**
+  String get servicesJobAssignmentNotEditable;
+
+  /// No description provided for @servicesJobAssignmentAlreadyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This job assignment is already cancelled.'**
+  String get servicesJobAssignmentAlreadyCancelled;
+
+  /// No description provided for @servicesJobAssignmentEmployeeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected employee is not available.'**
+  String get servicesJobAssignmentEmployeeInvalid;
+
+  /// No description provided for @servicesJobAssignmentTeamInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected service team is not available.'**
+  String get servicesJobAssignmentTeamInvalid;
+
+  /// No description provided for @servicesJobAssignmentEmployeeNotInTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected employee is not a member of the selected service team.'**
+  String get servicesJobAssignmentEmployeeNotInTeam;
+
+  /// No description provided for @servicesJobAssignmentSequenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not allocate an assignment number.'**
+  String get servicesJobAssignmentSequenceFailed;
+
+  /// No description provided for @servicesJobAssignmentDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesJobAssignmentDenied;
+
+  /// No description provided for @servicesJobAssignmentStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the job assignment. Please try again.'**
+  String get servicesJobAssignmentStorageError;
+
+  /// No description provided for @servicesActivityAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get servicesActivityAssigned;
+
+  /// No description provided for @servicesActivityReopened.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopened'**
+  String get servicesActivityReopened;
+
+  /// No description provided for @servicesOverviewAssignmentsScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled assignments'**
+  String get servicesOverviewAssignmentsScheduled;
+
+  /// No description provided for @servicesOverviewAssignmentsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Visits today'**
+  String get servicesOverviewAssignmentsToday;
+
+  /// No description provided for @servicesOverviewAssignmentsUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming visits'**
+  String get servicesOverviewAssignmentsUpcoming;
+
+  /// No description provided for @servicesOverviewRecentAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming assignments'**
+  String get servicesOverviewRecentAssignments;
+
+  /// No description provided for @servicesOverviewNoAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming assignments.'**
+  String get servicesOverviewNoAssignments;
+
+  /// No description provided for @servicesEnquiryAssignmentSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesEnquiryAssignmentSection;
+
+  /// No description provided for @servicesEnquiryCreateAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesEnquiryCreateAssignment;
+
+  /// No description provided for @servicesEnquiryViewAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'View job assignment'**
+  String get servicesEnquiryViewAssignment;
+
+  /// No description provided for @servicesEnquiryStatusAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get servicesEnquiryStatusAssigned;
+
+  /// No description provided for @notifServiceWorkAssignedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service work assigned'**
+  String get notifServiceWorkAssignedTitle;
+
+  /// No description provided for @notifServiceWorkAssignedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been assigned service work.'**
+  String get notifServiceWorkAssignedBody;
+
+  /// No description provided for @servicesJobAssignmentGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated when saved'**
+  String get servicesJobAssignmentGenerated;
 }
 
 class _AppLocalizationsDelegate

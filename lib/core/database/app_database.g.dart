@@ -28431,6 +28431,3835 @@ class ServiceTicketTypesCompanion
   }
 }
 
+class $ServiceEnquiriesTable extends ServiceEnquiries
+    with TableInfo<$ServiceEnquiriesTable, ServiceEnquiryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceEnquiriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enquiryNumberMeta = const VerificationMeta(
+    'enquiryNumber',
+  );
+  @override
+  late final GeneratedColumn<String> enquiryNumber = GeneratedColumn<String>(
+    'enquiry_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _customerIdMeta = const VerificationMeta(
+    'customerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerId = GeneratedColumn<String>(
+    'customer_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  @override
+  late final GeneratedColumn<String> siteId = GeneratedColumn<String>(
+    'site_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serviceTypeIdMeta = const VerificationMeta(
+    'serviceTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> serviceTypeId = GeneratedColumn<String>(
+    'service_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _complaintTypeIdMeta = const VerificationMeta(
+    'complaintTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> complaintTypeId = GeneratedColumn<String>(
+    'complaint_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _priorityIdMeta = const VerificationMeta(
+    'priorityId',
+  );
+  @override
+  late final GeneratedColumn<String> priorityId = GeneratedColumn<String>(
+    'priority_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ticketTypeIdMeta = const VerificationMeta(
+    'ticketTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> ticketTypeId = GeneratedColumn<String>(
+    'ticket_type_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _materialReceivedMeta = const VerificationMeta(
+    'materialReceived',
+  );
+  @override
+  late final GeneratedColumn<String> materialReceived = GeneratedColumn<String>(
+    'material_received',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('no'),
+  );
+  static const VerificationMeta _partySnapshotMeta = const VerificationMeta(
+    'partySnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> partySnapshot = GeneratedColumn<String>(
+    'party_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _searchTextMeta = const VerificationMeta(
+    'searchText',
+  );
+  @override
+  late final GeneratedColumn<String> searchText = GeneratedColumn<String>(
+    'search_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _cancelReasonMeta = const VerificationMeta(
+    'cancelReason',
+  );
+  @override
+  late final GeneratedColumn<String> cancelReason = GeneratedColumn<String>(
+    'cancel_reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cancelledAtMeta = const VerificationMeta(
+    'cancelledAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> cancelledAt = GeneratedColumn<DateTime>(
+    'cancelled_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    enquiryNumber,
+    customerId,
+    siteId,
+    serviceTypeId,
+    complaintTypeId,
+    priorityId,
+    ticketTypeId,
+    description,
+    status,
+    materialReceived,
+    partySnapshot,
+    searchText,
+    cancelReason,
+    cancelledAt,
+    version,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_enquiries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceEnquiryRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('enquiry_number')) {
+      context.handle(
+        _enquiryNumberMeta,
+        enquiryNumber.isAcceptableOrUnknown(
+          data['enquiry_number']!,
+          _enquiryNumberMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_enquiryNumberMeta);
+    }
+    if (data.containsKey('customer_id')) {
+      context.handle(
+        _customerIdMeta,
+        customerId.isAcceptableOrUnknown(data['customer_id']!, _customerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_customerIdMeta);
+    }
+    if (data.containsKey('site_id')) {
+      context.handle(
+        _siteIdMeta,
+        siteId.isAcceptableOrUnknown(data['site_id']!, _siteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
+    }
+    if (data.containsKey('service_type_id')) {
+      context.handle(
+        _serviceTypeIdMeta,
+        serviceTypeId.isAcceptableOrUnknown(
+          data['service_type_id']!,
+          _serviceTypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_serviceTypeIdMeta);
+    }
+    if (data.containsKey('complaint_type_id')) {
+      context.handle(
+        _complaintTypeIdMeta,
+        complaintTypeId.isAcceptableOrUnknown(
+          data['complaint_type_id']!,
+          _complaintTypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_complaintTypeIdMeta);
+    }
+    if (data.containsKey('priority_id')) {
+      context.handle(
+        _priorityIdMeta,
+        priorityId.isAcceptableOrUnknown(data['priority_id']!, _priorityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_priorityIdMeta);
+    }
+    if (data.containsKey('ticket_type_id')) {
+      context.handle(
+        _ticketTypeIdMeta,
+        ticketTypeId.isAcceptableOrUnknown(
+          data['ticket_type_id']!,
+          _ticketTypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ticketTypeIdMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('material_received')) {
+      context.handle(
+        _materialReceivedMeta,
+        materialReceived.isAcceptableOrUnknown(
+          data['material_received']!,
+          _materialReceivedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('party_snapshot')) {
+      context.handle(
+        _partySnapshotMeta,
+        partySnapshot.isAcceptableOrUnknown(
+          data['party_snapshot']!,
+          _partySnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_partySnapshotMeta);
+    }
+    if (data.containsKey('search_text')) {
+      context.handle(
+        _searchTextMeta,
+        searchText.isAcceptableOrUnknown(data['search_text']!, _searchTextMeta),
+      );
+    }
+    if (data.containsKey('cancel_reason')) {
+      context.handle(
+        _cancelReasonMeta,
+        cancelReason.isAcceptableOrUnknown(
+          data['cancel_reason']!,
+          _cancelReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cancelled_at')) {
+      context.handle(
+        _cancelledAtMeta,
+        cancelledAt.isAcceptableOrUnknown(
+          data['cancelled_at']!,
+          _cancelledAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, enquiryNumber},
+    {companyId, requestId},
+  ];
+  @override
+  ServiceEnquiryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceEnquiryRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      enquiryNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}enquiry_number'],
+      )!,
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      )!,
+      siteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_id'],
+      )!,
+      serviceTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}service_type_id'],
+      )!,
+      complaintTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}complaint_type_id'],
+      )!,
+      priorityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}priority_id'],
+      )!,
+      ticketTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ticket_type_id'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      materialReceived: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}material_received'],
+      )!,
+      partySnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}party_snapshot'],
+      )!,
+      searchText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_text'],
+      )!,
+      cancelReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cancel_reason'],
+      ),
+      cancelledAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}cancelled_at'],
+      ),
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceEnquiriesTable createAlias(String alias) {
+    return $ServiceEnquiriesTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceEnquiryRow extends DataClass
+    implements Insertable<ServiceEnquiryRow> {
+  final String id;
+  final String companyId;
+  final String enquiryNumber;
+  final String customerId;
+  final String siteId;
+  final String serviceTypeId;
+  final String complaintTypeId;
+  final String priorityId;
+  final String ticketTypeId;
+  final String description;
+  final String status;
+
+  /// Header-level "Material Received" flag (TBD semantics). `no`/`yes`.
+  final String materialReceived;
+  final String partySnapshot;
+
+  /// Lower-cased concatenation of the snapshot's searchable fields
+  /// (customer name/mobile, site name, building, unit, enquiry number). Kept as
+  /// a plain column so list search stays a single indexed-friendly LIKE without
+  /// depending on SQLite JSON1 being compiled in.
+  final String searchText;
+  final String? cancelReason;
+  final DateTime? cancelledAt;
+  final int version;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String? requestId;
+  final String syncStatus;
+  const ServiceEnquiryRow({
+    required this.id,
+    required this.companyId,
+    required this.enquiryNumber,
+    required this.customerId,
+    required this.siteId,
+    required this.serviceTypeId,
+    required this.complaintTypeId,
+    required this.priorityId,
+    required this.ticketTypeId,
+    required this.description,
+    required this.status,
+    required this.materialReceived,
+    required this.partySnapshot,
+    required this.searchText,
+    this.cancelReason,
+    this.cancelledAt,
+    required this.version,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['enquiry_number'] = Variable<String>(enquiryNumber);
+    map['customer_id'] = Variable<String>(customerId);
+    map['site_id'] = Variable<String>(siteId);
+    map['service_type_id'] = Variable<String>(serviceTypeId);
+    map['complaint_type_id'] = Variable<String>(complaintTypeId);
+    map['priority_id'] = Variable<String>(priorityId);
+    map['ticket_type_id'] = Variable<String>(ticketTypeId);
+    map['description'] = Variable<String>(description);
+    map['status'] = Variable<String>(status);
+    map['material_received'] = Variable<String>(materialReceived);
+    map['party_snapshot'] = Variable<String>(partySnapshot);
+    map['search_text'] = Variable<String>(searchText);
+    if (!nullToAbsent || cancelReason != null) {
+      map['cancel_reason'] = Variable<String>(cancelReason);
+    }
+    if (!nullToAbsent || cancelledAt != null) {
+      map['cancelled_at'] = Variable<DateTime>(cancelledAt);
+    }
+    map['version'] = Variable<int>(version);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceEnquiriesCompanion toCompanion(bool nullToAbsent) {
+    return ServiceEnquiriesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      enquiryNumber: Value(enquiryNumber),
+      customerId: Value(customerId),
+      siteId: Value(siteId),
+      serviceTypeId: Value(serviceTypeId),
+      complaintTypeId: Value(complaintTypeId),
+      priorityId: Value(priorityId),
+      ticketTypeId: Value(ticketTypeId),
+      description: Value(description),
+      status: Value(status),
+      materialReceived: Value(materialReceived),
+      partySnapshot: Value(partySnapshot),
+      searchText: Value(searchText),
+      cancelReason: cancelReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelReason),
+      cancelledAt: cancelledAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelledAt),
+      version: Value(version),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceEnquiryRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceEnquiryRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      enquiryNumber: serializer.fromJson<String>(json['enquiryNumber']),
+      customerId: serializer.fromJson<String>(json['customerId']),
+      siteId: serializer.fromJson<String>(json['siteId']),
+      serviceTypeId: serializer.fromJson<String>(json['serviceTypeId']),
+      complaintTypeId: serializer.fromJson<String>(json['complaintTypeId']),
+      priorityId: serializer.fromJson<String>(json['priorityId']),
+      ticketTypeId: serializer.fromJson<String>(json['ticketTypeId']),
+      description: serializer.fromJson<String>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      materialReceived: serializer.fromJson<String>(json['materialReceived']),
+      partySnapshot: serializer.fromJson<String>(json['partySnapshot']),
+      searchText: serializer.fromJson<String>(json['searchText']),
+      cancelReason: serializer.fromJson<String?>(json['cancelReason']),
+      cancelledAt: serializer.fromJson<DateTime?>(json['cancelledAt']),
+      version: serializer.fromJson<int>(json['version']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'enquiryNumber': serializer.toJson<String>(enquiryNumber),
+      'customerId': serializer.toJson<String>(customerId),
+      'siteId': serializer.toJson<String>(siteId),
+      'serviceTypeId': serializer.toJson<String>(serviceTypeId),
+      'complaintTypeId': serializer.toJson<String>(complaintTypeId),
+      'priorityId': serializer.toJson<String>(priorityId),
+      'ticketTypeId': serializer.toJson<String>(ticketTypeId),
+      'description': serializer.toJson<String>(description),
+      'status': serializer.toJson<String>(status),
+      'materialReceived': serializer.toJson<String>(materialReceived),
+      'partySnapshot': serializer.toJson<String>(partySnapshot),
+      'searchText': serializer.toJson<String>(searchText),
+      'cancelReason': serializer.toJson<String?>(cancelReason),
+      'cancelledAt': serializer.toJson<DateTime?>(cancelledAt),
+      'version': serializer.toJson<int>(version),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'requestId': serializer.toJson<String?>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceEnquiryRow copyWith({
+    String? id,
+    String? companyId,
+    String? enquiryNumber,
+    String? customerId,
+    String? siteId,
+    String? serviceTypeId,
+    String? complaintTypeId,
+    String? priorityId,
+    String? ticketTypeId,
+    String? description,
+    String? status,
+    String? materialReceived,
+    String? partySnapshot,
+    String? searchText,
+    Value<String?> cancelReason = const Value.absent(),
+    Value<DateTime?> cancelledAt = const Value.absent(),
+    int? version,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    Value<String?> requestId = const Value.absent(),
+    String? syncStatus,
+  }) => ServiceEnquiryRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    enquiryNumber: enquiryNumber ?? this.enquiryNumber,
+    customerId: customerId ?? this.customerId,
+    siteId: siteId ?? this.siteId,
+    serviceTypeId: serviceTypeId ?? this.serviceTypeId,
+    complaintTypeId: complaintTypeId ?? this.complaintTypeId,
+    priorityId: priorityId ?? this.priorityId,
+    ticketTypeId: ticketTypeId ?? this.ticketTypeId,
+    description: description ?? this.description,
+    status: status ?? this.status,
+    materialReceived: materialReceived ?? this.materialReceived,
+    partySnapshot: partySnapshot ?? this.partySnapshot,
+    searchText: searchText ?? this.searchText,
+    cancelReason: cancelReason.present ? cancelReason.value : this.cancelReason,
+    cancelledAt: cancelledAt.present ? cancelledAt.value : this.cancelledAt,
+    version: version ?? this.version,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    requestId: requestId.present ? requestId.value : this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceEnquiryRow copyWithCompanion(ServiceEnquiriesCompanion data) {
+    return ServiceEnquiryRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      enquiryNumber: data.enquiryNumber.present
+          ? data.enquiryNumber.value
+          : this.enquiryNumber,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      serviceTypeId: data.serviceTypeId.present
+          ? data.serviceTypeId.value
+          : this.serviceTypeId,
+      complaintTypeId: data.complaintTypeId.present
+          ? data.complaintTypeId.value
+          : this.complaintTypeId,
+      priorityId: data.priorityId.present
+          ? data.priorityId.value
+          : this.priorityId,
+      ticketTypeId: data.ticketTypeId.present
+          ? data.ticketTypeId.value
+          : this.ticketTypeId,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      materialReceived: data.materialReceived.present
+          ? data.materialReceived.value
+          : this.materialReceived,
+      partySnapshot: data.partySnapshot.present
+          ? data.partySnapshot.value
+          : this.partySnapshot,
+      searchText: data.searchText.present
+          ? data.searchText.value
+          : this.searchText,
+      cancelReason: data.cancelReason.present
+          ? data.cancelReason.value
+          : this.cancelReason,
+      cancelledAt: data.cancelledAt.present
+          ? data.cancelledAt.value
+          : this.cancelledAt,
+      version: data.version.present ? data.version.value : this.version,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceEnquiryRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('enquiryNumber: $enquiryNumber, ')
+          ..write('customerId: $customerId, ')
+          ..write('siteId: $siteId, ')
+          ..write('serviceTypeId: $serviceTypeId, ')
+          ..write('complaintTypeId: $complaintTypeId, ')
+          ..write('priorityId: $priorityId, ')
+          ..write('ticketTypeId: $ticketTypeId, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('materialReceived: $materialReceived, ')
+          ..write('partySnapshot: $partySnapshot, ')
+          ..write('searchText: $searchText, ')
+          ..write('cancelReason: $cancelReason, ')
+          ..write('cancelledAt: $cancelledAt, ')
+          ..write('version: $version, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    companyId,
+    enquiryNumber,
+    customerId,
+    siteId,
+    serviceTypeId,
+    complaintTypeId,
+    priorityId,
+    ticketTypeId,
+    description,
+    status,
+    materialReceived,
+    partySnapshot,
+    searchText,
+    cancelReason,
+    cancelledAt,
+    version,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    requestId,
+    syncStatus,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceEnquiryRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.enquiryNumber == this.enquiryNumber &&
+          other.customerId == this.customerId &&
+          other.siteId == this.siteId &&
+          other.serviceTypeId == this.serviceTypeId &&
+          other.complaintTypeId == this.complaintTypeId &&
+          other.priorityId == this.priorityId &&
+          other.ticketTypeId == this.ticketTypeId &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.materialReceived == this.materialReceived &&
+          other.partySnapshot == this.partySnapshot &&
+          other.searchText == this.searchText &&
+          other.cancelReason == this.cancelReason &&
+          other.cancelledAt == this.cancelledAt &&
+          other.version == this.version &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceEnquiriesCompanion extends UpdateCompanion<ServiceEnquiryRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> enquiryNumber;
+  final Value<String> customerId;
+  final Value<String> siteId;
+  final Value<String> serviceTypeId;
+  final Value<String> complaintTypeId;
+  final Value<String> priorityId;
+  final Value<String> ticketTypeId;
+  final Value<String> description;
+  final Value<String> status;
+  final Value<String> materialReceived;
+  final Value<String> partySnapshot;
+  final Value<String> searchText;
+  final Value<String?> cancelReason;
+  final Value<DateTime?> cancelledAt;
+  final Value<int> version;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String?> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceEnquiriesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.enquiryNumber = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.siteId = const Value.absent(),
+    this.serviceTypeId = const Value.absent(),
+    this.complaintTypeId = const Value.absent(),
+    this.priorityId = const Value.absent(),
+    this.ticketTypeId = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.materialReceived = const Value.absent(),
+    this.partySnapshot = const Value.absent(),
+    this.searchText = const Value.absent(),
+    this.cancelReason = const Value.absent(),
+    this.cancelledAt = const Value.absent(),
+    this.version = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceEnquiriesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String enquiryNumber,
+    required String customerId,
+    required String siteId,
+    required String serviceTypeId,
+    required String complaintTypeId,
+    required String priorityId,
+    required String ticketTypeId,
+    required String description,
+    required String status,
+    this.materialReceived = const Value.absent(),
+    required String partySnapshot,
+    this.searchText = const Value.absent(),
+    this.cancelReason = const Value.absent(),
+    this.cancelledAt = const Value.absent(),
+    this.version = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    this.requestId = const Value.absent(),
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       enquiryNumber = Value(enquiryNumber),
+       customerId = Value(customerId),
+       siteId = Value(siteId),
+       serviceTypeId = Value(serviceTypeId),
+       complaintTypeId = Value(complaintTypeId),
+       priorityId = Value(priorityId),
+       ticketTypeId = Value(ticketTypeId),
+       description = Value(description),
+       status = Value(status),
+       partySnapshot = Value(partySnapshot),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceEnquiryRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? enquiryNumber,
+    Expression<String>? customerId,
+    Expression<String>? siteId,
+    Expression<String>? serviceTypeId,
+    Expression<String>? complaintTypeId,
+    Expression<String>? priorityId,
+    Expression<String>? ticketTypeId,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<String>? materialReceived,
+    Expression<String>? partySnapshot,
+    Expression<String>? searchText,
+    Expression<String>? cancelReason,
+    Expression<DateTime>? cancelledAt,
+    Expression<int>? version,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (enquiryNumber != null) 'enquiry_number': enquiryNumber,
+      if (customerId != null) 'customer_id': customerId,
+      if (siteId != null) 'site_id': siteId,
+      if (serviceTypeId != null) 'service_type_id': serviceTypeId,
+      if (complaintTypeId != null) 'complaint_type_id': complaintTypeId,
+      if (priorityId != null) 'priority_id': priorityId,
+      if (ticketTypeId != null) 'ticket_type_id': ticketTypeId,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (materialReceived != null) 'material_received': materialReceived,
+      if (partySnapshot != null) 'party_snapshot': partySnapshot,
+      if (searchText != null) 'search_text': searchText,
+      if (cancelReason != null) 'cancel_reason': cancelReason,
+      if (cancelledAt != null) 'cancelled_at': cancelledAt,
+      if (version != null) 'version': version,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceEnquiriesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? enquiryNumber,
+    Value<String>? customerId,
+    Value<String>? siteId,
+    Value<String>? serviceTypeId,
+    Value<String>? complaintTypeId,
+    Value<String>? priorityId,
+    Value<String>? ticketTypeId,
+    Value<String>? description,
+    Value<String>? status,
+    Value<String>? materialReceived,
+    Value<String>? partySnapshot,
+    Value<String>? searchText,
+    Value<String?>? cancelReason,
+    Value<DateTime?>? cancelledAt,
+    Value<int>? version,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String?>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceEnquiriesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      enquiryNumber: enquiryNumber ?? this.enquiryNumber,
+      customerId: customerId ?? this.customerId,
+      siteId: siteId ?? this.siteId,
+      serviceTypeId: serviceTypeId ?? this.serviceTypeId,
+      complaintTypeId: complaintTypeId ?? this.complaintTypeId,
+      priorityId: priorityId ?? this.priorityId,
+      ticketTypeId: ticketTypeId ?? this.ticketTypeId,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      materialReceived: materialReceived ?? this.materialReceived,
+      partySnapshot: partySnapshot ?? this.partySnapshot,
+      searchText: searchText ?? this.searchText,
+      cancelReason: cancelReason ?? this.cancelReason,
+      cancelledAt: cancelledAt ?? this.cancelledAt,
+      version: version ?? this.version,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (enquiryNumber.present) {
+      map['enquiry_number'] = Variable<String>(enquiryNumber.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (siteId.present) {
+      map['site_id'] = Variable<String>(siteId.value);
+    }
+    if (serviceTypeId.present) {
+      map['service_type_id'] = Variable<String>(serviceTypeId.value);
+    }
+    if (complaintTypeId.present) {
+      map['complaint_type_id'] = Variable<String>(complaintTypeId.value);
+    }
+    if (priorityId.present) {
+      map['priority_id'] = Variable<String>(priorityId.value);
+    }
+    if (ticketTypeId.present) {
+      map['ticket_type_id'] = Variable<String>(ticketTypeId.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (materialReceived.present) {
+      map['material_received'] = Variable<String>(materialReceived.value);
+    }
+    if (partySnapshot.present) {
+      map['party_snapshot'] = Variable<String>(partySnapshot.value);
+    }
+    if (searchText.present) {
+      map['search_text'] = Variable<String>(searchText.value);
+    }
+    if (cancelReason.present) {
+      map['cancel_reason'] = Variable<String>(cancelReason.value);
+    }
+    if (cancelledAt.present) {
+      map['cancelled_at'] = Variable<DateTime>(cancelledAt.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceEnquiriesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('enquiryNumber: $enquiryNumber, ')
+          ..write('customerId: $customerId, ')
+          ..write('siteId: $siteId, ')
+          ..write('serviceTypeId: $serviceTypeId, ')
+          ..write('complaintTypeId: $complaintTypeId, ')
+          ..write('priorityId: $priorityId, ')
+          ..write('ticketTypeId: $ticketTypeId, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('materialReceived: $materialReceived, ')
+          ..write('partySnapshot: $partySnapshot, ')
+          ..write('searchText: $searchText, ')
+          ..write('cancelReason: $cancelReason, ')
+          ..write('cancelledAt: $cancelledAt, ')
+          ..write('version: $version, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceEnquiryDetailsTable extends ServiceEnquiryDetails
+    with TableInfo<$ServiceEnquiryDetailsTable, ServiceEnquiryDetailRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceEnquiryDetailsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enquiryIdMeta = const VerificationMeta(
+    'enquiryId',
+  );
+  @override
+  late final GeneratedColumn<String> enquiryId = GeneratedColumn<String>(
+    'enquiry_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lineNumberMeta = const VerificationMeta(
+    'lineNumber',
+  );
+  @override
+  late final GeneratedColumn<int> lineNumber = GeneratedColumn<int>(
+    'line_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _removedAtMeta = const VerificationMeta(
+    'removedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> removedAt = GeneratedColumn<DateTime>(
+    'removed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    enquiryId,
+    lineNumber,
+    description,
+    status,
+    removedAt,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_enquiry_details';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceEnquiryDetailRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('enquiry_id')) {
+      context.handle(
+        _enquiryIdMeta,
+        enquiryId.isAcceptableOrUnknown(data['enquiry_id']!, _enquiryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enquiryIdMeta);
+    }
+    if (data.containsKey('line_number')) {
+      context.handle(
+        _lineNumberMeta,
+        lineNumber.isAcceptableOrUnknown(data['line_number']!, _lineNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lineNumberMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('removed_at')) {
+      context.handle(
+        _removedAtMeta,
+        removedAt.isAcceptableOrUnknown(data['removed_at']!, _removedAtMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ServiceEnquiryDetailRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceEnquiryDetailRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      enquiryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}enquiry_id'],
+      )!,
+      lineNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_number'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      removedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}removed_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceEnquiryDetailsTable createAlias(String alias) {
+    return $ServiceEnquiryDetailsTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceEnquiryDetailRow extends DataClass
+    implements Insertable<ServiceEnquiryDetailRow> {
+  final String id;
+  final String companyId;
+  final String enquiryId;
+  final int lineNumber;
+  final String description;
+  final String status;
+  final DateTime? removedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String syncStatus;
+  const ServiceEnquiryDetailRow({
+    required this.id,
+    required this.companyId,
+    required this.enquiryId,
+    required this.lineNumber,
+    required this.description,
+    required this.status,
+    this.removedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['enquiry_id'] = Variable<String>(enquiryId);
+    map['line_number'] = Variable<int>(lineNumber);
+    map['description'] = Variable<String>(description);
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || removedAt != null) {
+      map['removed_at'] = Variable<DateTime>(removedAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceEnquiryDetailsCompanion toCompanion(bool nullToAbsent) {
+    return ServiceEnquiryDetailsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      enquiryId: Value(enquiryId),
+      lineNumber: Value(lineNumber),
+      description: Value(description),
+      status: Value(status),
+      removedAt: removedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(removedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceEnquiryDetailRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceEnquiryDetailRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      enquiryId: serializer.fromJson<String>(json['enquiryId']),
+      lineNumber: serializer.fromJson<int>(json['lineNumber']),
+      description: serializer.fromJson<String>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      removedAt: serializer.fromJson<DateTime?>(json['removedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'enquiryId': serializer.toJson<String>(enquiryId),
+      'lineNumber': serializer.toJson<int>(lineNumber),
+      'description': serializer.toJson<String>(description),
+      'status': serializer.toJson<String>(status),
+      'removedAt': serializer.toJson<DateTime?>(removedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceEnquiryDetailRow copyWith({
+    String? id,
+    String? companyId,
+    String? enquiryId,
+    int? lineNumber,
+    String? description,
+    String? status,
+    Value<DateTime?> removedAt = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    String? syncStatus,
+  }) => ServiceEnquiryDetailRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    enquiryId: enquiryId ?? this.enquiryId,
+    lineNumber: lineNumber ?? this.lineNumber,
+    description: description ?? this.description,
+    status: status ?? this.status,
+    removedAt: removedAt.present ? removedAt.value : this.removedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceEnquiryDetailRow copyWithCompanion(
+    ServiceEnquiryDetailsCompanion data,
+  ) {
+    return ServiceEnquiryDetailRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      enquiryId: data.enquiryId.present ? data.enquiryId.value : this.enquiryId,
+      lineNumber: data.lineNumber.present
+          ? data.lineNumber.value
+          : this.lineNumber,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      removedAt: data.removedAt.present ? data.removedAt.value : this.removedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceEnquiryDetailRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('enquiryId: $enquiryId, ')
+          ..write('lineNumber: $lineNumber, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('removedAt: $removedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    enquiryId,
+    lineNumber,
+    description,
+    status,
+    removedAt,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceEnquiryDetailRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.enquiryId == this.enquiryId &&
+          other.lineNumber == this.lineNumber &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.removedAt == this.removedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceEnquiryDetailsCompanion
+    extends UpdateCompanion<ServiceEnquiryDetailRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> enquiryId;
+  final Value<int> lineNumber;
+  final Value<String> description;
+  final Value<String> status;
+  final Value<DateTime?> removedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceEnquiryDetailsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.enquiryId = const Value.absent(),
+    this.lineNumber = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.removedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceEnquiryDetailsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String enquiryId,
+    required int lineNumber,
+    required String description,
+    required String status,
+    this.removedAt = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       enquiryId = Value(enquiryId),
+       lineNumber = Value(lineNumber),
+       description = Value(description),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceEnquiryDetailRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? enquiryId,
+    Expression<int>? lineNumber,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<DateTime>? removedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (enquiryId != null) 'enquiry_id': enquiryId,
+      if (lineNumber != null) 'line_number': lineNumber,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (removedAt != null) 'removed_at': removedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceEnquiryDetailsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? enquiryId,
+    Value<int>? lineNumber,
+    Value<String>? description,
+    Value<String>? status,
+    Value<DateTime?>? removedAt,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceEnquiryDetailsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      enquiryId: enquiryId ?? this.enquiryId,
+      lineNumber: lineNumber ?? this.lineNumber,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      removedAt: removedAt ?? this.removedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (enquiryId.present) {
+      map['enquiry_id'] = Variable<String>(enquiryId.value);
+    }
+    if (lineNumber.present) {
+      map['line_number'] = Variable<int>(lineNumber.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (removedAt.present) {
+      map['removed_at'] = Variable<DateTime>(removedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceEnquiryDetailsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('enquiryId: $enquiryId, ')
+          ..write('lineNumber: $lineNumber, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('removedAt: $removedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceJobAssignmentsTable extends ServiceJobAssignments
+    with TableInfo<$ServiceJobAssignmentsTable, ServiceJobAssignmentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceJobAssignmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _assignmentNumberMeta = const VerificationMeta(
+    'assignmentNumber',
+  );
+  @override
+  late final GeneratedColumn<String> assignmentNumber = GeneratedColumn<String>(
+    'assignment_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _assignmentDateMeta = const VerificationMeta(
+    'assignmentDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> assignmentDate =
+      GeneratedColumn<DateTime>(
+        'assignment_date',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _sourceEnquiryIdMeta = const VerificationMeta(
+    'sourceEnquiryId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceEnquiryId = GeneratedColumn<String>(
+    'source_enquiry_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _scheduledVisitDateMeta =
+      const VerificationMeta('scheduledVisitDate');
+  @override
+  late final GeneratedColumn<DateTime> scheduledVisitDate =
+      GeneratedColumn<DateTime>(
+        'scheduled_visit_date',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _searchTextMeta = const VerificationMeta(
+    'searchText',
+  );
+  @override
+  late final GeneratedColumn<String> searchText = GeneratedColumn<String>(
+    'search_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    assignmentNumber,
+    assignmentDate,
+    sourceEnquiryId,
+    scheduledVisitDate,
+    status,
+    version,
+    searchText,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    requestId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_job_assignments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceJobAssignmentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('assignment_number')) {
+      context.handle(
+        _assignmentNumberMeta,
+        assignmentNumber.isAcceptableOrUnknown(
+          data['assignment_number']!,
+          _assignmentNumberMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_assignmentNumberMeta);
+    }
+    if (data.containsKey('assignment_date')) {
+      context.handle(
+        _assignmentDateMeta,
+        assignmentDate.isAcceptableOrUnknown(
+          data['assignment_date']!,
+          _assignmentDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_assignmentDateMeta);
+    }
+    if (data.containsKey('source_enquiry_id')) {
+      context.handle(
+        _sourceEnquiryIdMeta,
+        sourceEnquiryId.isAcceptableOrUnknown(
+          data['source_enquiry_id']!,
+          _sourceEnquiryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceEnquiryIdMeta);
+    }
+    if (data.containsKey('scheduled_visit_date')) {
+      context.handle(
+        _scheduledVisitDateMeta,
+        scheduledVisitDate.isAcceptableOrUnknown(
+          data['scheduled_visit_date']!,
+          _scheduledVisitDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_scheduledVisitDateMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    }
+    if (data.containsKey('search_text')) {
+      context.handle(
+        _searchTextMeta,
+        searchText.isAcceptableOrUnknown(data['search_text']!, _searchTextMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, assignmentNumber},
+    {companyId, requestId},
+  ];
+  @override
+  ServiceJobAssignmentRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceJobAssignmentRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      assignmentNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assignment_number'],
+      )!,
+      assignmentDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}assignment_date'],
+      )!,
+      sourceEnquiryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_enquiry_id'],
+      )!,
+      scheduledVisitDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}scheduled_visit_date'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      searchText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_text'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceJobAssignmentsTable createAlias(String alias) {
+    return $ServiceJobAssignmentsTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceJobAssignmentRow extends DataClass
+    implements Insertable<ServiceJobAssignmentRow> {
+  final String id;
+  final String companyId;
+  final String assignmentNumber;
+  final DateTime assignmentDate;
+  final String sourceEnquiryId;
+  final DateTime scheduledVisitDate;
+  final String status;
+  final int version;
+
+  /// Lower-cased concatenation of searchable fields (assignment/enquiry number,
+  /// customer/mobile/site/building/unit, assigned employee/team names) so list
+  /// search stays one indexed-friendly LIKE.
+  final String searchText;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String? requestId;
+  final String syncStatus;
+  const ServiceJobAssignmentRow({
+    required this.id,
+    required this.companyId,
+    required this.assignmentNumber,
+    required this.assignmentDate,
+    required this.sourceEnquiryId,
+    required this.scheduledVisitDate,
+    required this.status,
+    required this.version,
+    required this.searchText,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    this.requestId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['assignment_number'] = Variable<String>(assignmentNumber);
+    map['assignment_date'] = Variable<DateTime>(assignmentDate);
+    map['source_enquiry_id'] = Variable<String>(sourceEnquiryId);
+    map['scheduled_visit_date'] = Variable<DateTime>(scheduledVisitDate);
+    map['status'] = Variable<String>(status);
+    map['version'] = Variable<int>(version);
+    map['search_text'] = Variable<String>(searchText);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceJobAssignmentsCompanion toCompanion(bool nullToAbsent) {
+    return ServiceJobAssignmentsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      assignmentNumber: Value(assignmentNumber),
+      assignmentDate: Value(assignmentDate),
+      sourceEnquiryId: Value(sourceEnquiryId),
+      scheduledVisitDate: Value(scheduledVisitDate),
+      status: Value(status),
+      version: Value(version),
+      searchText: Value(searchText),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceJobAssignmentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceJobAssignmentRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      assignmentNumber: serializer.fromJson<String>(json['assignmentNumber']),
+      assignmentDate: serializer.fromJson<DateTime>(json['assignmentDate']),
+      sourceEnquiryId: serializer.fromJson<String>(json['sourceEnquiryId']),
+      scheduledVisitDate: serializer.fromJson<DateTime>(
+        json['scheduledVisitDate'],
+      ),
+      status: serializer.fromJson<String>(json['status']),
+      version: serializer.fromJson<int>(json['version']),
+      searchText: serializer.fromJson<String>(json['searchText']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'assignmentNumber': serializer.toJson<String>(assignmentNumber),
+      'assignmentDate': serializer.toJson<DateTime>(assignmentDate),
+      'sourceEnquiryId': serializer.toJson<String>(sourceEnquiryId),
+      'scheduledVisitDate': serializer.toJson<DateTime>(scheduledVisitDate),
+      'status': serializer.toJson<String>(status),
+      'version': serializer.toJson<int>(version),
+      'searchText': serializer.toJson<String>(searchText),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'requestId': serializer.toJson<String?>(requestId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceJobAssignmentRow copyWith({
+    String? id,
+    String? companyId,
+    String? assignmentNumber,
+    DateTime? assignmentDate,
+    String? sourceEnquiryId,
+    DateTime? scheduledVisitDate,
+    String? status,
+    int? version,
+    String? searchText,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    Value<String?> requestId = const Value.absent(),
+    String? syncStatus,
+  }) => ServiceJobAssignmentRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    assignmentNumber: assignmentNumber ?? this.assignmentNumber,
+    assignmentDate: assignmentDate ?? this.assignmentDate,
+    sourceEnquiryId: sourceEnquiryId ?? this.sourceEnquiryId,
+    scheduledVisitDate: scheduledVisitDate ?? this.scheduledVisitDate,
+    status: status ?? this.status,
+    version: version ?? this.version,
+    searchText: searchText ?? this.searchText,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    requestId: requestId.present ? requestId.value : this.requestId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceJobAssignmentRow copyWithCompanion(
+    ServiceJobAssignmentsCompanion data,
+  ) {
+    return ServiceJobAssignmentRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      assignmentNumber: data.assignmentNumber.present
+          ? data.assignmentNumber.value
+          : this.assignmentNumber,
+      assignmentDate: data.assignmentDate.present
+          ? data.assignmentDate.value
+          : this.assignmentDate,
+      sourceEnquiryId: data.sourceEnquiryId.present
+          ? data.sourceEnquiryId.value
+          : this.sourceEnquiryId,
+      scheduledVisitDate: data.scheduledVisitDate.present
+          ? data.scheduledVisitDate.value
+          : this.scheduledVisitDate,
+      status: data.status.present ? data.status.value : this.status,
+      version: data.version.present ? data.version.value : this.version,
+      searchText: data.searchText.present
+          ? data.searchText.value
+          : this.searchText,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceJobAssignmentRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('assignmentNumber: $assignmentNumber, ')
+          ..write('assignmentDate: $assignmentDate, ')
+          ..write('sourceEnquiryId: $sourceEnquiryId, ')
+          ..write('scheduledVisitDate: $scheduledVisitDate, ')
+          ..write('status: $status, ')
+          ..write('version: $version, ')
+          ..write('searchText: $searchText, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    assignmentNumber,
+    assignmentDate,
+    sourceEnquiryId,
+    scheduledVisitDate,
+    status,
+    version,
+    searchText,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    requestId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceJobAssignmentRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.assignmentNumber == this.assignmentNumber &&
+          other.assignmentDate == this.assignmentDate &&
+          other.sourceEnquiryId == this.sourceEnquiryId &&
+          other.scheduledVisitDate == this.scheduledVisitDate &&
+          other.status == this.status &&
+          other.version == this.version &&
+          other.searchText == this.searchText &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.requestId == this.requestId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceJobAssignmentsCompanion
+    extends UpdateCompanion<ServiceJobAssignmentRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> assignmentNumber;
+  final Value<DateTime> assignmentDate;
+  final Value<String> sourceEnquiryId;
+  final Value<DateTime> scheduledVisitDate;
+  final Value<String> status;
+  final Value<int> version;
+  final Value<String> searchText;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String?> requestId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceJobAssignmentsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.assignmentNumber = const Value.absent(),
+    this.assignmentDate = const Value.absent(),
+    this.sourceEnquiryId = const Value.absent(),
+    this.scheduledVisitDate = const Value.absent(),
+    this.status = const Value.absent(),
+    this.version = const Value.absent(),
+    this.searchText = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceJobAssignmentsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String assignmentNumber,
+    required DateTime assignmentDate,
+    required String sourceEnquiryId,
+    required DateTime scheduledVisitDate,
+    required String status,
+    this.version = const Value.absent(),
+    this.searchText = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    this.requestId = const Value.absent(),
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       assignmentNumber = Value(assignmentNumber),
+       assignmentDate = Value(assignmentDate),
+       sourceEnquiryId = Value(sourceEnquiryId),
+       scheduledVisitDate = Value(scheduledVisitDate),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceJobAssignmentRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? assignmentNumber,
+    Expression<DateTime>? assignmentDate,
+    Expression<String>? sourceEnquiryId,
+    Expression<DateTime>? scheduledVisitDate,
+    Expression<String>? status,
+    Expression<int>? version,
+    Expression<String>? searchText,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? requestId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (assignmentNumber != null) 'assignment_number': assignmentNumber,
+      if (assignmentDate != null) 'assignment_date': assignmentDate,
+      if (sourceEnquiryId != null) 'source_enquiry_id': sourceEnquiryId,
+      if (scheduledVisitDate != null)
+        'scheduled_visit_date': scheduledVisitDate,
+      if (status != null) 'status': status,
+      if (version != null) 'version': version,
+      if (searchText != null) 'search_text': searchText,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (requestId != null) 'request_id': requestId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceJobAssignmentsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? assignmentNumber,
+    Value<DateTime>? assignmentDate,
+    Value<String>? sourceEnquiryId,
+    Value<DateTime>? scheduledVisitDate,
+    Value<String>? status,
+    Value<int>? version,
+    Value<String>? searchText,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String?>? requestId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceJobAssignmentsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      assignmentNumber: assignmentNumber ?? this.assignmentNumber,
+      assignmentDate: assignmentDate ?? this.assignmentDate,
+      sourceEnquiryId: sourceEnquiryId ?? this.sourceEnquiryId,
+      scheduledVisitDate: scheduledVisitDate ?? this.scheduledVisitDate,
+      status: status ?? this.status,
+      version: version ?? this.version,
+      searchText: searchText ?? this.searchText,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      requestId: requestId ?? this.requestId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (assignmentNumber.present) {
+      map['assignment_number'] = Variable<String>(assignmentNumber.value);
+    }
+    if (assignmentDate.present) {
+      map['assignment_date'] = Variable<DateTime>(assignmentDate.value);
+    }
+    if (sourceEnquiryId.present) {
+      map['source_enquiry_id'] = Variable<String>(sourceEnquiryId.value);
+    }
+    if (scheduledVisitDate.present) {
+      map['scheduled_visit_date'] = Variable<DateTime>(
+        scheduledVisitDate.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (searchText.present) {
+      map['search_text'] = Variable<String>(searchText.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceJobAssignmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('assignmentNumber: $assignmentNumber, ')
+          ..write('assignmentDate: $assignmentDate, ')
+          ..write('sourceEnquiryId: $sourceEnquiryId, ')
+          ..write('scheduledVisitDate: $scheduledVisitDate, ')
+          ..write('status: $status, ')
+          ..write('version: $version, ')
+          ..write('searchText: $searchText, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('requestId: $requestId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceJobAssignmentLinesTable extends ServiceJobAssignmentLines
+    with
+        TableInfo<
+          $ServiceJobAssignmentLinesTable,
+          ServiceJobAssignmentLineRow
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceJobAssignmentLinesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _assignmentIdMeta = const VerificationMeta(
+    'assignmentId',
+  );
+  @override
+  late final GeneratedColumn<String> assignmentId = GeneratedColumn<String>(
+    'assignment_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lineNumberMeta = const VerificationMeta(
+    'lineNumber',
+  );
+  @override
+  late final GeneratedColumn<int> lineNumber = GeneratedColumn<int>(
+    'line_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _workMeta = const VerificationMeta('work');
+  @override
+  late final GeneratedColumn<String> work = GeneratedColumn<String>(
+    'work',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _assignedEmployeeIdMeta =
+      const VerificationMeta('assignedEmployeeId');
+  @override
+  late final GeneratedColumn<String> assignedEmployeeId =
+      GeneratedColumn<String>(
+        'assigned_employee_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _assignedTeamIdMeta = const VerificationMeta(
+    'assignedTeamId',
+  );
+  @override
+  late final GeneratedColumn<String> assignedTeamId = GeneratedColumn<String>(
+    'assigned_team_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionForWorkMeta =
+      const VerificationMeta('descriptionForWork');
+  @override
+  late final GeneratedColumn<String> descriptionForWork =
+      GeneratedColumn<String>(
+        'description_for_work',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
+  static const VerificationMeta _removedAtMeta = const VerificationMeta(
+    'removedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> removedAt = GeneratedColumn<DateTime>(
+    'removed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    assignmentId,
+    lineNumber,
+    work,
+    assignedEmployeeId,
+    assignedTeamId,
+    status,
+    descriptionForWork,
+    removedAt,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_job_assignment_lines';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceJobAssignmentLineRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('assignment_id')) {
+      context.handle(
+        _assignmentIdMeta,
+        assignmentId.isAcceptableOrUnknown(
+          data['assignment_id']!,
+          _assignmentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_assignmentIdMeta);
+    }
+    if (data.containsKey('line_number')) {
+      context.handle(
+        _lineNumberMeta,
+        lineNumber.isAcceptableOrUnknown(data['line_number']!, _lineNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lineNumberMeta);
+    }
+    if (data.containsKey('work')) {
+      context.handle(
+        _workMeta,
+        work.isAcceptableOrUnknown(data['work']!, _workMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_workMeta);
+    }
+    if (data.containsKey('assigned_employee_id')) {
+      context.handle(
+        _assignedEmployeeIdMeta,
+        assignedEmployeeId.isAcceptableOrUnknown(
+          data['assigned_employee_id']!,
+          _assignedEmployeeIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('assigned_team_id')) {
+      context.handle(
+        _assignedTeamIdMeta,
+        assignedTeamId.isAcceptableOrUnknown(
+          data['assigned_team_id']!,
+          _assignedTeamIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('description_for_work')) {
+      context.handle(
+        _descriptionForWorkMeta,
+        descriptionForWork.isAcceptableOrUnknown(
+          data['description_for_work']!,
+          _descriptionForWorkMeta,
+        ),
+      );
+    }
+    if (data.containsKey('removed_at')) {
+      context.handle(
+        _removedAtMeta,
+        removedAt.isAcceptableOrUnknown(data['removed_at']!, _removedAtMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ServiceJobAssignmentLineRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceJobAssignmentLineRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      assignmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assignment_id'],
+      )!,
+      lineNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_number'],
+      )!,
+      work: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work'],
+      )!,
+      assignedEmployeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assigned_employee_id'],
+      ),
+      assignedTeamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assigned_team_id'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      descriptionForWork: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description_for_work'],
+      )!,
+      removedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}removed_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceJobAssignmentLinesTable createAlias(String alias) {
+    return $ServiceJobAssignmentLinesTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceJobAssignmentLineRow extends DataClass
+    implements Insertable<ServiceJobAssignmentLineRow> {
+  final String id;
+  final String companyId;
+  final String assignmentId;
+  final int lineNumber;
+  final String work;
+  final String? assignedEmployeeId;
+  final String? assignedTeamId;
+  final String status;
+  final String descriptionForWork;
+  final DateTime? removedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String syncStatus;
+  const ServiceJobAssignmentLineRow({
+    required this.id,
+    required this.companyId,
+    required this.assignmentId,
+    required this.lineNumber,
+    required this.work,
+    this.assignedEmployeeId,
+    this.assignedTeamId,
+    required this.status,
+    required this.descriptionForWork,
+    this.removedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['assignment_id'] = Variable<String>(assignmentId);
+    map['line_number'] = Variable<int>(lineNumber);
+    map['work'] = Variable<String>(work);
+    if (!nullToAbsent || assignedEmployeeId != null) {
+      map['assigned_employee_id'] = Variable<String>(assignedEmployeeId);
+    }
+    if (!nullToAbsent || assignedTeamId != null) {
+      map['assigned_team_id'] = Variable<String>(assignedTeamId);
+    }
+    map['status'] = Variable<String>(status);
+    map['description_for_work'] = Variable<String>(descriptionForWork);
+    if (!nullToAbsent || removedAt != null) {
+      map['removed_at'] = Variable<DateTime>(removedAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceJobAssignmentLinesCompanion toCompanion(bool nullToAbsent) {
+    return ServiceJobAssignmentLinesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      assignmentId: Value(assignmentId),
+      lineNumber: Value(lineNumber),
+      work: Value(work),
+      assignedEmployeeId: assignedEmployeeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assignedEmployeeId),
+      assignedTeamId: assignedTeamId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assignedTeamId),
+      status: Value(status),
+      descriptionForWork: Value(descriptionForWork),
+      removedAt: removedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(removedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceJobAssignmentLineRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceJobAssignmentLineRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      assignmentId: serializer.fromJson<String>(json['assignmentId']),
+      lineNumber: serializer.fromJson<int>(json['lineNumber']),
+      work: serializer.fromJson<String>(json['work']),
+      assignedEmployeeId: serializer.fromJson<String?>(
+        json['assignedEmployeeId'],
+      ),
+      assignedTeamId: serializer.fromJson<String?>(json['assignedTeamId']),
+      status: serializer.fromJson<String>(json['status']),
+      descriptionForWork: serializer.fromJson<String>(
+        json['descriptionForWork'],
+      ),
+      removedAt: serializer.fromJson<DateTime?>(json['removedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'assignmentId': serializer.toJson<String>(assignmentId),
+      'lineNumber': serializer.toJson<int>(lineNumber),
+      'work': serializer.toJson<String>(work),
+      'assignedEmployeeId': serializer.toJson<String?>(assignedEmployeeId),
+      'assignedTeamId': serializer.toJson<String?>(assignedTeamId),
+      'status': serializer.toJson<String>(status),
+      'descriptionForWork': serializer.toJson<String>(descriptionForWork),
+      'removedAt': serializer.toJson<DateTime?>(removedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceJobAssignmentLineRow copyWith({
+    String? id,
+    String? companyId,
+    String? assignmentId,
+    int? lineNumber,
+    String? work,
+    Value<String?> assignedEmployeeId = const Value.absent(),
+    Value<String?> assignedTeamId = const Value.absent(),
+    String? status,
+    String? descriptionForWork,
+    Value<DateTime?> removedAt = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    String? syncStatus,
+  }) => ServiceJobAssignmentLineRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    assignmentId: assignmentId ?? this.assignmentId,
+    lineNumber: lineNumber ?? this.lineNumber,
+    work: work ?? this.work,
+    assignedEmployeeId: assignedEmployeeId.present
+        ? assignedEmployeeId.value
+        : this.assignedEmployeeId,
+    assignedTeamId: assignedTeamId.present
+        ? assignedTeamId.value
+        : this.assignedTeamId,
+    status: status ?? this.status,
+    descriptionForWork: descriptionForWork ?? this.descriptionForWork,
+    removedAt: removedAt.present ? removedAt.value : this.removedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceJobAssignmentLineRow copyWithCompanion(
+    ServiceJobAssignmentLinesCompanion data,
+  ) {
+    return ServiceJobAssignmentLineRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      assignmentId: data.assignmentId.present
+          ? data.assignmentId.value
+          : this.assignmentId,
+      lineNumber: data.lineNumber.present
+          ? data.lineNumber.value
+          : this.lineNumber,
+      work: data.work.present ? data.work.value : this.work,
+      assignedEmployeeId: data.assignedEmployeeId.present
+          ? data.assignedEmployeeId.value
+          : this.assignedEmployeeId,
+      assignedTeamId: data.assignedTeamId.present
+          ? data.assignedTeamId.value
+          : this.assignedTeamId,
+      status: data.status.present ? data.status.value : this.status,
+      descriptionForWork: data.descriptionForWork.present
+          ? data.descriptionForWork.value
+          : this.descriptionForWork,
+      removedAt: data.removedAt.present ? data.removedAt.value : this.removedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceJobAssignmentLineRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('assignmentId: $assignmentId, ')
+          ..write('lineNumber: $lineNumber, ')
+          ..write('work: $work, ')
+          ..write('assignedEmployeeId: $assignedEmployeeId, ')
+          ..write('assignedTeamId: $assignedTeamId, ')
+          ..write('status: $status, ')
+          ..write('descriptionForWork: $descriptionForWork, ')
+          ..write('removedAt: $removedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    assignmentId,
+    lineNumber,
+    work,
+    assignedEmployeeId,
+    assignedTeamId,
+    status,
+    descriptionForWork,
+    removedAt,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceJobAssignmentLineRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.assignmentId == this.assignmentId &&
+          other.lineNumber == this.lineNumber &&
+          other.work == this.work &&
+          other.assignedEmployeeId == this.assignedEmployeeId &&
+          other.assignedTeamId == this.assignedTeamId &&
+          other.status == this.status &&
+          other.descriptionForWork == this.descriptionForWork &&
+          other.removedAt == this.removedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceJobAssignmentLinesCompanion
+    extends UpdateCompanion<ServiceJobAssignmentLineRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> assignmentId;
+  final Value<int> lineNumber;
+  final Value<String> work;
+  final Value<String?> assignedEmployeeId;
+  final Value<String?> assignedTeamId;
+  final Value<String> status;
+  final Value<String> descriptionForWork;
+  final Value<DateTime?> removedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceJobAssignmentLinesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.assignmentId = const Value.absent(),
+    this.lineNumber = const Value.absent(),
+    this.work = const Value.absent(),
+    this.assignedEmployeeId = const Value.absent(),
+    this.assignedTeamId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.descriptionForWork = const Value.absent(),
+    this.removedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceJobAssignmentLinesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String assignmentId,
+    required int lineNumber,
+    required String work,
+    this.assignedEmployeeId = const Value.absent(),
+    this.assignedTeamId = const Value.absent(),
+    required String status,
+    this.descriptionForWork = const Value.absent(),
+    this.removedAt = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       assignmentId = Value(assignmentId),
+       lineNumber = Value(lineNumber),
+       work = Value(work),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceJobAssignmentLineRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? assignmentId,
+    Expression<int>? lineNumber,
+    Expression<String>? work,
+    Expression<String>? assignedEmployeeId,
+    Expression<String>? assignedTeamId,
+    Expression<String>? status,
+    Expression<String>? descriptionForWork,
+    Expression<DateTime>? removedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (assignmentId != null) 'assignment_id': assignmentId,
+      if (lineNumber != null) 'line_number': lineNumber,
+      if (work != null) 'work': work,
+      if (assignedEmployeeId != null)
+        'assigned_employee_id': assignedEmployeeId,
+      if (assignedTeamId != null) 'assigned_team_id': assignedTeamId,
+      if (status != null) 'status': status,
+      if (descriptionForWork != null)
+        'description_for_work': descriptionForWork,
+      if (removedAt != null) 'removed_at': removedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceJobAssignmentLinesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? assignmentId,
+    Value<int>? lineNumber,
+    Value<String>? work,
+    Value<String?>? assignedEmployeeId,
+    Value<String?>? assignedTeamId,
+    Value<String>? status,
+    Value<String>? descriptionForWork,
+    Value<DateTime?>? removedAt,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceJobAssignmentLinesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      assignmentId: assignmentId ?? this.assignmentId,
+      lineNumber: lineNumber ?? this.lineNumber,
+      work: work ?? this.work,
+      assignedEmployeeId: assignedEmployeeId ?? this.assignedEmployeeId,
+      assignedTeamId: assignedTeamId ?? this.assignedTeamId,
+      status: status ?? this.status,
+      descriptionForWork: descriptionForWork ?? this.descriptionForWork,
+      removedAt: removedAt ?? this.removedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (assignmentId.present) {
+      map['assignment_id'] = Variable<String>(assignmentId.value);
+    }
+    if (lineNumber.present) {
+      map['line_number'] = Variable<int>(lineNumber.value);
+    }
+    if (work.present) {
+      map['work'] = Variable<String>(work.value);
+    }
+    if (assignedEmployeeId.present) {
+      map['assigned_employee_id'] = Variable<String>(assignedEmployeeId.value);
+    }
+    if (assignedTeamId.present) {
+      map['assigned_team_id'] = Variable<String>(assignedTeamId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (descriptionForWork.present) {
+      map['description_for_work'] = Variable<String>(descriptionForWork.value);
+    }
+    if (removedAt.present) {
+      map['removed_at'] = Variable<DateTime>(removedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceJobAssignmentLinesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('assignmentId: $assignmentId, ')
+          ..write('lineNumber: $lineNumber, ')
+          ..write('work: $work, ')
+          ..write('assignedEmployeeId: $assignedEmployeeId, ')
+          ..write('assignedTeamId: $assignedTeamId, ')
+          ..write('status: $status, ')
+          ..write('descriptionForWork: $descriptionForWork, ')
+          ..write('removedAt: $removedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -28493,6 +32322,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $ServicePrioritiesTable(this);
   late final $ServiceTicketTypesTable serviceTicketTypes =
       $ServiceTicketTypesTable(this);
+  late final $ServiceEnquiriesTable serviceEnquiries = $ServiceEnquiriesTable(
+    this,
+  );
+  late final $ServiceEnquiryDetailsTable serviceEnquiryDetails =
+      $ServiceEnquiryDetailsTable(this);
+  late final $ServiceJobAssignmentsTable serviceJobAssignments =
+      $ServiceJobAssignmentsTable(this);
+  late final $ServiceJobAssignmentLinesTable serviceJobAssignmentLines =
+      $ServiceJobAssignmentLinesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -28532,6 +32370,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     complaintTypes,
     servicePriorities,
     serviceTicketTypes,
+    serviceEnquiries,
+    serviceEnquiryDetails,
+    serviceJobAssignments,
+    serviceJobAssignmentLines,
   ];
 }
 
@@ -42877,6 +46719,1800 @@ typedef $$ServiceTicketTypesTableProcessedTableManager =
       ServiceTicketTypeRow,
       PrefetchHooks Function()
     >;
+typedef $$ServiceEnquiriesTableCreateCompanionBuilder =
+    ServiceEnquiriesCompanion Function({
+      required String id,
+      required String companyId,
+      required String enquiryNumber,
+      required String customerId,
+      required String siteId,
+      required String serviceTypeId,
+      required String complaintTypeId,
+      required String priorityId,
+      required String ticketTypeId,
+      required String description,
+      required String status,
+      Value<String> materialReceived,
+      required String partySnapshot,
+      Value<String> searchText,
+      Value<String?> cancelReason,
+      Value<DateTime?> cancelledAt,
+      Value<int> version,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      Value<String?> requestId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceEnquiriesTableUpdateCompanionBuilder =
+    ServiceEnquiriesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> enquiryNumber,
+      Value<String> customerId,
+      Value<String> siteId,
+      Value<String> serviceTypeId,
+      Value<String> complaintTypeId,
+      Value<String> priorityId,
+      Value<String> ticketTypeId,
+      Value<String> description,
+      Value<String> status,
+      Value<String> materialReceived,
+      Value<String> partySnapshot,
+      Value<String> searchText,
+      Value<String?> cancelReason,
+      Value<DateTime?> cancelledAt,
+      Value<int> version,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String?> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceEnquiriesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiriesTable> {
+  $$ServiceEnquiriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enquiryNumber => $composableBuilder(
+    column: $table.enquiryNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get complaintTypeId => $composableBuilder(
+    column: $table.complaintTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get priorityId => $composableBuilder(
+    column: $table.priorityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ticketTypeId => $composableBuilder(
+    column: $table.ticketTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get materialReceived => $composableBuilder(
+    column: $table.materialReceived,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get partySnapshot => $composableBuilder(
+    column: $table.partySnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cancelReason => $composableBuilder(
+    column: $table.cancelReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get cancelledAt => $composableBuilder(
+    column: $table.cancelledAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceEnquiriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiriesTable> {
+  $$ServiceEnquiriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enquiryNumber => $composableBuilder(
+    column: $table.enquiryNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get complaintTypeId => $composableBuilder(
+    column: $table.complaintTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get priorityId => $composableBuilder(
+    column: $table.priorityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ticketTypeId => $composableBuilder(
+    column: $table.ticketTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get materialReceived => $composableBuilder(
+    column: $table.materialReceived,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get partySnapshot => $composableBuilder(
+    column: $table.partySnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cancelReason => $composableBuilder(
+    column: $table.cancelReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get cancelledAt => $composableBuilder(
+    column: $table.cancelledAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceEnquiriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiriesTable> {
+  $$ServiceEnquiriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get enquiryNumber => $composableBuilder(
+    column: $table.enquiryNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get siteId =>
+      $composableBuilder(column: $table.siteId, builder: (column) => column);
+
+  GeneratedColumn<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get complaintTypeId => $composableBuilder(
+    column: $table.complaintTypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get priorityId => $composableBuilder(
+    column: $table.priorityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ticketTypeId => $composableBuilder(
+    column: $table.ticketTypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get materialReceived => $composableBuilder(
+    column: $table.materialReceived,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get partySnapshot => $composableBuilder(
+    column: $table.partySnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get cancelReason => $composableBuilder(
+    column: $table.cancelReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get cancelledAt => $composableBuilder(
+    column: $table.cancelledAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceEnquiriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceEnquiriesTable,
+          ServiceEnquiryRow,
+          $$ServiceEnquiriesTableFilterComposer,
+          $$ServiceEnquiriesTableOrderingComposer,
+          $$ServiceEnquiriesTableAnnotationComposer,
+          $$ServiceEnquiriesTableCreateCompanionBuilder,
+          $$ServiceEnquiriesTableUpdateCompanionBuilder,
+          (
+            ServiceEnquiryRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceEnquiriesTable,
+              ServiceEnquiryRow
+            >,
+          ),
+          ServiceEnquiryRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceEnquiriesTableTableManager(
+    _$AppDatabase db,
+    $ServiceEnquiriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceEnquiriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceEnquiriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceEnquiriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> enquiryNumber = const Value.absent(),
+                Value<String> customerId = const Value.absent(),
+                Value<String> siteId = const Value.absent(),
+                Value<String> serviceTypeId = const Value.absent(),
+                Value<String> complaintTypeId = const Value.absent(),
+                Value<String> priorityId = const Value.absent(),
+                Value<String> ticketTypeId = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> materialReceived = const Value.absent(),
+                Value<String> partySnapshot = const Value.absent(),
+                Value<String> searchText = const Value.absent(),
+                Value<String?> cancelReason = const Value.absent(),
+                Value<DateTime?> cancelledAt = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceEnquiriesCompanion(
+                id: id,
+                companyId: companyId,
+                enquiryNumber: enquiryNumber,
+                customerId: customerId,
+                siteId: siteId,
+                serviceTypeId: serviceTypeId,
+                complaintTypeId: complaintTypeId,
+                priorityId: priorityId,
+                ticketTypeId: ticketTypeId,
+                description: description,
+                status: status,
+                materialReceived: materialReceived,
+                partySnapshot: partySnapshot,
+                searchText: searchText,
+                cancelReason: cancelReason,
+                cancelledAt: cancelledAt,
+                version: version,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String enquiryNumber,
+                required String customerId,
+                required String siteId,
+                required String serviceTypeId,
+                required String complaintTypeId,
+                required String priorityId,
+                required String ticketTypeId,
+                required String description,
+                required String status,
+                Value<String> materialReceived = const Value.absent(),
+                required String partySnapshot,
+                Value<String> searchText = const Value.absent(),
+                Value<String?> cancelReason = const Value.absent(),
+                Value<DateTime?> cancelledAt = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                Value<String?> requestId = const Value.absent(),
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceEnquiriesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                enquiryNumber: enquiryNumber,
+                customerId: customerId,
+                siteId: siteId,
+                serviceTypeId: serviceTypeId,
+                complaintTypeId: complaintTypeId,
+                priorityId: priorityId,
+                ticketTypeId: ticketTypeId,
+                description: description,
+                status: status,
+                materialReceived: materialReceived,
+                partySnapshot: partySnapshot,
+                searchText: searchText,
+                cancelReason: cancelReason,
+                cancelledAt: cancelledAt,
+                version: version,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceEnquiriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceEnquiriesTable,
+      ServiceEnquiryRow,
+      $$ServiceEnquiriesTableFilterComposer,
+      $$ServiceEnquiriesTableOrderingComposer,
+      $$ServiceEnquiriesTableAnnotationComposer,
+      $$ServiceEnquiriesTableCreateCompanionBuilder,
+      $$ServiceEnquiriesTableUpdateCompanionBuilder,
+      (
+        ServiceEnquiryRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceEnquiriesTable,
+          ServiceEnquiryRow
+        >,
+      ),
+      ServiceEnquiryRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceEnquiryDetailsTableCreateCompanionBuilder =
+    ServiceEnquiryDetailsCompanion Function({
+      required String id,
+      required String companyId,
+      required String enquiryId,
+      required int lineNumber,
+      required String description,
+      required String status,
+      Value<DateTime?> removedAt,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceEnquiryDetailsTableUpdateCompanionBuilder =
+    ServiceEnquiryDetailsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> enquiryId,
+      Value<int> lineNumber,
+      Value<String> description,
+      Value<String> status,
+      Value<DateTime?> removedAt,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceEnquiryDetailsTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiryDetailsTable> {
+  $$ServiceEnquiryDetailsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enquiryId => $composableBuilder(
+    column: $table.enquiryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get removedAt => $composableBuilder(
+    column: $table.removedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceEnquiryDetailsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiryDetailsTable> {
+  $$ServiceEnquiryDetailsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enquiryId => $composableBuilder(
+    column: $table.enquiryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get removedAt => $composableBuilder(
+    column: $table.removedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceEnquiryDetailsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceEnquiryDetailsTable> {
+  $$ServiceEnquiryDetailsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get enquiryId =>
+      $composableBuilder(column: $table.enquiryId, builder: (column) => column);
+
+  GeneratedColumn<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get removedAt =>
+      $composableBuilder(column: $table.removedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceEnquiryDetailsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceEnquiryDetailsTable,
+          ServiceEnquiryDetailRow,
+          $$ServiceEnquiryDetailsTableFilterComposer,
+          $$ServiceEnquiryDetailsTableOrderingComposer,
+          $$ServiceEnquiryDetailsTableAnnotationComposer,
+          $$ServiceEnquiryDetailsTableCreateCompanionBuilder,
+          $$ServiceEnquiryDetailsTableUpdateCompanionBuilder,
+          (
+            ServiceEnquiryDetailRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceEnquiryDetailsTable,
+              ServiceEnquiryDetailRow
+            >,
+          ),
+          ServiceEnquiryDetailRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceEnquiryDetailsTableTableManager(
+    _$AppDatabase db,
+    $ServiceEnquiryDetailsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceEnquiryDetailsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$ServiceEnquiryDetailsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ServiceEnquiryDetailsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> enquiryId = const Value.absent(),
+                Value<int> lineNumber = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime?> removedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceEnquiryDetailsCompanion(
+                id: id,
+                companyId: companyId,
+                enquiryId: enquiryId,
+                lineNumber: lineNumber,
+                description: description,
+                status: status,
+                removedAt: removedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String enquiryId,
+                required int lineNumber,
+                required String description,
+                required String status,
+                Value<DateTime?> removedAt = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceEnquiryDetailsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                enquiryId: enquiryId,
+                lineNumber: lineNumber,
+                description: description,
+                status: status,
+                removedAt: removedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceEnquiryDetailsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceEnquiryDetailsTable,
+      ServiceEnquiryDetailRow,
+      $$ServiceEnquiryDetailsTableFilterComposer,
+      $$ServiceEnquiryDetailsTableOrderingComposer,
+      $$ServiceEnquiryDetailsTableAnnotationComposer,
+      $$ServiceEnquiryDetailsTableCreateCompanionBuilder,
+      $$ServiceEnquiryDetailsTableUpdateCompanionBuilder,
+      (
+        ServiceEnquiryDetailRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceEnquiryDetailsTable,
+          ServiceEnquiryDetailRow
+        >,
+      ),
+      ServiceEnquiryDetailRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceJobAssignmentsTableCreateCompanionBuilder =
+    ServiceJobAssignmentsCompanion Function({
+      required String id,
+      required String companyId,
+      required String assignmentNumber,
+      required DateTime assignmentDate,
+      required String sourceEnquiryId,
+      required DateTime scheduledVisitDate,
+      required String status,
+      Value<int> version,
+      Value<String> searchText,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      Value<String?> requestId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceJobAssignmentsTableUpdateCompanionBuilder =
+    ServiceJobAssignmentsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> assignmentNumber,
+      Value<DateTime> assignmentDate,
+      Value<String> sourceEnquiryId,
+      Value<DateTime> scheduledVisitDate,
+      Value<String> status,
+      Value<int> version,
+      Value<String> searchText,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String?> requestId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceJobAssignmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentsTable> {
+  $$ServiceJobAssignmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assignmentNumber => $composableBuilder(
+    column: $table.assignmentNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get assignmentDate => $composableBuilder(
+    column: $table.assignmentDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceEnquiryId => $composableBuilder(
+    column: $table.sourceEnquiryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get scheduledVisitDate => $composableBuilder(
+    column: $table.scheduledVisitDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceJobAssignmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentsTable> {
+  $$ServiceJobAssignmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assignmentNumber => $composableBuilder(
+    column: $table.assignmentNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get assignmentDate => $composableBuilder(
+    column: $table.assignmentDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceEnquiryId => $composableBuilder(
+    column: $table.sourceEnquiryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get scheduledVisitDate => $composableBuilder(
+    column: $table.scheduledVisitDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceJobAssignmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentsTable> {
+  $$ServiceJobAssignmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get assignmentNumber => $composableBuilder(
+    column: $table.assignmentNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get assignmentDate => $composableBuilder(
+    column: $table.assignmentDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceEnquiryId => $composableBuilder(
+    column: $table.sourceEnquiryId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get scheduledVisitDate => $composableBuilder(
+    column: $table.scheduledVisitDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get searchText => $composableBuilder(
+    column: $table.searchText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceJobAssignmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceJobAssignmentsTable,
+          ServiceJobAssignmentRow,
+          $$ServiceJobAssignmentsTableFilterComposer,
+          $$ServiceJobAssignmentsTableOrderingComposer,
+          $$ServiceJobAssignmentsTableAnnotationComposer,
+          $$ServiceJobAssignmentsTableCreateCompanionBuilder,
+          $$ServiceJobAssignmentsTableUpdateCompanionBuilder,
+          (
+            ServiceJobAssignmentRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceJobAssignmentsTable,
+              ServiceJobAssignmentRow
+            >,
+          ),
+          ServiceJobAssignmentRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceJobAssignmentsTableTableManager(
+    _$AppDatabase db,
+    $ServiceJobAssignmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceJobAssignmentsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$ServiceJobAssignmentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ServiceJobAssignmentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> assignmentNumber = const Value.absent(),
+                Value<DateTime> assignmentDate = const Value.absent(),
+                Value<String> sourceEnquiryId = const Value.absent(),
+                Value<DateTime> scheduledVisitDate = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> searchText = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceJobAssignmentsCompanion(
+                id: id,
+                companyId: companyId,
+                assignmentNumber: assignmentNumber,
+                assignmentDate: assignmentDate,
+                sourceEnquiryId: sourceEnquiryId,
+                scheduledVisitDate: scheduledVisitDate,
+                status: status,
+                version: version,
+                searchText: searchText,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String assignmentNumber,
+                required DateTime assignmentDate,
+                required String sourceEnquiryId,
+                required DateTime scheduledVisitDate,
+                required String status,
+                Value<int> version = const Value.absent(),
+                Value<String> searchText = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                Value<String?> requestId = const Value.absent(),
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceJobAssignmentsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                assignmentNumber: assignmentNumber,
+                assignmentDate: assignmentDate,
+                sourceEnquiryId: sourceEnquiryId,
+                scheduledVisitDate: scheduledVisitDate,
+                status: status,
+                version: version,
+                searchText: searchText,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                requestId: requestId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceJobAssignmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceJobAssignmentsTable,
+      ServiceJobAssignmentRow,
+      $$ServiceJobAssignmentsTableFilterComposer,
+      $$ServiceJobAssignmentsTableOrderingComposer,
+      $$ServiceJobAssignmentsTableAnnotationComposer,
+      $$ServiceJobAssignmentsTableCreateCompanionBuilder,
+      $$ServiceJobAssignmentsTableUpdateCompanionBuilder,
+      (
+        ServiceJobAssignmentRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceJobAssignmentsTable,
+          ServiceJobAssignmentRow
+        >,
+      ),
+      ServiceJobAssignmentRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceJobAssignmentLinesTableCreateCompanionBuilder =
+    ServiceJobAssignmentLinesCompanion Function({
+      required String id,
+      required String companyId,
+      required String assignmentId,
+      required int lineNumber,
+      required String work,
+      Value<String?> assignedEmployeeId,
+      Value<String?> assignedTeamId,
+      required String status,
+      Value<String> descriptionForWork,
+      Value<DateTime?> removedAt,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceJobAssignmentLinesTableUpdateCompanionBuilder =
+    ServiceJobAssignmentLinesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> assignmentId,
+      Value<int> lineNumber,
+      Value<String> work,
+      Value<String?> assignedEmployeeId,
+      Value<String?> assignedTeamId,
+      Value<String> status,
+      Value<String> descriptionForWork,
+      Value<DateTime?> removedAt,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceJobAssignmentLinesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentLinesTable> {
+  $$ServiceJobAssignmentLinesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assignmentId => $composableBuilder(
+    column: $table.assignmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get work => $composableBuilder(
+    column: $table.work,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assignedEmployeeId => $composableBuilder(
+    column: $table.assignedEmployeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assignedTeamId => $composableBuilder(
+    column: $table.assignedTeamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get descriptionForWork => $composableBuilder(
+    column: $table.descriptionForWork,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get removedAt => $composableBuilder(
+    column: $table.removedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceJobAssignmentLinesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentLinesTable> {
+  $$ServiceJobAssignmentLinesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assignmentId => $composableBuilder(
+    column: $table.assignmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get work => $composableBuilder(
+    column: $table.work,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assignedEmployeeId => $composableBuilder(
+    column: $table.assignedEmployeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assignedTeamId => $composableBuilder(
+    column: $table.assignedTeamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get descriptionForWork => $composableBuilder(
+    column: $table.descriptionForWork,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get removedAt => $composableBuilder(
+    column: $table.removedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceJobAssignmentLinesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceJobAssignmentLinesTable> {
+  $$ServiceJobAssignmentLinesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get assignmentId => $composableBuilder(
+    column: $table.assignmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get lineNumber => $composableBuilder(
+    column: $table.lineNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get work =>
+      $composableBuilder(column: $table.work, builder: (column) => column);
+
+  GeneratedColumn<String> get assignedEmployeeId => $composableBuilder(
+    column: $table.assignedEmployeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get assignedTeamId => $composableBuilder(
+    column: $table.assignedTeamId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get descriptionForWork => $composableBuilder(
+    column: $table.descriptionForWork,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get removedAt =>
+      $composableBuilder(column: $table.removedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceJobAssignmentLinesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceJobAssignmentLinesTable,
+          ServiceJobAssignmentLineRow,
+          $$ServiceJobAssignmentLinesTableFilterComposer,
+          $$ServiceJobAssignmentLinesTableOrderingComposer,
+          $$ServiceJobAssignmentLinesTableAnnotationComposer,
+          $$ServiceJobAssignmentLinesTableCreateCompanionBuilder,
+          $$ServiceJobAssignmentLinesTableUpdateCompanionBuilder,
+          (
+            ServiceJobAssignmentLineRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceJobAssignmentLinesTable,
+              ServiceJobAssignmentLineRow
+            >,
+          ),
+          ServiceJobAssignmentLineRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceJobAssignmentLinesTableTableManager(
+    _$AppDatabase db,
+    $ServiceJobAssignmentLinesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceJobAssignmentLinesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$ServiceJobAssignmentLinesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ServiceJobAssignmentLinesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> assignmentId = const Value.absent(),
+                Value<int> lineNumber = const Value.absent(),
+                Value<String> work = const Value.absent(),
+                Value<String?> assignedEmployeeId = const Value.absent(),
+                Value<String?> assignedTeamId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> descriptionForWork = const Value.absent(),
+                Value<DateTime?> removedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceJobAssignmentLinesCompanion(
+                id: id,
+                companyId: companyId,
+                assignmentId: assignmentId,
+                lineNumber: lineNumber,
+                work: work,
+                assignedEmployeeId: assignedEmployeeId,
+                assignedTeamId: assignedTeamId,
+                status: status,
+                descriptionForWork: descriptionForWork,
+                removedAt: removedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String assignmentId,
+                required int lineNumber,
+                required String work,
+                Value<String?> assignedEmployeeId = const Value.absent(),
+                Value<String?> assignedTeamId = const Value.absent(),
+                required String status,
+                Value<String> descriptionForWork = const Value.absent(),
+                Value<DateTime?> removedAt = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceJobAssignmentLinesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                assignmentId: assignmentId,
+                lineNumber: lineNumber,
+                work: work,
+                assignedEmployeeId: assignedEmployeeId,
+                assignedTeamId: assignedTeamId,
+                status: status,
+                descriptionForWork: descriptionForWork,
+                removedAt: removedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceJobAssignmentLinesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceJobAssignmentLinesTable,
+      ServiceJobAssignmentLineRow,
+      $$ServiceJobAssignmentLinesTableFilterComposer,
+      $$ServiceJobAssignmentLinesTableOrderingComposer,
+      $$ServiceJobAssignmentLinesTableAnnotationComposer,
+      $$ServiceJobAssignmentLinesTableCreateCompanionBuilder,
+      $$ServiceJobAssignmentLinesTableUpdateCompanionBuilder,
+      (
+        ServiceJobAssignmentLineRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceJobAssignmentLinesTable,
+          ServiceJobAssignmentLineRow
+        >,
+      ),
+      ServiceJobAssignmentLineRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -42966,4 +48602,15 @@ class $AppDatabaseManager {
       $$ServicePrioritiesTableTableManager(_db, _db.servicePriorities);
   $$ServiceTicketTypesTableTableManager get serviceTicketTypes =>
       $$ServiceTicketTypesTableTableManager(_db, _db.serviceTicketTypes);
+  $$ServiceEnquiriesTableTableManager get serviceEnquiries =>
+      $$ServiceEnquiriesTableTableManager(_db, _db.serviceEnquiries);
+  $$ServiceEnquiryDetailsTableTableManager get serviceEnquiryDetails =>
+      $$ServiceEnquiryDetailsTableTableManager(_db, _db.serviceEnquiryDetails);
+  $$ServiceJobAssignmentsTableTableManager get serviceJobAssignments =>
+      $$ServiceJobAssignmentsTableTableManager(_db, _db.serviceJobAssignments);
+  $$ServiceJobAssignmentLinesTableTableManager get serviceJobAssignmentLines =>
+      $$ServiceJobAssignmentLinesTableTableManager(
+        _db,
+        _db.serviceJobAssignmentLines,
+      );
 }

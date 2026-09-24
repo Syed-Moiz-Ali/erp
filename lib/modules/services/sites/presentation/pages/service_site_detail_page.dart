@@ -6,14 +6,21 @@ import 'package:modular_erp/core/models/configuration_record.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/recent_enquiries_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
 import 'package:modular_erp/modules/services/sites/presentation/bloc/service_site_blocs.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceSiteDetailPage extends StatelessWidget {
-  const ServiceSiteDetailPage({super.key, required this.siteId});
+  const ServiceSiteDetailPage({
+    super.key,
+    required this.siteId,
+    this.enquiries,
+  });
   final String siteId;
+  final ServiceEnquiryRepository? enquiries;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +84,6 @@ class ServiceSiteDetailPage extends StatelessWidget {
         ].whereType<String>().where((s) => s.isNotEmpty).join(', ');
 
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: site.siteName,
             subtitle: site.siteCode,
@@ -226,6 +232,15 @@ class ServiceSiteDetailPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+              ],
+              if (enquiries != null) ...[
+                const SizedBox(height: AppSpacing.xxl),
+                ServiceRecentEnquiriesSection(
+                  repository: enquiries!,
+                  title: l.servicesEnquiryRecentForSite,
+                  emptyText: l.servicesEnquiryNoneForSite,
+                  siteId: site.id,
                 ),
               ],
             ],

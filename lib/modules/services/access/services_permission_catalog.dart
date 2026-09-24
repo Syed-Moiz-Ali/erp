@@ -31,9 +31,98 @@ final servicesPermissionModules = <PermissionModule>[
     order: 20,
     submodules: [
       PermissionSubmodule(
+        id: 'enquiries',
+        nameKey: 'servicesPermSubEnquiries',
+        order: 0,
+        definitions: [
+          PermissionDefinition(
+            key: 'services.enquiries.view',
+            moduleId: 'services',
+            submoduleId: 'enquiries',
+            featureFlag: 'services',
+            nameKey: 'servicesPermEnquiriesView',
+            descriptionKey: 'servicesPermEnquiriesViewDesc',
+            order: 1,
+            permissions: {
+              PermissionScope.all: AppPermission.serviceEnquiryView,
+            },
+          ),
+          _action(
+            'services.enquiries.create',
+            'enquiries',
+            'servicesPermEnquiriesCreate',
+            'servicesPermEnquiriesCreateDesc',
+            2,
+            AppPermission.serviceEnquiryCreate,
+          ),
+          _action(
+            'services.enquiries.edit',
+            'enquiries',
+            'servicesPermEnquiriesEdit',
+            'servicesPermEnquiriesEditDesc',
+            3,
+            AppPermission.serviceEnquiryEdit,
+          ),
+          _action(
+            'services.enquiries.cancel',
+            'enquiries',
+            'servicesPermEnquiriesCancel',
+            'servicesPermEnquiriesCancelDesc',
+            4,
+            AppPermission.serviceEnquiryCancel,
+          ),
+        ],
+      ),
+      PermissionSubmodule(
+        id: 'jobAssignments',
+        nameKey: 'servicesPermSubJobAssignments',
+        order: 1,
+        definitions: [
+          PermissionDefinition(
+            key: 'services.jobAssignments.view',
+            moduleId: 'services',
+            submoduleId: 'jobAssignments',
+            featureFlag: 'services',
+            nameKey: 'servicesPermJobAssignmentsView',
+            descriptionKey: 'servicesPermJobAssignmentsViewDesc',
+            order: 1,
+            permissions: {
+              PermissionScope.assigned:
+                  AppPermission.serviceJobAssignmentViewAssigned,
+              PermissionScope.team: AppPermission.serviceJobAssignmentViewTeam,
+              PermissionScope.all: AppPermission.serviceJobAssignmentViewAll,
+            },
+          ),
+          _action(
+            'services.jobAssignments.create',
+            'jobAssignments',
+            'servicesPermJobAssignmentsCreate',
+            'servicesPermJobAssignmentsCreateDesc',
+            2,
+            AppPermission.serviceJobAssignmentCreate,
+          ),
+          _action(
+            'services.jobAssignments.edit',
+            'jobAssignments',
+            'servicesPermJobAssignmentsEdit',
+            'servicesPermJobAssignmentsEditDesc',
+            3,
+            AppPermission.serviceJobAssignmentEdit,
+          ),
+          _action(
+            'services.jobAssignments.cancel',
+            'jobAssignments',
+            'servicesPermJobAssignmentsCancel',
+            'servicesPermJobAssignmentsCancelDesc',
+            4,
+            AppPermission.serviceJobAssignmentCancel,
+          ),
+        ],
+      ),
+      PermissionSubmodule(
         id: 'customers',
         nameKey: 'servicesPermSubCustomers',
-        order: 1,
+        order: 2,
         definitions: [
           _action(
             'services.customers.view',
@@ -72,7 +161,7 @@ final servicesPermissionModules = <PermissionModule>[
       PermissionSubmodule(
         id: 'sites',
         nameKey: 'servicesPermSubSites',
-        order: 2,
+        order: 3,
         definitions: [
           _action(
             'services.sites.view',
@@ -111,7 +200,7 @@ final servicesPermissionModules = <PermissionModule>[
       PermissionSubmodule(
         id: 'teams',
         nameKey: 'servicesPermSubTeams',
-        order: 3,
+        order: 4,
         definitions: [
           _action(
             'services.teams.view',
@@ -134,7 +223,7 @@ final servicesPermissionModules = <PermissionModule>[
       PermissionSubmodule(
         id: 'configuration',
         nameKey: 'servicesPermSubConfiguration',
-        order: 4,
+        order: 5,
         definitions: [
           _action(
             'services.serviceTypes.view',

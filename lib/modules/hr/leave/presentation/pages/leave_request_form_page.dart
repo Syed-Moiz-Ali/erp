@@ -35,7 +35,6 @@ class LeaveRequestFormPage extends StatelessWidget {
       void change(LeaveRequestDraft Function(LeaveRequestDraft) update) =>
           bloc.add(LeaveRequestDraftChanged(update));
       return AppPage(
-        maxWidth: 880,
         header: AppPageHeader(
           title: l.leaveRequestTitle,
           actions: [

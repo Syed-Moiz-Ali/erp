@@ -188,7 +188,6 @@ class ServiceTeamListPage extends StatelessWidget {
         }
 
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: l.servicesTeamsTitle,
             subtitle: page == null

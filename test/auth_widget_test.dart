@@ -15,9 +15,13 @@ import 'package:modular_erp/modules/hr/module/workforce_directory_adapter.dart';
 import 'package:modular_erp/modules/services/configuration/data/local_service_master_repository.dart';
 import 'package:modular_erp/modules/services/customers/data/local_service_customer_repository.dart';
 import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
+import 'package:modular_erp/modules/services/enquiries/data/local_service_enquiry_repository.dart';
+import 'package:modular_erp/modules/services/job_assignments/data/local_service_job_assignment_repository.dart';
+import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
 import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'package:modular_erp/shared/transactions/data/local_attachment_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_document_number_service.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
@@ -118,6 +122,20 @@ Future<Harness> mount(
           clock,
         ),
       );
+      await tester.runAsync(
+        () => seedServiceEnquiriesDemoData(
+          database!,
+          source.findByScenario(DemoScenario.platformAdmin)!.context,
+          clock,
+        ),
+      );
+      await tester.runAsync(
+        () => seedServiceJobAssignmentDemoData(
+          database!,
+          source.findByScenario(DemoScenario.platformAdmin)!.context,
+          clock,
+        ),
+      );
       registry = createErpRegistry(
         repo,
         locationService: locationService,
@@ -148,6 +166,22 @@ Future<Harness> mount(
           database,
           clock,
           activity,
+        ),
+        serviceEnquiryRepository: LocalServiceEnquiryRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+          LocalAttachmentRepository(database, clock),
+        ),
+        serviceJobAssignmentRepository: LocalServiceJobAssignmentRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+          LocalAttachmentRepository(database, clock),
+          HrWorkforceDirectory(repo, employees),
+          const FixedOffsetCompanyTimeService(),
         ),
         workforceDirectory: HrWorkforceDirectory(repo, employees),
         activityRepository: activity,

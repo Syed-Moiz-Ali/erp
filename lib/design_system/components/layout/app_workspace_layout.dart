@@ -7,7 +7,7 @@ class AppContentMaxWidth extends StatelessWidget {
   const AppContentMaxWidth({
     super.key,
     required this.child,
-    this.maxWidth = AppDimensions.content,
+    this.maxWidth = AppDimensions.contentMaxWidth,
   });
   final Widget child;
   final double maxWidth;

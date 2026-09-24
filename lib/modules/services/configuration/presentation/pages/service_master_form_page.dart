@@ -44,7 +44,6 @@ class ServiceMasterFormPage extends StatelessWidget {
         final d = state.draft;
         final cubit = context.read<ServiceMasterFormCubit>();
         return AppPage(
-          maxWidth: AppDimensions.details,
           header: AppPageHeader(
             title: id == null
                 ? serviceMasterTitle(l, kind)

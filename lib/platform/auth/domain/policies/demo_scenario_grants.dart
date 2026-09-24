@@ -51,6 +51,8 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.leaveBalanceViewTeam,
       // View-only Services access (demonstrates view vs manage wiring).
       AppPermission.serviceCustomerView,
+      AppPermission.serviceEnquiryView,
+      AppPermission.serviceJobAssignmentViewAssigned,
     },
     DemoScenario.hr => {
       ...base,
@@ -99,6 +101,16 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.servicePriorityManage,
       AppPermission.serviceTicketTypeView,
       AppPermission.serviceTicketTypeManage,
+      // Full Services Phase 2 enquiry management.
+      AppPermission.serviceEnquiryView,
+      AppPermission.serviceEnquiryCreate,
+      AppPermission.serviceEnquiryEdit,
+      AppPermission.serviceEnquiryCancel,
+      // Full Services Phase 3 job assignment management.
+      AppPermission.serviceJobAssignmentViewAll,
+      AppPermission.serviceJobAssignmentCreate,
+      AppPermission.serviceJobAssignmentEdit,
+      AppPermission.serviceJobAssignmentCancel,
     },
     _ => <AppPermission>{},
   });

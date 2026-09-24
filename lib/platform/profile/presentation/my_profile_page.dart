@@ -29,7 +29,6 @@ class MyProfilePage extends StatelessWidget {
           final viewModel = state.data;
           if (state.loading || viewModel == null) {
             return AppPage(
-              maxWidth: AppDimensions.content,
               header: AppPageHeader(title: l.profileMyProfile),
               child: const _ProfileSkeleton(),
             );
@@ -38,7 +37,6 @@ class MyProfilePage extends StatelessWidget {
           final main = _mainSections(context, viewModel);
           final side = _sideSections(context, viewModel);
           return AppPage(
-            maxWidth: AppDimensions.content,
             header: AppPageHeader(title: l.profileMyProfile),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

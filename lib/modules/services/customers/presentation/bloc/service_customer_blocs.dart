@@ -196,12 +196,13 @@ class ServiceCustomerFormState {
     this.loading = false,
     this.saving = false,
     this.saved = false,
+    this.savedId,
     this.failure,
     this.fieldErrors = const {},
     this.draft = const ServiceCustomerDraft(),
   });
   final bool loading, saving, saved;
-  final String? failure;
+  final String? savedId, failure;
   final Map<String, String> fieldErrors;
   final ServiceCustomerDraft draft;
 
@@ -209,6 +210,7 @@ class ServiceCustomerFormState {
     bool? loading,
     bool? saving,
     bool? saved,
+    String? savedId,
     String? failure,
     bool clearFailure = false,
     Map<String, String>? fieldErrors,
@@ -217,6 +219,7 @@ class ServiceCustomerFormState {
     loading: loading ?? this.loading,
     saving: saving ?? this.saving,
     saved: saved ?? this.saved,
+    savedId: savedId ?? this.savedId,
     failure: clearFailure ? null : (failure ?? this.failure),
     fieldErrors: fieldErrors ?? this.fieldErrors,
     draft: draft ?? this.draft,
@@ -267,8 +270,8 @@ class ServiceCustomerFormCubit extends Cubit<ServiceCustomerFormState> {
     emit(state.copyWith(saving: true, clearFailure: true));
     final result = await repository.saveCustomer(context, state.draft, id: id);
     switch (result) {
-      case Success<ServiceCustomer>():
-        emit(state.copyWith(saving: false, saved: true));
+      case Success<ServiceCustomer>(:final value):
+        emit(state.copyWith(saving: false, saved: true, savedId: value.id));
       case Failed<ServiceCustomer>(:final failure):
         emit(state.copyWith(saving: false, failure: failure.code));
     }

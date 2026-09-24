@@ -421,7 +421,6 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
         );
       }
       return AppPage(
-        maxWidth: AppDimensions.wideContent,
         header: AppPageHeader(
           title: l.shellEmployees,
           subtitle: state.data == null

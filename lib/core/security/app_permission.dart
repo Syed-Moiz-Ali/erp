@@ -69,6 +69,18 @@ enum AppPermission {
   servicePriorityManage,
   serviceTicketTypeView,
   serviceTicketTypeManage,
+  // Services Phase 2 (service enquiry transaction).
+  serviceEnquiryView,
+  serviceEnquiryCreate,
+  serviceEnquiryEdit,
+  serviceEnquiryCancel,
+  // Services Phase 3 (job assignment & scheduling transaction).
+  serviceJobAssignmentViewAssigned,
+  serviceJobAssignmentViewTeam,
+  serviceJobAssignmentViewAll,
+  serviceJobAssignmentCreate,
+  serviceJobAssignmentEdit,
+  serviceJobAssignmentCancel,
 }
 
 /// Manage authority implies the matching view authority so a manage-only grant
@@ -86,6 +98,20 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.complaintTypeManage: AppPermission.complaintTypeView,
   AppPermission.servicePriorityManage: AppPermission.servicePriorityView,
   AppPermission.serviceTicketTypeManage: AppPermission.serviceTicketTypeView,
+  // Edit/Cancel need record visibility to target an Enquiry; normalize centrally.
+  // Create deliberately does NOT imply View (create-only stays usable through the
+  // restricted reference lookups + Overview New Enquiry action).
+  AppPermission.serviceEnquiryEdit: AppPermission.serviceEnquiryView,
+  AppPermission.serviceEnquiryCancel: AppPermission.serviceEnquiryView,
+  // Create/Edit/Cancel need enough visibility to use the resulting transaction.
+  // Coordinators who assign work operate company-wide, so the action permissions
+  // normalize to the ALL view scope.
+  AppPermission.serviceJobAssignmentCreate:
+      AppPermission.serviceJobAssignmentViewAll,
+  AppPermission.serviceJobAssignmentEdit:
+      AppPermission.serviceJobAssignmentViewAll,
+  AppPermission.serviceJobAssignmentCancel:
+      AppPermission.serviceJobAssignmentViewAll,
 };
 
 /// Expands a raw grant set so that every `*Manage` grant carries its `*View`

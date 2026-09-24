@@ -7,6 +7,7 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/overview/presentation/bloc/service_overview_cubit.dart';
+import 'package:modular_erp/modules/services/services_localization.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceOverviewPage extends StatelessWidget {
@@ -28,7 +29,50 @@ class ServiceOverviewPage extends StatelessWidget {
         if (state.loading) {
           return const AppPage(child: AppConfigurationSkeleton());
         }
+        final summary = state.enquirySummary;
+        final assignmentSummary = state.assignmentSummary;
         final metrics = <Widget>[
+          if (summary != null) ...[
+            AppMetricCard(
+              label: l.servicesOverviewEnquiriesOpen,
+              value: numbers.integer(summary.openCount),
+              icon: Icons.support_agent_outlined,
+              onTap: can(AppPermission.serviceEnquiryView)
+                  ? () => context.go(ServicesRoutes.enquiries)
+                  : null,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewEnquiriesToday,
+              value: numbers.integer(summary.todayCount),
+              icon: Icons.today_outlined,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewEnquiriesHigh,
+              value: numbers.integer(summary.highUrgentOpenCount),
+              icon: Icons.priority_high_outlined,
+              status: summary.highUrgentOpenCount > 0
+                  ? AppStatus.warning
+                  : AppStatus.neutral,
+            ),
+          ],
+          if (assignmentSummary != null) ...[
+            AppMetricCard(
+              label: l.servicesOverviewAssignmentsScheduled,
+              value: numbers.integer(assignmentSummary.activeCount),
+              icon: Icons.assignment_ind_outlined,
+              onTap: () => context.go(ServicesRoutes.assignments),
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewAssignmentsToday,
+              value: numbers.integer(assignmentSummary.todayCount),
+              icon: Icons.today_outlined,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewAssignmentsUpcoming,
+              value: numbers.integer(assignmentSummary.upcomingCount),
+              icon: Icons.event_outlined,
+            ),
+          ],
           if (state.customers != null)
             AppMetricCard(
               label: l.servicesSummaryCustomers,
@@ -49,16 +93,79 @@ class ServiceOverviewPage extends StatelessWidget {
             ),
         ];
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: l.servicesPermModuleServices,
             subtitle: l.servicesOverviewSubtitle,
+            actions: [
+              if (can(AppPermission.serviceEnquiryCreate))
+                AppPrimaryButton(
+                  label: l.servicesOverviewNewEnquiry,
+                  icon: Icons.add,
+                  onPressed: () => context.go(ServicesRoutes.enquiriesNew),
+                ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (metrics.isNotEmpty) ...[
                 AppDashboardGrid(children: metrics),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (summary != null) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewRecentEnquiries,
+                  children: [
+                    if (state.recentEnquiries.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Text(l.servicesOverviewNoEnquiries),
+                      )
+                    else
+                      for (final item in state.recentEnquiries)
+                        AppSettingsRow(
+                          title: item.enquiryNumber,
+                          description: [
+                            item.customerName,
+                            if (item.siteName.isNotEmpty) item.siteName,
+                          ].join(' · '),
+                          icon: Icons.support_agent_outlined,
+                          trailing: serviceEnquiryStatusLabel(item.status, l),
+                          onPressed: () =>
+                              context.go(ServicesRoutes.enquiry(item.id)),
+                        ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (assignmentSummary != null) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewRecentAssignments,
+                  children: [
+                    if (state.upcomingAssignments.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Text(l.servicesOverviewNoAssignments),
+                      )
+                    else
+                      for (final item in state.upcomingAssignments)
+                        AppSettingsRow(
+                          title: item.assignmentNumber,
+                          description: [
+                            item.customerName,
+                            if (item.assignedSummary.isNotEmpty)
+                              item.assignedSummary,
+                          ].join(' · '),
+                          icon: Icons.assignment_ind_outlined,
+                          trailing: serviceJobAssignmentStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          onPressed: () =>
+                              context.go(ServicesRoutes.assignment(item.id)),
+                        ),
+                  ],
+                ),
                 const SizedBox(height: AppSpacing.xxl),
               ],
               AppSettingsSection(

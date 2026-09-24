@@ -203,7 +203,6 @@ class ServiceSiteListPage extends StatelessWidget {
         }
 
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: l.servicesSitesTitle,
             subtitle: page == null

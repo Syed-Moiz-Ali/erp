@@ -1,40 +1,454 @@
-```text id="m1xd35"
-SERVICES PHASE 2 — COMPLETE SERVICE ENQUIRY VERTICAL SLICE
+```text
+SERVICES PHASE 3 — JOB ASSIGNMENT & SCHEDULING
+CLIENT-REFERENCE-ACCURATE IMPLEMENTATION
 
-Continue working on the EXISTING Flutter ERP application after Services Phase 1.
+Continue working on the EXISTING Flutter ERP application.
 
-Phase 1 is expected to have completed:
+DO NOT redesign existing foundations.
 
-- Services module registration
-- /app/services
-- Services Overview
-- Services permission catalog contribution
-- Customer Directory
+Completed before this phase:
+
+- permission + scope-driven access
+- runtime permission wiring
+- shared transaction infrastructure
+- one centered global ERP content width
+- Customers
 - Service Sites
 - Service Teams
-- WorkforceDirectory integration
-- Service Types
-- Complaint Types
-- Service Priorities
-- Ticket Types
-- Services Settings
-- Drift persistence
-- outbox/activity integration
-- responsive UI
-- EN/AR
-- permission wiring
+- Service configuration masters
+- Service Enquiry
+- Enquiry detail lines
+- Enquiry photos
+- Material Received
+- client-reference traceability architecture
 
-THIS PHASE IMPLEMENTS THE FIRST REAL SERVICES TRANSACTION:
+THIS PHASE IMPLEMENTS:
 
-SERVICE ENQUIRY
+JOB ASSIGNMENT & SCHEDULING
 
-DO NOT start Job Assignment & Scheduling yet.
+using the actual client reference requirements already extracted below.
 
 ==================================================
-0. BUSINESS WORKFLOW POSITION
+0. CLIENT REFERENCE — AUTHORITATIVE BUSINESS INPUT
 ==================================================
 
-Known client workflow:
+The client Job Assignment & Scheduling screen contains:
+
+HEADER / TRANSACTION FIELDS
+
+Company Name
+
+Job Assignment No
+
+Date
+
+Enquiry No
+
+Customer Name
+
+Mobile No
+
+Complaint Type
+
+Priority Type
+
+Tenant Name
+
+Building
+
+Unit No
+
+Material Received
+
+Visit Date
+
+Insert By
+
+Update By
+
+REPEATING JOB ASSIGNMENT ROWS
+
+S.No
+
+Work
+
+Technician Name
+
+Team
+
+Status
+
+Description For Work
+
+Add row
+
+Delete row
+
+Bottom transaction actions:
+
+Save
+
+Clear
+
+Delete.
+
+These are BUSINESS requirements.
+
+DO NOT copy the old visual design.
+
+Modernize them into our current ERP architecture.
+
+==================================================
+1. MODERN FIELD MAPPING
+==================================================
+
+Implement the legacy fields as follows.
+
+Company Name
+
+→ active CompanyContext
+
+→ system-derived
+
+→ NOT editable.
+
+Job Assignment No
+
+→ generated company-scoped transaction number
+
+→ shared sequence infrastructure
+
+→ NOT manually typed.
+
+Date
+
+→ assignment business date
+
+→ company timezone
+
+→ generated when created
+
+→ display it clearly.
+
+Enquiry No
+
+→ searchable selector of eligible Service Enquiries.
+
+Customer Name
+
+→ derived from selected Enquiry.
+
+Mobile No
+
+→ derived from selected Enquiry/customer snapshot.
+
+Complaint Type
+
+→ derived from selected Enquiry.
+
+Priority Type
+
+→ derived from selected Enquiry.
+
+Tenant Name
+
+→ derived from selected Enquiry ServiceSite snapshot.
+
+Building
+
+→ derived from ServiceSite snapshot.
+
+Unit No
+
+→ derived from ServiceSite snapshot.
+
+Material Received
+
+→ carry from Service Enquiry
+
+→ read-only here unless future business evidence proves it changes during
+Assignment.
+
+Visit Date
+
+→ actual scheduling input for this phase.
+
+Insert By
+
+→ createdBy / audit metadata
+
+→ NOT editable.
+
+Update By
+
+→ updatedBy / audit metadata
+
+→ NOT editable.
+
+==================================================
+2. CLIENT DETAIL ROW MAPPING
+==================================================
+
+Legacy:
+
+S.No
+
+→ UI line number only.
+
+Do not use as database identity.
+
+Legacy:
+
+Work
+
+→ JobAssignmentLine.work
+
+This describes the work/task to be assigned.
+
+Legacy:
+
+Technician Name
+
+→ existing Employee selected through WorkforceDirectory.
+
+Do NOT create Technician table.
+
+Legacy:
+
+Team
+
+→ modernize to an explicit Service Team selection.
+
+The old checkbox is too ambiguous for a modern ERP.
+
+Use existing:
+
+ServiceTeam.
+
+Legacy:
+
+Status
+
+→ JobAssignmentLine.status.
+
+Preserve the field.
+
+Legacy:
+
+Description For Work
+
+→ JobAssignmentLine.instructions / descriptionForWork.
+
+Legacy:
+
++
+
+→ Add work item.
+
+Legacy:
+
+trash
+
+→ Remove eligible work item.
+
+==================================================
+3. IMPORTANT TEAM / TECHNICIAN DECISION
+==================================================
+
+The client reference contains BOTH:
+
+Technician Name
+
+and
+
+Team.
+
+Therefore do NOT force a false either/or model.
+
+A work line may contain:
+
+assignedEmployeeId optional
+
+assignedTeamId optional.
+
+At least ONE must normally exist before the assignment is finalized.
+
+Possible:
+
+Individual Employee only
+
+Service Team only
+
+Employee + Service Team.
+
+This preserves more of the client workflow than assuming mutual exclusivity.
+
+==================================================
+4. TEAM UI MODERNIZATION
+==================================================
+
+DO NOT reproduce the legacy Team checkbox.
+
+Use:
+
+Service Team
+[ Search/select team ]
+
+This makes the assignment explicit.
+
+If no team is selected:
+
+the row may still be assigned directly to an Employee.
+
+==================================================
+5. TECHNICIAN UI
+==================================================
+
+Use:
+
+Assigned employee / Technician
+
+with searchable workforce selector.
+
+The user-facing label may say:
+
+Technician
+
+if that terminology matches the client.
+
+But domain identity is:
+
+Employee.
+
+==================================================
+6. NO TECHNICIAN ENTITY
+==================================================
+
+DO NOT CREATE:
+
+Technician
+
+TechnicianPerson
+
+TechnicianProfile
+
+TechnicianUser.
+
+Use:
+
+Employee
++
+Service permissions
++
+Job Assignment.
+
+==================================================
+7. CLIENT REFERENCE TRACEABILITY
+==================================================
+
+Update:
+
+docs/services/client_reference_traceability.md
+
+Add the Job Assignment & Scheduling section with EXACT mappings:
+
+Company Name
+→ CompanyContext
+→ SYSTEM-DERIVED
+
+Job Assignment No
+→ sequence-generated display number
+→ MODERNIZED
+
+Date
+→ company business date
+→ MODERNIZED
+
+Enquiry No
+→ source ServiceEnquiry
+→ IMPLEMENT
+
+Customer Name
+→ enquiry/customer snapshot
+→ MODERNIZED
+
+Mobile No
+→ enquiry party snapshot
+→ MODERNIZED
+
+Complaint Type
+→ source Enquiry ComplaintType
+→ MODERNIZED
+
+Priority Type
+→ source Enquiry Priority
+→ MODERNIZED
+
+Tenant Name
+→ source Site snapshot
+→ MODERNIZED
+
+Building
+→ source Site snapshot
+→ MODERNIZED
+
+Unit No
+→ source Site snapshot
+→ MODERNIZED
+
+Material Received
+→ source Enquiry value
+→ IMPLEMENT
+
+Visit Date
+→ scheduledVisitDate
+→ IMPLEMENT
+
+Insert By
+→ createdBy
+→ SYSTEM-DERIVED
+
+Update By
+→ updatedBy
+→ SYSTEM-DERIVED
+
+Work
+→ ServiceJobAssignmentLine.work
+→ IMPLEMENT
+
+Technician Name
+→ Employee / WorkforceDirectory
+→ MODERNIZED
+
+Team checkbox
+→ explicit ServiceTeam selector
+→ MODERNIZED
+
+Status
+→ ServiceJobAssignmentLine.status
+→ IMPLEMENT
+
+Description For Work
+→ ServiceJobAssignmentLine.descriptionForWork
+→ IMPLEMENT
+
++
+→ Add work item
+→ MODERNIZED
+
+Delete row
+→ Remove work item
+→ MODERNIZED
+
+Delete transaction
+→ Cancel Assignment
+→ MODERNIZED.
+
+==================================================
+8. WORKFLOW POSITION
+==================================================
+
+Client workflow remains:
 
 Service Enquiry
         ↓
@@ -46,410 +460,132 @@ Request of Material
         ↓
 Work Execution
 
-Phase 2 implements ONLY:
-
-SERVICE ENQUIRY.
-
-Phase 3 will consume eligible Service Enquiries.
+Do not skip stages.
 
 ==================================================
-1. BUSINESS REFERENCE
+9. PHASE SCOPE
 ==================================================
 
-The client's old ERP indicates Service Enquiry information such as:
+Implement:
 
-Enquiry No
+Job Assignment list
 
-Customer
+Job Assignment create
 
-Customer Mobile
+Job Assignment detail
 
-Tenant
+Job Assignment edit
 
-Building
+Job Assignment cancellation
 
-Unit
+Scheduling by Visit Date
 
-Complaint Type
+Multiple work assignment lines
 
-Priority Type
+Employee assignment
 
-Ticket Type
+Service Team assignment
 
-and complaint/service information.
+permissions/scopes
 
-The old ERP is a BUSINESS REFERENCE.
+notifications
 
-DO NOT COPY ITS VISUAL DESIGN.
+activity
 
-Use the current modern ERP design system.
+outbox
+
+Services Overview integration
+
+Enquiry integration.
 
 ==================================================
-2. DO NOT IMPLEMENT
+10. DO NOT IMPLEMENT
 ==================================================
 
 DO NOT implement:
 
-Job Assignment
-
-Technician Assignment
-
-Scheduling
-
 Inspection
 
-Material Request
+Root Cause
+
+Before Work Photos
+
+Inspection Checklist
+
+Inspected Points
+
+Inspection Material Requirement
+
+Request For Material
 
 Material Issue
 
+Material Receipt workflow
+
 Work Execution
+
+Work start/end time
+
+Material Used
+
+After Work Photos
 
 Quotation
 
-Job Order
+Job Order creation
 
 Invoice
 
-Payment
+Payment.
 
-Customer Portal.
-
-Do not create fake placeholders pretending those workflows already exist.
+Those belong to later phases.
 
 ==================================================
-3. MODULE LOCATION
-==================================================
-
-Add Service Enquiry under:
-
-lib/modules/services/enquiries/
-
-Suggested practical structure:
-
-enquiries/
-  domain/
-  data/
-  application/
-  presentation/
-
-Keep it inside the Services bounded module.
-
-==================================================
-4. ACCESS MODEL
-==================================================
-
-NO ROLE CHECKS.
-
-Do not implement:
-
-if technician
-
-if serviceManager
-
-if coordinator
-
-if admin.
-
-Authorization remains:
-
-Company Services module enabled
-
-AND
-
-Permission granted
-
-AND
-
-Permission scope valid
-
-AND
-
-Employee/team relationship where required
-
-AND
-
-Company match.
-
-==================================================
-5. PHASE 2 PERMISSIONS
-==================================================
-
-Add only permissions backed by real Phase 2 functionality.
-
-Recommended:
-
-services.enquiries.view
-
-services.enquiries.create
-
-services.enquiries.edit
-
-services.enquiries.cancel
-
-Use exact naming consistent with the existing catalog.
-
-Do NOT add future permissions for:
-
-assign
-
-schedule
-
-inspect
-
-requestMaterial
-
-executeWork.
-
-==================================================
-6. ENQUIRY VIEW SCOPE
-==================================================
-
-Service Enquiry is currently the company's unassigned incoming service queue.
-
-At Phase 2 there is no Job/Team assignment yet.
-
-Therefore DO NOT invent ASSIGNED scope for Enquiries.
-
-Prefer:
-
-services.enquiries.view
-scope = ALL
-
-for the current operational enquiry queue.
-
-If the existing access architecture requires a scoped definition,
-support only the scope that has REAL Phase 2 semantics.
-
-Do not fabricate TEAM behavior without an assignment relationship.
-
-==================================================
-7. CREATE/EDIT/CANCEL PERMISSIONS
+11. DOMAIN NAME
 ==================================================
 
 Create:
 
-action permission
+ServiceJobAssignment
 
-scope NONE.
+Do NOT name it:
 
-Edit:
+JobOrder.
 
-action permission
+The client's system clearly has Job Assignment as its own transaction.
 
-applies only to eligible OPEN Enquiries.
-
-Cancel:
-
-action permission
-
-applies only to eligible OPEN Enquiries.
-
-Record company validation is always required.
+Job Order is referenced separately in later client workflows.
 
 ==================================================
-8. ACCESS UI
-==================================================
-
-Existing:
-
-Settings
-→ Users & Access
-
-must automatically show:
-
-Services
-  → Enquiries
-
-with:
-
-View Enquiries
-
-Create Enquiry
-
-Edit Enquiry
-
-Cancel Enquiry
-
-through the Services PermissionCatalog.
-
-DO NOT hardcode Enquiry checkboxes into Access UI.
-
-==================================================
-9. PERMISSION WIRING
-==================================================
-
-Every new permission requires a real consumer.
-
-services.enquiries.view
-
-→ Services navigation
-→ Enquiries sub-navigation
-→ route
-→ repository read
-→ detail read.
-
-services.enquiries.create
-
-→ New Enquiry button
-→ /new route
-→ create use case.
-
-services.enquiries.edit
-
-→ Edit action
-→ /edit route
-→ update use case.
-
-services.enquiries.cancel
-
-→ Cancel action
-→ cancel use case.
-
-Update:
-
-docs/architecture/permission_coverage.md
-
-==================================================
-10. NAVIGATION
-==================================================
-
-Services secondary navigation becomes:
-
-Overview
-
-Enquiries
-
-Customers
-
-Sites
-
-Teams
-
-Settings
-
-Each destination remains independently permission driven.
-
-==================================================
-11. ENQUIRIES ROUTES
-==================================================
-
-Canonical:
-
-/app/services/enquiries
-
-/app/services/enquiries/new
-
-/app/services/enquiries/:enquiryId
-
-/app/services/enquiries/:enquiryId/edit
-
-Do NOT create:
-
-/app/services/enquiry
-
-singular.
-
-==================================================
-12. SERVICES ROOT OVERVIEW
-==================================================
-
-Now that Enquiries exist, Services Overview can display REAL enquiry data.
-
-Possible permission-aware cards:
-
-Open Enquiries
-
-Today's Enquiries
-
-High/Urgent Enquiries
-
-Recent Enquiries.
-
-Only show these when:
-
-services.enquiries.view
-
-is effective.
-
-Do not display fake Job/Inspection metrics yet.
-
-==================================================
-13. SERVICE ENQUIRY DOMAIN
-==================================================
-
-Create typed aggregate:
-
-ServiceEnquiry
-
-This is a business transaction, NOT configuration/master data.
-
-==================================================
-14. IDENTITY
+12. AGGREGATE STRUCTURE
 ==================================================
 
 Use:
 
-id
-→ stable UUID/internal identity.
+ServiceJobAssignment
+    │
+    └── lines[]
+          └── ServiceJobAssignmentLine
 
-displayNumber / enquiryNumber
-→ company-scoped human-readable number.
-
-Use Phase 0.4 sequence infrastructure.
-
-==================================================
-15. SEQUENCE
-==================================================
-
-Register an enquiry sequence key.
-
-Conceptually:
-
-services.enquiry
-
-Do NOT hardcode sequence formatting throughout the feature.
-
-Allow shared sequence infrastructure to determine:
-
-prefix
-
-padding
-
-company scope.
-
-Example only:
-
-ENQ-000001
-
-Do not use this exact format as domain identity.
+This matches the client repeating row structure.
 
 ==================================================
-16. CORE ENQUIRY FIELDS
+13. SERVICE JOB ASSIGNMENT HEADER
 ==================================================
 
-Design from the actual current Phase 1 masters and client reference.
-
-At minimum likely:
+Suggested typed fields:
 
 id
 
 companyId
 
-enquiryNumber
+assignmentNumber
 
-customerId
+assignmentDate
 
-siteId
+sourceEnquiryId
 
-serviceTypeId
-
-complaintTypeId
-
-priorityId
-
-ticketTypeId
-
-description / complaintDetails
+scheduledVisitDate
 
 status
 
@@ -465,917 +601,21 @@ requestId
 
 syncStatus
 
-version if current transaction conventions use it.
+version
 
-Use exact project naming conventions.
+plus only metadata required by existing transaction conventions.
 
 ==================================================
-17. REQUIRED BUSINESS FIELDS
+14. DO NOT DUPLICATE ENQUIRY DATA AS EDITABLE FIELDS
 ==================================================
-
-For Phase 2 treat these as core:
 
 Customer
-
-Service Site
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-Complaint / Service Description.
-
-If actual Phase 1/client implementation establishes different requirements,
-follow the real implementation and document deviations.
-
-Do not introduce unrelated CRM fields.
-
-==================================================
-18. CUSTOMER RELATIONSHIP
-==================================================
-
-Enquiry references:
-
-ServiceCustomer.id
-
-Do not store a completely independent duplicate Customer entity.
-
-==================================================
-19. SITE RELATIONSHIP
-==================================================
-
-Enquiry references:
-
-ServiceSite.id
-
-Site MUST belong to selected Customer.
-
-Enforce:
-
-site.companyId == enquiry.companyId
-
-AND
-
-site.customerId == enquiry.customerId.
-
-==================================================
-20. CUSTOMER/SITE HISTORICAL SNAPSHOT
-==================================================
-
-Because Service Enquiry is a transaction, preserve enough historical display
-context so editing a Customer/Site later does not make an old Enquiry
-misleading.
-
-Create a typed snapshot model if appropriate.
-
-Example concept:
-
-ServiceEnquiryPartySnapshot
-
-containing only useful transaction-time display values such as:
-
-customerName
-
-customerMobile
-
-siteName
-
-tenantName
-
-buildingName
-
-unitNumber
-
-address summary
-
-site contact.
-
-DO NOT use an untyped Map<String, dynamic> domain model.
-
-Persist using existing typed/JSON converter conventions if suitable.
-
-Keep Customer/Site IDs as authoritative relationships too.
-
-==================================================
-21. WHY SNAPSHOT EXISTS
-==================================================
-
-Example:
-
-Enquiry created for:
-
-ABC Properties
-Building A
-Unit 204
-
-Later Customer master is renamed.
-
-Historical Enquiry should still be able to represent what was captured when
-the enquiry was created.
-
-Document snapshot semantics.
-
-==================================================
-22. MASTER REFERENCES
-==================================================
-
-Enquiry references existing Phase 1 masters:
-
-ServiceType
-
-ComplaintType
-
-ServicePriority
-
-ServiceTicketType.
-
-Do NOT copy these masters into Enquiry tables as separate entities.
-
-==================================================
-23. HISTORICAL MASTER RESOLUTION
-==================================================
-
-Inactive master records must remain resolvable for historical Enquiries.
-
-For NEW Enquiry selection:
-
-only active values.
-
-==================================================
-24. COMPLAINT TYPE FILTERING
-==================================================
-
-If ComplaintType has:
-
-serviceTypeId
-
-then selecting Service Type should filter Complaint Types appropriately.
-
-Generic Complaint Types where serviceTypeId == null may remain available if
-Phase 1 supports them.
-
-==================================================
-25. CUSTOMER SELECTOR
-==================================================
-
-Reuse the scalable Customer reference selector from Phase 1.
-
-Search by appropriate fields:
-
-Customer name
-
-Customer code
-
-Mobile.
-
-Do not load all Customers into a giant dropdown.
-
-==================================================
-26. IMPORTANT CROSS-PERMISSION RULE
-==================================================
-
-A user may have:
-
-services.enquiries.create
-
-without:
-
-services.customers.view.
-
-They still need enough Customer reference information to create the Enquiry.
-
-Therefore:
-
-Enquiry Create permission should allow restricted Customer REFERENCE SEARCH
-for the Enquiry form.
-
-It must NOT automatically expose:
-
-Customers navigation
-
-Customer full list
-
-Customer full detail
-
-Customer editing.
-
-This is important.
-
-==================================================
-27. CUSTOMER REFERENCE CONTRACT
-==================================================
-
-Create/reuse:
-
-ServiceCustomerRef
-
-containing only the fields needed for selection.
-
-Example:
-
-id
-
-customerCode
-
-displayName
-
-mobile
-
-status.
-
-Do not expose sensitive/unnecessary Customer fields.
-
-==================================================
-28. SITE SELECTOR
-==================================================
-
-After Customer selection:
-
-load/search only ACTIVE Sites belonging to that Customer.
-
-==================================================
-29. SITE REFERENCE CROSS-PERMISSION
-==================================================
-
-A user creating an Enquiry must be able to select an eligible Site even if
-they do not have:
-
-services.sites.view
-
-for the full Sites directory.
-
-Use restricted reference access.
-
-Do not grant full Site-directory access indirectly.
-
-==================================================
-30. CUSTOMER CHANGE
-==================================================
-
-If Customer changes after Site selected:
-
-clear Site.
-
-Do NOT retain a Site belonging to previous Customer.
-
-==================================================
-31. SITE PREVIEW
-==================================================
-
-After Site selected, show a compact contextual preview:
-
-Site Name
-
-Tenant if present
-
-Building
-
-Unit
-
-Address summary
-
-Contact.
-
-Do not make the user reopen Customer/Site detail pages.
-
-==================================================
-32. CONTACT DISPLAY
-==================================================
-
-Use:
-
-Site contact where present
-
-otherwise appropriate Customer contact
-
-according to current Phase 1 data semantics.
-
-Do not silently modify Customer/Site master contact information from Enquiry form.
-
-==================================================
-33. ENQUIRY STATUS
-==================================================
-
-Use a typed enum.
-
-For Phase 2 keep the state machine minimal.
-
-Recommended current states:
-
-OPEN
-
-CANCELLED
-
-Do NOT create fake:
-
-ASSIGNED
-
-INSPECTED
-
-MATERIAL_REQUESTED
-
-COMPLETED
-
-until those workflows exist.
-
-Phase 3 can extend the transaction lifecycle where necessary.
-
-==================================================
-34. CREATE BEHAVIOR
-==================================================
-
-Successful Enquiry creation produces:
-
-OPEN Enquiry.
-
-Do not create a separate DRAFT lifecycle unless the current UX explicitly
-requires draft saving.
-
-==================================================
-35. EDIT BEHAVIOR
-==================================================
-
-Only OPEN Enquiries may be edited in Phase 2.
-
-A CANCELLED Enquiry is historical/read-only.
-
-==================================================
-36. CANCEL BEHAVIOR
-==================================================
-
-Do NOT hard-delete Enquiries.
-
-Cancel changes status to:
-
-CANCELLED.
-
-Record structured activity.
-
-If the product already has standard cancellation-note handling, reuse it.
-
-Otherwise do not invent a complex cancellation workflow.
-
-==================================================
-37. FUTURE JOB LINK
-==================================================
-
-Do NOT add fake Job records.
-
-Design Enquiry identity so Phase 3 can later create a Job/Assignment referencing:
-
-sourceEnquiryId.
-
-Do not create a nullable jobId now unless needed by the domain.
-
-Job should reference Enquiry when Job exists.
-
-==================================================
-38. NO QUOTATION / JOB ORDER
-==================================================
-
-Do NOT add:
-
-quotationId
-
-quotationNo
-
-jobOrderId
-
-jobOrderNo
-
-as required Enquiry fields.
-
-Ownership and lifecycle are still unconfirmed.
-
-==================================================
-39. ENQUIRY DRAFT MODEL
-==================================================
-
-Create a typed:
-
-ServiceEnquiryDraft
-
-or equivalent.
-
-It contains user-editable form data only.
-
-Do NOT let UI directly construct Drift companions everywhere.
-
-==================================================
-40. LIST READ MODEL
-==================================================
-
-Create:
-
-ServiceEnquiryListItem
-
-optimized for the list.
-
-Possible fields:
-
-id
-
-enquiryNumber
-
-createdAt
-
-Customer name
-
-Customer mobile
-
-Site summary
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-status.
-
-Do not expose entire aggregate where unnecessary.
-
-==================================================
-41. DETAIL READ MODEL
-==================================================
-
-Create:
-
-ServiceEnquiryDetail
-
-or use aggregate + references where clean.
-
-Detail should support:
-
-identity
-
-customer/site context
-
-service classification
-
-complaint
-
-status
-
-metadata
-
-activity timeline.
-
-==================================================
-42. LIST PAGE
-==================================================
-
-Route:
-
-/app/services/enquiries
-
-Desktop:
-
-professional operational table.
-
-Suggested columns:
-
-Enquiry
-
-Customer
-
-Site
-
-Service / Complaint
-
-Priority
-
-Ticket Type
-
-Status
-
-Created
-
-Actions.
-
-Do not overload table.
-
-==================================================
-43. DEFAULT SORT
-==================================================
-
-Newest operational Enquiries first.
-
-Prefer:
-
-createdAt descending
-
-or business sequence descending according to current conventions.
-
-==================================================
-44. SEARCH
-==================================================
-
-Support useful search such as:
-
-Enquiry Number
-
-Customer Name
-
-Customer Mobile
-
-Site Name
-
-Building
-
-Unit.
-
-Implement efficiently through local repository query/read model.
-
-==================================================
-45. FILTERS
-==================================================
-
-Useful filters:
-
-Status
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-Created Date range.
-
-Do not create unnecessary filters.
-
-==================================================
-46. FILTER UX
-==================================================
-
-Desktop:
-
-compact filter bar / popover.
-
-Mobile:
-
-Filters bottom sheet/full-screen sheet.
-
-Do not create a giant permanent filter form.
-
-==================================================
-47. LIST EMPTY STATE
-==================================================
-
-If user can create:
-
-"No service enquiries yet."
-
-CTA:
-New Enquiry.
-
-If user cannot create:
-
-informational empty state without fake CTA.
-
-==================================================
-48. MOBILE LIST
-==================================================
-
-Use purpose-built Enquiry cards.
-
-Show:
-
-Enquiry No
-
-Customer
-
-Site
-
-Priority
-
-Status
-
-Created.
-
-No squeezed desktop table.
-
-==================================================
-49. NEW ENQUIRY ACTION
-==================================================
-
-Show:
-
-New Enquiry
-
-only with:
-
-services.enquiries.create.
-
-==================================================
-50. CREATE ROUTE GUARD
-==================================================
-
-/app/services/enquiries/new
-
-must require Create permission.
-
-Typing URL manually cannot bypass.
-
-==================================================
-51. ENQUIRY FORM UX
-==================================================
-
-Build a polished transaction form.
-
-Recommended sections:
-
-CUSTOMER & LOCATION
-
-Customer
-
-Service Site
-
-site/context preview
-
-SERVICE DETAILS
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-COMPLAINT
-
-Description / Complaint Details
-
-SUMMARY
-
-read-only summary before save where useful.
-
-==================================================
-52. FIELD ORDER
-==================================================
-
-Optimize for actual operator workflow:
-
-1. Find Customer
-
-2. Select Site
-
-3. classify Service
-
-4. classify Complaint
-
-5. choose Priority
-
-6. choose Ticket Type
-
-7. enter Complaint Details
-
-8. Submit.
-
-Do not arrange fields alphabetically.
-
-==================================================
-53. CUSTOMER NOT FOUND
-==================================================
-
-If user has:
-
-services.customers.create
-
-optionally provide:
-
-Create Customer
-
-from the Customer selector.
-
-After creation:
-
-return to Enquiry form
-
-preselect new Customer.
-
-If user does not have Customer create permission:
-
-do not show the action.
-
-==================================================
-54. SITE NOT FOUND
-==================================================
-
-Same pattern.
-
-If authorized:
-
-Add Site
-
-with selected Customer pre-filled.
-
-Return and preselect.
-
-Do not lose Enquiry form state.
-
-==================================================
-55. NESTED CREATE UX
-==================================================
-
-If existing router/form architecture makes in-context nested creation fragile,
-use normal routes while preserving draft state safely.
-
-Do NOT build a giant nested modal system just for this.
-
-==================================================
-56. VALIDATION
-==================================================
-
-At minimum validate:
-
-Customer required
-
-Customer active
-
-Site required
-
-Site active
-
-Site belongs to Customer
-
-Service Type required and active
-
-Complaint Type required and active
-
-Complaint Type compatible with Service Type where applicable
-
-Priority required and active
-
-Ticket Type required and active
-
-Description required
-
-reasonable max lengths.
-
-==================================================
-57. DESCRIPTION
-==================================================
-
-Use multiline field.
-
-Do not force operators into tiny single-line complaint input.
-
-==================================================
-58. FORM SAVE
-==================================================
-
-Primary CTA:
-
-Create Enquiry
-
-not:
-
-Save Record
-
-Use proper loading state.
-
-Prevent duplicate submit.
-
-==================================================
-59. FORM DIRTY GUARD
-==================================================
-
-Use existing FormNavigationGuard.
-
-Unsaved changes:
-
-Back/navigation
-
-→ confirm discard.
-
-==================================================
-60. CREATE TRANSACTION
-==================================================
-
-Creating Enquiry should atomically perform where applicable:
-
-sequence number allocation
-
-Enquiry insert
-
-party snapshot
-
-activity event
-
-outbox operation.
-
-All in one local transaction.
-
-==================================================
-61. CREATE ACTIVITY
-==================================================
-
-Add structured event:
-
-services.enquiry.created
-
-Metadata may include:
-
-status
-
-customerId
-
-siteId
-
-serviceTypeId
-
-priorityId.
-
-Do not store only English sentence.
-
-==================================================
-62. OUTBOX CREATE
-==================================================
-
-Register operation:
-
-SERVICES_ENQUIRY_CREATE
-
-or naming consistent with current outbox conventions.
-
-Payload should map cleanly to future backend contract.
-
-==================================================
-63. IDPOTENCY
-==================================================
-
-Use requestId.
-
-Repeated create with same request ID must not create duplicate Enquiry.
-
-==================================================
-64. DETAIL PAGE
-==================================================
-
-Route:
-
-/app/services/enquiries/:enquiryId
-
-Build an operational detail page.
-
-==================================================
-65. DETAIL HEADER
-==================================================
-
-Show:
-
-Enquiry No
-
-Status
-
-Priority
-
-Created date/time.
-
-Actions:
-
-Edit
-
-Cancel
-
-only when allowed.
-
-Do not show future:
-
-Assign Technician
-
-Start Inspection
-
-Request Material
-
-Complete Work
-
-yet.
-
-==================================================
-66. CUSTOMER & SITE SECTION
-==================================================
-
-Show:
-
-Customer
-
-Customer Code
 
 Mobile
 
-Site
+Complaint Type
+
+Priority
 
 Tenant
 
@@ -1383,1186 +623,2118 @@ Building
 
 Unit
 
-Address
+Material Received
 
-Contact.
+come from the selected Enquiry.
 
-Use transaction snapshot for historical display where appropriate.
+They should be shown as assignment context.
 
-==================================================
-67. SERVICE DETAILS SECTION
-==================================================
-
-Show:
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-Complaint description.
-
-==================================================
-68. AUDIT METADATA
-==================================================
-
-Use reusable Phase 0.4:
-
-AuditMetadataBlock
-
-or equivalent.
-
-Show where appropriate:
-
-Created by
-
-Created at
-
-Updated by
-
-Updated at.
-
-==================================================
-69. ACTIVITY TIMELINE
-==================================================
-
-Use shared ActivityTimeline.
-
-Phase 2 events:
-
-Created
-
-Updated
-
-Cancelled.
-
-No fake Job/Inspection events.
-
-==================================================
-70. EDIT ACTION
-==================================================
-
-Visible only if:
-
-services.enquiries.edit
-
-AND
-
-Enquiry status allows editing.
-
-==================================================
-71. EDIT ROUTE
-==================================================
-
-/app/services/enquiries/:enquiryId/edit
-
-Requires:
-
-edit permission
-
-record/company access
-
-OPEN status.
-
-==================================================
-72. EDIT FORM
-==================================================
-
-Reuse Create form architecture.
-
-Avoid duplicate screen implementation.
-
-==================================================
-73. EDITABLE FIELDS
-==================================================
-
-For OPEN Enquiry, allow editing business fields that remain safe before
-assignment exists.
-
-Potentially:
-
-Customer
-
-Site
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-Description.
-
-Once Job Assignment exists in future,
-some fields may become locked/revision-controlled.
-
-Do not prematurely implement that now.
-
-==================================================
-74. UPDATE ACTIVITY
-==================================================
-
-Create:
-
-services.enquiry.updated
-
-Prefer structured changed-fields metadata where current activity foundation
-supports it.
-
-==================================================
-75. UPDATE OUTBOX
-==================================================
-
-Register:
-
-SERVICES_ENQUIRY_UPDATE
-
-or equivalent.
-
-==================================================
-76. CONCURRENCY
-==================================================
-
-Use transaction version/update conventions if already available.
-
-Future backend should be able to reject stale edit.
-
-Do not create complicated local conflict UI beyond current sync conventions.
-
-==================================================
-77. CANCEL ACTION
-==================================================
-
-Visible only if:
-
-services.enquiries.cancel
-
-AND
-
-status == OPEN.
-
-==================================================
-78. CANCEL CONFIRMATION
-==================================================
-
-Use confirmation dialog/sheet:
-
-Cancel Enquiry?
-
-Explain that cancelled Enquiry remains available historically.
-
-Do not use destructive:
-
-Delete Enquiry.
-
-==================================================
-79. CANCELLATION REASON
-==================================================
-
-If existing product conventions support cancellation reason:
-
-capture it.
-
-If not:
-
-keep cancellation simple rather than inventing a large reason-master system.
-
-==================================================
-80. CANCEL ACTIVITY
-==================================================
-
-Record:
-
-services.enquiry.cancelled.
-
-==================================================
-81. CANCEL OUTBOX
-==================================================
-
-Register:
-
-SERVICES_ENQUIRY_CANCEL.
-
-==================================================
-82. CANCELLED DETAIL
-==================================================
-
-Cancelled Enquiry:
-
-readable
-
-historical
-
-cannot be edited
-
-cannot be cancelled again.
-
-==================================================
-83. NO DELETE
-==================================================
-
-Do not expose:
-
-Delete Enquiry.
-
-Transactions are historical records.
-
-==================================================
-84. SERVICES OVERVIEW — REAL METRICS
-==================================================
-
-Update Services Overview now that real transaction data exists.
-
-Possible cards:
-
-Open Enquiries
-
-Enquiries Today
-
-High/Urgent Open
-
-Customers
-
-Sites
-
-Teams.
-
-Render only cards permitted by user's effective access.
-
-==================================================
-85. OVERVIEW QUERY
-==================================================
-
-Create an efficient:
-
-ServicesOverviewRepository
-
-or extend existing Phase 1 overview source.
-
-Do NOT load all Enquiries into widget and count them.
-
-Use aggregate queries/read models.
-
-==================================================
-86. RECENT ENQUIRIES
-==================================================
-
-If enquiry view permission exists:
-
-show a compact Recent Enquiries section.
-
-Fields:
-
-number
-
-customer
-
-priority
-
-status
-
-created time.
-
-Click:
-Enquiry Detail.
-
-==================================================
-87. OVERVIEW SECURITY
-==================================================
-
-No Enquiry view permission:
-
-do not query or show Enquiry metrics.
-
-No Customer permission:
-
-do not reveal Customer-directory counts unless required by a permitted Enquiry
-read model.
-
-Avoid indirect information leakage.
-
-==================================================
-88. CUSTOMER DETAIL INTEGRATION
-==================================================
-
-Customer Detail can now show:
-
-Recent Enquiries
-
-ONLY if:
-
-services.enquiries.view
-
-is granted.
-
-Do not make Customer screen depend on Enquiry permission for basic rendering.
-
-==================================================
-89. SITE DETAIL INTEGRATION
-==================================================
-
-Same:
-
-Recent Enquiries at this Site
-
-only when Enquiry view is allowed.
-
-==================================================
-90. CUSTOMER/SITE CROSS-MODULE READ
-==================================================
-
-Enquiry read model is allowed to resolve Customer/Site labels necessary to
-display an authorized Enquiry.
-
-This must NOT imply broad Customer/Site directory access.
-
-Document this distinction.
-
-==================================================
-91. QUERY PARAMETER LIST STATE
-==================================================
-
-Preserve meaningful Enquiry list state through query parameters where existing
-routing architecture supports it.
-
-Examples:
-
-search
-
-status
-
-priority
-
-page.
-
-Back from Detail should restore operator context.
-
-==================================================
-92. NO N+1
-==================================================
-
-List query should join/resolve:
-
-Customer
-
-Site
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-efficiently.
-
-Do not perform one repository fetch per row.
-
-==================================================
-93. REPOSITORY
-==================================================
-
-Create:
-
-ServiceEnquiryRepository
-
-Interface should support what current UI actually needs.
-
-Likely methods:
-
-watchEnquiries(filter/sort/page)
-
-getEnquiry(id)
-
-createEnquiry(draft, requestId)
-
-updateEnquiry(id, draft, requestId)
-
-cancelEnquiry(id, requestId, optionalReason)
-
-watchRecentEnquiries(...)
-
-watchEnquirySummary(...).
-
-Use actual architecture conventions.
-
-==================================================
-94. RESTRICTED REFERENCE LOOKUPS
-==================================================
-
-Repository/application services for Enquiry form should expose:
-
-searchCustomerRefsForEnquiry
-
-searchSiteRefsForEnquiry
-
-or equivalent.
-
-These calls are authorized by:
-
-Enquiry Create/Edit capability
-
-rather than full Customer/Site directory View capability.
-
-Do not weaken Customer/Site repository security globally.
-
-==================================================
-95. APPLICATION USE CASES
-==================================================
-
-Create/use:
-
-CreateServiceEnquiry
-
-UpdateServiceEnquiry
-
-CancelServiceEnquiry
-
-WatchServiceEnquiries
-
-GetServiceEnquiry
-
-or architecture-equivalent.
-
-Do not put transaction rules in widgets.
-
-==================================================
-96. CREATE AUTHORIZATION
-==================================================
-
-Create use case checks:
-
-Services module enabled
-
-services.enquiries.create
+Do NOT ask operator to type them again.
 
-same company
-
-active Customer
-
-active Site
-
-valid master references.
-
-==================================================
-97. EDIT AUTHORIZATION
-==================================================
-
-Checks:
-
-services.enquiries.edit
-
-same company
-
-OPEN status
-
-valid references.
-
-==================================================
-98. CANCEL AUTHORIZATION
-==================================================
-
-Checks:
-
-services.enquiries.cancel
-
-same company
-
-OPEN status.
-
-==================================================
-99. READ AUTHORIZATION
-==================================================
-
-List/detail require:
-
-services.enquiries.view.
-
-Do not assume Services module visibility itself grants read access.
-
-==================================================
-100. FAILURE TYPES
-==================================================
-
-Use typed domain/application failures.
-
-Examples:
-
-ServiceEnquiryNotFound
-
-ServiceEnquiryNotEditable
-
-ServiceEnquiryAlreadyCancelled
-
-ServiceEnquiryCustomerInactive
-
-ServiceEnquirySiteInactive
-
-ServiceEnquirySiteCustomerMismatch
-
-ServiceEnquiryInvalidComplaintType
-
-Unauthorized/Forbidden.
-
-Follow current failure architecture.
-
-==================================================
-101. DATABASE TABLE
-==================================================
-
-Add a Phase 2 table:
-
-ServiceEnquiries
-
-or existing naming convention.
-
-Inspect actual latest schemaVersion first.
-
-==================================================
-102. TABLE FIELDS
-==================================================
-
-Persist:
-
-identity
-
-company
-
-display number
-
-master refs
-
-customer/site refs
-
-snapshot
-
-description
-
-status
-
-metadata
-
-sync/request/version fields
-
-according to actual domain.
-
 ==================================================
-103. INDEXES
+15. TRANSACTION SNAPSHOT
 ==================================================
-
-Add useful indexes.
-
-Likely:
 
-companyId + status
+The selected Enquiry already has historical customer/site context.
 
-companyId + createdAt
+The Job Assignment must preserve its relationship to that Enquiry.
 
-companyId + customerId
+Use the Enquiry transaction snapshot for display where appropriate.
 
-companyId + siteId
+If a dedicated lightweight assignment snapshot is required for durable
+backend-ready reads, make it typed.
 
-companyId + enquiryNumber.
+Do NOT use untyped Maps.
 
-Do not over-index blindly.
-
-==================================================
-104. UNIQUE NUMBER
-==================================================
-
-Enquiry display number unique within company.
-
 ==================================================
-105. FOREIGN COMPANY VALIDATION
+16. ONE ACTIVE ASSIGNMENT PER ENQUIRY — V1
 ==================================================
 
-Prevent:
-
-Company A Enquiry
-→ Company B Customer
-
-or Site
-
-or configuration.
-
-==================================================
-106. SCHEMA MIGRATION
-==================================================
+Based on the client flow:
 
-Inspect current schema.
+one Job Assignment transaction selects one Enquiry
 
-Increment exactly once if needed for Phase 2.
+and contains multiple work rows.
 
-Migration must preserve:
+Implement V1 as:
 
-HR
+ONE ACTIVE Job Assignment per Service Enquiry.
 
-Access
+Multiple pieces of work belong inside:
 
-Phase 1 Services
+ServiceJobAssignmentLine[].
 
-shared transaction infrastructure.
+Do not create five separate Job Assignment records for the same Enquiry just
+because there are five work rows.
 
 ==================================================
-107. DEMO SEED
+17. ENQUIRY STATE TRANSITION
 ==================================================
-
-Seed a small deterministic set of Service Enquiries.
-
-Use existing seeded:
-
-Customers
-
-Sites
-
-Service Types
-
-Complaint Types
-
-Priorities
-
-Ticket Types.
-
-Examples should demonstrate:
-
-different Customers
 
-different Sites
+Extend the current Enquiry lifecycle carefully.
 
-different priorities
+Current:
 
 OPEN
 
 CANCELLED.
 
-Do not seed future Job/Inspection records.
-
-==================================================
-108. DEMO ACCESS
-==================================================
-
-Use explicit permission grants.
-
-Example fixture A:
-
-Enquiry View/Create/Edit/Cancel.
-
-Fixture B:
-
-View only.
-
-Fixture C:
-
-Create only if product/access model allows it.
-
-No role-derived grants.
-
-==================================================
-109. CREATE WITHOUT CUSTOMER DIRECTORY TEST
-==================================================
-
-Critical test:
-
-User has:
-
-services.enquiries.create
-
-but NOT:
-
-services.customers.view
-
-services.sites.view.
-
-Expected:
-
-can open New Enquiry
-
-can search/select Customer refs
-
-can search/select eligible Site refs
-
-cannot navigate Customers
-
-cannot navigate Sites
-
-cannot open arbitrary Customer/Site detail.
-
-==================================================
-110. VIEW ONLY TEST
-==================================================
-
-Grant only:
-
-services.enquiries.view.
-
-Expected:
-
-Services visible
-
-Enquiries visible
-
-list works
-
-detail works
-
-New Enquiry hidden
-
-Edit hidden
-
-Cancel hidden.
-
-==================================================
-111. CREATE TEST
-==================================================
-
 Add:
 
-services.enquiries.create.
+ASSIGNED.
 
-Expected:
+Flow:
 
-New Enquiry visible
+OPEN
+   ↓ Create Job Assignment
+ASSIGNED
 
-/new accessible
-
-create mutation succeeds.
-
-==================================================
-112. EDIT TEST
-==================================================
-
-Without Edit:
-
-Edit hidden
-
-/edit blocked
-
-mutation rejected.
-
-With Edit:
-
-OPEN Enquiry editable.
-
-CANCELLED Enquiry remains read-only.
+CANCELLED remains terminal.
 
 ==================================================
-113. CANCEL TEST
+18. ENQUIRY EDITING AFTER ASSIGNMENT
 ==================================================
 
-Without Cancel:
+Once Enquiry becomes:
 
-no Cancel action.
+ASSIGNED
 
-With Cancel:
+it should no longer be freely editable like an OPEN Enquiry.
 
-OPEN can cancel.
+The Assignment now represents operational execution of that Enquiry.
 
-Cancelled cannot cancel again.
-
-==================================================
-114. DIRECT URL TEST
-==================================================
-
-No permission:
-
-list/details/new/edit routes blocked appropriately.
+Enquiry detail remains readable.
 
 ==================================================
-115. SITE OWNERSHIP TEST
+19. CANCEL ASSIGNMENT
 ==================================================
 
-Customer A selected.
+Do not hard-delete Job Assignment.
 
-Site belonging Customer B passed manually.
+Modernize the legacy Delete action into:
 
-Create/update must fail.
+Cancel Assignment.
 
-==================================================
-116. INACTIVE CUSTOMER TEST
-==================================================
+When the ONLY active Assignment for the Enquiry is cancelled:
 
-Inactive Customer cannot be selected for new Enquiry.
+Enquiry may return:
 
-Historical Enquiry remains readable.
+ASSIGNED → OPEN
 
-==================================================
-117. INACTIVE SITE TEST
-==================================================
+so it can be assigned again.
 
-Same.
+Do this transactionally.
 
 ==================================================
-118. INACTIVE MASTER TEST
+20. ASSIGNMENT STATUS
 ==================================================
 
-Inactive configuration not selectable for new/edit where invalid.
+Use a typed transaction-level status.
 
-Historical Enquiry still resolves it.
+V1:
+
+ACTIVE
+
+CANCELLED
+
+or more appropriate existing naming.
+
+Do not invent:
+
+INSPECTED
+
+EXECUTED
+
+COMPLETED
+
+until those phases exist.
 
 ==================================================
-119. SERVICE TYPE / COMPLAINT TEST
-==================================================
-
-Complaint associated with another Service Type cannot be silently submitted.
-
-==================================================
-120. SEQUENCE TEST
-==================================================
-
-New Enquiry receives one unique company-scoped display number.
-
-Retry same requestId:
-
-same logical transaction/no duplicate.
-
-==================================================
-121. ACTIVITY TEST
+21. JOB ASSIGNMENT LINE
 ==================================================
 
 Create:
 
-created event.
+ServiceJobAssignmentLine
 
-Edit:
+Fields:
 
-updated event.
+id
 
-Cancel:
+companyId
 
-cancelled event.
+assignmentId
 
-==================================================
-122. OUTBOX TEST
-==================================================
+lineNumber / sortOrder
 
-Each mutation creates exactly one appropriate outbox mutation.
+work
 
-==================================================
-123. ATOMICITY TEST
-==================================================
+assignedEmployeeId nullable
 
-If outbox/activity/sequence part fails:
+assignedTeamId nullable
 
-do not leave partially-created transaction.
+status
 
-==================================================
-124. OVERVIEW TEST
-==================================================
+descriptionForWork
 
-Enquiry metrics use actual DB records.
+createdAt
 
-View permission removed:
+updatedAt
 
-Enquiry cards/Recent Enquiries disappear.
+sync metadata if required.
 
 ==================================================
-125. CUSTOMER DETAIL TEST
+22. LINE IDENTITY
 ==================================================
 
-Customer Detail:
+Every line gets stable UUID.
 
-Recent Enquiries shown only with Enquiry View permission.
-
-==================================================
-126. SITE DETAIL TEST
-==================================================
-
-Same.
+S.No is display order only.
 
 ==================================================
-127. COMPANY ISOLATION
+23. MULTIPLE WORK ITEMS
 ==================================================
 
-Company A cannot read or mutate Company B Enquiry.
+Support:
+
+1..N work items.
+
+Do NOT hardcode exactly 5 rows.
+
+Legacy screen showing 5 empty rows is merely old UI.
+
+Modern UI dynamically adds rows.
 
 ==================================================
-128. COMPANY SWITCH
+24. MINIMUM WORK ITEM
 ==================================================
 
-Switch Company:
-
-Enquiry list
-
-overview metrics
-
-Customer refs
-
-Site refs
-
-all recompute for new company.
-
-No stale company data.
+Require at least one valid work line before creating Assignment.
 
 ==================================================
-129. LIVE PERMISSION CHANGE
+25. WORK FIELD
 ==================================================
 
-Current user loses:
+`work` is required.
 
-services.enquiries.view
+Use multiline or appropriately sized input.
 
-while inside Enquiry screen.
-
-Expected:
-
-navigation updates
-
-route becomes unauthorized
-
-safe landing occurs
-
-no restart/login required.
+This is the actual work/task being assigned.
 
 ==================================================
-130. LIVE CREATE PERMISSION CHANGE
+26. DESCRIPTION FOR WORK
 ==================================================
 
-Current user gains:
+Keep separate from `work`.
 
-services.enquiries.create.
+`work`
 
-New Enquiry CTA appears through existing permission refresh architecture.
+→ work/task title or scope.
 
-==================================================
-131. RESPONSIVE LIST
-==================================================
+`descriptionForWork`
 
-Test:
+→ detailed instructions / notes.
 
-390px
-
-768px
-
-1024px
-
-1440px.
-
-No overflow.
-
-Desktop uses table-like operational layout.
-
-Mobile uses cards.
+Do not collapse them into one field because the client uses both.
 
 ==================================================
-132. RESPONSIVE FORM
+27. EMPLOYEE ASSIGNMENT
 ==================================================
 
-Desktop:
+Use:
 
-logical two-column layout where appropriate.
+WorkforceDirectory.
 
-Mobile:
+Never directly import:
 
-single-column.
+HR DAO
 
-Do not create excessively wide text fields on desktop.
+HR Drift tables
 
-==================================================
-133. DETAIL RESPONSIVENESS
-==================================================
+HR BLoCs
 
-Desktop:
-
-summary/header + structured sections/activity.
-
-Mobile:
-
-stacked sections.
+HR presentation.
 
 ==================================================
-134. ARABIC / RTL
+28. EMPLOYEE SELECTOR
 ==================================================
 
-Add all strings to Services module ARBs.
+Search:
 
-Test:
+Employee name
 
-list
+Employee code
 
-filters
+designation if useful.
 
-form
+Display lightweight:
 
-selectors
+Name
 
-detail
+Employee Code
 
-activity
+Designation
 
-cancel confirmation
-
-overview metrics.
+Department where helpful.
 
 ==================================================
-135. LOCALIZATION
+29. ACTIVE EMPLOYEE RULE
 ==================================================
 
-No hardcoded user-facing English.
+New Assignment can select only:
 
-Enquiry number itself remains machine/display identifier.
+ACTIVE Employee
 
-==================================================
-136. PRIORITY VISUALS
-==================================================
+same company.
 
-Use existing semantic status/badge system.
-
-Do not hardcode alarming colors separately.
-
-Priority must remain understandable without color.
+Historical inactive assigned Employees remain resolvable.
 
 ==================================================
-137. STATUS VISUALS
+30. SERVICE TEAM SELECTOR
 ==================================================
+
+Use existing:
+
+ServiceTeamRepository / reference lookup.
+
+Only:
+
+ACTIVE team
+
+same company
+
+may receive a new assignment.
+
+==================================================
+31. EMPLOYEE + TEAM VALIDATION
+==================================================
+
+If both Employee and Team are selected:
+
+prefer Employee being a member of that Service Team.
+
+If not:
+
+show validation/warning according to existing business architecture.
+
+Do NOT silently change team membership.
+
+Do NOT add Employee to Team automatically.
+
+==================================================
+32. TEAM MEMBERSHIP DOES NOT GRANT APP ACCESS
+==================================================
+
+ServiceTeam membership still does NOT grant Services permission.
+
+Permissions remain explicit.
+
+==================================================
+33. ASSIGNMENT DOES NOT GRANT APP ACCESS
+==================================================
+
+Assigning work to an Employee does NOT automatically grant them application
+permissions.
+
+If Employee has no Services job access:
+
+assignment still exists
+
+but they cannot access ERP operational screens until permission is granted.
+
+==================================================
+34. SCHEDULE FIELD
+==================================================
+
+The client Job Assignment screen contains:
+
+Visit Date.
+
+Implement:
+
+scheduledVisitDate.
+
+DO NOT invent:
+
+Visit Start Time
+
+Visit End Time
+
+Duration
+
+time slot
+
+recurrence
+
+because this client screen does not contain those.
+
+==================================================
+35. VISIT DATE VALIDATION
+==================================================
+
+Use:
+
+CompanyTimeService.
+
+Validate according to realistic rules.
+
+Do not allow obviously invalid dates.
+
+Do not use raw server/device local time assumptions.
+
+==================================================
+36. JOB ASSIGNMENT NUMBER
+==================================================
+
+Use shared DocumentSequence infrastructure.
+
+Register:
+
+services.jobAssignment
+
+or project-equivalent sequence key.
+
+Example display only:
+
+JA-000001
+
+or client-compatible company prefix.
+
+Do not hardcode prefix across feature.
+
+==================================================
+37. ASSIGNMENT DATE
+==================================================
+
+Display:
+
+assignmentDate
+
+using company business date.
+
+It is system-derived.
+
+Do not require manual typing.
+
+==================================================
+38. MATERIAL RECEIVED
+==================================================
+
+Display the value inherited from Enquiry.
+
+Do NOT introduce materials/inventory behavior.
+
+This is informational in Phase 3.
+
+==================================================
+39. STATUS PER WORK LINE
+==================================================
+
+The client reference contains a Status selector PER work line.
+
+Therefore preserve:
+
+ServiceJobAssignmentLine.status.
+
+IMPORTANT:
+
+the screenshot does not reveal the allowed values.
+
+Do NOT invent a complex lifecycle.
+
+If the codebase/client traceability contains no confirmed values:
+
+use a minimal typed default:
+
+PENDING
+
+and keep the field architecture ready for confirmed status values.
+
+Do not let guessed line status control Inspection or Work Execution.
+
+Document:
+
+TBD — client confirmation required for complete Job Assignment line status
+vocabulary.
+
+==================================================
+40. DO NOT CREATE A FAKE STATUS MASTER
+==================================================
+
+Do not create a configurable status-master screen merely to avoid this
+uncertainty.
+
+Keep status typed and minimal.
+
+==================================================
+41. PERMISSIONS
+==================================================
+
+Register actual Phase 3 permissions.
+
+Use names consistent with existing catalog.
+
+Recommended:
+
+services.jobAssignments.view
+
+services.jobAssignments.create
+
+services.jobAssignments.edit
+
+services.jobAssignments.cancel
+
+==================================================
+42. VIEW SCOPE
+==================================================
+
+services.jobAssignments.view supports:
+
+ASSIGNED
+
+TEAM
+
+ALL.
+
+This is the first Services transaction where these scopes have real operational
+meaning.
+
+==================================================
+43. ASSIGNED SCOPE
+==================================================
+
+ASSIGNED includes a Job Assignment when current linked Employee is:
+
+directly selected on one or more lines
+
+OR
+
+belongs to an assigned Service Team according to Services scope policy.
+
+==================================================
+44. TEAM SCOPE
+==================================================
+
+TEAM uses the existing:
+
+ServiceTeamScopeResolver.
+
+TEAM visibility must never silently become company-wide ALL.
+
+==================================================
+45. ALL SCOPE
+==================================================
+
+ALL returns company-wide Job Assignments within the active company.
+
+No cross-company data.
+
+==================================================
+46. CREATE PERMISSION
+==================================================
+
+services.jobAssignments.create
+
+controls:
+
+New Job Assignment action
+
+/new route
+
+create use case.
+
+==================================================
+47. EDIT PERMISSION
+==================================================
+
+services.jobAssignments.edit
+
+controls:
+
+Edit
+
+reassignment of lines
+
+Visit Date updates
+
+work/instruction updates
+
+while transaction is ACTIVE.
+
+==================================================
+48. CANCEL PERMISSION
+==================================================
+
+services.jobAssignments.cancel
+
+controls:
+
+Cancel Assignment.
+
+No hard delete.
+
+==================================================
+49. PERMISSION DEPENDENCIES
+==================================================
+
+Create/Edit/Cancel require enough View access to use the resulting transaction.
+
+Normalize this centrally using existing permission dependencies.
+
+Do not duplicate dependency logic in screens.
+
+==================================================
+50. ACCESS UI
+==================================================
+
+Existing:
+
+Settings
+→ Users & Access
+
+must automatically show:
+
+Services
+  → Job Assignments
+
+View Job Assignments
+scope:
+No Access / Assigned / Team / All
+
+Create Job Assignment
+
+Edit Job Assignment
+
+Cancel Job Assignment.
+
+No Services-specific access-screen code.
+
+==================================================
+51. SERVICES NAVIGATION
+==================================================
+
+Services navigation becomes:
+
+Overview
+
+Enquiries
+
+Job Assignments
+
+Customers
+
+Sites
+
+Teams
+
+Settings
+
+according to permissions.
+
+==================================================
+52. ROUTES
+==================================================
+
+Create:
+
+/app/services/job-assignments
+
+/app/services/job-assignments/new
+
+/app/services/job-assignments/:assignmentId
+
+/app/services/job-assignments/:assignmentId/edit
+
+==================================================
+53. CREATE FROM ENQUIRY
+==================================================
+
+On eligible:
+
+Service Enquiry Detail
+
+show:
+
+Create Job Assignment
+
+when:
+
+Enquiry == OPEN
+
+AND
+
+user has Job Assignment Create permission.
+
+==================================================
+54. CREATE FROM JOB ASSIGNMENTS
+==================================================
+
+Also allow:
+
+New Job Assignment
+
+from Job Assignments list.
+
+The first field/step selects eligible Enquiry.
+
+==================================================
+55. ELIGIBLE ENQUIRY REFERENCE ACCESS
+==================================================
+
+A user with Job Assignment Create permission needs a restricted Enquiry
+reference selector.
+
+They do NOT necessarily need unrestricted:
+
+services.enquiries.view / ALL.
+
+Provide safe reference access for eligible assignable Enquiries.
+
+==================================================
+56. ELIGIBLE ENQUIRIES
+==================================================
+
+Selector returns only:
+
+same company
 
 OPEN
 
-CANCELLED
+not already actively assigned
 
-through existing badge/chip primitives.
-
-No hardcoded arbitrary colors.
+valid Customer/Site context.
 
 ==================================================
-138. ACCESSIBILITY
+57. SELECTING ENQUIRY
 ==================================================
 
-Selectors labeled.
+After selecting Enquiry:
 
-Form validation announced.
+automatically display:
 
-Priority/status not color-only.
+Enquiry Number
 
-Desktop table keyboard usable according to existing conventions.
+Customer Name
 
-==================================================
-139. NOTIFICATIONS
-==================================================
-
-Creating an Enquiry alone does NOT require noisy internal notifications in Phase 2.
-
-Do not send notifications merely because an Enquiry exists.
-
-Phase 3 assignment will introduce relevant assignee notifications.
-
-==================================================
-140. ATTACHMENTS
-==================================================
-
-Do NOT automatically add Enquiry attachments unless the actual client reference
-or current product requirement explicitly includes them.
-
-Inspection photos belong to future Inspection phase.
-
-Shared attachment foundation remains available.
-
-==================================================
-141. QUOTATION
-==================================================
-
-Do not infer:
-
-Quotation created from Enquiry.
-
-Still unresolved.
-
-==================================================
-142. JOB ORDER
-==================================================
-
-Do not infer:
-
-Job Order created from Enquiry.
-
-Still unresolved.
-
-==================================================
-143. ASSIGNMENT READINESS
-==================================================
-
-Design ServiceEnquiry so Phase 3 can safely consume OPEN Enquiries.
-
-Do not implement actual assignment now.
-
-==================================================
-144. NEXT-PHASE INTEGRATION CONTRACT
-==================================================
-
-Document what Phase 3 may rely on from Enquiry:
-
-enquiryId
-
-enquiryNumber
-
-Customer
-
-Site
-
-Service Type
+Mobile
 
 Complaint Type
 
 Priority
 
-Ticket Type
+Tenant
 
-description
+Building
+
+Unit
+
+Material Received
+
+Enquiry issues/details.
+
+Do not require re-entry.
+
+==================================================
+58. ENQUIRY ISSUES
+==================================================
+
+Show Phase 2.1 Enquiry Detail lines.
+
+Example:
+
+Issue 1
+Description
+Status
+photo count/thumbnails if access permits.
+
+This helps the assignment operator decide:
+
+Work
+
+Technician
+
+Team
+
+instructions.
+
+==================================================
+59. ENQUIRY PHOTOS
+==================================================
+
+Allow viewing source Enquiry photos.
+
+Do not duplicate attachments into Job Assignment.
+
+==================================================
+60. CREATE FORM — MODERN UI
+==================================================
+
+Use current ONE GLOBAL CENTERED ERP CONTENT WIDTH.
+
+Same left/right page bounds as:
+
+Employees
+
+Add Employee
+
+Enquiries
+
+New Enquiry
+
+Customers
+
+etc.
+
+Do not create another page width.
+
+==================================================
+61. CREATE FORM STRUCTURE
+==================================================
+
+Recommended:
+
+JOB CONTEXT
+
+Enquiry selector
+
+Assignment No — generated/read-only
+
+Assignment Date — read-only
+
+SCHEDULE
+
+Visit Date
+
+CUSTOMER & LOCATION
+
+read-only context card:
+
+Customer
+Mobile
+Tenant
+Building
+Unit
+
+SERVICE CONTEXT
+
+Complaint Type
+Priority
+Material Received
+
+SOURCE ENQUIRY ISSUES
+
+read-only issue cards with photos
+
+WORK ASSIGNMENT
+
+repeatable work items.
+
+==================================================
+62. WORK ITEM UI — DESKTOP
+==================================================
+
+Do NOT copy the old giant spreadsheet literally.
+
+Use modern structured work cards or a compact repeater.
+
+Each work item must include:
+
+Work
+
+Assigned Employee / Technician
+
+Service Team
+
+Status
+
+Description For Work
+
+Remove.
+
+==================================================
+63. DESKTOP EXAMPLE
+==================================================
+
+Work item 1
+
+Work
+[ Repair AC compressor                     ]
+
+Technician
+[ Ahmed Khan ▼ ]
+
+Service Team
+[ HVAC Team ▼ ]
+
+Status
+[ Pending ]
+
+Instructions
+[ Inspect compressor and verify pressure... ]
+
+[ Remove work item ]
+
+==================================================
+64. MOBILE WORK ITEM UI
+==================================================
+
+Use stacked cards.
+
+Do NOT use horizontally scrolling editable legacy table as primary UI.
+
+==================================================
+65. ADD WORK ITEM
+==================================================
+
+Use a visible button:
+
++ Add work item
+
+Do not use tiny unlabeled `+`.
+
+==================================================
+66. REMOVE WORK ITEM
+==================================================
+
+Unsaved line:
+
+remove according to current UX.
+
+Persisted line:
+
+mark within aggregate update.
+
+Never allow zero lines.
+
+==================================================
+67. FORM SUBMISSION
+==================================================
+
+Primary CTA:
+
+Create Job Assignment.
+
+Prevent duplicate submission.
+
+==================================================
+68. DIRTY FORM GUARD
+==================================================
+
+Use existing:
+
+FormNavigationGuard.
+
+==================================================
+69. LIST PAGE
+==================================================
+
+Create:
+
+Job Assignments
+
+using same centered global page width.
+
+Desktop columns should be concise.
+
+Recommended:
+
+Assignment
+
+Enquiry
+
+Customer / Site
+
+Visit Date
+
+Assigned To
+
+Priority
+
+Status
+
+Created
+
+Actions.
+
+==================================================
+70. ASSIGNED TO SUMMARY
+==================================================
+
+If lines contain multiple targets, show compact summary.
+
+Example:
+
+Ahmed Khan + HVAC Team
++2 more
+
+Do not explode table width.
+
+==================================================
+71. LIST SEARCH
+==================================================
+
+Search:
+
+Assignment No
+
+Enquiry No
+
+Customer
+
+Mobile
+
+Site/Building/Unit
+
+Employee
+
+Team.
+
+==================================================
+72. FILTERS
+==================================================
+
+Useful filters:
+
+Status
+
+Visit Date / range
+
+Priority
+
+Service Team
+
+Employee
+
+Customer
+
+possibly due/today.
+
+Do not overbuild.
+
+==================================================
+73. SCOPE FILTERING
+==================================================
+
+ASSIGNED user:
+
+only relevant assigned records.
+
+TEAM user:
+
+resolved team records.
+
+ALL:
+
+company.
+
+Filtering never expands security scope.
+
+==================================================
+74. DETAIL PAGE
+==================================================
+
+Create operational Job Assignment detail.
+
+Header:
+
+Assignment No
+
+Status
+
+Visit Date
+
+Created date.
+
+Actions:
+
+Edit
+
+Cancel
+
+according to permission/state.
+
+==================================================
+75. DETAIL — ENQUIRY CONTEXT
+==================================================
+
+Show:
+
+Enquiry No
+
+Customer
+
+Mobile
+
+Complaint
+
+Priority
+
+Tenant
+
+Building
+
+Unit
+
+Material Received.
+
+==================================================
+76. DETAIL — WORK ITEMS
+==================================================
+
+For every assignment line show:
+
+Work
+
+Technician
+
+Team
+
+Status
+
+Description For Work.
+
+==================================================
+77. DETAIL — SOURCE ISSUES
+==================================================
+
+Also show source Enquiry issues and photos.
+
+Do not make operator navigate back just to understand assignment context.
+
+==================================================
+78. DETAIL — AUDIT
+==================================================
+
+Use:
+
+AuditMetadataBlock.
+
+Show:
+
+Created By
+
+Created At
+
+Updated By
+
+Updated At.
+
+==================================================
+79. DETAIL — ACTIVITY
+==================================================
+
+Use shared ActivityTimeline.
+
+Events may include:
+
+Job Assignment created
+
+Visit Date changed
+
+Work item updated
+
+Assignment target changed
+
+Job Assignment cancelled.
+
+Use structured events.
+
+==================================================
+80. EDIT
+==================================================
+
+ACTIVE Job Assignment can be edited when permitted.
+
+Editable:
+
+Visit Date
+
+Work
+
+Employee
+
+Team
+
+line status as supported
+
+Description For Work.
+
+Source Enquiry context remains read-only.
+
+==================================================
+81. EDIT TARGET
+==================================================
+
+Reassigning:
+
+Employee
+
+or
+
+Team
+
+must create a structured activity event.
+
+==================================================
+82. CANCEL
+==================================================
+
+Use:
+
+Cancel Assignment
+
+not Delete.
+
+Confirm before cancelling.
+
+Cancelled assignment remains historical.
+
+==================================================
+83. CANCELLED ASSIGNMENT
+==================================================
+
+Read-only.
+
+No Edit.
+
+No second Cancel.
+
+No future Inspection may be created from cancelled assignment.
+
+==================================================
+84. INSPECTION READINESS
+==================================================
+
+Phase 4 will consume an ACTIVE Job Assignment.
+
+Prepare a clean reference DTO such as:
+
+ServiceJobAssignmentRef
+
+containing:
+
+id
+
+assignmentNumber
+
+sourceEnquiryId
+
+customer/site summary
+
+scheduledVisitDate
+
+assigned employees/teams
+
+priority.
+
+Do NOT implement Inspection yet.
+
+==================================================
+85. DATABASE
+==================================================
+
+Inspect current schemaVersion.
+
+Add:
+
+ServiceJobAssignments
+
+ServiceJobAssignmentLines.
+
+Increment schema exactly once.
+
+==================================================
+86. JOB ASSIGNMENT TABLE
+==================================================
+
+Likely fields:
+
+id
+
+companyId
+
+assignmentNumber
+
+assignmentDate
+
+sourceEnquiryId
+
+scheduledVisitDate
 
 status
 
-created metadata.
+createdAt
+
+updatedAt
+
+createdByUserId
+
+updatedByUserId
+
+requestId
+
+syncStatus
+
+version.
 
 ==================================================
-145. BACKEND-READY CONTRACT
+87. LINE TABLE
 ==================================================
 
-Keep repository/domain shape suitable for future APIs.
+Likely fields:
 
-Expected eventual concepts:
+id
 
-GET enquiries
+companyId
 
-GET enquiry detail
+assignmentId
 
-POST enquiry
+lineNumber
 
-PATCH enquiry
+work
 
-POST cancel
+assignedEmployeeId nullable
 
-restricted Customer/Site reference search.
+assignedTeamId nullable
 
-Do NOT implement fake Dio calls yet unless backend integration is already being
-done separately.
+status
 
-==================================================
-146. API REQUIREMENT DOC
-==================================================
+descriptionForWork
 
-If the existing backend requirement document already exists for Platform + HR:
+createdAt
 
-DO NOT mix unfinished Services transaction requirements into it silently.
-
-Create/update Services backend-requirement notes only if current project
-documentation process expects per-phase API trace.
-
-Otherwise leave backend implementation for the dedicated Services API contract.
+updatedAt.
 
 ==================================================
-147. PERMISSION COVERAGE
+88. CONSTRAINTS
+==================================================
+
+Enforce:
+
+company-scoped assignmentNumber unique
+
+one ACTIVE Assignment per Enquiry
+
+line belongs to same company/Assignment
+
+Employee same company
+
+Team same company.
+
+==================================================
+89. INDEXES
+==================================================
+
+Useful indexes:
+
+company + status
+
+company + sourceEnquiryId
+
+company + scheduledVisitDate
+
+assignmentId
+
+assignedEmployeeId
+
+assignedTeamId.
+
+==================================================
+90. ATOMIC CREATE
+==================================================
+
+Creating Job Assignment must atomically:
+
+allocate sequence
+
+insert Assignment
+
+insert work lines
+
+transition Enquiry OPEN → ASSIGNED
+
+write activity
+
+write outbox.
+
+No partial state.
+
+==================================================
+91. ATOMIC CANCEL
+==================================================
+
+Cancel must atomically:
+
+Assignment → CANCELLED
+
+Enquiry → OPEN when appropriate
+
+activity
+
+outbox.
+
+==================================================
+92. OUTBOX
+==================================================
+
+Register:
+
+SERVICES_JOB_ASSIGNMENT_CREATE
+
+SERVICES_JOB_ASSIGNMENT_UPDATE
+
+SERVICES_JOB_ASSIGNMENT_CANCEL
+
+or exact project naming convention.
+
+==================================================
+93. OUTBOX PAYLOAD
+==================================================
+
+Backend-ready payload includes:
+
+header
+
+sourceEnquiryId
+
+visitDate
+
+lines:
+  work
+  employeeId
+  teamId
+  status
+  descriptionForWork.
+
+Do not embed Employee/Team display objects as authoritative identity.
+
+==================================================
+94. IDEMPOTENCY
+==================================================
+
+Use requestId.
+
+Retry must not create:
+
+duplicate Assignment
+
+duplicate lines
+
+duplicate Enquiry transition.
+
+==================================================
+95. ACTIVITY EVENTS
+==================================================
+
+Structured events:
+
+services.jobAssignment.created
+
+services.jobAssignment.updated
+
+services.jobAssignment.cancelled
+
+services.jobAssignment.visitDateChanged
+
+services.jobAssignment.assignmentChanged
+
+where useful.
+
+Avoid noisy event spam.
+
+==================================================
+96. NOTIFICATIONS
+==================================================
+
+This phase introduces meaningful assignment notifications.
+
+When work is assigned to a direct Employee:
+
+create notification for that Employee's linked UserAccount where one exists.
+
+Example semantic event:
+
+Service work assigned.
+
+Deep link:
+
+/app/services/job-assignments/:assignmentId
+
+==================================================
+97. TEAM NOTIFICATIONS
+==================================================
+
+For a Service Team assignment:
+
+prefer notifying:
+
+Team Lead
+
+and/or active members according to existing notification architecture.
+
+Do not duplicate notifications unnecessarily.
+
+Document exact policy selected.
+
+==================================================
+98. PERMISSION-AWARE NOTIFICATION
+==================================================
+
+Opening notification re-checks current:
+
+Services module enablement
+
+permission
+
+ASSIGNED/TEAM/ALL scope
+
+record access.
+
+Notification itself never bypasses authorization.
+
+==================================================
+99. USERS WITHOUT LOGIN
+==================================================
+
+An Employee may be assigned work even without UserAccount.
+
+Assignment is still valid.
+
+Simply no in-app notification can be delivered to that Employee yet.
+
+==================================================
+100. SERVICES OVERVIEW
+==================================================
+
+Add REAL Phase 3 data where permission permits.
+
+Possible cards:
+
+Open Enquiries
+
+Scheduled Assignments
+
+Visits Today
+
+Upcoming Visits.
+
+Do not fabricate Inspection metrics.
+
+==================================================
+101. TODAY'S VISITS
+==================================================
+
+Use:
+
+CompanyTimeService
+
+and:
+
+scheduledVisitDate.
+
+No device-time assumptions.
+
+==================================================
+102. RECENT / UPCOMING ASSIGNMENTS
+==================================================
+
+Show useful compact section for authorized user.
+
+ASSIGNED user:
+
+their assignments.
+
+TEAM:
+
+team scope.
+
+ALL:
+
+company scope.
+
+==================================================
+103. ENQUIRY DETAIL INTEGRATION
+==================================================
+
+ASSIGNED Enquiry should display:
+
+Job Assignment
+
+Assignment No
+
+Visit Date
+
+Assigned Employee/Team summary.
+
+Click:
+
+Job Assignment Detail
+
+if user has access.
+
+==================================================
+104. ENQUIRY ACTION
+==================================================
+
+OPEN:
+
+Create Job Assignment
+
+when authorized.
+
+ASSIGNED:
+
+View Job Assignment
+
+when authorized.
+
+CANCELLED:
+
+no assignment creation.
+
+==================================================
+105. NO N+1
+==================================================
+
+Job Assignment list must efficiently resolve:
+
+Enquiry
+
+Customer/site summary
+
+Priority
+
+Employee/Team summary.
+
+Do not query each row individually.
+
+==================================================
+106. REPOSITORY
+==================================================
+
+Create:
+
+ServiceJobAssignmentRepository.
+
+Likely responsibilities:
+
+watchAssignments
+
+getAssignment
+
+createAssignment
+
+updateAssignment
+
+cancelAssignment
+
+watchUpcomingAssignments
+
+watchAssignmentSummary
+
+searchAssignableEnquiryRefs.
+
+Follow existing architecture conventions.
+
+==================================================
+107. USE CASES
+==================================================
+
+Create application use cases such as:
+
+CreateServiceJobAssignment
+
+UpdateServiceJobAssignment
+
+CancelServiceJobAssignment
+
+WatchServiceJobAssignments
+
+GetServiceJobAssignment.
+
+No business logic in widgets.
+
+==================================================
+108. WORKFORCE CONTRACT
+==================================================
+
+Employee selector uses cross-module:
+
+WorkforceDirectory.
+
+Services must not depend on HR internal DAO.
+
+==================================================
+109. PERMISSION ENFORCEMENT
+==================================================
+
+LIST:
+
+services.jobAssignments.view
++
+scope.
+
+DETAIL:
+
+same
++
+object scope.
+
+CREATE:
+
+services.jobAssignments.create.
+
+EDIT:
+
+services.jobAssignments.edit
++
+record scope.
+
+CANCEL:
+
+services.jobAssignments.cancel
++
+record scope.
+
+==================================================
+110. OBJECT SECURITY
+==================================================
+
+ASSIGNED Employee A cannot open Employee B's unrelated Assignment through URL.
+
+TEAM cannot access unrelated Service Team Assignment.
+
+ALL remains company-scoped.
+
+==================================================
+111. REFERENCE ACCESS
+==================================================
+
+A user authorized to create/edit Job Assignment receives enough restricted
+reference access for:
+
+eligible Enquiries
+
+Employees
+
+Service Teams
+
+without automatically gaining:
+
+Employees HR directory access
+
+full Customer management
+
+full Team management.
+
+==================================================
+112. DEMO DATA
+==================================================
+
+Seed realistic Assignments from Phase 2 Enquiries.
+
+Example:
+
+Assignment JA-000001
+
+Enquiry:
+AC Not Cooling
+
+Visit:
+25 Sep 2026
+
+Work items:
+
+1.
+Work:
+Inspect indoor and outdoor AC units
+
+Employee:
+existing seeded employee
+
+Team:
+HVAC Team
+
+Description:
+Check cooling pressure and electrical connection.
+
+2.
+Work:
+Verify thermostat and airflow
+
+Team:
+HVAC Team.
+
+Use actual seeded IDs.
+
+==================================================
+113. DEMO PERMISSIONS
+==================================================
+
+Seed explicit grants.
+
+Example test personas by grants only:
+
+A:
+View ALL
+Create
+Edit
+Cancel
+
+B:
+View ASSIGNED
+
+C:
+View TEAM
+
+D:
+No Job Assignment access.
+
+No role authorization.
+
+==================================================
+114. TEST — CREATE FROM ENQUIRY
+==================================================
+
+OPEN Enquiry + create permission:
+
+Create Job Assignment visible.
+
+Successful creation:
+
+Assignment created
+
+Enquiry becomes ASSIGNED.
+
+==================================================
+115. TEST — DUPLICATE ACTIVE ASSIGNMENT
+==================================================
+
+Attempt second ACTIVE Assignment for same Enquiry:
+
+reject.
+
+==================================================
+116. TEST — CANCEL
+==================================================
+
+Cancel active Assignment:
+
+Assignment becomes CANCELLED.
+
+Enquiry returns OPEN when no other active assignment exists.
+
+==================================================
+117. TEST — ASSIGNED SCOPE DIRECT EMPLOYEE
+==================================================
+
+Employee appears in a work line.
+
+User linked to that Employee with ASSIGNED view permission.
+
+Expected:
+
+Assignment visible.
+
+==================================================
+118. TEST — ASSIGNED SCOPE TEAM
+==================================================
+
+Employee belongs to assigned Service Team.
+
+ASSIGNED behavior follows documented Services resolver.
+
+Expected appropriate visibility.
+
+==================================================
+119. TEST — TEAM SCOPE
+==================================================
+
+TEAM grant cannot see unrelated team Assignment.
+
+==================================================
+120. TEST — ALL
+==================================================
+
+ALL sees company Assignments only.
+
+No cross-company.
+
+==================================================
+121. TEST — NO HR DIRECTORY LEAK
+==================================================
+
+Job Assignment creator can search assignable Employee refs.
+
+They cannot thereby open:
+
+HR → Employees
+
+unless separately permitted.
+
+==================================================
+122. TEST — TEAM MANAGEMENT LEAK
+==================================================
+
+Assignment creator can select ServiceTeam refs.
+
+They cannot manage Teams unless separately permitted.
+
+==================================================
+123. TEST — INACTIVE EMPLOYEE
+==================================================
+
+Inactive Employee:
+
+not selectable for new Assignment.
+
+Historical Assignment remains readable.
+
+==================================================
+124. TEST — INACTIVE TEAM
+==================================================
+
+Same.
+
+==================================================
+125. TEST — WRONG COMPANY EMPLOYEE
+==================================================
+
+Reject.
+
+==================================================
+126. TEST — WRONG COMPANY TEAM
+==================================================
+
+Reject.
+
+==================================================
+127. TEST — CANCELLED ENQUIRY
+==================================================
+
+Cannot create Assignment.
+
+==================================================
+128. TEST — MATERIAL RECEIVED
+==================================================
+
+Job Assignment displays the value from Enquiry correctly.
+
+It does not create material records.
+
+==================================================
+129. TEST — CUSTOMER/SITE CONTEXT
+==================================================
+
+Customer
+
+Mobile
+
+Tenant
+
+Building
+
+Unit
+
+come from the selected Enquiry/Site snapshot.
+
+No manual duplicate entry.
+
+==================================================
+130. TEST — MULTIPLE WORK ITEMS
+==================================================
+
+1..N rows work.
+
+No fixed maximum of 5 simply because old screen displays five rows.
+
+==================================================
+131. TEST — EMPLOYEE + TEAM
+==================================================
+
+Support Employee only.
+
+Support Team only.
+
+Support both according to validation policy.
+
+==================================================
+132. TEST — IDEMPOTENCY
+==================================================
+
+Repeated requestId:
+
+no duplicate Assignment
+
+no duplicate work lines
+
+no duplicate Enquiry transition.
+
+==================================================
+133. TEST — ATOMICITY
+==================================================
+
+Failure during:
+
+line insert
+
+activity
+
+outbox
+
+sequence
+
+must rollback transaction.
+
+==================================================
+134. TEST — LIVE PERMISSION CHANGE
+==================================================
+
+Remove Job Assignment View while user is inside detail:
+
+navigation updates
+
+route becomes unauthorized
+
+safe landing.
+
+No relogin.
+
+==================================================
+135. RESPONSIVE UI
+==================================================
+
+Use ONE centered global page max width.
+
+Do not create a different list/form width.
+
+All screens:
+
+equal left/right workspace whitespace on desktop.
+
+==================================================
+136. DESKTOP
+==================================================
+
+Test:
+
+1280
+
+1440
+
+1600
+
+1920.
+
+Job Assignment List and Form must use identical global page bounds.
+
+==================================================
+137. MOBILE
+==================================================
+
+390px.
+
+Work items become cards.
+
+No giant horizontal editable table.
+
+Employee/Team selectors usable.
+
+==================================================
+138. RTL
+==================================================
+
+English + Arabic.
+
+Audit:
+
+Job Assignment
+
+Visit Date
+
+Enquiry context
+
+Work
+
+Technician
+
+Service Team
+
+Status
+
+Description For Work
+
+Add Work Item
+
+Cancel Assignment.
+
+==================================================
+139. NO LEGACY UI COPY
+==================================================
+
+Do not implement:
+
+five permanent blank rows
+
+tiny '+' buttons
+
+raw checkbox for Team
+
+editable Company field
+
+editable Customer duplicate fields
+
+editable Insert/Update By
+
+hard Delete.
+
+Preserve the BUSINESS behavior while modernizing the interaction.
+
+==================================================
+140. DOCUMENTATION
+==================================================
+
+Create:
+
+docs/services/phase_3_job_assignment.md
+
+Document:
+
+client reference mapping
+
+domain
+
+header/detail relationship
+
+Enquiry transition
+
+Employee/Team assignment
+
+scope behavior
+
+Visit Date
+
+permissions
+
+routes
+
+repository
+
+outbox
+
+notifications
+
+known TBDs.
+
+==================================================
+141. PERMISSION COVERAGE
 ==================================================
 
 Update:
 
 docs/architecture/permission_coverage.md
 
-For each Enquiry permission document:
+For every new permission include:
 
 Nav
 
@@ -2577,182 +2749,48 @@ Mutation
 Scope.
 
 ==================================================
-148. SERVICES PHASE DOCUMENTATION
+142. TRACEABILITY OPEN QUESTION
 ==================================================
 
-Create:
+The client screenshot visibly includes:
 
-docs/services/phase_2_service_enquiry.md
+Status
+
+per Job Assignment work row
+
+but does not expose the dropdown values.
 
 Document:
 
-domain model
+TBD — exact Job Assignment work-line status values require confirmation.
 
-state machine
-
-sequence
-
-Customer/Site references
-
-historical snapshot
-
-permissions
-
-routes
-
-repository
-
-use cases
-
-outbox
-
-activity
-
-overview integration
-
-Customer/Site detail integration
-
-backend-ready contract
-
-deferred workflow.
+Do NOT guess a large status workflow.
 
 ==================================================
-149. DOCUMENT STATE MACHINE
+143. JOB ORDER / QUOTATION
 ==================================================
 
-Phase 2:
+DO NOT introduce:
 
-CREATE
-  ↓
-OPEN
-  ├── EDIT → OPEN
-  └── CANCEL → CANCELLED
+Job Order No
 
-No other transitions.
+Quotation No
 
-==================================================
-150. DO NOT CREATE UNUSED PERMISSIONS
-==================================================
+into Job Assignment Phase 3.
 
-Every newly registered permission must have actual runtime consumers.
+Those appear in later client workflows, not this Job Assignment screen.
 
-If not:
-
-do not add it.
+Their ownership remains unresolved.
 
 ==================================================
-151. NO ROLE LANGUAGE
-==================================================
-
-Do not label screens:
-
-Coordinator Enquiries
-
-Manager Enquiries.
-
-Use:
-
-Enquiries.
-
-Different employees see functionality according to permissions.
-
-==================================================
-152. SERVICES OVERVIEW ACCESS
-==================================================
-
-A user with ONLY Enquiry View should still get a useful Services experience:
-
-Services
-  → Overview with permitted Enquiry data
-  → Enquiries.
-
-They should NOT see:
-
-Customers
-
-Sites
-
-Teams
-
-Settings
-
-unless separately granted.
-
-==================================================
-153. CREATE-ONLY ACCESS EDGE CASE
-==================================================
-
-If a user receives Create but not View:
-
-follow the catalog/dependency policy deliberately.
-
-Recommended:
-
-services.enquiries.create
-
-should imply the minimal usable access necessary to create an Enquiry,
-but NOT necessarily company-wide Enquiry list access.
-
-If the current permission dependency system requires View for usable Create,
-normalize it centrally and document the behavior.
-
-Do NOT accidentally create an unusable permission.
-
-==================================================
-154. EDIT/CANCEL DEPENDENCY
-==================================================
-
-Edit/Cancel require enough record visibility to target an Enquiry.
-
-Normalize dependencies through existing:
-
-permissionViewDependencies
-
-or equivalent.
-
-Do not duplicate dependency logic in widgets.
-
-==================================================
-155. READ-ONLY EXPERIENCE
-==================================================
-
-View-only Enquiry detail should look intentionally read-only.
-
-Do not render disabled Edit/Cancel buttons.
-
-Hide unauthorized mutation controls.
-
-==================================================
-156. NO DECORATIVE FUTURE PANELS
-==================================================
-
-Do not show:
-
-Assignment
-"No assignment yet"
-
-Inspection
-"Not started"
-
-Materials
-"No requests"
-
-Execution
-"Not started"
-
-until those features exist.
-
-Keep Phase 2 UI clean.
-
-==================================================
-157. QUALITY GATE
+144. QUALITY GATE
 ==================================================
 
 Run:
 
-localization merge/generation
+localization generation/merge
 
-build_runner if required
+build_runner where required
 
 dart format .
 
@@ -2763,246 +2801,250 @@ flutter test
 flutter build web --release --dart-define=DEMO_AUTH=true
 
 ==================================================
-158. COMPLETION REPORT
+145. COMPLETION REPORT
 ==================================================
 
 Report:
 
-1. Enquiry module structure
+1. Job Assignment client-reference mapping
 
-2. ServiceEnquiry domain
+2. ServiceJobAssignment model
 
-3. ServiceEnquiryDraft
+3. ServiceJobAssignmentLine model
 
-4. status state machine
+4. Assignment number sequence
 
-5. Enquiry sequence
+5. Enquiry relationship
 
-6. display-number implementation
+6. Enquiry OPEN → ASSIGNED transition
 
-7. Customer relationship
+7. cancellation/reopen behavior
 
-8. Site relationship
+8. Assignment Date
 
-9. historical party snapshot
+9. Visit Date
 
-10. master references
+10. Customer mapping
 
-11. ComplaintType filtering
+11. Mobile mapping
 
-12. Enquiry permissions
+12. Complaint mapping
 
-13. permission dependencies
+13. Priority mapping
 
-14. Access UI integration
+14. Tenant mapping
 
-15. navigation integration
+15. Building mapping
 
-16. routes
+16. Unit mapping
 
-17. Enquiry list
+17. Material Received mapping
 
-18. filters/search
+18. Work implementation
 
-19. create form
+19. Technician/Employee implementation
 
-20. restricted Customer reference access
+20. Service Team modernization
 
-21. restricted Site reference access
+21. Employee + Team behavior
 
-22. Customer-not-found flow
+22. line status implementation/TBD
 
-23. Site-not-found flow
+23. Description For Work implementation
 
-24. detail page
+24. permissions
 
-25. edit flow
+25. ASSIGNED scope
 
-26. cancel flow
+26. TEAM scope
 
-27. repository
+27. ALL scope
 
-28. use cases
+28. navigation
 
-29. Drift table
+29. routes
 
-30. schema migration/version
+30. Job Assignment list
 
-31. sequence atomicity
+31. create form
 
-32. activity events
+32. detail page
 
-33. outbox operations
+33. edit
 
-34. idempotency
+34. cancel
 
-35. Services Overview integration
+35. Enquiry detail integration
 
-36. Customer Detail integration
+36. Services Overview integration
 
-37. Site Detail integration
+37. WorkforceDirectory integration
 
-38. company isolation
+38. ServiceTeam integration
 
-39. permission-change behavior
+39. notifications
 
-40. Desktop UI
+40. database migration
 
-41. Mobile UI
+41. activity events
 
-42. English
+42. outbox
 
-43. Arabic/RTL
+43. idempotency
 
-44. tests added
+44. company isolation
 
-45. permission coverage documentation
+45. responsive layout
 
-46. Phase 2 documentation
+46. centered global width compliance
 
-47. flutter analyze result
+47. Arabic/RTL
 
-48. flutter test result/count
+48. permission coverage
 
-49. Web release build result
+49. traceability update
 
-50. genuine remaining limitations.
+50. tests
+
+51. flutter analyze
+
+52. flutter test count/result
+
+53. Web release build
+
+54. remaining genuine TBDs.
 
 ==================================================
-159. HARD STOP CONDITION
+146. HARD STOP
 ==================================================
 
-SERVICES PHASE 2 IS COMPLETE ONLY WHEN:
+PHASE 3 IS COMPLETE ONLY WHEN:
 
-✓ Service Enquiry is a real transaction
+✓ client Job Assignment screen is fully traceable
 
-✓ Enquiries navigation exists
+✓ every visible client business field has a modern equivalent
 
-✓ /app/services/enquiries works
+✓ Job Assignment exists as its own transaction
 
-✓ Enquiry list works
+✓ Job Assignment is NOT called Job Order
 
-✓ Enquiry detail works
+✓ Company is system-derived
 
-✓ New Enquiry works
+✓ Job Assignment No is sequence-generated
 
-✓ Edit Enquiry works
+✓ assignment date is represented
 
-✓ Cancel Enquiry works
+✓ Enquiry is selectable from eligible OPEN Enquiries
 
-✓ Enquiries are never hard-deleted
+✓ Customer is derived from Enquiry
 
-✓ OPEN/CANCELLED state machine is enforced
+✓ Mobile is derived from Enquiry
 
-✓ unique company-scoped Enquiry number exists
+✓ Complaint Type is derived from Enquiry
 
-✓ shared sequence infrastructure is reused
+✓ Priority is derived from Enquiry
 
-✓ Customer is selected from Phase 1 directory
+✓ Tenant is represented
 
-✓ Site is selected from selected Customer
+✓ Building is represented
 
-✓ cross-Customer Site cannot be submitted
+✓ Unit is represented
 
-✓ Customer/Site historical context is preserved appropriately
+✓ Material Received is represented
 
-✓ Service Type is integrated
+✓ Visit Date is implemented
 
-✓ Complaint Type is integrated
+✓ Insert By is audit-derived
 
-✓ Complaint Type compatibility is enforced
+✓ Update By is audit-derived
 
-✓ Priority is integrated
+✓ multiple Work rows are supported
 
-✓ Ticket Type is integrated
+✓ Work is preserved separately
 
-✓ inactive masters are excluded from new selection
+✓ Technician uses Employee
 
-✓ historical inactive references remain readable
+✓ no Technician table exists
 
-✓ services.enquiries.view works
+✓ Service Team is explicit
 
-✓ services.enquiries.create works
+✓ old Team checkbox is not copied literally
 
-✓ services.enquiries.edit works
+✓ Employee-only assignment works
 
-✓ services.enquiries.cancel works
+✓ Team-only assignment works
 
-✓ Users & Access automatically displays Enquiry permissions
+✓ Employee + Team assignment works according to validation policy
 
-✓ View-only user gets intentional read-only UI
+✓ Status exists per work line
 
-✓ user without Customer View can still use restricted Customer reference search
-  when authorized to create/edit Enquiry
+✓ unknown status values were not fabricated into a complex workflow
 
-✓ user without Site View can still use restricted Site reference search
-  when authorized to create/edit Enquiry
+✓ Description For Work exists separately
 
-✓ restricted reference access does NOT expose full Customer/Site directories
+✓ Add Work Item works
 
-✓ direct URLs cannot bypass permission
+✓ Remove Work Item works
 
-✓ use cases enforce permission
+✓ exactly 5 rows are NOT hardcoded
 
-✓ company isolation works
+✓ at least one valid work item is required
 
-✓ Services Overview shows REAL Enquiry metrics
+✓ one ACTIVE Assignment per Enquiry is enforced in V1
 
-✓ Overview hides Enquiry metrics without Enquiry permission
+✓ creating Assignment transitions Enquiry to ASSIGNED
 
-✓ Customer Detail integrates Recent Enquiries when permitted
+✓ cancelling Assignment is historical, not hard delete
 
-✓ Site Detail integrates Recent Enquiries when permitted
+✓ cancelled Assignment can make Enquiry assignable again
 
-✓ list query avoids N+1 behavior
+✓ Job Assignment View supports ASSIGNED / TEAM / ALL
 
-✓ search works
+✓ restricted Enquiry reference lookup works
 
-✓ filters work
+✓ restricted Employee reference lookup works
 
-✓ list state restores appropriately
+✓ restricted Team reference lookup works
 
-✓ activity timeline works
+✓ reference access does not grant full directory management
 
-✓ create/update/cancel events are structured
+✓ direct URLs are protected
 
-✓ outbox operations exist
+✓ object scope is enforced
 
-✓ repeated requestId does not duplicate transaction
+✓ direct use cases enforce permission
 
-✓ local transaction writes are atomic
+✓ assignment notifications work
 
-✓ schema migration preserves existing HR/access/Services Phase 1 data
+✓ notification deep links re-check permission
 
-✓ live permission changes update UI/routes
+✓ Services Overview uses real assignment data
 
-✓ no business role checks were introduced
+✓ Enquiry Detail links to Assignment
 
-✓ no fake assignment UI exists
+✓ no Inspection functionality was implemented
 
-✓ no Job was created
+✓ no Material Request functionality was implemented
 
-✓ no Inspection was created
+✓ no Work Execution functionality was implemented
 
-✓ no Material workflow was created
+✓ no Quotation ownership was guessed
 
-✓ no Work Execution was created
+✓ no Job Order ownership was guessed
 
-✓ Quotation ownership was not guessed
+✓ one global centered ERP page width is preserved
 
-✓ Job Order ownership was not guessed
+✓ desktop works
 
-✓ Desktop works
-
-✓ Mobile works
-
-✓ English works
+✓ mobile works
 
 ✓ Arabic/RTL works
 
-✓ permission coverage updated
+✓ migration preserves all existing data
 
-✓ Services Phase 2 documentation created
+✓ permission coverage is updated
+
+✓ client-reference traceability is updated
 
 ✓ flutter analyze passes
 
@@ -3012,10 +3054,52 @@ SERVICES PHASE 2 IS COMPLETE ONLY WHEN:
 
 THEN STOP.
 
-DO NOT START PHASE 3 AUTOMATICALLY.
+DO NOT START PHASE 4 AUTOMATICALLY.
 
-NEXT PHASE AFTER APPROVAL:
+NEXT PHASE:
 
-SERVICES PHASE 3 —
-JOB ASSIGNMENT & SCHEDULING.
+SERVICES PHASE 4 — INSPECTION
+
+The Phase 4 requirements will be based directly on the supplied client
+Inspection screens, including:
+
+Inspection No
+
+Job Assignment No
+
+Enquiry No
+
+Customer/Mobile
+
+Complaint/Priority
+
+Tenant/Building/Unit
+
+Material Received
+
+Visit Date
+
+Visit Time
+
+Technician Name
+
+Root Cause
+
+Charged
+
+Status
+
+Checklist rows
+
+Work Type
+
+Description For Work
+
+Before Work Photos
+
+Inspected Points
+
+Material Required
+
+and the remaining visible client Inspection fields.
 ```

@@ -462,7 +462,6 @@ class _HolidayFormPageState extends State<HolidayFormPage> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     return AppPage(
-      maxWidth: 880,
       header: AppPageHeader(title: _editing ? l.editHoliday : l.addHoliday),
       child: _loading
           ? const AppLoadingState()
@@ -870,7 +869,6 @@ class _HolidayImportPageState extends State<HolidayImportPage> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     return AppPage(
-      maxWidth: 880,
       header: AppPageHeader(
         title: l.importHolidays,
         subtitle: l.holidayImportHint,

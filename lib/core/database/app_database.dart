@@ -73,6 +73,10 @@ class SyncOutbox extends Table {
     ComplaintTypes,
     ServicePriorities,
     ServiceTicketTypes,
+    ServiceEnquiries,
+    ServiceEnquiryDetails,
+    ServiceJobAssignments,
+    ServiceJobAssignmentLines,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -88,7 +92,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 15;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -124,7 +128,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 11 || to != 12) {
+      if (from < 1 || from > 14 || to != 15) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -214,9 +218,50 @@ class AppDatabase extends _$AppDatabase {
         await _ensureTable(m, servicePriorities);
         await _ensureTable(m, serviceTicketTypes);
       }
+      if (from < 13) {
+        // Services Phase 2: the Service Enquiry transaction.
+        await _ensureTable(m, serviceEnquiries);
+      }
+      if (from < 14) {
+        // Services Phase 2.1: enquiry detail lines, photos and Material Received.
+        await _ensureColumn(
+          m,
+          serviceEnquiries,
+          serviceEnquiries.materialReceived,
+        );
+        // Repair rows that existed before the column was added (an added column
+        // leaves existing rows NULL rather than applying the Dart default).
+        await customStatement(
+          "UPDATE service_enquiries SET material_received='no' WHERE material_received IS NULL",
+        );
+        await _ensureTable(m, serviceEnquiryDetails);
+        // Preserve existing Phase 2 Enquiries: copy each header description into
+        // a single detail line so no historical complaint text is lost.
+        await customStatement(
+          "INSERT INTO service_enquiry_details "
+          "(id, company_id, enquiry_id, line_number, description, status, "
+          "created_at, updated_at, created_by_user_id, updated_by_user_id, sync_status) "
+          "SELECT e.id || '-d1', e.company_id, e.id, 1, e.description, 'open', "
+          "e.created_at, e.updated_at, e.created_by_user_id, e.updated_by_user_id, e.sync_status "
+          "FROM service_enquiries e "
+          "WHERE trim(e.description) <> '' "
+          "AND NOT EXISTS (SELECT 1 FROM service_enquiry_details d WHERE d.enquiry_id = e.id)",
+        );
+      }
+      if (from < 15) {
+        // Services Phase 3: Job Assignment & Scheduling.
+        await _ensureTable(m, serviceJobAssignments);
+        await _ensureTable(m, serviceJobAssignmentLines);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+      // Idempotent repair: legacy service_enquiries rows may predate the
+      // material_received column and read back as NULL. Normalize on every open
+      // so a schema already migrated to v14 is healed too.
+      await customStatement(
+        "UPDATE service_enquiries SET material_received='no' WHERE material_received IS NULL",
+      );
       await customStatement(
         'CREATE UNIQUE INDEX IF NOT EXISTS outbox_request ON sync_outbox(request_id) WHERE request_id IS NOT NULL',
       );
@@ -354,6 +399,49 @@ class AppDatabase extends _$AppDatabase {
           'CREATE INDEX IF NOT EXISTS ${table}_company_status ON $table(company_id, status, name)',
         );
       }
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS service_enquiries_company_number ON service_enquiries(company_id, enquiry_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiries_company_status ON service_enquiries(company_id, status, created_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiries_company_created ON service_enquiries(company_id, created_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiries_company_customer ON service_enquiries(company_id, customer_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiries_company_site ON service_enquiries(company_id, site_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiry_details_company_enquiry ON service_enquiry_details(company_id, enquiry_id, line_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_enquiry_details_company ON service_enquiry_details(company_id, removed_at)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignments_company_status ON service_job_assignments(company_id, status, scheduled_visit_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignments_company_enquiry ON service_job_assignments(company_id, source_enquiry_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignments_company_visit ON service_job_assignments(company_id, scheduled_visit_date)',
+      );
+      // V1: at most one ACTIVE assignment per enquiry.
+      await customStatement(
+        "CREATE UNIQUE INDEX IF NOT EXISTS service_job_assignments_active_enquiry ON service_job_assignments(company_id, source_enquiry_id) WHERE status='active'",
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignment_lines_assignment ON service_job_assignment_lines(company_id, assignment_id, line_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignment_lines_employee ON service_job_assignment_lines(company_id, assigned_employee_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_job_assignment_lines_team ON service_job_assignment_lines(company_id, assigned_team_id)',
+      );
     },
   );
 }

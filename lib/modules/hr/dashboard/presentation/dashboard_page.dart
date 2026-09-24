@@ -305,7 +305,6 @@ class DashboardView extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () => _refresh(context),
         child: AppPage(
-          maxWidth: AppDimensions.dashboard,
           header: header,
           animateEntrance: false,
           scrollPhysics: const AlwaysScrollableScrollPhysics(),

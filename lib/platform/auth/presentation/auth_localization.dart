@@ -103,5 +103,19 @@ extension AppPermissionLocalization on AppPermission {
     AppPermission.serviceTicketTypeView => l10n.permissionServiceTicketTypeView,
     AppPermission.serviceTicketTypeManage =>
       l10n.permissionServiceTicketTypeManage,
+    AppPermission.serviceEnquiryView => l10n.permissionServiceEnquiryView,
+    AppPermission.serviceEnquiryCreate => l10n.permissionServiceEnquiryCreate,
+    AppPermission.serviceEnquiryEdit => l10n.permissionServiceEnquiryEdit,
+    AppPermission.serviceEnquiryCancel => l10n.permissionServiceEnquiryCancel,
+    AppPermission.serviceJobAssignmentViewAssigned ||
+    AppPermission.serviceJobAssignmentViewTeam ||
+    AppPermission.serviceJobAssignmentViewAll =>
+      l10n.permissionServiceJobAssignmentView,
+    AppPermission.serviceJobAssignmentCreate =>
+      l10n.permissionServiceJobAssignmentCreate,
+    AppPermission.serviceJobAssignmentEdit =>
+      l10n.permissionServiceJobAssignmentEdit,
+    AppPermission.serviceJobAssignmentCancel =>
+      l10n.permissionServiceJobAssignmentCancel,
   };
 }

@@ -49,7 +49,7 @@ class _ChangePasswordState extends State<ChangePasswordPage> {
   }
 
   Widget _layout(Widget form) => widget.embedded
-      ? AppPage(maxWidth: AppDimensions.form, child: form)
+      ? AppPage(child: form)
       : AppAuthLayout(showBrandPanel: false, child: form);
   @override
   Widget build(BuildContext context) => _layout(

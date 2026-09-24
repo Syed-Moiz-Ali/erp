@@ -138,6 +138,54 @@ class EmployeeDao {
     return rows.isEmpty ? null : map(rows.single);
   }
 
+  /// Restricted, company-scoped, active-employee search used by the cross-module
+  /// workforce contract (Services assignment pickers). It deliberately does not
+  /// apply the HR employee-view scope: assignment operators must be able to
+  /// reference assignable employees without gaining HR directory access.
+  Future<List<Employee>> searchAssignable(
+    String company, {
+    String query = '',
+    int limit = 50,
+  }) async {
+    final parts = <String>["company_id=?", "status='active'"];
+    final variables = <Variable>[Variable(company)];
+    if (query.trim().isNotEmpty) {
+      final escaped = query
+          .trim()
+          .toLowerCase()
+          .replaceAll('\\', '\\\\')
+          .replaceAll('%', '\\%')
+          .replaceAll('_', '\\_');
+      parts.add(
+        "(lower(first_name || ' ' || COALESCE(middle_name,'') || ' ' || last_name) LIKE ? ESCAPE '\\' "
+        "OR lower(employee_code) LIKE ? ESCAPE '\\')",
+      );
+      variables.addAll([Variable('%$escaped%'), Variable('%$escaped%')]);
+    }
+    final rows = await db
+        .customSelect(
+          'SELECT * FROM workforce_employees WHERE ${parts.join(' AND ')} '
+          'ORDER BY lower(first_name), lower(last_name), id LIMIT ?',
+          variables: [...variables, Variable(limit.clamp(1, 100))],
+        )
+        .get();
+    return [for (final row in rows) map(row)];
+  }
+
+  /// Restricted, company-scoped batch lookup (active or historical) for the
+  /// cross-module workforce contract.
+  Future<List<Employee>> getMany(String company, List<String> ids) async {
+    if (ids.isEmpty) return const [];
+    final placeholders = List.filled(ids.length, '?').join(',');
+    final rows = await db
+        .customSelect(
+          'SELECT * FROM workforce_employees WHERE company_id=? AND id IN ($placeholders)',
+          variables: [Variable(company), ...ids.map((id) => Variable(id))],
+        )
+        .get();
+    return [for (final row in rows) map(row)];
+  }
+
   Employee map(QueryRow r) => Employee(
     id: r.read('id'),
     companyId: r.read('company_id'),

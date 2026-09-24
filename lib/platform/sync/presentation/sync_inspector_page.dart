@@ -46,7 +46,6 @@ class _SyncInspectorPageState extends State<SyncInspectorPage> {
     final data = _data;
     final sync = _read<AppSyncStatusCubit>(context);
     return AppPage(
-      maxWidth: AppDimensions.details,
       header: AppPageHeader(
         title: l.syncStatusTitle,
         actions: [

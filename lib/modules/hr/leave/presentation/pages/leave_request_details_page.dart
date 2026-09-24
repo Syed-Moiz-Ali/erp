@@ -52,7 +52,6 @@ class LeaveRequestDetailsPage extends StatelessWidget {
                   perms.can(AppPermission.leaveApproveAll));
           final canCancel = isSelf && request.isPending;
           return AppPage(
-            maxWidth: 880,
             header: AppPageHeader(
               title: request.typeSnapshot.name,
               subtitle: row.employeeName.isEmpty ? null : row.employeeName,

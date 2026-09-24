@@ -13,6 +13,24 @@ abstract interface class EmployeeRepository {
   });
   Stream<Result<Employee?>> watchEmployee(AuthContext context, String id);
   Future<Result<Employee?>> getEmployeeById(AuthContext context, String id);
+
+  /// Restricted, company-scoped active-employee search for the cross-module
+  /// workforce contract. Does not require HR employee-view permission.
+  Future<Result<List<Employee>>> searchAssignableCompanyEmployees(
+    AuthContext context, {
+    String query = '',
+    int limit = 50,
+  });
+
+  /// Restricted, company-scoped employee lookup (active or historical) for the
+  /// cross-module workforce contract. Does not require HR employee-view permission.
+  Future<Result<Employee?>> getCompanyEmployee(AuthContext context, String id);
+
+  /// Restricted, company-scoped batch employee lookup (active or historical).
+  Future<Result<List<Employee>>> getCompanyEmployees(
+    AuthContext context,
+    Iterable<String> ids,
+  );
   Future<Result<Employee>> saveEmployee(
     AuthContext context,
     EmployeeDraft draft, {

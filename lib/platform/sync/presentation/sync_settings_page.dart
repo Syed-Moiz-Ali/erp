@@ -26,7 +26,6 @@ class SyncSettingsPage extends StatelessWidget {
           ? l.syncChangesWaiting
           : l.syncAllChangesSynced;
       return AppPage(
-        maxWidth: AppDimensions.details,
         header: AppPageHeader(title: l.syncDataAndSync),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

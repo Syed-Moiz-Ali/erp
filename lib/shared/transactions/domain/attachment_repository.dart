@@ -18,7 +18,20 @@ abstract interface class AttachmentRepository {
     required String ownerId,
   });
 
-  Future<Result<AttachmentRef>> addLocalAttachment(AttachmentDraft draft);
+  /// Batch lookup for owners of the same type (avoids N+1 when loading an
+  /// aggregate whose child rows each own attachments).
+  Future<Result<List<AttachmentRef>>> getForOwners({
+    required String companyId,
+    required String ownerType,
+    required List<String> ownerIds,
+  });
+
+  /// [id] lets a caller reserve the attachment identity up-front so a
+  /// client-generated draft can be reconciled by id at save time.
+  Future<Result<AttachmentRef>> addLocalAttachment(
+    AttachmentDraft draft, {
+    String? id,
+  });
 
   Future<Result<void>> removeAttachment({
     required String companyId,

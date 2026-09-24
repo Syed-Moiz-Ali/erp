@@ -5551,4 +5551,850 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get servicesDenied => 'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get permissionServiceEnquiryView => 'عرض الاستفسارات';
+
+  @override
+  String get permissionServiceEnquiryCreate => 'إنشاء استفسار';
+
+  @override
+  String get permissionServiceEnquiryEdit => 'تعديل استفسار';
+
+  @override
+  String get permissionServiceEnquiryCancel => 'إلغاء استفسار';
+
+  @override
+  String get servicesPermSubEnquiries => 'الاستفسارات';
+
+  @override
+  String get servicesPermEnquiriesView => 'عرض الاستفسارات';
+
+  @override
+  String get servicesPermEnquiriesViewDesc =>
+      'عرض قائمة استفسارات الخدمة وبياناتها.';
+
+  @override
+  String get servicesPermEnquiriesCreate => 'إنشاء استفسار';
+
+  @override
+  String get servicesPermEnquiriesCreateDesc =>
+      'تسجيل استفسار خدمة جديد مع البحث المقيّد عن العميل والموقع.';
+
+  @override
+  String get servicesPermEnquiriesEdit => 'تعديل استفسار';
+
+  @override
+  String get servicesPermEnquiriesEditDesc => 'تعديل استفسار خدمة مفتوح.';
+
+  @override
+  String get servicesPermEnquiriesCancel => 'إلغاء استفسار';
+
+  @override
+  String get servicesPermEnquiriesCancelDesc =>
+      'إلغاء استفسار خدمة مفتوح (يُحفظ تاريخيًا).';
+
+  @override
+  String get servicesNavEnquiries => 'الاستفسارات';
+
+  @override
+  String get servicesEnquiriesTitle => 'استفسارات الخدمة';
+
+  @override
+  String servicesEnquiryCount(String filtered, String total) {
+    return '$filtered من $total استفسار';
+  }
+
+  @override
+  String get servicesEnquirySearch =>
+      'ابحث برقم الاستفسار أو العميل أو الجوال أو الموقع أو المبنى أو الوحدة';
+
+  @override
+  String get servicesEnquiryAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesEnquiryEmpty => 'لا توجد استفسارات خدمة بعد.';
+
+  @override
+  String get servicesEnquiryEmptyMessage =>
+      'سجّل أول استفسار خدمة لبدء قائمة العمل.';
+
+  @override
+  String get servicesEnquiryNoResults => 'لا توجد استفسارات مطابقة للمرشحات.';
+
+  @override
+  String get servicesEnquiryAdd => 'استفسار جديد';
+
+  @override
+  String get servicesEnquiryColumnEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesEnquiryColumnCustomer => 'العميل';
+
+  @override
+  String get servicesEnquiryColumnSite => 'الموقع';
+
+  @override
+  String get servicesEnquiryColumnService => 'الخدمة / الشكوى';
+
+  @override
+  String get servicesEnquiryColumnPriority => 'الأولوية';
+
+  @override
+  String get servicesEnquiryColumnTicket => 'نوع التذكرة';
+
+  @override
+  String get servicesEnquiryColumnStatus => 'الحالة';
+
+  @override
+  String get servicesEnquiryColumnCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesEnquiryStatusOpen => 'مفتوح';
+
+  @override
+  String get servicesEnquiryStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesEnquiryFilterTitle => 'المرشحات';
+
+  @override
+  String get servicesEnquiryFilterStatus => 'الحالة';
+
+  @override
+  String get servicesEnquiryFilterServiceType => 'نوع الخدمة';
+
+  @override
+  String get servicesEnquiryFilterComplaintType => 'نوع الشكوى';
+
+  @override
+  String get servicesEnquiryFilterPriority => 'الأولوية';
+
+  @override
+  String get servicesEnquiryFilterTicketType => 'نوع التذكرة';
+
+  @override
+  String get servicesEnquiryFilterCreatedFrom => 'من تاريخ';
+
+  @override
+  String get servicesEnquiryFilterCreatedTo => 'إلى تاريخ';
+
+  @override
+  String get servicesEnquiryDetailCustomerSection => 'العميل والموقع';
+
+  @override
+  String get servicesEnquiryDetailServiceSection => 'تفاصيل الخدمة';
+
+  @override
+  String get servicesEnquiryDetailComplaintSection => 'الشكوى';
+
+  @override
+  String get servicesEnquiryDetailRecord => 'السجل';
+
+  @override
+  String get servicesEnquiryDetailActivity => 'النشاط';
+
+  @override
+  String get servicesEnquiryCustomerCode => 'رمز العميل';
+
+  @override
+  String get servicesEnquiryCustomerName => 'العميل';
+
+  @override
+  String get servicesEnquiryCustomerMobile => 'جوال العميل';
+
+  @override
+  String get servicesEnquirySite => 'موقع الخدمة';
+
+  @override
+  String get servicesEnquiryTenant => 'المستأجر';
+
+  @override
+  String get servicesEnquiryBuilding => 'المبنى';
+
+  @override
+  String get servicesEnquiryUnit => 'الوحدة';
+
+  @override
+  String get servicesEnquiryAddress => 'العنوان';
+
+  @override
+  String get servicesEnquiryContact => 'جهة الاتصال';
+
+  @override
+  String get servicesEnquiryServiceType => 'نوع الخدمة';
+
+  @override
+  String get servicesEnquiryComplaintType => 'نوع الشكوى';
+
+  @override
+  String get servicesEnquiryPriority => 'الأولوية';
+
+  @override
+  String get servicesEnquiryTicketType => 'نوع التذكرة';
+
+  @override
+  String get servicesEnquiryDescription => 'تفاصيل الشكوى';
+
+  @override
+  String get servicesEnquiryCreatedBy => 'أنشأه';
+
+  @override
+  String get servicesEnquiryCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesEnquiryUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesEnquiryUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesEnquiryVersion => 'الإصدار';
+
+  @override
+  String get servicesEnquiryCancelledAt => 'تاريخ الإلغاء';
+
+  @override
+  String get servicesEnquiryCancelReason => 'سبب الإلغاء';
+
+  @override
+  String get servicesEnquiryNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesEnquiryEdit => 'تعديل الاستفسار';
+
+  @override
+  String get servicesEnquiryCancel => 'إلغاء الاستفسار';
+
+  @override
+  String get servicesEnquiryCreate => 'إنشاء استفسار';
+
+  @override
+  String get servicesEnquiryCancelConfirmTitle => 'إلغاء الاستفسار؟';
+
+  @override
+  String get servicesEnquiryCancelConfirmMessage =>
+      'يبقى الاستفسار الملغى متاحًا تاريخيًا ولا يمكن تعديله بعد ذلك.';
+
+  @override
+  String get servicesEnquiryCancelReasonHint => 'سبب الإلغاء (اختياري)';
+
+  @override
+  String get servicesEnquiryCreated => 'تم إنشاء الاستفسار.';
+
+  @override
+  String get servicesEnquiryUpdated => 'تم تحديث الاستفسار.';
+
+  @override
+  String get servicesEnquiryCancelled => 'تم إلغاء الاستفسار.';
+
+  @override
+  String get servicesEnquiryFormNew => 'استفسار جديد';
+
+  @override
+  String get servicesEnquiryFormEdit => 'تعديل الاستفسار';
+
+  @override
+  String get servicesEnquirySectionCustomerLocation => 'العميل والموقع';
+
+  @override
+  String get servicesEnquirySectionService => 'تفاصيل الخدمة';
+
+  @override
+  String get servicesEnquirySectionComplaint => 'الشكوى';
+
+  @override
+  String get servicesEnquirySectionSummary => 'الملخص';
+
+  @override
+  String get servicesEnquirySelectCustomer => 'اختر عميلًا';
+
+  @override
+  String get servicesEnquirySelectSite => 'اختر موقع خدمة';
+
+  @override
+  String get servicesEnquiryChangeCustomer => 'تغيير العميل';
+
+  @override
+  String get servicesEnquiryChangeSite => 'تغيير الموقع';
+
+  @override
+  String get servicesEnquiryCreateCustomer => 'إنشاء عميل';
+
+  @override
+  String get servicesEnquiryCreateSite => 'إضافة موقع';
+
+  @override
+  String get servicesEnquiryNoSitesForCustomer =>
+      'لا توجد مواقع نشطة لهذا العميل.';
+
+  @override
+  String get servicesEnquiryNoComplaintTypes =>
+      'لا توجد أنواع شكاوى متاحة لنوع الخدمة هذا.';
+
+  @override
+  String get servicesEnquiryDescriptionHint => 'صف الشكوى أو طلب الخدمة';
+
+  @override
+  String get servicesEnquiryCustomerRequired => 'اختر عميلًا.';
+
+  @override
+  String get servicesEnquirySiteRequired => 'اختر موقع خدمة.';
+
+  @override
+  String get servicesEnquiryServiceTypeRequired => 'اختر نوع الخدمة.';
+
+  @override
+  String get servicesEnquiryComplaintTypeRequired => 'اختر نوع الشكوى.';
+
+  @override
+  String get servicesEnquiryPriorityRequired => 'اختر الأولوية.';
+
+  @override
+  String get servicesEnquiryTicketTypeRequired => 'اختر نوع التذكرة.';
+
+  @override
+  String get servicesEnquiryDescriptionRequired => 'أدخل تفاصيل الشكوى.';
+
+  @override
+  String get servicesEnquiryDescriptionTooLong => 'تفاصيل الشكوى طويلة جدًا.';
+
+  @override
+  String get servicesEnquiryDenied => 'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get servicesEnquiryNotFound => 'الاستفسار غير موجود.';
+
+  @override
+  String get servicesEnquiryNotEditable =>
+      'يمكن تعديل الاستفسارات المفتوحة فقط.';
+
+  @override
+  String get servicesEnquiryAlreadyCancelled => 'هذا الاستفسار ملغى بالفعل.';
+
+  @override
+  String get servicesEnquiryCustomerNotFound => 'العميل غير موجود.';
+
+  @override
+  String get servicesEnquiryCustomerInactive => 'العميل المحدد غير نشط.';
+
+  @override
+  String get servicesEnquirySiteNotFound => 'موقع الخدمة غير موجود.';
+
+  @override
+  String get servicesEnquirySiteInactive => 'موقع الخدمة المحدد غير نشط.';
+
+  @override
+  String get servicesEnquirySiteCustomerMismatch =>
+      'الموقع المحدد لا يتبع العميل المحدد.';
+
+  @override
+  String get servicesEnquiryServiceTypeInvalid => 'نوع الخدمة المحدد غير متاح.';
+
+  @override
+  String get servicesEnquiryComplaintTypeInvalid =>
+      'نوع الشكوى المحدد غير متاح.';
+
+  @override
+  String get servicesEnquiryComplaintTypeMismatch =>
+      'نوع الشكوى لا يطابق نوع الخدمة المحدد.';
+
+  @override
+  String get servicesEnquiryPriorityInvalid => 'الأولوية المحددة غير متاحة.';
+
+  @override
+  String get servicesEnquiryTicketTypeInvalid => 'نوع التذكرة المحدد غير متاح.';
+
+  @override
+  String get servicesEnquirySequenceFailed => 'تعذّر تخصيص رقم للاستفسار.';
+
+  @override
+  String get servicesEnquiryStorageError =>
+      'تعذّر حفظ الاستفسار. حاول مرة أخرى.';
+
+  @override
+  String get servicesActivityCancelled => 'إلغاء';
+
+  @override
+  String get servicesOverviewEnquiriesOpen => 'الاستفسارات المفتوحة';
+
+  @override
+  String get servicesOverviewEnquiriesToday => 'استفسارات اليوم';
+
+  @override
+  String get servicesOverviewEnquiriesHigh => 'عالية / عاجلة مفتوحة';
+
+  @override
+  String get servicesOverviewRecentEnquiries => 'أحدث الاستفسارات';
+
+  @override
+  String get servicesOverviewNewEnquiry => 'استفسار جديد';
+
+  @override
+  String get servicesOverviewNoEnquiries => 'لا توجد استفسارات بعد.';
+
+  @override
+  String get servicesEnquiryRecentForCustomer => 'أحدث الاستفسارات';
+
+  @override
+  String get servicesEnquiryRecentForSite => 'أحدث الاستفسارات';
+
+  @override
+  String get servicesEnquiryNoneForCustomer =>
+      'لا توجد استفسارات لهذا العميل بعد.';
+
+  @override
+  String get servicesEnquiryNoneForSite => 'لا توجد استفسارات لهذا الموقع بعد.';
+
+  @override
+  String get servicesEnquiryDetailsSection => 'تفاصيل الاستفسار';
+
+  @override
+  String get servicesEnquiryAddDetail => 'إضافة مشكلة أخرى';
+
+  @override
+  String get servicesEnquiryRemoveDetail => 'إزالة المشكلة';
+
+  @override
+  String servicesEnquiryDetailLine(String index) {
+    return 'المشكلة $index';
+  }
+
+  @override
+  String get servicesEnquiryDetailDescription => 'الوصف';
+
+  @override
+  String get servicesEnquiryDetailStatus => 'الحالة';
+
+  @override
+  String get servicesEnquiryDetailStatusOpen => 'مفتوح';
+
+  @override
+  String get servicesEnquiryDetailStatusClosed => 'مغلق';
+
+  @override
+  String get servicesEnquiryPhotos => 'الصور';
+
+  @override
+  String get servicesEnquiryAddPhotos => 'إضافة صور';
+
+  @override
+  String get servicesEnquiryMaterialReceived => 'استلام المواد';
+
+  @override
+  String get servicesEnquiryMaterialReceivedYes => 'نعم';
+
+  @override
+  String get servicesEnquiryMaterialReceivedNo => 'لا';
+
+  @override
+  String get servicesEnquiryNoDetails => 'لا توجد تفاصيل مسجلة.';
+
+  @override
+  String get servicesEnquiryDetailsRequired =>
+      'أضف تفصيلًا واحدًا على الأقل للاستفسار.';
+
+  @override
+  String get servicesEnquiryDetailDescriptionRequired =>
+      'أدخل وصفًا لكل تفصيل في الاستفسار.';
+
+  @override
+  String get servicesEnquiryAttachmentUnsupportedType => 'نوع الملف غير مدعوم.';
+
+  @override
+  String get servicesEnquiryAttachmentTooLarge => 'الملف كبير جدًا.';
+
+  @override
+  String get servicesEnquiryAttachmentLimitReached =>
+      'تم الوصول إلى الحد الأقصى للمرفقات.';
+
+  @override
+  String get servicesEnquiryAttachmentFailure => 'تعذّر إرفاق الملف.';
+
+  @override
+  String get attachmentUploaded => 'تم الرفع';
+
+  @override
+  String get attachmentLocalOnly => 'محلي';
+
+  @override
+  String get attachmentPendingUpload => 'قيد الرفع';
+
+  @override
+  String get attachmentFailed => 'فشل';
+
+  @override
+  String get attachmentPendingDelete => 'قيد الحذف';
+
+  @override
+  String get attachmentDeleted => 'محذوف';
+
+  @override
+  String get servicesNavJobAssignments => 'تكليفات العمل';
+
+  @override
+  String get servicesPermSubJobAssignments => 'تكليفات العمل';
+
+  @override
+  String get servicesPermJobAssignmentsView => 'عرض تكليفات العمل';
+
+  @override
+  String get servicesPermJobAssignmentsViewDesc =>
+      'عرض قائمة تكليفات العمل ضمن نطاق سجلاتك.';
+
+  @override
+  String get servicesPermJobAssignmentsCreate => 'إنشاء تكليف عمل';
+
+  @override
+  String get servicesPermJobAssignmentsCreateDesc =>
+      'تكليف العمل من استفسار مؤهل، مع البحث المقيّد عن الاستفسار والموظف والفريق.';
+
+  @override
+  String get servicesPermJobAssignmentsEdit => 'تعديل تكليف العمل';
+
+  @override
+  String get servicesPermJobAssignmentsEditDesc =>
+      'تعديل أو إعادة تكليف تكليف عمل نشط.';
+
+  @override
+  String get servicesPermJobAssignmentsCancel => 'إلغاء تكليف العمل';
+
+  @override
+  String get servicesPermJobAssignmentsCancelDesc =>
+      'إلغاء تكليف عمل نشط (يُحفظ تاريخيًا).';
+
+  @override
+  String get permissionServiceJobAssignmentView => 'عرض تكليفات العمل';
+
+  @override
+  String get permissionServiceJobAssignmentCreate => 'إنشاء تكليف عمل';
+
+  @override
+  String get permissionServiceJobAssignmentEdit => 'تعديل تكليف العمل';
+
+  @override
+  String get permissionServiceJobAssignmentCancel => 'إلغاء تكليف العمل';
+
+  @override
+  String get servicesJobAssignmentsTitle => 'تكليفات العمل';
+
+  @override
+  String servicesJobAssignmentCount(String filtered, String total) {
+    return '$filtered من $total تكليف عمل';
+  }
+
+  @override
+  String get servicesJobAssignmentSearch =>
+      'ابحث برقم التكليف أو الاستفسار أو العميل أو الجوال أو الموقع أو الموظف أو الفريق';
+
+  @override
+  String get servicesJobAssignmentAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesJobAssignmentStatusActive => 'نشط';
+
+  @override
+  String get servicesJobAssignmentStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesJobAssignmentEmpty => 'لا توجد تكليفات عمل بعد.';
+
+  @override
+  String get servicesJobAssignmentEmptyMessage =>
+      'أنشئ تكليف عمل من استفسار خدمة مفتوح.';
+
+  @override
+  String get servicesJobAssignmentNoResults =>
+      'لا توجد تكليفات عمل مطابقة للمرشحات.';
+
+  @override
+  String get servicesJobAssignmentAdd => 'تكليف عمل جديد';
+
+  @override
+  String get servicesJobAssignmentColumnAssignment => 'التكليف';
+
+  @override
+  String get servicesJobAssignmentColumnEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesJobAssignmentColumnCustomerSite => 'العميل / الموقع';
+
+  @override
+  String get servicesJobAssignmentColumnVisitDate => 'تاريخ الزيارة';
+
+  @override
+  String get servicesJobAssignmentColumnAssignedTo => 'مُكلَّف إلى';
+
+  @override
+  String get servicesJobAssignmentColumnPriority => 'الأولوية';
+
+  @override
+  String get servicesJobAssignmentColumnStatus => 'الحالة';
+
+  @override
+  String get servicesJobAssignmentColumnCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesJobAssignmentFilterTitle => 'المرشحات';
+
+  @override
+  String get servicesJobAssignmentFilterStatus => 'الحالة';
+
+  @override
+  String get servicesJobAssignmentFilterPriority => 'الأولوية';
+
+  @override
+  String get servicesJobAssignmentFilterVisitFrom => 'الزيارة من';
+
+  @override
+  String get servicesJobAssignmentFilterVisitTo => 'الزيارة إلى';
+
+  @override
+  String get servicesJobAssignmentFormNew => 'تكليف عمل جديد';
+
+  @override
+  String get servicesJobAssignmentFormEdit => 'تعديل تكليف العمل';
+
+  @override
+  String get servicesJobAssignmentCreate => 'إنشاء تكليف عمل';
+
+  @override
+  String get servicesJobAssignmentSectionJobContext => 'سياق التكليف';
+
+  @override
+  String get servicesJobAssignmentSectionSchedule => 'الجدولة';
+
+  @override
+  String get servicesJobAssignmentSectionCustomerLocation => 'العميل والموقع';
+
+  @override
+  String get servicesJobAssignmentSectionServiceContext => 'سياق الخدمة';
+
+  @override
+  String get servicesJobAssignmentSectionSourceIssues =>
+      'مشكلات الاستفسار المصدر';
+
+  @override
+  String get servicesJobAssignmentSectionWork => 'تكليف العمل';
+
+  @override
+  String get servicesJobAssignmentNo => 'رقم التكليف';
+
+  @override
+  String get servicesJobAssignmentDate => 'تاريخ التكليف';
+
+  @override
+  String get servicesJobAssignmentVisitDate => 'تاريخ الزيارة';
+
+  @override
+  String get servicesJobAssignmentEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesJobAssignmentSelectEnquiry => 'اختر استفسارًا مؤهلًا';
+
+  @override
+  String get servicesJobAssignmentChangeEnquiry => 'تغيير الاستفسار';
+
+  @override
+  String get servicesJobAssignmentNoIssues =>
+      'لا توجد مشكلات مسجلة في الاستفسار.';
+
+  @override
+  String get servicesJobAssignmentMaterialReceived => 'استلام المواد';
+
+  @override
+  String get servicesJobAssignmentWork => 'العمل';
+
+  @override
+  String get servicesJobAssignmentTechnician => 'الفني';
+
+  @override
+  String get servicesJobAssignmentServiceTeam => 'فريق الخدمة';
+
+  @override
+  String get servicesJobAssignmentLineStatus => 'الحالة';
+
+  @override
+  String get servicesJobAssignmentLineStatusPending => 'قيد الانتظار';
+
+  @override
+  String get servicesJobAssignmentDescriptionForWork => 'وصف العمل';
+
+  @override
+  String get servicesJobAssignmentAddLine => 'إضافة بند عمل';
+
+  @override
+  String get servicesJobAssignmentRemoveLine => 'إزالة بند العمل';
+
+  @override
+  String servicesJobAssignmentLineTitle(String index) {
+    return 'بند العمل $index';
+  }
+
+  @override
+  String get servicesJobAssignmentNoTargets =>
+      'عيّن موظفًا أو فريق خدمة أو كليهما.';
+
+  @override
+  String get servicesJobAssignmentDetailContext => 'سياق الاستفسار';
+
+  @override
+  String get servicesJobAssignmentDetailWork => 'بنود العمل';
+
+  @override
+  String get servicesJobAssignmentDetailAudit => 'السجل';
+
+  @override
+  String get servicesJobAssignmentDetailActivity => 'النشاط';
+
+  @override
+  String get servicesJobAssignmentEdit => 'تعديل التكليف';
+
+  @override
+  String get servicesJobAssignmentCancel => 'إلغاء التكليف';
+
+  @override
+  String get servicesJobAssignmentCancelConfirmTitle => 'إلغاء التكليف؟';
+
+  @override
+  String get servicesJobAssignmentCancelConfirmMessage =>
+      'يبقى التكليف الملغى متاحًا تاريخيًا ولا يمكن تعديله بعد ذلك.';
+
+  @override
+  String get servicesJobAssignmentCreated => 'تم إنشاء تكليف العمل.';
+
+  @override
+  String get servicesJobAssignmentUpdated => 'تم تحديث تكليف العمل.';
+
+  @override
+  String get servicesJobAssignmentCancelled => 'تم إلغاء تكليف العمل.';
+
+  @override
+  String get servicesJobAssignmentNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesJobAssignmentCreatedBy => 'أنشأه';
+
+  @override
+  String get servicesJobAssignmentCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesJobAssignmentUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesJobAssignmentUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesJobAssignmentVersion => 'الإصدار';
+
+  @override
+  String get servicesJobAssignmentCancelledAt => 'تاريخ الإلغاء';
+
+  @override
+  String get servicesJobAssignmentEnquiryRequired => 'اختر استفسارًا.';
+
+  @override
+  String get servicesJobAssignmentVisitDateRequired => 'اختر تاريخ الزيارة.';
+
+  @override
+  String get servicesJobAssignmentLinesRequired =>
+      'أضف بند عمل واحدًا على الأقل.';
+
+  @override
+  String get servicesJobAssignmentWorkRequired => 'أدخل العمل لكل بند.';
+
+  @override
+  String get servicesJobAssignmentWorkTooLong => 'نص العمل طويل جدًا.';
+
+  @override
+  String get servicesJobAssignmentDescriptionTooLong => 'الوصف طويل جدًا.';
+
+  @override
+  String get servicesJobAssignmentTargetRequired =>
+      'عيّن موظفًا أو فريق خدمة أو كليهما.';
+
+  @override
+  String get servicesJobAssignmentEnquiryNotFound => 'الاستفسار غير موجود.';
+
+  @override
+  String get servicesJobAssignmentEnquiryNotOpen =>
+      'يمكن تكليف الاستفسارات المفتوحة فقط.';
+
+  @override
+  String get servicesJobAssignmentAlreadyActive =>
+      'يوجد تكليف عمل نشط لهذا الاستفسار بالفعل.';
+
+  @override
+  String get servicesJobAssignmentNotFound => 'تكليف العمل غير موجود.';
+
+  @override
+  String get servicesJobAssignmentNotEditable =>
+      'يمكن تعديل تكليفات العمل النشطة فقط.';
+
+  @override
+  String get servicesJobAssignmentAlreadyCancelled =>
+      'تكليف العمل ملغى بالفعل.';
+
+  @override
+  String get servicesJobAssignmentEmployeeInvalid => 'الموظف المحدد غير متاح.';
+
+  @override
+  String get servicesJobAssignmentTeamInvalid => 'فريق الخدمة المحدد غير متاح.';
+
+  @override
+  String get servicesJobAssignmentEmployeeNotInTeam =>
+      'الموظف المحدد ليس عضوًا في فريق الخدمة المحدد.';
+
+  @override
+  String get servicesJobAssignmentSequenceFailed => 'تعذّر تخصيص رقم للتكليف.';
+
+  @override
+  String get servicesJobAssignmentDenied =>
+      'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get servicesJobAssignmentStorageError =>
+      'تعذّر حفظ تكليف العمل. حاول مرة أخرى.';
+
+  @override
+  String get servicesActivityAssigned => 'تكليف';
+
+  @override
+  String get servicesActivityReopened => 'إعادة فتح';
+
+  @override
+  String get servicesOverviewAssignmentsScheduled => 'التكليفات المجدولة';
+
+  @override
+  String get servicesOverviewAssignmentsToday => 'زيارات اليوم';
+
+  @override
+  String get servicesOverviewAssignmentsUpcoming => 'الزيارات القادمة';
+
+  @override
+  String get servicesOverviewRecentAssignments => 'التكليفات القادمة';
+
+  @override
+  String get servicesOverviewNoAssignments => 'لا توجد تكليفات قادمة.';
+
+  @override
+  String get servicesEnquiryAssignmentSection => 'تكليف العمل';
+
+  @override
+  String get servicesEnquiryCreateAssignment => 'إنشاء تكليف عمل';
+
+  @override
+  String get servicesEnquiryViewAssignment => 'عرض تكليف العمل';
+
+  @override
+  String get servicesEnquiryStatusAssigned => 'مُكلَّف';
+
+  @override
+  String get notifServiceWorkAssignedTitle => 'تم تكليفك بعمل خدمة';
+
+  @override
+  String get notifServiceWorkAssignedBody => 'تم تكليفك بعمل خدمة.';
+
+  @override
+  String get servicesJobAssignmentGenerated => 'يُولَّد عند الحفظ';
 }

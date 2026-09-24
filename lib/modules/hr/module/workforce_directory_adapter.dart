@@ -26,6 +26,7 @@ class HrWorkforceDirectory implements WorkforceDirectory {
     designationId: employee.designationId,
     workLocationId: employee.workLocationId,
     avatarReference: employee.avatarUrl,
+    linkedUserId: employee.linkedUserId,
     isActive: employee.status == EmploymentStatus.active,
   );
 
@@ -36,7 +37,9 @@ class HrWorkforceDirectory implements WorkforceDirectory {
   }) async {
     final context = await _context();
     if (context == null) return null;
-    final result = await employees.getEmployeeById(context, employeeId);
+    // Restricted reference: authorized by the cross-module contract, not by HR
+    // employee-view permission.
+    final result = await employees.getCompanyEmployee(context, employeeId);
     if (result is! Success<Employee?> || result.value == null) return null;
     final employee = result.value!;
     if (!includeInactive && employee.status != EmploymentStatus.active) {
@@ -52,14 +55,13 @@ class HrWorkforceDirectory implements WorkforceDirectory {
   }) async {
     final context = await _context();
     if (context == null) return const [];
-    final result = await employees
-        .watchEmployees(context, query: query, pageSize: limit)
-        .first;
-    if (result is! Success<EmployeePageData>) return const [];
-    return [
-      for (final employee in result.value.employees)
-        if (employee.status == EmploymentStatus.active) _ref(employee),
-    ];
+    final result = await employees.searchAssignableCompanyEmployees(
+      context,
+      query: query,
+      limit: limit,
+    );
+    if (result is! Success<List<Employee>>) return const [];
+    return [for (final employee in result.value) _ref(employee)];
   }
 
   @override
@@ -68,15 +70,9 @@ class HrWorkforceDirectory implements WorkforceDirectory {
   ) async {
     final context = await _context();
     if (context == null) return const [];
-    final result = await employees
-        .watchEmployees(context, pageSize: 100, filter: const EmployeeFilter())
-        .first;
-    if (result is! Success<EmployeePageData>) return const [];
-    final wanted = employeeIds.toSet();
-    return [
-      for (final employee in result.value.employees)
-        if (wanted.contains(employee.id)) _ref(employee),
-    ];
+    final result = await employees.getCompanyEmployees(context, employeeIds);
+    if (result is! Success<List<Employee>>) return const [];
+    return [for (final employee in result.value) _ref(employee)];
   }
 
   @override

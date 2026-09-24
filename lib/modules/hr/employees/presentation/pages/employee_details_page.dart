@@ -54,7 +54,6 @@ class EmployeeDetailsPage extends StatelessWidget {
           a = state.account?.user;
       final navigation = NavigationResolver(registry);
       return AppPage(
-        maxWidth: AppDimensions.content,
         header: AppPageHeader(
           title: e.displayName,
           subtitle: [

@@ -27,6 +27,7 @@ class NotificationTile extends StatelessWidget {
     AppNotificationType.leaveRequestRejected => Icons.event_busy_outlined,
     AppNotificationType.leaveRequestCancelled => Icons.event_busy_outlined,
     AppNotificationType.leaveApprovalRequired => Icons.event_note_outlined,
+    AppNotificationType.serviceWorkAssigned => Icons.assignment_ind_outlined,
     AppNotificationType.unknown => Icons.notifications_none_outlined,
   };
 

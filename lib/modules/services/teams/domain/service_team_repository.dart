@@ -31,4 +31,10 @@ abstract interface class ServiceTeamRepository {
     String query = '',
     int limit = 50,
   });
+
+  /// Resolves several team references by id (active or historical) for display.
+  Future<Result<List<ServiceTeamRef>>> getReferences(
+    AuthContext context,
+    Iterable<String> ids,
+  );
 }

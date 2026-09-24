@@ -84,9 +84,35 @@ class LocalAttachmentRepository implements AttachmentRepository {
   }
 
   @override
+  Future<Result<List<AttachmentRef>>> getForOwners({
+    required String companyId,
+    required String ownerType,
+    required List<String> ownerIds,
+  }) async {
+    if (ownerIds.isEmpty) return const Success([]);
+    try {
+      final rows =
+          await (database.select(database.attachmentRecords)..where(
+                (t) =>
+                    t.companyId.equals(companyId) &
+                    t.ownerType.equals(ownerType) &
+                    t.ownerId.isIn(ownerIds) &
+                    t.uploadStatus.isNotValue('deleted'),
+              ))
+              .get();
+      return Success(rows.map(_map).toList());
+    } catch (_) {
+      return const Failed(
+        Failure(code: 'attachmentFailure', kind: FailureKind.storageWrite),
+      );
+    }
+  }
+
+  @override
   Future<Result<AttachmentRef>> addLocalAttachment(
-    AttachmentDraft draft,
-  ) async {
+    AttachmentDraft draft, {
+    String? id,
+  }) async {
     try {
       final existing = await _ownerQuery(
         companyId: draft.companyId,
@@ -103,7 +129,7 @@ class LocalAttachmentRepository implements AttachmentRepository {
       }
       final now = clock.now();
       final row = AttachmentRecordsCompanion.insert(
-        id: _uuid.v4(),
+        id: id ?? _uuid.v4(),
         companyId: draft.companyId,
         ownerType: draft.ownerType,
         ownerId: draft.ownerId,
@@ -120,16 +146,21 @@ class LocalAttachmentRepository implements AttachmentRepository {
         createdAt: now,
         updatedAt: now,
       );
-      await database.into(database.attachmentRecords).insert(row);
-      return Success(
-        _map(
-          (await _ownerQuery(
-            companyId: draft.companyId,
-            ownerType: draft.ownerType,
-            ownerId: draft.ownerId,
-          ).get()).firstWhere((r) => r.id == row.id.value),
-        ),
-      );
+      await database
+          .into(database.attachmentRecords)
+          .insert(row, mode: InsertMode.insertOrIgnore);
+      final inserted = await _ownerQuery(
+        companyId: draft.companyId,
+        ownerType: draft.ownerType,
+        ownerId: draft.ownerId,
+      ).get();
+      final match = inserted.where((r) => r.id == row.id.value).firstOrNull;
+      if (match == null) {
+        return const Failed(
+          Failure(code: 'attachmentFailure', kind: FailureKind.storageWrite),
+        );
+      }
+      return Success(_map(match));
     } catch (_) {
       return const Failed(
         Failure(code: 'attachmentFailure', kind: FailureKind.storageWrite),

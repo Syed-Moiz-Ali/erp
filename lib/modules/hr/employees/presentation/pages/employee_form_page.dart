@@ -118,7 +118,6 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
       }
 
       return AppPage(
-        maxWidth: AppDimensions.details,
         header: AppPageHeader(
           title: bloc.id == null ? l.empAdd : l.empEdit,
           actions: [

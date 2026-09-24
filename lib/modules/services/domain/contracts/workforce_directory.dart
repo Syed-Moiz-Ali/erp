@@ -15,11 +15,16 @@ class WorkforcePersonRef {
     this.designationName,
     this.workLocationId,
     this.avatarReference,
+    this.linkedUserId,
     this.isActive = true,
   });
   final String id, name, employeeCode;
   final String? departmentId, departmentName, designationId, designationName;
   final String? workLocationId, avatarReference;
+
+  /// The linked login account, when the employee has one. Used to deliver
+  /// assignment notifications; null means the employee has no app account yet.
+  final String? linkedUserId;
   final bool isActive;
 }
 

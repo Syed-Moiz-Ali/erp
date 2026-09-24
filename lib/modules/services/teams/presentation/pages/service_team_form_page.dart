@@ -28,7 +28,6 @@ class ServiceTeamFormPage extends StatelessWidget {
             ? serviceFailureMessage(state.failure, l)
             : null;
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: teamId == null ? l.servicesTeamAdd : l.servicesTeamEdit,
             actions: [

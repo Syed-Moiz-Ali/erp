@@ -15,7 +15,6 @@ class MorePage extends StatelessWidget {
         : navigation.mobileMore;
     final groups = navigation.sectionsFor(items);
     return AppPage(
-      maxWidth: AppDimensions.details,
       header: AppPageHeader(
         title: context.l10n.shellMore,
         subtitle: context.l10n.shellMoreDescription,

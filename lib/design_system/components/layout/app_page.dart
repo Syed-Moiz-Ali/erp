@@ -6,8 +6,13 @@ import 'package:modular_erp/design_system/theme/app_motion.dart';
 import 'package:modular_erp/design_system/components/cards/app_cards.dart';
 import 'package:modular_erp/design_system/components/headers/app_headers.dart';
 
-/// Standard page frame: owns responsive page padding, max content width and
-/// the optional header/filters, then scrolls its [child].
+/// The single, global ERP page content width.
+///
+/// Every feature screen (HR, Services, Settings, future modules) shares this
+/// exact width and is horizontally centered inside the main workspace, so the
+/// left and right free space are always equal. There are deliberately **no**
+/// per-screen width modes: the page itself always has one width. Internal
+/// components may still use their own grids/columns.
 ///
 /// Do not place another scrollable (`ListView`) directly inside [child]; use a
 /// `Column` or provide a dedicated sliver body.
@@ -17,13 +22,11 @@ class AppPage extends StatelessWidget {
     required this.child,
     this.header,
     this.filters,
-    this.maxWidth = AppDimensions.content,
     this.animateEntrance = true,
     this.scrollPhysics,
   });
   final Widget child;
   final Widget? header, filters;
-  final double maxWidth;
   final bool animateEntrance;
   final ScrollPhysics? scrollPhysics;
   @override
@@ -32,7 +35,9 @@ class AppPage extends StatelessWidget {
     child: Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth),
+        constraints: const BoxConstraints(
+          maxWidth: AppDimensions.contentMaxWidth,
+        ),
         child: Padding(
           padding: EdgeInsets.all(
             AppBreakpoints.of(context) == AppSize.compact

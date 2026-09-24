@@ -20,6 +20,10 @@ class DocumentSequenceType {
     key: 'serviceEnquiry',
     prefix: 'ENQ',
   );
+  static const serviceJobAssignment = DocumentSequenceType(
+    key: 'serviceJobAssignment',
+    prefix: 'JA',
+  );
   static const serviceJob = DocumentSequenceType(
     key: 'serviceJob',
     prefix: 'JOB',

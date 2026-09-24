@@ -31,6 +31,8 @@ import 'package:modular_erp/modules/services/sites/domain/service_site_repositor
 import 'package:modular_erp/modules/services/teams/domain/service_team_repository.dart';
 import 'package:modular_erp/modules/services/configuration/domain/service_master_repository.dart';
 import 'package:modular_erp/modules/services/domain/contracts/workforce_directory.dart';
+import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
+import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
 import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
@@ -67,6 +69,8 @@ ModuleRegistry createErpRegistry(
   ServiceSiteRepository? serviceSiteRepository,
   ServiceTeamRepository? serviceTeamRepository,
   ServiceMasterRepository? serviceMasterRepository,
+  ServiceEnquiryRepository? serviceEnquiryRepository,
+  ServiceJobAssignmentRepository? serviceJobAssignmentRepository,
   WorkforceDirectory? workforceDirectory,
   ActivityRepository? activityRepository,
 }) {
@@ -224,6 +228,8 @@ ModuleRegistry createErpRegistry(
       sites: serviceSiteRepository,
       teams: serviceTeamRepository,
       masters: serviceMasterRepository,
+      enquiries: serviceEnquiryRepository,
+      jobAssignments: serviceJobAssignmentRepository,
       workforce: workforceDirectory,
       activity: activityRepository,
     ),

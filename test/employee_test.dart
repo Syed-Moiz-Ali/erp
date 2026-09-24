@@ -672,7 +672,7 @@ void main() {
     expect(
       (await migrated.customSelect('PRAGMA user_version').getSingle())
           .read<int>('user_version'),
-      12,
+      15,
     );
     // Access is permission-based: the legacy account role column is gone.
     final accountColumns = await migrated

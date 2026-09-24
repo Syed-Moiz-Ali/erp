@@ -12,6 +12,7 @@ enum AppNotificationType {
   leaveRequestRejected,
   leaveRequestCancelled,
   leaveApprovalRequired,
+  serviceWorkAssigned,
   unknown;
 
   static AppNotificationType fromName(String? name) => values.firstWhere(

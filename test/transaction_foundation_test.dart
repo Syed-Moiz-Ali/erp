@@ -366,31 +366,18 @@ void main() {
 
     test('assignment search returns only active employees', () async {
       when(
-        () => employees.watchEmployees(
+        () => employees.searchAssignableCompanyEmployees(
           any(),
           query: any(named: 'query'),
-          pageSize: any(named: 'pageSize'),
+          limit: any(named: 'limit'),
         ),
-      ).thenAnswer(
-        (_) => Stream.value(
-          Success(
-            EmployeePageData(
-              [
-                _employee(id: 'e1'),
-                _employee(id: 'e2', status: EmploymentStatus.inactive),
-              ],
-              2,
-              2,
-            ),
-          ),
-        ),
-      );
+      ).thenAnswer((_) async => Success<List<Employee>>([_employee(id: 'e1')]));
       final result = await directory.searchAssignable();
       expect(result.map((r) => r.id), ['e1']);
     });
 
     test('inactive employees resolve only as historical references', () async {
-      when(() => employees.getEmployeeById(any(), 'e2')).thenAnswer(
+      when(() => employees.getCompanyEmployee(any(), 'e2')).thenAnswer(
         (_) async => Success<Employee?>(
           _employee(id: 'e2', status: EmploymentStatus.inactive),
         ),
@@ -406,7 +393,7 @@ void main() {
 
     test('cross-company employee ids do not resolve', () async {
       when(
-        () => employees.getEmployeeById(any(), 'other'),
+        () => employees.getCompanyEmployee(any(), 'other'),
       ).thenAnswer((_) async => const Success<Employee?>(null));
       expect(await directory.getEmployeeReference('other'), isNull);
     });

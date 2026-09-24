@@ -17,6 +17,16 @@ import 'package:modular_erp/modules/services/customers/presentation/pages/servic
 import 'package:modular_erp/modules/services/customers/presentation/pages/service_customer_form_page.dart';
 import 'package:modular_erp/modules/services/customers/presentation/pages/service_customer_list_page.dart';
 import 'package:modular_erp/modules/services/domain/contracts/workforce_directory.dart';
+import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
+import 'package:modular_erp/modules/services/enquiries/presentation/bloc/service_enquiry_blocs.dart';
+import 'package:modular_erp/modules/services/enquiries/presentation/pages/service_enquiry_detail_page.dart';
+import 'package:modular_erp/modules/services/enquiries/presentation/pages/service_enquiry_form_page.dart';
+import 'package:modular_erp/modules/services/enquiries/presentation/pages/service_enquiry_list_page.dart';
+import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
+import 'package:modular_erp/modules/services/job_assignments/presentation/bloc/service_job_assignment_blocs.dart';
+import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_detail_page.dart';
+import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_form_page.dart';
+import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_list_page.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/overview/presentation/bloc/service_overview_cubit.dart';
 import 'package:modular_erp/modules/services/overview/presentation/service_overview_page.dart';
@@ -41,6 +51,8 @@ List<AppModule> buildServicesModules({
   ServiceSiteRepository? sites,
   ServiceTeamRepository? teams,
   ServiceMasterRepository? masters,
+  ServiceEnquiryRepository? enquiries,
+  ServiceJobAssignmentRepository? jobAssignments,
   WorkforceDirectory? workforce,
   ActivityRepository? activity,
 }) {
@@ -207,11 +219,189 @@ List<AppModule> buildServicesModules({
                 teams,
                 masters,
                 account,
+                enquiries: enquiries,
+                jobAssignments: jobAssignments,
               )..load(),
               child: const ServiceOverviewPage(),
             );
           },
         ),
+        if (enquiries != null && activity != null)
+          destination(
+            ErpModule(
+              id: 'services-enquiries',
+              moduleId: AppModuleIds.services,
+              name: (l) => l.servicesNavEnquiries,
+              icon: Icons.support_agent_outlined,
+              selectedIcon: Icons.support_agent,
+              route: ServicesRoutes.enquiries,
+              navigationGroup: NavigationGroup.services,
+              order: 1,
+              anyPermissions: {
+                AppPermission.serviceEnquiryView,
+                AppPermission.serviceEnquiryCreate,
+              },
+            ),
+            (context) {
+              final account = context.read<AuthBloc>().state.context!;
+              return BlocProvider(
+                create: (_) =>
+                    ServiceEnquiryListCubit(enquiries, masters, account)
+                      ..start(),
+                child: const ServiceEnquiryListPage(),
+              );
+            },
+            children: [
+              GoRoute(
+                path: 'new',
+                name: 'services-enquiry-new',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  return BlocProvider(
+                    create: (_) => ServiceEnquiryFormCubit(
+                      enquiries,
+                      masters,
+                      account,
+                      null,
+                    )..init(),
+                    child: const ServiceEnquiryFormPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':enquiryId',
+                name: 'services-enquiry-details',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final enquiryId = state.pathParameters['enquiryId']!;
+                  return BlocProvider(
+                    create: (_) => ServiceEnquiryDetailCubit(
+                      enquiries,
+                      activity,
+                      account,
+                      enquiryId,
+                    )..start(),
+                    child: ServiceEnquiryDetailPage(
+                      enquiryId: enquiryId,
+                      jobAssignments: jobAssignments,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    name: 'services-enquiry-edit',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final enquiryId = state.pathParameters['enquiryId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceEnquiryFormCubit(
+                          enquiries,
+                          masters,
+                          account,
+                          enquiryId,
+                        )..init(),
+                        child: ServiceEnquiryFormPage(enquiryId: enquiryId),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        if (jobAssignments != null && workforce != null)
+          destination(
+            ErpModule(
+              id: 'services-job-assignments',
+              moduleId: AppModuleIds.services,
+              name: (l) => l.servicesNavJobAssignments,
+              icon: Icons.assignment_ind_outlined,
+              selectedIcon: Icons.assignment_ind,
+              route: ServicesRoutes.assignments,
+              navigationGroup: NavigationGroup.services,
+              order: 2,
+              anyPermissions: {
+                AppPermission.serviceJobAssignmentViewAssigned,
+                AppPermission.serviceJobAssignmentViewTeam,
+                AppPermission.serviceJobAssignmentViewAll,
+                AppPermission.serviceJobAssignmentCreate,
+              },
+            ),
+            (context) {
+              final account = context.read<AuthBloc>().state.context!;
+              return BlocProvider(
+                create: (_) => ServiceJobAssignmentListCubit(
+                  jobAssignments,
+                  masters,
+                  account,
+                )..start(),
+                child: const ServiceJobAssignmentListPage(),
+              );
+            },
+            children: [
+              GoRoute(
+                path: 'new',
+                name: 'services-job-assignment-new',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final enquiryId = state.uri.queryParameters['enquiryId'];
+                  return BlocProvider(
+                    create: (_) => ServiceJobAssignmentFormCubit(
+                      jobAssignments,
+                      workforce,
+                      teams,
+                      account,
+                      null,
+                      initialEnquiryId: enquiryId,
+                    )..init(),
+                    child: const ServiceJobAssignmentFormPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':assignmentId',
+                name: 'services-job-assignment-details',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final assignmentId = state.pathParameters['assignmentId']!;
+                  return BlocProvider(
+                    create: (_) => ServiceJobAssignmentDetailCubit(
+                      jobAssignments,
+                      activity!,
+                      account,
+                      assignmentId,
+                    )..start(),
+                    child: ServiceJobAssignmentDetailPage(
+                      assignmentId: assignmentId,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    name: 'services-job-assignment-edit',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final assignmentId =
+                          state.pathParameters['assignmentId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceJobAssignmentFormCubit(
+                          jobAssignments,
+                          workforce,
+                          teams,
+                          account,
+                          assignmentId,
+                        )..init(),
+                        child: ServiceJobAssignmentFormPage(
+                          assignmentId: assignmentId,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         destination(
           ErpModule(
             id: 'services-customers',
@@ -220,7 +410,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.business_outlined,
             route: ServicesRoutes.customers,
             navigationGroup: NavigationGroup.services,
-            order: 1,
+            order: 3,
             requiredPermissions: {AppPermission.serviceCustomerView},
           ),
           (context) {
@@ -241,7 +431,9 @@ List<AppModule> buildServicesModules({
                   create: (_) =>
                       ServiceCustomerFormCubit(customers, account, null)
                         ..init(),
-                  child: const ServiceCustomerFormPage(),
+                  child: ServiceCustomerFormPage(
+                    returnSelection: state.uri.queryParameters['select'] == '1',
+                  ),
                 );
               },
             ),
@@ -259,7 +451,10 @@ List<AppModule> buildServicesModules({
                     account,
                     customerId,
                   )..start(),
-                  child: ServiceCustomerDetailPage(customerId: customerId),
+                  child: ServiceCustomerDetailPage(
+                    customerId: customerId,
+                    enquiries: enquiries,
+                  ),
                 );
               },
               routes: [
@@ -291,7 +486,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.location_on_outlined,
             route: ServicesRoutes.sites,
             navigationGroup: NavigationGroup.services,
-            order: 2,
+            order: 4,
             requiredPermissions: {AppPermission.serviceSiteView},
           ),
           (context) {
@@ -316,7 +511,10 @@ List<AppModule> buildServicesModules({
                     null,
                     preselectedCustomerId: customerId,
                   )..init(),
-                  child: ServiceSiteFormPage(preselectedCustomerId: customerId),
+                  child: ServiceSiteFormPage(
+                    preselectedCustomerId: customerId,
+                    returnSelection: state.uri.queryParameters['select'] == '1',
+                  ),
                 );
               },
             ),
@@ -330,7 +528,10 @@ List<AppModule> buildServicesModules({
                   create: (_) =>
                       ServiceSiteDetailCubit(sites, customers, account, siteId)
                         ..start(),
-                  child: ServiceSiteDetailPage(siteId: siteId),
+                  child: ServiceSiteDetailPage(
+                    siteId: siteId,
+                    enquiries: enquiries,
+                  ),
                 );
               },
               routes: [
@@ -363,7 +564,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.groups_outlined,
             route: ServicesRoutes.teams,
             navigationGroup: NavigationGroup.services,
-            order: 3,
+            order: 5,
             requiredPermissions: {AppPermission.serviceTeamView},
           ),
           (context) {
@@ -429,7 +630,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.settings_outlined,
             route: ServicesRoutes.settings,
             navigationGroup: NavigationGroup.services,
-            order: 4,
+            order: 6,
             anyPermissions: {
               AppPermission.serviceTypeView,
               AppPermission.complaintTypeView,

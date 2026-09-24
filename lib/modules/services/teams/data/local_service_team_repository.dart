@@ -410,6 +410,40 @@ class LocalServiceTeamRepository implements ServiceTeamRepository {
     }
   }
 
+  @override
+  Future<Result<List<ServiceTeamRef>>> getReferences(
+    AuthContext context,
+    Iterable<String> ids,
+  ) async {
+    final failure = _access(context);
+    if (failure != null) return Failed(failure);
+    final wanted = ids.toSet();
+    if (wanted.isEmpty) return const Success([]);
+    try {
+      final placeholders = List.filled(wanted.length, '?').join(',');
+      final rows = await db
+          .customSelect(
+            'SELECT id, team_code, name FROM service_teams '
+            'WHERE company_id=? AND id IN ($placeholders)',
+            variables: [
+              Variable(context.company.id),
+              ...wanted.map((id) => Variable(id)),
+            ],
+          )
+          .get();
+      return Success([
+        for (final row in rows)
+          ServiceTeamRef(
+            id: row.read<String>('id'),
+            teamCode: row.read<String>('team_code'),
+            displayName: row.read<String>('name'),
+          ),
+      ]);
+    } catch (_) {
+      return const Failed(Failure(code: 'servicesStorage'));
+    }
+  }
+
   String? _nullable(String? value) {
     final trimmed = value?.trim() ?? '';
     return trimmed.isEmpty ? null : trimmed;

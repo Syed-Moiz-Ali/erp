@@ -89,6 +89,53 @@ Navigation and route guards are centralized: HR destinations declare
 The `services` feature flag must be enabled for the company. Team membership never
 grants permission, and a Services permission never creates team membership.
 
+## Services (Phase 2 — Service Enquiry)
+
+| Permission | Scope | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `services.enquiries.view` | `all` | Services + Enquiries | `/app/services/enquiries`, `/:enquiryId` | `watchEnquiries`/`getEnquiry`/`watchEnquiry`, overview summary + recent, customer/site recent | — | — |
+| `services.enquiries.create` | none | Enquiries (New) + Overview action | `/app/services/enquiries/new` | restricted Customer/Site reference lookup | New enquiry | `createEnquiry` |
+| `services.enquiries.edit` | none | Enquiries (Edit) | `/:enquiryId/edit` | restricted Customer/Site reference lookup | Edit (OPEN only) | `updateEnquiry` |
+| `services.enquiries.cancel` | none | Enquiries (Cancel) | — | — | Cancel (OPEN only) | `cancelEnquiry` |
+
+Notes:
+
+- `services.enquiries.edit`/`.cancel` imply `.view` through
+  `permissionViewDependencies`. `.create` deliberately does **not** imply `.view`:
+  a create-only operator gets the New Enquiry flow and restricted reference
+  lookups (authorized by Enquiry Create), but not the company enquiry list.
+- The Enquiries destination is visible with `view` **or** `create`
+  (`anyPermissions`). A create-only user sees a create-oriented state instead of
+  the list.
+- Restricted Customer/Site reference lookups are authorized by Enquiry
+  Create/Edit, never by `services.customers.view`/`services.sites.view`, so an
+  Enquiry operator never gains directory access indirectly.
+- Direct URLs are guarded in `NavigationResolver.routeAccess` (`/new` → create,
+  `/edit` → edit, `/:id` → view); the repository re-checks every mutation.
+
+## Services (Phase 3 — Job Assignment & Scheduling)
+
+| Permission | Scope | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `services.jobAssignments.view` | `assigned`/`team`/`all` | Services + Job assignments | `/app/services/job-assignments`, `/:assignmentId` | `watchAssignments`/`getAssignment`/`watchUpcomingAssignments`/`summary`, enquiry detail integration | — | — |
+| `services.jobAssignments.create` | none | Job assignments (New) + Enquiry action | `/app/services/job-assignments/new` | restricted Enquiry/Employee/Team reference lookup | New job assignment | `createAssignment` (+ Enquiry OPEN→ASSIGNED) |
+| `services.jobAssignments.edit` | none | Job assignments (Edit) | `/:assignmentId/edit` | restricted Enquiry/Employee/Team reference lookup | Edit / reassign (ACTIVE only) | `updateAssignment` |
+| `services.jobAssignments.cancel` | none | Job assignments (Cancel) | — | — | Cancel (ACTIVE only) | `cancelAssignment` (+ Enquiry ASSIGNED→OPEN when last) |
+
+Notes:
+
+- `create`/`edit`/`cancel` imply `serviceJobAssignmentViewAll` through
+  `permissionViewDependencies` (coordinators who assign operate company-wide).
+- Record scope is resolved by `ServiceJobAssignmentScopeResolver` via the shared
+  `AccessScopeResolver` (`all > team > assigned`): ASSIGNED = the linked employee
+  is directly on a line or belongs to an assigned Service Team; TEAM = the linked
+  employee's Service Teams; ALL = company. TEAM never silently becomes ALL.
+- Restricted Enquiry/Employee/Team reference lookups are authorized by Job
+  Assignment Create/Edit, never by the full Enquiry/HR/Team directories.
+- Direct URLs are guarded in `NavigationResolver.routeAccess` (`/new` → create,
+  `/edit` → edit, `/:id` → any view scope); the repository re-checks every
+  mutation and the record scope on every read.
+
 ## Notes
 
 - `*Manage` implies `*View` through `permissionViewDependencies` (single

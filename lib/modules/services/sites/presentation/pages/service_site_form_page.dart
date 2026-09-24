@@ -13,9 +13,14 @@ class ServiceSiteFormPage extends StatelessWidget {
     super.key,
     this.siteId,
     this.preselectedCustomerId,
+    this.returnSelection = false,
   });
   final String? siteId;
   final String? preselectedCustomerId;
+
+  /// When true the page pops the created id instead of leaving the flow, so an
+  /// in-context caller (Service Enquiry form) can preselect the new site.
+  final bool returnSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,11 @@ class ServiceSiteFormPage extends StatelessWidget {
       listenWhen: (p, c) => c.saved && !p.saved,
       listener: (context, state) {
         AppFeedback.showMessage(context, message: (l) => l.servicesSiteSaved);
-        context.go(ServicesRoutes.sites);
+        if (returnSelection) {
+          context.pop(state.savedId);
+        } else {
+          context.go(ServicesRoutes.sites);
+        }
       },
       builder: (context, state) {
         final d = state.draft;
@@ -35,7 +44,6 @@ class ServiceSiteFormPage extends StatelessWidget {
             ? serviceFailureMessage(state.failure, l)
             : null;
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: siteId == null ? l.servicesSiteAdd : l.servicesSiteEdit,
             actions: [

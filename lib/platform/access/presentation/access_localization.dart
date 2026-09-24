@@ -20,6 +20,8 @@ extension AccessCatalogLocalization on AppLocalizations {
     'customers' => servicesPermSubCustomers,
     'sites' => servicesPermSubSites,
     'teams' => servicesPermSubTeams,
+    'enquiries' => servicesPermSubEnquiries,
+    'jobAssignments' => servicesPermSubJobAssignments,
     _ => key,
   };
 
@@ -83,6 +85,14 @@ extension AccessCatalogLocalization on AppLocalizations {
     'servicesPermPrioritiesManage' => servicesPermPrioritiesManage,
     'servicesPermTicketTypesView' => servicesPermTicketTypesView,
     'servicesPermTicketTypesManage' => servicesPermTicketTypesManage,
+    'servicesPermEnquiriesView' => servicesPermEnquiriesView,
+    'servicesPermEnquiriesCreate' => servicesPermEnquiriesCreate,
+    'servicesPermEnquiriesEdit' => servicesPermEnquiriesEdit,
+    'servicesPermEnquiriesCancel' => servicesPermEnquiriesCancel,
+    'servicesPermJobAssignmentsView' => servicesPermJobAssignmentsView,
+    'servicesPermJobAssignmentsCreate' => servicesPermJobAssignmentsCreate,
+    'servicesPermJobAssignmentsEdit' => servicesPermJobAssignmentsEdit,
+    'servicesPermJobAssignmentsCancel' => servicesPermJobAssignmentsCancel,
     _ => key,
   };
 
@@ -150,6 +160,16 @@ extension AccessCatalogLocalization on AppLocalizations {
     'servicesPermPrioritiesManageDesc' => servicesPermPrioritiesManageDesc,
     'servicesPermTicketTypesViewDesc' => servicesPermTicketTypesViewDesc,
     'servicesPermTicketTypesManageDesc' => servicesPermTicketTypesManageDesc,
+    'servicesPermEnquiriesViewDesc' => servicesPermEnquiriesViewDesc,
+    'servicesPermEnquiriesCreateDesc' => servicesPermEnquiriesCreateDesc,
+    'servicesPermEnquiriesEditDesc' => servicesPermEnquiriesEditDesc,
+    'servicesPermEnquiriesCancelDesc' => servicesPermEnquiriesCancelDesc,
+    'servicesPermJobAssignmentsViewDesc' => servicesPermJobAssignmentsViewDesc,
+    'servicesPermJobAssignmentsCreateDesc' =>
+      servicesPermJobAssignmentsCreateDesc,
+    'servicesPermJobAssignmentsEditDesc' => servicesPermJobAssignmentsEditDesc,
+    'servicesPermJobAssignmentsCancelDesc' =>
+      servicesPermJobAssignmentsCancelDesc,
     _ => key,
   };
 

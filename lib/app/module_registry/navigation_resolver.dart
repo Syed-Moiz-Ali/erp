@@ -153,6 +153,67 @@ class NavigationResolver {
       }
       return RouteAccess.allowed;
     }
+    if (owner?.id == 'services-enquiries') {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceEnquiryCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceEnquiryEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      final segments = Uri.parse(path).pathSegments;
+      final isDetail = segments.isNotEmpty && segments.last != 'enquiries';
+      if (isDetail) {
+        return p.can(AppPermission.serviceEnquiryView)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
+    if (owner?.id == 'services-job-assignments') {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceJobAssignmentCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceJobAssignmentEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      final segments = Uri.parse(path).pathSegments;
+      final isDetail =
+          segments.isNotEmpty && segments.last != 'job-assignments';
+      if (isDetail) {
+        return p.canAny([
+              AppPermission.serviceJobAssignmentViewAssigned,
+              AppPermission.serviceJobAssignmentViewTeam,
+              AppPermission.serviceJobAssignmentViewAll,
+            ])
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
     return owner == null
         ? RouteAccess.unknown
         : access(

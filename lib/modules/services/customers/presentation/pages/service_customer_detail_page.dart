@@ -9,13 +9,20 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/customers/domain/service_customer.dart';
 import 'package:modular_erp/modules/services/customers/presentation/bloc/service_customer_blocs.dart';
+import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/recent_enquiries_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceCustomerDetailPage extends StatelessWidget {
-  const ServiceCustomerDetailPage({super.key, required this.customerId});
+  const ServiceCustomerDetailPage({
+    super.key,
+    required this.customerId,
+    this.enquiries,
+  });
   final String customerId;
+  final ServiceEnquiryRepository? enquiries;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +86,6 @@ class ServiceCustomerDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: customer.name,
             subtitle: customer.customerCode,
@@ -233,6 +239,15 @@ class ServiceCustomerDetailPage extends StatelessWidget {
                       ),
                 ],
               ),
+              if (enquiries != null) ...[
+                const SizedBox(height: AppSpacing.xxl),
+                ServiceRecentEnquiriesSection(
+                  repository: enquiries!,
+                  title: l.servicesEnquiryRecentForCustomer,
+                  emptyText: l.servicesEnquiryNoneForCustomer,
+                  customerId: customer.id,
+                ),
+              ],
             ],
           ),
         );

@@ -1,5 +1,6 @@
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/platform/notifications/domain/app_notification.dart';
 
 class NotificationContent {
@@ -62,6 +63,10 @@ NotificationContent notificationContent(
     l.notifLeaveApprovalRequiredTitle,
     l.notifLeaveApprovalRequiredBody,
   ),
+  AppNotificationType.serviceWorkAssigned => NotificationContent(
+    l.notifServiceWorkAssignedTitle,
+    l.notifServiceWorkAssignedBody,
+  ),
   AppNotificationType.unknown => NotificationContent(
     l.notifUnknownTitle,
     l.notifUnknownBody,
@@ -95,8 +100,17 @@ String? notificationRoute(AppNotification notification) =>
         _leaveRequestId(notification) != null
             ? AppRoutes.leaveRequestDetails(_leaveRequestId(notification)!)
             : AppRoutes.leave,
+      AppNotificationType.serviceWorkAssigned =>
+        _assignmentId(notification) != null
+            ? ServicesRoutes.assignment(_assignmentId(notification)!)
+            : ServicesRoutes.assignments,
       AppNotificationType.unknown => notification.route,
     };
+
+String? _assignmentId(AppNotification notification) {
+  final value = notification.payload['assignmentId'];
+  return value is String && value.isNotEmpty ? value : null;
+}
 
 String? _correctionId(AppNotification notification) {
   final value = notification.payload['correctionId'];

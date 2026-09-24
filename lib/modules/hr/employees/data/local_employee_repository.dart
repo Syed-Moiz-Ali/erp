@@ -74,6 +74,61 @@ class LocalEmployeeRepository implements EmployeeRepository {
   }
 
   @override
+  Future<Result<List<Employee>>> searchAssignableCompanyEmployees(
+    AuthContext context, {
+    String query = '',
+    int limit = 50,
+  }) async {
+    if (context.user.status != AccountStatus.active ||
+        context.user.companyId != context.company.id) {
+      return Failed(fail('denied'));
+    }
+    try {
+      return Success(
+        await dao.searchAssignable(
+          context.company.id,
+          query: query,
+          limit: limit,
+        ),
+      );
+    } catch (_) {
+      return Failed(fail('storage'));
+    }
+  }
+
+  @override
+  Future<Result<Employee?>> getCompanyEmployee(
+    AuthContext context,
+    String id,
+  ) async {
+    if (context.user.status != AccountStatus.active ||
+        context.user.companyId != context.company.id) {
+      return Failed(fail('denied'));
+    }
+    try {
+      return Success(await dao.raw(context.company.id, id));
+    } catch (_) {
+      return Failed(fail('storage'));
+    }
+  }
+
+  @override
+  Future<Result<List<Employee>>> getCompanyEmployees(
+    AuthContext context,
+    Iterable<String> ids,
+  ) async {
+    if (context.user.status != AccountStatus.active ||
+        context.user.companyId != context.company.id) {
+      return Failed(fail('denied'));
+    }
+    try {
+      return Success(await dao.getMany(context.company.id, ids.toList()));
+    } catch (_) {
+      return Failed(fail('storage'));
+    }
+  }
+
+  @override
   Future<Result<bool>> checkEmailAvailability(
     AuthContext context,
     String email, {

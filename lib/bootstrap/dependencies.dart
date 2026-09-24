@@ -48,6 +48,8 @@ void configureApplicationComposition(GetIt services) {
       serviceSiteRepository: services(),
       serviceTeamRepository: services(),
       serviceMasterRepository: services(),
+      serviceEnquiryRepository: services(),
+      serviceJobAssignmentRepository: services(),
       workforceDirectory: services(),
       activityRepository: services(),
     ),

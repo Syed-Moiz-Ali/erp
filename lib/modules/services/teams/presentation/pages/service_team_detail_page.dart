@@ -71,7 +71,6 @@ class ServiceTeamDetailPage extends StatelessWidget {
             .firstOrNull;
 
         return AppPage(
-          maxWidth: AppDimensions.wideContent,
           header: AppPageHeader(
             title: team.name,
             subtitle: team.teamCode,

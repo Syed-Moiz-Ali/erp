@@ -269,7 +269,6 @@ GoRouter createAppRouter({
                   );
                   if (preferences == null || device == null) {
                     return AppPage(
-                      maxWidth: AppDimensions.details,
                       header: AppPageHeader(
                         title: context.l10n.notificationsReminders,
                       ),
@@ -286,7 +285,6 @@ GoRouter createAppRouter({
                       ?.employeeReference;
                   if (linked == null) {
                     return AppPage(
-                      maxWidth: AppDimensions.details,
                       header: AppPageHeader(
                         title: context.l10n.notificationsReminders,
                       ),
@@ -316,7 +314,6 @@ GoRouter createAppRouter({
                   final cubit = _providerOrNull<AppSyncStatusCubit>(context);
                   if (cubit == null) {
                     return AppPage(
-                      maxWidth: AppDimensions.details,
                       header: AppPageHeader(
                         title: context.l10n.syncDataAndSync,
                       ),

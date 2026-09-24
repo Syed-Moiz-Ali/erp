@@ -3,6 +3,17 @@
 abstract final class ServicesRoutes {
   static const root = '/app/services';
 
+  static const enquiries = '$root/enquiries';
+  static const enquiriesNew = '$enquiries/new';
+  static String enquiry(String id) => '$enquiries/${Uri.encodeComponent(id)}';
+  static String enquiryEdit(String id) => '${enquiry(id)}/edit';
+
+  static const assignments = '$root/job-assignments';
+  static const assignmentsNew = '$assignments/new';
+  static String assignment(String id) =>
+      '$assignments/${Uri.encodeComponent(id)}';
+  static String assignmentEdit(String id) => '${assignment(id)}/edit';
+
   static const customers = '$root/customers';
   static const customersNew = '$customers/new';
   static String customer(String id) => '$customers/${Uri.encodeComponent(id)}';

@@ -5634,4 +5634,867 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get servicesDenied =>
       'You do not have permission to perform this action.';
+
+  @override
+  String get permissionServiceEnquiryView => 'View enquiries';
+
+  @override
+  String get permissionServiceEnquiryCreate => 'Create enquiry';
+
+  @override
+  String get permissionServiceEnquiryEdit => 'Edit enquiry';
+
+  @override
+  String get permissionServiceEnquiryCancel => 'Cancel enquiry';
+
+  @override
+  String get servicesPermSubEnquiries => 'Enquiries';
+
+  @override
+  String get servicesPermEnquiriesView => 'View enquiries';
+
+  @override
+  String get servicesPermEnquiriesViewDesc =>
+      'View the company service enquiry queue and enquiry details.';
+
+  @override
+  String get servicesPermEnquiriesCreate => 'Create enquiry';
+
+  @override
+  String get servicesPermEnquiriesCreateDesc =>
+      'Log a new service enquiry, including restricted customer and site reference lookup.';
+
+  @override
+  String get servicesPermEnquiriesEdit => 'Edit enquiry';
+
+  @override
+  String get servicesPermEnquiriesEditDesc => 'Edit an open service enquiry.';
+
+  @override
+  String get servicesPermEnquiriesCancel => 'Cancel enquiry';
+
+  @override
+  String get servicesPermEnquiriesCancelDesc =>
+      'Cancel an open service enquiry (kept historically).';
+
+  @override
+  String get servicesNavEnquiries => 'Enquiries';
+
+  @override
+  String get servicesEnquiriesTitle => 'Service enquiries';
+
+  @override
+  String servicesEnquiryCount(String filtered, String total) {
+    return '$filtered of $total enquiries';
+  }
+
+  @override
+  String get servicesEnquirySearch =>
+      'Search by number, customer, mobile, site, building or unit';
+
+  @override
+  String get servicesEnquiryAllStatuses => 'All statuses';
+
+  @override
+  String get servicesEnquiryEmpty => 'No service enquiries yet.';
+
+  @override
+  String get servicesEnquiryEmptyMessage =>
+      'Log the first service enquiry to start the operational queue.';
+
+  @override
+  String get servicesEnquiryNoResults => 'No enquiries match your filters.';
+
+  @override
+  String get servicesEnquiryAdd => 'New enquiry';
+
+  @override
+  String get servicesEnquiryColumnEnquiry => 'Enquiry';
+
+  @override
+  String get servicesEnquiryColumnCustomer => 'Customer';
+
+  @override
+  String get servicesEnquiryColumnSite => 'Site';
+
+  @override
+  String get servicesEnquiryColumnService => 'Service / complaint';
+
+  @override
+  String get servicesEnquiryColumnPriority => 'Priority';
+
+  @override
+  String get servicesEnquiryColumnTicket => 'Ticket type';
+
+  @override
+  String get servicesEnquiryColumnStatus => 'Status';
+
+  @override
+  String get servicesEnquiryColumnCreated => 'Created';
+
+  @override
+  String get servicesEnquiryStatusOpen => 'Open';
+
+  @override
+  String get servicesEnquiryStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesEnquiryFilterTitle => 'Filters';
+
+  @override
+  String get servicesEnquiryFilterStatus => 'Status';
+
+  @override
+  String get servicesEnquiryFilterServiceType => 'Service type';
+
+  @override
+  String get servicesEnquiryFilterComplaintType => 'Complaint type';
+
+  @override
+  String get servicesEnquiryFilterPriority => 'Priority';
+
+  @override
+  String get servicesEnquiryFilterTicketType => 'Ticket type';
+
+  @override
+  String get servicesEnquiryFilterCreatedFrom => 'Created from';
+
+  @override
+  String get servicesEnquiryFilterCreatedTo => 'Created to';
+
+  @override
+  String get servicesEnquiryDetailCustomerSection => 'Customer & location';
+
+  @override
+  String get servicesEnquiryDetailServiceSection => 'Service details';
+
+  @override
+  String get servicesEnquiryDetailComplaintSection => 'Complaint';
+
+  @override
+  String get servicesEnquiryDetailRecord => 'Record';
+
+  @override
+  String get servicesEnquiryDetailActivity => 'Activity';
+
+  @override
+  String get servicesEnquiryCustomerCode => 'Customer code';
+
+  @override
+  String get servicesEnquiryCustomerName => 'Customer';
+
+  @override
+  String get servicesEnquiryCustomerMobile => 'Customer mobile';
+
+  @override
+  String get servicesEnquirySite => 'Service site';
+
+  @override
+  String get servicesEnquiryTenant => 'Tenant';
+
+  @override
+  String get servicesEnquiryBuilding => 'Building';
+
+  @override
+  String get servicesEnquiryUnit => 'Unit';
+
+  @override
+  String get servicesEnquiryAddress => 'Address';
+
+  @override
+  String get servicesEnquiryContact => 'Contact';
+
+  @override
+  String get servicesEnquiryServiceType => 'Service type';
+
+  @override
+  String get servicesEnquiryComplaintType => 'Complaint type';
+
+  @override
+  String get servicesEnquiryPriority => 'Priority';
+
+  @override
+  String get servicesEnquiryTicketType => 'Ticket type';
+
+  @override
+  String get servicesEnquiryDescription => 'Complaint details';
+
+  @override
+  String get servicesEnquiryCreatedBy => 'Created by';
+
+  @override
+  String get servicesEnquiryCreatedAt => 'Created at';
+
+  @override
+  String get servicesEnquiryUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesEnquiryUpdatedAt => 'Updated at';
+
+  @override
+  String get servicesEnquiryVersion => 'Version';
+
+  @override
+  String get servicesEnquiryCancelledAt => 'Cancelled at';
+
+  @override
+  String get servicesEnquiryCancelReason => 'Cancellation reason';
+
+  @override
+  String get servicesEnquiryNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesEnquiryEdit => 'Edit enquiry';
+
+  @override
+  String get servicesEnquiryCancel => 'Cancel enquiry';
+
+  @override
+  String get servicesEnquiryCreate => 'Create enquiry';
+
+  @override
+  String get servicesEnquiryCancelConfirmTitle => 'Cancel enquiry?';
+
+  @override
+  String get servicesEnquiryCancelConfirmMessage =>
+      'The cancelled enquiry stays available historically and cannot be edited afterwards.';
+
+  @override
+  String get servicesEnquiryCancelReasonHint => 'Optional cancellation reason';
+
+  @override
+  String get servicesEnquiryCreated => 'Enquiry created.';
+
+  @override
+  String get servicesEnquiryUpdated => 'Enquiry updated.';
+
+  @override
+  String get servicesEnquiryCancelled => 'Enquiry cancelled.';
+
+  @override
+  String get servicesEnquiryFormNew => 'New enquiry';
+
+  @override
+  String get servicesEnquiryFormEdit => 'Edit enquiry';
+
+  @override
+  String get servicesEnquirySectionCustomerLocation => 'Customer & location';
+
+  @override
+  String get servicesEnquirySectionService => 'Service details';
+
+  @override
+  String get servicesEnquirySectionComplaint => 'Complaint';
+
+  @override
+  String get servicesEnquirySectionSummary => 'Summary';
+
+  @override
+  String get servicesEnquirySelectCustomer => 'Select a customer';
+
+  @override
+  String get servicesEnquirySelectSite => 'Select a service site';
+
+  @override
+  String get servicesEnquiryChangeCustomer => 'Change customer';
+
+  @override
+  String get servicesEnquiryChangeSite => 'Change site';
+
+  @override
+  String get servicesEnquiryCreateCustomer => 'Create customer';
+
+  @override
+  String get servicesEnquiryCreateSite => 'Add site';
+
+  @override
+  String get servicesEnquiryNoSitesForCustomer =>
+      'No active sites for this customer.';
+
+  @override
+  String get servicesEnquiryNoComplaintTypes =>
+      'No complaint types are available for this service type.';
+
+  @override
+  String get servicesEnquiryDescriptionHint =>
+      'Describe the complaint or service request';
+
+  @override
+  String get servicesEnquiryCustomerRequired => 'Select a customer.';
+
+  @override
+  String get servicesEnquirySiteRequired => 'Select a service site.';
+
+  @override
+  String get servicesEnquiryServiceTypeRequired => 'Select a service type.';
+
+  @override
+  String get servicesEnquiryComplaintTypeRequired => 'Select a complaint type.';
+
+  @override
+  String get servicesEnquiryPriorityRequired => 'Select a priority.';
+
+  @override
+  String get servicesEnquiryTicketTypeRequired => 'Select a ticket type.';
+
+  @override
+  String get servicesEnquiryDescriptionRequired =>
+      'Enter the complaint details.';
+
+  @override
+  String get servicesEnquiryDescriptionTooLong =>
+      'The complaint details are too long.';
+
+  @override
+  String get servicesEnquiryDenied =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get servicesEnquiryNotFound => 'Enquiry not found.';
+
+  @override
+  String get servicesEnquiryNotEditable => 'Only open enquiries can be edited.';
+
+  @override
+  String get servicesEnquiryAlreadyCancelled =>
+      'This enquiry is already cancelled.';
+
+  @override
+  String get servicesEnquiryCustomerNotFound => 'Customer not found.';
+
+  @override
+  String get servicesEnquiryCustomerInactive =>
+      'The selected customer is inactive.';
+
+  @override
+  String get servicesEnquirySiteNotFound => 'Service site not found.';
+
+  @override
+  String get servicesEnquirySiteInactive =>
+      'The selected service site is inactive.';
+
+  @override
+  String get servicesEnquirySiteCustomerMismatch =>
+      'The selected site does not belong to the selected customer.';
+
+  @override
+  String get servicesEnquiryServiceTypeInvalid =>
+      'The selected service type is not available.';
+
+  @override
+  String get servicesEnquiryComplaintTypeInvalid =>
+      'The selected complaint type is not available.';
+
+  @override
+  String get servicesEnquiryComplaintTypeMismatch =>
+      'The complaint type does not match the selected service type.';
+
+  @override
+  String get servicesEnquiryPriorityInvalid =>
+      'The selected priority is not available.';
+
+  @override
+  String get servicesEnquiryTicketTypeInvalid =>
+      'The selected ticket type is not available.';
+
+  @override
+  String get servicesEnquirySequenceFailed =>
+      'Could not allocate an enquiry number.';
+
+  @override
+  String get servicesEnquiryStorageError =>
+      'Could not save the enquiry. Please try again.';
+
+  @override
+  String get servicesActivityCancelled => 'Cancelled';
+
+  @override
+  String get servicesOverviewEnquiriesOpen => 'Open enquiries';
+
+  @override
+  String get servicesOverviewEnquiriesToday => 'Enquiries today';
+
+  @override
+  String get servicesOverviewEnquiriesHigh => 'High / urgent open';
+
+  @override
+  String get servicesOverviewRecentEnquiries => 'Recent enquiries';
+
+  @override
+  String get servicesOverviewNewEnquiry => 'New enquiry';
+
+  @override
+  String get servicesOverviewNoEnquiries => 'No enquiries yet.';
+
+  @override
+  String get servicesEnquiryRecentForCustomer => 'Recent enquiries';
+
+  @override
+  String get servicesEnquiryRecentForSite => 'Recent enquiries';
+
+  @override
+  String get servicesEnquiryNoneForCustomer =>
+      'No enquiries for this customer yet.';
+
+  @override
+  String get servicesEnquiryNoneForSite => 'No enquiries for this site yet.';
+
+  @override
+  String get servicesEnquiryDetailsSection => 'Enquiry details';
+
+  @override
+  String get servicesEnquiryAddDetail => 'Add another issue';
+
+  @override
+  String get servicesEnquiryRemoveDetail => 'Remove issue';
+
+  @override
+  String servicesEnquiryDetailLine(String index) {
+    return 'Issue $index';
+  }
+
+  @override
+  String get servicesEnquiryDetailDescription => 'Description';
+
+  @override
+  String get servicesEnquiryDetailStatus => 'Status';
+
+  @override
+  String get servicesEnquiryDetailStatusOpen => 'Open';
+
+  @override
+  String get servicesEnquiryDetailStatusClosed => 'Closed';
+
+  @override
+  String get servicesEnquiryPhotos => 'Photos';
+
+  @override
+  String get servicesEnquiryAddPhotos => 'Add photos';
+
+  @override
+  String get servicesEnquiryMaterialReceived => 'Material received';
+
+  @override
+  String get servicesEnquiryMaterialReceivedYes => 'Yes';
+
+  @override
+  String get servicesEnquiryMaterialReceivedNo => 'No';
+
+  @override
+  String get servicesEnquiryNoDetails => 'No details recorded.';
+
+  @override
+  String get servicesEnquiryDetailsRequired =>
+      'Add at least one enquiry detail.';
+
+  @override
+  String get servicesEnquiryDetailDescriptionRequired =>
+      'Enter a description for each enquiry detail.';
+
+  @override
+  String get servicesEnquiryAttachmentUnsupportedType =>
+      'Unsupported file type.';
+
+  @override
+  String get servicesEnquiryAttachmentTooLarge => 'File is too large.';
+
+  @override
+  String get servicesEnquiryAttachmentLimitReached =>
+      'Attachment limit reached.';
+
+  @override
+  String get servicesEnquiryAttachmentFailure => 'Could not attach the file.';
+
+  @override
+  String get attachmentUploaded => 'Uploaded';
+
+  @override
+  String get attachmentLocalOnly => 'Local';
+
+  @override
+  String get attachmentPendingUpload => 'Pending';
+
+  @override
+  String get attachmentFailed => 'Failed';
+
+  @override
+  String get attachmentPendingDelete => 'Deleting';
+
+  @override
+  String get attachmentDeleted => 'Deleted';
+
+  @override
+  String get servicesNavJobAssignments => 'Job assignments';
+
+  @override
+  String get servicesPermSubJobAssignments => 'Job assignments';
+
+  @override
+  String get servicesPermJobAssignmentsView => 'View job assignments';
+
+  @override
+  String get servicesPermJobAssignmentsViewDesc =>
+      'View the company job assignment queue within your record scope.';
+
+  @override
+  String get servicesPermJobAssignmentsCreate => 'Create job assignment';
+
+  @override
+  String get servicesPermJobAssignmentsCreateDesc =>
+      'Assign work from an eligible enquiry, including restricted enquiry, employee and team reference lookup.';
+
+  @override
+  String get servicesPermJobAssignmentsEdit => 'Edit job assignment';
+
+  @override
+  String get servicesPermJobAssignmentsEditDesc =>
+      'Edit or reassign an active job assignment.';
+
+  @override
+  String get servicesPermJobAssignmentsCancel => 'Cancel job assignment';
+
+  @override
+  String get servicesPermJobAssignmentsCancelDesc =>
+      'Cancel an active job assignment (kept historically).';
+
+  @override
+  String get permissionServiceJobAssignmentView => 'View job assignments';
+
+  @override
+  String get permissionServiceJobAssignmentCreate => 'Create job assignment';
+
+  @override
+  String get permissionServiceJobAssignmentEdit => 'Edit job assignment';
+
+  @override
+  String get permissionServiceJobAssignmentCancel => 'Cancel job assignment';
+
+  @override
+  String get servicesJobAssignmentsTitle => 'Job assignments';
+
+  @override
+  String servicesJobAssignmentCount(String filtered, String total) {
+    return '$filtered of $total job assignments';
+  }
+
+  @override
+  String get servicesJobAssignmentSearch =>
+      'Search by assignment, enquiry, customer, mobile, site, employee or team';
+
+  @override
+  String get servicesJobAssignmentAllStatuses => 'All statuses';
+
+  @override
+  String get servicesJobAssignmentStatusActive => 'Active';
+
+  @override
+  String get servicesJobAssignmentStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesJobAssignmentEmpty => 'No job assignments yet.';
+
+  @override
+  String get servicesJobAssignmentEmptyMessage =>
+      'Create a job assignment from an open service enquiry.';
+
+  @override
+  String get servicesJobAssignmentNoResults =>
+      'No job assignments match your filters.';
+
+  @override
+  String get servicesJobAssignmentAdd => 'New job assignment';
+
+  @override
+  String get servicesJobAssignmentColumnAssignment => 'Assignment';
+
+  @override
+  String get servicesJobAssignmentColumnEnquiry => 'Enquiry';
+
+  @override
+  String get servicesJobAssignmentColumnCustomerSite => 'Customer / site';
+
+  @override
+  String get servicesJobAssignmentColumnVisitDate => 'Visit date';
+
+  @override
+  String get servicesJobAssignmentColumnAssignedTo => 'Assigned to';
+
+  @override
+  String get servicesJobAssignmentColumnPriority => 'Priority';
+
+  @override
+  String get servicesJobAssignmentColumnStatus => 'Status';
+
+  @override
+  String get servicesJobAssignmentColumnCreated => 'Created';
+
+  @override
+  String get servicesJobAssignmentFilterTitle => 'Filters';
+
+  @override
+  String get servicesJobAssignmentFilterStatus => 'Status';
+
+  @override
+  String get servicesJobAssignmentFilterPriority => 'Priority';
+
+  @override
+  String get servicesJobAssignmentFilterVisitFrom => 'Visit from';
+
+  @override
+  String get servicesJobAssignmentFilterVisitTo => 'Visit to';
+
+  @override
+  String get servicesJobAssignmentFormNew => 'New job assignment';
+
+  @override
+  String get servicesJobAssignmentFormEdit => 'Edit job assignment';
+
+  @override
+  String get servicesJobAssignmentCreate => 'Create job assignment';
+
+  @override
+  String get servicesJobAssignmentSectionJobContext => 'Job context';
+
+  @override
+  String get servicesJobAssignmentSectionSchedule => 'Schedule';
+
+  @override
+  String get servicesJobAssignmentSectionCustomerLocation =>
+      'Customer & location';
+
+  @override
+  String get servicesJobAssignmentSectionServiceContext => 'Service context';
+
+  @override
+  String get servicesJobAssignmentSectionSourceIssues =>
+      'Source enquiry issues';
+
+  @override
+  String get servicesJobAssignmentSectionWork => 'Work assignment';
+
+  @override
+  String get servicesJobAssignmentNo => 'Assignment no';
+
+  @override
+  String get servicesJobAssignmentDate => 'Assignment date';
+
+  @override
+  String get servicesJobAssignmentVisitDate => 'Visit date';
+
+  @override
+  String get servicesJobAssignmentEnquiry => 'Enquiry';
+
+  @override
+  String get servicesJobAssignmentSelectEnquiry => 'Select an eligible enquiry';
+
+  @override
+  String get servicesJobAssignmentChangeEnquiry => 'Change enquiry';
+
+  @override
+  String get servicesJobAssignmentNoIssues => 'No enquiry issues recorded.';
+
+  @override
+  String get servicesJobAssignmentMaterialReceived => 'Material received';
+
+  @override
+  String get servicesJobAssignmentWork => 'Work';
+
+  @override
+  String get servicesJobAssignmentTechnician => 'Technician';
+
+  @override
+  String get servicesJobAssignmentServiceTeam => 'Service team';
+
+  @override
+  String get servicesJobAssignmentLineStatus => 'Status';
+
+  @override
+  String get servicesJobAssignmentLineStatusPending => 'Pending';
+
+  @override
+  String get servicesJobAssignmentDescriptionForWork => 'Description for work';
+
+  @override
+  String get servicesJobAssignmentAddLine => 'Add work item';
+
+  @override
+  String get servicesJobAssignmentRemoveLine => 'Remove work item';
+
+  @override
+  String servicesJobAssignmentLineTitle(String index) {
+    return 'Work item $index';
+  }
+
+  @override
+  String get servicesJobAssignmentNoTargets =>
+      'Assign an employee, a service team, or both.';
+
+  @override
+  String get servicesJobAssignmentDetailContext => 'Enquiry context';
+
+  @override
+  String get servicesJobAssignmentDetailWork => 'Work items';
+
+  @override
+  String get servicesJobAssignmentDetailAudit => 'Record';
+
+  @override
+  String get servicesJobAssignmentDetailActivity => 'Activity';
+
+  @override
+  String get servicesJobAssignmentEdit => 'Edit assignment';
+
+  @override
+  String get servicesJobAssignmentCancel => 'Cancel assignment';
+
+  @override
+  String get servicesJobAssignmentCancelConfirmTitle => 'Cancel assignment?';
+
+  @override
+  String get servicesJobAssignmentCancelConfirmMessage =>
+      'The cancelled assignment stays available historically and cannot be edited afterwards.';
+
+  @override
+  String get servicesJobAssignmentCreated => 'Job assignment created.';
+
+  @override
+  String get servicesJobAssignmentUpdated => 'Job assignment updated.';
+
+  @override
+  String get servicesJobAssignmentCancelled => 'Job assignment cancelled.';
+
+  @override
+  String get servicesJobAssignmentNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesJobAssignmentCreatedBy => 'Created by';
+
+  @override
+  String get servicesJobAssignmentCreatedAt => 'Created at';
+
+  @override
+  String get servicesJobAssignmentUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesJobAssignmentUpdatedAt => 'Updated at';
+
+  @override
+  String get servicesJobAssignmentVersion => 'Version';
+
+  @override
+  String get servicesJobAssignmentCancelledAt => 'Cancelled at';
+
+  @override
+  String get servicesJobAssignmentEnquiryRequired => 'Select an enquiry.';
+
+  @override
+  String get servicesJobAssignmentVisitDateRequired => 'Select a visit date.';
+
+  @override
+  String get servicesJobAssignmentLinesRequired =>
+      'Add at least one work item.';
+
+  @override
+  String get servicesJobAssignmentWorkRequired =>
+      'Enter the work for each item.';
+
+  @override
+  String get servicesJobAssignmentWorkTooLong => 'The work text is too long.';
+
+  @override
+  String get servicesJobAssignmentDescriptionTooLong =>
+      'The description is too long.';
+
+  @override
+  String get servicesJobAssignmentTargetRequired =>
+      'Assign an employee, a service team, or both.';
+
+  @override
+  String get servicesJobAssignmentEnquiryNotFound => 'Enquiry not found.';
+
+  @override
+  String get servicesJobAssignmentEnquiryNotOpen =>
+      'Only open enquiries can be assigned.';
+
+  @override
+  String get servicesJobAssignmentAlreadyActive =>
+      'This enquiry already has an active job assignment.';
+
+  @override
+  String get servicesJobAssignmentNotFound => 'Job assignment not found.';
+
+  @override
+  String get servicesJobAssignmentNotEditable =>
+      'Only active job assignments can be edited.';
+
+  @override
+  String get servicesJobAssignmentAlreadyCancelled =>
+      'This job assignment is already cancelled.';
+
+  @override
+  String get servicesJobAssignmentEmployeeInvalid =>
+      'The selected employee is not available.';
+
+  @override
+  String get servicesJobAssignmentTeamInvalid =>
+      'The selected service team is not available.';
+
+  @override
+  String get servicesJobAssignmentEmployeeNotInTeam =>
+      'The selected employee is not a member of the selected service team.';
+
+  @override
+  String get servicesJobAssignmentSequenceFailed =>
+      'Could not allocate an assignment number.';
+
+  @override
+  String get servicesJobAssignmentDenied =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get servicesJobAssignmentStorageError =>
+      'Could not save the job assignment. Please try again.';
+
+  @override
+  String get servicesActivityAssigned => 'Assigned';
+
+  @override
+  String get servicesActivityReopened => 'Reopened';
+
+  @override
+  String get servicesOverviewAssignmentsScheduled => 'Scheduled assignments';
+
+  @override
+  String get servicesOverviewAssignmentsToday => 'Visits today';
+
+  @override
+  String get servicesOverviewAssignmentsUpcoming => 'Upcoming visits';
+
+  @override
+  String get servicesOverviewRecentAssignments => 'Upcoming assignments';
+
+  @override
+  String get servicesOverviewNoAssignments => 'No upcoming assignments.';
+
+  @override
+  String get servicesEnquiryAssignmentSection => 'Job assignment';
+
+  @override
+  String get servicesEnquiryCreateAssignment => 'Create job assignment';
+
+  @override
+  String get servicesEnquiryViewAssignment => 'View job assignment';
+
+  @override
+  String get servicesEnquiryStatusAssigned => 'Assigned';
+
+  @override
+  String get notifServiceWorkAssignedTitle => 'Service work assigned';
+
+  @override
+  String get notifServiceWorkAssignedBody =>
+      'You have been assigned service work.';
+
+  @override
+  String get servicesJobAssignmentGenerated => 'Generated when saved';
 }

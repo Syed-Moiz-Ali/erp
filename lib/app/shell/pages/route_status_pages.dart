@@ -16,7 +16,6 @@ class RouteStatusPage extends StatelessWidget {
   final String landing;
   @override
   Widget build(BuildContext context) => AppPage(
-    maxWidth: AppDimensions.details,
     child: AppCard(
       child: Column(
         children: [

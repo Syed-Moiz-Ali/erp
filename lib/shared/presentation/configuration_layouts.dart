@@ -481,7 +481,6 @@ class ConfigurationFormLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) => AppPage(
-    maxWidth: 880,
     header: AppPageHeader(title: title),
     child: loading
         ? const AppConfigurationSkeleton()
