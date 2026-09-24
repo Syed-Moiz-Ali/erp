@@ -89,7 +89,7 @@ class MyProfilePage extends StatelessWidget {
             ),
             vm.referenceName(vm.references?.departments, employee.departmentId),
           ].whereType<String>().where((s) => s.isNotEmpty).join(' Â· ')
-        : vm.account.user.role.label(l);
+        : vm.account.company.name;
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Row(
@@ -133,7 +133,7 @@ class MyProfilePage extends StatelessWidget {
                         status: AppStatus.neutral,
                       ),
                     AppStatusBadge(
-                      label: vm.account.user.role.label(l),
+                      label: vm.account.company.code,
                       status: AppStatus.brand,
                     ),
                   ],
@@ -289,7 +289,6 @@ class MyProfilePage extends StatelessWidget {
           l.profileLoginEmail: account.user.email,
           l.authAccountStatus: account.user.status.label(l),
           l.profileCurrentCompany: account.company.name,
-          l.profileRoles: account.user.role.label(l),
         },
       ),
       const SizedBox(height: AppSpacing.xl),
@@ -383,11 +382,9 @@ class MyProfilePage extends StatelessWidget {
       rows.add(MapEntry(l.cfgConfiguration, l.profileManage));
     }
     if (capabilities.has(UserCapability.manageUsers) ||
-        capabilities.has(UserCapability.manageRoles) ||
         capabilities.has(UserCapability.manageCompany)) {
       final admin = <String>[
         if (capabilities.has(UserCapability.manageUsers)) l.shellAdministration,
-        if (capabilities.has(UserCapability.manageRoles)) l.profileRoles,
         if (capabilities.has(UserCapability.manageCompany))
           l.profileCurrentCompany,
       ];

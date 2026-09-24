@@ -6,7 +6,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_scope_resolver.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/demo/demo_attendance_seed.dart';
 import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
@@ -18,7 +18,7 @@ void main() {
   late AppDatabase db;
   late MockAuth auth;
   late WorkforceAttendanceReadRepository repo;
-  var actor = employeeContext(AppRole.manager);
+  var actor = employeeContext(DemoScenario.manager);
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
@@ -36,7 +36,7 @@ void main() {
   test(
     'manager can read only direct reports, with bounded pagination',
     () async {
-      actor = employeeContext(AppRole.manager);
+      actor = employeeContext(DemoScenario.manager);
       final result = await repo.read(
         date: DateTime.utc(2026, 9, 18),
         scope: AttendanceScope.team,
@@ -57,7 +57,7 @@ void main() {
   );
 
   test('team search and company scope are permission bound', () async {
-    actor = employeeContext(AppRole.manager);
+    actor = employeeContext(DemoScenario.manager);
     final search = await repo.read(
       date: DateTime.utc(2026, 9, 18),
       scope: AttendanceScope.team,
@@ -76,7 +76,7 @@ void main() {
       ),
       isA<Failed<WorkforceAttendancePage>>(),
     );
-    actor = employeeContext(AppRole.hr);
+    actor = employeeContext(DemoScenario.hr);
     final company = await repo.read(
       date: DateTime.utc(2026, 9, 18),
       scope: AttendanceScope.company,
@@ -93,7 +93,7 @@ void main() {
       final clock = FakeClock(DateTime.utc(2026, 9, 18, 12));
       await seedDemoAttendance(db, enabled: true, clock: clock);
       await seedDemoWorkforce(db, enabled: true, clock: clock);
-      actor = employeeContext(AppRole.manager);
+      actor = employeeContext(DemoScenario.manager);
       final result = await repo.read(
         date: DateTime.utc(2026, 9, 18),
         scope: AttendanceScope.team,
@@ -134,7 +134,7 @@ void main() {
         enabled: true,
         clock: FakeClock(DateTime.utc(2026, 9, 18, 12)),
       );
-      actor = employeeContext(AppRole.manager);
+      actor = employeeContext(DemoScenario.manager);
       final all =
           (await repo.read(
                     date: DateTime.utc(2026, 9, 18),

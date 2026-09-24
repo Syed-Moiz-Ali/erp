@@ -5,6 +5,7 @@ import 'package:modular_erp/l10n/l10n.dart';
 extension AccessCatalogLocalization on AppLocalizations {
   String moduleLabel(String key) => switch (key) {
     'hr' || 'hrPermModuleHr' => hrPermModuleHr,
+    'services' || 'servicesPermModuleServices' => servicesPermModuleServices,
     'platform' || 'accessModulePlatform' => accessModulePlatform,
     _ => key,
   };
@@ -16,6 +17,9 @@ extension AccessCatalogLocalization on AppLocalizations {
     'reports' => hrPermSubReports,
     'configuration' => hrPermSubConfiguration,
     'access' => accessSubAccess,
+    'customers' => servicesPermSubCustomers,
+    'sites' => servicesPermSubSites,
+    'teams' => servicesPermSubTeams,
     _ => key,
   };
 
@@ -59,9 +63,26 @@ extension AccessCatalogLocalization on AppLocalizations {
     'accessPermissionsManage' => accessPermissionsManage,
     'accessModulesView' => accessModulesView,
     'accessCompanyUsersManage' => accessCompanyUsersManage,
-    'accessCompanyRolesManage' => accessCompanyRolesManage,
     'accessPlatformCompaniesManage' => accessPlatformCompaniesManage,
     'accessPlatformModulesManage' => accessPlatformModulesManage,
+    'servicesPermCustomersView' => servicesPermCustomersView,
+    'servicesPermCustomersCreate' => servicesPermCustomersCreate,
+    'servicesPermCustomersEdit' => servicesPermCustomersEdit,
+    'servicesPermCustomersDeactivate' => servicesPermCustomersDeactivate,
+    'servicesPermSitesView' => servicesPermSitesView,
+    'servicesPermSitesCreate' => servicesPermSitesCreate,
+    'servicesPermSitesEdit' => servicesPermSitesEdit,
+    'servicesPermSitesDeactivate' => servicesPermSitesDeactivate,
+    'servicesPermTeamsView' => servicesPermTeamsView,
+    'servicesPermTeamsManage' => servicesPermTeamsManage,
+    'servicesPermServiceTypesView' => servicesPermServiceTypesView,
+    'servicesPermServiceTypesManage' => servicesPermServiceTypesManage,
+    'servicesPermComplaintTypesView' => servicesPermComplaintTypesView,
+    'servicesPermComplaintTypesManage' => servicesPermComplaintTypesManage,
+    'servicesPermPrioritiesView' => servicesPermPrioritiesView,
+    'servicesPermPrioritiesManage' => servicesPermPrioritiesManage,
+    'servicesPermTicketTypesView' => servicesPermTicketTypesView,
+    'servicesPermTicketTypesManage' => servicesPermTicketTypesManage,
     _ => key,
   };
 
@@ -107,9 +128,28 @@ extension AccessCatalogLocalization on AppLocalizations {
     'accessPermissionsManageDesc' => accessPermissionsManageDesc,
     'accessModulesViewDesc' => accessModulesViewDesc,
     'accessCompanyUsersManageDesc' => accessCompanyUsersManageDesc,
-    'accessCompanyRolesManageDesc' => accessCompanyRolesManageDesc,
     'accessPlatformCompaniesManageDesc' => accessPlatformCompaniesManageDesc,
     'accessPlatformModulesManageDesc' => accessPlatformModulesManageDesc,
+    'servicesPermCustomersViewDesc' => servicesPermCustomersViewDesc,
+    'servicesPermCustomersCreateDesc' => servicesPermCustomersCreateDesc,
+    'servicesPermCustomersEditDesc' => servicesPermCustomersEditDesc,
+    'servicesPermCustomersDeactivateDesc' =>
+      servicesPermCustomersDeactivateDesc,
+    'servicesPermSitesViewDesc' => servicesPermSitesViewDesc,
+    'servicesPermSitesCreateDesc' => servicesPermSitesCreateDesc,
+    'servicesPermSitesEditDesc' => servicesPermSitesEditDesc,
+    'servicesPermSitesDeactivateDesc' => servicesPermSitesDeactivateDesc,
+    'servicesPermTeamsViewDesc' => servicesPermTeamsViewDesc,
+    'servicesPermTeamsManageDesc' => servicesPermTeamsManageDesc,
+    'servicesPermServiceTypesViewDesc' => servicesPermServiceTypesViewDesc,
+    'servicesPermServiceTypesManageDesc' => servicesPermServiceTypesManageDesc,
+    'servicesPermComplaintTypesViewDesc' => servicesPermComplaintTypesViewDesc,
+    'servicesPermComplaintTypesManageDesc' =>
+      servicesPermComplaintTypesManageDesc,
+    'servicesPermPrioritiesViewDesc' => servicesPermPrioritiesViewDesc,
+    'servicesPermPrioritiesManageDesc' => servicesPermPrioritiesManageDesc,
+    'servicesPermTicketTypesViewDesc' => servicesPermTicketTypesViewDesc,
+    'servicesPermTicketTypesManageDesc' => servicesPermTicketTypesManageDesc,
     _ => key,
   };
 

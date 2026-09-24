@@ -7,6 +7,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
@@ -79,7 +80,7 @@ void main() {
     await seedEmployees(db);
     await seedAttendanceConfiguration(db);
     local = AttendanceLocalDataSource(db);
-    actor = employeeContext(AppRole.employee);
+    actor = employeeContext(DemoScenario.employee);
     auth = MockAuth();
     when(() => auth.checkSession()).thenAnswer((_) async => Success(actor));
     when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());

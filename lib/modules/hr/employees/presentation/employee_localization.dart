@@ -28,7 +28,6 @@ String employeeFailure(Failure failure, AppLocalizations l) =>
       'manager' => l.empInvalidManager,
       'reference' => l.empInvalidReference,
       'assignment' => l.cfgAssignmentError,
-      'accountRole' => l.empAccountRoleError,
       'denied' => l.shellAccessMessage,
       _ => l.empStorageError,
     };

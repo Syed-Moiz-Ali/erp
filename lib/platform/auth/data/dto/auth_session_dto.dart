@@ -53,7 +53,6 @@ abstract final class AuthSessionMapper {
       phone: u['phone'] as String?,
       avatarUrl: u['avatarUrl'] as String?,
       companyId: u['companyId'] as String,
-      role: roleFromCode(u['role'] as String),
       permissions: PermissionSet(
         (u['permissions'] as List)
             .cast<String>()
@@ -106,7 +105,6 @@ abstract final class AuthSessionMapper {
         'phone': u.phone,
         'avatarUrl': u.avatarUrl,
         'companyId': u.companyId,
-        'role': roleCode(u.role),
         'status': u.status.name,
         'permissions': u.permissions.values.map((p) => p.name).toList(),
       },
@@ -136,20 +134,4 @@ abstract final class AuthSessionMapper {
     }
     return null; // Unknown grants fail closed, allowing newer server versions.
   }
-
-  static String roleCode(AppRole role) => switch (role) {
-    AppRole.superAdmin => 'SUPER_ADMIN',
-    AppRole.companyAdmin => 'COMPANY_ADMIN',
-    AppRole.hr => 'HR',
-    AppRole.manager => 'MANAGER',
-    AppRole.employee => 'EMPLOYEE',
-  };
-  static AppRole roleFromCode(String code) => switch (code) {
-    'SUPER_ADMIN' => AppRole.superAdmin,
-    'COMPANY_ADMIN' => AppRole.companyAdmin,
-    'HR' => AppRole.hr,
-    'MANAGER' => AppRole.manager,
-    'EMPLOYEE' => AppRole.employee,
-    _ => throw const FormatException('Unknown role'),
-  };
 }

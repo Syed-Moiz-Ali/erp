@@ -11,7 +11,7 @@ import 'package:modular_erp/platform/access/data/local_access_repository.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/user_permission_grant.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 
@@ -176,18 +176,18 @@ void main() {
       defaultLocale: 'en',
       enabledModules: {'employees', 'attendance', 'leave'},
     );
-    AuthContext account(AppRole role, PermissionSet permissions) => AuthContext(
-      user: UserAccount(
-        id: 'u1',
-        displayName: 'User',
-        email: 'u@erp.demo',
-        companyId: 'c1',
-        role: role,
-        permissions: permissions,
-        status: AccountStatus.active,
-      ),
-      company: company(),
-    );
+    AuthContext account(DemoScenario role, PermissionSet permissions) =>
+        AuthContext(
+          user: UserAccount(
+            id: 'u1',
+            displayName: 'User',
+            email: 'u@erp.demo',
+            companyId: 'c1',
+            permissions: permissions,
+            status: AccountStatus.active,
+          ),
+          company: company(),
+        );
 
     test('changing the legacy role label does not change capabilities', () {
       final permissions = PermissionSet([
@@ -197,10 +197,10 @@ void main() {
       ]);
       const resolver = UserCapabilityResolver();
       final asAdmin = resolver.forAuthContext(
-        account(AppRole.superAdmin, permissions),
+        account(DemoScenario.platformAdmin, permissions),
       );
       final asEmployee = resolver.forAuthContext(
-        account(AppRole.employee, permissions),
+        account(DemoScenario.employee, permissions),
       );
       expect(asAdmin.granted, asEmployee.granted);
       // Unlinked users get no self-service capability regardless of role label.
@@ -210,7 +210,7 @@ void main() {
 
     test('ALL records access does not imply SELF actions', () {
       final unlinked = account(
-        AppRole.manager,
+        DemoScenario.manager,
         PermissionSet([
           AppPermission.leaveViewAll,
           AppPermission.leaveApproveAll,
@@ -226,7 +226,7 @@ void main() {
 
     test('role templates are demo seed fixtures only', () {
       // A role template is explicit grants; it never implies authority by name.
-      final template = permissionsForRole(AppRole.employee);
+      final template = demoScenarioGrants(DemoScenario.employee);
       expect(template.contains(AppPermission.leaveRequest), isTrue);
       expect(template.contains(AppPermission.employeeViewAll), isFalse);
     });

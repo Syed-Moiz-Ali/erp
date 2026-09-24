@@ -32,7 +32,6 @@ AuthContext _context(PermissionSet permissions) => AuthContext(
     displayName: 'User',
     email: 'u@erp.demo',
     companyId: 'c1',
-    role: AppRole.employee,
     permissions: permissions,
     status: AccountStatus.active,
   ),

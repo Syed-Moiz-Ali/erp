@@ -7,7 +7,7 @@ import 'package:modular_erp/platform/access/platform_permission_catalog.dart';
 ///
 /// Each module owns its contribution; the application composes them once. New
 /// modules register here and the Access UI renders them automatically.
-const erpAccessCatalog = PermissionCatalog([
+final erpAccessCatalog = PermissionCatalog([
   ...hrPermissionModules,
   ...servicesPermissionModules,
   ...platformPermissionModules,

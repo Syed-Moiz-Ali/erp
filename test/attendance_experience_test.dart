@@ -30,6 +30,7 @@ import 'attendance_test.dart' show FakeClock, MockCapture, TestSender;
 import 'employee_test.dart' show employeeContext;
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/attendance/data/attendance_sync_handler.dart';
 import 'auth_widget_test.dart' as h;
 
@@ -578,7 +579,7 @@ void main() {
     );
   }
   testWidgets('view-self only hides every mutation action', (t) async {
-    final base = employeeContext(AppRole.employee);
+    final base = employeeContext(DemoScenario.employee);
     final restricted = base.copyWith(
       user: base.user.copyWith(
         permissions: PermissionSet([
@@ -600,7 +601,7 @@ void main() {
       AppLanguage.arabic,
       390,
       authContext: employeeContext(
-        AppRole.employee,
+        DemoScenario.employee,
       ).copyWith(employeeReference: null),
     );
     expect(e.bloc.state.failure!.code, 'notLinkedToEmployee');
@@ -754,7 +755,7 @@ void main() {
     AppPermission.attendancePunchOut,
   ]) {
     testWidgets('working actions respect omitted $omitted', (t) async {
-      final a = employeeContext(AppRole.employee);
+      final a = employeeContext(DemoScenario.employee);
       final permissions = a.user.permissions.values.where((p) => p != omitted);
       final e = await mount(
         t,

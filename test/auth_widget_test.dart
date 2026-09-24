@@ -11,6 +11,15 @@ import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
+import 'package:modular_erp/modules/hr/module/workforce_directory_adapter.dart';
+import 'package:modular_erp/modules/services/configuration/data/local_service_master_repository.dart';
+import 'package:modular_erp/modules/services/customers/data/local_service_customer_repository.dart';
+import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
+import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
+import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
+import 'package:modular_erp/shared/transactions/data/local_document_number_service.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
@@ -74,6 +83,7 @@ Future<Harness> mount(
   AttendanceBloc Function(AuthRepository, AppDatabase)? createAttendanceBloc,
   AppClock? attendanceClock,
   UserGrantsController? grants,
+  bool withServices = false,
 }) async {
   final locale = LocaleCubit(
     LocalAppPreferencesRepository(
@@ -93,17 +103,65 @@ Future<Harness> mount(
       await seedEmployees(database!);
       await seedAttendanceConfiguration(database);
     });
-    registry = createErpRegistry(
-      repo,
-      locationService: locationService,
-      shiftRepository: LocalShiftRepository(database),
-      workLocationRepository: LocalWorkLocationRepository(database),
-      attendancePolicyRepository: LocalAttendancePolicyRepository(database),
-      employeeRepository: LocalEmployeeRepository(
-        EmployeeDao(database),
-        LocalAccountProvisioningRepository(database),
-      ),
+    final employees = LocalEmployeeRepository(
+      EmployeeDao(database),
+      LocalAccountProvisioningRepository(database),
     );
+    if (withServices) {
+      final clock = const SystemAppClock();
+      final numbers = LocalDocumentNumberService(database, clock);
+      final activity = LocalActivityRepository(database);
+      await tester.runAsync(
+        () => seedServicesDemoData(
+          database!,
+          source.findByScenario(DemoScenario.platformAdmin)!.context,
+          clock,
+        ),
+      );
+      registry = createErpRegistry(
+        repo,
+        locationService: locationService,
+        shiftRepository: LocalShiftRepository(database),
+        workLocationRepository: LocalWorkLocationRepository(database),
+        attendancePolicyRepository: LocalAttendancePolicyRepository(database),
+        employeeRepository: employees,
+        serviceCustomerRepository: LocalServiceCustomerRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+        ),
+        serviceSiteRepository: LocalServiceSiteRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+        ),
+        serviceTeamRepository: LocalServiceTeamRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+          HrWorkforceDirectory(repo, employees),
+        ),
+        serviceMasterRepository: LocalServiceMasterRepository(
+          database,
+          clock,
+          activity,
+        ),
+        workforceDirectory: HrWorkforceDirectory(repo, employees),
+        activityRepository: activity,
+      );
+    } else {
+      registry = createErpRegistry(
+        repo,
+        locationService: locationService,
+        shiftRepository: LocalShiftRepository(database),
+        workLocationRepository: LocalWorkLocationRepository(database),
+        attendancePolicyRepository: LocalAttendancePolicyRepository(database),
+        employeeRepository: employees,
+      );
+    }
   } else {
     registry = registryFactory(repo);
   }
@@ -208,6 +266,29 @@ void main() {
       await loader.load();
     }
   });
+  testWidgets('demo persona picker lists access and signs in with one tap', (
+    tester,
+  ) async {
+    final h = await mount(tester, AppLanguage.english);
+    await tester.tap(find.byKey(const ValueKey('login-demo-accounts')));
+    await pump(tester);
+    expect(find.text('Super admin'), findsOneWidget);
+    expect(find.text('Company admin'), findsOneWidget);
+    expect(find.text('HR'), findsOneWidget);
+    expect(find.text('Manager'), findsOneWidget);
+    expect(find.text('Employee'), findsOneWidget);
+    expect(find.text('Every company module and access'), findsOneWidget);
+    final managerCard = find.byKey(const ValueKey('demo-persona-manager'));
+    await tester.ensureVisible(managerCard);
+    await pump(tester);
+    await tester.tap(managerCard);
+    await pump(tester);
+    await pump(tester);
+    expect(find.text('Super admin'), findsNothing);
+    expect(h.auth.state.isAuthenticated, isTrue);
+    await unmount(tester, h);
+  });
+
   for (final language in AppLanguage.values) {
     for (final width in [
       360.0,

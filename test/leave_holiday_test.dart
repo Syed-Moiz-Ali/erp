@@ -8,7 +8,7 @@ import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_holiday_csv.dart';
 import 'package:modular_erp/modules/hr/leave/data/local_leave_repository.dart';
@@ -21,28 +21,28 @@ void main() {
 
   group('permissions', () {
     test('HR can view and manage holidays', () {
-      final hr = permissionsForRole(AppRole.hr);
+      final hr = demoScenarioGrants(DemoScenario.hr);
       expect(hr.contains(AppPermission.holidayView), isTrue);
       expect(hr.contains(AppPermission.holidayManage), isTrue);
     });
 
     test('employees and managers cannot manage holidays by default', () {
       expect(
-        permissionsForRole(
-          AppRole.employee,
+        demoScenarioGrants(
+          DemoScenario.employee,
         ).contains(AppPermission.holidayManage),
         isFalse,
       );
       expect(
-        permissionsForRole(
-          AppRole.manager,
+        demoScenarioGrants(
+          DemoScenario.manager,
         ).contains(AppPermission.holidayManage),
         isFalse,
       );
     });
 
     test('company admin can manage holidays', () {
-      final admin = permissionsForRole(AppRole.companyAdmin);
+      final admin = demoScenarioGrants(DemoScenario.companyAdmin);
       expect(admin.contains(AppPermission.holidayView), isTrue);
       expect(admin.contains(AppPermission.holidayManage), isTrue);
     });
@@ -73,7 +73,7 @@ void main() {
     late AuthContext hr;
 
     setUp(() async {
-      hr = employeeContext(AppRole.hr);
+      hr = employeeContext(DemoScenario.hr);
       db = AppDatabase(NativeDatabase.memory());
       await seedEmployees(db);
       await seedAttendanceConfiguration(db);

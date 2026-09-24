@@ -4,8 +4,8 @@ import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'support/memory_session_storage.dart';
 import 'employee_test.dart' show employeeContext;
@@ -26,7 +26,7 @@ void main() {
       .toList();
 
   test('configuration pages are secondary, not main navigation', () {
-    final hr = employeeContext(AppRole.hr);
+    final hr = employeeContext(DemoScenario.hr);
     final items = visible(resolver(), hr);
     expect(items, contains('settings'));
     expect(items, isNot(contains('shifts')));
@@ -35,7 +35,7 @@ void main() {
   });
 
   test('attendance is a single primary module with internal destinations', () {
-    final hr = employeeContext(AppRole.hr);
+    final hr = employeeContext(DemoScenario.hr);
     final items = visible(resolver(), hr);
     expect(items.where((id) => id.startsWith('attendance')).toList(), [
       'attendance',
@@ -46,13 +46,13 @@ void main() {
   });
 
   test('employee sees a minimal navigation', () {
-    final employee = employeeContext(AppRole.employee);
+    final employee = employeeContext(DemoScenario.employee);
     final items = visible(resolver(), employee);
     expect(items, ['dashboard', 'attendance', 'profile']);
   });
 
   test('settings items follow configuration permissions independently', () {
-    final hr = employeeContext(AppRole.hr);
+    final hr = employeeContext(DemoScenario.hr);
     final onlyShifts = hr.copyWith(
       user: hr.user.copyWith(
         permissions: PermissionSet([
@@ -78,7 +78,7 @@ void main() {
   });
 
   test('primary module stays selected across nested configuration routes', () {
-    final hr = employeeContext(AppRole.hr);
+    final hr = employeeContext(DemoScenario.hr);
     final registry = createErpRegistry(
       DemoAuthRepository(MemorySessionStorage()),
     );
@@ -95,7 +95,7 @@ void main() {
   });
 
   test('attendance primary is gated by any attendance capability', () {
-    final hr = employeeContext(AppRole.hr);
+    final hr = employeeContext(DemoScenario.hr);
     final capabilities = const UserCapabilityResolver().forAuthContext(hr);
     expect(
       capabilities.hasAny([
@@ -109,14 +109,14 @@ void main() {
 
   test('role templates no longer grant self service to platform admins', () {
     expect(
-      permissionsForRole(
-        AppRole.superAdmin,
+      demoScenarioGrants(
+        DemoScenario.platformAdmin,
       ).contains(AppPermission.attendanceViewSelf),
       isFalse,
     );
     expect(
-      permissionsForRole(
-        AppRole.companyAdmin,
+      demoScenarioGrants(
+        DemoScenario.companyAdmin,
       ).contains(AppPermission.attendanceViewSelf),
       isFalse,
     );

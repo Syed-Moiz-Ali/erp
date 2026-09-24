@@ -72,7 +72,6 @@ AuthContext _context({
     displayName: 'User',
     email: 'u@erp.demo',
     companyId: 'c1',
-    role: AppRole.employee,
     permissions: PermissionSet(permissions),
     status: AccountStatus.active,
   ),

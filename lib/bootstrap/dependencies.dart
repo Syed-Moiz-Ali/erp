@@ -44,6 +44,12 @@ void configureApplicationComposition(GetIt services) {
       accessRepository: services(),
       accessCatalog: services(),
       accessAuthority: services(),
+      serviceCustomerRepository: services(),
+      serviceSiteRepository: services(),
+      serviceTeamRepository: services(),
+      serviceMasterRepository: services(),
+      workforceDirectory: services(),
+      activityRepository: services(),
     ),
   );
 }

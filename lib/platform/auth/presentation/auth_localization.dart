@@ -1,14 +1,25 @@
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 
-extension AppRoleLocalization on AppRole {
-  String label(AppLocalizations l10n) => switch (this) {
-    AppRole.superAdmin => l10n.authRoleSuperAdmin,
-    AppRole.companyAdmin => l10n.authRoleCompanyAdmin,
-    AppRole.hr => l10n.authRoleHr,
-    AppRole.manager => l10n.authRoleManager,
-    AppRole.employee => l10n.authRoleEmployee,
+extension DemoScenarioLocalization on DemoScenario {
+  /// Demo persona label. Fixture copy only — never authorization.
+  String personaLabel(AppLocalizations l) => switch (this) {
+    DemoScenario.platformAdmin => l.demoPersonaPlatformAdmin,
+    DemoScenario.companyAdmin => l.demoPersonaCompanyAdmin,
+    DemoScenario.hr => l.demoPersonaHr,
+    DemoScenario.manager => l.demoPersonaManager,
+    DemoScenario.employee => l.demoPersonaEmployee,
+  };
+
+  /// Human description of what the seeded grants allow.
+  String accessSummary(AppLocalizations l) => switch (this) {
+    DemoScenario.platformAdmin => l.demoAccessPlatformAdmin,
+    DemoScenario.companyAdmin => l.demoAccessCompanyAdmin,
+    DemoScenario.hr => l.demoAccessHr,
+    DemoScenario.manager => l.demoAccessManager,
+    DemoScenario.employee => l.demoAccessEmployee,
   };
 }
 
@@ -47,7 +58,6 @@ extension AppPermissionLocalization on AppPermission {
       l10n.permissionAttendancePolicyManage,
     AppPermission.companyManage => l10n.permissionCompanyManage,
     AppPermission.userManage => l10n.permissionUserManage,
-    AppPermission.roleManage => l10n.permissionRoleManage,
     AppPermission.attendanceReportView => l10n.permissionAttendanceReportView,
     AppPermission.leaveViewSelf => l10n.permissionLeaveViewSelf,
     AppPermission.leaveRequest => l10n.permissionLeaveRequest,
@@ -73,5 +83,25 @@ extension AppPermissionLocalization on AppPermission {
       l10n.permissionAccessPermissionsManage,
     AppPermission.companyModulesView => l10n.permissionCompanyModulesView,
     AppPermission.platformModulesManage => l10n.permissionPlatformModulesManage,
+    AppPermission.serviceCustomerView => l10n.permissionServiceCustomerView,
+    AppPermission.serviceCustomerCreate => l10n.permissionServiceCustomerCreate,
+    AppPermission.serviceCustomerEdit => l10n.permissionServiceCustomerEdit,
+    AppPermission.serviceCustomerDeactivate =>
+      l10n.permissionServiceCustomerDeactivate,
+    AppPermission.serviceSiteView => l10n.permissionServiceSiteView,
+    AppPermission.serviceSiteCreate => l10n.permissionServiceSiteCreate,
+    AppPermission.serviceSiteEdit => l10n.permissionServiceSiteEdit,
+    AppPermission.serviceSiteDeactivate => l10n.permissionServiceSiteDeactivate,
+    AppPermission.serviceTeamView => l10n.permissionServiceTeamView,
+    AppPermission.serviceTeamManage => l10n.permissionServiceTeamManage,
+    AppPermission.serviceTypeView => l10n.permissionServiceTypeView,
+    AppPermission.serviceTypeManage => l10n.permissionServiceTypeManage,
+    AppPermission.complaintTypeView => l10n.permissionComplaintTypeView,
+    AppPermission.complaintTypeManage => l10n.permissionComplaintTypeManage,
+    AppPermission.servicePriorityView => l10n.permissionServicePriorityView,
+    AppPermission.servicePriorityManage => l10n.permissionServicePriorityManage,
+    AppPermission.serviceTicketTypeView => l10n.permissionServiceTicketTypeView,
+    AppPermission.serviceTicketTypeManage =>
+      l10n.permissionServiceTicketTypeManage,
   };
 }

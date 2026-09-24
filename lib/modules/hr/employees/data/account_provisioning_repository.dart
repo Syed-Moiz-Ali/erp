@@ -3,9 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
-import 'package:modular_erp/modules/hr/employees/domain/employee_access.dart';
 
 abstract interface class AccountProvisioningRepository {
   Future<String?> provision(
@@ -34,16 +33,10 @@ class LocalAccountProvisioningRepository
       if (existingId != null) await setEnabled(existingId, false);
       return existingId;
     }
-    if (!const AccountRolePolicy()
-        .available(actor)
-        .contains(draft.accountRole)) {
-      throw const EmployeeWriteException('accountRole');
-    }
     final id = existingId ?? const Uuid().v4();
-    final desired = permissionsForRole(draft.accountRole).values;
-    if (!desired.every((permission) => grantAllowed(actor, permission))) {
-      throw const EmployeeWriteException('accountRole');
-    }
+    // A provisioned account starts with the self-service baseline; an access
+    // administrator refines grants in Users & Access. No role is stored.
+    final desired = demoScenarioGrants(DemoScenario.employee).values;
     final old = await (db.select(
       db.workforceAccounts,
     )..where((t) => t.id.equals(id))).getSingleOrNull();
@@ -85,7 +78,6 @@ class LocalAccountProvisioningRepository
             phone: old != null && !old.credentialPending
                 ? old.phone
                 : normalizeEmployeePhone(draft.phone),
-            role: draft.accountRole.name,
             grants: jsonEncode(desired.map((p) => p.name).toList()),
             status:
                 (draft.status == EmploymentStatus.active

@@ -211,16 +211,14 @@ class AppSidebar extends StatelessWidget {
       ..sort((a, b) => b.route.length.compareTo(a.route.length));
     final selectedId = matches.firstOrNull?.id;
     final main = modules
-        .where(
-          (m) =>
-              m.navigationGroup != NavigationGroup.account &&
-              m.navigationGroup != NavigationGroup.administration,
-        )
+        .where((m) => m.section != NavigationSection.account)
         .toList();
-    final account = modules.where((m) => !main.contains(m)).toList();
-    final groups = <NavigationGroup, List<ErpModule>>{};
+    final account = modules
+        .where((m) => m.section == NavigationSection.account)
+        .toList();
+    final groups = <NavigationSection, List<ErpModule>>{};
     for (final item in main) {
-      groups.putIfAbsent(item.navigationGroup, () => []).add(item);
+      groups.putIfAbsent(item.section, () => []).add(item);
     }
     return AnimatedContainer(
       duration: MediaQuery.disableAnimationsOf(context)
@@ -252,7 +250,7 @@ class AppSidebar extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     for (final group in groups.entries) ...[
-                      if (!collapsed && group.value.length > 1)
+                      if (!collapsed)
                         Padding(
                           padding: const EdgeInsetsDirectional.only(
                             start: AppSpacing.md,

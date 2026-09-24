@@ -716,6 +716,30 @@ abstract class AppLocalizations {
   /// **'{start}–{end} of {total}'**
   String paginationSummary(String start, String end, String total);
 
+  /// Shell navigation module section: HR.
+  ///
+  /// In en, this message translates to:
+  /// **'Human resources'**
+  String get navSectionHr;
+
+  /// Shell navigation module section: Services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get navSectionServices;
+
+  /// Shell navigation module section: Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSectionSettings;
+
+  /// Shell navigation module section: Account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get navSectionAccount;
+
   /// durationHoursMinutes
   ///
   /// In en, this message translates to:
@@ -1760,12 +1784,6 @@ abstract class AppLocalizations {
   /// **'Company'**
   String get authCompany;
 
-  /// No description provided for @authRole.
-  ///
-  /// In en, this message translates to:
-  /// **'Role'**
-  String get authRole;
-
   /// No description provided for @authPermissions.
   ///
   /// In en, this message translates to:
@@ -1795,36 +1813,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inactive'**
   String get authStatusInactive;
-
-  /// No description provided for @authRoleSuperAdmin.
-  ///
-  /// In en, this message translates to:
-  /// **'Super administrator'**
-  String get authRoleSuperAdmin;
-
-  /// No description provided for @authRoleCompanyAdmin.
-  ///
-  /// In en, this message translates to:
-  /// **'Company administrator'**
-  String get authRoleCompanyAdmin;
-
-  /// No description provided for @authRoleHr.
-  ///
-  /// In en, this message translates to:
-  /// **'Human resources'**
-  String get authRoleHr;
-
-  /// No description provided for @authRoleManager.
-  ///
-  /// In en, this message translates to:
-  /// **'Manager'**
-  String get authRoleManager;
-
-  /// No description provided for @authRoleEmployee.
-  ///
-  /// In en, this message translates to:
-  /// **'Employee'**
-  String get authRoleEmployee;
 
   /// No description provided for @authPermissionViewer.
   ///
@@ -1867,12 +1855,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage user accounts'**
   String get permissionUserManage;
-
-  /// No description provided for @permissionRoleManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage roles'**
-  String get permissionRoleManage;
 
   /// No description provided for @shellDashboard.
   ///
@@ -2612,12 +2594,6 @@ abstract class AppLocalizations {
   /// **'Administrative access'**
   String get profileAdministrativeAccess;
 
-  /// No description provided for @profileRoles.
-  ///
-  /// In en, this message translates to:
-  /// **'Roles'**
-  String get profileRoles;
-
   /// No description provided for @profileEmploymentStatus.
   ///
   /// In en, this message translates to:
@@ -2857,18 +2833,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage company user accounts.'**
   String get accessCompanyUsersManageDesc;
-
-  /// No description provided for @accessCompanyRolesManage.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage company roles'**
-  String get accessCompanyRolesManage;
-
-  /// No description provided for @accessCompanyRolesManageDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage company role metadata.'**
-  String get accessCompanyRolesManageDesc;
 
   /// No description provided for @accessPlatformCompaniesManage.
   ///
@@ -3313,6 +3277,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not linked'**
   String get accessNotLinked;
+
+  /// No description provided for @demoPersonaPlatformAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Super admin'**
+  String get demoPersonaPlatformAdmin;
+
+  /// No description provided for @demoPersonaCompanyAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Company admin'**
+  String get demoPersonaCompanyAdmin;
+
+  /// No description provided for @demoPersonaHr.
+  ///
+  /// In en, this message translates to:
+  /// **'HR'**
+  String get demoPersonaHr;
+
+  /// No description provided for @demoPersonaManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get demoPersonaManager;
+
+  /// No description provided for @demoPersonaEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get demoPersonaEmployee;
+
+  /// No description provided for @demoAccessPlatformAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform administration · every module and every access'**
+  String get demoAccessPlatformAdmin;
+
+  /// No description provided for @demoAccessCompanyAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Every company module and access'**
+  String get demoAccessCompanyAdmin;
+
+  /// No description provided for @demoAccessHr.
+  ///
+  /// In en, this message translates to:
+  /// **'HR: employees, attendance, leave, reports, configuration'**
+  String get demoAccessHr;
+
+  /// No description provided for @demoAccessManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Team attendance and team leave approvals'**
+  String get demoAccessManager;
+
+  /// No description provided for @demoAccessEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Self attendance and self leave'**
+  String get demoAccessEmployee;
+
+  /// No description provided for @authDemoSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get authDemoSignIn;
 
   /// Common/Phase 0 UI: dashboard.
   ///
@@ -4285,12 +4315,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose an active department and designation.'**
   String get empInvalidReference;
-
-  /// No description provided for @empAccountRoleError.
-  ///
-  /// In en, this message translates to:
-  /// **'You cannot provision this account role or its permissions.'**
-  String get empAccountRoleError;
 
   /// No description provided for @empStorageError.
   ///
@@ -9409,6 +9433,1344 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create and edit attendance policies.'**
   String get hrPermPoliciesManageDesc;
+
+  /// No description provided for @servicesPermModuleServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get servicesPermModuleServices;
+
+  /// No description provided for @servicesPermSubCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get servicesPermSubCustomers;
+
+  /// No description provided for @servicesPermSubSites.
+  ///
+  /// In en, this message translates to:
+  /// **'Service sites'**
+  String get servicesPermSubSites;
+
+  /// No description provided for @servicesPermSubTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Service teams'**
+  String get servicesPermSubTeams;
+
+  /// No description provided for @servicesPermSubConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration'**
+  String get servicesPermSubConfiguration;
+
+  /// No description provided for @servicesPermCustomersView.
+  ///
+  /// In en, this message translates to:
+  /// **'View customers'**
+  String get servicesPermCustomersView;
+
+  /// No description provided for @servicesPermCustomersViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See the service customer directory.'**
+  String get servicesPermCustomersViewDesc;
+
+  /// No description provided for @servicesPermCustomersCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create customer'**
+  String get servicesPermCustomersCreate;
+
+  /// No description provided for @servicesPermCustomersCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new service customers.'**
+  String get servicesPermCustomersCreateDesc;
+
+  /// No description provided for @servicesPermCustomersEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get servicesPermCustomersEdit;
+
+  /// No description provided for @servicesPermCustomersEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update customer details.'**
+  String get servicesPermCustomersEditDesc;
+
+  /// No description provided for @servicesPermCustomersDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate customer'**
+  String get servicesPermCustomersDeactivate;
+
+  /// No description provided for @servicesPermCustomersDeactivateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate or reactivate customers.'**
+  String get servicesPermCustomersDeactivateDesc;
+
+  /// No description provided for @servicesPermSitesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service sites'**
+  String get servicesPermSitesView;
+
+  /// No description provided for @servicesPermSitesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See service sites.'**
+  String get servicesPermSitesViewDesc;
+
+  /// No description provided for @servicesPermSitesCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create site'**
+  String get servicesPermSitesCreate;
+
+  /// No description provided for @servicesPermSitesCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add service sites to customers.'**
+  String get servicesPermSitesCreateDesc;
+
+  /// No description provided for @servicesPermSitesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit site'**
+  String get servicesPermSitesEdit;
+
+  /// No description provided for @servicesPermSitesEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update site details.'**
+  String get servicesPermSitesEditDesc;
+
+  /// No description provided for @servicesPermSitesDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate site'**
+  String get servicesPermSitesDeactivate;
+
+  /// No description provided for @servicesPermSitesDeactivateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate or reactivate sites.'**
+  String get servicesPermSitesDeactivateDesc;
+
+  /// No description provided for @servicesPermTeamsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service teams'**
+  String get servicesPermTeamsView;
+
+  /// No description provided for @servicesPermTeamsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See service teams and membership.'**
+  String get servicesPermTeamsViewDesc;
+
+  /// No description provided for @servicesPermTeamsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage service teams'**
+  String get servicesPermTeamsManage;
+
+  /// No description provided for @servicesPermTeamsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create teams and manage membership.'**
+  String get servicesPermTeamsManageDesc;
+
+  /// No description provided for @servicesPermServiceTypesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service types'**
+  String get servicesPermServiceTypesView;
+
+  /// No description provided for @servicesPermServiceTypesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See configured service types.'**
+  String get servicesPermServiceTypesViewDesc;
+
+  /// No description provided for @servicesPermServiceTypesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage service types'**
+  String get servicesPermServiceTypesManage;
+
+  /// No description provided for @servicesPermServiceTypesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit service types.'**
+  String get servicesPermServiceTypesManageDesc;
+
+  /// No description provided for @servicesPermComplaintTypesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View complaint types'**
+  String get servicesPermComplaintTypesView;
+
+  /// No description provided for @servicesPermComplaintTypesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See configured complaint types.'**
+  String get servicesPermComplaintTypesViewDesc;
+
+  /// No description provided for @servicesPermComplaintTypesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage complaint types'**
+  String get servicesPermComplaintTypesManage;
+
+  /// No description provided for @servicesPermComplaintTypesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit complaint types.'**
+  String get servicesPermComplaintTypesManageDesc;
+
+  /// No description provided for @servicesPermPrioritiesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View priorities'**
+  String get servicesPermPrioritiesView;
+
+  /// No description provided for @servicesPermPrioritiesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See configured service priorities.'**
+  String get servicesPermPrioritiesViewDesc;
+
+  /// No description provided for @servicesPermPrioritiesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage priorities'**
+  String get servicesPermPrioritiesManage;
+
+  /// No description provided for @servicesPermPrioritiesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit service priorities.'**
+  String get servicesPermPrioritiesManageDesc;
+
+  /// No description provided for @servicesPermTicketTypesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View ticket types'**
+  String get servicesPermTicketTypesView;
+
+  /// No description provided for @servicesPermTicketTypesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See configured ticket types.'**
+  String get servicesPermTicketTypesViewDesc;
+
+  /// No description provided for @servicesPermTicketTypesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage ticket types'**
+  String get servicesPermTicketTypesManage;
+
+  /// No description provided for @servicesPermTicketTypesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit ticket types.'**
+  String get servicesPermTicketTypesManageDesc;
+
+  /// No description provided for @permissionServiceCustomerView.
+  ///
+  /// In en, this message translates to:
+  /// **'View customers'**
+  String get permissionServiceCustomerView;
+
+  /// No description provided for @permissionServiceCustomerCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create customer'**
+  String get permissionServiceCustomerCreate;
+
+  /// No description provided for @permissionServiceCustomerEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get permissionServiceCustomerEdit;
+
+  /// No description provided for @permissionServiceCustomerDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate customer'**
+  String get permissionServiceCustomerDeactivate;
+
+  /// No description provided for @permissionServiceSiteView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service sites'**
+  String get permissionServiceSiteView;
+
+  /// No description provided for @permissionServiceSiteCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create site'**
+  String get permissionServiceSiteCreate;
+
+  /// No description provided for @permissionServiceSiteEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit site'**
+  String get permissionServiceSiteEdit;
+
+  /// No description provided for @permissionServiceSiteDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate site'**
+  String get permissionServiceSiteDeactivate;
+
+  /// No description provided for @permissionServiceTeamView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service teams'**
+  String get permissionServiceTeamView;
+
+  /// No description provided for @permissionServiceTeamManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage service teams'**
+  String get permissionServiceTeamManage;
+
+  /// No description provided for @permissionServiceTypeView.
+  ///
+  /// In en, this message translates to:
+  /// **'View service types'**
+  String get permissionServiceTypeView;
+
+  /// No description provided for @permissionServiceTypeManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage service types'**
+  String get permissionServiceTypeManage;
+
+  /// No description provided for @permissionComplaintTypeView.
+  ///
+  /// In en, this message translates to:
+  /// **'View complaint types'**
+  String get permissionComplaintTypeView;
+
+  /// No description provided for @permissionComplaintTypeManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage complaint types'**
+  String get permissionComplaintTypeManage;
+
+  /// No description provided for @permissionServicePriorityView.
+  ///
+  /// In en, this message translates to:
+  /// **'View priorities'**
+  String get permissionServicePriorityView;
+
+  /// No description provided for @permissionServicePriorityManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage priorities'**
+  String get permissionServicePriorityManage;
+
+  /// No description provided for @permissionServiceTicketTypeView.
+  ///
+  /// In en, this message translates to:
+  /// **'View ticket types'**
+  String get permissionServiceTicketTypeView;
+
+  /// No description provided for @permissionServiceTicketTypeManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage ticket types'**
+  String get permissionServiceTicketTypeManage;
+
+  /// No description provided for @servicesNavOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get servicesNavOverview;
+
+  /// No description provided for @servicesNavCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get servicesNavCustomers;
+
+  /// No description provided for @servicesNavSites.
+  ///
+  /// In en, this message translates to:
+  /// **'Sites'**
+  String get servicesNavSites;
+
+  /// No description provided for @servicesNavTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get servicesNavTeams;
+
+  /// No description provided for @servicesNavSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Services settings'**
+  String get servicesNavSettings;
+
+  /// No description provided for @servicesOverviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your service directory, teams and operational configuration.'**
+  String get servicesOverviewSubtitle;
+
+  /// No description provided for @servicesSummaryCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get servicesSummaryCustomers;
+
+  /// No description provided for @servicesSummarySites.
+  ///
+  /// In en, this message translates to:
+  /// **'Active sites'**
+  String get servicesSummarySites;
+
+  /// No description provided for @servicesSummaryTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Service teams'**
+  String get servicesSummaryTeams;
+
+  /// No description provided for @servicesSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup'**
+  String get servicesSetupTitle;
+
+  /// No description provided for @servicesSetupServiceTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Service types'**
+  String get servicesSetupServiceTypes;
+
+  /// No description provided for @servicesSetupPriorities.
+  ///
+  /// In en, this message translates to:
+  /// **'Priorities'**
+  String get servicesSetupPriorities;
+
+  /// No description provided for @servicesSetupReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Configured'**
+  String get servicesSetupReady;
+
+  /// No description provided for @servicesSetupMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not configured'**
+  String get servicesSetupMissing;
+
+  /// No description provided for @servicesDirectoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer directory'**
+  String get servicesDirectoryTitle;
+
+  /// No description provided for @servicesRecentCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent customers'**
+  String get servicesRecentCustomers;
+
+  /// No description provided for @servicesNoCustomersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet'**
+  String get servicesNoCustomersYet;
+
+  /// No description provided for @servicesCustomersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get servicesCustomersTitle;
+
+  /// No description provided for @servicesCustomerAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add customer'**
+  String get servicesCustomerAdd;
+
+  /// No description provided for @servicesCustomerEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get servicesCustomerEdit;
+
+  /// No description provided for @servicesCustomerCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesCustomerCode;
+
+  /// No description provided for @servicesCustomerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get servicesCustomerName;
+
+  /// No description provided for @servicesCustomerKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get servicesCustomerKind;
+
+  /// No description provided for @servicesCustomerKindIndividual.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual'**
+  String get servicesCustomerKindIndividual;
+
+  /// No description provided for @servicesCustomerKindOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get servicesCustomerKindOrganization;
+
+  /// No description provided for @servicesCustomerMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile'**
+  String get servicesCustomerMobile;
+
+  /// No description provided for @servicesCustomerAlternateMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate mobile'**
+  String get servicesCustomerAlternateMobile;
+
+  /// No description provided for @servicesCustomerEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get servicesCustomerEmail;
+
+  /// No description provided for @servicesCustomerNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get servicesCustomerNotes;
+
+  /// No description provided for @servicesCustomerSites.
+  ///
+  /// In en, this message translates to:
+  /// **'Sites'**
+  String get servicesCustomerSites;
+
+  /// No description provided for @servicesCustomerContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get servicesCustomerContact;
+
+  /// No description provided for @servicesCustomerLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get servicesCustomerLastUpdated;
+
+  /// No description provided for @servicesCustomerSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer saved.'**
+  String get servicesCustomerSaved;
+
+  /// No description provided for @servicesCustomerStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the customer.'**
+  String get servicesCustomerStorageError;
+
+  /// No description provided for @servicesCustomerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer not found.'**
+  String get servicesCustomerNotFound;
+
+  /// No description provided for @servicesCustomerEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet'**
+  String get servicesCustomerEmpty;
+
+  /// No description provided for @servicesCustomerEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first customer to get started.'**
+  String get servicesCustomerEmptyMessage;
+
+  /// No description provided for @servicesCustomerNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers match your search.'**
+  String get servicesCustomerNoResults;
+
+  /// No description provided for @servicesCustomerRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get servicesCustomerRequired;
+
+  /// No description provided for @servicesCustomerInvalidMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid mobile number.'**
+  String get servicesCustomerInvalidMobile;
+
+  /// No description provided for @servicesCustomerInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email.'**
+  String get servicesCustomerInvalidEmail;
+
+  /// No description provided for @servicesCustomerDuplicateMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'A customer with this mobile already exists.'**
+  String get servicesCustomerDuplicateMobile;
+
+  /// No description provided for @servicesCustomerDuplicateEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'A customer with this email already exists.'**
+  String get servicesCustomerDuplicateEmail;
+
+  /// No description provided for @servicesCustomerDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get servicesCustomerDeactivate;
+
+  /// No description provided for @servicesCustomerActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get servicesCustomerActivate;
+
+  /// No description provided for @servicesCustomerSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search customers'**
+  String get servicesCustomerSearch;
+
+  /// No description provided for @servicesCustomerAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesCustomerAllStatuses;
+
+  /// No description provided for @servicesCustomerActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesCustomerActivity;
+
+  /// No description provided for @servicesCustomerNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesCustomerNoActivity;
+
+  /// No description provided for @servicesCustomerSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select customer'**
+  String get servicesCustomerSelect;
+
+  /// No description provided for @servicesCustomerStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesCustomerStatus;
+
+  /// No description provided for @servicesCustomerDiscardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes.'**
+  String get servicesCustomerDiscardMessage;
+
+  /// No description provided for @servicesCustomerDiscardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get servicesCustomerDiscardAction;
+
+  /// No description provided for @servicesSitesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service sites'**
+  String get servicesSitesTitle;
+
+  /// No description provided for @servicesSiteAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add site'**
+  String get servicesSiteAdd;
+
+  /// No description provided for @servicesSiteEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit site'**
+  String get servicesSiteEdit;
+
+  /// No description provided for @servicesSiteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesSiteCode;
+
+  /// No description provided for @servicesSiteName.
+  ///
+  /// In en, this message translates to:
+  /// **'Site name'**
+  String get servicesSiteName;
+
+  /// No description provided for @servicesSiteCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get servicesSiteCustomer;
+
+  /// No description provided for @servicesSiteTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get servicesSiteTenant;
+
+  /// No description provided for @servicesSiteBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get servicesSiteBuilding;
+
+  /// No description provided for @servicesSiteUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get servicesSiteUnit;
+
+  /// No description provided for @servicesSiteContactName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact name'**
+  String get servicesSiteContactName;
+
+  /// No description provided for @servicesSiteContactMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact mobile'**
+  String get servicesSiteContactMobile;
+
+  /// No description provided for @servicesSiteContactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact email'**
+  String get servicesSiteContactEmail;
+
+  /// No description provided for @servicesSiteAddress1.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get servicesSiteAddress1;
+
+  /// No description provided for @servicesSiteAddress2.
+  ///
+  /// In en, this message translates to:
+  /// **'Address line 2'**
+  String get servicesSiteAddress2;
+
+  /// No description provided for @servicesSiteArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get servicesSiteArea;
+
+  /// No description provided for @servicesSiteCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get servicesSiteCity;
+
+  /// No description provided for @servicesSiteState.
+  ///
+  /// In en, this message translates to:
+  /// **'State/region'**
+  String get servicesSiteState;
+
+  /// No description provided for @servicesSitePostalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Postal code'**
+  String get servicesSitePostalCode;
+
+  /// No description provided for @servicesSiteCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get servicesSiteCountry;
+
+  /// No description provided for @servicesSiteLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get servicesSiteLatitude;
+
+  /// No description provided for @servicesSiteLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get servicesSiteLongitude;
+
+  /// No description provided for @servicesSiteNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get servicesSiteNotes;
+
+  /// No description provided for @servicesSiteBuildingUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Building / unit'**
+  String get servicesSiteBuildingUnit;
+
+  /// No description provided for @servicesSiteSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Site saved.'**
+  String get servicesSiteSaved;
+
+  /// No description provided for @servicesSiteStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the site.'**
+  String get servicesSiteStorageError;
+
+  /// No description provided for @servicesSiteNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Site not found.'**
+  String get servicesSiteNotFound;
+
+  /// No description provided for @servicesSiteEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No sites yet'**
+  String get servicesSiteEmpty;
+
+  /// No description provided for @servicesSiteEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a site to a customer to schedule work.'**
+  String get servicesSiteEmptyMessage;
+
+  /// No description provided for @servicesSiteNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No sites match your search.'**
+  String get servicesSiteNoResults;
+
+  /// No description provided for @servicesSiteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get servicesSiteRequired;
+
+  /// No description provided for @servicesSiteDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get servicesSiteDeactivate;
+
+  /// No description provided for @servicesSiteActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get servicesSiteActivate;
+
+  /// No description provided for @servicesSiteSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search sites'**
+  String get servicesSiteSearch;
+
+  /// No description provided for @servicesSiteDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Site'**
+  String get servicesSiteDetails;
+
+  /// No description provided for @servicesSiteActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesSiteActivity;
+
+  /// No description provided for @servicesSiteLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get servicesSiteLocation;
+
+  /// No description provided for @servicesSiteIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'Site identity'**
+  String get servicesSiteIdentity;
+
+  /// No description provided for @servicesSiteAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get servicesSiteAddress;
+
+  /// No description provided for @servicesSiteContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get servicesSiteContact;
+
+  /// No description provided for @servicesSiteCustomerRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a customer.'**
+  String get servicesSiteCustomerRequired;
+
+  /// No description provided for @servicesSiteSelectCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select customer'**
+  String get servicesSiteSelectCustomer;
+
+  /// No description provided for @servicesTeamsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service teams'**
+  String get servicesTeamsTitle;
+
+  /// No description provided for @servicesTeamAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add team'**
+  String get servicesTeamAdd;
+
+  /// No description provided for @servicesTeamEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit team'**
+  String get servicesTeamEdit;
+
+  /// No description provided for @servicesTeamCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesTeamCode;
+
+  /// No description provided for @servicesTeamName.
+  ///
+  /// In en, this message translates to:
+  /// **'Team name'**
+  String get servicesTeamName;
+
+  /// No description provided for @servicesTeamDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesTeamDescription;
+
+  /// No description provided for @servicesTeamLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Team lead'**
+  String get servicesTeamLead;
+
+  /// No description provided for @servicesTeamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get servicesTeamMembers;
+
+  /// No description provided for @servicesTeamMemberAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get servicesTeamMemberAdd;
+
+  /// No description provided for @servicesTeamMemberSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search employees'**
+  String get servicesTeamMemberSearch;
+
+  /// No description provided for @servicesTeamNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'No members yet'**
+  String get servicesTeamNoMembers;
+
+  /// No description provided for @servicesTeamSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Team saved.'**
+  String get servicesTeamSaved;
+
+  /// No description provided for @servicesTeamStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the team.'**
+  String get servicesTeamStorageError;
+
+  /// No description provided for @servicesTeamNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Team not found.'**
+  String get servicesTeamNotFound;
+
+  /// No description provided for @servicesTeamEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No teams yet'**
+  String get servicesTeamEmpty;
+
+  /// No description provided for @servicesTeamEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a team to group employees for service work.'**
+  String get servicesTeamEmptyMessage;
+
+  /// No description provided for @servicesTeamNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No teams match your search.'**
+  String get servicesTeamNoResults;
+
+  /// No description provided for @servicesTeamRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get servicesTeamRequired;
+
+  /// No description provided for @servicesTeamDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get servicesTeamDeactivate;
+
+  /// No description provided for @servicesTeamActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get servicesTeamActivate;
+
+  /// No description provided for @servicesTeamSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search teams'**
+  String get servicesTeamSearch;
+
+  /// No description provided for @servicesTeamDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get servicesTeamDetails;
+
+  /// No description provided for @servicesTeamActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesTeamActivity;
+
+  /// No description provided for @servicesTeamLeadOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'No lead'**
+  String get servicesTeamLeadOptional;
+
+  /// No description provided for @servicesTeamSelectLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Select lead'**
+  String get servicesTeamSelectLead;
+
+  /// No description provided for @servicesTeamMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get servicesTeamMembersCount;
+
+  /// No description provided for @servicesSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Services settings'**
+  String get servicesSettingsTitle;
+
+  /// No description provided for @servicesSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure the master data used by service operations.'**
+  String get servicesSettingsSubtitle;
+
+  /// No description provided for @servicesServiceTypesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service types'**
+  String get servicesServiceTypesTitle;
+
+  /// No description provided for @servicesComplaintTypesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint types'**
+  String get servicesComplaintTypesTitle;
+
+  /// No description provided for @servicesPrioritiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Priorities'**
+  String get servicesPrioritiesTitle;
+
+  /// No description provided for @servicesTicketTypesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket types'**
+  String get servicesTicketTypesTitle;
+
+  /// No description provided for @servicesAddMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get servicesAddMaster;
+
+  /// No description provided for @servicesEditMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get servicesEditMaster;
+
+  /// No description provided for @servicesMasterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesMasterCode;
+
+  /// No description provided for @servicesMasterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get servicesMasterName;
+
+  /// No description provided for @servicesMasterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesMasterDescription;
+
+  /// No description provided for @servicesMasterSortOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort order'**
+  String get servicesMasterSortOrder;
+
+  /// No description provided for @servicesMasterRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get servicesMasterRank;
+
+  /// No description provided for @servicesMasterDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get servicesMasterDefault;
+
+  /// No description provided for @servicesMasterServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type'**
+  String get servicesMasterServiceType;
+
+  /// No description provided for @servicesMasterSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved.'**
+  String get servicesMasterSaved;
+
+  /// No description provided for @servicesMasterStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save.'**
+  String get servicesMasterStorageError;
+
+  /// No description provided for @servicesMasterNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Record not found.'**
+  String get servicesMasterNotFound;
+
+  /// No description provided for @servicesMasterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing configured yet'**
+  String get servicesMasterEmpty;
+
+  /// No description provided for @servicesMasterNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No records match your search.'**
+  String get servicesMasterNoResults;
+
+  /// No description provided for @servicesMasterRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get servicesMasterRequired;
+
+  /// No description provided for @servicesMasterDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get servicesMasterDeactivate;
+
+  /// No description provided for @servicesMasterActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get servicesMasterActivate;
+
+  /// No description provided for @servicesMasterSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get servicesMasterSearch;
+
+  /// No description provided for @servicesMasterGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get servicesMasterGeneric;
+
+  /// No description provided for @servicesMasterNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required.'**
+  String get servicesMasterNameRequired;
+
+  /// No description provided for @servicesMasterCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Code is required.'**
+  String get servicesMasterCodeRequired;
+
+  /// No description provided for @servicesMasterDuplicateCode.
+  ///
+  /// In en, this message translates to:
+  /// **'A record with this code already exists.'**
+  String get servicesMasterDuplicateCode;
+
+  /// No description provided for @servicesMasterDuplicateName.
+  ///
+  /// In en, this message translates to:
+  /// **'A record with this name already exists.'**
+  String get servicesMasterDuplicateName;
+
+  /// No description provided for @servicesCustomerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} customers'**
+  String servicesCustomerCount(String filtered, String total);
+
+  /// No description provided for @servicesSiteCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} sites'**
+  String servicesSiteCount(String filtered, String total);
+
+  /// No description provided for @servicesTeamCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} teams'**
+  String servicesTeamCount(String filtered, String total);
+
+  /// No description provided for @servicesActivityCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesActivityCreated;
+
+  /// No description provided for @servicesActivityUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated'**
+  String get servicesActivityUpdated;
+
+  /// No description provided for @servicesActivityActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Activated'**
+  String get servicesActivityActivated;
+
+  /// No description provided for @servicesActivityDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivated'**
+  String get servicesActivityDeactivated;
+
+  /// No description provided for @servicesActivityMembersUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members updated'**
+  String get servicesActivityMembersUpdated;
+
+  /// No description provided for @servicesActivityUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesActivityUnknown;
+
+  /// No description provided for @servicesCustomerContactSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details'**
+  String get servicesCustomerContactSection;
+
+  /// No description provided for @servicesSiteAddressSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get servicesSiteAddressSection;
+
+  /// No description provided for @servicesTeamLeadSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Team lead'**
+  String get servicesTeamLeadSection;
+
+  /// No description provided for @servicesTeamLeadNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No team lead assigned'**
+  String get servicesTeamLeadNone;
+
+  /// No description provided for @servicesCustomerNoSites.
+  ///
+  /// In en, this message translates to:
+  /// **'No service sites yet.'**
+  String get servicesCustomerNoSites;
+
+  /// No description provided for @servicesDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesDenied;
 }
 
 class _AppLocalizationsDelegate

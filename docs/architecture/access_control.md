@@ -15,6 +15,11 @@ UserAccount (login/security identity)
    -> Navigation + Routes + Actions + Record scope
 ```
 
+- There is **no role in the application code or database**. The `AppRole` enum,
+  `UserAccount.role`, `Employee.accountRole` and the `workforce_accounts.role`
+  column have been removed (schema v11 drops the column). Demo personas are
+  seeded as `DemoScenario` fixtures only, and every access decision derives from
+  grants + scopes + module entitlement + employee link.
 - **Employee** is the single employment identity. There is no `TechnicianPerson`,
   `InspectorPerson` or `ServiceManagerPerson`; those are employees with grants.
 - **UserAccount** is the login identity. A company employee may have no login;

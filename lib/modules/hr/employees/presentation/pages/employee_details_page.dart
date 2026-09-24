@@ -352,7 +352,6 @@ class EmployeeDetailsPage extends StatelessWidget {
                       value: a.phone ?? l.empUnassigned,
                       identifier: true,
                     ),
-                    AppDetailField(label: l.authRole, value: a.role.label(l)),
                     AppDetailField(
                       label: l.authAccountStatus,
                       value: a.status.label(l),

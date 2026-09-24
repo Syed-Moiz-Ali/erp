@@ -24,7 +24,6 @@ class WorkforceAccounts extends Table {
   TextColumn get displayName => text()();
   TextColumn get email => text()();
   TextColumn get phone => text()();
-  TextColumn get role => text()();
   TextColumn get grants => text()();
   TextColumn get status => text()();
   BoolColumn get credentialPending =>

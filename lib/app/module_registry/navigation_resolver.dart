@@ -40,10 +40,12 @@ class ResolvedNavigation {
       mobilePrimary,
       mobileMore,
       mobileDestinations;
-  Map<NavigationGroup, List<ErpModule>> groupsFor(Iterable<ErpModule> items) {
-    final result = <NavigationGroup, List<ErpModule>>{};
+  Map<NavigationSection, List<ErpModule>> sectionsFor(
+    Iterable<ErpModule> items,
+  ) {
+    final result = <NavigationSection, List<ErpModule>>{};
     for (final item in items) {
-      result.putIfAbsent(item.navigationGroup, () => []).add(item);
+      result.putIfAbsent(item.section, () => []).add(item);
     }
     return Map.unmodifiable(
       result.map(

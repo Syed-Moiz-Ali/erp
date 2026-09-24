@@ -133,7 +133,6 @@ class LocalEmployeeRepository implements EmployeeRepository {
             email: a.email,
             phone: a.phone,
             companyId: a.companyId,
-            role: AppRole.values.byName(a.role),
             permissions: PermissionSet(
               (jsonDecode(a.grants) as List).map(
                 (p) => AppPermission.values.byName(p as String),
@@ -392,7 +391,6 @@ class LocalEmployeeRepository implements EmployeeRepository {
       if (account != null)
         'accountConfiguration': {
           'id': account.id,
-          'role': account.role,
           'permissions': jsonDecode(account.grants),
           'status': account.status,
           'email': account.email,

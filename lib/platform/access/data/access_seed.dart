@@ -4,7 +4,7 @@ import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 
 /// Demo access seed: converts the legacy role templates into **explicit
 /// permission grants**. The persona names are test fixtures; runtime
@@ -20,7 +20,7 @@ Future<void> seedAccessDemoData(
   for (final account in source.accounts) {
     final companyId = account.context.company.id;
     final userId = account.context.user.id;
-    final permissions = permissionsForRole(account.context.user.role);
+    final permissions = demoScenarioGrants(account.scenario);
     final grants = catalog.grantsFor(permissions.values);
     for (final grant in grants) {
       await db

@@ -6,7 +6,7 @@ import 'package:modular_erp/app/router/app_router.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/localization/app_language.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_details_bloc.dart';
 import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_list_bloc.dart';
@@ -88,7 +88,7 @@ void main() {
         authRedirect(
           AuthState(
             AuthStatus.authenticated,
-            context: employeeContext(AppRole.hr),
+            context: employeeContext(DemoScenario.hr),
           ),
           Uri.parse('/login?from=https%3A%2F%2Fevil.example'),
           navigation: navigation,
@@ -102,7 +102,7 @@ void main() {
         authRedirect(
           AuthState(
             AuthStatus.authenticated,
-            context: employeeContext(AppRole.hr),
+            context: employeeContext(DemoScenario.hr),
           ),
           Uri.parse(detail),
           navigation: navigation,
@@ -119,7 +119,7 @@ void main() {
         authRedirect(
           AuthState(
             AuthStatus.authenticated,
-            context: employeeContext(AppRole.employee),
+            context: employeeContext(DemoScenario.employee),
           ),
           Uri.parse(detail),
           navigation: navigation,
@@ -129,7 +129,7 @@ void main() {
     });
 
     test('disabled module is unavailable', () {
-      final hr = employeeContext(AppRole.hr);
+      final hr = employeeContext(DemoScenario.hr);
       final redirect = authRedirect(
         AuthState(
           AuthStatus.authenticated,

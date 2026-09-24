@@ -54,7 +54,6 @@ AuthContext _context({
     displayName: 'User',
     email: 'u@erp.demo',
     companyId: companyId,
-    role: AppRole.employee,
     permissions: permissions ?? PermissionSet(const []),
     status: AccountStatus.active,
   ),
@@ -114,21 +113,15 @@ void main() {
     );
   });
 
-  test('role label never changes effective permissions', () async {
+  test('effective permissions always come from grants', () async {
     final repository = _MockAuthRepository();
     when(
       () => repository.sessionChanges,
     ).thenAnswer((_) => const Stream.empty());
     final permissions = PermissionSet([AppPermission.leaveRequest]);
-    when(() => repository.login(any(), any())).thenAnswer(
-      (_) async => Success(
-        _context(permissions: permissions).copyWith(
-          user: _context(
-            permissions: permissions,
-          ).user.copyWith(role: AppRole.superAdmin),
-        ),
-      ),
-    );
+    when(
+      () => repository.login(any(), any()),
+    ).thenAnswer((_) async => Success(_context(permissions: permissions)));
     final grants = _FakeGrants(permissions);
     final bloc = AuthBloc(repository, grants: grants);
     addTearDown(() async {

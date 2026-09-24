@@ -63,6 +63,32 @@ Navigation and route guards are centralized: HR destinations declare
 | `platform.companies.manage` | — | — | — | platform-only | platform-only |
 | `platform.modules.manage` | — | — | — | platform-only | platform-only |
 
+## Services (Phase 1)
+
+| Permission | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- |
+| `services.customers.view` | Services + Customers | `/app/services/customers*` | `LocalServiceCustomerRepository.watchCustomers/getCustomer` | — | — |
+| `services.customers.create` | — | `/app/services/customers/new` | — | Add customer | `saveCustomer` |
+| `services.customers.edit` | — | `.../:id/edit` | — | Edit | `saveCustomer(id)` |
+| `services.customers.deactivate` | — | — | — | Activate/Deactivate | `setActive` |
+| `services.sites.view` | Sites | `/app/services/sites*` | `LocalServiceSiteRepository.watchSites/getSite` | — | — |
+| `services.sites.create` | — | `/app/services/sites/new` | — | Add site | `saveSite` |
+| `services.sites.edit` | — | `.../:id/edit` | — | Edit | `saveSite(id)` |
+| `services.sites.deactivate` | — | — | — | Activate/Deactivate | `setActive` |
+| `services.teams.view` | Teams | `/app/services/teams*` | `LocalServiceTeamRepository.watchTeams/watchMembers` | — | — |
+| `services.teams.manage` | — | `/new`, `/:id/edit` | — | Create/Edit/Deactivate/Membership | `saveTeam`/`setActive` |
+| `services.serviceTypes.view` | Settings | `/app/services/settings/service-types*` | master list | — | — |
+| `services.serviceTypes.manage` | — | `.../new|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+| `services.complaintTypes.view` | Settings | `.../complaint-types*` | master list | — | — |
+| `services.complaintTypes.manage` | — | `.../new|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+| `services.priorities.view` | Settings | `.../priorities*` | master list | — | — |
+| `services.priorities.manage` | — | `.../new|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+| `services.ticketTypes.view` | Settings | `.../ticket-types*` | master list | — | — |
+| `services.ticketTypes.manage` | — | `.../new|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+
+The `services` feature flag must be enabled for the company. Team membership never
+grants permission, and a Services permission never creates team membership.
+
 ## Notes
 
 - `*Manage` implies `*View` through `permissionViewDependencies` (single

@@ -1,5 +1,4 @@
 import 'package:modular_erp/app/router/app_routes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,10 +70,12 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: AppSpacing.lg),
               for (final account in widget.demoAccounts) ...[
                 InkWell(
+                  key: ValueKey('demo-persona-${account.scenario.name}'),
                   onTap: () {
                     _identifier.text = account.email;
                     _password.text = account.password;
                     Navigator.pop(dialogContext);
+                    _submit();
                   },
                   borderRadius: BorderRadius.circular(AppRadius.radiusMd),
                   child: Container(
@@ -94,20 +95,34 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Expanded(
+                              child: Text(
+                                account.scenario.personaLabel(
+                                  dialogContext.l10n,
+                                ),
+                                style: AppTypography.of(dialogContext).label
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark
+                                          ? const Color(0xFF38BDF8)
+                                          : AppColors.brandPrimary,
+                                    ),
+                              ),
+                            ),
                             Text(
-                              account.role.label(dialogContext.l10n),
-                              style: AppTypography.of(dialogContext).label
+                              dialogContext.l10n.authDemoSignIn,
+                              style: AppTypography.of(dialogContext).caption
                                   .copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: isDark
-                                        ? const Color(0xFF38BDF8)
-                                        : AppColors.brandPrimary,
+                                        ? const Color(0xFF94A3B8)
+                                        : AppColors.textSecondary,
                                   ),
                             ),
+                            const SizedBox(width: AppSpacing.xs),
                             Icon(
-                              Icons.touch_app_outlined,
+                              Icons.login,
                               size: 14,
                               color: isDark
                                   ? const Color(0xFF94A3B8)
@@ -116,25 +131,25 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          account.scenario.accessSummary(dialogContext.l10n),
+                          style: AppTypography.of(dialogContext).bodySmall
+                              .copyWith(
+                                color: isDark
+                                    ? const Color(0xFFCBD5E1)
+                                    : AppColors.textSecondary,
+                              ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
                         SelectableText(
                           account.email,
-                          style: AppTypography.of(dialogContext).bodySmall
+                          style: AppTypography.of(dialogContext).caption
                               .copyWith(
                                 color: isDark
                                     ? Colors.white
                                     : AppColors.textPrimary,
                               ),
                         ),
-                        SelectableText(
-                          account.phone,
-                          style: AppTypography.of(dialogContext).bodySmall
-                              .copyWith(
-                                color: isDark
-                                    ? const Color(0xFF94A3B8)
-                                    : AppColors.textSecondary,
-                              ),
-                        ),
-                        const SizedBox(height: AppSpacing.xs),
                         SelectableText(
                           '${dialogContext.l10n.authDemoPassword}: ${account.password}',
                           style: AppTypography.of(dialogContext).caption
@@ -170,11 +185,6 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state) {
         final loading = state.status == AuthStatus.authenticating;
         return AppAuthLayout(
-          developerAccess: !kDebugMode || widget.demoAccounts.isEmpty || loading
-              ? null
-              : _DeveloperAccessButton(
-                  onPressed: () => _showDemoAccountsDialog(context),
-                ),
           child: AutofillGroup(
             child: Form(
               key: _form,
@@ -271,6 +281,20 @@ class _LoginPageState extends State<LoginPage> {
                       fullWidth: true,
                     ),
                   ),
+                  if (widget.demoAccounts.isNotEmpty && !loading) ...[
+                    const SizedBox(height: AppSpacing.md),
+                    FocusTraversalOrder(
+                      order: const NumericFocusOrder(5),
+                      child: AppSecondaryButton(
+                        key: const ValueKey('login-demo-accounts'),
+                        label: context.l10n.authDemoUse,
+                        icon: Icons.bolt_outlined,
+                        onPressed: () => _showDemoAccountsDialog(context),
+                        size: AppButtonSize.large,
+                        fullWidth: true,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -311,26 +335,5 @@ class _ForgotPasswordAction extends StatelessWidget {
           ),
         ),
     child: Text(context.l10n.forgotPassword),
-  );
-}
-
-/// Development-only entry point. Icon-only and low-emphasis so it never
-/// competes with the primary action; absent entirely in production builds.
-class _DeveloperAccessButton extends StatelessWidget {
-  const _DeveloperAccessButton({required this.onPressed});
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) => IconButton(
-    tooltip: context.l10n.authDeveloperAccess,
-    onPressed: onPressed,
-    iconSize: 18,
-    visualDensity: VisualDensity.compact,
-    style: IconButton.styleFrom(
-      foregroundColor: AppColors.textMuted,
-      overlayColor: AppColors.brandSubtle,
-      hoverColor: AppColors.brandSubtle,
-    ),
-    icon: const Icon(Icons.more_horiz_rounded),
   );
 }

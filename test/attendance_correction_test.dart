@@ -11,7 +11,7 @@ import 'package:modular_erp/modules/hr/attendance/data/local_attendance_correcti
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_models.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_history.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'attendance_test.dart' show FakeClock, MockAuth;
 import 'employee_test.dart' show employeeContext;
@@ -22,9 +22,9 @@ void main() {
   late AttendanceLocalDataSource local;
   late FakeClock clock;
   late MockAuth auth;
-  var actor = employeeContext(AppRole.employee);
+  var actor = employeeContext(DemoScenario.employee);
   setUp(() async {
-    actor = employeeContext(AppRole.employee);
+    actor = employeeContext(DemoScenario.employee);
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
     await seedAttendanceConfiguration(db);
@@ -94,7 +94,7 @@ void main() {
       );
       final created = await repo.createRequest(draft);
       expect(created, isA<Success<AttendanceCorrectionRequest>>());
-      actor = employeeContext(AppRole.manager);
+      actor = employeeContext(DemoScenario.manager);
       final reviewed = await repo.approveRequest(
         'r-1',
         reviewerId: actor.user.id,
@@ -125,7 +125,7 @@ void main() {
         )).first.effectiveTimestamp,
         draft.changes.single.requestedTimestamp,
       );
-      actor = employeeContext(AppRole.employee);
+      actor = employeeContext(DemoScenario.employee);
       final history = await local.history(
         'demo-company',
         'employee-employee',
@@ -179,7 +179,7 @@ void main() {
       await repo.createRequest(r),
       isA<Success<AttendanceCorrectionRequest>>(),
     );
-    actor = employeeContext(AppRole.manager);
+    actor = employeeContext(DemoScenario.manager);
     expect(
       await repo.rejectRequest(r.id, reviewerId: actor.user.id, note: ''),
       isA<Failed<AttendanceCorrectionRequest>>(),
@@ -253,7 +253,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        10,
+        12,
       );
       expect(
         await upgraded.select(upgraded.userPermissionGrants).get(),

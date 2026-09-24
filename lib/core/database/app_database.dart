@@ -10,6 +10,7 @@ import 'package:modular_erp/modules/hr/employees/data/employee_tables.dart';
 import 'package:modular_erp/core/sync/sync_conflicts_table.dart';
 import 'package:modular_erp/shared/transactions/data/transactions_tables.dart';
 import 'package:modular_erp/platform/access/data/access_tables.dart';
+import 'package:modular_erp/modules/services/data/services_tables.dart';
 part 'app_database.g.dart';
 
 class SyncOutbox extends Table {
@@ -64,6 +65,14 @@ class SyncOutbox extends Table {
     AttachmentRecords,
     BusinessActivityEvents,
     UserPermissionGrants,
+    ServiceCustomers,
+    ServiceSites,
+    ServiceTeams,
+    ServiceTeamMembers,
+    ServiceTypes,
+    ComplaintTypes,
+    ServicePriorities,
+    ServiceTicketTypes,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -79,7 +88,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 12;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -115,7 +124,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 9 || to != 10) {
+      if (from < 1 || from > 11 || to != 12) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -182,6 +191,28 @@ class AppDatabase extends _$AppDatabase {
       if (from < 10) {
         // Phase 0.5 explicit permission grants.
         await _ensureTable(m, userPermissionGrants);
+      }
+      if (from < 11) {
+        // Access is permission-based: remove the legacy account role column.
+        final columns = await customSelect(
+          'PRAGMA table_info(workforce_accounts)',
+        ).get();
+        if (columns.any((row) => row.read<String>('name') == 'role')) {
+          await customStatement(
+            'ALTER TABLE workforce_accounts DROP COLUMN role',
+          );
+        }
+      }
+      if (from < 12) {
+        // Services Phase 1: directory, teams and configuration masters.
+        await _ensureTable(m, serviceCustomers);
+        await _ensureTable(m, serviceSites);
+        await _ensureTable(m, serviceTeams);
+        await _ensureTable(m, serviceTeamMembers);
+        await _ensureTable(m, serviceTypes);
+        await _ensureTable(m, complaintTypes);
+        await _ensureTable(m, servicePriorities);
+        await _ensureTable(m, serviceTicketTypes);
       }
     },
     beforeOpen: (details) async {
@@ -298,6 +329,31 @@ class AppDatabase extends _$AppDatabase {
       await customStatement(
         'CREATE INDEX IF NOT EXISTS permission_grant_user ON user_permission_grants(company_id, user_id, is_active)',
       );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_customers_company_status ON service_customers(company_id, status, name)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_sites_company_customer ON service_sites(company_id, customer_id, status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_teams_company_status ON service_teams(company_id, status, name)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_team_members_team ON service_team_members(company_id, team_id, status)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_team_members_employee ON service_team_members(company_id, employee_id)',
+      );
+      for (final table in [
+        'service_types',
+        'complaint_types',
+        'service_priorities',
+        'service_ticket_types',
+      ]) {
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS ${table}_company_status ON $table(company_id, status, name)',
+        );
+      }
     },
   );
 }

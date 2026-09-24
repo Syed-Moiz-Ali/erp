@@ -327,6 +327,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get navSectionHr => 'Human resources';
+
+  @override
+  String get navSectionServices => 'Services';
+
+  @override
+  String get navSectionSettings => 'Settings';
+
+  @override
+  String get navSectionAccount => 'Account';
+
+  @override
   String durationHoursMinutes(String hours, String minutes) {
     return '${hours}h ${minutes}m';
   }
@@ -885,9 +897,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCompany => 'Company';
 
   @override
-  String get authRole => 'Role';
-
-  @override
   String get authPermissions => 'Permissions';
 
   @override
@@ -901,21 +910,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authStatusInactive => 'Inactive';
-
-  @override
-  String get authRoleSuperAdmin => 'Super administrator';
-
-  @override
-  String get authRoleCompanyAdmin => 'Company administrator';
-
-  @override
-  String get authRoleHr => 'Human resources';
-
-  @override
-  String get authRoleManager => 'Manager';
-
-  @override
-  String get authRoleEmployee => 'Employee';
 
   @override
   String get authPermissionViewer => 'Assigned permissions';
@@ -941,9 +935,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionUserManage => 'Manage user accounts';
-
-  @override
-  String get permissionRoleManage => 'Manage roles';
 
   @override
   String get shellDashboard => 'Dashboard';
@@ -1340,9 +1331,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileAdministrativeAccess => 'Administrative access';
 
   @override
-  String get profileRoles => 'Roles';
-
-  @override
   String get profileEmploymentStatus => 'Employment status';
 
   @override
@@ -1475,12 +1463,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessCompanyUsersManageDesc => 'Manage company user accounts.';
-
-  @override
-  String get accessCompanyRolesManage => 'Manage company roles';
-
-  @override
-  String get accessCompanyRolesManageDesc => 'Manage company role metadata.';
 
   @override
   String get accessPlatformCompaniesManage => 'Manage platform companies';
@@ -1718,6 +1700,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessNotLinked => 'Not linked';
+
+  @override
+  String get demoPersonaPlatformAdmin => 'Super admin';
+
+  @override
+  String get demoPersonaCompanyAdmin => 'Company admin';
+
+  @override
+  String get demoPersonaHr => 'HR';
+
+  @override
+  String get demoPersonaManager => 'Manager';
+
+  @override
+  String get demoPersonaEmployee => 'Employee';
+
+  @override
+  String get demoAccessPlatformAdmin =>
+      'Platform administration · every module and every access';
+
+  @override
+  String get demoAccessCompanyAdmin => 'Every company module and access';
+
+  @override
+  String get demoAccessHr =>
+      'HR: employees, attendance, leave, reports, configuration';
+
+  @override
+  String get demoAccessManager => 'Team attendance and team leave approvals';
+
+  @override
+  String get demoAccessEmployee => 'Self attendance and self leave';
+
+  @override
+  String get authDemoSignIn => 'Sign in';
 
   @override
   String get dashboard => 'Dashboard';
@@ -2239,10 +2256,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get empInvalidReference =>
       'Choose an active department and designation.';
-
-  @override
-  String get empAccountRoleError =>
-      'You cannot provision this account role or its permissions.';
 
   @override
   String get empStorageError =>
@@ -4925,4 +4938,700 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hrPermPoliciesManageDesc => 'Create and edit attendance policies.';
+
+  @override
+  String get servicesPermModuleServices => 'Services';
+
+  @override
+  String get servicesPermSubCustomers => 'Customers';
+
+  @override
+  String get servicesPermSubSites => 'Service sites';
+
+  @override
+  String get servicesPermSubTeams => 'Service teams';
+
+  @override
+  String get servicesPermSubConfiguration => 'Configuration';
+
+  @override
+  String get servicesPermCustomersView => 'View customers';
+
+  @override
+  String get servicesPermCustomersViewDesc =>
+      'See the service customer directory.';
+
+  @override
+  String get servicesPermCustomersCreate => 'Create customer';
+
+  @override
+  String get servicesPermCustomersCreateDesc => 'Add new service customers.';
+
+  @override
+  String get servicesPermCustomersEdit => 'Edit customer';
+
+  @override
+  String get servicesPermCustomersEditDesc => 'Update customer details.';
+
+  @override
+  String get servicesPermCustomersDeactivate => 'Deactivate customer';
+
+  @override
+  String get servicesPermCustomersDeactivateDesc =>
+      'Deactivate or reactivate customers.';
+
+  @override
+  String get servicesPermSitesView => 'View service sites';
+
+  @override
+  String get servicesPermSitesViewDesc => 'See service sites.';
+
+  @override
+  String get servicesPermSitesCreate => 'Create site';
+
+  @override
+  String get servicesPermSitesCreateDesc => 'Add service sites to customers.';
+
+  @override
+  String get servicesPermSitesEdit => 'Edit site';
+
+  @override
+  String get servicesPermSitesEditDesc => 'Update site details.';
+
+  @override
+  String get servicesPermSitesDeactivate => 'Deactivate site';
+
+  @override
+  String get servicesPermSitesDeactivateDesc =>
+      'Deactivate or reactivate sites.';
+
+  @override
+  String get servicesPermTeamsView => 'View service teams';
+
+  @override
+  String get servicesPermTeamsViewDesc => 'See service teams and membership.';
+
+  @override
+  String get servicesPermTeamsManage => 'Manage service teams';
+
+  @override
+  String get servicesPermTeamsManageDesc =>
+      'Create teams and manage membership.';
+
+  @override
+  String get servicesPermServiceTypesView => 'View service types';
+
+  @override
+  String get servicesPermServiceTypesViewDesc =>
+      'See configured service types.';
+
+  @override
+  String get servicesPermServiceTypesManage => 'Manage service types';
+
+  @override
+  String get servicesPermServiceTypesManageDesc =>
+      'Create and edit service types.';
+
+  @override
+  String get servicesPermComplaintTypesView => 'View complaint types';
+
+  @override
+  String get servicesPermComplaintTypesViewDesc =>
+      'See configured complaint types.';
+
+  @override
+  String get servicesPermComplaintTypesManage => 'Manage complaint types';
+
+  @override
+  String get servicesPermComplaintTypesManageDesc =>
+      'Create and edit complaint types.';
+
+  @override
+  String get servicesPermPrioritiesView => 'View priorities';
+
+  @override
+  String get servicesPermPrioritiesViewDesc =>
+      'See configured service priorities.';
+
+  @override
+  String get servicesPermPrioritiesManage => 'Manage priorities';
+
+  @override
+  String get servicesPermPrioritiesManageDesc =>
+      'Create and edit service priorities.';
+
+  @override
+  String get servicesPermTicketTypesView => 'View ticket types';
+
+  @override
+  String get servicesPermTicketTypesViewDesc => 'See configured ticket types.';
+
+  @override
+  String get servicesPermTicketTypesManage => 'Manage ticket types';
+
+  @override
+  String get servicesPermTicketTypesManageDesc =>
+      'Create and edit ticket types.';
+
+  @override
+  String get permissionServiceCustomerView => 'View customers';
+
+  @override
+  String get permissionServiceCustomerCreate => 'Create customer';
+
+  @override
+  String get permissionServiceCustomerEdit => 'Edit customer';
+
+  @override
+  String get permissionServiceCustomerDeactivate => 'Deactivate customer';
+
+  @override
+  String get permissionServiceSiteView => 'View service sites';
+
+  @override
+  String get permissionServiceSiteCreate => 'Create site';
+
+  @override
+  String get permissionServiceSiteEdit => 'Edit site';
+
+  @override
+  String get permissionServiceSiteDeactivate => 'Deactivate site';
+
+  @override
+  String get permissionServiceTeamView => 'View service teams';
+
+  @override
+  String get permissionServiceTeamManage => 'Manage service teams';
+
+  @override
+  String get permissionServiceTypeView => 'View service types';
+
+  @override
+  String get permissionServiceTypeManage => 'Manage service types';
+
+  @override
+  String get permissionComplaintTypeView => 'View complaint types';
+
+  @override
+  String get permissionComplaintTypeManage => 'Manage complaint types';
+
+  @override
+  String get permissionServicePriorityView => 'View priorities';
+
+  @override
+  String get permissionServicePriorityManage => 'Manage priorities';
+
+  @override
+  String get permissionServiceTicketTypeView => 'View ticket types';
+
+  @override
+  String get permissionServiceTicketTypeManage => 'Manage ticket types';
+
+  @override
+  String get servicesNavOverview => 'Overview';
+
+  @override
+  String get servicesNavCustomers => 'Customers';
+
+  @override
+  String get servicesNavSites => 'Sites';
+
+  @override
+  String get servicesNavTeams => 'Teams';
+
+  @override
+  String get servicesNavSettings => 'Services settings';
+
+  @override
+  String get servicesOverviewSubtitle =>
+      'Manage your service directory, teams and operational configuration.';
+
+  @override
+  String get servicesSummaryCustomers => 'Customers';
+
+  @override
+  String get servicesSummarySites => 'Active sites';
+
+  @override
+  String get servicesSummaryTeams => 'Service teams';
+
+  @override
+  String get servicesSetupTitle => 'Setup';
+
+  @override
+  String get servicesSetupServiceTypes => 'Service types';
+
+  @override
+  String get servicesSetupPriorities => 'Priorities';
+
+  @override
+  String get servicesSetupReady => 'Configured';
+
+  @override
+  String get servicesSetupMissing => 'Not configured';
+
+  @override
+  String get servicesDirectoryTitle => 'Customer directory';
+
+  @override
+  String get servicesRecentCustomers => 'Recent customers';
+
+  @override
+  String get servicesNoCustomersYet => 'No customers yet';
+
+  @override
+  String get servicesCustomersTitle => 'Customers';
+
+  @override
+  String get servicesCustomerAdd => 'Add customer';
+
+  @override
+  String get servicesCustomerEdit => 'Edit customer';
+
+  @override
+  String get servicesCustomerCode => 'Code';
+
+  @override
+  String get servicesCustomerName => 'Name';
+
+  @override
+  String get servicesCustomerKind => 'Type';
+
+  @override
+  String get servicesCustomerKindIndividual => 'Individual';
+
+  @override
+  String get servicesCustomerKindOrganization => 'Organization';
+
+  @override
+  String get servicesCustomerMobile => 'Mobile';
+
+  @override
+  String get servicesCustomerAlternateMobile => 'Alternate mobile';
+
+  @override
+  String get servicesCustomerEmail => 'Email';
+
+  @override
+  String get servicesCustomerNotes => 'Notes';
+
+  @override
+  String get servicesCustomerSites => 'Sites';
+
+  @override
+  String get servicesCustomerContact => 'Contact';
+
+  @override
+  String get servicesCustomerLastUpdated => 'Last updated';
+
+  @override
+  String get servicesCustomerSaved => 'Customer saved.';
+
+  @override
+  String get servicesCustomerStorageError => 'Could not save the customer.';
+
+  @override
+  String get servicesCustomerNotFound => 'Customer not found.';
+
+  @override
+  String get servicesCustomerEmpty => 'No customers yet';
+
+  @override
+  String get servicesCustomerEmptyMessage =>
+      'Add your first customer to get started.';
+
+  @override
+  String get servicesCustomerNoResults => 'No customers match your search.';
+
+  @override
+  String get servicesCustomerRequired => 'This field is required.';
+
+  @override
+  String get servicesCustomerInvalidMobile => 'Enter a valid mobile number.';
+
+  @override
+  String get servicesCustomerInvalidEmail => 'Enter a valid email.';
+
+  @override
+  String get servicesCustomerDuplicateMobile =>
+      'A customer with this mobile already exists.';
+
+  @override
+  String get servicesCustomerDuplicateEmail =>
+      'A customer with this email already exists.';
+
+  @override
+  String get servicesCustomerDeactivate => 'Deactivate';
+
+  @override
+  String get servicesCustomerActivate => 'Activate';
+
+  @override
+  String get servicesCustomerSearch => 'Search customers';
+
+  @override
+  String get servicesCustomerAllStatuses => 'All statuses';
+
+  @override
+  String get servicesCustomerActivity => 'Activity';
+
+  @override
+  String get servicesCustomerNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesCustomerSelect => 'Select customer';
+
+  @override
+  String get servicesCustomerStatus => 'Status';
+
+  @override
+  String get servicesCustomerDiscardMessage => 'You have unsaved changes.';
+
+  @override
+  String get servicesCustomerDiscardAction => 'Discard';
+
+  @override
+  String get servicesSitesTitle => 'Service sites';
+
+  @override
+  String get servicesSiteAdd => 'Add site';
+
+  @override
+  String get servicesSiteEdit => 'Edit site';
+
+  @override
+  String get servicesSiteCode => 'Code';
+
+  @override
+  String get servicesSiteName => 'Site name';
+
+  @override
+  String get servicesSiteCustomer => 'Customer';
+
+  @override
+  String get servicesSiteTenant => 'Tenant';
+
+  @override
+  String get servicesSiteBuilding => 'Building';
+
+  @override
+  String get servicesSiteUnit => 'Unit';
+
+  @override
+  String get servicesSiteContactName => 'Contact name';
+
+  @override
+  String get servicesSiteContactMobile => 'Contact mobile';
+
+  @override
+  String get servicesSiteContactEmail => 'Contact email';
+
+  @override
+  String get servicesSiteAddress1 => 'Address';
+
+  @override
+  String get servicesSiteAddress2 => 'Address line 2';
+
+  @override
+  String get servicesSiteArea => 'Area';
+
+  @override
+  String get servicesSiteCity => 'City';
+
+  @override
+  String get servicesSiteState => 'State/region';
+
+  @override
+  String get servicesSitePostalCode => 'Postal code';
+
+  @override
+  String get servicesSiteCountry => 'Country';
+
+  @override
+  String get servicesSiteLatitude => 'Latitude';
+
+  @override
+  String get servicesSiteLongitude => 'Longitude';
+
+  @override
+  String get servicesSiteNotes => 'Notes';
+
+  @override
+  String get servicesSiteBuildingUnit => 'Building / unit';
+
+  @override
+  String get servicesSiteSaved => 'Site saved.';
+
+  @override
+  String get servicesSiteStorageError => 'Could not save the site.';
+
+  @override
+  String get servicesSiteNotFound => 'Site not found.';
+
+  @override
+  String get servicesSiteEmpty => 'No sites yet';
+
+  @override
+  String get servicesSiteEmptyMessage =>
+      'Add a site to a customer to schedule work.';
+
+  @override
+  String get servicesSiteNoResults => 'No sites match your search.';
+
+  @override
+  String get servicesSiteRequired => 'This field is required.';
+
+  @override
+  String get servicesSiteDeactivate => 'Deactivate';
+
+  @override
+  String get servicesSiteActivate => 'Activate';
+
+  @override
+  String get servicesSiteSearch => 'Search sites';
+
+  @override
+  String get servicesSiteDetails => 'Site';
+
+  @override
+  String get servicesSiteActivity => 'Activity';
+
+  @override
+  String get servicesSiteLocation => 'Location';
+
+  @override
+  String get servicesSiteIdentity => 'Site identity';
+
+  @override
+  String get servicesSiteAddress => 'Address';
+
+  @override
+  String get servicesSiteContact => 'Contact';
+
+  @override
+  String get servicesSiteCustomerRequired => 'Select a customer.';
+
+  @override
+  String get servicesSiteSelectCustomer => 'Select customer';
+
+  @override
+  String get servicesTeamsTitle => 'Service teams';
+
+  @override
+  String get servicesTeamAdd => 'Add team';
+
+  @override
+  String get servicesTeamEdit => 'Edit team';
+
+  @override
+  String get servicesTeamCode => 'Code';
+
+  @override
+  String get servicesTeamName => 'Team name';
+
+  @override
+  String get servicesTeamDescription => 'Description';
+
+  @override
+  String get servicesTeamLead => 'Team lead';
+
+  @override
+  String get servicesTeamMembers => 'Members';
+
+  @override
+  String get servicesTeamMemberAdd => 'Add member';
+
+  @override
+  String get servicesTeamMemberSearch => 'Search employees';
+
+  @override
+  String get servicesTeamNoMembers => 'No members yet';
+
+  @override
+  String get servicesTeamSaved => 'Team saved.';
+
+  @override
+  String get servicesTeamStorageError => 'Could not save the team.';
+
+  @override
+  String get servicesTeamNotFound => 'Team not found.';
+
+  @override
+  String get servicesTeamEmpty => 'No teams yet';
+
+  @override
+  String get servicesTeamEmptyMessage =>
+      'Create a team to group employees for service work.';
+
+  @override
+  String get servicesTeamNoResults => 'No teams match your search.';
+
+  @override
+  String get servicesTeamRequired => 'This field is required.';
+
+  @override
+  String get servicesTeamDeactivate => 'Deactivate';
+
+  @override
+  String get servicesTeamActivate => 'Activate';
+
+  @override
+  String get servicesTeamSearch => 'Search teams';
+
+  @override
+  String get servicesTeamDetails => 'Team';
+
+  @override
+  String get servicesTeamActivity => 'Activity';
+
+  @override
+  String get servicesTeamLeadOptional => 'No lead';
+
+  @override
+  String get servicesTeamSelectLead => 'Select lead';
+
+  @override
+  String get servicesTeamMembersCount => 'Members';
+
+  @override
+  String get servicesSettingsTitle => 'Services settings';
+
+  @override
+  String get servicesSettingsSubtitle =>
+      'Configure the master data used by service operations.';
+
+  @override
+  String get servicesServiceTypesTitle => 'Service types';
+
+  @override
+  String get servicesComplaintTypesTitle => 'Complaint types';
+
+  @override
+  String get servicesPrioritiesTitle => 'Priorities';
+
+  @override
+  String get servicesTicketTypesTitle => 'Ticket types';
+
+  @override
+  String get servicesAddMaster => 'Add';
+
+  @override
+  String get servicesEditMaster => 'Edit';
+
+  @override
+  String get servicesMasterCode => 'Code';
+
+  @override
+  String get servicesMasterName => 'Name';
+
+  @override
+  String get servicesMasterDescription => 'Description';
+
+  @override
+  String get servicesMasterSortOrder => 'Sort order';
+
+  @override
+  String get servicesMasterRank => 'Rank';
+
+  @override
+  String get servicesMasterDefault => 'Default';
+
+  @override
+  String get servicesMasterServiceType => 'Service type';
+
+  @override
+  String get servicesMasterSaved => 'Saved.';
+
+  @override
+  String get servicesMasterStorageError => 'Could not save.';
+
+  @override
+  String get servicesMasterNotFound => 'Record not found.';
+
+  @override
+  String get servicesMasterEmpty => 'Nothing configured yet';
+
+  @override
+  String get servicesMasterNoResults => 'No records match your search.';
+
+  @override
+  String get servicesMasterRequired => 'This field is required.';
+
+  @override
+  String get servicesMasterDeactivate => 'Deactivate';
+
+  @override
+  String get servicesMasterActivate => 'Activate';
+
+  @override
+  String get servicesMasterSearch => 'Search';
+
+  @override
+  String get servicesMasterGeneric => 'General';
+
+  @override
+  String get servicesMasterNameRequired => 'Name is required.';
+
+  @override
+  String get servicesMasterCodeRequired => 'Code is required.';
+
+  @override
+  String get servicesMasterDuplicateCode =>
+      'A record with this code already exists.';
+
+  @override
+  String get servicesMasterDuplicateName =>
+      'A record with this name already exists.';
+
+  @override
+  String servicesCustomerCount(String filtered, String total) {
+    return '$filtered of $total customers';
+  }
+
+  @override
+  String servicesSiteCount(String filtered, String total) {
+    return '$filtered of $total sites';
+  }
+
+  @override
+  String servicesTeamCount(String filtered, String total) {
+    return '$filtered of $total teams';
+  }
+
+  @override
+  String get servicesActivityCreated => 'Created';
+
+  @override
+  String get servicesActivityUpdated => 'Updated';
+
+  @override
+  String get servicesActivityActivated => 'Activated';
+
+  @override
+  String get servicesActivityDeactivated => 'Deactivated';
+
+  @override
+  String get servicesActivityMembersUpdated => 'Team members updated';
+
+  @override
+  String get servicesActivityUnknown => 'Activity';
+
+  @override
+  String get servicesCustomerContactSection => 'Contact details';
+
+  @override
+  String get servicesSiteAddressSection => 'Address';
+
+  @override
+  String get servicesTeamLeadSection => 'Team lead';
+
+  @override
+  String get servicesTeamLeadNone => 'No team lead assigned';
+
+  @override
+  String get servicesCustomerNoSites => 'No service sites yet.';
+
+  @override
+  String get servicesDenied =>
+      'You do not have permission to perform this action.';
 }

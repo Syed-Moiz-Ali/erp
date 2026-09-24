@@ -1,3145 +1,3021 @@
-```text
-TASK — GENERATE COMPLETE BACKEND API REQUIREMENT DOCUMENT
-FOR THE EXISTING FLUTTER ERP
+```text id="m1xd35"
+SERVICES PHASE 2 — COMPLETE SERVICE ENQUIRY VERTICAL SLICE
 
-You are acting as a:
+Continue working on the EXISTING Flutter ERP application after Services Phase 1.
 
-SENIOR BACKEND ARCHITECT
-API CONTRACT DESIGNER
-FLUTTER/BACKEND INTEGRATION ARCHITECT
+Phase 1 is expected to have completed:
 
-The Flutter ERP frontend is already implemented.
+- Services module registration
+- /app/services
+- Services Overview
+- Services permission catalog contribution
+- Customer Directory
+- Service Sites
+- Service Teams
+- WorkforceDirectory integration
+- Service Types
+- Complaint Types
+- Service Priorities
+- Ticket Types
+- Services Settings
+- Drift persistence
+- outbox/activity integration
+- responsive UI
+- EN/AR
+- permission wiring
 
-YOUR JOB IS NOT TO BUILD THE BACKEND.
+THIS PHASE IMPLEMENTS THE FIRST REAL SERVICES TRANSACTION:
 
-YOUR JOB IS TO INSPECT THE ACTUAL CURRENT FLUTTER CODEBASE AND GENERATE
-A COMPLETE, BACKEND-DEVELOPER-READY API REQUIREMENT DOCUMENT.
+SERVICE ENQUIRY
 
-==================================================
-ABSOLUTE OUTPUT REQUIREMENT
-==================================================
-
-Create:
-
-docs/backend/hr_backend_api_requirements.md
-
-This file will be handed directly to the backend developer.
-
-It must be detailed enough that the backend developer can understand:
-
-- what APIs must exist
-- exact endpoint purpose
-- HTTP method
-- URL
-- required headers
-- query parameters
-- request body
-- request field types
-- request validation
-- response body
-- response field types
-- pagination
-- sorting
-- filtering
-- error responses
-- permission required
-- permission scope required
-- company/tenant behavior
-- employee-link requirements
-- idempotency
-- concurrency behavior
-- backend business validations
-- upload/download behavior
-- date/time behavior
-- sync/offline behavior
-- notification effects
-- audit requirements
-- examples
-
-DO NOT implement API clients.
-
-DO NOT implement backend code.
-
-DO NOT modify Flutter business functionality.
-
-ONLY GENERATE THE REQUIREMENT DOCUMENT.
-
-==================================================
-1. INSPECT THE REAL CODE FIRST
-==================================================
-
-Before writing the document, inspect the ACTUAL CURRENT project.
-
-Do NOT work from assumptions.
-
-Inspect at minimum:
-
-lib/app/
-
-lib/bootstrap/
-
-lib/core/
-
-lib/platform/auth/
-
-lib/platform/profile/
-
-lib/platform/notifications/
-
-lib/platform/sync/
-
-lib/modules/hr/
-
-lib/shared/
-
-Drift database/tables
-
-repository interfaces
-
-local repository implementations
-
-domain models
-
-Freezed models
-
-enums
-
-use cases
-
-BLoCs/Cubits
-
-route definitions
-
-permission catalogs
-
-permission scope resolvers
-
-UserCapabilityContext
-
-NavigationResolver
-
-outbox operations
-
-notification types
-
-dashboard repositories
-
-report repositories
-
-attachment infrastructure
-
-transaction/audit infrastructure
-
-localization where it reveals business terminology
-
-and architecture documentation.
-
-Also inspect:
-
-docs/architecture/access_control.md
-
-docs/architecture/permission_coverage.md
-
-docs/architecture/routing.md
-
-docs/architecture/transaction_foundation.md
-
-and any current HR/Leave/Attendance architecture documents.
-
-==================================================
-2. SOURCE OF TRUTH
-==================================================
-
-The Flutter implementation is the source of truth.
-
-DO NOT invent request fields based only on what a typical ERP might use.
-
-If Flutter has:
-
-EmployeeDraft
-
-LeaveRequestDraft
-
-AttendancePolicy
-
-HolidayCalendar
-
-PermissionGrant
-
-etc.
-
-derive API fields from those actual models.
-
-If the frontend currently needs information not represented cleanly in models,
-identify it explicitly.
-
-If something is uncertain, write:
-
-TBD — BACKEND/PRODUCT CONFIRMATION REQUIRED
-
-Do NOT silently guess.
-
-==================================================
-3. CURRENT SCOPE ONLY
-==================================================
-
-Generate backend requirements for everything implemented BEFORE the Services
-business module starts.
-
-INCLUDE:
-
-PLATFORM
-
-Authentication
-
-Session
-
-Refresh token
-
-Logout
-
-Current account
-
-Current company
-
-Company switching
-
-Application bootstrap
-
-Profile
-
-Preferences
-
-Notifications
-
-Sync/outbox requirements
-
-Company module entitlement
-
-Users & Access
-
-Permission grants
-
-Permission scopes
-
-Access history/audit
-
-HR
-
-HR dashboard
-
-Employees
-
-Employee details
-
-Employee create
-
-Employee edit
-
-Employee activation/deactivation if implemented
-
-Employee account/login provisioning if implemented
-
-Departments
-
-Designations
-
-Manager relationships
-
-Shifts
-
-Work Locations
-
-Attendance Policies
-
-Attendance Today
-
-Punch In
-
-Break
-
-Resume
-
-Punch Out
-
-Attendance History
-
-Attendance Day details
-
-Team Attendance
-
-All Attendance
-
-Attendance Corrections
-
-Attendance Correction review/approval/rejection
-
-Attendance Reports
-
-Report filters
-
-Report exports
-
-Leave Types
-
-Leave Policies
-
-Leave policy assignments if present
-
-Leave balances
-
-Leave ledger
-
-Leave request preview
-
-Leave request submission
-
-Leave request details
-
-Leave cancellation
-
-Leave approval
-
-Leave rejection
-
-Team Leave
-
-All Leave
-
-Leave approvals queue
-
-Employee Leave profile
-
-Leave Calendar
-
-Holiday Calendars
-
-Holidays
-
-Public/Government Holiday
-
-Festival Holiday
-
-Regional Holiday
-
-Company Holiday
-
-Special Closure
-
-Optional Holiday
-
-Holiday create/edit
-
-Holiday year setup
-
-Copy previous year
-
-Holiday CSV import
-
-Holiday applicability/work-location scope
-
-Dashboard Leave/Holiday integrations
-
-Attendance Leave/Holiday classification
-
-Leave Reports if currently implemented
-
-DO NOT DESIGN SERVICES BUSINESS APIs.
-
-==================================================
-4. USE CURRENT CANONICAL ROUTING/NAMING
-==================================================
-
-Frontend canonical routes now follow module boundaries such as:
-
-/app/hr/...
-
-Do NOT confuse frontend routes with backend REST endpoints.
-
-Backend should use an API namespace such as:
-
-/api/v1/...
-
-Recommended domain style:
-
-/api/v1/hr/employees
-
-/api/v1/hr/attendance/...
-
-/api/v1/hr/leave/...
-
-/api/v1/hr/holidays/...
-
-but derive the final endpoint organization based on the actual domain model.
-
-==================================================
-5. AUTHORIZATION MODEL — CRITICAL
-==================================================
-
-The current ERP is NOT business-role-driven.
-
-DO NOT design APIs around:
-
-HR role
-
-Manager role
-
-Employee role
-
-Technician role
-
-Service Manager role.
-
-Runtime access is:
-
-COMPANY MODULE ENABLED
-
-AND
-
-PERMISSION GRANTED
-
-AND
-
-REQUIRED EMPLOYEE CONTEXT VALID
-
-AND
-
-RECORD IS INSIDE GRANTED SCOPE
-
-AND
-
-COMPANY/TENANT MATCH.
-
-Current supported scopes include:
-
-NONE
-
-SELF
-
-ASSIGNED
-
-TEAM
-
-ALL
-
-For current HR, mostly:
-
-SELF
-
-TEAM
-
-ALL.
-
-Document the required permission and supported scope for EVERY protected API.
-
-==================================================
-6. PERMISSION KEYS
-==================================================
-
-Read actual stable permission keys from the current permission catalog.
-
-Examples may include:
-
-hr.employees.view
-
-hr.employees.create
-
-hr.employees.edit
-
-hr.attendance.self.view
-
-hr.attendance.self.punch
-
-hr.attendance.records.view
-
-hr.attendance.corrections.review
-
-hr.leave.self.view
-
-hr.leave.self.request
-
-hr.leave.records.view
-
-hr.leave.requests.review
-
-hr.holidays.view
-
-hr.holidays.manage
-
-company.access.users.view
-
-company.access.permissions.manage
-
-etc.
-
-DO NOT rely on these examples alone.
-
-Inspect the real permission catalog and list every current permission.
-
-==================================================
-7. PERMISSION/API MATRIX
-==================================================
-
-Inside the generated document create a section:
-
-API AUTHORIZATION MATRIX
-
-For every API endpoint show:
-
-Endpoint
-
-Method
-
-Module
-
-Permission key
-
-Required/allowed scope
-
-Employee link required?
-
-Company module required?
-
-Record-scope rule
-
-Example:
-
-GET /api/v1/hr/leave/requests
-
-Permission:
-hr.leave.records.view
-
-Scope:
-TEAM or ALL
-
-TEAM:
-server returns only leave requests within resolved team.
-
-ALL:
-server returns company-wide requests.
-
-Do this for ALL protected APIs.
-
-==================================================
-8. SERVER AUTHORIZATION
-==================================================
-
-The backend MUST NOT trust the Flutter UI to enforce permissions.
-
-Even if Flutter hides:
-
-Add Employee
-
-Approve Leave
-
-Punch In
-
-Manage Holiday
-
-the backend must independently enforce authorization.
-
-Document this rule prominently.
-
-==================================================
-9. COMPANY/TENANT ISOLATION
-==================================================
-
-Every company-owned record must be tenant scoped.
-
-Document exactly how active company is selected.
-
-Preferred:
-
-Authorization: Bearer <token>
-
-X-Company-Id: <companyId>
-
-Server must verify:
-
-user belongs to company
-
-membership active
-
-company active
-
-module enabled
-
-permission valid
-
-record belongs to same company.
-
-Never trust companyId from request body alone.
-
-==================================================
-10. SELF OPERATIONS
-==================================================
-
-For SELF APIs, backend derives employee identity from:
-
-authenticated user
-
-+
-
-active company membership
-
-+
-
-linked Employee.
-
-Example:
-
-POST /attendance/punch-in
-
-must NOT accept arbitrary employeeId for normal self punch.
-
-Same for:
-
-My Attendance
-
-My Leave
-
-Request Leave
-
-My Balance.
-
-Document this clearly.
-
-==================================================
-11. API VERSIONING
-==================================================
-
-Use:
-
-/api/v1
-
-Document future versioning expectation.
-
-==================================================
-12. STANDARD REQUEST HEADERS
-==================================================
-
-Define a standard header contract.
-
-Document which are mandatory/optional.
-
-Consider:
-
-Authorization: Bearer <accessToken>
-
-X-Company-Id: <uuid>
-
-X-Request-Id: <uuid>
-
-Idempotency-Key: <uuid>
-
-Accept-Language: en | ar
-
-X-Client-Platform: android | ios | web
-
-X-Client-Version: <version>
-
-Content-Type: application/json
-
-If different headers are appropriate, explain why.
-
-==================================================
-13. LOGIN HEADERS
-==================================================
-
-Login occurs before company context.
-
-Therefore do not require:
-
-X-Company-Id
-
-for login.
-
-Specify exact login headers separately.
-
-==================================================
-14. STANDARD SUCCESS RESPONSE
-==================================================
-
-Define ONE consistent success envelope.
-
-Example style:
-
-{
-  "success": true,
-  "data": {},
-  "meta": {
-    "requestId": "uuid",
-    "serverTimeUtc": "2026-09-24T06:00:00Z"
-  }
-}
-
-Use actual recommendation consistently throughout the document.
-
-==================================================
-15. PAGINATED RESPONSE
-==================================================
-
-Define exact pagination response.
-
-Example:
-
-{
-  "success": true,
-  "data": [],
-  "meta": {
-    "page": 1,
-    "pageSize": 25,
-    "totalItems": 120,
-    "totalPages": 5,
-    "requestId": "...",
-    "serverTimeUtc": "..."
-  }
-}
-
-Document:
-
-default page size
-
-maximum page size
-
-zero/one-based page behavior.
-
-==================================================
-16. STANDARD ERROR RESPONSE
-==================================================
-
-Define exact shape.
-
-Example:
-
-{
-  "success": false,
-  "error": {
-    "code": "LEAVE_INSUFFICIENT_BALANCE",
-    "message": "Insufficient leave balance.",
-    "fieldErrors": {},
-    "details": {}
-  },
-  "meta": {
-    "requestId": "...",
-    "serverTimeUtc": "..."
-  }
-}
-
-The backend must provide stable error codes.
-
-Flutter must not need to parse English text.
-
-==================================================
-17. HTTP STATUS CODES
-==================================================
-
-Define usage for:
-
-200
-
-201
-
-204
-
-400
-
-401
-
-403
-
-404
-
-409
-
-422
-
-429
-
-500
-
-Also explain when to choose:
-
-403 vs 404
-
-409 vs 422.
-
-==================================================
-18. FIELD VALIDATION
-==================================================
-
-For EVERY mutation endpoint document validation.
-
-Example Employee create:
-
-required fields
-
-format
-
-max lengths
-
-valid reference IDs
-
-company ownership
-
-duplicate employee code behavior
-
-email rules
-
-phone rules
-
-manager rules
-
-shift/work-location validation.
-
-Do this using the actual Flutter validators/domain rules.
-
-==================================================
-19. DATE / TIME CONTRACT
-==================================================
-
-The current frontend has:
-
-AppClock
-
-CompanyTimeService.
-
-Backend must also follow a deterministic time contract.
-
-Document:
-
-UTC storage for absolute timestamps
-
-ISO-8601 UTC response timestamps
-
-company timezone
-
-business date handling
-
-date-only values
-
-time-only values
-
-overnight shifts
-
-holiday dates
-
-leave dates
-
-attendance event timestamps.
-
-Never use server-local timezone as business truth.
-
-==================================================
-20. ENUM CONTRACT
-==================================================
-
-Inspect ALL current enums.
-
-For each API-relevant enum document:
-
-name
-
-allowed wire values
-
-meaning
-
-transitions where applicable.
-
-Examples:
-
-Attendance status
-
-Leave request status
-
-Holiday type
-
-sync status if exposed
-
-Employee status
-
-configuration status.
-
-Do not send localized enum values.
-
-==================================================
-21. ID CONTRACT
-==================================================
-
-Document:
-
-internal UUID
-
-business display code where applicable
-
-foreign reference IDs.
-
-Do not use names/emails as IDs.
-
-==================================================
-22. IDEMPOTENCY
-==================================================
-
-Identify every mutation that must be idempotent.
-
-Examples:
-
-Punch In
-
-Punch Out
-
-Leave submit
-
-Leave approve
-
-Leave reject
-
-Balance adjustment
-
-Holiday import
-
-Permission replacement
-
-Employee create if request retried.
-
-Document:
-
-Idempotency-Key usage
-
-duplicate request behavior
-
-response behavior.
-
-==================================================
-23. OPTIMISTIC CONCURRENCY
-==================================================
-
-Inspect whether current domain needs revision/version handling.
-
-At minimum consider:
-
-Leave approval concurrency
-
-correction review concurrency
-
-permission editing
-
-configuration editing
-
-holiday editing.
-
-Document recommended:
-
-version field
-
-ETag
-
-updatedAt check
-
-or equivalent.
-
-Example:
-
-two reviewers approve same Leave request.
-
-Only first transition succeeds.
-
-Second receives:
-
-409 LEAVE_ALREADY_REVIEWED.
-
-==================================================
-24. AUTHENTICATION SECTION
-==================================================
-
-Document full APIs for:
-
-Login
-
-Refresh token
-
-Logout
-
-Current account
-
-Company memberships
-
-Current company bootstrap
-
-Password change if present
-
-Password reset if present
-
-Account/session validation.
-
-For EACH endpoint provide:
-
-method
-
-URL
-
-headers
-
-body
-
-field table
-
-success response
-
-error responses
-
-security requirements.
-
-==================================================
-25. LOGIN CONTRACT
-==================================================
-
-Derive exact login fields from Flutter.
-
-If frontend supports:
-
-email/phone + password
-
-document that.
-
-Example should be based on actual model.
-
-Do not invent MFA if not implemented.
-
-==================================================
-26. BOOTSTRAP CONTRACT — VERY IMPORTANT
-==================================================
-
-Define one company-session bootstrap API.
-
-Example conceptual:
-
-GET /api/v1/me/bootstrap
-
-It should return what Flutter needs after login/company selection:
-
-account
-
-company
-
-company timezone
-
-company locale
-
-enabled modules/features
-
-linked Employee if any
-
-permission grants + scopes
-
-permission/catalog version if useful
-
-feature/config versions if useful
-
-server time.
-
-DO NOT return role name as authorization truth.
-
-==================================================
-27. COMPANY SWITCH
-==================================================
-
-Document exact process.
-
-Example:
-
-change X-Company-Id
-
-fetch bootstrap
-
-clear/partition stale tenant state
-
-load new company context.
-
-Backend must reject unauthorized company IDs.
-
-==================================================
-28. PROFILE APIs
-==================================================
-
-Inspect current Profile implementation.
-
-Document exact required APIs.
-
-Examples potentially:
-
-GET /me/profile
-
-PATCH /me/preferences
-
-PATCH /me/profile
-
-POST /auth/change-password
-
-but ONLY include functionality actually supported by Flutter.
-
-==================================================
-29. NOTIFICATION APIs
-==================================================
-
-Inspect notification architecture.
-
-Document APIs for:
-
-list notifications
-
-unread count
-
-mark read
-
-mark all read if supported
-
-notification details/deep-link payload
-
-notification preferences if implemented.
-
-Permission must be rechecked when target record is accessed.
-
-==================================================
-30. ACCESS MANAGEMENT APIs
-==================================================
-
-Document full Users & Access backend contract.
-
-Include:
-
-list access users
-
-get access user
-
-get grants
-
-replace/update grants
-
-access history
-
-permission catalog if backend provides it
-
-company module view.
-
-Respect:
-
-self-escalation protection
-
-grant authority
-
-platform-only permissions
-
-non-delegable permissions
-
-employee-link requirements
-
-module enabled requirements
-
-last access admin protection.
-
-==================================================
-31. PERMISSION GRANT RESPONSE
-==================================================
-
-Document exact grant representation.
-
-Example conceptual:
-
-{
-  "key": "hr.leave.requests.review",
-  "scope": "TEAM",
-  "expiresAt": null
-}
-
-Use actual model fields.
-
-==================================================
-32. PERMISSION UPDATE CONTRACT
-==================================================
-
-Prefer an atomic replacement/update contract matching current frontend.
-
-Document:
-
-request
-
-validation
-
-grant authority
-
-audit events
-
-idempotency
-
-response.
-
-==================================================
-33. COMPANY MODULE API
-==================================================
-
-Current local demo may expose module availability read-only.
-
-Document current required API:
-
-GET company modules/entitlements.
-
-If module mutation belongs to platform backend but not current Flutter,
-mark mutation endpoint as:
-
-FUTURE / NOT REQUIRED BY CURRENT FRONTEND.
-
-==================================================
-34. EMPLOYEE API SECTION
-==================================================
-
-Create complete backend specification for Employees.
-
-Include every API required by current screens.
-
-Likely:
-
-list
-
-detail
-
-create
-
-edit
-
-activation/deactivation
-
-reference search
-
-manager reference search
-
-account provisioning where applicable.
-
-Do not assume.
-
-Read repository interfaces and screens.
-
-==================================================
-35. EMPLOYEE LIST
-==================================================
-
-Document:
-
-GET endpoint
-
-search
-
-pagination
-
-department filter
-
-designation filter
-
-work location
-
-status
-
-manager if used
-
-sorting.
-
-Also document scope:
-
-TEAM
-
-ALL
-
-and how server resolves TEAM.
-
-==================================================
-36. EMPLOYEE LIST RESPONSE
-==================================================
-
-Do NOT return giant full Employee aggregates unnecessarily.
-
-Define:
-
-EmployeeListItemDto
-
-based on fields actually shown in list/cards.
-
-Then detail endpoint can return richer DTO.
-
-==================================================
-37. EMPLOYEE DETAIL
-==================================================
-
-Document:
-
-GET detail endpoint
-
-object-scope authorization
-
-safe field visibility
-
-account/security sections.
-
-If some sensitive fields require extra permission,
-document field-level behavior.
-
-==================================================
-38. EMPLOYEE CREATE/EDIT
-==================================================
-
-Document exact request body based on:
-
-EmployeeDraft
-
-Employee model
-
-form validators.
-
-Include reference IDs for:
-
-department
-
-designation
-
-manager
-
-shift
-
-work location
-
-etc. where currently used.
-
-==================================================
-39. REFERENCE DATA
-==================================================
-
-Document reference/search APIs required by selectors.
-
-Examples:
-
-departments
-
-designations
-
-managers/employees
-
-shifts
-
-work locations.
-
-Avoid forcing Flutter to download enormous full lists for every dropdown.
-
-Specify search/reference DTOs where useful.
-
-==================================================
-40. SHIFTS
-==================================================
-
-Document:
-
-list
-
-detail
-
-create
-
-edit
-
-activate/deactivate
-
-validation
-
-overnight shift behavior
-
-permissions.
-
-==================================================
-41. WORK LOCATIONS
-==================================================
-
-Document complete API.
-
-Include actual current fields such as:
-
-name
-
-coordinates
-
-radius/geofence
-
-status
-
-etc.
-
-Derive from models.
-
-==================================================
-42. ATTENDANCE POLICIES
-==================================================
-
-Document complete API.
-
-Explain interaction between:
-
-policy
-
-shift
-
-work location.
-
-Use actual model.
-
-==================================================
-43. ATTENDANCE TODAY API
-==================================================
-
-Define API Flutter should use to render today's attendance.
-
-It should provide enough data for:
-
-state
-
-Punch In availability
-
-Break/Resume
-
-Punch Out
-
-shift/context
-
-policy warnings
-
-location requirements
-
-pending sync/server status if needed.
-
-Do NOT force Flutter to infer server business rules from multiple unrelated APIs
-unless current architecture explicitly requires it.
-
-==================================================
-44. ATTENDANCE ACTION APIs
-==================================================
-
-Document individually or as one command-style endpoint:
-
-Punch In
-
-Break
-
-Resume
-
-Punch Out.
-
-For each specify:
-
-request
-
-GPS/location evidence
-
-accuracy if current frontend sends it
-
-request ID
-
-timestamp/evidence rules
-
-business validations
-
-possible errors
-
-response.
-
-==================================================
-45. SERVER AUTHORITATIVE ATTENDANCE
-==================================================
-
-Backend must ultimately validate:
-
-Employee link
-
-shift
-
-policy
-
-action transition
-
-location/geofence
-
-duplicate event
-
-company timezone
-
-overnight day ownership
-
-permissions.
-
-Flutter UI is not authority.
-
-==================================================
-46. ATTENDANCE STATE MACHINE
-==================================================
-
-Document existing state machine exactly from Flutter.
-
-Do not invent another one.
-
-Include allowed transitions.
-
-==================================================
-47. ATTENDANCE HISTORY
-==================================================
-
-Document:
-
-self history
-
-date filters
-
-pagination if used
-
-monthly summary
-
-day detail.
-
-==================================================
-48. TEAM / ALL ATTENDANCE
-==================================================
-
-Document APIs and scope behavior.
-
-TEAM grant:
-
-server returns only resolved HR team.
-
-ALL:
-
-company-wide.
-
-Never send unrestricted company data to TEAM user and expect Flutter to filter.
-
-==================================================
-49. ATTENDANCE CORRECTIONS
-==================================================
-
-Document:
-
-create correction request
-
-list own corrections if present
-
-review queue
-
-detail
-
-approve/apply
-
-reject.
-
-Use current actual workflow.
-
-==================================================
-50. ATTENDANCE CORRECTION CONCURRENCY
-==================================================
-
-Document:
-
-reviewed request cannot be reviewed twice
-
-self-review restriction
-
-immutable original Attendance events
-
-correction overlay/effective attendance behavior.
-
-==================================================
-51. ATTENDANCE REPORTS
-==================================================
-
-Inspect report implementation.
-
-Document endpoints for report data with:
-
-mode
-
-date range
-
-employee
-
-department
-
-location
-
-shift
-
-issues
-
-pagination
-
-scope.
-
-==================================================
-52. REPORT EXPORT
-==================================================
-
-Document:
-
-CSV
-
-PDF
-
-or current supported export formats.
-
-Export must use same authorization and filters as on-screen report.
-
-No scope bypass.
-
-==================================================
-53. LEAVE TYPE APIs
-==================================================
-
-Document:
-
-list
-
-detail
-
-create
-
-edit
-
-activate/deactivate
-
-fields
-
-validation
-
-permissions.
-
-==================================================
-54. LEAVE POLICY APIs
-==================================================
-
-Document complete current model.
-
-Include:
-
-entitlements
-
-half-day rules
-
-minimum service
-
-advance notice
-
-carry forward fields if model exists
-
-negative balance
-
-probation fields if they are CURRENTLY implemented
-
-etc.
-
-Do not invent future functionality.
-
-==================================================
-55. LEAVE POLICY ASSIGNMENTS
-==================================================
-
-If current repository/domain has employee policy assignments,
-document endpoints.
-
-If UI is deferred but backend data is required,
-mark:
-
-BACKEND REQUIRED / CURRENT UI DEFERRED
-
-rather than omitting it.
-
-==================================================
-56. LEAVE BALANCE MODEL
-==================================================
-
-The current architecture uses a ledger.
-
-Backend must preserve this principle.
-
-Do NOT design:
-
-employee.leaveBalance = 15
-
-as a directly overwritten mutable number.
-
-Document:
-
-balance account
-
-ledger transactions
-
-entitlement
-
-used
-
-pending/reserved
-
-available.
-
-==================================================
-57. LEAVE LEDGER APIs
-==================================================
-
-Document APIs required for:
-
-view balance
-
-view Employee balances
-
-view ledger
-
-adjust balance.
-
-Balance adjustment creates ledger transaction.
-
-No direct overwrite.
-
-==================================================
-58. LEAVE PREVIEW
-==================================================
-
-Document request preview API if needed.
-
-It should calculate server-side:
-
-working leave days
-
-excluded weekends/non-working days
-
-excluded holidays
-
-half-day handling
-
-balance impact
-
-eligibility
-
-warnings.
-
-Use actual LeaveDayCalculator behavior.
-
-==================================================
-59. LEAVE SUBMIT
-==================================================
-
-Document:
-
-POST leave request
-
-body
-
-validation
-
-overlap
-
-balance validation
-
-policy eligibility
-
-holiday exclusion
-
-date calculation
-
-idempotency
-
-response.
-
-==================================================
-60. LEAVE REQUEST STATUS
-==================================================
-
-Document actual enum and valid transitions.
-
-Example based on current implementation:
-
-PENDING
-
-APPROVED
-
-REJECTED
-
-CANCELLED
-
-but verify code.
-
-==================================================
-61. LEAVE APPROVAL
-==================================================
-
-Document:
-
-approve
-
-reject
-
-cancel.
-
-Approval must be transactional:
-
-status transition
-
-ledger reservation/consumption change
-
-event/audit
-
-notification
-
-outbox/event as backend architecture requires.
-
-==================================================
-62. TEAM LEAVE
-==================================================
-
-Document TEAM scope APIs.
-
-==================================================
-63. ALL LEAVE
-==================================================
-
-Document ALL scope APIs.
-
-==================================================
-64. APPROVAL QUEUE
-==================================================
-
-Document:
-
-pending filters
-
-starting soon
-
-employee
-
-leave type
-
-period
-
-department
-
-pagination
-
-scope.
-
-==================================================
-65. EMPLOYEE LEAVE PROFILE
-==================================================
-
-Document backend data needed for:
-
-employee identity
-
-balances
-
-upcoming leave
-
-recent requests
-
-ledger where permitted.
-
-Consider one composed endpoint vs multiple calls.
-
-Recommend based on actual frontend architecture.
-
-==================================================
-66. LEAVE CALENDAR
-==================================================
-
-Document:
-
-period
-
-scope
-
-employee/team/company
-
-Leave events
-
-Holiday events
-
-privacy rules.
-
-Do not include leave reasons broadly in calendar responses unless permission
-actually requires it.
-
-==================================================
-67. HOLIDAY CALENDAR
-==================================================
-
-Document current annual Holiday Calendar model.
-
-Include APIs for:
-
-list years/calendars
-
-calendar detail
-
-year setup
-
-default/applicable calendar if current model uses it.
-
-==================================================
-68. HOLIDAY CRUD
-==================================================
-
-Document:
-
-list
-
-detail
-
-create
-
-edit
-
-activate/deactivate/cancel as actual domain supports.
-
-Fields must come from current Holiday model.
-
-==================================================
-69. HOLIDAY TYPES
-==================================================
-
-Document current actual enum.
-
-Likely concepts include:
-
-PUBLIC/GOVERNMENT
-
-FESTIVAL
-
-REGIONAL
-
-COMPANY
-
-SPECIAL CLOSURE
-
-and independent optionality.
-
-Verify actual implementation.
-
-==================================================
-70. HOLIDAY SCOPE
-==================================================
-
-Document:
-
-company-wide
-
-specific Work Locations
-
-and how applicability is resolved server-side.
-
-==================================================
-71. HOLIDAY COPY YEAR
-==================================================
-
-Document exact API required to:
-
-preview copy
-
-copy previous year's Holidays
-
-validate duplicates
-
-mark source metadata
-
-allow festival dates to be reviewed.
-
-If frontend currently uses different flow,
-follow it.
-
-==================================================
-72. HOLIDAY CSV IMPORT
-==================================================
-
-Document:
-
-multipart/form-data endpoint
-
-file field name
-
-accepted file type
-
-maximum size
-
-preview/validation response
-
-row errors
-
-duplicate warnings
-
-confirmation/final import behavior.
-
-Do not use one opaque "upload and hope" API.
-
-==================================================
-73. ATTENDANCE + LEAVE + HOLIDAY CLASSIFICATION
-==================================================
-
-Backend must support the same workday truth as frontend.
-
-Document classification semantics such as:
-
-working
-
-on break
-
-completed
-
-incomplete
-
-approved Leave
-
-Holiday
-
-non-working day
-
-no record
-
-issue
-
-based on actual code.
-
-Do NOT automatically call missing Attendance "Absent"
-unless current backend requirement explicitly supports an absence engine.
-
-==================================================
-74. HR DASHBOARD
-==================================================
-
-Inspect current dashboard.
-
-List every card/metric/section and the data required.
-
-Then recommend API design.
-
-Possible approaches:
-
-one composed HR dashboard endpoint
-
-or grouped module summary APIs.
-
-Prefer minimizing excessive network calls while keeping module ownership clean.
-
-Document exact response DTO.
-
-==================================================
-75. DASHBOARD SECURITY
-==================================================
-
-Dashboard must not leak metrics outside user scope.
-
-Example:
-
-TEAM Leave permission:
-team metrics only.
-
-No employee visibility:
-do not return company-wide employee counts.
-
-Server shapes data according to effective permissions.
-
-==================================================
-76. NOTIFICATIONS CAUSED BY HR ACTIONS
-==================================================
-
-Map current notifications.
-
-Examples:
-
-Leave submitted
-
-Leave approval required
-
-Leave approved
-
-Leave rejected
-
-Attendance correction requested
-
-correction reviewed
-
-holiday-related notifications if implemented.
-
-For each document:
-
-trigger
-
-recipient selection
-
-deep-link target
-
-payload
-
-permission considerations.
-
-==================================================
-77. AUDIT / ACTIVITY
-==================================================
-
-Current transaction foundation has structured events.
-
-Document backend requirements for:
-
-createdBy
-
-updatedBy
-
-activity history
-
-permission change audit
-
-Leave events
-
-correction events
-
-configuration actions where relevant.
-
-Do not store only English sentences.
-
-==================================================
-78. ATTACHMENTS
-==================================================
-
-Inspect actual current HR usage.
-
-If current HR features support attachment metadata,
-document required APIs.
-
-If attachment capability exists only as shared foundation for future Services,
-state:
-
-NO CURRENT HR ATTACHMENT ENDPOINT REQUIRED
-
-rather than inventing APIs.
-
-==================================================
-79. SYNC / OFFLINE — IMPORTANT
-==================================================
-
-The Flutter application is local-first and has an outbox.
-
-Inspect actual sync architecture.
-
-Generate backend requirements to support it.
-
-Document whether backend integration should use:
-
-normal resource endpoints per mutation
-
-plus retry/idempotency
-
-OR
-
-a batch sync endpoint.
-
-Recommend based on the existing code.
-
-==================================================
-80. OUTBOX OPERATION MATRIX
-==================================================
-
-List every CURRENT outbox operation key from code.
-
-For each map:
-
-operation key
-
-entity
-
-corresponding API endpoint
-
-request payload
-
-idempotency behavior
-
-server response
-
-conflict behavior.
-
-Do not omit current operations.
-
-==================================================
-81. SYNC CONFLICTS
-==================================================
-
-Define behavior for:
-
-duplicate request
-
-server newer version
-
-resource deleted/deactivated
-
-already reviewed
-
-permission removed
-
-company disabled
-
-validation changed.
-
-Map to stable error codes.
-
-==================================================
-82. SOFT DELETE / DEACTIVATION
-==================================================
-
-Inspect each configuration entity.
-
-Document whether backend should:
-
-hard delete
-
-soft delete
-
-deactivate/archive.
-
-Follow current frontend semantics.
-
-==================================================
-83. STANDARD REFERENCE DTO
-==================================================
-
-Where many forms require lightweight references,
-define appropriate DTOs.
-
-Example:
-
-EmployeeReferenceDto
-
-{
-  "id": "...",
-  "employeeCode": "EMP-001",
-  "displayName": "Ahmed Khan"
-}
-
-Do not return full Employee aggregate in selectors.
-
-==================================================
-84. DATA MINIMIZATION
-==================================================
-
-For every endpoint avoid returning data Flutter does not need.
-
-List DTO
-
-Detail DTO
-
-Reference DTO
-
-may differ.
-
-Document them explicitly.
-
-==================================================
-85. FIELD TABLES
-==================================================
-
-For every request/response DTO include a field table:
-
-Field
-
-Type
-
-Required
-
-Nullable
-
-Example
-
-Description
-
-Validation.
-
-Example:
-
-| Field | Type | Required | Nullable | Example | Description |
-| id | UUID | yes | no | ... | Employee ID |
-
-Do this throughout the document.
-
-==================================================
-86. ENDPOINT FORMAT
-==================================================
-
-For EVERY endpoint use this exact documentation template:
-
-### <Endpoint Name>
-
-PURPOSE
-
-METHOD
-
-PATH
-
-AUTHENTICATION
-
-REQUIRED PERMISSION
-
-ALLOWED SCOPE
-
-REQUIRED HEADERS
-
-PATH PARAMETERS
-
-QUERY PARAMETERS
-
-REQUEST BODY
-
-REQUEST FIELD TABLE
-
-BUSINESS VALIDATIONS
-
-SUCCESS RESPONSE
-
-RESPONSE FIELD TABLE
-
-ERROR RESPONSES
-
-IDEMPOTENCY
-
-CONCURRENCY
-
-AUDIT / NOTIFICATION EFFECTS
-
-FLUTTER CONSUMER
-
-Example Flutter repository/use case that consumes it.
-
-==================================================
-87. FLUTTER CONSUMER MAPPING
-==================================================
-
-For every backend endpoint identify which frontend interface consumes it.
-
-Example:
-
-GET /api/v1/hr/employees
-
-Flutter consumer:
-
-EmployeeRepository.watchEmployees(...)
-
-Current local implementation:
-
-LocalEmployeeRepository
-
-This helps backend and frontend teams verify completeness.
-
-==================================================
-88. REPOSITORY → API MATRIX
-==================================================
-
-Create a major section:
-
-FRONTEND REPOSITORY TO BACKEND API MATRIX
-
-For every current repository interface:
-
-Repository
-
-Method
-
-Current local implementation
-
-Required backend endpoint
-
-HTTP method
-
-Permission
-
-Scope.
-
-This is one of the MOST IMPORTANT sections.
-
-==================================================
-89. BLOC / SCREEN COVERAGE
-==================================================
-
-Create:
-
-SCREEN → REQUIRED API MATRIX
-
-Examples:
-
-Login Screen
-
-HR Dashboard
-
-Employee List
-
-Employee Details
-
-Attendance Today
-
-Attendance History
-
-Team Attendance
-
-Leave Home
-
-Leave Approvals
-
-Holiday Management
-
-Users & Access
-
-etc.
-
-For each list all APIs required to render and perform actions.
-
-This catches missing backend endpoints.
-
-==================================================
-90. API COMPLETENESS AUDIT
-==================================================
-
-At the end, compare:
-
-every current route
-
-every repository method
-
-every use case
-
-every mutation
-
-every outbox operation
-
-every report
-
-every notification
-
-against the proposed backend contract.
-
-No current frontend functionality should be left without a backend path.
-
-==================================================
-91. PERFORMANCE / NETWORK DESIGN
-==================================================
-
-Identify places where naive backend integration would cause N+1 requests.
-
-Examples:
-
-Employee list resolving departments one by one
-
-Leave list resolving employee one by one
-
-Dashboard loading 15 independent endpoints
-
-Calendar fetching each day separately.
-
-Recommend composed/list read models where appropriate.
-
-==================================================
-92. CACHING
-==================================================
-
-Document appropriate caching semantics for:
-
-permission catalog
-
-company bootstrap
-
-configuration/master lists
-
-holidays
-
-reference data.
-
-Do not cache volatile Attendance mutations incorrectly.
-
-==================================================
-93. RATE LIMITING
-==================================================
-
-Recommend basic rate limits especially for:
-
-login
-
-password/reset if present
-
-file import
-
-repeated Attendance mutation.
-
-Do not over-design exact infrastructure if backend stack is unknown.
-
-==================================================
-94. SECURITY REQUIREMENTS
-==================================================
-
-Include a backend security section covering:
-
-token validation
-
-tenant isolation
-
-permission enforcement
-
-scope enforcement
-
-mass assignment prevention
-
-input validation
-
-SQL injection protection
-
-file upload validation
-
-PII exposure
-
-audit actor source
-
-rate limits
-
-secure refresh token handling
-
-HTTPS
-
-CORS
-
-CSRF where relevant for Web/cookies.
-
-==================================================
-95. DO NOT TRUST createdBy / updatedBy
-==================================================
-
-Backend derives actor from authenticated session.
-
-Do not accept editable:
-
-createdByUserId
-
-updatedByUserId
-
-from normal mutation body.
-
-==================================================
-96. DO NOT TRUST PERMISSION/SCOPE FROM REQUEST BODY
-==================================================
-
-Normal business request must not send:
-
-"I have ALL scope."
-
-Server resolves it from stored grants.
-
-==================================================
-97. OPENAPI READINESS
-==================================================
-
-The Markdown requirement should be structured so it can later be converted to:
-
-OpenAPI 3.1
-
-but DO NOT generate backend code.
-
-Optionally include a final section:
-
-OPENAPI IMPLEMENTATION NOTES.
-
-==================================================
-98. BACKEND STACK NEUTRAL
-==================================================
-
-Do not assume:
-
-Node
-
-.NET
-
-Java
-
-Laravel
-
-Django
-
-unless repository already contains backend requirements.
-
-The requirement document should be backend-stack-neutral.
-
-==================================================
-99. DATABASE DESIGN
-==================================================
-
-This is primarily an API requirements document.
-
-Do NOT turn it into a giant backend database design.
-
-However where API correctness depends on persistence semantics,
-state requirements.
-
-Examples:
-
-Leave ledger append-only
-
-activity events
-
-permission grant uniqueness
-
-Attendance immutable events
-
-holiday work-location scope
-
-idempotency records.
-
-==================================================
-100. RESPONSE EXAMPLES
-==================================================
-
-Include realistic JSON examples for EVERY important endpoint.
-
-Especially:
-
-Login
-
-Bootstrap
-
-Employee list/detail/create
-
-Attendance Today
-
-Punch In
-
-Punch Out
-
-Team Attendance
-
-Leave preview
-
-Leave submit
-
-Leave approval
-
-Leave balance
-
-Leave calendar
-
-Holiday list/create/import
-
-Users & Access
-
-permission update
-
-Dashboard
-
-Notifications.
-
-==================================================
-101. COMPLETE ERROR CATALOG
-==================================================
-
-Create a section:
-
-ERROR CODE CATALOG
-
-Group by:
-
-AUTH
-
-ACCESS
-
-EMPLOYEE
-
-ATTENDANCE
-
-LEAVE
-
-HOLIDAY
-
-CONFIGURATION
-
-SYNC
-
-VALIDATION.
-
-Derive business errors from current domain failures.
-
-Do not invent hundreds of speculative errors.
-
-==================================================
-102. BACKEND RESPONSIBILITY VS FRONTEND RESPONSIBILITY
-==================================================
-
-Create a table clarifying authority.
-
-Examples:
-
-Permission enforcement
-→ Backend authoritative.
-
-Attendance transition validity
-→ Backend authoritative.
-
-Leave day calculation
-→ Backend authoritative; Flutter may preview.
-
-Leave balance
-→ Backend authoritative.
-
-UI navigation
-→ Flutter.
-
-Localization labels
-→ Flutter.
-
-Company timezone
-→ Backend configuration and Flutter rendering.
-
-This avoids duplicated business authority.
-
-==================================================
-103. MIGRATION FROM LOCAL REPOSITORIES
-==================================================
-
-Document how backend integration should replace current local-only behavior.
-
-Preferred architecture remains:
-
-Flutter UI
-→ BLoC/Cubit
-→ Use Case
-→ Repository
-→ Local/Remote data source
-
-Remote response updates local Drift.
-
-Drift remains frontend source of truth where current architecture requires it.
-
-Do NOT instruct backend developer to rewrite Flutter architecture.
-
-==================================================
-104. REMOTE REPOSITORY CONTRACT
-==================================================
-
-Identify which current repositories need remote data sources.
-
-List them explicitly.
-
-Example categories:
-
-Auth
-
-Employee
-
-Attendance
-
-Leave
-
-Configuration
-
-Reports
-
-Notifications
-
-Access.
-
-==================================================
-105. BOOTSTRAP ORDER
-==================================================
-
-Document recommended application boot API order:
-
-login
-
-company selection if necessary
-
-bootstrap
-
-initial sync/config load
-
-dashboard/current screen.
-
-Avoid unnecessary calls before bootstrap.
-
-==================================================
-106. BACKEND EVENTUAL AUTHORITY
-==================================================
-
-For local/demo current values,
-identify what server becomes authoritative for.
-
-Examples:
-
-permission grants
-
-attendance timestamps
-
-company timezone
-
-leave balances
-
-leave approval state
-
-holiday calendar
-
-employee records.
-
-==================================================
-107. QUESTIONS / GAPS SECTION
-==================================================
-
-At the end create:
-
-BACKEND QUESTIONS / PRODUCT CONFIRMATIONS
-
-Only include genuine uncertainties discovered from code.
-
-For each:
-
-Question
-
-Why it matters
-
-Affected APIs
-
-Recommended safe default if one exists.
-
-Do NOT silently resolve uncertainty.
+DO NOT start Job Assignment & Scheduling yet.
 
 ==================================================
-108. NO SERVICES
+0. BUSINESS WORKFLOW POSITION
 ==================================================
 
-Do not add APIs for:
+Known client workflow:
 
 Service Enquiry
+        ↓
+Job Assignment & Scheduling
+        ↓
+Inspection
+        ↓
+Request of Material
+        ↓
+Work Execution
 
-Service Jobs
+Phase 2 implements ONLY:
+
+SERVICE ENQUIRY.
+
+Phase 3 will consume eligible Service Enquiries.
+
+==================================================
+1. BUSINESS REFERENCE
+==================================================
+
+The client's old ERP indicates Service Enquiry information such as:
+
+Enquiry No
+
+Customer
+
+Customer Mobile
+
+Tenant
+
+Building
+
+Unit
+
+Complaint Type
+
+Priority Type
+
+Ticket Type
+
+and complaint/service information.
+
+The old ERP is a BUSINESS REFERENCE.
+
+DO NOT COPY ITS VISUAL DESIGN.
+
+Use the current modern ERP design system.
+
+==================================================
+2. DO NOT IMPLEMENT
+==================================================
+
+DO NOT implement:
+
+Job Assignment
+
+Technician Assignment
 
 Scheduling
 
 Inspection
 
-Material Requests
+Material Request
+
+Material Issue
 
 Work Execution
 
-Service Reports
+Quotation
 
-Service Teams.
+Job Order
 
-They will have their own future backend API requirement increment.
+Invoice
 
-The current document is:
+Payment
 
-PLATFORM + ACCESS + COMPLETE HR.
+Customer Portal.
 
-==================================================
-109. DOCUMENT ORGANIZATION
-==================================================
-
-The generated Markdown should use this approximate structure:
-
-1. Document Purpose
-
-2. Current Flutter Architecture Summary
-
-3. API Design Standards
-
-4. Authentication & Session
-
-5. Company Context & Bootstrap
-
-6. Profile
-
-7. Permission & Access Control
-
-8. Company Modules
-
-9. Employees
-
-10. HR Configuration
-    - Departments/Designations if required
-    - Shifts
-    - Work Locations
-    - Attendance Policies
-
-11. Attendance
-    - Today
-    - Actions
-    - History
-    - Team/All
-    - Corrections
-    - Reports
-
-12. Leave
-    - Types
-    - Policies
-    - Balance/Ledger
-    - Requests
-    - Approval
-    - Team/All
-    - Employee Leave
-    - Calendar
-    - Reports
-
-13. Holidays
-    - Calendar
-    - CRUD
-    - Work-location scope
-    - Copy Year
-    - Import
-
-14. Dashboard
-
-15. Notifications
-
-16. Sync / Outbox / Offline
-
-17. Audit / Activity
-
-18. Standard DTOs
-
-19. Error Catalog
-
-20. Permission → API Matrix
-
-21. Repository → API Matrix
-
-22. Screen → API Matrix
-
-23. Backend vs Frontend Authority
-
-24. Security Requirements
-
-25. Performance/Caching Requirements
-
-26. OpenAPI Implementation Notes
-
-27. Product Questions / TBDs
-
-28. API Completeness Checklist
+Do not create fake placeholders pretending those workflows already exist.
 
 ==================================================
-110. API COMPLETENESS CHECKLIST
+3. MODULE LOCATION
 ==================================================
 
-End the document with checkboxes verifying:
+Add Service Enquiry under:
 
-Authentication covered
+lib/modules/services/enquiries/
 
-Company bootstrap covered
+Suggested practical structure:
 
-Company switch covered
+enquiries/
+  domain/
+  data/
+  application/
+  presentation/
 
-Profile covered
-
-Permissions covered
-
-Access editor covered
-
-Module entitlement covered
-
-Employee CRUD covered
-
-Employee references covered
-
-Shift CRUD covered
-
-Work Location CRUD covered
-
-Attendance Policy CRUD covered
-
-Attendance Today covered
-
-Punch In covered
-
-Break covered
-
-Resume covered
-
-Punch Out covered
-
-Attendance History covered
-
-Team Attendance covered
-
-All Attendance covered
-
-Corrections covered
-
-Correction review covered
-
-Attendance Reports covered
-
-Attendance export covered
-
-Leave Types covered
-
-Leave Policies covered
-
-Balance covered
-
-Ledger covered
-
-Leave preview covered
-
-Leave submit covered
-
-Leave cancel covered
-
-Leave approval covered
-
-Leave rejection covered
-
-Team Leave covered
-
-All Leave covered
-
-Approvals queue covered
-
-Employee Leave covered
-
-Leave Calendar covered
-
-Holiday Calendars covered
-
-Holiday CRUD covered
-
-Holiday Import covered
-
-Holiday Copy Year covered
-
-Holiday scope covered
-
-Dashboard covered
-
-Notifications covered
-
-Sync/outbox covered
-
-audit covered
-
-permission matrix complete
-
-repository matrix complete
-
-screen matrix complete.
+Keep it inside the Services bounded module.
 
 ==================================================
-111. DO NOT CHANGE APPLICATION CODE
+4. ACCESS MODEL
 ==================================================
 
-This task should NOT make functional Flutter changes.
+NO ROLE CHECKS.
 
-Only create/update backend requirement documentation.
+Do not implement:
 
-If helper analysis files are needed temporarily,
-do not leave junk files in production source.
+if technician
 
-==================================================
-112. OUTPUT QUALITY
-==================================================
+if serviceManager
 
-The document must NOT be a high-level summary.
+if coordinator
 
-Bad:
+if admin.
 
-"Create an employee API."
+Authorization remains:
 
-Good:
+Company Services module enabled
 
-METHOD:
-POST
+AND
 
-PATH:
-/api/v1/hr/employees
+Permission granted
 
-PERMISSION:
-hr.employees.create
+AND
 
-HEADERS:
-...
+Permission scope valid
 
-REQUEST:
-{ ... }
+AND
 
-FIELD TABLE:
-...
+Employee/team relationship where required
 
-VALIDATIONS:
-...
+AND
 
-SUCCESS:
-201
-{ ... }
-
-ERRORS:
-...
-
-AUDIT:
-...
-
-IDEMPOTENCY:
-...
-
-FLUTTER CONSUMER:
-EmployeeRepository.save(...)
-
-Do this level of detail.
+Company match.
 
 ==================================================
-113. FINAL SELF-AUDIT
+5. PHASE 2 PERMISSIONS
 ==================================================
 
-Before finishing:
+Add only permissions backed by real Phase 2 functionality.
 
-Search the codebase again for all repository methods.
+Recommended:
 
-Search all current routes.
+services.enquiries.view
 
-Search all mutation use cases.
+services.enquiries.create
 
-Search all outbox operation keys.
+services.enquiries.edit
 
-Search all permission definitions.
+services.enquiries.cancel
 
-Search all current notification types.
+Use exact naming consistent with the existing catalog.
 
-Search all report modes.
+Do NOT add future permissions for:
 
-Search all configuration repositories.
+assign
 
-Compare all of them against the document.
+schedule
 
-If something has no API requirement:
+inspect
 
-ADD IT
+requestMaterial
 
-or explicitly explain:
-
-NO BACKEND API REQUIRED — <reason>.
+executeWork.
 
 ==================================================
-114. FINAL RESPONSE
+6. ENQUIRY VIEW SCOPE
 ==================================================
 
-After generating:
+Service Enquiry is currently the company's unassigned incoming service queue.
 
-docs/backend/hr_backend_api_requirements.md
+At Phase 2 there is no Job/Team assignment yet.
 
-respond with a concise completion summary containing:
+Therefore DO NOT invent ASSIGNED scope for Enquiries.
 
-- file generated
-- total API endpoints documented
-- modules covered
-- repository interfaces covered
-- permission definitions covered
-- outbox operations covered
-- unresolved TBDs
-- confirmation that Services was excluded
-- confirmation that no application behavior was modified.
+Prefer:
 
-DO NOT START BACKEND IMPLEMENTATION.
+services.enquiries.view
+scope = ALL
 
-STOP AFTER THE REQUIREMENT DOCUMENT IS COMPLETE.
+for the current operational enquiry queue.
+
+If the existing access architecture requires a scoped definition,
+support only the scope that has REAL Phase 2 semantics.
+
+Do not fabricate TEAM behavior without an assignment relationship.
+
+==================================================
+7. CREATE/EDIT/CANCEL PERMISSIONS
+==================================================
+
+Create:
+
+action permission
+
+scope NONE.
+
+Edit:
+
+action permission
+
+applies only to eligible OPEN Enquiries.
+
+Cancel:
+
+action permission
+
+applies only to eligible OPEN Enquiries.
+
+Record company validation is always required.
+
+==================================================
+8. ACCESS UI
+==================================================
+
+Existing:
+
+Settings
+→ Users & Access
+
+must automatically show:
+
+Services
+  → Enquiries
+
+with:
+
+View Enquiries
+
+Create Enquiry
+
+Edit Enquiry
+
+Cancel Enquiry
+
+through the Services PermissionCatalog.
+
+DO NOT hardcode Enquiry checkboxes into Access UI.
+
+==================================================
+9. PERMISSION WIRING
+==================================================
+
+Every new permission requires a real consumer.
+
+services.enquiries.view
+
+→ Services navigation
+→ Enquiries sub-navigation
+→ route
+→ repository read
+→ detail read.
+
+services.enquiries.create
+
+→ New Enquiry button
+→ /new route
+→ create use case.
+
+services.enquiries.edit
+
+→ Edit action
+→ /edit route
+→ update use case.
+
+services.enquiries.cancel
+
+→ Cancel action
+→ cancel use case.
+
+Update:
+
+docs/architecture/permission_coverage.md
+
+==================================================
+10. NAVIGATION
+==================================================
+
+Services secondary navigation becomes:
+
+Overview
+
+Enquiries
+
+Customers
+
+Sites
+
+Teams
+
+Settings
+
+Each destination remains independently permission driven.
+
+==================================================
+11. ENQUIRIES ROUTES
+==================================================
+
+Canonical:
+
+/app/services/enquiries
+
+/app/services/enquiries/new
+
+/app/services/enquiries/:enquiryId
+
+/app/services/enquiries/:enquiryId/edit
+
+Do NOT create:
+
+/app/services/enquiry
+
+singular.
+
+==================================================
+12. SERVICES ROOT OVERVIEW
+==================================================
+
+Now that Enquiries exist, Services Overview can display REAL enquiry data.
+
+Possible permission-aware cards:
+
+Open Enquiries
+
+Today's Enquiries
+
+High/Urgent Enquiries
+
+Recent Enquiries.
+
+Only show these when:
+
+services.enquiries.view
+
+is effective.
+
+Do not display fake Job/Inspection metrics yet.
+
+==================================================
+13. SERVICE ENQUIRY DOMAIN
+==================================================
+
+Create typed aggregate:
+
+ServiceEnquiry
+
+This is a business transaction, NOT configuration/master data.
+
+==================================================
+14. IDENTITY
+==================================================
+
+Use:
+
+id
+→ stable UUID/internal identity.
+
+displayNumber / enquiryNumber
+→ company-scoped human-readable number.
+
+Use Phase 0.4 sequence infrastructure.
+
+==================================================
+15. SEQUENCE
+==================================================
+
+Register an enquiry sequence key.
+
+Conceptually:
+
+services.enquiry
+
+Do NOT hardcode sequence formatting throughout the feature.
+
+Allow shared sequence infrastructure to determine:
+
+prefix
+
+padding
+
+company scope.
+
+Example only:
+
+ENQ-000001
+
+Do not use this exact format as domain identity.
+
+==================================================
+16. CORE ENQUIRY FIELDS
+==================================================
+
+Design from the actual current Phase 1 masters and client reference.
+
+At minimum likely:
+
+id
+
+companyId
+
+enquiryNumber
+
+customerId
+
+siteId
+
+serviceTypeId
+
+complaintTypeId
+
+priorityId
+
+ticketTypeId
+
+description / complaintDetails
+
+status
+
+createdAt
+
+updatedAt
+
+createdByUserId
+
+updatedByUserId
+
+requestId
+
+syncStatus
+
+version if current transaction conventions use it.
+
+Use exact project naming conventions.
+
+==================================================
+17. REQUIRED BUSINESS FIELDS
+==================================================
+
+For Phase 2 treat these as core:
+
+Customer
+
+Service Site
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+Complaint / Service Description.
+
+If actual Phase 1/client implementation establishes different requirements,
+follow the real implementation and document deviations.
+
+Do not introduce unrelated CRM fields.
+
+==================================================
+18. CUSTOMER RELATIONSHIP
+==================================================
+
+Enquiry references:
+
+ServiceCustomer.id
+
+Do not store a completely independent duplicate Customer entity.
+
+==================================================
+19. SITE RELATIONSHIP
+==================================================
+
+Enquiry references:
+
+ServiceSite.id
+
+Site MUST belong to selected Customer.
+
+Enforce:
+
+site.companyId == enquiry.companyId
+
+AND
+
+site.customerId == enquiry.customerId.
+
+==================================================
+20. CUSTOMER/SITE HISTORICAL SNAPSHOT
+==================================================
+
+Because Service Enquiry is a transaction, preserve enough historical display
+context so editing a Customer/Site later does not make an old Enquiry
+misleading.
+
+Create a typed snapshot model if appropriate.
+
+Example concept:
+
+ServiceEnquiryPartySnapshot
+
+containing only useful transaction-time display values such as:
+
+customerName
+
+customerMobile
+
+siteName
+
+tenantName
+
+buildingName
+
+unitNumber
+
+address summary
+
+site contact.
+
+DO NOT use an untyped Map<String, dynamic> domain model.
+
+Persist using existing typed/JSON converter conventions if suitable.
+
+Keep Customer/Site IDs as authoritative relationships too.
+
+==================================================
+21. WHY SNAPSHOT EXISTS
+==================================================
+
+Example:
+
+Enquiry created for:
+
+ABC Properties
+Building A
+Unit 204
+
+Later Customer master is renamed.
+
+Historical Enquiry should still be able to represent what was captured when
+the enquiry was created.
+
+Document snapshot semantics.
+
+==================================================
+22. MASTER REFERENCES
+==================================================
+
+Enquiry references existing Phase 1 masters:
+
+ServiceType
+
+ComplaintType
+
+ServicePriority
+
+ServiceTicketType.
+
+Do NOT copy these masters into Enquiry tables as separate entities.
+
+==================================================
+23. HISTORICAL MASTER RESOLUTION
+==================================================
+
+Inactive master records must remain resolvable for historical Enquiries.
+
+For NEW Enquiry selection:
+
+only active values.
+
+==================================================
+24. COMPLAINT TYPE FILTERING
+==================================================
+
+If ComplaintType has:
+
+serviceTypeId
+
+then selecting Service Type should filter Complaint Types appropriately.
+
+Generic Complaint Types where serviceTypeId == null may remain available if
+Phase 1 supports them.
+
+==================================================
+25. CUSTOMER SELECTOR
+==================================================
+
+Reuse the scalable Customer reference selector from Phase 1.
+
+Search by appropriate fields:
+
+Customer name
+
+Customer code
+
+Mobile.
+
+Do not load all Customers into a giant dropdown.
+
+==================================================
+26. IMPORTANT CROSS-PERMISSION RULE
+==================================================
+
+A user may have:
+
+services.enquiries.create
+
+without:
+
+services.customers.view.
+
+They still need enough Customer reference information to create the Enquiry.
+
+Therefore:
+
+Enquiry Create permission should allow restricted Customer REFERENCE SEARCH
+for the Enquiry form.
+
+It must NOT automatically expose:
+
+Customers navigation
+
+Customer full list
+
+Customer full detail
+
+Customer editing.
+
+This is important.
+
+==================================================
+27. CUSTOMER REFERENCE CONTRACT
+==================================================
+
+Create/reuse:
+
+ServiceCustomerRef
+
+containing only the fields needed for selection.
+
+Example:
+
+id
+
+customerCode
+
+displayName
+
+mobile
+
+status.
+
+Do not expose sensitive/unnecessary Customer fields.
+
+==================================================
+28. SITE SELECTOR
+==================================================
+
+After Customer selection:
+
+load/search only ACTIVE Sites belonging to that Customer.
+
+==================================================
+29. SITE REFERENCE CROSS-PERMISSION
+==================================================
+
+A user creating an Enquiry must be able to select an eligible Site even if
+they do not have:
+
+services.sites.view
+
+for the full Sites directory.
+
+Use restricted reference access.
+
+Do not grant full Site-directory access indirectly.
+
+==================================================
+30. CUSTOMER CHANGE
+==================================================
+
+If Customer changes after Site selected:
+
+clear Site.
+
+Do NOT retain a Site belonging to previous Customer.
+
+==================================================
+31. SITE PREVIEW
+==================================================
+
+After Site selected, show a compact contextual preview:
+
+Site Name
+
+Tenant if present
+
+Building
+
+Unit
+
+Address summary
+
+Contact.
+
+Do not make the user reopen Customer/Site detail pages.
+
+==================================================
+32. CONTACT DISPLAY
+==================================================
+
+Use:
+
+Site contact where present
+
+otherwise appropriate Customer contact
+
+according to current Phase 1 data semantics.
+
+Do not silently modify Customer/Site master contact information from Enquiry form.
+
+==================================================
+33. ENQUIRY STATUS
+==================================================
+
+Use a typed enum.
+
+For Phase 2 keep the state machine minimal.
+
+Recommended current states:
+
+OPEN
+
+CANCELLED
+
+Do NOT create fake:
+
+ASSIGNED
+
+INSPECTED
+
+MATERIAL_REQUESTED
+
+COMPLETED
+
+until those workflows exist.
+
+Phase 3 can extend the transaction lifecycle where necessary.
+
+==================================================
+34. CREATE BEHAVIOR
+==================================================
+
+Successful Enquiry creation produces:
+
+OPEN Enquiry.
+
+Do not create a separate DRAFT lifecycle unless the current UX explicitly
+requires draft saving.
+
+==================================================
+35. EDIT BEHAVIOR
+==================================================
+
+Only OPEN Enquiries may be edited in Phase 2.
+
+A CANCELLED Enquiry is historical/read-only.
+
+==================================================
+36. CANCEL BEHAVIOR
+==================================================
+
+Do NOT hard-delete Enquiries.
+
+Cancel changes status to:
+
+CANCELLED.
+
+Record structured activity.
+
+If the product already has standard cancellation-note handling, reuse it.
+
+Otherwise do not invent a complex cancellation workflow.
+
+==================================================
+37. FUTURE JOB LINK
+==================================================
+
+Do NOT add fake Job records.
+
+Design Enquiry identity so Phase 3 can later create a Job/Assignment referencing:
+
+sourceEnquiryId.
+
+Do not create a nullable jobId now unless needed by the domain.
+
+Job should reference Enquiry when Job exists.
+
+==================================================
+38. NO QUOTATION / JOB ORDER
+==================================================
+
+Do NOT add:
+
+quotationId
+
+quotationNo
+
+jobOrderId
+
+jobOrderNo
+
+as required Enquiry fields.
+
+Ownership and lifecycle are still unconfirmed.
+
+==================================================
+39. ENQUIRY DRAFT MODEL
+==================================================
+
+Create a typed:
+
+ServiceEnquiryDraft
+
+or equivalent.
+
+It contains user-editable form data only.
+
+Do NOT let UI directly construct Drift companions everywhere.
+
+==================================================
+40. LIST READ MODEL
+==================================================
+
+Create:
+
+ServiceEnquiryListItem
+
+optimized for the list.
+
+Possible fields:
+
+id
+
+enquiryNumber
+
+createdAt
+
+Customer name
+
+Customer mobile
+
+Site summary
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+status.
+
+Do not expose entire aggregate where unnecessary.
+
+==================================================
+41. DETAIL READ MODEL
+==================================================
+
+Create:
+
+ServiceEnquiryDetail
+
+or use aggregate + references where clean.
+
+Detail should support:
+
+identity
+
+customer/site context
+
+service classification
+
+complaint
+
+status
+
+metadata
+
+activity timeline.
+
+==================================================
+42. LIST PAGE
+==================================================
+
+Route:
+
+/app/services/enquiries
+
+Desktop:
+
+professional operational table.
+
+Suggested columns:
+
+Enquiry
+
+Customer
+
+Site
+
+Service / Complaint
+
+Priority
+
+Ticket Type
+
+Status
+
+Created
+
+Actions.
+
+Do not overload table.
+
+==================================================
+43. DEFAULT SORT
+==================================================
+
+Newest operational Enquiries first.
+
+Prefer:
+
+createdAt descending
+
+or business sequence descending according to current conventions.
+
+==================================================
+44. SEARCH
+==================================================
+
+Support useful search such as:
+
+Enquiry Number
+
+Customer Name
+
+Customer Mobile
+
+Site Name
+
+Building
+
+Unit.
+
+Implement efficiently through local repository query/read model.
+
+==================================================
+45. FILTERS
+==================================================
+
+Useful filters:
+
+Status
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+Created Date range.
+
+Do not create unnecessary filters.
+
+==================================================
+46. FILTER UX
+==================================================
+
+Desktop:
+
+compact filter bar / popover.
+
+Mobile:
+
+Filters bottom sheet/full-screen sheet.
+
+Do not create a giant permanent filter form.
+
+==================================================
+47. LIST EMPTY STATE
+==================================================
+
+If user can create:
+
+"No service enquiries yet."
+
+CTA:
+New Enquiry.
+
+If user cannot create:
+
+informational empty state without fake CTA.
+
+==================================================
+48. MOBILE LIST
+==================================================
+
+Use purpose-built Enquiry cards.
+
+Show:
+
+Enquiry No
+
+Customer
+
+Site
+
+Priority
+
+Status
+
+Created.
+
+No squeezed desktop table.
+
+==================================================
+49. NEW ENQUIRY ACTION
+==================================================
+
+Show:
+
+New Enquiry
+
+only with:
+
+services.enquiries.create.
+
+==================================================
+50. CREATE ROUTE GUARD
+==================================================
+
+/app/services/enquiries/new
+
+must require Create permission.
+
+Typing URL manually cannot bypass.
+
+==================================================
+51. ENQUIRY FORM UX
+==================================================
+
+Build a polished transaction form.
+
+Recommended sections:
+
+CUSTOMER & LOCATION
+
+Customer
+
+Service Site
+
+site/context preview
+
+SERVICE DETAILS
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+COMPLAINT
+
+Description / Complaint Details
+
+SUMMARY
+
+read-only summary before save where useful.
+
+==================================================
+52. FIELD ORDER
+==================================================
+
+Optimize for actual operator workflow:
+
+1. Find Customer
+
+2. Select Site
+
+3. classify Service
+
+4. classify Complaint
+
+5. choose Priority
+
+6. choose Ticket Type
+
+7. enter Complaint Details
+
+8. Submit.
+
+Do not arrange fields alphabetically.
+
+==================================================
+53. CUSTOMER NOT FOUND
+==================================================
+
+If user has:
+
+services.customers.create
+
+optionally provide:
+
+Create Customer
+
+from the Customer selector.
+
+After creation:
+
+return to Enquiry form
+
+preselect new Customer.
+
+If user does not have Customer create permission:
+
+do not show the action.
+
+==================================================
+54. SITE NOT FOUND
+==================================================
+
+Same pattern.
+
+If authorized:
+
+Add Site
+
+with selected Customer pre-filled.
+
+Return and preselect.
+
+Do not lose Enquiry form state.
+
+==================================================
+55. NESTED CREATE UX
+==================================================
+
+If existing router/form architecture makes in-context nested creation fragile,
+use normal routes while preserving draft state safely.
+
+Do NOT build a giant nested modal system just for this.
+
+==================================================
+56. VALIDATION
+==================================================
+
+At minimum validate:
+
+Customer required
+
+Customer active
+
+Site required
+
+Site active
+
+Site belongs to Customer
+
+Service Type required and active
+
+Complaint Type required and active
+
+Complaint Type compatible with Service Type where applicable
+
+Priority required and active
+
+Ticket Type required and active
+
+Description required
+
+reasonable max lengths.
+
+==================================================
+57. DESCRIPTION
+==================================================
+
+Use multiline field.
+
+Do not force operators into tiny single-line complaint input.
+
+==================================================
+58. FORM SAVE
+==================================================
+
+Primary CTA:
+
+Create Enquiry
+
+not:
+
+Save Record
+
+Use proper loading state.
+
+Prevent duplicate submit.
+
+==================================================
+59. FORM DIRTY GUARD
+==================================================
+
+Use existing FormNavigationGuard.
+
+Unsaved changes:
+
+Back/navigation
+
+→ confirm discard.
+
+==================================================
+60. CREATE TRANSACTION
+==================================================
+
+Creating Enquiry should atomically perform where applicable:
+
+sequence number allocation
+
+Enquiry insert
+
+party snapshot
+
+activity event
+
+outbox operation.
+
+All in one local transaction.
+
+==================================================
+61. CREATE ACTIVITY
+==================================================
+
+Add structured event:
+
+services.enquiry.created
+
+Metadata may include:
+
+status
+
+customerId
+
+siteId
+
+serviceTypeId
+
+priorityId.
+
+Do not store only English sentence.
+
+==================================================
+62. OUTBOX CREATE
+==================================================
+
+Register operation:
+
+SERVICES_ENQUIRY_CREATE
+
+or naming consistent with current outbox conventions.
+
+Payload should map cleanly to future backend contract.
+
+==================================================
+63. IDPOTENCY
+==================================================
+
+Use requestId.
+
+Repeated create with same request ID must not create duplicate Enquiry.
+
+==================================================
+64. DETAIL PAGE
+==================================================
+
+Route:
+
+/app/services/enquiries/:enquiryId
+
+Build an operational detail page.
+
+==================================================
+65. DETAIL HEADER
+==================================================
+
+Show:
+
+Enquiry No
+
+Status
+
+Priority
+
+Created date/time.
+
+Actions:
+
+Edit
+
+Cancel
+
+only when allowed.
+
+Do not show future:
+
+Assign Technician
+
+Start Inspection
+
+Request Material
+
+Complete Work
+
+yet.
+
+==================================================
+66. CUSTOMER & SITE SECTION
+==================================================
+
+Show:
+
+Customer
+
+Customer Code
+
+Mobile
+
+Site
+
+Tenant
+
+Building
+
+Unit
+
+Address
+
+Contact.
+
+Use transaction snapshot for historical display where appropriate.
+
+==================================================
+67. SERVICE DETAILS SECTION
+==================================================
+
+Show:
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+Complaint description.
+
+==================================================
+68. AUDIT METADATA
+==================================================
+
+Use reusable Phase 0.4:
+
+AuditMetadataBlock
+
+or equivalent.
+
+Show where appropriate:
+
+Created by
+
+Created at
+
+Updated by
+
+Updated at.
+
+==================================================
+69. ACTIVITY TIMELINE
+==================================================
+
+Use shared ActivityTimeline.
+
+Phase 2 events:
+
+Created
+
+Updated
+
+Cancelled.
+
+No fake Job/Inspection events.
+
+==================================================
+70. EDIT ACTION
+==================================================
+
+Visible only if:
+
+services.enquiries.edit
+
+AND
+
+Enquiry status allows editing.
+
+==================================================
+71. EDIT ROUTE
+==================================================
+
+/app/services/enquiries/:enquiryId/edit
+
+Requires:
+
+edit permission
+
+record/company access
+
+OPEN status.
+
+==================================================
+72. EDIT FORM
+==================================================
+
+Reuse Create form architecture.
+
+Avoid duplicate screen implementation.
+
+==================================================
+73. EDITABLE FIELDS
+==================================================
+
+For OPEN Enquiry, allow editing business fields that remain safe before
+assignment exists.
+
+Potentially:
+
+Customer
+
+Site
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+Description.
+
+Once Job Assignment exists in future,
+some fields may become locked/revision-controlled.
+
+Do not prematurely implement that now.
+
+==================================================
+74. UPDATE ACTIVITY
+==================================================
+
+Create:
+
+services.enquiry.updated
+
+Prefer structured changed-fields metadata where current activity foundation
+supports it.
+
+==================================================
+75. UPDATE OUTBOX
+==================================================
+
+Register:
+
+SERVICES_ENQUIRY_UPDATE
+
+or equivalent.
+
+==================================================
+76. CONCURRENCY
+==================================================
+
+Use transaction version/update conventions if already available.
+
+Future backend should be able to reject stale edit.
+
+Do not create complicated local conflict UI beyond current sync conventions.
+
+==================================================
+77. CANCEL ACTION
+==================================================
+
+Visible only if:
+
+services.enquiries.cancel
+
+AND
+
+status == OPEN.
+
+==================================================
+78. CANCEL CONFIRMATION
+==================================================
+
+Use confirmation dialog/sheet:
+
+Cancel Enquiry?
+
+Explain that cancelled Enquiry remains available historically.
+
+Do not use destructive:
+
+Delete Enquiry.
+
+==================================================
+79. CANCELLATION REASON
+==================================================
+
+If existing product conventions support cancellation reason:
+
+capture it.
+
+If not:
+
+keep cancellation simple rather than inventing a large reason-master system.
+
+==================================================
+80. CANCEL ACTIVITY
+==================================================
+
+Record:
+
+services.enquiry.cancelled.
+
+==================================================
+81. CANCEL OUTBOX
+==================================================
+
+Register:
+
+SERVICES_ENQUIRY_CANCEL.
+
+==================================================
+82. CANCELLED DETAIL
+==================================================
+
+Cancelled Enquiry:
+
+readable
+
+historical
+
+cannot be edited
+
+cannot be cancelled again.
+
+==================================================
+83. NO DELETE
+==================================================
+
+Do not expose:
+
+Delete Enquiry.
+
+Transactions are historical records.
+
+==================================================
+84. SERVICES OVERVIEW — REAL METRICS
+==================================================
+
+Update Services Overview now that real transaction data exists.
+
+Possible cards:
+
+Open Enquiries
+
+Enquiries Today
+
+High/Urgent Open
+
+Customers
+
+Sites
+
+Teams.
+
+Render only cards permitted by user's effective access.
+
+==================================================
+85. OVERVIEW QUERY
+==================================================
+
+Create an efficient:
+
+ServicesOverviewRepository
+
+or extend existing Phase 1 overview source.
+
+Do NOT load all Enquiries into widget and count them.
+
+Use aggregate queries/read models.
+
+==================================================
+86. RECENT ENQUIRIES
+==================================================
+
+If enquiry view permission exists:
+
+show a compact Recent Enquiries section.
+
+Fields:
+
+number
+
+customer
+
+priority
+
+status
+
+created time.
+
+Click:
+Enquiry Detail.
+
+==================================================
+87. OVERVIEW SECURITY
+==================================================
+
+No Enquiry view permission:
+
+do not query or show Enquiry metrics.
+
+No Customer permission:
+
+do not reveal Customer-directory counts unless required by a permitted Enquiry
+read model.
+
+Avoid indirect information leakage.
+
+==================================================
+88. CUSTOMER DETAIL INTEGRATION
+==================================================
+
+Customer Detail can now show:
+
+Recent Enquiries
+
+ONLY if:
+
+services.enquiries.view
+
+is granted.
+
+Do not make Customer screen depend on Enquiry permission for basic rendering.
+
+==================================================
+89. SITE DETAIL INTEGRATION
+==================================================
+
+Same:
+
+Recent Enquiries at this Site
+
+only when Enquiry view is allowed.
+
+==================================================
+90. CUSTOMER/SITE CROSS-MODULE READ
+==================================================
+
+Enquiry read model is allowed to resolve Customer/Site labels necessary to
+display an authorized Enquiry.
+
+This must NOT imply broad Customer/Site directory access.
+
+Document this distinction.
+
+==================================================
+91. QUERY PARAMETER LIST STATE
+==================================================
+
+Preserve meaningful Enquiry list state through query parameters where existing
+routing architecture supports it.
+
+Examples:
+
+search
+
+status
+
+priority
+
+page.
+
+Back from Detail should restore operator context.
+
+==================================================
+92. NO N+1
+==================================================
+
+List query should join/resolve:
+
+Customer
+
+Site
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+efficiently.
+
+Do not perform one repository fetch per row.
+
+==================================================
+93. REPOSITORY
+==================================================
+
+Create:
+
+ServiceEnquiryRepository
+
+Interface should support what current UI actually needs.
+
+Likely methods:
+
+watchEnquiries(filter/sort/page)
+
+getEnquiry(id)
+
+createEnquiry(draft, requestId)
+
+updateEnquiry(id, draft, requestId)
+
+cancelEnquiry(id, requestId, optionalReason)
+
+watchRecentEnquiries(...)
+
+watchEnquirySummary(...).
+
+Use actual architecture conventions.
+
+==================================================
+94. RESTRICTED REFERENCE LOOKUPS
+==================================================
+
+Repository/application services for Enquiry form should expose:
+
+searchCustomerRefsForEnquiry
+
+searchSiteRefsForEnquiry
+
+or equivalent.
+
+These calls are authorized by:
+
+Enquiry Create/Edit capability
+
+rather than full Customer/Site directory View capability.
+
+Do not weaken Customer/Site repository security globally.
+
+==================================================
+95. APPLICATION USE CASES
+==================================================
+
+Create/use:
+
+CreateServiceEnquiry
+
+UpdateServiceEnquiry
+
+CancelServiceEnquiry
+
+WatchServiceEnquiries
+
+GetServiceEnquiry
+
+or architecture-equivalent.
+
+Do not put transaction rules in widgets.
+
+==================================================
+96. CREATE AUTHORIZATION
+==================================================
+
+Create use case checks:
+
+Services module enabled
+
+services.enquiries.create
+
+same company
+
+active Customer
+
+active Site
+
+valid master references.
+
+==================================================
+97. EDIT AUTHORIZATION
+==================================================
+
+Checks:
+
+services.enquiries.edit
+
+same company
+
+OPEN status
+
+valid references.
+
+==================================================
+98. CANCEL AUTHORIZATION
+==================================================
+
+Checks:
+
+services.enquiries.cancel
+
+same company
+
+OPEN status.
+
+==================================================
+99. READ AUTHORIZATION
+==================================================
+
+List/detail require:
+
+services.enquiries.view.
+
+Do not assume Services module visibility itself grants read access.
+
+==================================================
+100. FAILURE TYPES
+==================================================
+
+Use typed domain/application failures.
+
+Examples:
+
+ServiceEnquiryNotFound
+
+ServiceEnquiryNotEditable
+
+ServiceEnquiryAlreadyCancelled
+
+ServiceEnquiryCustomerInactive
+
+ServiceEnquirySiteInactive
+
+ServiceEnquirySiteCustomerMismatch
+
+ServiceEnquiryInvalidComplaintType
+
+Unauthorized/Forbidden.
+
+Follow current failure architecture.
+
+==================================================
+101. DATABASE TABLE
+==================================================
+
+Add a Phase 2 table:
+
+ServiceEnquiries
+
+or existing naming convention.
+
+Inspect actual latest schemaVersion first.
+
+==================================================
+102. TABLE FIELDS
+==================================================
+
+Persist:
+
+identity
+
+company
+
+display number
+
+master refs
+
+customer/site refs
+
+snapshot
+
+description
+
+status
+
+metadata
+
+sync/request/version fields
+
+according to actual domain.
+
+==================================================
+103. INDEXES
+==================================================
+
+Add useful indexes.
+
+Likely:
+
+companyId + status
+
+companyId + createdAt
+
+companyId + customerId
+
+companyId + siteId
+
+companyId + enquiryNumber.
+
+Do not over-index blindly.
+
+==================================================
+104. UNIQUE NUMBER
+==================================================
+
+Enquiry display number unique within company.
+
+==================================================
+105. FOREIGN COMPANY VALIDATION
+==================================================
+
+Prevent:
+
+Company A Enquiry
+→ Company B Customer
+
+or Site
+
+or configuration.
+
+==================================================
+106. SCHEMA MIGRATION
+==================================================
+
+Inspect current schema.
+
+Increment exactly once if needed for Phase 2.
+
+Migration must preserve:
+
+HR
+
+Access
+
+Phase 1 Services
+
+shared transaction infrastructure.
+
+==================================================
+107. DEMO SEED
+==================================================
+
+Seed a small deterministic set of Service Enquiries.
+
+Use existing seeded:
+
+Customers
+
+Sites
+
+Service Types
+
+Complaint Types
+
+Priorities
+
+Ticket Types.
+
+Examples should demonstrate:
+
+different Customers
+
+different Sites
+
+different priorities
+
+OPEN
+
+CANCELLED.
+
+Do not seed future Job/Inspection records.
+
+==================================================
+108. DEMO ACCESS
+==================================================
+
+Use explicit permission grants.
+
+Example fixture A:
+
+Enquiry View/Create/Edit/Cancel.
+
+Fixture B:
+
+View only.
+
+Fixture C:
+
+Create only if product/access model allows it.
+
+No role-derived grants.
+
+==================================================
+109. CREATE WITHOUT CUSTOMER DIRECTORY TEST
+==================================================
+
+Critical test:
+
+User has:
+
+services.enquiries.create
+
+but NOT:
+
+services.customers.view
+
+services.sites.view.
+
+Expected:
+
+can open New Enquiry
+
+can search/select Customer refs
+
+can search/select eligible Site refs
+
+cannot navigate Customers
+
+cannot navigate Sites
+
+cannot open arbitrary Customer/Site detail.
+
+==================================================
+110. VIEW ONLY TEST
+==================================================
+
+Grant only:
+
+services.enquiries.view.
+
+Expected:
+
+Services visible
+
+Enquiries visible
+
+list works
+
+detail works
+
+New Enquiry hidden
+
+Edit hidden
+
+Cancel hidden.
+
+==================================================
+111. CREATE TEST
+==================================================
+
+Add:
+
+services.enquiries.create.
+
+Expected:
+
+New Enquiry visible
+
+/new accessible
+
+create mutation succeeds.
+
+==================================================
+112. EDIT TEST
+==================================================
+
+Without Edit:
+
+Edit hidden
+
+/edit blocked
+
+mutation rejected.
+
+With Edit:
+
+OPEN Enquiry editable.
+
+CANCELLED Enquiry remains read-only.
+
+==================================================
+113. CANCEL TEST
+==================================================
+
+Without Cancel:
+
+no Cancel action.
+
+With Cancel:
+
+OPEN can cancel.
+
+Cancelled cannot cancel again.
+
+==================================================
+114. DIRECT URL TEST
+==================================================
+
+No permission:
+
+list/details/new/edit routes blocked appropriately.
+
+==================================================
+115. SITE OWNERSHIP TEST
+==================================================
+
+Customer A selected.
+
+Site belonging Customer B passed manually.
+
+Create/update must fail.
+
+==================================================
+116. INACTIVE CUSTOMER TEST
+==================================================
+
+Inactive Customer cannot be selected for new Enquiry.
+
+Historical Enquiry remains readable.
+
+==================================================
+117. INACTIVE SITE TEST
+==================================================
+
+Same.
+
+==================================================
+118. INACTIVE MASTER TEST
+==================================================
+
+Inactive configuration not selectable for new/edit where invalid.
+
+Historical Enquiry still resolves it.
+
+==================================================
+119. SERVICE TYPE / COMPLAINT TEST
+==================================================
+
+Complaint associated with another Service Type cannot be silently submitted.
+
+==================================================
+120. SEQUENCE TEST
+==================================================
+
+New Enquiry receives one unique company-scoped display number.
+
+Retry same requestId:
+
+same logical transaction/no duplicate.
+
+==================================================
+121. ACTIVITY TEST
+==================================================
+
+Create:
+
+created event.
+
+Edit:
+
+updated event.
+
+Cancel:
+
+cancelled event.
+
+==================================================
+122. OUTBOX TEST
+==================================================
+
+Each mutation creates exactly one appropriate outbox mutation.
+
+==================================================
+123. ATOMICITY TEST
+==================================================
+
+If outbox/activity/sequence part fails:
+
+do not leave partially-created transaction.
+
+==================================================
+124. OVERVIEW TEST
+==================================================
+
+Enquiry metrics use actual DB records.
+
+View permission removed:
+
+Enquiry cards/Recent Enquiries disappear.
+
+==================================================
+125. CUSTOMER DETAIL TEST
+==================================================
+
+Customer Detail:
+
+Recent Enquiries shown only with Enquiry View permission.
+
+==================================================
+126. SITE DETAIL TEST
+==================================================
+
+Same.
+
+==================================================
+127. COMPANY ISOLATION
+==================================================
+
+Company A cannot read or mutate Company B Enquiry.
+
+==================================================
+128. COMPANY SWITCH
+==================================================
+
+Switch Company:
+
+Enquiry list
+
+overview metrics
+
+Customer refs
+
+Site refs
+
+all recompute for new company.
+
+No stale company data.
+
+==================================================
+129. LIVE PERMISSION CHANGE
+==================================================
+
+Current user loses:
+
+services.enquiries.view
+
+while inside Enquiry screen.
+
+Expected:
+
+navigation updates
+
+route becomes unauthorized
+
+safe landing occurs
+
+no restart/login required.
+
+==================================================
+130. LIVE CREATE PERMISSION CHANGE
+==================================================
+
+Current user gains:
+
+services.enquiries.create.
+
+New Enquiry CTA appears through existing permission refresh architecture.
+
+==================================================
+131. RESPONSIVE LIST
+==================================================
+
+Test:
+
+390px
+
+768px
+
+1024px
+
+1440px.
+
+No overflow.
+
+Desktop uses table-like operational layout.
+
+Mobile uses cards.
+
+==================================================
+132. RESPONSIVE FORM
+==================================================
+
+Desktop:
+
+logical two-column layout where appropriate.
+
+Mobile:
+
+single-column.
+
+Do not create excessively wide text fields on desktop.
+
+==================================================
+133. DETAIL RESPONSIVENESS
+==================================================
+
+Desktop:
+
+summary/header + structured sections/activity.
+
+Mobile:
+
+stacked sections.
+
+==================================================
+134. ARABIC / RTL
+==================================================
+
+Add all strings to Services module ARBs.
+
+Test:
+
+list
+
+filters
+
+form
+
+selectors
+
+detail
+
+activity
+
+cancel confirmation
+
+overview metrics.
+
+==================================================
+135. LOCALIZATION
+==================================================
+
+No hardcoded user-facing English.
+
+Enquiry number itself remains machine/display identifier.
+
+==================================================
+136. PRIORITY VISUALS
+==================================================
+
+Use existing semantic status/badge system.
+
+Do not hardcode alarming colors separately.
+
+Priority must remain understandable without color.
+
+==================================================
+137. STATUS VISUALS
+==================================================
+
+OPEN
+
+CANCELLED
+
+through existing badge/chip primitives.
+
+No hardcoded arbitrary colors.
+
+==================================================
+138. ACCESSIBILITY
+==================================================
+
+Selectors labeled.
+
+Form validation announced.
+
+Priority/status not color-only.
+
+Desktop table keyboard usable according to existing conventions.
+
+==================================================
+139. NOTIFICATIONS
+==================================================
+
+Creating an Enquiry alone does NOT require noisy internal notifications in Phase 2.
+
+Do not send notifications merely because an Enquiry exists.
+
+Phase 3 assignment will introduce relevant assignee notifications.
+
+==================================================
+140. ATTACHMENTS
+==================================================
+
+Do NOT automatically add Enquiry attachments unless the actual client reference
+or current product requirement explicitly includes them.
+
+Inspection photos belong to future Inspection phase.
+
+Shared attachment foundation remains available.
+
+==================================================
+141. QUOTATION
+==================================================
+
+Do not infer:
+
+Quotation created from Enquiry.
+
+Still unresolved.
+
+==================================================
+142. JOB ORDER
+==================================================
+
+Do not infer:
+
+Job Order created from Enquiry.
+
+Still unresolved.
+
+==================================================
+143. ASSIGNMENT READINESS
+==================================================
+
+Design ServiceEnquiry so Phase 3 can safely consume OPEN Enquiries.
+
+Do not implement actual assignment now.
+
+==================================================
+144. NEXT-PHASE INTEGRATION CONTRACT
+==================================================
+
+Document what Phase 3 may rely on from Enquiry:
+
+enquiryId
+
+enquiryNumber
+
+Customer
+
+Site
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+description
+
+status
+
+created metadata.
+
+==================================================
+145. BACKEND-READY CONTRACT
+==================================================
+
+Keep repository/domain shape suitable for future APIs.
+
+Expected eventual concepts:
+
+GET enquiries
+
+GET enquiry detail
+
+POST enquiry
+
+PATCH enquiry
+
+POST cancel
+
+restricted Customer/Site reference search.
+
+Do NOT implement fake Dio calls yet unless backend integration is already being
+done separately.
+
+==================================================
+146. API REQUIREMENT DOC
+==================================================
+
+If the existing backend requirement document already exists for Platform + HR:
+
+DO NOT mix unfinished Services transaction requirements into it silently.
+
+Create/update Services backend-requirement notes only if current project
+documentation process expects per-phase API trace.
+
+Otherwise leave backend implementation for the dedicated Services API contract.
+
+==================================================
+147. PERMISSION COVERAGE
+==================================================
+
+Update:
+
+docs/architecture/permission_coverage.md
+
+For each Enquiry permission document:
+
+Nav
+
+Route
+
+Read
+
+Action
+
+Mutation
+
+Scope.
+
+==================================================
+148. SERVICES PHASE DOCUMENTATION
+==================================================
+
+Create:
+
+docs/services/phase_2_service_enquiry.md
+
+Document:
+
+domain model
+
+state machine
+
+sequence
+
+Customer/Site references
+
+historical snapshot
+
+permissions
+
+routes
+
+repository
+
+use cases
+
+outbox
+
+activity
+
+overview integration
+
+Customer/Site detail integration
+
+backend-ready contract
+
+deferred workflow.
+
+==================================================
+149. DOCUMENT STATE MACHINE
+==================================================
+
+Phase 2:
+
+CREATE
+  ↓
+OPEN
+  ├── EDIT → OPEN
+  └── CANCEL → CANCELLED
+
+No other transitions.
+
+==================================================
+150. DO NOT CREATE UNUSED PERMISSIONS
+==================================================
+
+Every newly registered permission must have actual runtime consumers.
+
+If not:
+
+do not add it.
+
+==================================================
+151. NO ROLE LANGUAGE
+==================================================
+
+Do not label screens:
+
+Coordinator Enquiries
+
+Manager Enquiries.
+
+Use:
+
+Enquiries.
+
+Different employees see functionality according to permissions.
+
+==================================================
+152. SERVICES OVERVIEW ACCESS
+==================================================
+
+A user with ONLY Enquiry View should still get a useful Services experience:
+
+Services
+  → Overview with permitted Enquiry data
+  → Enquiries.
+
+They should NOT see:
+
+Customers
+
+Sites
+
+Teams
+
+Settings
+
+unless separately granted.
+
+==================================================
+153. CREATE-ONLY ACCESS EDGE CASE
+==================================================
+
+If a user receives Create but not View:
+
+follow the catalog/dependency policy deliberately.
+
+Recommended:
+
+services.enquiries.create
+
+should imply the minimal usable access necessary to create an Enquiry,
+but NOT necessarily company-wide Enquiry list access.
+
+If the current permission dependency system requires View for usable Create,
+normalize it centrally and document the behavior.
+
+Do NOT accidentally create an unusable permission.
+
+==================================================
+154. EDIT/CANCEL DEPENDENCY
+==================================================
+
+Edit/Cancel require enough record visibility to target an Enquiry.
+
+Normalize dependencies through existing:
+
+permissionViewDependencies
+
+or equivalent.
+
+Do not duplicate dependency logic in widgets.
+
+==================================================
+155. READ-ONLY EXPERIENCE
+==================================================
+
+View-only Enquiry detail should look intentionally read-only.
+
+Do not render disabled Edit/Cancel buttons.
+
+Hide unauthorized mutation controls.
+
+==================================================
+156. NO DECORATIVE FUTURE PANELS
+==================================================
+
+Do not show:
+
+Assignment
+"No assignment yet"
+
+Inspection
+"Not started"
+
+Materials
+"No requests"
+
+Execution
+"Not started"
+
+until those features exist.
+
+Keep Phase 2 UI clean.
+
+==================================================
+157. QUALITY GATE
+==================================================
+
+Run:
+
+localization merge/generation
+
+build_runner if required
+
+dart format .
+
+flutter analyze
+
+flutter test
+
+flutter build web --release --dart-define=DEMO_AUTH=true
+
+==================================================
+158. COMPLETION REPORT
+==================================================
+
+Report:
+
+1. Enquiry module structure
+
+2. ServiceEnquiry domain
+
+3. ServiceEnquiryDraft
+
+4. status state machine
+
+5. Enquiry sequence
+
+6. display-number implementation
+
+7. Customer relationship
+
+8. Site relationship
+
+9. historical party snapshot
+
+10. master references
+
+11. ComplaintType filtering
+
+12. Enquiry permissions
+
+13. permission dependencies
+
+14. Access UI integration
+
+15. navigation integration
+
+16. routes
+
+17. Enquiry list
+
+18. filters/search
+
+19. create form
+
+20. restricted Customer reference access
+
+21. restricted Site reference access
+
+22. Customer-not-found flow
+
+23. Site-not-found flow
+
+24. detail page
+
+25. edit flow
+
+26. cancel flow
+
+27. repository
+
+28. use cases
+
+29. Drift table
+
+30. schema migration/version
+
+31. sequence atomicity
+
+32. activity events
+
+33. outbox operations
+
+34. idempotency
+
+35. Services Overview integration
+
+36. Customer Detail integration
+
+37. Site Detail integration
+
+38. company isolation
+
+39. permission-change behavior
+
+40. Desktop UI
+
+41. Mobile UI
+
+42. English
+
+43. Arabic/RTL
+
+44. tests added
+
+45. permission coverage documentation
+
+46. Phase 2 documentation
+
+47. flutter analyze result
+
+48. flutter test result/count
+
+49. Web release build result
+
+50. genuine remaining limitations.
+
+==================================================
+159. HARD STOP CONDITION
+==================================================
+
+SERVICES PHASE 2 IS COMPLETE ONLY WHEN:
+
+✓ Service Enquiry is a real transaction
+
+✓ Enquiries navigation exists
+
+✓ /app/services/enquiries works
+
+✓ Enquiry list works
+
+✓ Enquiry detail works
+
+✓ New Enquiry works
+
+✓ Edit Enquiry works
+
+✓ Cancel Enquiry works
+
+✓ Enquiries are never hard-deleted
+
+✓ OPEN/CANCELLED state machine is enforced
+
+✓ unique company-scoped Enquiry number exists
+
+✓ shared sequence infrastructure is reused
+
+✓ Customer is selected from Phase 1 directory
+
+✓ Site is selected from selected Customer
+
+✓ cross-Customer Site cannot be submitted
+
+✓ Customer/Site historical context is preserved appropriately
+
+✓ Service Type is integrated
+
+✓ Complaint Type is integrated
+
+✓ Complaint Type compatibility is enforced
+
+✓ Priority is integrated
+
+✓ Ticket Type is integrated
+
+✓ inactive masters are excluded from new selection
+
+✓ historical inactive references remain readable
+
+✓ services.enquiries.view works
+
+✓ services.enquiries.create works
+
+✓ services.enquiries.edit works
+
+✓ services.enquiries.cancel works
+
+✓ Users & Access automatically displays Enquiry permissions
+
+✓ View-only user gets intentional read-only UI
+
+✓ user without Customer View can still use restricted Customer reference search
+  when authorized to create/edit Enquiry
+
+✓ user without Site View can still use restricted Site reference search
+  when authorized to create/edit Enquiry
+
+✓ restricted reference access does NOT expose full Customer/Site directories
+
+✓ direct URLs cannot bypass permission
+
+✓ use cases enforce permission
+
+✓ company isolation works
+
+✓ Services Overview shows REAL Enquiry metrics
+
+✓ Overview hides Enquiry metrics without Enquiry permission
+
+✓ Customer Detail integrates Recent Enquiries when permitted
+
+✓ Site Detail integrates Recent Enquiries when permitted
+
+✓ list query avoids N+1 behavior
+
+✓ search works
+
+✓ filters work
+
+✓ list state restores appropriately
+
+✓ activity timeline works
+
+✓ create/update/cancel events are structured
+
+✓ outbox operations exist
+
+✓ repeated requestId does not duplicate transaction
+
+✓ local transaction writes are atomic
+
+✓ schema migration preserves existing HR/access/Services Phase 1 data
+
+✓ live permission changes update UI/routes
+
+✓ no business role checks were introduced
+
+✓ no fake assignment UI exists
+
+✓ no Job was created
+
+✓ no Inspection was created
+
+✓ no Material workflow was created
+
+✓ no Work Execution was created
+
+✓ Quotation ownership was not guessed
+
+✓ Job Order ownership was not guessed
+
+✓ Desktop works
+
+✓ Mobile works
+
+✓ English works
+
+✓ Arabic/RTL works
+
+✓ permission coverage updated
+
+✓ Services Phase 2 documentation created
+
+✓ flutter analyze passes
+
+✓ flutter test passes
+
+✓ Web release build succeeds
+
+THEN STOP.
+
+DO NOT START PHASE 3 AUTOMATICALLY.
+
+NEXT PHASE AFTER APPROVAL:
+
+SERVICES PHASE 3 —
+JOB ASSIGNMENT & SCHEDULING.
 ```

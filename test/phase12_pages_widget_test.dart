@@ -11,7 +11,7 @@ import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
 import 'package:modular_erp/core/sync/outbox_repository.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_theme.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/notifications/data/noop_notification_repository.dart';
 import 'package:modular_erp/platform/notifications/domain/device_notification_service.dart';
 import 'package:modular_erp/platform/notifications/presentation/bloc/notifications_bloc.dart';
@@ -54,9 +54,9 @@ void main() {
         tester.view.resetDevicePixelRatio();
       });
       final auth = MockAuth();
-      when(
-        () => auth.checkSession(),
-      ).thenAnswer((_) async => Success(employeeContext(AppRole.employee)));
+      when(() => auth.checkSession()).thenAnswer(
+        (_) async => Success(employeeContext(DemoScenario.employee)),
+      );
       when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());
       final bloc = NotificationsBloc(const NoopNotificationRepository(), auth)
         ..add(const NotificationsStarted());
@@ -112,7 +112,7 @@ void main() {
     final auth = MockAuth();
     when(
       () => auth.checkSession(),
-    ).thenAnswer((_) async => Success(employeeContext(AppRole.employee)));
+    ).thenAnswer((_) async => Success(employeeContext(DemoScenario.employee)));
     when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());
     final connectivity = MockConnectivity();
     when(() => connectivity.isConnected).thenAnswer((_) async => true);

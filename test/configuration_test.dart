@@ -15,7 +15,7 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/module_registry/navigation_resolver.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
@@ -69,7 +69,7 @@ void main() {
   late LocalWorkLocationRepository locations;
   late LocalAttendancePolicyRepository policies;
   late LocalEmployeeRepository employees;
-  final hr = employeeContext(AppRole.hr);
+  final hr = employeeContext(DemoScenario.hr);
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
@@ -320,7 +320,7 @@ void main() {
   test(
     'view/manage permissions and company module enablement are explicit',
     () async {
-      final self = employeeContext(AppRole.employee);
+      final self = employeeContext(DemoScenario.employee);
       expect(
         await shifts.watchList(self).first,
         isA<Failed<ConfigurationPageData<Shift>>>(),
@@ -439,7 +439,7 @@ void main() {
           id: current.id,
         ),
       );
-      final self = employeeContext(AppRole.employee),
+      final self = employeeContext(DemoScenario.employee),
           refs = unwrap(
             await employees.getReferences(self, excludingId: current.id),
           );
@@ -730,7 +730,7 @@ void main() {
         expect(
           resolver.routeAccess(
             '${pair.root}/id',
-            employeeContext(AppRole.employee),
+            employeeContext(DemoScenario.employee),
           ),
           RouteAccess.unauthorized,
         );
@@ -792,7 +792,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        10,
+        12,
       );
       expect(await upgraded.select(upgraded.documentSequences).get(), isEmpty);
       expect(await upgraded.select(upgraded.attachmentRecords).get(), isEmpty);

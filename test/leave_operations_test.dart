@@ -14,6 +14,7 @@ import 'package:modular_erp/modules/hr/attendance/domain/attendance_scope_resolv
 import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/leave/data/leave_configuration_repositories.dart';
@@ -42,8 +43,8 @@ void main() {
   );
 
   setUp(() async {
-    manager = employeeContext(AppRole.manager);
-    hr = employeeContext(AppRole.hr);
+    manager = employeeContext(DemoScenario.manager);
+    hr = employeeContext(DemoScenario.hr);
     today = DateTime.utc(2026, 9, 22);
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
@@ -104,7 +105,7 @@ void main() {
   test(
     'unlinked admin can use company scope but cannot request leave',
     () async {
-      final admin = employeeContext(AppRole.companyAdmin);
+      final admin = employeeContext(DemoScenario.companyAdmin);
       expect(admin.employeeReference, isNull);
       final result = await repo
           .watchOperations(admin, scope: LeaveRequestScope.company)

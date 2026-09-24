@@ -14,6 +14,7 @@ import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/core/utils/local_time.dart';
 import 'package:modular_erp/core/sync/outbox_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
@@ -709,7 +710,7 @@ void integrationTests() {
       db = AppDatabase(NativeDatabase.memory());
       await seedEmployees(db);
       await seedAttendanceConfiguration(db);
-      self = employeeContext(AppRole.employee);
+      self = employeeContext(DemoScenario.employee);
       clock = FakeClock(baseline.add(const Duration(hours: 5))); // 09:00 Dubai
       auth = MockAuth();
       when(() => auth.checkSession()).thenAnswer((_) async => Success(self));
@@ -1344,7 +1345,7 @@ void integrationTests() {
         "UPDATE workforce_employees SET attendance_policy_id='policy-office' WHERE id='employee-employee'",
       );
       when(() => capture.capture()).thenAnswer((_) async {
-        self = employeeContext(AppRole.manager);
+        self = employeeContext(DemoScenario.manager);
         return Success(
           AttendanceLocationEvidence(
             latitude: 17.385044,

@@ -63,6 +63,23 @@ class HrWorkforceDirectory implements WorkforceDirectory {
   }
 
   @override
+  Future<List<WorkforcePersonRef>> getEmployees(
+    Iterable<String> employeeIds,
+  ) async {
+    final context = await _context();
+    if (context == null) return const [];
+    final result = await employees
+        .watchEmployees(context, pageSize: 100, filter: const EmployeeFilter())
+        .first;
+    if (result is! Success<EmployeePageData>) return const [];
+    final wanted = employeeIds.toSet();
+    return [
+      for (final employee in result.value.employees)
+        if (wanted.contains(employee.id)) _ref(employee),
+    ];
+  }
+
+  @override
   Stream<List<AssignableEmployeeSummary>> watchAssignableEmployees({
     String query = '',
   }) async* {

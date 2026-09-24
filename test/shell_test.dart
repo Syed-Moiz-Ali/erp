@@ -19,6 +19,7 @@ import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
@@ -30,8 +31,8 @@ import 'support/memory_session_storage.dart';
 
 void main() {
   final source = DemoAuthSource();
-  AuthContext account(AppRole role) =>
-      source.accounts.firstWhere((a) => a.context.user.role == role).context;
+  AuthContext account(DemoScenario role) =>
+      source.accounts.firstWhere((a) => a.scenario == role).context;
   late DemoAuthRepository repository;
   late ModuleRegistry registry;
   late NavigationResolver resolver;
@@ -96,13 +97,13 @@ void main() {
   });
   test('permission-filtered navigation differs across all five demo roles', () {
     final expected = {
-      AppRole.employee: [
+      DemoScenario.employee: [
         'dashboard',
         'attendance',
         'attendance-history',
         'profile',
       ],
-      AppRole.manager: [
+      DemoScenario.manager: [
         'dashboard',
         'employees',
         'attendance',
@@ -110,7 +111,7 @@ void main() {
         'reports',
         'profile',
       ],
-      AppRole.hr: [
+      DemoScenario.hr: [
         'dashboard',
         'employees',
         'attendance',
@@ -122,7 +123,7 @@ void main() {
         'attendance-policies',
         'profile',
       ],
-      AppRole.companyAdmin: [
+      DemoScenario.companyAdmin: [
         'dashboard',
         'employees',
         'attendance',
@@ -133,7 +134,7 @@ void main() {
         'attendance-policies',
         'profile',
       ],
-      AppRole.superAdmin: [
+      DemoScenario.platformAdmin: [
         'dashboard',
         'employees',
         'attendance',
@@ -159,8 +160,10 @@ void main() {
         expected[role],
       );
     }
-    final hrWithoutGrants = account(AppRole.hr).copyWith(
-      user: account(AppRole.hr).user.copyWith(permissions: PermissionSet([])),
+    final hrWithoutGrants = account(DemoScenario.hr).copyWith(
+      user: account(
+        DemoScenario.hr,
+      ).user.copyWith(permissions: PermissionSet([])),
     );
     expect(
       resolver
@@ -177,7 +180,7 @@ void main() {
   test(
     'company module enablement and registry enablement precede permissions',
     () {
-      final ctx = account(AppRole.superAdmin);
+      final ctx = account(DemoScenario.platformAdmin);
       final company = ctx.company.copyWith(enabledModules: {'attendance'});
       expect(
         resolver
@@ -215,7 +218,7 @@ void main() {
   test(
     'permission gate applies to nested paths, aliases and strict boundaries',
     () {
-      final employee = account(AppRole.employee);
+      final employee = account(DemoScenario.employee);
       expect(
         resolver.routeAccess('${AppRoutes.employees}/123', employee),
         RouteAccess.unauthorized,
@@ -234,9 +237,9 @@ void main() {
   test(
     'mobile primary destinations use explicit priorities and reserve More',
     () {
-      final ctx = account(AppRole.superAdmin),
+      final ctx = account(DemoScenario.platformAdmin),
           nav = resolver.resolve(
-            account(AppRole.superAdmin).company,
+            account(DemoScenario.platformAdmin).company,
             ctx.user.permissions,
             employee: ctx.employeeReference,
           );
@@ -250,10 +253,10 @@ void main() {
         'settings',
         'profile',
       ]);
-      expect(nav.groupsFor(nav.mobileMore).keys, [
-        NavigationGroup.insights,
-        NavigationGroup.configuration,
-        NavigationGroup.account,
+      expect(nav.sectionsFor(nav.mobileMore).keys, [
+        NavigationSection.hr,
+        NavigationSection.settings,
+        NavigationSection.account,
       ]);
       expect(() => nav.mobileMore.clear(), throwsUnsupportedError);
     },
@@ -261,7 +264,7 @@ void main() {
   test(
     'default landing chooses an enabled permitted destination and handles no access',
     () {
-      final ctx = account(AppRole.employee);
+      final ctx = account(DemoScenario.employee);
       expect(
         DefaultLandingResolver(resolver).resolve(ctx),
         AppRoutes.dashboard,
@@ -295,7 +298,7 @@ void main() {
     () {
       final employee = AuthState(
         AuthStatus.authenticated,
-        context: account(AppRole.employee),
+        context: account(DemoScenario.employee),
       );
       expect(
         authRedirect(
@@ -343,7 +346,7 @@ void main() {
     );
     final detail = AppRoutes.attendanceDayDetails('record-id');
     expect(registry.ownerOf(detail)!.id, 'attendance-history');
-    final employee = account(AppRole.employee);
+    final employee = account(DemoScenario.employee);
     expect(resolver.routeAccess(detail, employee), RouteAccess.allowed);
     final teamOnly = employee.copyWith(
       user: employee.user.copyWith(

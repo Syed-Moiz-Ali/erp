@@ -58,15 +58,6 @@ const platformPermissionModules = <PermissionModule>[
             permissions: {PermissionScope.none: AppPermission.userManage},
           ),
           PermissionDefinition(
-            key: 'company.roles.manage',
-            moduleId: 'platform',
-            submoduleId: 'access',
-            nameKey: 'accessCompanyRolesManage',
-            descriptionKey: 'accessCompanyRolesManageDesc',
-            order: 5,
-            permissions: {PermissionScope.none: AppPermission.roleManage},
-          ),
-          PermissionDefinition(
             key: 'platform.companies.manage',
             moduleId: 'platform',
             submoduleId: 'access',

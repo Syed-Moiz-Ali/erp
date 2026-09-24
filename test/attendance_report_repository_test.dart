@@ -9,7 +9,7 @@ import 'package:modular_erp/modules/hr/demo/demo_workforce_seed.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/reports/data/local_attendance_report_repository.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
@@ -29,9 +29,9 @@ void main() {
   late MockAuth auth;
   late LocalAttendanceReportRepository repo;
   final today = DateTime.utc(2026, 9, 18);
-  var actor = employeeContext(AppRole.manager);
+  var actor = employeeContext(DemoScenario.manager);
   setUp(() async {
-    actor = employeeContext(AppRole.manager);
+    actor = employeeContext(DemoScenario.manager);
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
     await seedAttendanceConfiguration(db);
@@ -89,13 +89,13 @@ void main() {
         await repo.load(company, AttendanceReportType.overview),
         isA<Failed<AttendanceReportData>>(),
       );
-      actor = employeeContext(AppRole.hr);
+      actor = employeeContext(DemoScenario.hr);
       final full =
           (await repo.load(company, AttendanceReportType.overview)
                   as Success<AttendanceReportData>)
               .value;
       expect(full.summary.recordedDays, greaterThan(0));
-      actor = employeeContext(AppRole.manager);
+      actor = employeeContext(DemoScenario.manager);
       for (final type in AttendanceReportType.values) {
         expect(
           await repo.load(team, type),
@@ -217,7 +217,7 @@ void main() {
   });
 
   test('overview exposes consistent chart-ready aggregates', () async {
-    actor = employeeContext(AppRole.hr);
+    actor = employeeContext(DemoScenario.hr);
     final filter = AttendanceReportFilter.preset(
       AttendanceReportPeriod.thisMonth,
       today,
@@ -245,7 +245,7 @@ void main() {
   });
 
   test('English PDF keeps Arabic fallback for mixed-language data', () async {
-    actor = employeeContext(AppRole.hr);
+    actor = employeeContext(DemoScenario.hr);
     final filter = AttendanceReportFilter.preset(
       AttendanceReportPeriod.thisMonth,
       today,

@@ -13,7 +13,7 @@ class MorePage extends StatelessWidget {
     final items = navigation.mobileMore.isEmpty
         ? navigation.destinations
         : navigation.mobileMore;
-    final groups = navigation.groupsFor(items);
+    final groups = navigation.sectionsFor(items);
     return AppPage(
       maxWidth: AppDimensions.details,
       header: AppPageHeader(

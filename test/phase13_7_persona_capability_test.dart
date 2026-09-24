@@ -10,7 +10,7 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_theme.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
 import 'package:modular_erp/platform/profile/application/my_profile_cubit.dart';
@@ -26,7 +26,9 @@ void main() {
 
   group('user capability resolver', () {
     test('super admin without employee has no self attendance', () {
-      final c = _resolver.forAuthContext(employeeContext(AppRole.superAdmin));
+      final c = _resolver.forAuthContext(
+        employeeContext(DemoScenario.platformAdmin),
+      );
       expect(c.hasLinkedEmployee, isFalse);
       expect(c.has(UserCapability.selfAttendance), isFalse);
       expect(c.has(UserCapability.selfAttendanceHistory), isFalse);
@@ -38,19 +40,21 @@ void main() {
     });
 
     test('company admin without employee has no self attendance', () {
-      final c = _resolver.forAuthContext(employeeContext(AppRole.companyAdmin));
+      final c = _resolver.forAuthContext(
+        employeeContext(DemoScenario.companyAdmin),
+      );
       expect(c.hasLinkedEmployee, isFalse);
       expect(c.has(UserCapability.selfAttendance), isFalse);
       expect(c.has(UserCapability.companyAttendance), isTrue);
     });
 
     test('HR without employee manages workforce but not self attendance', () {
-      final c = _resolver.forAuthContext(employeeContext(AppRole.hr));
+      final c = _resolver.forAuthContext(employeeContext(DemoScenario.hr));
       expect(c.hasLinkedEmployee, isTrue); // demo HR is linked
       expect(c.has(UserCapability.selfAttendance), isTrue);
       final unlinked = _resolver.resolve(
-        company: employeeContext(AppRole.hr).company,
-        permissions: employeeContext(AppRole.hr).user.permissions,
+        company: employeeContext(DemoScenario.hr).company,
+        permissions: employeeContext(DemoScenario.hr).user.permissions,
       );
       expect(unlinked.has(UserCapability.selfAttendance), isFalse);
       expect(unlinked.has(UserCapability.companyAttendance), isTrue);
@@ -58,14 +62,14 @@ void main() {
     });
 
     test('manager linked gets team + self but not company', () {
-      final c = _resolver.forAuthContext(employeeContext(AppRole.manager));
+      final c = _resolver.forAuthContext(employeeContext(DemoScenario.manager));
       expect(c.has(UserCapability.selfAttendance), isTrue);
       expect(c.has(UserCapability.teamAttendance), isTrue);
       expect(c.has(UserCapability.companyAttendance), isFalse);
     });
 
     test('manager without employee cannot resolve a team', () {
-      final manager = employeeContext(AppRole.manager);
+      final manager = employeeContext(DemoScenario.manager);
       final c = _resolver.resolve(
         company: manager.company,
         permissions: manager.user.permissions,
@@ -75,14 +79,16 @@ void main() {
     });
 
     test('employee self only', () {
-      final c = _resolver.forAuthContext(employeeContext(AppRole.employee));
+      final c = _resolver.forAuthContext(
+        employeeContext(DemoScenario.employee),
+      );
       expect(c.has(UserCapability.selfAttendance), isTrue);
       expect(c.has(UserCapability.teamAttendance), isFalse);
       expect(c.has(UserCapability.companyAttendance), isFalse);
     });
 
     test('attendanceViewAll does not imply self attendance', () {
-      final base = employeeContext(AppRole.companyAdmin);
+      final base = employeeContext(DemoScenario.companyAdmin);
       final c = _resolver.resolve(
         company: base.company,
         permissions: PermissionSet([AppPermission.attendanceViewAll]),
@@ -93,7 +99,7 @@ void main() {
     });
 
     test('attendanceViewTeam does not imply attendanceViewAll', () {
-      final base = employeeContext(AppRole.manager);
+      final base = employeeContext(DemoScenario.manager);
       final c = _resolver.resolve(
         company: base.company,
         permissions: PermissionSet([AppPermission.attendanceViewTeam]),
@@ -104,7 +110,7 @@ void main() {
     });
 
     test('linked admin with self permission regains self attendance', () {
-      final base = employeeContext(AppRole.companyAdmin);
+      final base = employeeContext(DemoScenario.companyAdmin);
       final linked = base.copyWith(
         employeeReference: EmployeeReference(
           id: 'employee-company',
@@ -184,7 +190,7 @@ void main() {
 
     test('unlinked admin sees all attendance but not self attendance', () {
       final nav = NavigationResolver(registry());
-      final admin = employeeContext(AppRole.companyAdmin);
+      final admin = employeeContext(DemoScenario.companyAdmin);
       final destinations = nav
           .resolve(
             admin.company,
@@ -199,7 +205,7 @@ void main() {
 
     test('linked employee sees self attendance only', () {
       final nav = NavigationResolver(registry());
-      final employee = employeeContext(AppRole.employee);
+      final employee = employeeContext(DemoScenario.employee);
       final destinations = nav
           .resolve(
             employee.company,
@@ -239,9 +245,9 @@ void main() {
   testWidgets('unlinked admin profile shows no employment section', (t) async {
     for (final locale in [const Locale('en'), const Locale('ar')]) {
       final auth = MockAuth();
-      when(
-        () => auth.checkSession(),
-      ).thenAnswer((_) async => Success(employeeContext(AppRole.companyAdmin)));
+      when(() => auth.checkSession()).thenAnswer(
+        (_) async => Success(employeeContext(DemoScenario.companyAdmin)),
+      );
       when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());
       final cubit = MyProfileCubit(auth, null)..start();
       addTearDown(cubit.close);
@@ -266,7 +272,7 @@ void main() {
   ) async {
     final auth = MockAuth();
     final employee = employeeFixture();
-    final context = employeeContext(AppRole.employee);
+    final context = employeeContext(DemoScenario.employee);
     when(() => auth.checkSession()).thenAnswer((_) async => Success(context));
     when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());
     final repo = MockEmployeeRepository();
@@ -304,8 +310,8 @@ void main() {
   });
 
   test('role templates withhold self attendance from platform admins', () {
-    final superAdmin = permissionsForRole(AppRole.superAdmin);
-    final companyAdmin = permissionsForRole(AppRole.companyAdmin);
+    final superAdmin = demoScenarioGrants(DemoScenario.platformAdmin);
+    final companyAdmin = demoScenarioGrants(DemoScenario.companyAdmin);
     expect(superAdmin.contains(AppPermission.attendanceViewSelf), isFalse);
     expect(companyAdmin.contains(AppPermission.attendanceViewSelf), isFalse);
     expect(superAdmin.contains(AppPermission.attendanceViewAll), isTrue);

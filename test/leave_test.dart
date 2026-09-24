@@ -5,6 +5,7 @@ import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/leave/data/leave_configuration_repositories.dart';
 import 'package:modular_erp/modules/hr/leave/data/local_leave_repository.dart';
@@ -23,8 +24,8 @@ void main() {
   late AuthContext hr;
 
   setUp(() async {
-    manager = employeeContext(AppRole.manager);
-    hr = employeeContext(AppRole.hr);
+    manager = employeeContext(DemoScenario.manager);
+    hr = employeeContext(DemoScenario.hr);
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
     await seedAttendanceConfiguration(db);

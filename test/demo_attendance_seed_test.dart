@@ -12,7 +12,7 @@ import 'package:modular_erp/modules/hr/attendance/domain/attendance_summary_calc
 import 'package:mocktail/mocktail.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
@@ -98,7 +98,7 @@ void main() {
     () async {
       await seedDemoAttendance(db, enabled: true, clock: clock);
       final self = DemoAuthSource().accounts
-          .firstWhere((a) => a.context.user.role == AppRole.employee)
+          .firstWhere((a) => a.scenario == DemoScenario.employee)
           .context;
       final auth = MockAuth();
       when(() => auth.checkSession()).thenAnswer((_) async => Success(self));

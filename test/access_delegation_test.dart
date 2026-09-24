@@ -14,6 +14,7 @@ import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/access/domain/user_permission_grant.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 
 class _MockAccessRepository extends Mock implements AccessRepository {}
 
@@ -26,7 +27,6 @@ AuthContext _actor({
     displayName: 'Admin',
     email: 'admin@erp.demo',
     companyId: 'c1',
-    role: AppRole.companyAdmin,
     permissions: PermissionSet(permissions),
     status: AccountStatus.active,
   ),
@@ -261,27 +261,33 @@ void main() {
     });
     tearDown(() => repository.dispose());
 
-    AuthContext account(AppRole role) =>
-        source.accounts.firstWhere((a) => a.context.user.role == role).context;
+    AuthContext account(DemoScenario role) =>
+        source.accounts.firstWhere((a) => a.scenario == role).context;
 
     test('direct URL to Users & Access is blocked without permission', () {
       expect(
-        resolver.routeAccess(AppRoutes.access, account(AppRole.hr)),
+        resolver.routeAccess(AppRoutes.access, account(DemoScenario.hr)),
         RouteAccess.unauthorized,
       );
       expect(
-        resolver.routeAccess(AppRoutes.modules, account(AppRole.hr)),
+        resolver.routeAccess(AppRoutes.modules, account(DemoScenario.hr)),
         RouteAccess.unauthorized,
       );
     });
 
     test('platform administrator can reach access administration', () {
       expect(
-        resolver.routeAccess(AppRoutes.access, account(AppRole.superAdmin)),
+        resolver.routeAccess(
+          AppRoutes.access,
+          account(DemoScenario.platformAdmin),
+        ),
         RouteAccess.allowed,
       );
       expect(
-        resolver.routeAccess(AppRoutes.modules, account(AppRole.superAdmin)),
+        resolver.routeAccess(
+          AppRoutes.modules,
+          account(DemoScenario.platformAdmin),
+        ),
         RouteAccess.allowed,
       );
     });

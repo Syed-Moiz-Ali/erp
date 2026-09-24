@@ -115,11 +115,15 @@ class AppMobileRecordCard extends StatelessWidget {
                           ).caption.copyWith(color: AppColors.textMuted),
                         ),
                         const SizedBox(width: AppSpacing.xs),
-                        Text(
-                          m.value,
-                          style: AppTypography.of(context).caption.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                        Flexible(
+                          child: Text(
+                            m.value,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTypography.of(context).caption.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
+                            ),
                           ),
                         ),
                       ],

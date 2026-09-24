@@ -324,6 +324,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get navSectionHr => 'الموارد البشرية';
+
+  @override
+  String get navSectionServices => 'الخدمات';
+
+  @override
+  String get navSectionSettings => 'الإعدادات';
+
+  @override
+  String get navSectionAccount => 'الحساب';
+
+  @override
   String durationHoursMinutes(String hours, String minutes) {
     return '$hours س $minutes د';
   }
@@ -879,9 +891,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authCompany => 'الشركة';
 
   @override
-  String get authRole => 'الدور';
-
-  @override
   String get authPermissions => 'الصلاحيات';
 
   @override
@@ -895,21 +904,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authStatusInactive => 'غير نشط';
-
-  @override
-  String get authRoleSuperAdmin => 'المسؤول العام';
-
-  @override
-  String get authRoleCompanyAdmin => 'مسؤول الشركة';
-
-  @override
-  String get authRoleHr => 'الموارد البشرية';
-
-  @override
-  String get authRoleManager => 'مدير';
-
-  @override
-  String get authRoleEmployee => 'موظف';
 
   @override
   String get authPermissionViewer => 'الصلاحيات الممنوحة';
@@ -935,9 +929,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get permissionUserManage => 'إدارة حسابات المستخدمين';
-
-  @override
-  String get permissionRoleManage => 'إدارة الأدوار';
 
   @override
   String get shellDashboard => 'لوحة التحكم';
@@ -1323,9 +1314,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileAdministrativeAccess => 'صلاحيات إدارية';
 
   @override
-  String get profileRoles => 'الأدوار';
-
-  @override
   String get profileEmploymentStatus => 'حالة التوظيف';
 
   @override
@@ -1452,12 +1440,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accessCompanyUsersManageDesc => 'إدارة حسابات مستخدمي الشركة.';
-
-  @override
-  String get accessCompanyRolesManage => 'إدارة أدوار الشركة';
-
-  @override
-  String get accessCompanyRolesManageDesc => 'إدارة بيانات أدوار الشركة.';
 
   @override
   String get accessPlatformCompaniesManage => 'إدارة شركات المنصة';
@@ -1693,6 +1675,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accessNotLinked => 'غير مرتبط';
+
+  @override
+  String get demoPersonaPlatformAdmin => 'مدير المنصة';
+
+  @override
+  String get demoPersonaCompanyAdmin => 'مدير الشركة';
+
+  @override
+  String get demoPersonaHr => 'الموارد البشرية';
+
+  @override
+  String get demoPersonaManager => 'المدير';
+
+  @override
+  String get demoPersonaEmployee => 'الموظف';
+
+  @override
+  String get demoAccessPlatformAdmin =>
+      'إدارة المنصة · كل الوحدات وكل الصلاحيات';
+
+  @override
+  String get demoAccessCompanyAdmin => 'كل وحدات الشركة وصلاحياتها';
+
+  @override
+  String get demoAccessHr =>
+      'الموارد البشرية: الموظفون والحضور والإجازات والتقارير والإعدادات';
+
+  @override
+  String get demoAccessManager => 'حضور الفريق والموافقة على إجازات الفريق';
+
+  @override
+  String get demoAccessEmployee => 'الحضور الذاتي والإجازات الذاتية';
+
+  @override
+  String get authDemoSignIn => 'تسجيل الدخول';
 
   @override
   String get dashboard => 'لوحة المعلومات';
@@ -2207,9 +2224,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get empInvalidReference => 'اختر قسمًا ومسمى وظيفيًا نشطين.';
-
-  @override
-  String get empAccountRoleError => 'لا يمكنك إنشاء هذا الدور أو منح صلاحياته.';
 
   @override
   String get empStorageError =>
@@ -4856,4 +4870,685 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get hrPermPoliciesManageDesc => 'إنشاء وتعديل سياسات الحضور.';
+
+  @override
+  String get servicesPermModuleServices => 'الخدمات';
+
+  @override
+  String get servicesPermSubCustomers => 'العملاء';
+
+  @override
+  String get servicesPermSubSites => 'مواقع الخدمة';
+
+  @override
+  String get servicesPermSubTeams => 'فرق الخدمة';
+
+  @override
+  String get servicesPermSubConfiguration => 'الإعدادات';
+
+  @override
+  String get servicesPermCustomersView => 'عرض العملاء';
+
+  @override
+  String get servicesPermCustomersViewDesc => 'الاطلاع على دليل عملاء الخدمة.';
+
+  @override
+  String get servicesPermCustomersCreate => 'إضافة عميل';
+
+  @override
+  String get servicesPermCustomersCreateDesc => 'إضافة عملاء خدمة جدد.';
+
+  @override
+  String get servicesPermCustomersEdit => 'تعديل عميل';
+
+  @override
+  String get servicesPermCustomersEditDesc => 'تحديث بيانات العميل.';
+
+  @override
+  String get servicesPermCustomersDeactivate => 'إيقاف عميل';
+
+  @override
+  String get servicesPermCustomersDeactivateDesc =>
+      'إيقاف أو إعادة تنشيط العملاء.';
+
+  @override
+  String get servicesPermSitesView => 'عرض مواقع الخدمة';
+
+  @override
+  String get servicesPermSitesViewDesc => 'الاطلاع على مواقع الخدمة.';
+
+  @override
+  String get servicesPermSitesCreate => 'إضافة موقع';
+
+  @override
+  String get servicesPermSitesCreateDesc => 'إضافة مواقع خدمة للعملاء.';
+
+  @override
+  String get servicesPermSitesEdit => 'تعديل موقع';
+
+  @override
+  String get servicesPermSitesEditDesc => 'تحديث بيانات الموقع.';
+
+  @override
+  String get servicesPermSitesDeactivate => 'إيقاف موقع';
+
+  @override
+  String get servicesPermSitesDeactivateDesc => 'إيقاف أو إعادة تنشيط المواقع.';
+
+  @override
+  String get servicesPermTeamsView => 'عرض فرق الخدمة';
+
+  @override
+  String get servicesPermTeamsViewDesc => 'الاطلاع على فرق الخدمة وأعضائها.';
+
+  @override
+  String get servicesPermTeamsManage => 'إدارة فرق الخدمة';
+
+  @override
+  String get servicesPermTeamsManageDesc => 'إنشاء الفرق وإدارة العضوية.';
+
+  @override
+  String get servicesPermServiceTypesView => 'عرض أنواع الخدمة';
+
+  @override
+  String get servicesPermServiceTypesViewDesc => 'الاطلاع على أنواع الخدمة.';
+
+  @override
+  String get servicesPermServiceTypesManage => 'إدارة أنواع الخدمة';
+
+  @override
+  String get servicesPermServiceTypesManageDesc => 'إنشاء وتعديل أنواع الخدمة.';
+
+  @override
+  String get servicesPermComplaintTypesView => 'عرض أنواع الشكاوى';
+
+  @override
+  String get servicesPermComplaintTypesViewDesc => 'الاطلاع على أنواع الشكاوى.';
+
+  @override
+  String get servicesPermComplaintTypesManage => 'إدارة أنواع الشكاوى';
+
+  @override
+  String get servicesPermComplaintTypesManageDesc =>
+      'إنشاء وتعديل أنواع الشكاوى.';
+
+  @override
+  String get servicesPermPrioritiesView => 'عرض الأولويات';
+
+  @override
+  String get servicesPermPrioritiesViewDesc => 'الاطلاع على أولويات الخدمة.';
+
+  @override
+  String get servicesPermPrioritiesManage => 'إدارة الأولويات';
+
+  @override
+  String get servicesPermPrioritiesManageDesc => 'إنشاء وتعديل أولويات الخدمة.';
+
+  @override
+  String get servicesPermTicketTypesView => 'عرض أنواع التذاكر';
+
+  @override
+  String get servicesPermTicketTypesViewDesc => 'الاطلاع على أنواع التذاكر.';
+
+  @override
+  String get servicesPermTicketTypesManage => 'إدارة أنواع التذاكر';
+
+  @override
+  String get servicesPermTicketTypesManageDesc => 'إنشاء وتعديل أنواع التذاكر.';
+
+  @override
+  String get permissionServiceCustomerView => 'عرض العملاء';
+
+  @override
+  String get permissionServiceCustomerCreate => 'إضافة عميل';
+
+  @override
+  String get permissionServiceCustomerEdit => 'تعديل عميل';
+
+  @override
+  String get permissionServiceCustomerDeactivate => 'إيقاف عميل';
+
+  @override
+  String get permissionServiceSiteView => 'عرض مواقع الخدمة';
+
+  @override
+  String get permissionServiceSiteCreate => 'إضافة موقع';
+
+  @override
+  String get permissionServiceSiteEdit => 'تعديل موقع';
+
+  @override
+  String get permissionServiceSiteDeactivate => 'إيقاف موقع';
+
+  @override
+  String get permissionServiceTeamView => 'عرض فرق الخدمة';
+
+  @override
+  String get permissionServiceTeamManage => 'إدارة فرق الخدمة';
+
+  @override
+  String get permissionServiceTypeView => 'عرض أنواع الخدمة';
+
+  @override
+  String get permissionServiceTypeManage => 'إدارة أنواع الخدمة';
+
+  @override
+  String get permissionComplaintTypeView => 'عرض أنواع الشكاوى';
+
+  @override
+  String get permissionComplaintTypeManage => 'إدارة أنواع الشكاوى';
+
+  @override
+  String get permissionServicePriorityView => 'عرض الأولويات';
+
+  @override
+  String get permissionServicePriorityManage => 'إدارة الأولويات';
+
+  @override
+  String get permissionServiceTicketTypeView => 'عرض أنواع التذاكر';
+
+  @override
+  String get permissionServiceTicketTypeManage => 'إدارة أنواع التذاكر';
+
+  @override
+  String get servicesNavOverview => 'نظرة عامة';
+
+  @override
+  String get servicesNavCustomers => 'العملاء';
+
+  @override
+  String get servicesNavSites => 'المواقع';
+
+  @override
+  String get servicesNavTeams => 'الفرق';
+
+  @override
+  String get servicesNavSettings => 'إعدادات الخدمات';
+
+  @override
+  String get servicesOverviewSubtitle =>
+      'أدر دليل الخدمة والفرق والإعدادات التشغيلية.';
+
+  @override
+  String get servicesSummaryCustomers => 'العملاء';
+
+  @override
+  String get servicesSummarySites => 'المواقع النشطة';
+
+  @override
+  String get servicesSummaryTeams => 'فرق الخدمة';
+
+  @override
+  String get servicesSetupTitle => 'الإعداد';
+
+  @override
+  String get servicesSetupServiceTypes => 'أنواع الخدمة';
+
+  @override
+  String get servicesSetupPriorities => 'الأولويات';
+
+  @override
+  String get servicesSetupReady => 'مُهيّأ';
+
+  @override
+  String get servicesSetupMissing => 'غير مُهيّأ';
+
+  @override
+  String get servicesDirectoryTitle => 'دليل العملاء';
+
+  @override
+  String get servicesRecentCustomers => 'أحدث العملاء';
+
+  @override
+  String get servicesNoCustomersYet => 'لا يوجد عملاء بعد';
+
+  @override
+  String get servicesCustomersTitle => 'العملاء';
+
+  @override
+  String get servicesCustomerAdd => 'إضافة عميل';
+
+  @override
+  String get servicesCustomerEdit => 'تعديل العميل';
+
+  @override
+  String get servicesCustomerCode => 'الرمز';
+
+  @override
+  String get servicesCustomerName => 'الاسم';
+
+  @override
+  String get servicesCustomerKind => 'النوع';
+
+  @override
+  String get servicesCustomerKindIndividual => 'فرد';
+
+  @override
+  String get servicesCustomerKindOrganization => 'منشأة';
+
+  @override
+  String get servicesCustomerMobile => 'الجوال';
+
+  @override
+  String get servicesCustomerAlternateMobile => 'جوال بديل';
+
+  @override
+  String get servicesCustomerEmail => 'البريد الإلكتروني';
+
+  @override
+  String get servicesCustomerNotes => 'ملاحظات';
+
+  @override
+  String get servicesCustomerSites => 'المواقع';
+
+  @override
+  String get servicesCustomerContact => 'معلومات التواصل';
+
+  @override
+  String get servicesCustomerLastUpdated => 'آخر تحديث';
+
+  @override
+  String get servicesCustomerSaved => 'تم حفظ العميل.';
+
+  @override
+  String get servicesCustomerStorageError => 'تعذّر حفظ العميل.';
+
+  @override
+  String get servicesCustomerNotFound => 'لم يتم العثور على العميل.';
+
+  @override
+  String get servicesCustomerEmpty => 'لا يوجد عملاء بعد';
+
+  @override
+  String get servicesCustomerEmptyMessage => 'أضف أول عميل للبدء.';
+
+  @override
+  String get servicesCustomerNoResults => 'لا يوجد عملاء مطابقون لبحثك.';
+
+  @override
+  String get servicesCustomerRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get servicesCustomerInvalidMobile => 'أدخل رقم جوال صالح.';
+
+  @override
+  String get servicesCustomerInvalidEmail => 'أدخل بريدًا إلكترونيًا صالحًا.';
+
+  @override
+  String get servicesCustomerDuplicateMobile => 'يوجد عميل بهذا الجوال بالفعل.';
+
+  @override
+  String get servicesCustomerDuplicateEmail =>
+      'يوجد عميل بهذا البريد الإلكتروني بالفعل.';
+
+  @override
+  String get servicesCustomerDeactivate => 'إيقاف';
+
+  @override
+  String get servicesCustomerActivate => 'تنشيط';
+
+  @override
+  String get servicesCustomerSearch => 'البحث عن العملاء';
+
+  @override
+  String get servicesCustomerAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesCustomerActivity => 'النشاط';
+
+  @override
+  String get servicesCustomerNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesCustomerSelect => 'اختر عميلًا';
+
+  @override
+  String get servicesCustomerStatus => 'الحالة';
+
+  @override
+  String get servicesCustomerDiscardMessage => 'لديك تغييرات غير محفوظة.';
+
+  @override
+  String get servicesCustomerDiscardAction => 'تجاهل';
+
+  @override
+  String get servicesSitesTitle => 'مواقع الخدمة';
+
+  @override
+  String get servicesSiteAdd => 'إضافة موقع';
+
+  @override
+  String get servicesSiteEdit => 'تعديل الموقع';
+
+  @override
+  String get servicesSiteCode => 'الرمز';
+
+  @override
+  String get servicesSiteName => 'اسم الموقع';
+
+  @override
+  String get servicesSiteCustomer => 'العميل';
+
+  @override
+  String get servicesSiteTenant => 'المستأجر';
+
+  @override
+  String get servicesSiteBuilding => 'المبنى';
+
+  @override
+  String get servicesSiteUnit => 'الوحدة';
+
+  @override
+  String get servicesSiteContactName => 'اسم جهة الاتصال';
+
+  @override
+  String get servicesSiteContactMobile => 'جوال جهة الاتصال';
+
+  @override
+  String get servicesSiteContactEmail => 'بريد جهة الاتصال';
+
+  @override
+  String get servicesSiteAddress1 => 'العنوان';
+
+  @override
+  String get servicesSiteAddress2 => 'العنوان 2';
+
+  @override
+  String get servicesSiteArea => 'المنطقة';
+
+  @override
+  String get servicesSiteCity => 'المدينة';
+
+  @override
+  String get servicesSiteState => 'الولاية/المنطقة';
+
+  @override
+  String get servicesSitePostalCode => 'الرمز البريدي';
+
+  @override
+  String get servicesSiteCountry => 'الدولة';
+
+  @override
+  String get servicesSiteLatitude => 'خط العرض';
+
+  @override
+  String get servicesSiteLongitude => 'خط الطول';
+
+  @override
+  String get servicesSiteNotes => 'ملاحظات';
+
+  @override
+  String get servicesSiteBuildingUnit => 'المبنى / الوحدة';
+
+  @override
+  String get servicesSiteSaved => 'تم حفظ الموقع.';
+
+  @override
+  String get servicesSiteStorageError => 'تعذّر حفظ الموقع.';
+
+  @override
+  String get servicesSiteNotFound => 'لم يتم العثور على الموقع.';
+
+  @override
+  String get servicesSiteEmpty => 'لا توجد مواقع بعد';
+
+  @override
+  String get servicesSiteEmptyMessage => 'أضف موقعًا لعميل لجدولة العمل.';
+
+  @override
+  String get servicesSiteNoResults => 'لا توجد مواقع مطابقة لبحثك.';
+
+  @override
+  String get servicesSiteRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get servicesSiteDeactivate => 'إيقاف';
+
+  @override
+  String get servicesSiteActivate => 'تنشيط';
+
+  @override
+  String get servicesSiteSearch => 'البحث عن المواقع';
+
+  @override
+  String get servicesSiteDetails => 'الموقع';
+
+  @override
+  String get servicesSiteActivity => 'النشاط';
+
+  @override
+  String get servicesSiteLocation => 'الموقع الجغرافي';
+
+  @override
+  String get servicesSiteIdentity => 'هوية الموقع';
+
+  @override
+  String get servicesSiteAddress => 'العنوان';
+
+  @override
+  String get servicesSiteContact => 'معلومات التواصل';
+
+  @override
+  String get servicesSiteCustomerRequired => 'اختر عميلًا.';
+
+  @override
+  String get servicesSiteSelectCustomer => 'اختر عميلًا';
+
+  @override
+  String get servicesTeamsTitle => 'فرق الخدمة';
+
+  @override
+  String get servicesTeamAdd => 'إضافة فريق';
+
+  @override
+  String get servicesTeamEdit => 'تعديل الفريق';
+
+  @override
+  String get servicesTeamCode => 'الرمز';
+
+  @override
+  String get servicesTeamName => 'اسم الفريق';
+
+  @override
+  String get servicesTeamDescription => 'الوصف';
+
+  @override
+  String get servicesTeamLead => 'قائد الفريق';
+
+  @override
+  String get servicesTeamMembers => 'الأعضاء';
+
+  @override
+  String get servicesTeamMemberAdd => 'إضافة عضو';
+
+  @override
+  String get servicesTeamMemberSearch => 'البحث عن الموظفين';
+
+  @override
+  String get servicesTeamNoMembers => 'لا يوجد أعضاء بعد';
+
+  @override
+  String get servicesTeamSaved => 'تم حفظ الفريق.';
+
+  @override
+  String get servicesTeamStorageError => 'تعذّر حفظ الفريق.';
+
+  @override
+  String get servicesTeamNotFound => 'لم يتم العثور على الفريق.';
+
+  @override
+  String get servicesTeamEmpty => 'لا توجد فرق بعد';
+
+  @override
+  String get servicesTeamEmptyMessage =>
+      'أنشئ فريقًا لتجميع الموظفين لأعمال الخدمة.';
+
+  @override
+  String get servicesTeamNoResults => 'لا توجد فرق مطابقة لبحثك.';
+
+  @override
+  String get servicesTeamRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get servicesTeamDeactivate => 'إيقاف';
+
+  @override
+  String get servicesTeamActivate => 'تنشيط';
+
+  @override
+  String get servicesTeamSearch => 'البحث عن الفرق';
+
+  @override
+  String get servicesTeamDetails => 'الفريق';
+
+  @override
+  String get servicesTeamActivity => 'النشاط';
+
+  @override
+  String get servicesTeamLeadOptional => 'بلا قائد';
+
+  @override
+  String get servicesTeamSelectLead => 'اختر قائدًا';
+
+  @override
+  String get servicesTeamMembersCount => 'الأعضاء';
+
+  @override
+  String get servicesSettingsTitle => 'إعدادات الخدمات';
+
+  @override
+  String get servicesSettingsSubtitle =>
+      'هيّئ البيانات الأساسية المستخدمة في عمليات الخدمة.';
+
+  @override
+  String get servicesServiceTypesTitle => 'أنواع الخدمة';
+
+  @override
+  String get servicesComplaintTypesTitle => 'أنواع الشكاوى';
+
+  @override
+  String get servicesPrioritiesTitle => 'الأولويات';
+
+  @override
+  String get servicesTicketTypesTitle => 'أنواع التذاكر';
+
+  @override
+  String get servicesAddMaster => 'إضافة';
+
+  @override
+  String get servicesEditMaster => 'تعديل';
+
+  @override
+  String get servicesMasterCode => 'الرمز';
+
+  @override
+  String get servicesMasterName => 'الاسم';
+
+  @override
+  String get servicesMasterDescription => 'الوصف';
+
+  @override
+  String get servicesMasterSortOrder => 'ترتيب العرض';
+
+  @override
+  String get servicesMasterRank => 'الرتبة';
+
+  @override
+  String get servicesMasterDefault => 'افتراضي';
+
+  @override
+  String get servicesMasterServiceType => 'نوع الخدمة';
+
+  @override
+  String get servicesMasterSaved => 'تم الحفظ.';
+
+  @override
+  String get servicesMasterStorageError => 'تعذّر الحفظ.';
+
+  @override
+  String get servicesMasterNotFound => 'لم يتم العثور على السجل.';
+
+  @override
+  String get servicesMasterEmpty => 'لا يوجد شيء مُهيّأ بعد';
+
+  @override
+  String get servicesMasterNoResults => 'لا توجد سجلات مطابقة لبحثك.';
+
+  @override
+  String get servicesMasterRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get servicesMasterDeactivate => 'إيقاف';
+
+  @override
+  String get servicesMasterActivate => 'تنشيط';
+
+  @override
+  String get servicesMasterSearch => 'بحث';
+
+  @override
+  String get servicesMasterGeneric => 'عام';
+
+  @override
+  String get servicesMasterNameRequired => 'الاسم مطلوب.';
+
+  @override
+  String get servicesMasterCodeRequired => 'الرمز مطلوب.';
+
+  @override
+  String get servicesMasterDuplicateCode => 'يوجد سجل بهذا الرمز بالفعل.';
+
+  @override
+  String get servicesMasterDuplicateName => 'يوجد سجل بهذا الاسم بالفعل.';
+
+  @override
+  String servicesCustomerCount(String filtered, String total) {
+    return '$filtered من $total عميل';
+  }
+
+  @override
+  String servicesSiteCount(String filtered, String total) {
+    return '$filtered من $total موقع';
+  }
+
+  @override
+  String servicesTeamCount(String filtered, String total) {
+    return '$filtered من $total فريق';
+  }
+
+  @override
+  String get servicesActivityCreated => 'إنشاء';
+
+  @override
+  String get servicesActivityUpdated => 'تحديث';
+
+  @override
+  String get servicesActivityActivated => 'تنشيط';
+
+  @override
+  String get servicesActivityDeactivated => 'إلغاء تنشيط';
+
+  @override
+  String get servicesActivityMembersUpdated => 'تحديث أعضاء الفريق';
+
+  @override
+  String get servicesActivityUnknown => 'نشاط';
+
+  @override
+  String get servicesCustomerContactSection => 'بيانات التواصل';
+
+  @override
+  String get servicesSiteAddressSection => 'العنوان';
+
+  @override
+  String get servicesTeamLeadSection => 'قائد الفريق';
+
+  @override
+  String get servicesTeamLeadNone => 'لا يوجد قائد فريق معيّن';
+
+  @override
+  String get servicesCustomerNoSites => 'لا توجد مواقع خدمة بعد.';
+
+  @override
+  String get servicesDenied => 'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
 }

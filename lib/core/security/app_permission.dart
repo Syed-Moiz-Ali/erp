@@ -25,7 +25,6 @@ enum AppPermission {
   attendancePolicyManage,
   companyManage,
   userManage,
-  roleManage,
   attendanceReportView,
   leaveViewSelf,
   leaveRequest,
@@ -51,6 +50,25 @@ enum AppPermission {
   accessPermissionsManage,
   companyModulesView,
   platformModulesManage,
+  // Services Phase 1 (directory, teams, configuration).
+  serviceCustomerView,
+  serviceCustomerCreate,
+  serviceCustomerEdit,
+  serviceCustomerDeactivate,
+  serviceSiteView,
+  serviceSiteCreate,
+  serviceSiteEdit,
+  serviceSiteDeactivate,
+  serviceTeamView,
+  serviceTeamManage,
+  serviceTypeView,
+  serviceTypeManage,
+  complaintTypeView,
+  complaintTypeManage,
+  servicePriorityView,
+  servicePriorityManage,
+  serviceTicketTypeView,
+  serviceTicketTypeManage,
 }
 
 /// Manage authority implies the matching view authority so a manage-only grant
@@ -63,6 +81,11 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.leaveTypeManage: AppPermission.leaveTypeView,
   AppPermission.leavePolicyManage: AppPermission.leavePolicyView,
   AppPermission.holidayManage: AppPermission.holidayView,
+  AppPermission.serviceTeamManage: AppPermission.serviceTeamView,
+  AppPermission.serviceTypeManage: AppPermission.serviceTypeView,
+  AppPermission.complaintTypeManage: AppPermission.complaintTypeView,
+  AppPermission.servicePriorityManage: AppPermission.servicePriorityView,
+  AppPermission.serviceTicketTypeManage: AppPermission.serviceTicketTypeView,
 };
 
 /// Expands a raw grant set so that every `*Manage` grant carries its `*View`

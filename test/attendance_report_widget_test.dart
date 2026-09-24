@@ -10,7 +10,7 @@ import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/design_system/theme/app_theme.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/data/local_attendance_report_repository.dart';
@@ -51,7 +51,7 @@ void main() {
       final auth = MockAuth();
       when(
         () => auth.checkSession(),
-      ).thenAnswer((_) async => Success(employeeContext(AppRole.manager)));
+      ).thenAnswer((_) async => Success(employeeContext(DemoScenario.manager)));
       final repo = LocalAttendanceReportRepository(db, auth, clock: clock);
       final bloc = AttendanceReportBloc(
         repo,

@@ -343,7 +343,7 @@ as EmployeeSyncStatus,
 /// @nodoc
 mixin _$EmployeeDraft {
 
- String get firstName; String get middleName; String get lastName; String get email; String get phone; String? get departmentId; String? get designationId; String? get managerId; String? get shiftId; String? get workLocationId; String? get attendancePolicyId; DateTime? get joiningDate; EmploymentType get employmentType; EmploymentStatus get status; bool get loginEnabled; AppRole get accountRole;
+ String get firstName; String get middleName; String get lastName; String get email; String get phone; String? get departmentId; String? get designationId; String? get managerId; String? get shiftId; String? get workLocationId; String? get attendancePolicyId; DateTime? get joiningDate; EmploymentType get employmentType; EmploymentStatus get status; bool get loginEnabled;
 /// Create a copy of EmployeeDraft
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -354,16 +354,16 @@ $EmployeeDraftCopyWith<EmployeeDraft> get copyWith => _$EmployeeDraftCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EmployeeDraft&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.middleName, middleName) || other.middleName == middleName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.departmentId, departmentId) || other.departmentId == departmentId)&&(identical(other.designationId, designationId) || other.designationId == designationId)&&(identical(other.managerId, managerId) || other.managerId == managerId)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.workLocationId, workLocationId) || other.workLocationId == workLocationId)&&(identical(other.attendancePolicyId, attendancePolicyId) || other.attendancePolicyId == attendancePolicyId)&&(identical(other.joiningDate, joiningDate) || other.joiningDate == joiningDate)&&(identical(other.employmentType, employmentType) || other.employmentType == employmentType)&&(identical(other.status, status) || other.status == status)&&(identical(other.loginEnabled, loginEnabled) || other.loginEnabled == loginEnabled)&&(identical(other.accountRole, accountRole) || other.accountRole == accountRole));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EmployeeDraft&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.middleName, middleName) || other.middleName == middleName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.departmentId, departmentId) || other.departmentId == departmentId)&&(identical(other.designationId, designationId) || other.designationId == designationId)&&(identical(other.managerId, managerId) || other.managerId == managerId)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.workLocationId, workLocationId) || other.workLocationId == workLocationId)&&(identical(other.attendancePolicyId, attendancePolicyId) || other.attendancePolicyId == attendancePolicyId)&&(identical(other.joiningDate, joiningDate) || other.joiningDate == joiningDate)&&(identical(other.employmentType, employmentType) || other.employmentType == employmentType)&&(identical(other.status, status) || other.status == status)&&(identical(other.loginEnabled, loginEnabled) || other.loginEnabled == loginEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,firstName,middleName,lastName,email,phone,departmentId,designationId,managerId,shiftId,workLocationId,attendancePolicyId,joiningDate,employmentType,status,loginEnabled,accountRole);
+int get hashCode => Object.hash(runtimeType,firstName,middleName,lastName,email,phone,departmentId,designationId,managerId,shiftId,workLocationId,attendancePolicyId,joiningDate,employmentType,status,loginEnabled);
 
 @override
 String toString() {
-  return 'EmployeeDraft(firstName: $firstName, middleName: $middleName, lastName: $lastName, email: $email, phone: $phone, departmentId: $departmentId, designationId: $designationId, managerId: $managerId, shiftId: $shiftId, workLocationId: $workLocationId, attendancePolicyId: $attendancePolicyId, joiningDate: $joiningDate, employmentType: $employmentType, status: $status, loginEnabled: $loginEnabled, accountRole: $accountRole)';
+  return 'EmployeeDraft(firstName: $firstName, middleName: $middleName, lastName: $lastName, email: $email, phone: $phone, departmentId: $departmentId, designationId: $designationId, managerId: $managerId, shiftId: $shiftId, workLocationId: $workLocationId, attendancePolicyId: $attendancePolicyId, joiningDate: $joiningDate, employmentType: $employmentType, status: $status, loginEnabled: $loginEnabled)';
 }
 
 
@@ -374,7 +374,7 @@ abstract mixin class $EmployeeDraftCopyWith<$Res>  {
   factory $EmployeeDraftCopyWith(EmployeeDraft value, $Res Function(EmployeeDraft) _then) = _$EmployeeDraftCopyWithImpl;
 @useResult
 $Res call({
- String firstName, String middleName, String lastName, String email, String phone, String? departmentId, String? designationId, String? managerId, String? shiftId, String? workLocationId, String? attendancePolicyId, DateTime? joiningDate, EmploymentType employmentType, EmploymentStatus status, bool loginEnabled, AppRole accountRole
+ String firstName, String middleName, String lastName, String email, String phone, String? departmentId, String? designationId, String? managerId, String? shiftId, String? workLocationId, String? attendancePolicyId, DateTime? joiningDate, EmploymentType employmentType, EmploymentStatus status, bool loginEnabled
 });
 
 
@@ -391,7 +391,7 @@ class _$EmployeeDraftCopyWithImpl<$Res>
 
 /// Create a copy of EmployeeDraft
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? middleName = null,Object? lastName = null,Object? email = null,Object? phone = null,Object? departmentId = freezed,Object? designationId = freezed,Object? managerId = freezed,Object? shiftId = freezed,Object? workLocationId = freezed,Object? attendancePolicyId = freezed,Object? joiningDate = freezed,Object? employmentType = null,Object? status = null,Object? loginEnabled = null,Object? accountRole = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? middleName = null,Object? lastName = null,Object? email = null,Object? phone = null,Object? departmentId = freezed,Object? designationId = freezed,Object? managerId = freezed,Object? shiftId = freezed,Object? workLocationId = freezed,Object? attendancePolicyId = freezed,Object? joiningDate = freezed,Object? employmentType = null,Object? status = null,Object? loginEnabled = null,}) {
   return _then(_self.copyWith(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,middleName: null == middleName ? _self.middleName : middleName // ignore: cast_nullable_to_non_nullable
@@ -408,8 +408,7 @@ as String?,joiningDate: freezed == joiningDate ? _self.joiningDate : joiningDate
 as DateTime?,employmentType: null == employmentType ? _self.employmentType : employmentType // ignore: cast_nullable_to_non_nullable
 as EmploymentType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as EmploymentStatus,loginEnabled: null == loginEnabled ? _self.loginEnabled : loginEnabled // ignore: cast_nullable_to_non_nullable
-as bool,accountRole: null == accountRole ? _self.accountRole : accountRole // ignore: cast_nullable_to_non_nullable
-as AppRole,
+as bool,
   ));
 }
 
@@ -494,10 +493,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled,  AppRole accountRole)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeeDraft() when $default != null:
-return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled,_that.accountRole);case _:
+return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled);case _:
   return orElse();
 
 }
@@ -515,10 +514,10 @@ return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled,  AppRole accountRole)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeDraft():
-return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled,_that.accountRole);case _:
+return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -535,10 +534,10 @@ return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled,  AppRole accountRole)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String firstName,  String middleName,  String lastName,  String email,  String phone,  String? departmentId,  String? designationId,  String? managerId,  String? shiftId,  String? workLocationId,  String? attendancePolicyId,  DateTime? joiningDate,  EmploymentType employmentType,  EmploymentStatus status,  bool loginEnabled)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeDraft() when $default != null:
-return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled,_that.accountRole);case _:
+return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_that.phone,_that.departmentId,_that.designationId,_that.managerId,_that.shiftId,_that.workLocationId,_that.attendancePolicyId,_that.joiningDate,_that.employmentType,_that.status,_that.loginEnabled);case _:
   return null;
 
 }
@@ -550,7 +549,7 @@ return $default(_that.firstName,_that.middleName,_that.lastName,_that.email,_tha
 
 
 class _EmployeeDraft implements EmployeeDraft {
-  const _EmployeeDraft({this.firstName = '', this.middleName = '', this.lastName = '', this.email = '', this.phone = '', this.departmentId, this.designationId, this.managerId, this.shiftId, this.workLocationId, this.attendancePolicyId, this.joiningDate, this.employmentType = EmploymentType.fullTime, this.status = EmploymentStatus.active, this.loginEnabled = false, this.accountRole = AppRole.employee});
+  const _EmployeeDraft({this.firstName = '', this.middleName = '', this.lastName = '', this.email = '', this.phone = '', this.departmentId, this.designationId, this.managerId, this.shiftId, this.workLocationId, this.attendancePolicyId, this.joiningDate, this.employmentType = EmploymentType.fullTime, this.status = EmploymentStatus.active, this.loginEnabled = false});
   
 
 @override@JsonKey() final  String firstName;
@@ -568,7 +567,6 @@ class _EmployeeDraft implements EmployeeDraft {
 @override@JsonKey() final  EmploymentType employmentType;
 @override@JsonKey() final  EmploymentStatus status;
 @override@JsonKey() final  bool loginEnabled;
-@override@JsonKey() final  AppRole accountRole;
 
 /// Create a copy of EmployeeDraft
 /// with the given fields replaced by the non-null parameter values.
@@ -580,16 +578,16 @@ _$EmployeeDraftCopyWith<_EmployeeDraft> get copyWith => __$EmployeeDraftCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmployeeDraft&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.middleName, middleName) || other.middleName == middleName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.departmentId, departmentId) || other.departmentId == departmentId)&&(identical(other.designationId, designationId) || other.designationId == designationId)&&(identical(other.managerId, managerId) || other.managerId == managerId)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.workLocationId, workLocationId) || other.workLocationId == workLocationId)&&(identical(other.attendancePolicyId, attendancePolicyId) || other.attendancePolicyId == attendancePolicyId)&&(identical(other.joiningDate, joiningDate) || other.joiningDate == joiningDate)&&(identical(other.employmentType, employmentType) || other.employmentType == employmentType)&&(identical(other.status, status) || other.status == status)&&(identical(other.loginEnabled, loginEnabled) || other.loginEnabled == loginEnabled)&&(identical(other.accountRole, accountRole) || other.accountRole == accountRole));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmployeeDraft&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.middleName, middleName) || other.middleName == middleName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.departmentId, departmentId) || other.departmentId == departmentId)&&(identical(other.designationId, designationId) || other.designationId == designationId)&&(identical(other.managerId, managerId) || other.managerId == managerId)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.workLocationId, workLocationId) || other.workLocationId == workLocationId)&&(identical(other.attendancePolicyId, attendancePolicyId) || other.attendancePolicyId == attendancePolicyId)&&(identical(other.joiningDate, joiningDate) || other.joiningDate == joiningDate)&&(identical(other.employmentType, employmentType) || other.employmentType == employmentType)&&(identical(other.status, status) || other.status == status)&&(identical(other.loginEnabled, loginEnabled) || other.loginEnabled == loginEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,firstName,middleName,lastName,email,phone,departmentId,designationId,managerId,shiftId,workLocationId,attendancePolicyId,joiningDate,employmentType,status,loginEnabled,accountRole);
+int get hashCode => Object.hash(runtimeType,firstName,middleName,lastName,email,phone,departmentId,designationId,managerId,shiftId,workLocationId,attendancePolicyId,joiningDate,employmentType,status,loginEnabled);
 
 @override
 String toString() {
-  return 'EmployeeDraft(firstName: $firstName, middleName: $middleName, lastName: $lastName, email: $email, phone: $phone, departmentId: $departmentId, designationId: $designationId, managerId: $managerId, shiftId: $shiftId, workLocationId: $workLocationId, attendancePolicyId: $attendancePolicyId, joiningDate: $joiningDate, employmentType: $employmentType, status: $status, loginEnabled: $loginEnabled, accountRole: $accountRole)';
+  return 'EmployeeDraft(firstName: $firstName, middleName: $middleName, lastName: $lastName, email: $email, phone: $phone, departmentId: $departmentId, designationId: $designationId, managerId: $managerId, shiftId: $shiftId, workLocationId: $workLocationId, attendancePolicyId: $attendancePolicyId, joiningDate: $joiningDate, employmentType: $employmentType, status: $status, loginEnabled: $loginEnabled)';
 }
 
 
@@ -600,7 +598,7 @@ abstract mixin class _$EmployeeDraftCopyWith<$Res> implements $EmployeeDraftCopy
   factory _$EmployeeDraftCopyWith(_EmployeeDraft value, $Res Function(_EmployeeDraft) _then) = __$EmployeeDraftCopyWithImpl;
 @override @useResult
 $Res call({
- String firstName, String middleName, String lastName, String email, String phone, String? departmentId, String? designationId, String? managerId, String? shiftId, String? workLocationId, String? attendancePolicyId, DateTime? joiningDate, EmploymentType employmentType, EmploymentStatus status, bool loginEnabled, AppRole accountRole
+ String firstName, String middleName, String lastName, String email, String phone, String? departmentId, String? designationId, String? managerId, String? shiftId, String? workLocationId, String? attendancePolicyId, DateTime? joiningDate, EmploymentType employmentType, EmploymentStatus status, bool loginEnabled
 });
 
 
@@ -617,7 +615,7 @@ class __$EmployeeDraftCopyWithImpl<$Res>
 
 /// Create a copy of EmployeeDraft
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? middleName = null,Object? lastName = null,Object? email = null,Object? phone = null,Object? departmentId = freezed,Object? designationId = freezed,Object? managerId = freezed,Object? shiftId = freezed,Object? workLocationId = freezed,Object? attendancePolicyId = freezed,Object? joiningDate = freezed,Object? employmentType = null,Object? status = null,Object? loginEnabled = null,Object? accountRole = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? middleName = null,Object? lastName = null,Object? email = null,Object? phone = null,Object? departmentId = freezed,Object? designationId = freezed,Object? managerId = freezed,Object? shiftId = freezed,Object? workLocationId = freezed,Object? attendancePolicyId = freezed,Object? joiningDate = freezed,Object? employmentType = null,Object? status = null,Object? loginEnabled = null,}) {
   return _then(_EmployeeDraft(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,middleName: null == middleName ? _self.middleName : middleName // ignore: cast_nullable_to_non_nullable
@@ -634,8 +632,7 @@ as String?,joiningDate: freezed == joiningDate ? _self.joiningDate : joiningDate
 as DateTime?,employmentType: null == employmentType ? _self.employmentType : employmentType // ignore: cast_nullable_to_non_nullable
 as EmploymentType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as EmploymentStatus,loginEnabled: null == loginEnabled ? _self.loginEnabled : loginEnabled // ignore: cast_nullable_to_non_nullable
-as bool,accountRole: null == accountRole ? _self.accountRole : accountRole // ignore: cast_nullable_to_non_nullable
-as AppRole,
+as bool,
   ));
 }
 

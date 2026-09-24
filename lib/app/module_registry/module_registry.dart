@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
+import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 
 enum NavigationGroup {
@@ -34,6 +35,30 @@ extension NavigationGroupLocalization on NavigationGroup {
   };
 }
 
+/// Coarse business-module grouping for the shell navigation.
+///
+/// Destinations are grouped by the module that owns them (HR, Services,
+/// Settings, Account) so a user can always tell which module an item belongs
+/// to, independent of the finer-grained [NavigationGroup].
+enum NavigationSection { hr, services, settings, account }
+
+extension NavigationSectionLocalization on NavigationSection {
+  String label(AppLocalizations l10n) => switch (this) {
+    NavigationSection.hr => l10n.navSectionHr,
+    NavigationSection.services => l10n.navSectionServices,
+    NavigationSection.settings => l10n.navSectionSettings,
+    NavigationSection.account => l10n.navSectionAccount,
+  };
+}
+
+/// Maps a destination's owning module id to its navigation section.
+NavigationSection navigationSectionOf(String moduleId) => switch (moduleId) {
+  AppModuleIds.services => NavigationSection.services,
+  AppModuleIds.settings => NavigationSection.settings,
+  AppModuleIds.account => NavigationSection.account,
+  _ => NavigationSection.hr,
+};
+
 /// A navigation destination. All layouts receive the same resolved descriptors.
 class ErpModule {
   const ErpModule({
@@ -58,6 +83,7 @@ class ErpModule {
   final String id, route;
   final String? _moduleId;
   String get moduleId => _moduleId ?? id;
+  NavigationSection get section => navigationSectionOf(moduleId);
   final LocalizedText name;
   final NavigationGroup navigationGroup;
   final IconData icon;

@@ -2,8 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 part 'auth_context.freezed.dart';
 
-enum AppRole { superAdmin, companyAdmin, hr, manager, employee }
-
 enum AccountStatus { active, suspended, inactive }
 
 @freezed
@@ -15,7 +13,6 @@ abstract class UserAccount with _$UserAccount {
     String? phone,
     String? avatarUrl,
     required String companyId,
-    required AppRole role,
     required PermissionSet permissions,
     required AccountStatus status,
   }) = _UserAccount;

@@ -29,7 +29,6 @@ AuthContext _context(String companyId) => AuthContext(
     displayName: 'User',
     email: 'user@erp.demo',
     companyId: companyId,
-    role: AppRole.hr,
     permissions: PermissionSet(const []),
     status: AccountStatus.active,
   ),

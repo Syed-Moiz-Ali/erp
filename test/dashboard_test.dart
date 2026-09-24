@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_scope_resolver.dart';
@@ -37,9 +38,9 @@ class ThrowingSource extends DemoDashboardSource {
 
 void main() {
   final source = DemoAuthSource();
-  AuthContext account(AppRole role) =>
-      source.accounts.firstWhere((a) => a.context.user.role == role).context;
-  final employee = account(AppRole.employee);
+  AuthContext account(DemoScenario role) =>
+      source.accounts.firstWhere((a) => a.scenario == role).context;
+  final employee = account(DemoScenario.employee);
   AuthContext grants(Iterable<AppPermission> p) => employee.copyWith(
     user: employee.user.copyWith(permissions: PermissionSet(p)),
   );
@@ -81,7 +82,7 @@ void main() {
         DashboardScope.self,
       );
       expect(resolver.resolve(grants([])), DashboardScope.none);
-      final admin = account(AppRole.superAdmin);
+      final admin = account(DemoScenario.platformAdmin);
       expect(
         resolver.resolve(
           admin.copyWith(
@@ -100,7 +101,7 @@ void main() {
       );
     },
   );
-  for (final role in AppRole.values) {
+  for (final role in DemoScenario.values) {
     test(
       '$role receives permission-scoped deterministic immutable data',
       () async {
@@ -113,9 +114,9 @@ void main() {
                 .value;
         expect(
           data.scope,
-          role == AppRole.employee
+          role == DemoScenario.employee
               ? DashboardScope.self
-              : role == AppRole.manager
+              : role == DemoScenario.manager
               ? DashboardScope.team
               : DashboardScope.company,
         );
@@ -133,7 +134,7 @@ void main() {
           );
         }
         expect(() => data.metrics.clear(), throwsUnsupportedError);
-        if (role == AppRole.employee) {
+        if (role == DemoScenario.employee) {
           expect(data.status, isNull);
           expect(data.today, isNull);
           expect(data.metrics, isEmpty);
@@ -142,8 +143,8 @@ void main() {
           expect(data.alerts, isEmpty);
         } else {
           final status = data.status!;
-          expect(status.total, role == AppRole.manager ? 12 : 84);
-          expect(status.present, role == AppRole.manager ? 9 : 73);
+          expect(status.total, role == DemoScenario.manager ? 12 : 84);
+          expect(status.present, role == DemoScenario.manager ? 9 : 73);
           expect(data.metrics.first.value, status.total);
           final work = data.metrics
               .firstWhere((m) => m.kind == DashboardMetricKind.working)
@@ -152,7 +153,7 @@ void main() {
               .firstWhere((m) => m.kind == DashboardMetricKind.onBreak)
               .value;
           expect(work + rest, status.present);
-          if (role == AppRole.manager) {
+          if (role == DemoScenario.manager) {
             expect(
               data.metrics.any(
                 (m) => {
@@ -199,7 +200,7 @@ void main() {
   test(
     'disabled company modules suppress dependent metrics; no attendance grant returns empty',
     () async {
-      final admin = account(AppRole.superAdmin);
+      final admin = account(DemoScenario.platformAdmin);
       final disabled = admin.copyWith(
         company: admin.company.copyWith(
           enabledModules: {'dashboard', 'attendance'},

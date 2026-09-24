@@ -184,7 +184,6 @@
   "empDuplicatePhone": "This phone is already assigned to another employee.",
   "empInvalidManager": "Choose an active manager without a circular reporting relationship.",
   "empInvalidReference": "Choose an active department and designation.",
-  "empAccountRoleError": "You cannot provision this account role or its permissions.",
   "empStorageError": "We couldn’t complete this local operation. Please try again.",
   "empPending": "Pending sync",
   "empBack": "Back to employees",

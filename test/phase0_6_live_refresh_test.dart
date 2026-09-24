@@ -7,7 +7,7 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/account_role_templates.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'auth_widget_test.dart' as ui_test;
 
@@ -35,7 +35,7 @@ void main() {
     tester,
   ) async {
     ui_test.viewport(tester, 1440);
-    final grants = _FakeGrants(permissionsForRole(AppRole.hr));
+    final grants = _FakeGrants(demoScenarioGrants(DemoScenario.hr));
     addTearDown(grants.close);
     final h = await ui_test.mount(tester, AppLanguage.english, grants: grants);
     h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
@@ -67,7 +67,7 @@ void main() {
     expect(tester.takeException(), isNull);
 
     // Granting it back restores navigation live (no re-login).
-    grants.emit(permissionsForRole(AppRole.hr));
+    grants.emit(demoScenarioGrants(DemoScenario.hr));
     await ui_test.pump(tester);
     expect(_navItem('reports'), findsOneWidget);
 

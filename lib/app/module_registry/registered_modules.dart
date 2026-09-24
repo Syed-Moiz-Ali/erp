@@ -26,6 +26,12 @@ import 'package:modular_erp/modules/hr/reports/domain/attendance_report_reposito
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/services/module/services_module_registration.dart';
+import 'package:modular_erp/modules/services/customers/domain/service_customer_repository.dart';
+import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
+import 'package:modular_erp/modules/services/teams/domain/service_team_repository.dart';
+import 'package:modular_erp/modules/services/configuration/domain/service_master_repository.dart';
+import 'package:modular_erp/modules/services/domain/contracts/workforce_directory.dart';
+import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
@@ -57,6 +63,12 @@ ModuleRegistry createErpRegistry(
   AccessRepository? accessRepository,
   PermissionCatalog? accessCatalog,
   GrantAuthorityResolver? accessAuthority,
+  ServiceCustomerRepository? serviceCustomerRepository,
+  ServiceSiteRepository? serviceSiteRepository,
+  ServiceTeamRepository? serviceTeamRepository,
+  ServiceMasterRepository? serviceMasterRepository,
+  WorkforceDirectory? workforceDirectory,
+  ActivityRepository? activityRepository,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -115,7 +127,6 @@ ModuleRegistry createErpRegistry(
               AppPermission.holidayView,
               AppPermission.companyManage,
               AppPermission.userManage,
-              AppPermission.roleManage,
               AppPermission.accessUsersView,
               AppPermission.accessPermissionsManage,
               AppPermission.companyModulesView,
@@ -208,7 +219,14 @@ ModuleRegistry createErpRegistry(
         ...hr.settingsDestinations,
       ],
     ),
-    ...buildServicesModules(),
+    ...buildServicesModules(
+      customers: serviceCustomerRepository,
+      sites: serviceSiteRepository,
+      teams: serviceTeamRepository,
+      masters: serviceMasterRepository,
+      workforce: workforceDirectory,
+      activity: activityRepository,
+    ),
   ]);
   return registry;
 }

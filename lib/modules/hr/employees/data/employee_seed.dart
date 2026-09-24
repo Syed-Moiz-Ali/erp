@@ -55,7 +55,6 @@ Future<void> seedEmployees(AppDatabase db) => db.transaction(() async {
             displayName: u.displayName,
             email: u.email,
             phone: u.phone!,
-            role: u.role.name,
             grants: jsonEncode(
               u.permissions.values.map((p) => p.name).toList(),
             ),

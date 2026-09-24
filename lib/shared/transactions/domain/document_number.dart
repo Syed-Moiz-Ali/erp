@@ -36,6 +36,20 @@ class DocumentSequenceType {
     key: 'workExecution',
     prefix: 'EXEC',
   );
+
+  // Services Phase 1 directory/team display codes.
+  static const serviceCustomer = DocumentSequenceType(
+    key: 'serviceCustomer',
+    prefix: 'CUS',
+  );
+  static const serviceSite = DocumentSequenceType(
+    key: 'serviceSite',
+    prefix: 'SITE',
+  );
+  static const serviceTeam = DocumentSequenceType(
+    key: 'serviceTeam',
+    prefix: 'TEAM',
+  );
 }
 
 /// Centralized display-number formatting. Never build `prefix + padded number`

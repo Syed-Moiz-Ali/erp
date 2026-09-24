@@ -6,7 +6,7 @@ import 'package:modular_erp/core/models/configuration_record.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/core/utils/local_time.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
 import 'package:modular_erp/modules/hr/shifts/data/local_shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/data/local_work_location_repository.dart';
@@ -27,8 +27,8 @@ Future<void> seedDemoAttendance(
 }) async {
   if (!enabled) return;
   await db.transaction(() async {
-    final admin = DemoAuthSource().accounts
-        .firstWhere((a) => a.context.user.role == AppRole.superAdmin)
+    final admin = DemoAuthSource()
+        .findByScenario(DemoScenario.platformAdmin)!
         .context;
     final shifts = LocalShiftRepository(db),
         policies = LocalAttendancePolicyRepository(db);

@@ -18,7 +18,6 @@ enum UserCapability {
   manageAttendanceConfiguration,
   viewAttendanceReports,
   manageUsers,
-  manageRoles,
   manageCompany,
   platformAdministration,
   // Leave & holidays
@@ -111,15 +110,10 @@ class UserCapabilityResolver {
     if (p.can(AppPermission.userManage)) {
       granted.add(UserCapability.manageUsers);
     }
-    if (p.can(AppPermission.roleManage)) {
-      granted.add(UserCapability.manageRoles);
-    }
     if (p.can(AppPermission.companyManage)) {
       granted.add(UserCapability.manageCompany);
     }
-    if (p.can(AppPermission.companyManage) &&
-        p.can(AppPermission.userManage) &&
-        p.can(AppPermission.roleManage)) {
+    if (p.can(AppPermission.companyManage) && p.can(AppPermission.userManage)) {
       granted.add(UserCapability.platformAdministration);
     }
     // Leave & holidays. SELF actions require a linked employee.

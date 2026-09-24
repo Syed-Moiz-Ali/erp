@@ -56,6 +56,11 @@ abstract interface class WorkforceDirectory {
     int limit = 50,
   });
 
+  /// Resolves several references at once (company-scoped), including inactive
+  /// employees so historical membership stays resolvable. Unknown/other-company
+  /// ids are omitted.
+  Future<List<WorkforcePersonRef>> getEmployees(Iterable<String> employeeIds);
+
   /// Reactive variant used by assignment pickers.
   Stream<List<AssignableEmployeeSummary>> watchAssignableEmployees({
     String query = '',

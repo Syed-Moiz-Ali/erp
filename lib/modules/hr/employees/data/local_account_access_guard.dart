@@ -42,7 +42,6 @@ class LocalAccountAccessGuard implements AccountAccessGuard {
       email: a.email,
       phone: a.phone,
       companyId: a.companyId,
-      role: AppRole.values.byName(a.role),
       permissions: PermissionSet(
         (jsonDecode(a.grants) as List).map(
           (p) => AppPermission.values.byName(p as String),

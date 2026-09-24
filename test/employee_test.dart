@@ -8,6 +8,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
@@ -16,15 +17,13 @@ import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repos
 import 'package:modular_erp/modules/hr/employees/data/local_account_access_guard.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
-import 'package:modular_erp/modules/hr/employees/domain/employee_access.dart';
 import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_list_bloc.dart';
 import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_details_bloc.dart';
 import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_form_bloc.dart';
 import 'support/memory_session_storage.dart';
 
-AuthContext employeeContext(AppRole role) => DemoAuthSource().accounts
-    .firstWhere((a) => a.context.user.role == role)
-    .context;
+AuthContext employeeContext(DemoScenario role) =>
+    DemoAuthSource().accounts.firstWhere((a) => a.scenario == role).context;
 EmployeeDraft validDraft({
   String email = 'new@erp.demo',
   String phone = '+15558881111',
@@ -69,9 +68,9 @@ void main() {
   late AppDatabase db;
   late EmployeeDao dao;
   late LocalEmployeeRepository repo;
-  final hr = employeeContext(AppRole.hr),
-      manager = employeeContext(AppRole.manager),
-      self = employeeContext(AppRole.employee);
+  final hr = employeeContext(DemoScenario.hr),
+      manager = employeeContext(DemoScenario.manager),
+      self = employeeContext(DemoScenario.employee);
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
     await seedEmployees(db);
@@ -120,29 +119,6 @@ void main() {
         );
       }
     }
-  });
-  test('role options respect the full explicit permission ceiling', () {
-    final limited = hr.copyWith(
-      user: hr.user.copyWith(
-        permissions: PermissionSet([AppPermission.employeeCreate]),
-      ),
-    );
-    expect(const AccountRolePolicy().available(limited), isEmpty);
-    expect(
-      const AccountRolePolicy().available(
-        employeeContext(AppRole.companyAdmin),
-      ),
-      containsAll([
-        AppRole.employee,
-        AppRole.manager,
-        AppRole.hr,
-        AppRole.companyAdmin,
-      ]),
-    );
-    expect(
-      const AccountRolePolicy().available(employeeContext(AppRole.superAdmin)),
-      isNot(contains(AppRole.superAdmin)),
-    );
   });
   test(
     'list Bloc exposes failure and supports sorting and status writes',
@@ -212,7 +188,6 @@ void main() {
         ..add(const EmployeeFormInitialized());
       await until(() => !b.state.loading);
       expect(b.state.draft.firstName, 'Noor');
-      expect(b.state.draft.accountRole, AppRole.employee);
       expect(b.state.dirty, isFalse);
       expect(
         b.state.references!.managers.any((m) => m.id == 'employee-employee'),
@@ -292,51 +267,6 @@ void main() {
         }
       }
       await directory.delete();
-    },
-  );
-  test(
-    'local role changes update active auth permissions and survive restore',
-    () async {
-      final storage = MemorySessionStorage();
-      final auth = DemoAuthRepository(
-        storage,
-        source: DemoAuthSource(),
-        accountGuard: LocalAccountAccessGuard(db),
-      );
-      expect(
-        await auth.login(
-          AuthIdentifier.parse('employee@erp.demo')!,
-          'Employee@123',
-        ),
-        isA<Success<AuthContext>>(),
-      );
-      final changed = auth.sessionChanges.firstWhere(
-        (c) => c?.user.role == AppRole.manager,
-      );
-      final e = unwrap(await repo.getEmployeeById(hr, 'employee-employee'))!;
-      unwrap(
-        await repo.saveEmployee(
-          hr,
-          draftFrom(e).copyWith(accountRole: AppRole.manager),
-          id: e.id,
-        ),
-      );
-      final context = await changed.timeout(const Duration(seconds: 3));
-      expect(
-        context!.user.permissions.contains(AppPermission.employeeViewTeam),
-        isTrue,
-      );
-      await auth.dispose();
-      final restored = DemoAuthRepository(
-        storage,
-        source: DemoAuthSource(),
-        accountGuard: LocalAccountAccessGuard(db),
-      );
-      expect(
-        unwrap(await restored.restoreSession())!.user.role,
-        AppRole.manager,
-      );
-      await restored.dispose();
     },
   );
   test(
@@ -584,7 +514,14 @@ void main() {
       expect(e.linkedUserId, isNotNull);
       final a = unwrap(await repo.getLinkedAccount(hr, e.id))!;
       expect(a.credentialPending, isTrue);
-      expect(a.user.role, AppRole.employee);
+      expect(
+        a.user.permissions.contains(AppPermission.attendanceViewSelf),
+        isTrue,
+      );
+      expect(
+        a.user.permissions.contains(AppPermission.employeeViewAll),
+        isFalse,
+      );
       expect(await LocalAccountAccessGuard(db).enabled(a.user.id), isFalse);
       final cols = await db
           .customSelect('PRAGMA table_info(workforce_accounts)')
@@ -595,28 +532,18 @@ void main() {
       );
     },
   );
-  test(
-    'role ceiling rejects privilege escalation and rolls back provisioning',
-    () async {
-      expect(
-        await repo.saveEmployee(
-          hr,
-          validDraft().copyWith(
-            loginEnabled: true,
-            accountRole: AppRole.superAdmin,
-          ),
-        ),
-        isA<Failed<Employee>>(),
-      );
-      expect((await dao.page(hr)).total, 25);
-      expect((await db.select(db.workforceAccounts).get()).length, 5);
-      expect(await db.select(db.syncOutbox).get(), isEmpty);
-      expect(
-        const AccountRolePolicy().available(hr),
-        contains(AppRole.manager),
-      );
-    },
-  );
+  test('provisioning never grants organizational permissions', () async {
+    final e = unwrap(
+      await repo.saveEmployee(hr, validDraft().copyWith(loginEnabled: true)),
+    );
+    final a = unwrap(await repo.getLinkedAccount(hr, e.id))!;
+    expect(a.user.permissions.contains(AppPermission.employeeViewAll), isFalse);
+    expect(
+      a.user.permissions.contains(AppPermission.employeeViewTeam),
+      isFalse,
+    );
+    expect(a.user.permissions.contains(AppPermission.leaveApproveAll), isFalse);
+  });
   test(
     'reactive employee detail updates on edits despite unchanged row count',
     () async {
@@ -745,7 +672,15 @@ void main() {
     expect(
       (await migrated.customSelect('PRAGMA user_version').getSingle())
           .read<int>('user_version'),
-      10,
+      12,
+    );
+    // Access is permission-based: the legacy account role column is gone.
+    final accountColumns = await migrated
+        .customSelect('PRAGMA table_info(workforce_accounts)')
+        .get();
+    expect(
+      accountColumns.any((row) => row.read<String>('name') == 'role'),
+      isFalse,
     );
     await migrated.close();
   });

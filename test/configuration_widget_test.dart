@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'employee_test.dart' show employeeContext;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -704,8 +704,8 @@ void main() {
       (t) async {
         registerFallbackValue(AuthIdentifier.parse('hr@erp.demo')!);
         final mock = h.MockAuth();
-        final ctx = employeeContext(AppRole.hr).copyWith(
-          user: employeeContext(AppRole.hr).user.copyWith(
+        final ctx = employeeContext(DemoScenario.hr).copyWith(
+          user: employeeContext(DemoScenario.hr).user.copyWith(
             permissions: PermissionSet([
               manageOnly ? AppPermission.shiftManage : AppPermission.shiftView,
             ]),
@@ -847,7 +847,7 @@ void main() {
         unwrap(
           await LocalShiftRepository(
             app.database!,
-          ).setActive(employeeContext(AppRole.hr), 'shift-night', false),
+          ).setActive(employeeContext(DemoScenario.hr), 'shift-night', false),
         );
       });
       await settleDb(t);

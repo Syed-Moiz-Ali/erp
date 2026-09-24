@@ -16,6 +16,7 @@ import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_sourc
 import 'package:modular_erp/platform/auth/data/dto/auth_session_dto.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/password_bloc.dart';
@@ -60,7 +61,11 @@ void main() {
     act: (bloc) => bloc.add(const AuthBootstrapRequested()),
     expect: () => [
       status(AuthStatus.bootstrapping),
-      isA<AuthState>().having((s) => s.context!.user.role, 'role', AppRole.hr),
+      isA<AuthState>().having(
+        (s) => s.context!.user.email,
+        'email',
+        'hr@erp.demo',
+      ),
     ],
     verify: (bloc) {
       expect(bloc.state.context!.company.enabledModules, {
@@ -70,6 +75,7 @@ void main() {
         'leave',
         'reports',
         'settings',
+        'services',
       });
     },
   );
@@ -262,34 +268,32 @@ void main() {
   test('permissions use explicit grants and differ by demo role', () {
     expect(
       PermissionChecker(
-        demoPermissions(AppRole.employee),
+        demoScenarioGrants(DemoScenario.employee),
       ).can(AppPermission.employeeCreate),
       false,
     );
     expect(
       PermissionChecker(
-        demoPermissions(AppRole.hr),
+        demoScenarioGrants(DemoScenario.hr),
       ).can(AppPermission.employeeCreate),
       true,
     );
     expect(
       PermissionChecker(
-        demoPermissions(AppRole.manager),
+        demoScenarioGrants(DemoScenario.manager),
       ).can(AppPermission.employeeViewTeam),
       true,
     );
     expect(
-      PermissionChecker(demoPermissions(AppRole.superAdmin)).canAll([
-        AppPermission.companyManage,
-        AppPermission.userManage,
-        AppPermission.roleManage,
-      ]),
+      PermissionChecker(
+        demoScenarioGrants(DemoScenario.platformAdmin),
+      ).canAll([AppPermission.companyManage, AppPermission.userManage]),
       true,
     );
     expect(
-      () => demoPermissions(
-        AppRole.employee,
-      ).values.add(AppPermission.roleManage),
+      () => demoScenarioGrants(
+        DemoScenario.employee,
+      ).values.add(AppPermission.companyManage),
       throwsUnsupportedError,
     );
     expect(
@@ -306,7 +310,7 @@ void main() {
       final session = AuthSessionMapper.decode(AuthSessionDto.fromJson(json));
       expect(
         session.context.user.permissions.length,
-        demoPermissions(AppRole.hr).length,
+        demoScenarioGrants(DemoScenario.hr).length,
       );
       expect(session.toString(), isNot(contains(session.accessToken)));
       expect(AuthSessionMapper.encode(session).toJson()['employee'], isNotNull);
@@ -340,7 +344,7 @@ void main() {
     );
     final second = DemoAuthRepository(storage, source: DemoAuthSource());
     final result = await second.restoreSession() as Success<AuthContext?>;
-    expect(result.value!.user.role, AppRole.manager);
+    expect(result.value!.user.email, 'manager@erp.demo');
     await second.dispose();
   });
   test(

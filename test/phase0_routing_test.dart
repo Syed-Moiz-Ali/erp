@@ -12,18 +12,22 @@ import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_lis
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'support/memory_session_storage.dart';
 import 'auth_widget_test.dart' as ui_test;
 
 void main() {
   final source = DemoAuthSource();
-  AuthContext account(AppRole role) =>
-      source.accounts.firstWhere((a) => a.context.user.role == role).context;
+  AuthContext account(DemoScenario role) =>
+      source.accounts.firstWhere((a) => a.scenario == role).context;
   final resolver = NavigationResolver(
     createErpRegistry(DemoAuthRepository(MemorySessionStorage())),
   );
-  final hr = AuthState(AuthStatus.authenticated, context: account(AppRole.hr));
+  final hr = AuthState(
+    AuthStatus.authenticated,
+    context: account(DemoScenario.hr),
+  );
 
   group('LegacyRoutes.rewrite', () {
     test('maps old HR roots to canonical module-first paths', () {

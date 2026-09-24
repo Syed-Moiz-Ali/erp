@@ -58,7 +58,6 @@ class EmployeeFormState {
     if (failure?.code == 'duplicateEmail') errors['email'] = 'duplicateEmail';
     if (failure?.code == 'duplicatePhone') errors['phone'] = 'duplicatePhone';
     if (failure?.code == 'manager') errors['managerId'] = 'manager';
-    if (failure?.code == 'accountRole') errors['accountRole'] = 'accountRole';
     return Map.unmodifiable(errors);
   }
 
@@ -132,9 +131,6 @@ class EmployeeFormBloc extends Bloc<EmployeeFormEvent, EmployeeFormState> {
             employmentType: e.employmentType,
             status: e.status,
             loginEnabled: e.loginEnabled,
-            accountRole: account is Success<EmployeeAccountAccess?>
-                ? account.value?.user.role ?? AppRole.employee
-                : AppRole.employee,
           );
         }
         emit(

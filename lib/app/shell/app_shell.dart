@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/platform/auth/presentation/auth_localization.dart';
 import 'package:modular_erp/platform/notifications/presentation/bloc/notification_badge_cubit.dart';
 import 'package:modular_erp/platform/notifications/presentation/notification_panel.dart';
 import 'package:modular_erp/platform/notifications/presentation/widgets/notification_bell.dart';
@@ -142,7 +141,7 @@ class AppShell extends StatelessWidget {
                   builder: (context, busy) => AppUserMenu(
                     name: account.user.displayName,
                     email: account.user.email,
-                    roleLabel: account.user.role.label,
+                    roleLabel: (l) => account.company.name,
                     busy: busy,
                     onProfile: () => navigate(AppRoutes.profile),
                     onPassword: () => context.go(AppRoutes.changePassword),

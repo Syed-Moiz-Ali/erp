@@ -10,8 +10,6 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
 import 'package:modular_erp/shared/navigation/app_navigation.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/presentation/auth_localization.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee_access.dart';
@@ -119,7 +117,6 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
         return code == null ? null : employeeFailure(Failure(code: code), l);
       }
 
-      final roles = const AccountRolePolicy().available(bloc.context);
       return AppPage(
         maxWidth: AppDimensions.details,
         header: AppPageHeader(
@@ -385,7 +382,7 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                   AppSwitchField(
                     label: l.empLogin,
                     value: d.loginEnabled,
-                    onChanged: state.saving || roles.isEmpty
+                    onChanged: state.saving
                         ? null
                         : (v) => change((d) => d.copyWith(loginEnabled: v)),
                   ),
@@ -403,21 +400,6 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                           ? state.account!.user.phone ?? l.empUnassigned
                           : d.phone,
                       identifier: true,
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    AppSelectField<AppRole>(
-                      label: l.authRole,
-                      errorText: fieldError("accountRole"),
-                      value: d.accountRole,
-                      enabled: !state.saving,
-                      options: [
-                        for (final r in roles) AppSelectOption(r, r.label(l)),
-                      ],
-                      onChanged: (v) {
-                        if (v != null) {
-                          change((d) => d.copyWith(accountRole: v));
-                        }
-                      },
                     ),
                   ],
                 ],

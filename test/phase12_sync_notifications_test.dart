@@ -14,7 +14,7 @@ import 'package:modular_erp/core/sync/outbox_repository.dart';
 import 'package:modular_erp/core/sync/pending_mutation.dart';
 import 'package:modular_erp/core/sync/sync_retry_policy.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_models.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/notifications/application/attendance_reminder_service.dart';
 import 'package:modular_erp/platform/notifications/application/reminder_context.dart';
 import 'package:modular_erp/platform/notifications/data/local_notification_repository.dart';
@@ -368,7 +368,7 @@ void main() {
     addTearDown(db.close);
     final outbox = OutboxLocalDataSource(db);
     final auth = MockAuth();
-    final actor = employeeContext(AppRole.employee);
+    final actor = employeeContext(DemoScenario.employee);
     when(() => auth.checkSession()).thenAnswer((_) async => Success(actor));
     when(() => auth.sessionChanges).thenAnswer((_) => const Stream.empty());
     final connectivity = MockConnectivity();

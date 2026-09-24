@@ -2,7 +2,6 @@ import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 part 'employee.freezed.dart';
 part 'employee.g.dart';
 
@@ -74,7 +73,6 @@ abstract class EmployeeDraft with _$EmployeeDraft {
     @Default(EmploymentType.fullTime) EmploymentType employmentType,
     @Default(EmploymentStatus.active) EmploymentStatus status,
     @Default(false) bool loginEnabled,
-    @Default(AppRole.employee) AppRole accountRole,
   }) = _EmployeeDraft;
 }
 

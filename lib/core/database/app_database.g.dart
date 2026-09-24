@@ -6395,15 +6395,6 @@ class $WorkforceAccountsTable extends WorkforceAccounts
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _roleMeta = const VerificationMeta('role');
-  @override
-  late final GeneratedColumn<String> role = GeneratedColumn<String>(
-    'role',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _grantsMeta = const VerificationMeta('grants');
   @override
   late final GeneratedColumn<String> grants = GeneratedColumn<String>(
@@ -6444,7 +6435,6 @@ class $WorkforceAccountsTable extends WorkforceAccounts
     displayName,
     email,
     phone,
-    role,
     grants,
     status,
     credentialPending,
@@ -6500,14 +6490,6 @@ class $WorkforceAccountsTable extends WorkforceAccounts
       );
     } else if (isInserting) {
       context.missing(_phoneMeta);
-    }
-    if (data.containsKey('role')) {
-      context.handle(
-        _roleMeta,
-        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_roleMeta);
     }
     if (data.containsKey('grants')) {
       context.handle(
@@ -6568,10 +6550,6 @@ class $WorkforceAccountsTable extends WorkforceAccounts
         DriftSqlType.string,
         data['${effectivePrefix}phone'],
       )!,
-      role: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}role'],
-      )!,
       grants: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}grants'],
@@ -6600,7 +6578,6 @@ class WorkforceAccount extends DataClass
   final String displayName;
   final String email;
   final String phone;
-  final String role;
   final String grants;
   final String status;
   final bool credentialPending;
@@ -6610,7 +6587,6 @@ class WorkforceAccount extends DataClass
     required this.displayName,
     required this.email,
     required this.phone,
-    required this.role,
     required this.grants,
     required this.status,
     required this.credentialPending,
@@ -6623,7 +6599,6 @@ class WorkforceAccount extends DataClass
     map['display_name'] = Variable<String>(displayName);
     map['email'] = Variable<String>(email);
     map['phone'] = Variable<String>(phone);
-    map['role'] = Variable<String>(role);
     map['grants'] = Variable<String>(grants);
     map['status'] = Variable<String>(status);
     map['credential_pending'] = Variable<bool>(credentialPending);
@@ -6637,7 +6612,6 @@ class WorkforceAccount extends DataClass
       displayName: Value(displayName),
       email: Value(email),
       phone: Value(phone),
-      role: Value(role),
       grants: Value(grants),
       status: Value(status),
       credentialPending: Value(credentialPending),
@@ -6655,7 +6629,6 @@ class WorkforceAccount extends DataClass
       displayName: serializer.fromJson<String>(json['displayName']),
       email: serializer.fromJson<String>(json['email']),
       phone: serializer.fromJson<String>(json['phone']),
-      role: serializer.fromJson<String>(json['role']),
       grants: serializer.fromJson<String>(json['grants']),
       status: serializer.fromJson<String>(json['status']),
       credentialPending: serializer.fromJson<bool>(json['credentialPending']),
@@ -6670,7 +6643,6 @@ class WorkforceAccount extends DataClass
       'displayName': serializer.toJson<String>(displayName),
       'email': serializer.toJson<String>(email),
       'phone': serializer.toJson<String>(phone),
-      'role': serializer.toJson<String>(role),
       'grants': serializer.toJson<String>(grants),
       'status': serializer.toJson<String>(status),
       'credentialPending': serializer.toJson<bool>(credentialPending),
@@ -6683,7 +6655,6 @@ class WorkforceAccount extends DataClass
     String? displayName,
     String? email,
     String? phone,
-    String? role,
     String? grants,
     String? status,
     bool? credentialPending,
@@ -6693,7 +6664,6 @@ class WorkforceAccount extends DataClass
     displayName: displayName ?? this.displayName,
     email: email ?? this.email,
     phone: phone ?? this.phone,
-    role: role ?? this.role,
     grants: grants ?? this.grants,
     status: status ?? this.status,
     credentialPending: credentialPending ?? this.credentialPending,
@@ -6707,7 +6677,6 @@ class WorkforceAccount extends DataClass
           : this.displayName,
       email: data.email.present ? data.email.value : this.email,
       phone: data.phone.present ? data.phone.value : this.phone,
-      role: data.role.present ? data.role.value : this.role,
       grants: data.grants.present ? data.grants.value : this.grants,
       status: data.status.present ? data.status.value : this.status,
       credentialPending: data.credentialPending.present
@@ -6724,7 +6693,6 @@ class WorkforceAccount extends DataClass
           ..write('displayName: $displayName, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
-          ..write('role: $role, ')
           ..write('grants: $grants, ')
           ..write('status: $status, ')
           ..write('credentialPending: $credentialPending')
@@ -6739,7 +6707,6 @@ class WorkforceAccount extends DataClass
     displayName,
     email,
     phone,
-    role,
     grants,
     status,
     credentialPending,
@@ -6753,7 +6720,6 @@ class WorkforceAccount extends DataClass
           other.displayName == this.displayName &&
           other.email == this.email &&
           other.phone == this.phone &&
-          other.role == this.role &&
           other.grants == this.grants &&
           other.status == this.status &&
           other.credentialPending == this.credentialPending);
@@ -6765,7 +6731,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
   final Value<String> displayName;
   final Value<String> email;
   final Value<String> phone;
-  final Value<String> role;
   final Value<String> grants;
   final Value<String> status;
   final Value<bool> credentialPending;
@@ -6776,7 +6741,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
     this.displayName = const Value.absent(),
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
-    this.role = const Value.absent(),
     this.grants = const Value.absent(),
     this.status = const Value.absent(),
     this.credentialPending = const Value.absent(),
@@ -6788,7 +6752,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
     required String displayName,
     required String email,
     required String phone,
-    required String role,
     required String grants,
     required String status,
     this.credentialPending = const Value.absent(),
@@ -6798,7 +6761,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
        displayName = Value(displayName),
        email = Value(email),
        phone = Value(phone),
-       role = Value(role),
        grants = Value(grants),
        status = Value(status);
   static Insertable<WorkforceAccount> custom({
@@ -6807,7 +6769,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
     Expression<String>? displayName,
     Expression<String>? email,
     Expression<String>? phone,
-    Expression<String>? role,
     Expression<String>? grants,
     Expression<String>? status,
     Expression<bool>? credentialPending,
@@ -6819,7 +6780,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
       if (displayName != null) 'display_name': displayName,
       if (email != null) 'email': email,
       if (phone != null) 'phone': phone,
-      if (role != null) 'role': role,
       if (grants != null) 'grants': grants,
       if (status != null) 'status': status,
       if (credentialPending != null) 'credential_pending': credentialPending,
@@ -6833,7 +6793,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
     Value<String>? displayName,
     Value<String>? email,
     Value<String>? phone,
-    Value<String>? role,
     Value<String>? grants,
     Value<String>? status,
     Value<bool>? credentialPending,
@@ -6845,7 +6804,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
       displayName: displayName ?? this.displayName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
-      role: role ?? this.role,
       grants: grants ?? this.grants,
       status: status ?? this.status,
       credentialPending: credentialPending ?? this.credentialPending,
@@ -6871,9 +6829,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
     if (phone.present) {
       map['phone'] = Variable<String>(phone.value);
     }
-    if (role.present) {
-      map['role'] = Variable<String>(role.value);
-    }
     if (grants.present) {
       map['grants'] = Variable<String>(grants.value);
     }
@@ -6897,7 +6852,6 @@ class WorkforceAccountsCompanion extends UpdateCompanion<WorkforceAccount> {
           ..write('displayName: $displayName, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
-          ..write('role: $role, ')
           ..write('grants: $grants, ')
           ..write('status: $status, ')
           ..write('credentialPending: $credentialPending, ')
@@ -22173,6 +22127,6310 @@ class UserPermissionGrantsCompanion
   }
 }
 
+class $ServiceCustomersTable extends ServiceCustomers
+    with TableInfo<$ServiceCustomersTable, ServiceCustomerRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceCustomersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _customerCodeMeta = const VerificationMeta(
+    'customerCode',
+  );
+  @override
+  late final GeneratedColumn<String> customerCode = GeneratedColumn<String>(
+    'customer_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('individual'),
+  );
+  static const VerificationMeta _mobileMeta = const VerificationMeta('mobile');
+  @override
+  late final GeneratedColumn<String> mobile = GeneratedColumn<String>(
+    'mobile',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _alternateMobileMeta = const VerificationMeta(
+    'alternateMobile',
+  );
+  @override
+  late final GeneratedColumn<String> alternateMobile = GeneratedColumn<String>(
+    'alternate_mobile',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    customerCode,
+    name,
+    kind,
+    mobile,
+    alternateMobile,
+    email,
+    notes,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_customers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceCustomerRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('customer_code')) {
+      context.handle(
+        _customerCodeMeta,
+        customerCode.isAcceptableOrUnknown(
+          data['customer_code']!,
+          _customerCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_customerCodeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    }
+    if (data.containsKey('mobile')) {
+      context.handle(
+        _mobileMeta,
+        mobile.isAcceptableOrUnknown(data['mobile']!, _mobileMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mobileMeta);
+    }
+    if (data.containsKey('alternate_mobile')) {
+      context.handle(
+        _alternateMobileMeta,
+        alternateMobile.isAcceptableOrUnknown(
+          data['alternate_mobile']!,
+          _alternateMobileMeta,
+        ),
+      );
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, customerCode},
+  ];
+  @override
+  ServiceCustomerRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceCustomerRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      customerCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      mobile: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mobile'],
+      )!,
+      alternateMobile: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}alternate_mobile'],
+      ),
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+    );
+  }
+
+  @override
+  $ServiceCustomersTable createAlias(String alias) {
+    return $ServiceCustomersTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceCustomerRow extends DataClass
+    implements Insertable<ServiceCustomerRow> {
+  final String id;
+  final String companyId;
+  final String customerCode;
+  final String name;
+  final String kind;
+  final String mobile;
+  final String? alternateMobile;
+  final String? email;
+  final String? notes;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String syncStatus;
+  final String? requestId;
+  const ServiceCustomerRow({
+    required this.id,
+    required this.companyId,
+    required this.customerCode,
+    required this.name,
+    required this.kind,
+    required this.mobile,
+    this.alternateMobile,
+    this.email,
+    this.notes,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    required this.syncStatus,
+    this.requestId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['customer_code'] = Variable<String>(customerCode);
+    map['name'] = Variable<String>(name);
+    map['kind'] = Variable<String>(kind);
+    map['mobile'] = Variable<String>(mobile);
+    if (!nullToAbsent || alternateMobile != null) {
+      map['alternate_mobile'] = Variable<String>(alternateMobile);
+    }
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    return map;
+  }
+
+  ServiceCustomersCompanion toCompanion(bool nullToAbsent) {
+    return ServiceCustomersCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      customerCode: Value(customerCode),
+      name: Value(name),
+      kind: Value(kind),
+      mobile: Value(mobile),
+      alternateMobile: alternateMobile == null && nullToAbsent
+          ? const Value.absent()
+          : Value(alternateMobile),
+      email: email == null && nullToAbsent
+          ? const Value.absent()
+          : Value(email),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      syncStatus: Value(syncStatus),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+    );
+  }
+
+  factory ServiceCustomerRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceCustomerRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      customerCode: serializer.fromJson<String>(json['customerCode']),
+      name: serializer.fromJson<String>(json['name']),
+      kind: serializer.fromJson<String>(json['kind']),
+      mobile: serializer.fromJson<String>(json['mobile']),
+      alternateMobile: serializer.fromJson<String?>(json['alternateMobile']),
+      email: serializer.fromJson<String?>(json['email']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'customerCode': serializer.toJson<String>(customerCode),
+      'name': serializer.toJson<String>(name),
+      'kind': serializer.toJson<String>(kind),
+      'mobile': serializer.toJson<String>(mobile),
+      'alternateMobile': serializer.toJson<String?>(alternateMobile),
+      'email': serializer.toJson<String?>(email),
+      'notes': serializer.toJson<String?>(notes),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'requestId': serializer.toJson<String?>(requestId),
+    };
+  }
+
+  ServiceCustomerRow copyWith({
+    String? id,
+    String? companyId,
+    String? customerCode,
+    String? name,
+    String? kind,
+    String? mobile,
+    Value<String?> alternateMobile = const Value.absent(),
+    Value<String?> email = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    String? syncStatus,
+    Value<String?> requestId = const Value.absent(),
+  }) => ServiceCustomerRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    customerCode: customerCode ?? this.customerCode,
+    name: name ?? this.name,
+    kind: kind ?? this.kind,
+    mobile: mobile ?? this.mobile,
+    alternateMobile: alternateMobile.present
+        ? alternateMobile.value
+        : this.alternateMobile,
+    email: email.present ? email.value : this.email,
+    notes: notes.present ? notes.value : this.notes,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    syncStatus: syncStatus ?? this.syncStatus,
+    requestId: requestId.present ? requestId.value : this.requestId,
+  );
+  ServiceCustomerRow copyWithCompanion(ServiceCustomersCompanion data) {
+    return ServiceCustomerRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      customerCode: data.customerCode.present
+          ? data.customerCode.value
+          : this.customerCode,
+      name: data.name.present ? data.name.value : this.name,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      mobile: data.mobile.present ? data.mobile.value : this.mobile,
+      alternateMobile: data.alternateMobile.present
+          ? data.alternateMobile.value
+          : this.alternateMobile,
+      email: data.email.present ? data.email.value : this.email,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceCustomerRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('customerCode: $customerCode, ')
+          ..write('name: $name, ')
+          ..write('kind: $kind, ')
+          ..write('mobile: $mobile, ')
+          ..write('alternateMobile: $alternateMobile, ')
+          ..write('email: $email, ')
+          ..write('notes: $notes, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    customerCode,
+    name,
+    kind,
+    mobile,
+    alternateMobile,
+    email,
+    notes,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceCustomerRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.customerCode == this.customerCode &&
+          other.name == this.name &&
+          other.kind == this.kind &&
+          other.mobile == this.mobile &&
+          other.alternateMobile == this.alternateMobile &&
+          other.email == this.email &&
+          other.notes == this.notes &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.syncStatus == this.syncStatus &&
+          other.requestId == this.requestId);
+}
+
+class ServiceCustomersCompanion extends UpdateCompanion<ServiceCustomerRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> customerCode;
+  final Value<String> name;
+  final Value<String> kind;
+  final Value<String> mobile;
+  final Value<String?> alternateMobile;
+  final Value<String?> email;
+  final Value<String?> notes;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String> syncStatus;
+  final Value<String?> requestId;
+  final Value<int> rowid;
+  const ServiceCustomersCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.customerCode = const Value.absent(),
+    this.name = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.mobile = const Value.absent(),
+    this.alternateMobile = const Value.absent(),
+    this.email = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceCustomersCompanion.insert({
+    required String id,
+    required String companyId,
+    required String customerCode,
+    required String name,
+    this.kind = const Value.absent(),
+    required String mobile,
+    this.alternateMobile = const Value.absent(),
+    this.email = const Value.absent(),
+    this.notes = const Value.absent(),
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    required String syncStatus,
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       customerCode = Value(customerCode),
+       name = Value(name),
+       mobile = Value(mobile),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceCustomerRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? customerCode,
+    Expression<String>? name,
+    Expression<String>? kind,
+    Expression<String>? mobile,
+    Expression<String>? alternateMobile,
+    Expression<String>? email,
+    Expression<String>? notes,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? syncStatus,
+    Expression<String>? requestId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (customerCode != null) 'customer_code': customerCode,
+      if (name != null) 'name': name,
+      if (kind != null) 'kind': kind,
+      if (mobile != null) 'mobile': mobile,
+      if (alternateMobile != null) 'alternate_mobile': alternateMobile,
+      if (email != null) 'email': email,
+      if (notes != null) 'notes': notes,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (requestId != null) 'request_id': requestId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceCustomersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? customerCode,
+    Value<String>? name,
+    Value<String>? kind,
+    Value<String>? mobile,
+    Value<String?>? alternateMobile,
+    Value<String?>? email,
+    Value<String?>? notes,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String>? syncStatus,
+    Value<String?>? requestId,
+    Value<int>? rowid,
+  }) {
+    return ServiceCustomersCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      customerCode: customerCode ?? this.customerCode,
+      name: name ?? this.name,
+      kind: kind ?? this.kind,
+      mobile: mobile ?? this.mobile,
+      alternateMobile: alternateMobile ?? this.alternateMobile,
+      email: email ?? this.email,
+      notes: notes ?? this.notes,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      requestId: requestId ?? this.requestId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (customerCode.present) {
+      map['customer_code'] = Variable<String>(customerCode.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (mobile.present) {
+      map['mobile'] = Variable<String>(mobile.value);
+    }
+    if (alternateMobile.present) {
+      map['alternate_mobile'] = Variable<String>(alternateMobile.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceCustomersCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('customerCode: $customerCode, ')
+          ..write('name: $name, ')
+          ..write('kind: $kind, ')
+          ..write('mobile: $mobile, ')
+          ..write('alternateMobile: $alternateMobile, ')
+          ..write('email: $email, ')
+          ..write('notes: $notes, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceSitesTable extends ServiceSites
+    with TableInfo<$ServiceSitesTable, ServiceSiteRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceSitesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _customerIdMeta = const VerificationMeta(
+    'customerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerId = GeneratedColumn<String>(
+    'customer_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _siteCodeMeta = const VerificationMeta(
+    'siteCode',
+  );
+  @override
+  late final GeneratedColumn<String> siteCode = GeneratedColumn<String>(
+    'site_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _siteNameMeta = const VerificationMeta(
+    'siteName',
+  );
+  @override
+  late final GeneratedColumn<String> siteName = GeneratedColumn<String>(
+    'site_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tenantNameMeta = const VerificationMeta(
+    'tenantName',
+  );
+  @override
+  late final GeneratedColumn<String> tenantName = GeneratedColumn<String>(
+    'tenant_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _buildingNameMeta = const VerificationMeta(
+    'buildingName',
+  );
+  @override
+  late final GeneratedColumn<String> buildingName = GeneratedColumn<String>(
+    'building_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _unitNumberMeta = const VerificationMeta(
+    'unitNumber',
+  );
+  @override
+  late final GeneratedColumn<String> unitNumber = GeneratedColumn<String>(
+    'unit_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contactNameMeta = const VerificationMeta(
+    'contactName',
+  );
+  @override
+  late final GeneratedColumn<String> contactName = GeneratedColumn<String>(
+    'contact_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contactMobileMeta = const VerificationMeta(
+    'contactMobile',
+  );
+  @override
+  late final GeneratedColumn<String> contactMobile = GeneratedColumn<String>(
+    'contact_mobile',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contactEmailMeta = const VerificationMeta(
+    'contactEmail',
+  );
+  @override
+  late final GeneratedColumn<String> contactEmail = GeneratedColumn<String>(
+    'contact_email',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _addressLine1Meta = const VerificationMeta(
+    'addressLine1',
+  );
+  @override
+  late final GeneratedColumn<String> addressLine1 = GeneratedColumn<String>(
+    'address_line1',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _addressLine2Meta = const VerificationMeta(
+    'addressLine2',
+  );
+  @override
+  late final GeneratedColumn<String> addressLine2 = GeneratedColumn<String>(
+    'address_line2',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _areaMeta = const VerificationMeta('area');
+  @override
+  late final GeneratedColumn<String> area = GeneratedColumn<String>(
+    'area',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _postalCodeMeta = const VerificationMeta(
+    'postalCode',
+  );
+  @override
+  late final GeneratedColumn<String> postalCode = GeneratedColumn<String>(
+    'postal_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _countryCodeMeta = const VerificationMeta(
+    'countryCode',
+  );
+  @override
+  late final GeneratedColumn<String> countryCode = GeneratedColumn<String>(
+    'country_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    customerId,
+    siteCode,
+    siteName,
+    tenantName,
+    buildingName,
+    unitNumber,
+    contactName,
+    contactMobile,
+    contactEmail,
+    addressLine1,
+    addressLine2,
+    area,
+    city,
+    state,
+    postalCode,
+    countryCode,
+    latitude,
+    longitude,
+    notes,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_sites';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceSiteRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('customer_id')) {
+      context.handle(
+        _customerIdMeta,
+        customerId.isAcceptableOrUnknown(data['customer_id']!, _customerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_customerIdMeta);
+    }
+    if (data.containsKey('site_code')) {
+      context.handle(
+        _siteCodeMeta,
+        siteCode.isAcceptableOrUnknown(data['site_code']!, _siteCodeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteCodeMeta);
+    }
+    if (data.containsKey('site_name')) {
+      context.handle(
+        _siteNameMeta,
+        siteName.isAcceptableOrUnknown(data['site_name']!, _siteNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteNameMeta);
+    }
+    if (data.containsKey('tenant_name')) {
+      context.handle(
+        _tenantNameMeta,
+        tenantName.isAcceptableOrUnknown(data['tenant_name']!, _tenantNameMeta),
+      );
+    }
+    if (data.containsKey('building_name')) {
+      context.handle(
+        _buildingNameMeta,
+        buildingName.isAcceptableOrUnknown(
+          data['building_name']!,
+          _buildingNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unit_number')) {
+      context.handle(
+        _unitNumberMeta,
+        unitNumber.isAcceptableOrUnknown(data['unit_number']!, _unitNumberMeta),
+      );
+    }
+    if (data.containsKey('contact_name')) {
+      context.handle(
+        _contactNameMeta,
+        contactName.isAcceptableOrUnknown(
+          data['contact_name']!,
+          _contactNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('contact_mobile')) {
+      context.handle(
+        _contactMobileMeta,
+        contactMobile.isAcceptableOrUnknown(
+          data['contact_mobile']!,
+          _contactMobileMeta,
+        ),
+      );
+    }
+    if (data.containsKey('contact_email')) {
+      context.handle(
+        _contactEmailMeta,
+        contactEmail.isAcceptableOrUnknown(
+          data['contact_email']!,
+          _contactEmailMeta,
+        ),
+      );
+    }
+    if (data.containsKey('address_line1')) {
+      context.handle(
+        _addressLine1Meta,
+        addressLine1.isAcceptableOrUnknown(
+          data['address_line1']!,
+          _addressLine1Meta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_addressLine1Meta);
+    }
+    if (data.containsKey('address_line2')) {
+      context.handle(
+        _addressLine2Meta,
+        addressLine2.isAcceptableOrUnknown(
+          data['address_line2']!,
+          _addressLine2Meta,
+        ),
+      );
+    }
+    if (data.containsKey('area')) {
+      context.handle(
+        _areaMeta,
+        area.isAcceptableOrUnknown(data['area']!, _areaMeta),
+      );
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cityMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    }
+    if (data.containsKey('postal_code')) {
+      context.handle(
+        _postalCodeMeta,
+        postalCode.isAcceptableOrUnknown(data['postal_code']!, _postalCodeMeta),
+      );
+    }
+    if (data.containsKey('country_code')) {
+      context.handle(
+        _countryCodeMeta,
+        countryCode.isAcceptableOrUnknown(
+          data['country_code']!,
+          _countryCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, siteCode},
+  ];
+  @override
+  ServiceSiteRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceSiteRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      )!,
+      siteCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_code'],
+      )!,
+      siteName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_name'],
+      )!,
+      tenantName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tenant_name'],
+      ),
+      buildingName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}building_name'],
+      ),
+      unitNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit_number'],
+      ),
+      contactName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact_name'],
+      ),
+      contactMobile: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact_mobile'],
+      ),
+      contactEmail: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact_email'],
+      ),
+      addressLine1: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address_line1'],
+      )!,
+      addressLine2: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address_line2'],
+      ),
+      area: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}area'],
+      ),
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      ),
+      postalCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}postal_code'],
+      ),
+      countryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country_code'],
+      ),
+      latitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}latitude'],
+      ),
+      longitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}longitude'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+    );
+  }
+
+  @override
+  $ServiceSitesTable createAlias(String alias) {
+    return $ServiceSitesTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceSiteRow extends DataClass implements Insertable<ServiceSiteRow> {
+  final String id;
+  final String companyId;
+  final String customerId;
+  final String siteCode;
+  final String siteName;
+  final String? tenantName;
+  final String? buildingName;
+  final String? unitNumber;
+  final String? contactName;
+  final String? contactMobile;
+  final String? contactEmail;
+  final String addressLine1;
+  final String? addressLine2;
+  final String? area;
+  final String city;
+  final String? state;
+  final String? postalCode;
+  final String? countryCode;
+  final double? latitude;
+  final double? longitude;
+  final String? notes;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String syncStatus;
+  final String? requestId;
+  const ServiceSiteRow({
+    required this.id,
+    required this.companyId,
+    required this.customerId,
+    required this.siteCode,
+    required this.siteName,
+    this.tenantName,
+    this.buildingName,
+    this.unitNumber,
+    this.contactName,
+    this.contactMobile,
+    this.contactEmail,
+    required this.addressLine1,
+    this.addressLine2,
+    this.area,
+    required this.city,
+    this.state,
+    this.postalCode,
+    this.countryCode,
+    this.latitude,
+    this.longitude,
+    this.notes,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    required this.syncStatus,
+    this.requestId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['customer_id'] = Variable<String>(customerId);
+    map['site_code'] = Variable<String>(siteCode);
+    map['site_name'] = Variable<String>(siteName);
+    if (!nullToAbsent || tenantName != null) {
+      map['tenant_name'] = Variable<String>(tenantName);
+    }
+    if (!nullToAbsent || buildingName != null) {
+      map['building_name'] = Variable<String>(buildingName);
+    }
+    if (!nullToAbsent || unitNumber != null) {
+      map['unit_number'] = Variable<String>(unitNumber);
+    }
+    if (!nullToAbsent || contactName != null) {
+      map['contact_name'] = Variable<String>(contactName);
+    }
+    if (!nullToAbsent || contactMobile != null) {
+      map['contact_mobile'] = Variable<String>(contactMobile);
+    }
+    if (!nullToAbsent || contactEmail != null) {
+      map['contact_email'] = Variable<String>(contactEmail);
+    }
+    map['address_line1'] = Variable<String>(addressLine1);
+    if (!nullToAbsent || addressLine2 != null) {
+      map['address_line2'] = Variable<String>(addressLine2);
+    }
+    if (!nullToAbsent || area != null) {
+      map['area'] = Variable<String>(area);
+    }
+    map['city'] = Variable<String>(city);
+    if (!nullToAbsent || state != null) {
+      map['state'] = Variable<String>(state);
+    }
+    if (!nullToAbsent || postalCode != null) {
+      map['postal_code'] = Variable<String>(postalCode);
+    }
+    if (!nullToAbsent || countryCode != null) {
+      map['country_code'] = Variable<String>(countryCode);
+    }
+    if (!nullToAbsent || latitude != null) {
+      map['latitude'] = Variable<double>(latitude);
+    }
+    if (!nullToAbsent || longitude != null) {
+      map['longitude'] = Variable<double>(longitude);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    return map;
+  }
+
+  ServiceSitesCompanion toCompanion(bool nullToAbsent) {
+    return ServiceSitesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      customerId: Value(customerId),
+      siteCode: Value(siteCode),
+      siteName: Value(siteName),
+      tenantName: tenantName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tenantName),
+      buildingName: buildingName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(buildingName),
+      unitNumber: unitNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unitNumber),
+      contactName: contactName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contactName),
+      contactMobile: contactMobile == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contactMobile),
+      contactEmail: contactEmail == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contactEmail),
+      addressLine1: Value(addressLine1),
+      addressLine2: addressLine2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(addressLine2),
+      area: area == null && nullToAbsent ? const Value.absent() : Value(area),
+      city: Value(city),
+      state: state == null && nullToAbsent
+          ? const Value.absent()
+          : Value(state),
+      postalCode: postalCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(postalCode),
+      countryCode: countryCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(countryCode),
+      latitude: latitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latitude),
+      longitude: longitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(longitude),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      syncStatus: Value(syncStatus),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+    );
+  }
+
+  factory ServiceSiteRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceSiteRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      customerId: serializer.fromJson<String>(json['customerId']),
+      siteCode: serializer.fromJson<String>(json['siteCode']),
+      siteName: serializer.fromJson<String>(json['siteName']),
+      tenantName: serializer.fromJson<String?>(json['tenantName']),
+      buildingName: serializer.fromJson<String?>(json['buildingName']),
+      unitNumber: serializer.fromJson<String?>(json['unitNumber']),
+      contactName: serializer.fromJson<String?>(json['contactName']),
+      contactMobile: serializer.fromJson<String?>(json['contactMobile']),
+      contactEmail: serializer.fromJson<String?>(json['contactEmail']),
+      addressLine1: serializer.fromJson<String>(json['addressLine1']),
+      addressLine2: serializer.fromJson<String?>(json['addressLine2']),
+      area: serializer.fromJson<String?>(json['area']),
+      city: serializer.fromJson<String>(json['city']),
+      state: serializer.fromJson<String?>(json['state']),
+      postalCode: serializer.fromJson<String?>(json['postalCode']),
+      countryCode: serializer.fromJson<String?>(json['countryCode']),
+      latitude: serializer.fromJson<double?>(json['latitude']),
+      longitude: serializer.fromJson<double?>(json['longitude']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'customerId': serializer.toJson<String>(customerId),
+      'siteCode': serializer.toJson<String>(siteCode),
+      'siteName': serializer.toJson<String>(siteName),
+      'tenantName': serializer.toJson<String?>(tenantName),
+      'buildingName': serializer.toJson<String?>(buildingName),
+      'unitNumber': serializer.toJson<String?>(unitNumber),
+      'contactName': serializer.toJson<String?>(contactName),
+      'contactMobile': serializer.toJson<String?>(contactMobile),
+      'contactEmail': serializer.toJson<String?>(contactEmail),
+      'addressLine1': serializer.toJson<String>(addressLine1),
+      'addressLine2': serializer.toJson<String?>(addressLine2),
+      'area': serializer.toJson<String?>(area),
+      'city': serializer.toJson<String>(city),
+      'state': serializer.toJson<String?>(state),
+      'postalCode': serializer.toJson<String?>(postalCode),
+      'countryCode': serializer.toJson<String?>(countryCode),
+      'latitude': serializer.toJson<double?>(latitude),
+      'longitude': serializer.toJson<double?>(longitude),
+      'notes': serializer.toJson<String?>(notes),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'requestId': serializer.toJson<String?>(requestId),
+    };
+  }
+
+  ServiceSiteRow copyWith({
+    String? id,
+    String? companyId,
+    String? customerId,
+    String? siteCode,
+    String? siteName,
+    Value<String?> tenantName = const Value.absent(),
+    Value<String?> buildingName = const Value.absent(),
+    Value<String?> unitNumber = const Value.absent(),
+    Value<String?> contactName = const Value.absent(),
+    Value<String?> contactMobile = const Value.absent(),
+    Value<String?> contactEmail = const Value.absent(),
+    String? addressLine1,
+    Value<String?> addressLine2 = const Value.absent(),
+    Value<String?> area = const Value.absent(),
+    String? city,
+    Value<String?> state = const Value.absent(),
+    Value<String?> postalCode = const Value.absent(),
+    Value<String?> countryCode = const Value.absent(),
+    Value<double?> latitude = const Value.absent(),
+    Value<double?> longitude = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    String? syncStatus,
+    Value<String?> requestId = const Value.absent(),
+  }) => ServiceSiteRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    customerId: customerId ?? this.customerId,
+    siteCode: siteCode ?? this.siteCode,
+    siteName: siteName ?? this.siteName,
+    tenantName: tenantName.present ? tenantName.value : this.tenantName,
+    buildingName: buildingName.present ? buildingName.value : this.buildingName,
+    unitNumber: unitNumber.present ? unitNumber.value : this.unitNumber,
+    contactName: contactName.present ? contactName.value : this.contactName,
+    contactMobile: contactMobile.present
+        ? contactMobile.value
+        : this.contactMobile,
+    contactEmail: contactEmail.present ? contactEmail.value : this.contactEmail,
+    addressLine1: addressLine1 ?? this.addressLine1,
+    addressLine2: addressLine2.present ? addressLine2.value : this.addressLine2,
+    area: area.present ? area.value : this.area,
+    city: city ?? this.city,
+    state: state.present ? state.value : this.state,
+    postalCode: postalCode.present ? postalCode.value : this.postalCode,
+    countryCode: countryCode.present ? countryCode.value : this.countryCode,
+    latitude: latitude.present ? latitude.value : this.latitude,
+    longitude: longitude.present ? longitude.value : this.longitude,
+    notes: notes.present ? notes.value : this.notes,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    syncStatus: syncStatus ?? this.syncStatus,
+    requestId: requestId.present ? requestId.value : this.requestId,
+  );
+  ServiceSiteRow copyWithCompanion(ServiceSitesCompanion data) {
+    return ServiceSiteRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
+      siteCode: data.siteCode.present ? data.siteCode.value : this.siteCode,
+      siteName: data.siteName.present ? data.siteName.value : this.siteName,
+      tenantName: data.tenantName.present
+          ? data.tenantName.value
+          : this.tenantName,
+      buildingName: data.buildingName.present
+          ? data.buildingName.value
+          : this.buildingName,
+      unitNumber: data.unitNumber.present
+          ? data.unitNumber.value
+          : this.unitNumber,
+      contactName: data.contactName.present
+          ? data.contactName.value
+          : this.contactName,
+      contactMobile: data.contactMobile.present
+          ? data.contactMobile.value
+          : this.contactMobile,
+      contactEmail: data.contactEmail.present
+          ? data.contactEmail.value
+          : this.contactEmail,
+      addressLine1: data.addressLine1.present
+          ? data.addressLine1.value
+          : this.addressLine1,
+      addressLine2: data.addressLine2.present
+          ? data.addressLine2.value
+          : this.addressLine2,
+      area: data.area.present ? data.area.value : this.area,
+      city: data.city.present ? data.city.value : this.city,
+      state: data.state.present ? data.state.value : this.state,
+      postalCode: data.postalCode.present
+          ? data.postalCode.value
+          : this.postalCode,
+      countryCode: data.countryCode.present
+          ? data.countryCode.value
+          : this.countryCode,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceSiteRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('customerId: $customerId, ')
+          ..write('siteCode: $siteCode, ')
+          ..write('siteName: $siteName, ')
+          ..write('tenantName: $tenantName, ')
+          ..write('buildingName: $buildingName, ')
+          ..write('unitNumber: $unitNumber, ')
+          ..write('contactName: $contactName, ')
+          ..write('contactMobile: $contactMobile, ')
+          ..write('contactEmail: $contactEmail, ')
+          ..write('addressLine1: $addressLine1, ')
+          ..write('addressLine2: $addressLine2, ')
+          ..write('area: $area, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('notes: $notes, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    companyId,
+    customerId,
+    siteCode,
+    siteName,
+    tenantName,
+    buildingName,
+    unitNumber,
+    contactName,
+    contactMobile,
+    contactEmail,
+    addressLine1,
+    addressLine2,
+    area,
+    city,
+    state,
+    postalCode,
+    countryCode,
+    latitude,
+    longitude,
+    notes,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceSiteRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.customerId == this.customerId &&
+          other.siteCode == this.siteCode &&
+          other.siteName == this.siteName &&
+          other.tenantName == this.tenantName &&
+          other.buildingName == this.buildingName &&
+          other.unitNumber == this.unitNumber &&
+          other.contactName == this.contactName &&
+          other.contactMobile == this.contactMobile &&
+          other.contactEmail == this.contactEmail &&
+          other.addressLine1 == this.addressLine1 &&
+          other.addressLine2 == this.addressLine2 &&
+          other.area == this.area &&
+          other.city == this.city &&
+          other.state == this.state &&
+          other.postalCode == this.postalCode &&
+          other.countryCode == this.countryCode &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.notes == this.notes &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.syncStatus == this.syncStatus &&
+          other.requestId == this.requestId);
+}
+
+class ServiceSitesCompanion extends UpdateCompanion<ServiceSiteRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> customerId;
+  final Value<String> siteCode;
+  final Value<String> siteName;
+  final Value<String?> tenantName;
+  final Value<String?> buildingName;
+  final Value<String?> unitNumber;
+  final Value<String?> contactName;
+  final Value<String?> contactMobile;
+  final Value<String?> contactEmail;
+  final Value<String> addressLine1;
+  final Value<String?> addressLine2;
+  final Value<String?> area;
+  final Value<String> city;
+  final Value<String?> state;
+  final Value<String?> postalCode;
+  final Value<String?> countryCode;
+  final Value<double?> latitude;
+  final Value<double?> longitude;
+  final Value<String?> notes;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String> syncStatus;
+  final Value<String?> requestId;
+  final Value<int> rowid;
+  const ServiceSitesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.siteCode = const Value.absent(),
+    this.siteName = const Value.absent(),
+    this.tenantName = const Value.absent(),
+    this.buildingName = const Value.absent(),
+    this.unitNumber = const Value.absent(),
+    this.contactName = const Value.absent(),
+    this.contactMobile = const Value.absent(),
+    this.contactEmail = const Value.absent(),
+    this.addressLine1 = const Value.absent(),
+    this.addressLine2 = const Value.absent(),
+    this.area = const Value.absent(),
+    this.city = const Value.absent(),
+    this.state = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceSitesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String customerId,
+    required String siteCode,
+    required String siteName,
+    this.tenantName = const Value.absent(),
+    this.buildingName = const Value.absent(),
+    this.unitNumber = const Value.absent(),
+    this.contactName = const Value.absent(),
+    this.contactMobile = const Value.absent(),
+    this.contactEmail = const Value.absent(),
+    required String addressLine1,
+    this.addressLine2 = const Value.absent(),
+    this.area = const Value.absent(),
+    required String city,
+    this.state = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    this.countryCode = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.notes = const Value.absent(),
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    required String syncStatus,
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       customerId = Value(customerId),
+       siteCode = Value(siteCode),
+       siteName = Value(siteName),
+       addressLine1 = Value(addressLine1),
+       city = Value(city),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceSiteRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? customerId,
+    Expression<String>? siteCode,
+    Expression<String>? siteName,
+    Expression<String>? tenantName,
+    Expression<String>? buildingName,
+    Expression<String>? unitNumber,
+    Expression<String>? contactName,
+    Expression<String>? contactMobile,
+    Expression<String>? contactEmail,
+    Expression<String>? addressLine1,
+    Expression<String>? addressLine2,
+    Expression<String>? area,
+    Expression<String>? city,
+    Expression<String>? state,
+    Expression<String>? postalCode,
+    Expression<String>? countryCode,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<String>? notes,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? syncStatus,
+    Expression<String>? requestId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (customerId != null) 'customer_id': customerId,
+      if (siteCode != null) 'site_code': siteCode,
+      if (siteName != null) 'site_name': siteName,
+      if (tenantName != null) 'tenant_name': tenantName,
+      if (buildingName != null) 'building_name': buildingName,
+      if (unitNumber != null) 'unit_number': unitNumber,
+      if (contactName != null) 'contact_name': contactName,
+      if (contactMobile != null) 'contact_mobile': contactMobile,
+      if (contactEmail != null) 'contact_email': contactEmail,
+      if (addressLine1 != null) 'address_line1': addressLine1,
+      if (addressLine2 != null) 'address_line2': addressLine2,
+      if (area != null) 'area': area,
+      if (city != null) 'city': city,
+      if (state != null) 'state': state,
+      if (postalCode != null) 'postal_code': postalCode,
+      if (countryCode != null) 'country_code': countryCode,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (notes != null) 'notes': notes,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (requestId != null) 'request_id': requestId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceSitesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? customerId,
+    Value<String>? siteCode,
+    Value<String>? siteName,
+    Value<String?>? tenantName,
+    Value<String?>? buildingName,
+    Value<String?>? unitNumber,
+    Value<String?>? contactName,
+    Value<String?>? contactMobile,
+    Value<String?>? contactEmail,
+    Value<String>? addressLine1,
+    Value<String?>? addressLine2,
+    Value<String?>? area,
+    Value<String>? city,
+    Value<String?>? state,
+    Value<String?>? postalCode,
+    Value<String?>? countryCode,
+    Value<double?>? latitude,
+    Value<double?>? longitude,
+    Value<String?>? notes,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String>? syncStatus,
+    Value<String?>? requestId,
+    Value<int>? rowid,
+  }) {
+    return ServiceSitesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      customerId: customerId ?? this.customerId,
+      siteCode: siteCode ?? this.siteCode,
+      siteName: siteName ?? this.siteName,
+      tenantName: tenantName ?? this.tenantName,
+      buildingName: buildingName ?? this.buildingName,
+      unitNumber: unitNumber ?? this.unitNumber,
+      contactName: contactName ?? this.contactName,
+      contactMobile: contactMobile ?? this.contactMobile,
+      contactEmail: contactEmail ?? this.contactEmail,
+      addressLine1: addressLine1 ?? this.addressLine1,
+      addressLine2: addressLine2 ?? this.addressLine2,
+      area: area ?? this.area,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      postalCode: postalCode ?? this.postalCode,
+      countryCode: countryCode ?? this.countryCode,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      notes: notes ?? this.notes,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      requestId: requestId ?? this.requestId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (siteCode.present) {
+      map['site_code'] = Variable<String>(siteCode.value);
+    }
+    if (siteName.present) {
+      map['site_name'] = Variable<String>(siteName.value);
+    }
+    if (tenantName.present) {
+      map['tenant_name'] = Variable<String>(tenantName.value);
+    }
+    if (buildingName.present) {
+      map['building_name'] = Variable<String>(buildingName.value);
+    }
+    if (unitNumber.present) {
+      map['unit_number'] = Variable<String>(unitNumber.value);
+    }
+    if (contactName.present) {
+      map['contact_name'] = Variable<String>(contactName.value);
+    }
+    if (contactMobile.present) {
+      map['contact_mobile'] = Variable<String>(contactMobile.value);
+    }
+    if (contactEmail.present) {
+      map['contact_email'] = Variable<String>(contactEmail.value);
+    }
+    if (addressLine1.present) {
+      map['address_line1'] = Variable<String>(addressLine1.value);
+    }
+    if (addressLine2.present) {
+      map['address_line2'] = Variable<String>(addressLine2.value);
+    }
+    if (area.present) {
+      map['area'] = Variable<String>(area.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (postalCode.present) {
+      map['postal_code'] = Variable<String>(postalCode.value);
+    }
+    if (countryCode.present) {
+      map['country_code'] = Variable<String>(countryCode.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceSitesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('customerId: $customerId, ')
+          ..write('siteCode: $siteCode, ')
+          ..write('siteName: $siteName, ')
+          ..write('tenantName: $tenantName, ')
+          ..write('buildingName: $buildingName, ')
+          ..write('unitNumber: $unitNumber, ')
+          ..write('contactName: $contactName, ')
+          ..write('contactMobile: $contactMobile, ')
+          ..write('contactEmail: $contactEmail, ')
+          ..write('addressLine1: $addressLine1, ')
+          ..write('addressLine2: $addressLine2, ')
+          ..write('area: $area, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('countryCode: $countryCode, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('notes: $notes, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceTeamsTable extends ServiceTeams
+    with TableInfo<$ServiceTeamsTable, ServiceTeamRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceTeamsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamCodeMeta = const VerificationMeta(
+    'teamCode',
+  );
+  @override
+  late final GeneratedColumn<String> teamCode = GeneratedColumn<String>(
+    'team_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _leadEmployeeIdMeta = const VerificationMeta(
+    'leadEmployeeId',
+  );
+  @override
+  late final GeneratedColumn<String> leadEmployeeId = GeneratedColumn<String>(
+    'lead_employee_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedByUserIdMeta = const VerificationMeta(
+    'updatedByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> updatedByUserId = GeneratedColumn<String>(
+    'updated_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    teamCode,
+    name,
+    description,
+    leadEmployeeId,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_teams';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceTeamRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('team_code')) {
+      context.handle(
+        _teamCodeMeta,
+        teamCode.isAcceptableOrUnknown(data['team_code']!, _teamCodeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamCodeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('lead_employee_id')) {
+      context.handle(
+        _leadEmployeeIdMeta,
+        leadEmployeeId.isAcceptableOrUnknown(
+          data['lead_employee_id']!,
+          _leadEmployeeIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    if (data.containsKey('updated_by_user_id')) {
+      context.handle(
+        _updatedByUserIdMeta,
+        updatedByUserId.isAcceptableOrUnknown(
+          data['updated_by_user_id']!,
+          _updatedByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedByUserIdMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, teamCode},
+  ];
+  @override
+  ServiceTeamRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceTeamRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      teamCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}team_code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      leadEmployeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lead_employee_id'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+      updatedByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_by_user_id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      ),
+    );
+  }
+
+  @override
+  $ServiceTeamsTable createAlias(String alias) {
+    return $ServiceTeamsTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceTeamRow extends DataClass implements Insertable<ServiceTeamRow> {
+  final String id;
+  final String companyId;
+  final String teamCode;
+  final String name;
+  final String? description;
+  final String? leadEmployeeId;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String createdByUserId;
+  final String updatedByUserId;
+  final String syncStatus;
+  final String? requestId;
+  const ServiceTeamRow({
+    required this.id,
+    required this.companyId,
+    required this.teamCode,
+    required this.name,
+    this.description,
+    this.leadEmployeeId,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdByUserId,
+    required this.updatedByUserId,
+    required this.syncStatus,
+    this.requestId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['team_code'] = Variable<String>(teamCode);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || leadEmployeeId != null) {
+      map['lead_employee_id'] = Variable<String>(leadEmployeeId);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    map['updated_by_user_id'] = Variable<String>(updatedByUserId);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || requestId != null) {
+      map['request_id'] = Variable<String>(requestId);
+    }
+    return map;
+  }
+
+  ServiceTeamsCompanion toCompanion(bool nullToAbsent) {
+    return ServiceTeamsCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      teamCode: Value(teamCode),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      leadEmployeeId: leadEmployeeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(leadEmployeeId),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      createdByUserId: Value(createdByUserId),
+      updatedByUserId: Value(updatedByUserId),
+      syncStatus: Value(syncStatus),
+      requestId: requestId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestId),
+    );
+  }
+
+  factory ServiceTeamRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceTeamRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      teamCode: serializer.fromJson<String>(json['teamCode']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      leadEmployeeId: serializer.fromJson<String?>(json['leadEmployeeId']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+      updatedByUserId: serializer.fromJson<String>(json['updatedByUserId']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      requestId: serializer.fromJson<String?>(json['requestId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'teamCode': serializer.toJson<String>(teamCode),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'leadEmployeeId': serializer.toJson<String?>(leadEmployeeId),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+      'updatedByUserId': serializer.toJson<String>(updatedByUserId),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'requestId': serializer.toJson<String?>(requestId),
+    };
+  }
+
+  ServiceTeamRow copyWith({
+    String? id,
+    String? companyId,
+    String? teamCode,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    Value<String?> leadEmployeeId = const Value.absent(),
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdByUserId,
+    String? updatedByUserId,
+    String? syncStatus,
+    Value<String?> requestId = const Value.absent(),
+  }) => ServiceTeamRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    teamCode: teamCode ?? this.teamCode,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    leadEmployeeId: leadEmployeeId.present
+        ? leadEmployeeId.value
+        : this.leadEmployeeId,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+    updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+    syncStatus: syncStatus ?? this.syncStatus,
+    requestId: requestId.present ? requestId.value : this.requestId,
+  );
+  ServiceTeamRow copyWithCompanion(ServiceTeamsCompanion data) {
+    return ServiceTeamRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      teamCode: data.teamCode.present ? data.teamCode.value : this.teamCode,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      leadEmployeeId: data.leadEmployeeId.present
+          ? data.leadEmployeeId.value
+          : this.leadEmployeeId,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+      updatedByUserId: data.updatedByUserId.present
+          ? data.updatedByUserId.value
+          : this.updatedByUserId,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTeamRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('teamCode: $teamCode, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('leadEmployeeId: $leadEmployeeId, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    teamCode,
+    name,
+    description,
+    leadEmployeeId,
+    status,
+    createdAt,
+    updatedAt,
+    createdByUserId,
+    updatedByUserId,
+    syncStatus,
+    requestId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceTeamRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.teamCode == this.teamCode &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.leadEmployeeId == this.leadEmployeeId &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.createdByUserId == this.createdByUserId &&
+          other.updatedByUserId == this.updatedByUserId &&
+          other.syncStatus == this.syncStatus &&
+          other.requestId == this.requestId);
+}
+
+class ServiceTeamsCompanion extends UpdateCompanion<ServiceTeamRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> teamCode;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String?> leadEmployeeId;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> createdByUserId;
+  final Value<String> updatedByUserId;
+  final Value<String> syncStatus;
+  final Value<String?> requestId;
+  final Value<int> rowid;
+  const ServiceTeamsCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.teamCode = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.leadEmployeeId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.updatedByUserId = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceTeamsCompanion.insert({
+    required String id,
+    required String companyId,
+    required String teamCode,
+    required String name,
+    this.description = const Value.absent(),
+    this.leadEmployeeId = const Value.absent(),
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String createdByUserId,
+    required String updatedByUserId,
+    required String syncStatus,
+    this.requestId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       teamCode = Value(teamCode),
+       name = Value(name),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       createdByUserId = Value(createdByUserId),
+       updatedByUserId = Value(updatedByUserId),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceTeamRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? teamCode,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? leadEmployeeId,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? createdByUserId,
+    Expression<String>? updatedByUserId,
+    Expression<String>? syncStatus,
+    Expression<String>? requestId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (teamCode != null) 'team_code': teamCode,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (leadEmployeeId != null) 'lead_employee_id': leadEmployeeId,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (updatedByUserId != null) 'updated_by_user_id': updatedByUserId,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (requestId != null) 'request_id': requestId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceTeamsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? teamCode,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String?>? leadEmployeeId,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? createdByUserId,
+    Value<String>? updatedByUserId,
+    Value<String>? syncStatus,
+    Value<String?>? requestId,
+    Value<int>? rowid,
+  }) {
+    return ServiceTeamsCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      teamCode: teamCode ?? this.teamCode,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      leadEmployeeId: leadEmployeeId ?? this.leadEmployeeId,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      updatedByUserId: updatedByUserId ?? this.updatedByUserId,
+      syncStatus: syncStatus ?? this.syncStatus,
+      requestId: requestId ?? this.requestId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (teamCode.present) {
+      map['team_code'] = Variable<String>(teamCode.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (leadEmployeeId.present) {
+      map['lead_employee_id'] = Variable<String>(leadEmployeeId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (updatedByUserId.present) {
+      map['updated_by_user_id'] = Variable<String>(updatedByUserId.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTeamsCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('teamCode: $teamCode, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('leadEmployeeId: $leadEmployeeId, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('updatedByUserId: $updatedByUserId, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('requestId: $requestId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceTeamMembersTable extends ServiceTeamMembers
+    with TableInfo<$ServiceTeamMembersTable, ServiceTeamMemberRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceTeamMembersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  @override
+  late final GeneratedColumn<String> teamId = GeneratedColumn<String>(
+    'team_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _employeeIdMeta = const VerificationMeta(
+    'employeeId',
+  );
+  @override
+  late final GeneratedColumn<String> employeeId = GeneratedColumn<String>(
+    'employee_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdByUserIdMeta = const VerificationMeta(
+    'createdByUserId',
+  );
+  @override
+  late final GeneratedColumn<String> createdByUserId = GeneratedColumn<String>(
+    'created_by_user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    teamId,
+    employeeId,
+    status,
+    createdAt,
+    createdByUserId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_team_members';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceTeamMemberRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('team_id')) {
+      context.handle(
+        _teamIdMeta,
+        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamIdMeta);
+    }
+    if (data.containsKey('employee_id')) {
+      context.handle(
+        _employeeIdMeta,
+        employeeId.isAcceptableOrUnknown(data['employee_id']!, _employeeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_employeeIdMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('created_by_user_id')) {
+      context.handle(
+        _createdByUserIdMeta,
+        createdByUserId.isAcceptableOrUnknown(
+          data['created_by_user_id']!,
+          _createdByUserIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_createdByUserIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, teamId, employeeId},
+  ];
+  @override
+  ServiceTeamMemberRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceTeamMemberRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      teamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}team_id'],
+      )!,
+      employeeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}employee_id'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      createdByUserId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_user_id'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceTeamMembersTable createAlias(String alias) {
+    return $ServiceTeamMembersTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceTeamMemberRow extends DataClass
+    implements Insertable<ServiceTeamMemberRow> {
+  final String id;
+  final String companyId;
+  final String teamId;
+  final String employeeId;
+  final String status;
+  final DateTime createdAt;
+  final String createdByUserId;
+  const ServiceTeamMemberRow({
+    required this.id,
+    required this.companyId,
+    required this.teamId,
+    required this.employeeId,
+    required this.status,
+    required this.createdAt,
+    required this.createdByUserId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['team_id'] = Variable<String>(teamId);
+    map['employee_id'] = Variable<String>(employeeId);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_by_user_id'] = Variable<String>(createdByUserId);
+    return map;
+  }
+
+  ServiceTeamMembersCompanion toCompanion(bool nullToAbsent) {
+    return ServiceTeamMembersCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      teamId: Value(teamId),
+      employeeId: Value(employeeId),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      createdByUserId: Value(createdByUserId),
+    );
+  }
+
+  factory ServiceTeamMemberRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceTeamMemberRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      teamId: serializer.fromJson<String>(json['teamId']),
+      employeeId: serializer.fromJson<String>(json['employeeId']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      createdByUserId: serializer.fromJson<String>(json['createdByUserId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'teamId': serializer.toJson<String>(teamId),
+      'employeeId': serializer.toJson<String>(employeeId),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'createdByUserId': serializer.toJson<String>(createdByUserId),
+    };
+  }
+
+  ServiceTeamMemberRow copyWith({
+    String? id,
+    String? companyId,
+    String? teamId,
+    String? employeeId,
+    String? status,
+    DateTime? createdAt,
+    String? createdByUserId,
+  }) => ServiceTeamMemberRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    teamId: teamId ?? this.teamId,
+    employeeId: employeeId ?? this.employeeId,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    createdByUserId: createdByUserId ?? this.createdByUserId,
+  );
+  ServiceTeamMemberRow copyWithCompanion(ServiceTeamMembersCompanion data) {
+    return ServiceTeamMemberRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      teamId: data.teamId.present ? data.teamId.value : this.teamId,
+      employeeId: data.employeeId.present
+          ? data.employeeId.value
+          : this.employeeId,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      createdByUserId: data.createdByUserId.present
+          ? data.createdByUserId.value
+          : this.createdByUserId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTeamMemberRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('teamId: $teamId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('createdByUserId: $createdByUserId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    teamId,
+    employeeId,
+    status,
+    createdAt,
+    createdByUserId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceTeamMemberRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.teamId == this.teamId &&
+          other.employeeId == this.employeeId &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.createdByUserId == this.createdByUserId);
+}
+
+class ServiceTeamMembersCompanion
+    extends UpdateCompanion<ServiceTeamMemberRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> teamId;
+  final Value<String> employeeId;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<String> createdByUserId;
+  final Value<int> rowid;
+  const ServiceTeamMembersCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.teamId = const Value.absent(),
+    this.employeeId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.createdByUserId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceTeamMembersCompanion.insert({
+    required String id,
+    required String companyId,
+    required String teamId,
+    required String employeeId,
+    required String status,
+    required DateTime createdAt,
+    required String createdByUserId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       teamId = Value(teamId),
+       employeeId = Value(employeeId),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       createdByUserId = Value(createdByUserId);
+  static Insertable<ServiceTeamMemberRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? teamId,
+    Expression<String>? employeeId,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<String>? createdByUserId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (teamId != null) 'team_id': teamId,
+      if (employeeId != null) 'employee_id': employeeId,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (createdByUserId != null) 'created_by_user_id': createdByUserId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceTeamMembersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? teamId,
+    Value<String>? employeeId,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<String>? createdByUserId,
+    Value<int>? rowid,
+  }) {
+    return ServiceTeamMembersCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      teamId: teamId ?? this.teamId,
+      employeeId: employeeId ?? this.employeeId,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      createdByUserId: createdByUserId ?? this.createdByUserId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (teamId.present) {
+      map['team_id'] = Variable<String>(teamId.value);
+    }
+    if (employeeId.present) {
+      map['employee_id'] = Variable<String>(employeeId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (createdByUserId.present) {
+      map['created_by_user_id'] = Variable<String>(createdByUserId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTeamMembersCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('teamId: $teamId, ')
+          ..write('employeeId: $employeeId, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('createdByUserId: $createdByUserId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceTypesTable extends ServiceTypes
+    with TableInfo<$ServiceTypesTable, ServiceTypeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceTypesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_types';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceTypeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  ServiceTypeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceTypeRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceTypesTable createAlias(String alias) {
+    return $ServiceTypesTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceTypeRow extends DataClass implements Insertable<ServiceTypeRow> {
+  final String id;
+  final String companyId;
+  final String code;
+  final String name;
+  final String? description;
+  final String status;
+  final int sortOrder;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  const ServiceTypeRow({
+    required this.id,
+    required this.companyId,
+    required this.code,
+    required this.name,
+    this.description,
+    required this.status,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['status'] = Variable<String>(status);
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceTypesCompanion toCompanion(bool nullToAbsent) {
+    return ServiceTypesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      code: Value(code),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      status: Value(status),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceTypeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceTypeRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'status': serializer.toJson<String>(status),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceTypeRow copyWith({
+    String? id,
+    String? companyId,
+    String? code,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    String? status,
+    int? sortOrder,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+  }) => ServiceTypeRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    code: code ?? this.code,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    status: status ?? this.status,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceTypeRow copyWithCompanion(ServiceTypesCompanion data) {
+    return ServiceTypeRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      code: data.code.present ? data.code.value : this.code,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTypeRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceTypeRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceTypesCompanion extends UpdateCompanion<ServiceTypeRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> code;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String> status;
+  final Value<int> sortOrder;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceTypesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceTypesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String code,
+    required String name,
+    this.description = const Value.absent(),
+    required String status,
+    this.sortOrder = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       code = Value(code),
+       name = Value(name),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceTypeRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<int>? sortOrder,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceTypesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? code,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String>? status,
+    Value<int>? sortOrder,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceTypesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTypesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ComplaintTypesTable extends ComplaintTypes
+    with TableInfo<$ComplaintTypesTable, ComplaintTypeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ComplaintTypesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serviceTypeIdMeta = const VerificationMeta(
+    'serviceTypeId',
+  );
+  @override
+  late final GeneratedColumn<String> serviceTypeId = GeneratedColumn<String>(
+    'service_type_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    serviceTypeId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'complaint_types';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ComplaintTypeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('service_type_id')) {
+      context.handle(
+        _serviceTypeIdMeta,
+        serviceTypeId.isAcceptableOrUnknown(
+          data['service_type_id']!,
+          _serviceTypeIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  ComplaintTypeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ComplaintTypeRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      serviceTypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}service_type_id'],
+      ),
+    );
+  }
+
+  @override
+  $ComplaintTypesTable createAlias(String alias) {
+    return $ComplaintTypesTable(attachedDatabase, alias);
+  }
+}
+
+class ComplaintTypeRow extends DataClass
+    implements Insertable<ComplaintTypeRow> {
+  final String id;
+  final String companyId;
+  final String code;
+  final String name;
+  final String? description;
+  final String status;
+  final int sortOrder;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  final String? serviceTypeId;
+  const ComplaintTypeRow({
+    required this.id,
+    required this.companyId,
+    required this.code,
+    required this.name,
+    this.description,
+    required this.status,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+    this.serviceTypeId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['status'] = Variable<String>(status);
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || serviceTypeId != null) {
+      map['service_type_id'] = Variable<String>(serviceTypeId);
+    }
+    return map;
+  }
+
+  ComplaintTypesCompanion toCompanion(bool nullToAbsent) {
+    return ComplaintTypesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      code: Value(code),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      status: Value(status),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+      serviceTypeId: serviceTypeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serviceTypeId),
+    );
+  }
+
+  factory ComplaintTypeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ComplaintTypeRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      serviceTypeId: serializer.fromJson<String?>(json['serviceTypeId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'status': serializer.toJson<String>(status),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'serviceTypeId': serializer.toJson<String?>(serviceTypeId),
+    };
+  }
+
+  ComplaintTypeRow copyWith({
+    String? id,
+    String? companyId,
+    String? code,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    String? status,
+    int? sortOrder,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+    Value<String?> serviceTypeId = const Value.absent(),
+  }) => ComplaintTypeRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    code: code ?? this.code,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    status: status ?? this.status,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    serviceTypeId: serviceTypeId.present
+        ? serviceTypeId.value
+        : this.serviceTypeId,
+  );
+  ComplaintTypeRow copyWithCompanion(ComplaintTypesCompanion data) {
+    return ComplaintTypeRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      code: data.code.present ? data.code.value : this.code,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      serviceTypeId: data.serviceTypeId.present
+          ? data.serviceTypeId.value
+          : this.serviceTypeId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ComplaintTypeRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('serviceTypeId: $serviceTypeId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    serviceTypeId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ComplaintTypeRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.serviceTypeId == this.serviceTypeId);
+}
+
+class ComplaintTypesCompanion extends UpdateCompanion<ComplaintTypeRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> code;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String> status;
+  final Value<int> sortOrder;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<String?> serviceTypeId;
+  final Value<int> rowid;
+  const ComplaintTypesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.serviceTypeId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ComplaintTypesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String code,
+    required String name,
+    this.description = const Value.absent(),
+    required String status,
+    this.sortOrder = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.serviceTypeId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       code = Value(code),
+       name = Value(name),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ComplaintTypeRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<int>? sortOrder,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? serviceTypeId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (serviceTypeId != null) 'service_type_id': serviceTypeId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ComplaintTypesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? code,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String>? status,
+    Value<int>? sortOrder,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<String?>? serviceTypeId,
+    Value<int>? rowid,
+  }) {
+    return ComplaintTypesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      serviceTypeId: serviceTypeId ?? this.serviceTypeId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (serviceTypeId.present) {
+      map['service_type_id'] = Variable<String>(serviceTypeId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ComplaintTypesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('serviceTypeId: $serviceTypeId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServicePrioritiesTable extends ServicePriorities
+    with TableInfo<$ServicePrioritiesTable, ServicePriorityRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServicePrioritiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rankMeta = const VerificationMeta('rank');
+  @override
+  late final GeneratedColumn<int> rank = GeneratedColumn<int>(
+    'rank',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _isDefaultMeta = const VerificationMeta(
+    'isDefault',
+  );
+  @override
+  late final GeneratedColumn<bool> isDefault = GeneratedColumn<bool>(
+    'is_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    rank,
+    isDefault,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_priorities';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServicePriorityRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('rank')) {
+      context.handle(
+        _rankMeta,
+        rank.isAcceptableOrUnknown(data['rank']!, _rankMeta),
+      );
+    }
+    if (data.containsKey('is_default')) {
+      context.handle(
+        _isDefaultMeta,
+        isDefault.isAcceptableOrUnknown(data['is_default']!, _isDefaultMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  ServicePriorityRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServicePriorityRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      rank: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rank'],
+      )!,
+      isDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_default'],
+      )!,
+    );
+  }
+
+  @override
+  $ServicePrioritiesTable createAlias(String alias) {
+    return $ServicePrioritiesTable(attachedDatabase, alias);
+  }
+}
+
+class ServicePriorityRow extends DataClass
+    implements Insertable<ServicePriorityRow> {
+  final String id;
+  final String companyId;
+  final String code;
+  final String name;
+  final String? description;
+  final String status;
+  final int sortOrder;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  final int rank;
+  final bool isDefault;
+  const ServicePriorityRow({
+    required this.id,
+    required this.companyId,
+    required this.code,
+    required this.name,
+    this.description,
+    required this.status,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+    required this.rank,
+    required this.isDefault,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['status'] = Variable<String>(status);
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['rank'] = Variable<int>(rank);
+    map['is_default'] = Variable<bool>(isDefault);
+    return map;
+  }
+
+  ServicePrioritiesCompanion toCompanion(bool nullToAbsent) {
+    return ServicePrioritiesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      code: Value(code),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      status: Value(status),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+      rank: Value(rank),
+      isDefault: Value(isDefault),
+    );
+  }
+
+  factory ServicePriorityRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServicePriorityRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      rank: serializer.fromJson<int>(json['rank']),
+      isDefault: serializer.fromJson<bool>(json['isDefault']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'status': serializer.toJson<String>(status),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'rank': serializer.toJson<int>(rank),
+      'isDefault': serializer.toJson<bool>(isDefault),
+    };
+  }
+
+  ServicePriorityRow copyWith({
+    String? id,
+    String? companyId,
+    String? code,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    String? status,
+    int? sortOrder,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+    int? rank,
+    bool? isDefault,
+  }) => ServicePriorityRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    code: code ?? this.code,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    status: status ?? this.status,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    rank: rank ?? this.rank,
+    isDefault: isDefault ?? this.isDefault,
+  );
+  ServicePriorityRow copyWithCompanion(ServicePrioritiesCompanion data) {
+    return ServicePriorityRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      code: data.code.present ? data.code.value : this.code,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      rank: data.rank.present ? data.rank.value : this.rank,
+      isDefault: data.isDefault.present ? data.isDefault.value : this.isDefault,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServicePriorityRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rank: $rank, ')
+          ..write('isDefault: $isDefault')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    rank,
+    isDefault,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServicePriorityRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.rank == this.rank &&
+          other.isDefault == this.isDefault);
+}
+
+class ServicePrioritiesCompanion extends UpdateCompanion<ServicePriorityRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> code;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String> status;
+  final Value<int> sortOrder;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rank;
+  final Value<bool> isDefault;
+  final Value<int> rowid;
+  const ServicePrioritiesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rank = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServicePrioritiesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String code,
+    required String name,
+    this.description = const Value.absent(),
+    required String status,
+    this.sortOrder = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.rank = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       code = Value(code),
+       name = Value(name),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServicePriorityRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<int>? sortOrder,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rank,
+    Expression<bool>? isDefault,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rank != null) 'rank': rank,
+      if (isDefault != null) 'is_default': isDefault,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServicePrioritiesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? code,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String>? status,
+    Value<int>? sortOrder,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<int>? rank,
+    Value<bool>? isDefault,
+    Value<int>? rowid,
+  }) {
+    return ServicePrioritiesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rank: rank ?? this.rank,
+      isDefault: isDefault ?? this.isDefault,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rank.present) {
+      map['rank'] = Variable<int>(rank.value);
+    }
+    if (isDefault.present) {
+      map['is_default'] = Variable<bool>(isDefault.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServicePrioritiesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rank: $rank, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ServiceTicketTypesTable extends ServiceTicketTypes
+    with TableInfo<$ServiceTicketTypesTable, ServiceTicketTypeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ServiceTicketTypesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _companyIdMeta = const VerificationMeta(
+    'companyId',
+  );
+  @override
+  late final GeneratedColumn<String> companyId = GeneratedColumn<String>(
+    'company_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'service_ticket_types';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ServiceTicketTypeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('company_id')) {
+      context.handle(
+        _companyIdMeta,
+        companyId.isAcceptableOrUnknown(data['company_id']!, _companyIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_companyIdMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {companyId, code},
+  ];
+  @override
+  ServiceTicketTypeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ServiceTicketTypeRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      companyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}company_id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ServiceTicketTypesTable createAlias(String alias) {
+    return $ServiceTicketTypesTable(attachedDatabase, alias);
+  }
+}
+
+class ServiceTicketTypeRow extends DataClass
+    implements Insertable<ServiceTicketTypeRow> {
+  final String id;
+  final String companyId;
+  final String code;
+  final String name;
+  final String? description;
+  final String status;
+  final int sortOrder;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  const ServiceTicketTypeRow({
+    required this.id,
+    required this.companyId,
+    required this.code,
+    required this.name,
+    this.description,
+    required this.status,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.syncStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['company_id'] = Variable<String>(companyId);
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['status'] = Variable<String>(status);
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  ServiceTicketTypesCompanion toCompanion(bool nullToAbsent) {
+    return ServiceTicketTypesCompanion(
+      id: Value(id),
+      companyId: Value(companyId),
+      code: Value(code),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      status: Value(status),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory ServiceTicketTypeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ServiceTicketTypeRow(
+      id: serializer.fromJson<String>(json['id']),
+      companyId: serializer.fromJson<String>(json['companyId']),
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      status: serializer.fromJson<String>(json['status']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'companyId': serializer.toJson<String>(companyId),
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'status': serializer.toJson<String>(status),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  ServiceTicketTypeRow copyWith({
+    String? id,
+    String? companyId,
+    String? code,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    String? status,
+    int? sortOrder,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? syncStatus,
+  }) => ServiceTicketTypeRow(
+    id: id ?? this.id,
+    companyId: companyId ?? this.companyId,
+    code: code ?? this.code,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    status: status ?? this.status,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+  );
+  ServiceTicketTypeRow copyWithCompanion(ServiceTicketTypesCompanion data) {
+    return ServiceTicketTypeRow(
+      id: data.id.present ? data.id.value : this.id,
+      companyId: data.companyId.present ? data.companyId.value : this.companyId,
+      code: data.code.present ? data.code.value : this.code,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      status: data.status.present ? data.status.value : this.status,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTicketTypeRow(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    companyId,
+    code,
+    name,
+    description,
+    status,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    syncStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ServiceTicketTypeRow &&
+          other.id == this.id &&
+          other.companyId == this.companyId &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.status == this.status &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class ServiceTicketTypesCompanion
+    extends UpdateCompanion<ServiceTicketTypeRow> {
+  final Value<String> id;
+  final Value<String> companyId;
+  final Value<String> code;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String> status;
+  final Value<int> sortOrder;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const ServiceTicketTypesCompanion({
+    this.id = const Value.absent(),
+    this.companyId = const Value.absent(),
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.status = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ServiceTicketTypesCompanion.insert({
+    required String id,
+    required String companyId,
+    required String code,
+    required String name,
+    this.description = const Value.absent(),
+    required String status,
+    this.sortOrder = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String syncStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       companyId = Value(companyId),
+       code = Value(code),
+       name = Value(name),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ServiceTicketTypeRow> custom({
+    Expression<String>? id,
+    Expression<String>? companyId,
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? status,
+    Expression<int>? sortOrder,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (companyId != null) 'company_id': companyId,
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (status != null) 'status': status,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ServiceTicketTypesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? companyId,
+    Value<String>? code,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String>? status,
+    Value<int>? sortOrder,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<String>? syncStatus,
+    Value<int>? rowid,
+  }) {
+    return ServiceTicketTypesCompanion(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (companyId.present) {
+      map['company_id'] = Variable<String>(companyId.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ServiceTicketTypesCompanion(')
+          ..write('id: $id, ')
+          ..write('companyId: $companyId, ')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('status: $status, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -22222,6 +28480,19 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $BusinessActivityEventsTable(this);
   late final $UserPermissionGrantsTable userPermissionGrants =
       $UserPermissionGrantsTable(this);
+  late final $ServiceCustomersTable serviceCustomers = $ServiceCustomersTable(
+    this,
+  );
+  late final $ServiceSitesTable serviceSites = $ServiceSitesTable(this);
+  late final $ServiceTeamsTable serviceTeams = $ServiceTeamsTable(this);
+  late final $ServiceTeamMembersTable serviceTeamMembers =
+      $ServiceTeamMembersTable(this);
+  late final $ServiceTypesTable serviceTypes = $ServiceTypesTable(this);
+  late final $ComplaintTypesTable complaintTypes = $ComplaintTypesTable(this);
+  late final $ServicePrioritiesTable servicePriorities =
+      $ServicePrioritiesTable(this);
+  late final $ServiceTicketTypesTable serviceTicketTypes =
+      $ServiceTicketTypesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -22253,6 +28524,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     attachmentRecords,
     businessActivityEvents,
     userPermissionGrants,
+    serviceCustomers,
+    serviceSites,
+    serviceTeams,
+    serviceTeamMembers,
+    serviceTypes,
+    complaintTypes,
+    servicePriorities,
+    serviceTicketTypes,
   ];
 }
 
@@ -25727,7 +32006,6 @@ typedef $$WorkforceAccountsTableCreateCompanionBuilder =
       required String displayName,
       required String email,
       required String phone,
-      required String role,
       required String grants,
       required String status,
       Value<bool> credentialPending,
@@ -25740,7 +32018,6 @@ typedef $$WorkforceAccountsTableUpdateCompanionBuilder =
       Value<String> displayName,
       Value<String> email,
       Value<String> phone,
-      Value<String> role,
       Value<String> grants,
       Value<String> status,
       Value<bool> credentialPending,
@@ -25819,11 +32096,6 @@ class $$WorkforceAccountsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get role => $composableBuilder(
-    column: $table.role,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get grants => $composableBuilder(
     column: $table.grants,
     builder: (column) => ColumnFilters(column),
@@ -25899,11 +32171,6 @@ class $$WorkforceAccountsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get role => $composableBuilder(
-    column: $table.role,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get grants => $composableBuilder(
     column: $table.grants,
     builder: (column) => ColumnOrderings(column),
@@ -25945,9 +32212,6 @@ class $$WorkforceAccountsTableAnnotationComposer
 
   GeneratedColumn<String> get phone =>
       $composableBuilder(column: $table.phone, builder: (column) => column);
-
-  GeneratedColumn<String> get role =>
-      $composableBuilder(column: $table.role, builder: (column) => column);
 
   GeneratedColumn<String> get grants =>
       $composableBuilder(column: $table.grants, builder: (column) => column);
@@ -26025,7 +32289,6 @@ class $$WorkforceAccountsTableTableManager
                 Value<String> displayName = const Value.absent(),
                 Value<String> email = const Value.absent(),
                 Value<String> phone = const Value.absent(),
-                Value<String> role = const Value.absent(),
                 Value<String> grants = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<bool> credentialPending = const Value.absent(),
@@ -26036,7 +32299,6 @@ class $$WorkforceAccountsTableTableManager
                 displayName: displayName,
                 email: email,
                 phone: phone,
-                role: role,
                 grants: grants,
                 status: status,
                 credentialPending: credentialPending,
@@ -26049,7 +32311,6 @@ class $$WorkforceAccountsTableTableManager
                 required String displayName,
                 required String email,
                 required String phone,
-                required String role,
                 required String grants,
                 required String status,
                 Value<bool> credentialPending = const Value.absent(),
@@ -26060,7 +32321,6 @@ class $$WorkforceAccountsTableTableManager
                 displayName: displayName,
                 email: email,
                 phone: phone,
-                role: role,
                 grants: grants,
                 status: status,
                 credentialPending: credentialPending,
@@ -33619,6 +39879,3004 @@ typedef $$UserPermissionGrantsTableProcessedTableManager =
       UserPermissionGrantRow,
       PrefetchHooks Function()
     >;
+typedef $$ServiceCustomersTableCreateCompanionBuilder =
+    ServiceCustomersCompanion Function({
+      required String id,
+      required String companyId,
+      required String customerCode,
+      required String name,
+      Value<String> kind,
+      required String mobile,
+      Value<String?> alternateMobile,
+      Value<String?> email,
+      Value<String?> notes,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      required String syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+typedef $$ServiceCustomersTableUpdateCompanionBuilder =
+    ServiceCustomersCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> customerCode,
+      Value<String> name,
+      Value<String> kind,
+      Value<String> mobile,
+      Value<String?> alternateMobile,
+      Value<String?> email,
+      Value<String?> notes,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String> syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+
+class $$ServiceCustomersTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceCustomersTable> {
+  $$ServiceCustomersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customerCode => $composableBuilder(
+    column: $table.customerCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get mobile => $composableBuilder(
+    column: $table.mobile,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get alternateMobile => $composableBuilder(
+    column: $table.alternateMobile,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceCustomersTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceCustomersTable> {
+  $$ServiceCustomersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customerCode => $composableBuilder(
+    column: $table.customerCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get mobile => $composableBuilder(
+    column: $table.mobile,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get alternateMobile => $composableBuilder(
+    column: $table.alternateMobile,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceCustomersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceCustomersTable> {
+  $$ServiceCustomersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get customerCode => $composableBuilder(
+    column: $table.customerCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<String> get mobile =>
+      $composableBuilder(column: $table.mobile, builder: (column) => column);
+
+  GeneratedColumn<String> get alternateMobile => $composableBuilder(
+    column: $table.alternateMobile,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+}
+
+class $$ServiceCustomersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceCustomersTable,
+          ServiceCustomerRow,
+          $$ServiceCustomersTableFilterComposer,
+          $$ServiceCustomersTableOrderingComposer,
+          $$ServiceCustomersTableAnnotationComposer,
+          $$ServiceCustomersTableCreateCompanionBuilder,
+          $$ServiceCustomersTableUpdateCompanionBuilder,
+          (
+            ServiceCustomerRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceCustomersTable,
+              ServiceCustomerRow
+            >,
+          ),
+          ServiceCustomerRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceCustomersTableTableManager(
+    _$AppDatabase db,
+    $ServiceCustomersTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceCustomersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceCustomersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceCustomersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> customerCode = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<String> mobile = const Value.absent(),
+                Value<String?> alternateMobile = const Value.absent(),
+                Value<String?> email = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceCustomersCompanion(
+                id: id,
+                companyId: companyId,
+                customerCode: customerCode,
+                name: name,
+                kind: kind,
+                mobile: mobile,
+                alternateMobile: alternateMobile,
+                email: email,
+                notes: notes,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String customerCode,
+                required String name,
+                Value<String> kind = const Value.absent(),
+                required String mobile,
+                Value<String?> alternateMobile = const Value.absent(),
+                Value<String?> email = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                required String syncStatus,
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceCustomersCompanion.insert(
+                id: id,
+                companyId: companyId,
+                customerCode: customerCode,
+                name: name,
+                kind: kind,
+                mobile: mobile,
+                alternateMobile: alternateMobile,
+                email: email,
+                notes: notes,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceCustomersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceCustomersTable,
+      ServiceCustomerRow,
+      $$ServiceCustomersTableFilterComposer,
+      $$ServiceCustomersTableOrderingComposer,
+      $$ServiceCustomersTableAnnotationComposer,
+      $$ServiceCustomersTableCreateCompanionBuilder,
+      $$ServiceCustomersTableUpdateCompanionBuilder,
+      (
+        ServiceCustomerRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceCustomersTable,
+          ServiceCustomerRow
+        >,
+      ),
+      ServiceCustomerRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceSitesTableCreateCompanionBuilder =
+    ServiceSitesCompanion Function({
+      required String id,
+      required String companyId,
+      required String customerId,
+      required String siteCode,
+      required String siteName,
+      Value<String?> tenantName,
+      Value<String?> buildingName,
+      Value<String?> unitNumber,
+      Value<String?> contactName,
+      Value<String?> contactMobile,
+      Value<String?> contactEmail,
+      required String addressLine1,
+      Value<String?> addressLine2,
+      Value<String?> area,
+      required String city,
+      Value<String?> state,
+      Value<String?> postalCode,
+      Value<String?> countryCode,
+      Value<double?> latitude,
+      Value<double?> longitude,
+      Value<String?> notes,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      required String syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+typedef $$ServiceSitesTableUpdateCompanionBuilder =
+    ServiceSitesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> customerId,
+      Value<String> siteCode,
+      Value<String> siteName,
+      Value<String?> tenantName,
+      Value<String?> buildingName,
+      Value<String?> unitNumber,
+      Value<String?> contactName,
+      Value<String?> contactMobile,
+      Value<String?> contactEmail,
+      Value<String> addressLine1,
+      Value<String?> addressLine2,
+      Value<String?> area,
+      Value<String> city,
+      Value<String?> state,
+      Value<String?> postalCode,
+      Value<String?> countryCode,
+      Value<double?> latitude,
+      Value<double?> longitude,
+      Value<String?> notes,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String> syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+
+class $$ServiceSitesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceSitesTable> {
+  $$ServiceSitesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteCode => $composableBuilder(
+    column: $table.siteCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteName => $composableBuilder(
+    column: $table.siteName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tenantName => $composableBuilder(
+    column: $table.tenantName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get buildingName => $composableBuilder(
+    column: $table.buildingName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unitNumber => $composableBuilder(
+    column: $table.unitNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contactMobile => $composableBuilder(
+    column: $table.contactMobile,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contactEmail => $composableBuilder(
+    column: $table.contactEmail,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get area => $composableBuilder(
+    column: $table.area,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceSitesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceSitesTable> {
+  $$ServiceSitesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteCode => $composableBuilder(
+    column: $table.siteCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteName => $composableBuilder(
+    column: $table.siteName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tenantName => $composableBuilder(
+    column: $table.tenantName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get buildingName => $composableBuilder(
+    column: $table.buildingName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unitNumber => $composableBuilder(
+    column: $table.unitNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get contactMobile => $composableBuilder(
+    column: $table.contactMobile,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get contactEmail => $composableBuilder(
+    column: $table.contactEmail,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get area => $composableBuilder(
+    column: $table.area,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceSitesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceSitesTable> {
+  $$ServiceSitesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get siteCode =>
+      $composableBuilder(column: $table.siteCode, builder: (column) => column);
+
+  GeneratedColumn<String> get siteName =>
+      $composableBuilder(column: $table.siteName, builder: (column) => column);
+
+  GeneratedColumn<String> get tenantName => $composableBuilder(
+    column: $table.tenantName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get buildingName => $composableBuilder(
+    column: $table.buildingName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get unitNumber => $composableBuilder(
+    column: $table.unitNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get contactMobile => $composableBuilder(
+    column: $table.contactMobile,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get contactEmail => $composableBuilder(
+    column: $table.contactEmail,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get addressLine1 => $composableBuilder(
+    column: $table.addressLine1,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get addressLine2 => $composableBuilder(
+    column: $table.addressLine2,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get area =>
+      $composableBuilder(column: $table.area, builder: (column) => column);
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get countryCode => $composableBuilder(
+    column: $table.countryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+}
+
+class $$ServiceSitesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceSitesTable,
+          ServiceSiteRow,
+          $$ServiceSitesTableFilterComposer,
+          $$ServiceSitesTableOrderingComposer,
+          $$ServiceSitesTableAnnotationComposer,
+          $$ServiceSitesTableCreateCompanionBuilder,
+          $$ServiceSitesTableUpdateCompanionBuilder,
+          (
+            ServiceSiteRow,
+            BaseReferences<_$AppDatabase, $ServiceSitesTable, ServiceSiteRow>,
+          ),
+          ServiceSiteRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceSitesTableTableManager(_$AppDatabase db, $ServiceSitesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceSitesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceSitesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceSitesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> customerId = const Value.absent(),
+                Value<String> siteCode = const Value.absent(),
+                Value<String> siteName = const Value.absent(),
+                Value<String?> tenantName = const Value.absent(),
+                Value<String?> buildingName = const Value.absent(),
+                Value<String?> unitNumber = const Value.absent(),
+                Value<String?> contactName = const Value.absent(),
+                Value<String?> contactMobile = const Value.absent(),
+                Value<String?> contactEmail = const Value.absent(),
+                Value<String> addressLine1 = const Value.absent(),
+                Value<String?> addressLine2 = const Value.absent(),
+                Value<String?> area = const Value.absent(),
+                Value<String> city = const Value.absent(),
+                Value<String?> state = const Value.absent(),
+                Value<String?> postalCode = const Value.absent(),
+                Value<String?> countryCode = const Value.absent(),
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceSitesCompanion(
+                id: id,
+                companyId: companyId,
+                customerId: customerId,
+                siteCode: siteCode,
+                siteName: siteName,
+                tenantName: tenantName,
+                buildingName: buildingName,
+                unitNumber: unitNumber,
+                contactName: contactName,
+                contactMobile: contactMobile,
+                contactEmail: contactEmail,
+                addressLine1: addressLine1,
+                addressLine2: addressLine2,
+                area: area,
+                city: city,
+                state: state,
+                postalCode: postalCode,
+                countryCode: countryCode,
+                latitude: latitude,
+                longitude: longitude,
+                notes: notes,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String customerId,
+                required String siteCode,
+                required String siteName,
+                Value<String?> tenantName = const Value.absent(),
+                Value<String?> buildingName = const Value.absent(),
+                Value<String?> unitNumber = const Value.absent(),
+                Value<String?> contactName = const Value.absent(),
+                Value<String?> contactMobile = const Value.absent(),
+                Value<String?> contactEmail = const Value.absent(),
+                required String addressLine1,
+                Value<String?> addressLine2 = const Value.absent(),
+                Value<String?> area = const Value.absent(),
+                required String city,
+                Value<String?> state = const Value.absent(),
+                Value<String?> postalCode = const Value.absent(),
+                Value<String?> countryCode = const Value.absent(),
+                Value<double?> latitude = const Value.absent(),
+                Value<double?> longitude = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                required String syncStatus,
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceSitesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                customerId: customerId,
+                siteCode: siteCode,
+                siteName: siteName,
+                tenantName: tenantName,
+                buildingName: buildingName,
+                unitNumber: unitNumber,
+                contactName: contactName,
+                contactMobile: contactMobile,
+                contactEmail: contactEmail,
+                addressLine1: addressLine1,
+                addressLine2: addressLine2,
+                area: area,
+                city: city,
+                state: state,
+                postalCode: postalCode,
+                countryCode: countryCode,
+                latitude: latitude,
+                longitude: longitude,
+                notes: notes,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceSitesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceSitesTable,
+      ServiceSiteRow,
+      $$ServiceSitesTableFilterComposer,
+      $$ServiceSitesTableOrderingComposer,
+      $$ServiceSitesTableAnnotationComposer,
+      $$ServiceSitesTableCreateCompanionBuilder,
+      $$ServiceSitesTableUpdateCompanionBuilder,
+      (
+        ServiceSiteRow,
+        BaseReferences<_$AppDatabase, $ServiceSitesTable, ServiceSiteRow>,
+      ),
+      ServiceSiteRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceTeamsTableCreateCompanionBuilder =
+    ServiceTeamsCompanion Function({
+      required String id,
+      required String companyId,
+      required String teamCode,
+      required String name,
+      Value<String?> description,
+      Value<String?> leadEmployeeId,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String createdByUserId,
+      required String updatedByUserId,
+      required String syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+typedef $$ServiceTeamsTableUpdateCompanionBuilder =
+    ServiceTeamsCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> teamCode,
+      Value<String> name,
+      Value<String?> description,
+      Value<String?> leadEmployeeId,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> createdByUserId,
+      Value<String> updatedByUserId,
+      Value<String> syncStatus,
+      Value<String?> requestId,
+      Value<int> rowid,
+    });
+
+class $$ServiceTeamsTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceTeamsTable> {
+  $$ServiceTeamsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teamCode => $composableBuilder(
+    column: $table.teamCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get leadEmployeeId => $composableBuilder(
+    column: $table.leadEmployeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceTeamsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceTeamsTable> {
+  $$ServiceTeamsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get teamCode => $composableBuilder(
+    column: $table.teamCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get leadEmployeeId => $composableBuilder(
+    column: $table.leadEmployeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestId => $composableBuilder(
+    column: $table.requestId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceTeamsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceTeamsTable> {
+  $$ServiceTeamsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get teamCode =>
+      $composableBuilder(column: $table.teamCode, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get leadEmployeeId => $composableBuilder(
+    column: $table.leadEmployeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get updatedByUserId => $composableBuilder(
+    column: $table.updatedByUserId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestId =>
+      $composableBuilder(column: $table.requestId, builder: (column) => column);
+}
+
+class $$ServiceTeamsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceTeamsTable,
+          ServiceTeamRow,
+          $$ServiceTeamsTableFilterComposer,
+          $$ServiceTeamsTableOrderingComposer,
+          $$ServiceTeamsTableAnnotationComposer,
+          $$ServiceTeamsTableCreateCompanionBuilder,
+          $$ServiceTeamsTableUpdateCompanionBuilder,
+          (
+            ServiceTeamRow,
+            BaseReferences<_$AppDatabase, $ServiceTeamsTable, ServiceTeamRow>,
+          ),
+          ServiceTeamRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceTeamsTableTableManager(_$AppDatabase db, $ServiceTeamsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceTeamsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceTeamsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceTeamsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> teamCode = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> leadEmployeeId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<String> updatedByUserId = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTeamsCompanion(
+                id: id,
+                companyId: companyId,
+                teamCode: teamCode,
+                name: name,
+                description: description,
+                leadEmployeeId: leadEmployeeId,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String teamCode,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                Value<String?> leadEmployeeId = const Value.absent(),
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String createdByUserId,
+                required String updatedByUserId,
+                required String syncStatus,
+                Value<String?> requestId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTeamsCompanion.insert(
+                id: id,
+                companyId: companyId,
+                teamCode: teamCode,
+                name: name,
+                description: description,
+                leadEmployeeId: leadEmployeeId,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                createdByUserId: createdByUserId,
+                updatedByUserId: updatedByUserId,
+                syncStatus: syncStatus,
+                requestId: requestId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceTeamsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceTeamsTable,
+      ServiceTeamRow,
+      $$ServiceTeamsTableFilterComposer,
+      $$ServiceTeamsTableOrderingComposer,
+      $$ServiceTeamsTableAnnotationComposer,
+      $$ServiceTeamsTableCreateCompanionBuilder,
+      $$ServiceTeamsTableUpdateCompanionBuilder,
+      (
+        ServiceTeamRow,
+        BaseReferences<_$AppDatabase, $ServiceTeamsTable, ServiceTeamRow>,
+      ),
+      ServiceTeamRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceTeamMembersTableCreateCompanionBuilder =
+    ServiceTeamMembersCompanion Function({
+      required String id,
+      required String companyId,
+      required String teamId,
+      required String employeeId,
+      required String status,
+      required DateTime createdAt,
+      required String createdByUserId,
+      Value<int> rowid,
+    });
+typedef $$ServiceTeamMembersTableUpdateCompanionBuilder =
+    ServiceTeamMembersCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> teamId,
+      Value<String> employeeId,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<String> createdByUserId,
+      Value<int> rowid,
+    });
+
+class $$ServiceTeamMembersTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceTeamMembersTable> {
+  $$ServiceTeamMembersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceTeamMembersTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceTeamMembersTable> {
+  $$ServiceTeamMembersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceTeamMembersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceTeamMembersTable> {
+  $$ServiceTeamMembersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get teamId =>
+      $composableBuilder(column: $table.teamId, builder: (column) => column);
+
+  GeneratedColumn<String> get employeeId => $composableBuilder(
+    column: $table.employeeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get createdByUserId => $composableBuilder(
+    column: $table.createdByUserId,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceTeamMembersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceTeamMembersTable,
+          ServiceTeamMemberRow,
+          $$ServiceTeamMembersTableFilterComposer,
+          $$ServiceTeamMembersTableOrderingComposer,
+          $$ServiceTeamMembersTableAnnotationComposer,
+          $$ServiceTeamMembersTableCreateCompanionBuilder,
+          $$ServiceTeamMembersTableUpdateCompanionBuilder,
+          (
+            ServiceTeamMemberRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceTeamMembersTable,
+              ServiceTeamMemberRow
+            >,
+          ),
+          ServiceTeamMemberRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceTeamMembersTableTableManager(
+    _$AppDatabase db,
+    $ServiceTeamMembersTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceTeamMembersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceTeamMembersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceTeamMembersTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> teamId = const Value.absent(),
+                Value<String> employeeId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String> createdByUserId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTeamMembersCompanion(
+                id: id,
+                companyId: companyId,
+                teamId: teamId,
+                employeeId: employeeId,
+                status: status,
+                createdAt: createdAt,
+                createdByUserId: createdByUserId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String teamId,
+                required String employeeId,
+                required String status,
+                required DateTime createdAt,
+                required String createdByUserId,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTeamMembersCompanion.insert(
+                id: id,
+                companyId: companyId,
+                teamId: teamId,
+                employeeId: employeeId,
+                status: status,
+                createdAt: createdAt,
+                createdByUserId: createdByUserId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceTeamMembersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceTeamMembersTable,
+      ServiceTeamMemberRow,
+      $$ServiceTeamMembersTableFilterComposer,
+      $$ServiceTeamMembersTableOrderingComposer,
+      $$ServiceTeamMembersTableAnnotationComposer,
+      $$ServiceTeamMembersTableCreateCompanionBuilder,
+      $$ServiceTeamMembersTableUpdateCompanionBuilder,
+      (
+        ServiceTeamMemberRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceTeamMembersTable,
+          ServiceTeamMemberRow
+        >,
+      ),
+      ServiceTeamMemberRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceTypesTableCreateCompanionBuilder =
+    ServiceTypesCompanion Function({
+      required String id,
+      required String companyId,
+      required String code,
+      required String name,
+      Value<String?> description,
+      required String status,
+      Value<int> sortOrder,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceTypesTableUpdateCompanionBuilder =
+    ServiceTypesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> code,
+      Value<String> name,
+      Value<String?> description,
+      Value<String> status,
+      Value<int> sortOrder,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceTypesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceTypesTable> {
+  $$ServiceTypesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceTypesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceTypesTable> {
+  $$ServiceTypesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceTypesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceTypesTable> {
+  $$ServiceTypesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceTypesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceTypesTable,
+          ServiceTypeRow,
+          $$ServiceTypesTableFilterComposer,
+          $$ServiceTypesTableOrderingComposer,
+          $$ServiceTypesTableAnnotationComposer,
+          $$ServiceTypesTableCreateCompanionBuilder,
+          $$ServiceTypesTableUpdateCompanionBuilder,
+          (
+            ServiceTypeRow,
+            BaseReferences<_$AppDatabase, $ServiceTypesTable, ServiceTypeRow>,
+          ),
+          ServiceTypeRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceTypesTableTableManager(_$AppDatabase db, $ServiceTypesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceTypesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceTypesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceTypesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTypesCompanion(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String code,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                required String status,
+                Value<int> sortOrder = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTypesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceTypesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceTypesTable,
+      ServiceTypeRow,
+      $$ServiceTypesTableFilterComposer,
+      $$ServiceTypesTableOrderingComposer,
+      $$ServiceTypesTableAnnotationComposer,
+      $$ServiceTypesTableCreateCompanionBuilder,
+      $$ServiceTypesTableUpdateCompanionBuilder,
+      (
+        ServiceTypeRow,
+        BaseReferences<_$AppDatabase, $ServiceTypesTable, ServiceTypeRow>,
+      ),
+      ServiceTypeRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ComplaintTypesTableCreateCompanionBuilder =
+    ComplaintTypesCompanion Function({
+      required String id,
+      required String companyId,
+      required String code,
+      required String name,
+      Value<String?> description,
+      required String status,
+      Value<int> sortOrder,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<String?> serviceTypeId,
+      Value<int> rowid,
+    });
+typedef $$ComplaintTypesTableUpdateCompanionBuilder =
+    ComplaintTypesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> code,
+      Value<String> name,
+      Value<String?> description,
+      Value<String> status,
+      Value<int> sortOrder,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<String?> serviceTypeId,
+      Value<int> rowid,
+    });
+
+class $$ComplaintTypesTableFilterComposer
+    extends Composer<_$AppDatabase, $ComplaintTypesTable> {
+  $$ComplaintTypesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ComplaintTypesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ComplaintTypesTable> {
+  $$ComplaintTypesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ComplaintTypesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ComplaintTypesTable> {
+  $$ComplaintTypesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get serviceTypeId => $composableBuilder(
+    column: $table.serviceTypeId,
+    builder: (column) => column,
+  );
+}
+
+class $$ComplaintTypesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ComplaintTypesTable,
+          ComplaintTypeRow,
+          $$ComplaintTypesTableFilterComposer,
+          $$ComplaintTypesTableOrderingComposer,
+          $$ComplaintTypesTableAnnotationComposer,
+          $$ComplaintTypesTableCreateCompanionBuilder,
+          $$ComplaintTypesTableUpdateCompanionBuilder,
+          (
+            ComplaintTypeRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ComplaintTypesTable,
+              ComplaintTypeRow
+            >,
+          ),
+          ComplaintTypeRow,
+          PrefetchHooks Function()
+        > {
+  $$ComplaintTypesTableTableManager(
+    _$AppDatabase db,
+    $ComplaintTypesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ComplaintTypesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ComplaintTypesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ComplaintTypesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> serviceTypeId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ComplaintTypesCompanion(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                serviceTypeId: serviceTypeId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String code,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                required String status,
+                Value<int> sortOrder = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<String?> serviceTypeId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ComplaintTypesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                serviceTypeId: serviceTypeId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ComplaintTypesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ComplaintTypesTable,
+      ComplaintTypeRow,
+      $$ComplaintTypesTableFilterComposer,
+      $$ComplaintTypesTableOrderingComposer,
+      $$ComplaintTypesTableAnnotationComposer,
+      $$ComplaintTypesTableCreateCompanionBuilder,
+      $$ComplaintTypesTableUpdateCompanionBuilder,
+      (
+        ComplaintTypeRow,
+        BaseReferences<_$AppDatabase, $ComplaintTypesTable, ComplaintTypeRow>,
+      ),
+      ComplaintTypeRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServicePrioritiesTableCreateCompanionBuilder =
+    ServicePrioritiesCompanion Function({
+      required String id,
+      required String companyId,
+      required String code,
+      required String name,
+      Value<String?> description,
+      required String status,
+      Value<int> sortOrder,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<int> rank,
+      Value<bool> isDefault,
+      Value<int> rowid,
+    });
+typedef $$ServicePrioritiesTableUpdateCompanionBuilder =
+    ServicePrioritiesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> code,
+      Value<String> name,
+      Value<String?> description,
+      Value<String> status,
+      Value<int> sortOrder,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<int> rank,
+      Value<bool> isDefault,
+      Value<int> rowid,
+    });
+
+class $$ServicePrioritiesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServicePrioritiesTable> {
+  $$ServicePrioritiesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rank => $composableBuilder(
+    column: $table.rank,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServicePrioritiesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServicePrioritiesTable> {
+  $$ServicePrioritiesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rank => $composableBuilder(
+    column: $table.rank,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServicePrioritiesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServicePrioritiesTable> {
+  $$ServicePrioritiesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rank =>
+      $composableBuilder(column: $table.rank, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDefault =>
+      $composableBuilder(column: $table.isDefault, builder: (column) => column);
+}
+
+class $$ServicePrioritiesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServicePrioritiesTable,
+          ServicePriorityRow,
+          $$ServicePrioritiesTableFilterComposer,
+          $$ServicePrioritiesTableOrderingComposer,
+          $$ServicePrioritiesTableAnnotationComposer,
+          $$ServicePrioritiesTableCreateCompanionBuilder,
+          $$ServicePrioritiesTableUpdateCompanionBuilder,
+          (
+            ServicePriorityRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServicePrioritiesTable,
+              ServicePriorityRow
+            >,
+          ),
+          ServicePriorityRow,
+          PrefetchHooks Function()
+        > {
+  $$ServicePrioritiesTableTableManager(
+    _$AppDatabase db,
+    $ServicePrioritiesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServicePrioritiesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServicePrioritiesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServicePrioritiesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rank = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServicePrioritiesCompanion(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rank: rank,
+                isDefault: isDefault,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String code,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                required String status,
+                Value<int> sortOrder = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<int> rank = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServicePrioritiesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rank: rank,
+                isDefault: isDefault,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServicePrioritiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServicePrioritiesTable,
+      ServicePriorityRow,
+      $$ServicePrioritiesTableFilterComposer,
+      $$ServicePrioritiesTableOrderingComposer,
+      $$ServicePrioritiesTableAnnotationComposer,
+      $$ServicePrioritiesTableCreateCompanionBuilder,
+      $$ServicePrioritiesTableUpdateCompanionBuilder,
+      (
+        ServicePriorityRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServicePrioritiesTable,
+          ServicePriorityRow
+        >,
+      ),
+      ServicePriorityRow,
+      PrefetchHooks Function()
+    >;
+typedef $$ServiceTicketTypesTableCreateCompanionBuilder =
+    ServiceTicketTypesCompanion Function({
+      required String id,
+      required String companyId,
+      required String code,
+      required String name,
+      Value<String?> description,
+      required String status,
+      Value<int> sortOrder,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      required String syncStatus,
+      Value<int> rowid,
+    });
+typedef $$ServiceTicketTypesTableUpdateCompanionBuilder =
+    ServiceTicketTypesCompanion Function({
+      Value<String> id,
+      Value<String> companyId,
+      Value<String> code,
+      Value<String> name,
+      Value<String?> description,
+      Value<String> status,
+      Value<int> sortOrder,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<String> syncStatus,
+      Value<int> rowid,
+    });
+
+class $$ServiceTicketTypesTableFilterComposer
+    extends Composer<_$AppDatabase, $ServiceTicketTypesTable> {
+  $$ServiceTicketTypesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ServiceTicketTypesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ServiceTicketTypesTable> {
+  $$ServiceTicketTypesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get companyId => $composableBuilder(
+    column: $table.companyId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ServiceTicketTypesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ServiceTicketTypesTable> {
+  $$ServiceTicketTypesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get companyId =>
+      $composableBuilder(column: $table.companyId, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+}
+
+class $$ServiceTicketTypesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ServiceTicketTypesTable,
+          ServiceTicketTypeRow,
+          $$ServiceTicketTypesTableFilterComposer,
+          $$ServiceTicketTypesTableOrderingComposer,
+          $$ServiceTicketTypesTableAnnotationComposer,
+          $$ServiceTicketTypesTableCreateCompanionBuilder,
+          $$ServiceTicketTypesTableUpdateCompanionBuilder,
+          (
+            ServiceTicketTypeRow,
+            BaseReferences<
+              _$AppDatabase,
+              $ServiceTicketTypesTable,
+              ServiceTicketTypeRow
+            >,
+          ),
+          ServiceTicketTypeRow,
+          PrefetchHooks Function()
+        > {
+  $$ServiceTicketTypesTableTableManager(
+    _$AppDatabase db,
+    $ServiceTicketTypesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ServiceTicketTypesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ServiceTicketTypesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ServiceTicketTypesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> companyId = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTicketTypesCompanion(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String companyId,
+                required String code,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                required String status,
+                Value<int> sortOrder = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                required String syncStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => ServiceTicketTypesCompanion.insert(
+                id: id,
+                companyId: companyId,
+                code: code,
+                name: name,
+                description: description,
+                status: status,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                syncStatus: syncStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ServiceTicketTypesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ServiceTicketTypesTable,
+      ServiceTicketTypeRow,
+      $$ServiceTicketTypesTableFilterComposer,
+      $$ServiceTicketTypesTableOrderingComposer,
+      $$ServiceTicketTypesTableAnnotationComposer,
+      $$ServiceTicketTypesTableCreateCompanionBuilder,
+      $$ServiceTicketTypesTableUpdateCompanionBuilder,
+      (
+        ServiceTicketTypeRow,
+        BaseReferences<
+          _$AppDatabase,
+          $ServiceTicketTypesTable,
+          ServiceTicketTypeRow
+        >,
+      ),
+      ServiceTicketTypeRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -33692,4 +42950,20 @@ class $AppDatabaseManager {
       );
   $$UserPermissionGrantsTableTableManager get userPermissionGrants =>
       $$UserPermissionGrantsTableTableManager(_db, _db.userPermissionGrants);
+  $$ServiceCustomersTableTableManager get serviceCustomers =>
+      $$ServiceCustomersTableTableManager(_db, _db.serviceCustomers);
+  $$ServiceSitesTableTableManager get serviceSites =>
+      $$ServiceSitesTableTableManager(_db, _db.serviceSites);
+  $$ServiceTeamsTableTableManager get serviceTeams =>
+      $$ServiceTeamsTableTableManager(_db, _db.serviceTeams);
+  $$ServiceTeamMembersTableTableManager get serviceTeamMembers =>
+      $$ServiceTeamMembersTableTableManager(_db, _db.serviceTeamMembers);
+  $$ServiceTypesTableTableManager get serviceTypes =>
+      $$ServiceTypesTableTableManager(_db, _db.serviceTypes);
+  $$ComplaintTypesTableTableManager get complaintTypes =>
+      $$ComplaintTypesTableTableManager(_db, _db.complaintTypes);
+  $$ServicePrioritiesTableTableManager get servicePriorities =>
+      $$ServicePrioritiesTableTableManager(_db, _db.servicePriorities);
+  $$ServiceTicketTypesTableTableManager get serviceTicketTypes =>
+      $$ServiceTicketTypesTableTableManager(_db, _db.serviceTicketTypes);
 }
