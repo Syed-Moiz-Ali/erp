@@ -20,6 +20,8 @@ String serviceMasterTitle(AppLocalizations l, ServiceMasterKind kind) =>
       ServiceMasterKind.rootCause => l.servicesRootCausesTitle,
       ServiceMasterKind.chargeResponsibility =>
         l.servicesChargeResponsibilitiesTitle,
+      ServiceMasterKind.materialRequestPurpose =>
+        l.servicesMaterialRequestPurposesTitle,
     };
 
 AppPermission serviceMasterManagePermission(ServiceMasterKind kind) =>
@@ -31,6 +33,8 @@ AppPermission serviceMasterManagePermission(ServiceMasterKind kind) =>
       ServiceMasterKind.rootCause => AppPermission.serviceRootCauseManage,
       ServiceMasterKind.chargeResponsibility =>
         AppPermission.serviceChargeResponsibilityManage,
+      ServiceMasterKind.materialRequestPurpose =>
+        AppPermission.serviceMaterialRequestPurposeManage,
     };
 
 String _newRoute(ServiceMasterKind kind) => switch (kind) {
@@ -41,6 +45,8 @@ String _newRoute(ServiceMasterKind kind) => switch (kind) {
   ServiceMasterKind.rootCause => ServicesRoutes.rootCausesNew,
   ServiceMasterKind.chargeResponsibility =>
     ServicesRoutes.chargeResponsibilitiesNew,
+  ServiceMasterKind.materialRequestPurpose =>
+    ServicesRoutes.materialRequestPurposesNew,
 };
 
 String _editRoute(ServiceMasterKind kind, String id) => switch (kind) {
@@ -51,6 +57,8 @@ String _editRoute(ServiceMasterKind kind, String id) => switch (kind) {
   ServiceMasterKind.rootCause => ServicesRoutes.rootCauseEdit(id),
   ServiceMasterKind.chargeResponsibility =>
     ServicesRoutes.chargeResponsibilityEdit(id),
+  ServiceMasterKind.materialRequestPurpose =>
+    ServicesRoutes.materialRequestPurposeEdit(id),
 };
 
 class ServiceMasterListPage extends StatelessWidget {

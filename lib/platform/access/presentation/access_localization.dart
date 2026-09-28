@@ -23,6 +23,8 @@ extension AccessCatalogLocalization on AppLocalizations {
     'enquiries' => servicesPermSubEnquiries,
     'jobAssignments' => servicesPermSubJobAssignments,
     'inspections' => servicesPermSubInspections,
+    'materialRequests' => servicesPermSubMaterialRequests,
+    'workExecutions' => servicesPermSubWorkExecutions,
     _ => key,
   };
 
@@ -105,6 +107,21 @@ extension AccessCatalogLocalization on AppLocalizations {
       servicesPermChargeResponsibilitiesView,
     'servicesPermChargeResponsibilitiesManage' =>
       servicesPermChargeResponsibilitiesManage,
+    'servicesPermMaterialRequestPurposesView' =>
+      servicesPermMaterialRequestPurposesView,
+    'servicesPermMaterialRequestPurposesManage' =>
+      servicesPermMaterialRequestPurposesManage,
+    'servicesPermMaterialRequestsView' => servicesPermMaterialRequestsView,
+    'servicesPermMaterialRequestsCreate' => servicesPermMaterialRequestsCreate,
+    'servicesPermMaterialRequestsEdit' => servicesPermMaterialRequestsEdit,
+    'servicesPermMaterialRequestsCancel' => servicesPermMaterialRequestsCancel,
+    'servicesPermMaterialRequestsPrint' => servicesPermMaterialRequestsPrint,
+    'servicesPermWorkExecutionsView' => servicesPermWorkExecutionsView,
+    'servicesPermWorkExecutionsCreate' => servicesPermWorkExecutionsCreate,
+    'servicesPermWorkExecutionsEdit' => servicesPermWorkExecutionsEdit,
+    'servicesPermWorkExecutionsPerform' => servicesPermWorkExecutionsPerform,
+    'servicesPermWorkExecutionsComplete' => servicesPermWorkExecutionsComplete,
+    'servicesPermWorkExecutionsCancel' => servicesPermWorkExecutionsCancel,
     _ => key,
   };
 
@@ -194,6 +211,30 @@ extension AccessCatalogLocalization on AppLocalizations {
       servicesPermChargeResponsibilitiesViewDesc,
     'servicesPermChargeResponsibilitiesManageDesc' =>
       servicesPermChargeResponsibilitiesManageDesc,
+    'servicesPermMaterialRequestPurposesViewDesc' =>
+      servicesPermMaterialRequestPurposesViewDesc,
+    'servicesPermMaterialRequestPurposesManageDesc' =>
+      servicesPermMaterialRequestPurposesManageDesc,
+    'servicesPermMaterialRequestsViewDesc' =>
+      servicesPermMaterialRequestsViewDesc,
+    'servicesPermMaterialRequestsCreateDesc' =>
+      servicesPermMaterialRequestsCreateDesc,
+    'servicesPermMaterialRequestsEditDesc' =>
+      servicesPermMaterialRequestsEditDesc,
+    'servicesPermMaterialRequestsCancelDesc' =>
+      servicesPermMaterialRequestsCancelDesc,
+    'servicesPermMaterialRequestsPrintDesc' =>
+      servicesPermMaterialRequestsPrintDesc,
+    'servicesPermWorkExecutionsViewDesc' => servicesPermWorkExecutionsViewDesc,
+    'servicesPermWorkExecutionsCreateDesc' =>
+      servicesPermWorkExecutionsCreateDesc,
+    'servicesPermWorkExecutionsEditDesc' => servicesPermWorkExecutionsEditDesc,
+    'servicesPermWorkExecutionsPerformDesc' =>
+      servicesPermWorkExecutionsPerformDesc,
+    'servicesPermWorkExecutionsCompleteDesc' =>
+      servicesPermWorkExecutionsCompleteDesc,
+    'servicesPermWorkExecutionsCancelDesc' =>
+      servicesPermWorkExecutionsCancelDesc,
     _ => key,
   };
 

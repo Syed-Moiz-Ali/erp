@@ -103,6 +103,15 @@ enum AppPermission {
   serviceMaterialRequestEdit,
   serviceMaterialRequestCancel,
   serviceMaterialRequestPrint,
+  // Services Phase 6 (work execution).
+  serviceWorkExecutionViewAssigned,
+  serviceWorkExecutionViewTeam,
+  serviceWorkExecutionViewAll,
+  serviceWorkExecutionCreate,
+  serviceWorkExecutionEdit,
+  serviceWorkExecutionPerform,
+  serviceWorkExecutionComplete,
+  serviceWorkExecutionCancel,
 }
 
 /// Manage authority implies the matching view authority so a manage-only grant
@@ -143,6 +152,30 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.serviceInspectionComplete:
       AppPermission.serviceInspectionViewAll,
   AppPermission.serviceInspectionCancel: AppPermission.serviceInspectionViewAll,
+  AppPermission.serviceMaterialRequestPurposeManage:
+      AppPermission.serviceMaterialRequestPurposeView,
+  // Create/Edit/Cancel/Print need enough visibility to use the transaction.
+  AppPermission.serviceMaterialRequestCreate:
+      AppPermission.serviceMaterialRequestViewAll,
+  AppPermission.serviceMaterialRequestEdit:
+      AppPermission.serviceMaterialRequestViewAll,
+  AppPermission.serviceMaterialRequestCancel:
+      AppPermission.serviceMaterialRequestViewAll,
+  AppPermission.serviceMaterialRequestPrint:
+      AppPermission.serviceMaterialRequestViewAll,
+  // Create/Edit/Perform/Complete/Cancel need enough visibility to use the
+  // transaction. Operational field work normalizes to the ALL view scope so a
+  // performer can always open the record they act on.
+  AppPermission.serviceWorkExecutionCreate:
+      AppPermission.serviceWorkExecutionViewAll,
+  AppPermission.serviceWorkExecutionEdit:
+      AppPermission.serviceWorkExecutionViewAll,
+  AppPermission.serviceWorkExecutionPerform:
+      AppPermission.serviceWorkExecutionViewAll,
+  AppPermission.serviceWorkExecutionComplete:
+      AppPermission.serviceWorkExecutionViewAll,
+  AppPermission.serviceWorkExecutionCancel:
+      AppPermission.serviceWorkExecutionViewAll,
 };
 
 /// Expands a raw grant set so that every `*Manage` grant carries its `*View`

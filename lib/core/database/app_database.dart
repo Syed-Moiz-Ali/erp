@@ -83,6 +83,13 @@ class SyncOutbox extends Table {
     ServiceInspectionChecklistItems,
     ServiceInspectionPoints,
     ServiceInspectionMaterialRequirements,
+    ServiceMaterialRequestPurposes,
+    ServiceMaterialRequests,
+    ServiceMaterialRequestLines,
+    ServiceWorkExecutions,
+    ServiceWorkExecutionLines,
+    ServiceWorkExecutionMaterialsUsed,
+    ServiceWorkExecutionPhotoEntries,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -98,7 +105,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 18;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -134,7 +141,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 15 || to != 16) {
+      if (from < 1 || from > 17 || to != 18) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -267,6 +274,20 @@ class AppDatabase extends _$AppDatabase {
         await _ensureTable(m, serviceInspectionChecklistItems);
         await _ensureTable(m, serviceInspectionPoints);
         await _ensureTable(m, serviceInspectionMaterialRequirements);
+      }
+      if (from < 17) {
+        // Services Phase 5: Request for Material + Purpose master.
+        await _ensureTable(m, serviceMaterialRequestPurposes);
+        await _ensureTable(m, serviceMaterialRequests);
+        await _ensureTable(m, serviceMaterialRequestLines);
+      }
+      if (from < 18) {
+        // Services Phase 6: Work Execution (header + lines + materials used +
+        // after-work photo entries).
+        await _ensureTable(m, serviceWorkExecutions);
+        await _ensureTable(m, serviceWorkExecutionLines);
+        await _ensureTable(m, serviceWorkExecutionMaterialsUsed);
+        await _ensureTable(m, serviceWorkExecutionPhotoEntries);
       }
     },
     beforeOpen: (details) async {
@@ -492,6 +513,67 @@ class AppDatabase extends _$AppDatabase {
           'CREATE INDEX IF NOT EXISTS ${table}_inspection ON $table(company_id, inspection_id, line_number)',
         );
       }
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_request_purposes_company_status ON service_material_request_purposes(company_id, status, name)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_requests_company_status ON service_material_requests(company_id, status, request_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_requests_company_inspection ON service_material_requests(company_id, source_inspection_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_requests_company_assignment ON service_material_requests(company_id, source_job_assignment_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_requests_company_enquiry ON service_material_requests(company_id, source_enquiry_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_material_request_lines_request ON service_material_request_lines(company_id, material_request_id, line_number)',
+      );
+      // V1: one Inspection material requirement may be linked to at most one
+      // ACTIVE material request. Cancelling the request clears active_requirement_id
+      // (the source lineage column is retained), releasing the requirement.
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS service_material_request_lines_active_requirement ON service_material_request_lines(company_id, active_requirement_id) WHERE active_requirement_id IS NOT NULL',
+      );
+      await customStatement(
+        'CREATE UNIQUE INDEX IF NOT EXISTS service_work_executions_company_number ON service_work_executions(company_id, execution_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_executions_company_status ON service_work_executions(company_id, status, execution_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_executions_company_date ON service_work_executions(company_id, execution_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_executions_company_inspection ON service_work_executions(company_id, source_inspection_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_executions_company_assignment ON service_work_executions(company_id, source_job_assignment_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_executions_company_enquiry ON service_work_executions(company_id, source_enquiry_id)',
+      );
+      // V1: at most one non-cancelled Work Execution per Inspection.
+      await customStatement(
+        "CREATE UNIQUE INDEX IF NOT EXISTS service_work_executions_active_inspection ON service_work_executions(company_id, source_inspection_id) WHERE status <> 'cancelled'",
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_execution_lines_execution ON service_work_execution_lines(company_id, work_execution_id, line_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_execution_lines_employee ON service_work_execution_lines(company_id, employee_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_execution_lines_team ON service_work_execution_lines(company_id, service_team_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_execution_materials_used_execution ON service_work_execution_materials_used(company_id, work_execution_id, line_number)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_work_execution_photo_entries_execution ON service_work_execution_photo_entries(company_id, work_execution_id, line_number)',
+      );
     },
   );
 }

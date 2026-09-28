@@ -161,6 +161,83 @@ Notes:
 - Before-work photo access inherits the owning Inspection (no attachment-id bypass).
 - `*Manage` implies `*View` (root causes / charge responsibility).
 
+## Services (Phase 5 — Request for Material)
+
+| Permission | Scope | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `services.materialRequests.view` | `assigned`/`team`/`all` | Services + Material Requests | `/app/services/material-requests`, `/:id` | `watchRequests`/`getRequest`/`summary`/`watchRecentRequests`, Inspection integration | — | — |
+| `services.materialRequests.create` | none | Material Requests (New) + Overview/Inspection actions | `/app/services/material-requests/new` | restricted eligible-Inspection lookup + source context | New material request | `createRequest` (+ `WAITING→REQUESTED`) |
+| `services.materialRequests.edit` | none | Material Requests (Edit) | `/:id/edit` | restricted source context | Edit / reconcile lines (OPEN only) | `updateRequest` |
+| `services.materialRequests.cancel` | none | Material Requests (Cancel) | — | — | Cancel (OPEN only) | `cancelRequest` (+ `REQUESTED→WAITING`) |
+| `services.materialRequests.print` | none | Material Requests (Print) | `/:id/print` | document read via view scope | Print | `MaterialRequestPrintService` |
+| `services.materialRequestPurposes.view` | none | Settings | `/app/services/settings/material-request-purposes*` | purpose master list | — | — |
+| `services.materialRequestPurposes.manage` | none | — | `.../new\|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+
+Notes:
+
+- Create/Edit/Cancel/Print imply `serviceMaterialRequestViewAll` via
+  `permissionViewDependencies`. Record scope via
+  `ServiceMaterialRequestScopeResolver` (ASSIGNED = Inspection technician or
+  directly assigned on the source assignment or in an assigned Service Team; TEAM
+  never ALL; ALL = company).
+- Restricted eligible-Inspection lookups are authorized by Material Request Create,
+  never by broad Inspection access.
+- Direct print invocation enforces View + Print + object scope.
+- `*Manage` implies `*View` (purposes).
+
+## Services (Phase 6 — Work Execution)
+
+| Permission | Scope | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `services.workExecutions.view` | `assigned`/`team`/`all` | Services + Work Execution | `/app/services/work-executions`, `/:id` | `watchExecutions`/`getExecution`/`summary`/`watchRecentExecutions`, Inspection/Job Assignment/Enquiry integrations | — | — |
+| `services.workExecutions.create` | none | Work Execution (New) + Overview/Inspection actions | `/app/services/work-executions/new` | restricted eligible-Inspection lookup + source context | New work execution | `createExecution` |
+| `services.workExecutions.edit` | none | Work Execution (Edit) | `/:id/edit` | restricted source context | Edit references/work lines (open only) | `updateExecution` |
+| `services.workExecutions.perform` | none | Work Execution (actions) | `/:id` | — | Start Work / End Work / add Material Used / add After Work Photos | `startWorkLine`/`endWorkLine`/`addMaterialUsed`/`removeMaterialUsed`/`addPhotoEntry`/`updatePhotoEntryDescription`/`removePhotoEntry` |
+| `services.workExecutions.complete` | none | Work Execution (Complete) | — | — | Complete Work Execution (all lines finished) | `completeExecution` |
+| `services.workExecutions.cancel` | none | Work Execution (Cancel) | — | — | Cancel (not after COMPLETED) | `cancelExecution` |
+
+Notes:
+
+- Create/Edit/Perform/Complete/Cancel imply `serviceWorkExecutionViewAll` via
+  `permissionViewDependencies`. Record scope via
+  `ServiceWorkExecutionScopeResolver` (ASSIGNED = directly on a work line, on the
+  source Job Assignment line, the source Inspection technician, or in an assigned
+  Service Team; TEAM never ALL; ALL = company).
+- **Edit and Perform are separate**: structural edits require `edit`; Start/End,
+  Material Used and After Work Photos require `perform`. Both are enforced in the
+  UI and in use-case/repository authorization.
+- Restricted eligible-Inspection lookups are authorized by Work Execution Create,
+  never by broad Inspection access.
+- After-work photo access inherits Work Execution authorization; before-work photo
+  access inherits the owning Inspection (no attachment-id bypass).
+- `perform` requires an active linked Employee for ASSIGNED/self scope.
+
+## Services (Phase 7 — workflow integration)
+
+Phase 7 introduces **no new permission**. Every Services permission above is
+additionally consumed by the workflow read model and its shared components:
+
+| Consumer | Permissions re-checked |
+| --- | --- |
+| `ServiceWorkflowRepository.watchChain` / `loadChain` | The owning view permission **and** scope resolver for each node: `serviceEnquiryView` (all); `serviceJobAssignmentView*`; `serviceInspectionView*`; `serviceMaterialRequestView*`; `serviceWorkExecutionView*`. |
+| `ServiceWorkflowRepository.summary` | Same view permissions/scopes; a metric is only computed when the corresponding scope resolver is not `none`. |
+| `ServiceWorkflowRepository.watchActivity` | Same per-node authorization; only events from viewable records are merged. |
+| `ServiceWorkflowTimeline` / `ServiceWorkflowSection` | Resolves through the read model; a restricted node shows no reference number. |
+| `ServiceWorkflowActionResolver` | Every action is gated by its own action permission (create/edit/complete/cancel/print/perform) in addition to the view scope. |
+| Services Overview / My Work | Metrics and "My Work" are gated by the view permissions and resolved with ASSIGNED/TEAM/ALL scope. |
+
+Enforcement rules:
+
+- **Module disablement.** If the company's `services` module is disabled, every
+  Services scope resolver returns `none`, the navigation disappears, dashboard
+  cards/My Work are absent and deep links resolve to the safe forbidden fallback.
+- **Live refresh.** A grant/revoke while signed in refreshes the sidebar,
+  subnavigation, dashboard cards, buttons, routes and record access without a
+  new login; the workflow section re-reads the current `AuthContext`.
+- **No decorative permission.** Every Services permission maps to real
+  navigation, a real route, a real read, a real action and a real mutation (see
+  the per-phase tables above).
+
 ## Notes
 
 - `*Manage` implies `*View` through `permissionViewDependencies` (single

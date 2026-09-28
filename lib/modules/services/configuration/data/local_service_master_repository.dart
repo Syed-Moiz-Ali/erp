@@ -27,6 +27,8 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.rootCause => AppPermission.serviceRootCauseView,
     ServiceMasterKind.chargeResponsibility =>
       AppPermission.serviceChargeResponsibilityView,
+    ServiceMasterKind.materialRequestPurpose =>
+      AppPermission.serviceMaterialRequestPurposeView,
   };
 
   AppPermission _managePermission(ServiceMasterKind kind) => switch (kind) {
@@ -37,6 +39,8 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.rootCause => AppPermission.serviceRootCauseManage,
     ServiceMasterKind.chargeResponsibility =>
       AppPermission.serviceChargeResponsibilityManage,
+    ServiceMasterKind.materialRequestPurpose =>
+      AppPermission.serviceMaterialRequestPurposeManage,
   };
 
   Failure? _access(
@@ -146,6 +150,8 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.ticketType => db.serviceTicketTypes,
     ServiceMasterKind.rootCause => db.serviceRootCauses,
     ServiceMasterKind.chargeResponsibility => db.serviceChargeResponsibilities,
+    ServiceMasterKind.materialRequestPurpose =>
+      db.serviceMaterialRequestPurposes,
   };
 
   Future<ServiceMasterRecord?> _raw(
@@ -406,6 +412,23 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
             .into(db.serviceChargeResponsibilities)
             .insertOnConflictUpdate(
               ServiceChargeResponsibilitiesCompanion.insert(
+                id: record.id,
+                companyId: record.companyId,
+                code: record.code,
+                name: record.name,
+                description: Value(record.description),
+                status: record.status.name,
+                sortOrder: Value(record.sortOrder),
+                createdAt: record.createdAt,
+                updatedAt: now,
+                syncStatus: record.syncStatus.name,
+              ),
+            ),
+      ServiceMasterKind.materialRequestPurpose =>
+        db
+            .into(db.serviceMaterialRequestPurposes)
+            .insertOnConflictUpdate(
+              ServiceMaterialRequestPurposesCompanion.insert(
                 id: record.id,
                 companyId: record.companyId,
                 code: record.code,

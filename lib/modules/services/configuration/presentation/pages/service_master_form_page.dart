@@ -24,6 +24,8 @@ class ServiceMasterFormPage extends StatelessWidget {
       ServiceMasterKind.rootCause => ServicesRoutes.rootCauses,
       ServiceMasterKind.chargeResponsibility =>
         ServicesRoutes.chargeResponsibilities,
+      ServiceMasterKind.materialRequestPurpose =>
+        ServicesRoutes.materialRequestPurposes,
     };
     return BlocConsumer<ServiceMasterFormCubit, ServiceMasterFormState>(
       listenWhen: (p, c) =>

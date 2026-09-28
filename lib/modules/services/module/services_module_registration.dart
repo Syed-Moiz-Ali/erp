@@ -32,7 +32,18 @@ import 'package:modular_erp/modules/services/inspections/presentation/bloc/servi
 import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_detail_page.dart';
 import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_form_page.dart';
 import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_list_page.dart';
+import 'package:modular_erp/modules/services/material_requests/domain/service_material_request_repository.dart';
+import 'package:modular_erp/modules/services/material_requests/presentation/bloc/service_material_request_blocs.dart';
+import 'package:modular_erp/modules/services/material_requests/presentation/pages/service_material_request_detail_page.dart';
+import 'package:modular_erp/modules/services/material_requests/presentation/pages/service_material_request_form_page.dart';
+import 'package:modular_erp/modules/services/material_requests/presentation/pages/service_material_request_list_page.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/work_executions/presentation/bloc/service_work_execution_blocs.dart';
+import 'package:modular_erp/modules/services/work_executions/presentation/pages/service_work_execution_detail_page.dart';
+import 'package:modular_erp/modules/services/work_executions/presentation/pages/service_work_execution_form_page.dart';
+import 'package:modular_erp/modules/services/work_executions/presentation/pages/service_work_execution_list_page.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/modules/services/overview/presentation/bloc/service_overview_cubit.dart';
 import 'package:modular_erp/modules/services/overview/presentation/service_overview_page.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
@@ -59,6 +70,9 @@ List<AppModule> buildServicesModules({
   ServiceEnquiryRepository? enquiries,
   ServiceJobAssignmentRepository? jobAssignments,
   ServiceInspectionRepository? inspections,
+  ServiceMaterialRequestRepository? materialRequests,
+  ServiceWorkExecutionRepository? workExecutions,
+  ServiceWorkflowRepository? workflow,
   WorkforceDirectory? workforce,
   ActivityRepository? activity,
 }) {
@@ -134,6 +148,13 @@ List<AppModule> buildServicesModules({
         ServicesRoutes.chargeResponsibilities,
         ServicesRoutes.chargeResponsibilitiesNew,
         ServicesRoutes.chargeResponsibility,
+      ),
+      ServiceMasterKind.materialRequestPurpose => (
+        'services-material-request-purposes',
+        ServicesRoutes.materialRequestPurposes,
+        ServicesRoutes.materialRequestPurposes,
+        ServicesRoutes.materialRequestPurposesNew,
+        ServicesRoutes.materialRequestPurpose,
       ),
     };
     return RegisteredDestination(
@@ -242,6 +263,8 @@ List<AppModule> buildServicesModules({
                 enquiries: enquiries,
                 jobAssignments: jobAssignments,
                 inspections: inspections,
+                materialRequests: materialRequests,
+                workExecutions: workExecutions,
               )..load(),
               child: const ServiceOverviewPage(),
             );
@@ -305,6 +328,8 @@ List<AppModule> buildServicesModules({
                     child: ServiceEnquiryDetailPage(
                       enquiryId: enquiryId,
                       jobAssignments: jobAssignments,
+                      workExecutions: workExecutions,
+                      workflow: workflow,
                     ),
                   );
                 },
@@ -395,6 +420,8 @@ List<AppModule> buildServicesModules({
                     child: ServiceJobAssignmentDetailPage(
                       assignmentId: assignmentId,
                       inspections: inspections,
+                      workExecutions: workExecutions,
+                      workflow: workflow,
                     ),
                   );
                 },
@@ -486,6 +513,9 @@ List<AppModule> buildServicesModules({
                     )..start(),
                     child: ServiceInspectionDetailPage(
                       inspectionId: inspectionId,
+                      materialRequests: materialRequests,
+                      workExecutions: workExecutions,
+                      workflow: workflow,
                     ),
                   );
                 },
@@ -514,6 +544,211 @@ List<AppModule> buildServicesModules({
               ),
             ],
           ),
+        if (materialRequests != null && workforce != null)
+          destination(
+            ErpModule(
+              id: 'services-material-requests',
+              moduleId: AppModuleIds.services,
+              name: (l) => l.servicesNavMaterialRequests,
+              icon: Icons.request_quote_outlined,
+              selectedIcon: Icons.request_quote,
+              route: ServicesRoutes.materialRequests,
+              navigationGroup: NavigationGroup.services,
+              order: 4,
+              anyPermissions: {
+                AppPermission.serviceMaterialRequestViewAssigned,
+                AppPermission.serviceMaterialRequestViewTeam,
+                AppPermission.serviceMaterialRequestViewAll,
+                AppPermission.serviceMaterialRequestCreate,
+              },
+            ),
+            (context) {
+              final account = context.read<AuthBloc>().state.context!;
+              return BlocProvider(
+                create: (_) => ServiceMaterialRequestListCubit(
+                  materialRequests,
+                  masters,
+                  account,
+                )..start(),
+                child: const ServiceMaterialRequestListPage(),
+              );
+            },
+            children: [
+              GoRoute(
+                path: 'new',
+                name: 'services-material-request-new',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final inspectionId =
+                      state.uri.queryParameters['inspectionId'];
+                  return BlocProvider(
+                    create: (_) => ServiceMaterialRequestFormCubit(
+                      materialRequests,
+                      masters,
+                      account,
+                      null,
+                      initialInspectionId: inspectionId,
+                    )..init(),
+                    child: const ServiceMaterialRequestFormPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':requestId',
+                name: 'services-material-request-details',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final requestId = state.pathParameters['requestId']!;
+                  return BlocProvider(
+                    create: (_) => ServiceMaterialRequestDetailCubit(
+                      materialRequests,
+                      activity!,
+                      account,
+                      requestId,
+                    )..start(),
+                    child: ServiceMaterialRequestDetailPage(
+                      requestId: requestId,
+                      workflow: workflow,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    name: 'services-material-request-edit',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final requestId = state.pathParameters['requestId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceMaterialRequestFormCubit(
+                          materialRequests,
+                          masters,
+                          account,
+                          requestId,
+                        )..init(),
+                        child: ServiceMaterialRequestFormPage(
+                          requestId: requestId,
+                        ),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'print',
+                    name: 'services-material-request-print',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final requestId = state.pathParameters['requestId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceMaterialRequestDetailCubit(
+                          materialRequests,
+                          activity!,
+                          account,
+                          requestId,
+                        )..start(),
+                        child: ServiceMaterialRequestDetailPage(
+                          requestId: requestId,
+                          workflow: workflow,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        if (workExecutions != null && workforce != null)
+          destination(
+            ErpModule(
+              id: 'services-work-executions',
+              moduleId: AppModuleIds.services,
+              name: (l) => l.servicesNavWorkExecution,
+              icon: Icons.engineering_outlined,
+              selectedIcon: Icons.engineering,
+              route: ServicesRoutes.workExecutions,
+              navigationGroup: NavigationGroup.services,
+              order: 5,
+              anyPermissions: {
+                AppPermission.serviceWorkExecutionViewAssigned,
+                AppPermission.serviceWorkExecutionViewTeam,
+                AppPermission.serviceWorkExecutionViewAll,
+                AppPermission.serviceWorkExecutionCreate,
+              },
+            ),
+            (context) {
+              final account = context.read<AuthBloc>().state.context!;
+              return BlocProvider(
+                create: (_) =>
+                    ServiceWorkExecutionListCubit(workExecutions, account)
+                      ..start(),
+                child: const ServiceWorkExecutionListPage(),
+              );
+            },
+            children: [
+              GoRoute(
+                path: 'new',
+                name: 'services-work-execution-new',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final inspectionId =
+                      state.uri.queryParameters['inspectionId'];
+                  return BlocProvider(
+                    create: (_) => ServiceWorkExecutionFormCubit(
+                      workExecutions,
+                      account,
+                      null,
+                      initialInspectionId: inspectionId,
+                    )..init(),
+                    child: ServiceWorkExecutionFormPage(
+                      teamRepository: teams,
+                      workforce: workforce,
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':executionId',
+                name: 'services-work-execution-details',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final executionId = state.pathParameters['executionId']!;
+                  return BlocProvider(
+                    create: (_) => ServiceWorkExecutionDetailCubit(
+                      workExecutions,
+                      activity!,
+                      account,
+                      executionId,
+                    )..start(),
+                    child: ServiceWorkExecutionDetailPage(
+                      executionId: executionId,
+                      workflow: workflow,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    name: 'services-work-execution-edit',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final executionId = state.pathParameters['executionId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceWorkExecutionFormCubit(
+                          workExecutions,
+                          account,
+                          executionId,
+                        )..init(),
+                        child: ServiceWorkExecutionFormPage(
+                          executionId: executionId,
+                          teamRepository: teams,
+                          workforce: workforce,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         destination(
           ErpModule(
             id: 'services-customers',
@@ -522,7 +757,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.business_outlined,
             route: ServicesRoutes.customers,
             navigationGroup: NavigationGroup.services,
-            order: 4,
+            order: 6,
             requiredPermissions: {AppPermission.serviceCustomerView},
           ),
           (context) {
@@ -598,7 +833,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.location_on_outlined,
             route: ServicesRoutes.sites,
             navigationGroup: NavigationGroup.services,
-            order: 5,
+            order: 7,
             requiredPermissions: {AppPermission.serviceSiteView},
           ),
           (context) {
@@ -676,7 +911,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.groups_outlined,
             route: ServicesRoutes.teams,
             navigationGroup: NavigationGroup.services,
-            order: 6,
+            order: 8,
             requiredPermissions: {AppPermission.serviceTeamView},
           ),
           (context) {
@@ -742,12 +977,13 @@ List<AppModule> buildServicesModules({
             icon: Icons.settings_outlined,
             route: ServicesRoutes.settings,
             navigationGroup: NavigationGroup.services,
-            order: 7,
+            order: 9,
             anyPermissions: {
               AppPermission.serviceTypeView,
               AppPermission.complaintTypeView,
               AppPermission.servicePriorityView,
               AppPermission.serviceTicketTypeView,
+              AppPermission.serviceMaterialRequestPurposeView,
             },
           ),
           (_) => const ServiceSettingsPage(),
@@ -758,6 +994,7 @@ List<AppModule> buildServicesModules({
         masterDestination(ServiceMasterKind.ticketType),
         masterDestination(ServiceMasterKind.rootCause),
         masterDestination(ServiceMasterKind.chargeResponsibility),
+        masterDestination(ServiceMasterKind.materialRequestPurpose),
       ],
     ),
   ];
@@ -771,4 +1008,6 @@ AppPermission _masterView(ServiceMasterKind kind) => switch (kind) {
   ServiceMasterKind.rootCause => AppPermission.serviceRootCauseView,
   ServiceMasterKind.chargeResponsibility =>
     AppPermission.serviceChargeResponsibilityView,
+  ServiceMasterKind.materialRequestPurpose =>
+    AppPermission.serviceMaterialRequestPurposeView,
 };

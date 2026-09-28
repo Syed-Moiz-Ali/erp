@@ -18,6 +18,8 @@ import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
 import 'package:modular_erp/modules/services/enquiries/data/local_service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/data/local_service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/inspections/data/local_service_inspection_repository.dart';
+import 'package:modular_erp/modules/services/material_requests/data/local_service_material_request_repository.dart';
+import 'package:modular_erp/modules/services/work_executions/data/local_service_work_execution_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
@@ -131,6 +133,13 @@ Future<Harness> mount(
         ),
       );
       await tester.runAsync(
+        () => seedServiceJobAssignmentDemoData(
+          database!,
+          source.findByScenario(DemoScenario.platformAdmin)!.context,
+          clock,
+        ),
+      );
+      await tester.runAsync(
         () => seedServiceInspectionDemoData(
           database!,
           source.findByScenario(DemoScenario.platformAdmin)!.context,
@@ -138,7 +147,14 @@ Future<Harness> mount(
         ),
       );
       await tester.runAsync(
-        () => seedServiceJobAssignmentDemoData(
+        () => seedServiceMaterialRequestDemoData(
+          database!,
+          source.findByScenario(DemoScenario.platformAdmin)!.context,
+          clock,
+        ),
+      );
+      await tester.runAsync(
+        () => seedServiceWorkExecutionDemoData(
           database!,
           source.findByScenario(DemoScenario.platformAdmin)!.context,
           clock,
@@ -192,6 +208,23 @@ Future<Harness> mount(
           const FixedOffsetCompanyTimeService(),
         ),
         serviceInspectionRepository: LocalServiceInspectionRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+          LocalAttachmentRepository(database, clock),
+          HrWorkforceDirectory(repo, employees),
+          const FixedOffsetCompanyTimeService(),
+        ),
+        serviceMaterialRequestRepository: LocalServiceMaterialRequestRepository(
+          database,
+          clock,
+          numbers,
+          activity,
+          HrWorkforceDirectory(repo, employees),
+          const FixedOffsetCompanyTimeService(),
+        ),
+        serviceWorkExecutionRepository: LocalServiceWorkExecutionRepository(
           database,
           clock,
           numbers,

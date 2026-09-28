@@ -32,6 +32,8 @@ class ServiceOverviewPage extends StatelessWidget {
         final summary = state.enquirySummary;
         final assignmentSummary = state.assignmentSummary;
         final inspectionSummary = state.inspectionSummary;
+        final materialRequestSummary = state.materialRequestSummary;
+        final workExecutionSummary = state.workExecutionSummary;
         final metrics = <Widget>[
           if (summary != null) ...[
             AppMetricCard(
@@ -92,6 +94,42 @@ class ServiceOverviewPage extends StatelessWidget {
               icon: Icons.task_alt_outlined,
             ),
           ],
+          if (materialRequestSummary != null) ...[
+            AppMetricCard(
+              label: l.servicesOverviewMaterialRequestsOpen,
+              value: numbers.integer(materialRequestSummary.openCount),
+              icon: Icons.request_quote_outlined,
+              onTap: () => context.go(ServicesRoutes.materialRequests),
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewMaterialRequestsToday,
+              value: numbers.integer(materialRequestSummary.todayCount),
+              icon: Icons.today_outlined,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewMaterialRequestsLines,
+              value: numbers.integer(materialRequestSummary.lineCount),
+              icon: Icons.list_alt_outlined,
+            ),
+          ],
+          if (workExecutionSummary != null) ...[
+            AppMetricCard(
+              label: l.servicesOverviewWorkExecutionsPending,
+              value: numbers.integer(workExecutionSummary.pendingCount),
+              icon: Icons.engineering_outlined,
+              onTap: () => context.go(ServicesRoutes.workExecutions),
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewWorkExecutionsInProgress,
+              value: numbers.integer(workExecutionSummary.inProgressCount),
+              icon: Icons.play_circle_outline,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewWorkExecutionsCompletedToday,
+              value: numbers.integer(workExecutionSummary.completedTodayCount),
+              icon: Icons.task_alt_outlined,
+            ),
+          ],
           if (state.customers != null)
             AppMetricCard(
               label: l.servicesSummaryCustomers,
@@ -129,6 +167,51 @@ class ServiceOverviewPage extends StatelessWidget {
             children: [
               if (metrics.isNotEmpty) ...[
                 AppDashboardGrid(children: metrics),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (state.myWork != null && !state.myWork!.isEmpty) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewMyWork,
+                  children: [
+                    for (final item in state.myWork!.assignments)
+                      AppSettingsRow(
+                        title: item.assignmentNumber,
+                        description: [
+                          item.customerName,
+                          if (item.assignedSummary.isNotEmpty)
+                            item.assignedSummary,
+                        ].join(' · '),
+                        icon: Icons.assignment_ind_outlined,
+                        trailing: serviceJobAssignmentStatusLabel(
+                          item.status,
+                          l,
+                        ),
+                        onPressed: () =>
+                            context.go(ServicesRoutes.assignment(item.id)),
+                      ),
+                    for (final item in state.myWork!.inspections)
+                      AppSettingsRow(
+                        title: item.inspectionNumber,
+                        description: item.customerName,
+                        icon: Icons.fact_check_outlined,
+                        trailing: serviceInspectionStatusLabel(item.status, l),
+                        onPressed: () =>
+                            context.go(ServicesRoutes.inspection(item.id)),
+                      ),
+                    for (final item in state.myWork!.executions)
+                      AppSettingsRow(
+                        title: item.executionNumber,
+                        description: item.customerName,
+                        icon: Icons.engineering_outlined,
+                        trailing: serviceWorkExecutionStatusLabel(
+                          item.status,
+                          l,
+                        ),
+                        onPressed: () =>
+                            context.go(ServicesRoutes.workExecution(item.id)),
+                      ),
+                  ],
+                ),
                 const SizedBox(height: AppSpacing.xxl),
               ],
               if (summary != null) ...[
@@ -212,6 +295,67 @@ class ServiceOverviewPage extends StatelessWidget {
                           ),
                           onPressed: () =>
                               context.go(ServicesRoutes.inspection(item.id)),
+                        ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (materialRequestSummary != null) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewRecentMaterialRequests,
+                  children: [
+                    if (state.recentMaterialRequests.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Text(l.servicesOverviewNoMaterialRequests),
+                      )
+                    else
+                      for (final item in state.recentMaterialRequests)
+                        AppSettingsRow(
+                          title: item.requestNumber,
+                          description: [
+                            item.customerName,
+                            if (item.inspectionNumber.isNotEmpty)
+                              item.inspectionNumber,
+                          ].join(' · '),
+                          icon: Icons.request_quote_outlined,
+                          trailing: serviceMaterialRequestStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          onPressed: () => context.go(
+                            ServicesRoutes.materialRequest(item.id),
+                          ),
+                        ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (workExecutionSummary != null) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewRecentWorkExecutions,
+                  children: [
+                    if (state.recentWorkExecutions.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Text(l.servicesOverviewNoWorkExecutions),
+                      )
+                    else
+                      for (final item in state.recentWorkExecutions)
+                        AppSettingsRow(
+                          title: item.executionNumber,
+                          description: [
+                            item.customerName,
+                            if (item.inspectionNumber.isNotEmpty)
+                              item.inspectionNumber,
+                          ].join(' · '),
+                          icon: Icons.engineering_outlined,
+                          trailing: serviceWorkExecutionStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          onPressed: () =>
+                              context.go(ServicesRoutes.workExecution(item.id)),
                         ),
                   ],
                 ),

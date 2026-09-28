@@ -13309,6 +13309,2226 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have been assigned a service inspection.'**
   String get notifServiceInspectionAssignedBody;
+
+  /// No description provided for @servicesPermSubMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Material requests'**
+  String get servicesPermSubMaterialRequests;
+
+  /// No description provided for @servicesPermMaterialRequestsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View material requests'**
+  String get servicesPermMaterialRequestsView;
+
+  /// No description provided for @servicesPermMaterialRequestsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the company material request queue within your record scope.'**
+  String get servicesPermMaterialRequestsViewDesc;
+
+  /// No description provided for @servicesPermMaterialRequestsCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create material request'**
+  String get servicesPermMaterialRequestsCreate;
+
+  /// No description provided for @servicesPermMaterialRequestsCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a material request from an eligible completed inspection, including restricted inspection reference lookup.'**
+  String get servicesPermMaterialRequestsCreateDesc;
+
+  /// No description provided for @servicesPermMaterialRequestsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit material request'**
+  String get servicesPermMaterialRequestsEdit;
+
+  /// No description provided for @servicesPermMaterialRequestsEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit an open material request.'**
+  String get servicesPermMaterialRequestsEditDesc;
+
+  /// No description provided for @servicesPermMaterialRequestsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel material request'**
+  String get servicesPermMaterialRequestsCancel;
+
+  /// No description provided for @servicesPermMaterialRequestsCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel an open material request (kept historically).'**
+  String get servicesPermMaterialRequestsCancelDesc;
+
+  /// No description provided for @servicesPermMaterialRequestsPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Print material request'**
+  String get servicesPermMaterialRequestsPrint;
+
+  /// No description provided for @servicesPermMaterialRequestsPrintDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Print a material request document.'**
+  String get servicesPermMaterialRequestsPrintDesc;
+
+  /// No description provided for @servicesPermMaterialRequestPurposesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View material request purposes'**
+  String get servicesPermMaterialRequestPurposesView;
+
+  /// No description provided for @servicesPermMaterialRequestPurposesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See configured material request purposes.'**
+  String get servicesPermMaterialRequestPurposesViewDesc;
+
+  /// No description provided for @servicesPermMaterialRequestPurposesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage material request purposes'**
+  String get servicesPermMaterialRequestPurposesManage;
+
+  /// No description provided for @servicesPermMaterialRequestPurposesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and edit material request purposes.'**
+  String get servicesPermMaterialRequestPurposesManageDesc;
+
+  /// No description provided for @permissionServiceMaterialRequestView.
+  ///
+  /// In en, this message translates to:
+  /// **'View material requests'**
+  String get permissionServiceMaterialRequestView;
+
+  /// No description provided for @permissionServiceMaterialRequestCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create material request'**
+  String get permissionServiceMaterialRequestCreate;
+
+  /// No description provided for @permissionServiceMaterialRequestEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit material request'**
+  String get permissionServiceMaterialRequestEdit;
+
+  /// No description provided for @permissionServiceMaterialRequestCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel material request'**
+  String get permissionServiceMaterialRequestCancel;
+
+  /// No description provided for @permissionServiceMaterialRequestPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Print material request'**
+  String get permissionServiceMaterialRequestPrint;
+
+  /// No description provided for @servicesNavMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Material Requests'**
+  String get servicesNavMaterialRequests;
+
+  /// No description provided for @servicesMaterialRequestPurposesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request purposes'**
+  String get servicesMaterialRequestPurposesTitle;
+
+  /// No description provided for @servicesMaterialRequestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material requests'**
+  String get servicesMaterialRequestsTitle;
+
+  /// No description provided for @servicesMaterialRequestCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} material requests'**
+  String servicesMaterialRequestCount(String filtered, String total);
+
+  /// No description provided for @servicesMaterialRequestSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by request, inspection, job assignment, enquiry, job order, customer, code or description'**
+  String get servicesMaterialRequestSearch;
+
+  /// No description provided for @servicesMaterialRequestAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesMaterialRequestAllStatuses;
+
+  /// No description provided for @servicesMaterialRequestStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get servicesMaterialRequestStatusOpen;
+
+  /// No description provided for @servicesMaterialRequestStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesMaterialRequestStatusCancelled;
+
+  /// No description provided for @servicesMaterialRequestEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No material requests yet.'**
+  String get servicesMaterialRequestEmpty;
+
+  /// No description provided for @servicesMaterialRequestEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a material request from a completed inspection.'**
+  String get servicesMaterialRequestEmptyMessage;
+
+  /// No description provided for @servicesMaterialRequestNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No material requests match your filters.'**
+  String get servicesMaterialRequestNoResults;
+
+  /// No description provided for @servicesMaterialRequestAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New material request'**
+  String get servicesMaterialRequestAdd;
+
+  /// No description provided for @servicesMaterialRequestColumnRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get servicesMaterialRequestColumnRequest;
+
+  /// No description provided for @servicesMaterialRequestColumnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get servicesMaterialRequestColumnDate;
+
+  /// No description provided for @servicesMaterialRequestColumnInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesMaterialRequestColumnInspection;
+
+  /// No description provided for @servicesMaterialRequestColumnCustomerSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer / site'**
+  String get servicesMaterialRequestColumnCustomerSite;
+
+  /// No description provided for @servicesMaterialRequestColumnPurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get servicesMaterialRequestColumnPurpose;
+
+  /// No description provided for @servicesMaterialRequestColumnItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get servicesMaterialRequestColumnItems;
+
+  /// No description provided for @servicesMaterialRequestColumnTotalQty.
+  ///
+  /// In en, this message translates to:
+  /// **'Total qty'**
+  String get servicesMaterialRequestColumnTotalQty;
+
+  /// No description provided for @servicesMaterialRequestColumnStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesMaterialRequestColumnStatus;
+
+  /// No description provided for @servicesMaterialRequestColumnPreparedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared by'**
+  String get servicesMaterialRequestColumnPreparedBy;
+
+  /// No description provided for @servicesMaterialRequestColumnCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesMaterialRequestColumnCreated;
+
+  /// No description provided for @servicesMaterialRequestFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get servicesMaterialRequestFilterTitle;
+
+  /// No description provided for @servicesMaterialRequestFilterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesMaterialRequestFilterStatus;
+
+  /// No description provided for @servicesMaterialRequestFilterPurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get servicesMaterialRequestFilterPurpose;
+
+  /// No description provided for @servicesMaterialRequestFilterInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesMaterialRequestFilterInspection;
+
+  /// No description provided for @servicesMaterialRequestFilterFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From date'**
+  String get servicesMaterialRequestFilterFrom;
+
+  /// No description provided for @servicesMaterialRequestFilterTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To date'**
+  String get servicesMaterialRequestFilterTo;
+
+  /// No description provided for @servicesMaterialRequestFormNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New material request'**
+  String get servicesMaterialRequestFormNew;
+
+  /// No description provided for @servicesMaterialRequestFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit material request'**
+  String get servicesMaterialRequestFormEdit;
+
+  /// No description provided for @servicesMaterialRequestCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create material request'**
+  String get servicesMaterialRequestCreate;
+
+  /// No description provided for @servicesMaterialRequestSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get servicesMaterialRequestSaveChanges;
+
+  /// No description provided for @servicesMaterialRequestSectionRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get servicesMaterialRequestSectionRequest;
+
+  /// No description provided for @servicesMaterialRequestSectionContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Service context'**
+  String get servicesMaterialRequestSectionContext;
+
+  /// No description provided for @servicesMaterialRequestSectionInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Request information'**
+  String get servicesMaterialRequestSectionInformation;
+
+  /// No description provided for @servicesMaterialRequestSectionMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get servicesMaterialRequestSectionMaterials;
+
+  /// No description provided for @servicesMaterialRequestSectionAcknowledgement.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledgement'**
+  String get servicesMaterialRequestSectionAcknowledgement;
+
+  /// No description provided for @servicesMaterialRequestSectionSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get servicesMaterialRequestSectionSummary;
+
+  /// No description provided for @servicesMaterialRequestSectionAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesMaterialRequestSectionAudit;
+
+  /// No description provided for @servicesMaterialRequestSectionActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesMaterialRequestSectionActivity;
+
+  /// No description provided for @servicesMaterialRequestNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Request no'**
+  String get servicesMaterialRequestNo;
+
+  /// No description provided for @servicesMaterialRequestDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Request date'**
+  String get servicesMaterialRequestDate;
+
+  /// No description provided for @servicesMaterialRequestSourceInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Source inspection'**
+  String get servicesMaterialRequestSourceInspection;
+
+  /// No description provided for @servicesMaterialRequestSelectInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an eligible completed inspection'**
+  String get servicesMaterialRequestSelectInspection;
+
+  /// No description provided for @servicesMaterialRequestInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesMaterialRequestInspection;
+
+  /// No description provided for @servicesMaterialRequestJobAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesMaterialRequestJobAssignment;
+
+  /// No description provided for @servicesMaterialRequestEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesMaterialRequestEnquiry;
+
+  /// No description provided for @servicesMaterialRequestCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get servicesMaterialRequestCustomer;
+
+  /// No description provided for @servicesMaterialRequestSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Site'**
+  String get servicesMaterialRequestSite;
+
+  /// No description provided for @servicesMaterialRequestTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get servicesMaterialRequestTenant;
+
+  /// No description provided for @servicesMaterialRequestBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get servicesMaterialRequestBuilding;
+
+  /// No description provided for @servicesMaterialRequestUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get servicesMaterialRequestUnit;
+
+  /// No description provided for @servicesMaterialRequestMaterialReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Material received'**
+  String get servicesMaterialRequestMaterialReceived;
+
+  /// No description provided for @servicesMaterialRequestJobOrderReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Job order reference'**
+  String get servicesMaterialRequestJobOrderReference;
+
+  /// No description provided for @servicesMaterialRequestJobOrderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional external job order number'**
+  String get servicesMaterialRequestJobOrderHint;
+
+  /// No description provided for @servicesMaterialRequestPurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get servicesMaterialRequestPurpose;
+
+  /// No description provided for @servicesMaterialRequestRemarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Remarks'**
+  String get servicesMaterialRequestRemarks;
+
+  /// No description provided for @servicesMaterialRequestAcknowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledge'**
+  String get servicesMaterialRequestAcknowledge;
+
+  /// No description provided for @servicesMaterialRequestReceivedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Received by'**
+  String get servicesMaterialRequestReceivedBy;
+
+  /// No description provided for @servicesMaterialRequestPreparedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared by'**
+  String get servicesMaterialRequestPreparedBy;
+
+  /// No description provided for @servicesMaterialRequestLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material {index}'**
+  String servicesMaterialRequestLineTitle(String index);
+
+  /// No description provided for @servicesMaterialRequestCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesMaterialRequestCode;
+
+  /// No description provided for @servicesMaterialRequestDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesMaterialRequestDescription;
+
+  /// No description provided for @servicesMaterialRequestBatchNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch no'**
+  String get servicesMaterialRequestBatchNumber;
+
+  /// No description provided for @servicesMaterialRequestQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get servicesMaterialRequestQuantity;
+
+  /// No description provided for @servicesMaterialRequestRemark.
+  ///
+  /// In en, this message translates to:
+  /// **'Remark'**
+  String get servicesMaterialRequestRemark;
+
+  /// No description provided for @servicesMaterialRequestAddMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Add material'**
+  String get servicesMaterialRequestAddMaterial;
+
+  /// No description provided for @servicesMaterialRequestRemoveMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove material'**
+  String get servicesMaterialRequestRemoveMaterial;
+
+  /// No description provided for @servicesMaterialRequestTotalQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Total quantity'**
+  String get servicesMaterialRequestTotalQuantity;
+
+  /// No description provided for @servicesMaterialRequestItemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String servicesMaterialRequestItemCount(String count);
+
+  /// No description provided for @servicesMaterialRequestEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit request'**
+  String get servicesMaterialRequestEdit;
+
+  /// No description provided for @servicesMaterialRequestPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get servicesMaterialRequestPrint;
+
+  /// No description provided for @servicesMaterialRequestCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel material request'**
+  String get servicesMaterialRequestCancel;
+
+  /// No description provided for @servicesMaterialRequestCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel material request?'**
+  String get servicesMaterialRequestCancelConfirmTitle;
+
+  /// No description provided for @servicesMaterialRequestCancelConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cancelled request stays available historically and cannot be edited afterwards.'**
+  String get servicesMaterialRequestCancelConfirmMessage;
+
+  /// No description provided for @servicesMaterialRequestCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request created.'**
+  String get servicesMaterialRequestCreated;
+
+  /// No description provided for @servicesMaterialRequestUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request updated.'**
+  String get servicesMaterialRequestUpdated;
+
+  /// No description provided for @servicesMaterialRequestCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request cancelled.'**
+  String get servicesMaterialRequestCancelled;
+
+  /// No description provided for @servicesMaterialRequestPrinted.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request prepared for printing.'**
+  String get servicesMaterialRequestPrinted;
+
+  /// No description provided for @servicesMaterialRequestNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesMaterialRequestNoActivity;
+
+  /// No description provided for @servicesMaterialRequestNoMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'No material lines.'**
+  String get servicesMaterialRequestNoMaterials;
+
+  /// No description provided for @servicesMaterialRequestCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get servicesMaterialRequestCreatedBy;
+
+  /// No description provided for @servicesMaterialRequestCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get servicesMaterialRequestCreatedAt;
+
+  /// No description provided for @servicesMaterialRequestUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesMaterialRequestUpdatedBy;
+
+  /// No description provided for @servicesMaterialRequestUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get servicesMaterialRequestUpdatedAt;
+
+  /// No description provided for @servicesMaterialRequestVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get servicesMaterialRequestVersion;
+
+  /// No description provided for @servicesMaterialRequestDetailContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Source context'**
+  String get servicesMaterialRequestDetailContext;
+
+  /// No description provided for @servicesMaterialRequestDetailMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Material lines'**
+  String get servicesMaterialRequestDetailMaterials;
+
+  /// No description provided for @servicesMaterialRequestDetailAcknowledgement.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledgement'**
+  String get servicesMaterialRequestDetailAcknowledgement;
+
+  /// No description provided for @servicesMaterialRequestDetailAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesMaterialRequestDetailAudit;
+
+  /// No description provided for @servicesMaterialRequestDetailActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesMaterialRequestDetailActivity;
+
+  /// No description provided for @servicesMaterialRequestResetForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset form'**
+  String get servicesMaterialRequestResetForm;
+
+  /// No description provided for @servicesMaterialRequestResetConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset form?'**
+  String get servicesMaterialRequestResetConfirmTitle;
+
+  /// No description provided for @servicesMaterialRequestResetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This clears the unsaved material request.'**
+  String get servicesMaterialRequestResetConfirmMessage;
+
+  /// No description provided for @servicesMaterialRequestDiscardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get servicesMaterialRequestDiscardChanges;
+
+  /// No description provided for @servicesMaterialRequestCreateFromInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Create material request'**
+  String get servicesMaterialRequestCreateFromInspection;
+
+  /// No description provided for @servicesMaterialRequestSectionForInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Material requests'**
+  String get servicesMaterialRequestSectionForInspection;
+
+  /// No description provided for @servicesMaterialRequestNoneForInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'No material requests yet.'**
+  String get servicesMaterialRequestNoneForInspection;
+
+  /// No description provided for @servicesMaterialRequestInspectionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an inspection.'**
+  String get servicesMaterialRequestInspectionRequired;
+
+  /// No description provided for @servicesMaterialRequestInspectionInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected inspection is not eligible.'**
+  String get servicesMaterialRequestInspectionInvalid;
+
+  /// No description provided for @servicesMaterialRequestPurposeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected purpose is not available.'**
+  String get servicesMaterialRequestPurposeInvalid;
+
+  /// No description provided for @servicesMaterialRequestLinesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one material line.'**
+  String get servicesMaterialRequestLinesRequired;
+
+  /// No description provided for @servicesMaterialRequestCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code for each material line.'**
+  String get servicesMaterialRequestCodeRequired;
+
+  /// No description provided for @servicesMaterialRequestDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the description for each material line.'**
+  String get servicesMaterialRequestDescriptionRequired;
+
+  /// No description provided for @servicesMaterialRequestQuantityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a quantity greater than zero for each material line.'**
+  String get servicesMaterialRequestQuantityRequired;
+
+  /// No description provided for @servicesMaterialRequestNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request not found.'**
+  String get servicesMaterialRequestNotFound;
+
+  /// No description provided for @servicesMaterialRequestNotEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only open material requests can be edited.'**
+  String get servicesMaterialRequestNotEditable;
+
+  /// No description provided for @servicesMaterialRequestAlreadyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This material request is already cancelled.'**
+  String get servicesMaterialRequestAlreadyCancelled;
+
+  /// No description provided for @servicesMaterialRequestRequirementLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'A selected material requirement is already linked to an active request.'**
+  String get servicesMaterialRequestRequirementLinked;
+
+  /// No description provided for @servicesMaterialRequestSequenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not allocate a request number.'**
+  String get servicesMaterialRequestSequenceFailed;
+
+  /// No description provided for @servicesMaterialRequestDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesMaterialRequestDenied;
+
+  /// No description provided for @servicesMaterialRequestStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the material request. Please try again.'**
+  String get servicesMaterialRequestStorageError;
+
+  /// No description provided for @servicesMaterialRequestPrintFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not prepare the printable document.'**
+  String get servicesMaterialRequestPrintFailed;
+
+  /// No description provided for @servicesInspectionMaterialStatusRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get servicesInspectionMaterialStatusRequested;
+
+  /// No description provided for @servicesOverviewMaterialRequestsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open material requests'**
+  String get servicesOverviewMaterialRequestsOpen;
+
+  /// No description provided for @servicesOverviewMaterialRequestsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Material requests today'**
+  String get servicesOverviewMaterialRequestsToday;
+
+  /// No description provided for @servicesOverviewMaterialRequestsLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested material lines'**
+  String get servicesOverviewMaterialRequestsLines;
+
+  /// No description provided for @servicesOverviewRecentMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent material requests'**
+  String get servicesOverviewRecentMaterialRequests;
+
+  /// No description provided for @servicesOverviewNoMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No material requests yet.'**
+  String get servicesOverviewNoMaterialRequests;
+
+  /// No description provided for @servicesMaterialRequestPrintTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request'**
+  String get servicesMaterialRequestPrintTitle;
+
+  /// No description provided for @servicesActivityLinesChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Material lines changed'**
+  String get servicesActivityLinesChanged;
+
+  /// No description provided for @servicesNavWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Execution'**
+  String get servicesNavWorkExecution;
+
+  /// No description provided for @servicesPermSubWorkExecutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Execution'**
+  String get servicesPermSubWorkExecutions;
+
+  /// No description provided for @servicesPermWorkExecutionsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View Work Executions'**
+  String get servicesPermWorkExecutionsView;
+
+  /// No description provided for @servicesPermWorkExecutionsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the Work Execution queue within your record scope.'**
+  String get servicesPermWorkExecutionsViewDesc;
+
+  /// No description provided for @servicesPermWorkExecutionsCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Work Execution'**
+  String get servicesPermWorkExecutionsCreate;
+
+  /// No description provided for @servicesPermWorkExecutionsCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a Work Execution from a completed inspection, with a restricted eligible-inspection search.'**
+  String get servicesPermWorkExecutionsCreateDesc;
+
+  /// No description provided for @servicesPermWorkExecutionsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Work Execution'**
+  String get servicesPermWorkExecutionsEdit;
+
+  /// No description provided for @servicesPermWorkExecutionsEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify header references and work lines while eligible.'**
+  String get servicesPermWorkExecutionsEditDesc;
+
+  /// No description provided for @servicesPermWorkExecutionsPerform.
+  ///
+  /// In en, this message translates to:
+  /// **'Perform Work'**
+  String get servicesPermWorkExecutionsPerform;
+
+  /// No description provided for @servicesPermWorkExecutionsPerformDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start and end assigned work, record material used and add after-work photos.'**
+  String get servicesPermWorkExecutionsPerformDesc;
+
+  /// No description provided for @servicesPermWorkExecutionsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Work Execution'**
+  String get servicesPermWorkExecutionsComplete;
+
+  /// No description provided for @servicesPermWorkExecutionsCompleteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finalize a Work Execution once all required work is finished.'**
+  String get servicesPermWorkExecutionsCompleteDesc;
+
+  /// No description provided for @servicesPermWorkExecutionsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Work Execution'**
+  String get servicesPermWorkExecutionsCancel;
+
+  /// No description provided for @servicesPermWorkExecutionsCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel a Work Execution (kept historically).'**
+  String get servicesPermWorkExecutionsCancelDesc;
+
+  /// No description provided for @permissionServiceWorkExecutionView.
+  ///
+  /// In en, this message translates to:
+  /// **'View Work Executions'**
+  String get permissionServiceWorkExecutionView;
+
+  /// No description provided for @permissionServiceWorkExecutionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Work Execution'**
+  String get permissionServiceWorkExecutionCreate;
+
+  /// No description provided for @permissionServiceWorkExecutionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Work Execution'**
+  String get permissionServiceWorkExecutionEdit;
+
+  /// No description provided for @permissionServiceWorkExecutionPerform.
+  ///
+  /// In en, this message translates to:
+  /// **'Perform Work'**
+  String get permissionServiceWorkExecutionPerform;
+
+  /// No description provided for @permissionServiceWorkExecutionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Work Execution'**
+  String get permissionServiceWorkExecutionComplete;
+
+  /// No description provided for @permissionServiceWorkExecutionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Work Execution'**
+  String get permissionServiceWorkExecutionCancel;
+
+  /// No description provided for @servicesActivityWorkStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work started'**
+  String get servicesActivityWorkStarted;
+
+  /// No description provided for @servicesActivityWorkEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Work ended'**
+  String get servicesActivityWorkEnded;
+
+  /// No description provided for @servicesActivityMaterialUsedAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used added'**
+  String get servicesActivityMaterialUsedAdded;
+
+  /// No description provided for @servicesActivityMaterialUsedRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used removed'**
+  String get servicesActivityMaterialUsedRemoved;
+
+  /// No description provided for @servicesActivityPhotoAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'After-work photos added'**
+  String get servicesActivityPhotoAdded;
+
+  /// No description provided for @servicesActivityPhotoUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'After-work photo updated'**
+  String get servicesActivityPhotoUpdated;
+
+  /// No description provided for @servicesActivityPhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'After-work photo removed'**
+  String get servicesActivityPhotoRemoved;
+
+  /// No description provided for @servicesWorkExecutionStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get servicesWorkExecutionStatusPending;
+
+  /// No description provided for @servicesWorkExecutionStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get servicesWorkExecutionStatusInProgress;
+
+  /// No description provided for @servicesWorkExecutionStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get servicesWorkExecutionStatusCompleted;
+
+  /// No description provided for @servicesWorkExecutionStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesWorkExecutionStatusCancelled;
+
+  /// No description provided for @servicesWorkExecutionLineStateNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get servicesWorkExecutionLineStateNotStarted;
+
+  /// No description provided for @servicesWorkExecutionLineStateInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get servicesWorkExecutionLineStateInProgress;
+
+  /// No description provided for @servicesWorkExecutionLineStateFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get servicesWorkExecutionLineStateFinished;
+
+  /// No description provided for @servicesWorkExecutionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Execution'**
+  String get servicesWorkExecutionsTitle;
+
+  /// No description provided for @servicesWorkExecutionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} work executions'**
+  String servicesWorkExecutionCount(String filtered, String total);
+
+  /// No description provided for @servicesWorkExecutionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New work execution'**
+  String get servicesWorkExecutionAdd;
+
+  /// No description provided for @servicesWorkExecutionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No work executions yet.'**
+  String get servicesWorkExecutionEmpty;
+
+  /// No description provided for @servicesWorkExecutionEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a work execution from a completed inspection.'**
+  String get servicesWorkExecutionEmptyMessage;
+
+  /// No description provided for @servicesWorkExecutionNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No work executions match your filters.'**
+  String get servicesWorkExecutionNoResults;
+
+  /// No description provided for @servicesWorkExecutionSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by execution, inspection, assignment, enquiry, job order reference, quotation reference, customer, site, employee, team or material code'**
+  String get servicesWorkExecutionSearch;
+
+  /// No description provided for @servicesWorkExecutionFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get servicesWorkExecutionFilterTitle;
+
+  /// No description provided for @servicesWorkExecutionFilterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesWorkExecutionFilterStatus;
+
+  /// No description provided for @servicesWorkExecutionFilterFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From date'**
+  String get servicesWorkExecutionFilterFrom;
+
+  /// No description provided for @servicesWorkExecutionFilterTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To date'**
+  String get servicesWorkExecutionFilterTo;
+
+  /// No description provided for @servicesWorkExecutionAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesWorkExecutionAllStatuses;
+
+  /// No description provided for @servicesWorkExecutionColumnExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution'**
+  String get servicesWorkExecutionColumnExecution;
+
+  /// No description provided for @servicesWorkExecutionColumnInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesWorkExecutionColumnInspection;
+
+  /// No description provided for @servicesWorkExecutionColumnCustomerSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer / site'**
+  String get servicesWorkExecutionColumnCustomerSite;
+
+  /// No description provided for @servicesWorkExecutionColumnAssignedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to'**
+  String get servicesWorkExecutionColumnAssignedTo;
+
+  /// No description provided for @servicesWorkExecutionColumnState.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution state'**
+  String get servicesWorkExecutionColumnState;
+
+  /// No description provided for @servicesWorkExecutionColumnStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get servicesWorkExecutionColumnStarted;
+
+  /// No description provided for @servicesWorkExecutionColumnCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get servicesWorkExecutionColumnCompleted;
+
+  /// No description provided for @servicesWorkExecutionColumnStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesWorkExecutionColumnStatus;
+
+  /// No description provided for @servicesWorkExecutionColumnCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesWorkExecutionColumnCreated;
+
+  /// No description provided for @servicesWorkExecutionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel work execution'**
+  String get servicesWorkExecutionCancel;
+
+  /// No description provided for @servicesWorkExecutionCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel work execution?'**
+  String get servicesWorkExecutionCancelConfirmTitle;
+
+  /// No description provided for @servicesWorkExecutionCancelConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cancelled work execution stays available historically and cannot be edited afterwards.'**
+  String get servicesWorkExecutionCancelConfirmMessage;
+
+  /// No description provided for @servicesWorkExecutionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This work execution is cancelled.'**
+  String get servicesWorkExecutionCancelled;
+
+  /// No description provided for @servicesWorkExecutionStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the work execution. Please try again.'**
+  String get servicesWorkExecutionStorageError;
+
+  /// No description provided for @servicesWorkExecutionFormNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New work execution'**
+  String get servicesWorkExecutionFormNew;
+
+  /// No description provided for @servicesWorkExecutionFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit work execution'**
+  String get servicesWorkExecutionFormEdit;
+
+  /// No description provided for @servicesWorkExecutionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create work execution'**
+  String get servicesWorkExecutionCreate;
+
+  /// No description provided for @servicesWorkExecutionSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get servicesWorkExecutionSaveChanges;
+
+  /// No description provided for @servicesWorkExecutionResetForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset form'**
+  String get servicesWorkExecutionResetForm;
+
+  /// No description provided for @servicesWorkExecutionResetConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset form?'**
+  String get servicesWorkExecutionResetConfirmTitle;
+
+  /// No description provided for @servicesWorkExecutionResetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This clears the unsaved work execution.'**
+  String get servicesWorkExecutionResetConfirmMessage;
+
+  /// No description provided for @servicesWorkExecutionSectionContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution context'**
+  String get servicesWorkExecutionSectionContext;
+
+  /// No description provided for @servicesWorkExecutionSectionReferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow references'**
+  String get servicesWorkExecutionSectionReferences;
+
+  /// No description provided for @servicesWorkExecutionSectionCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & service context'**
+  String get servicesWorkExecutionSectionCustomer;
+
+  /// No description provided for @servicesWorkExecutionSectionInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection summary'**
+  String get servicesWorkExecutionSectionInspection;
+
+  /// No description provided for @servicesWorkExecutionSectionWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution'**
+  String get servicesWorkExecutionSectionWork;
+
+  /// No description provided for @servicesWorkExecutionSectionMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used'**
+  String get servicesWorkExecutionSectionMaterials;
+
+  /// No description provided for @servicesWorkExecutionSectionPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos after work'**
+  String get servicesWorkExecutionSectionPhotos;
+
+  /// No description provided for @servicesWorkExecutionNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution no'**
+  String get servicesWorkExecutionNo;
+
+  /// No description provided for @servicesWorkExecutionDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution date'**
+  String get servicesWorkExecutionDate;
+
+  /// No description provided for @servicesWorkExecutionSourceInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Source inspection'**
+  String get servicesWorkExecutionSourceInspection;
+
+  /// No description provided for @servicesWorkExecutionSelectInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an eligible completed inspection'**
+  String get servicesWorkExecutionSelectInspection;
+
+  /// No description provided for @servicesWorkExecutionInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesWorkExecutionInspection;
+
+  /// No description provided for @servicesWorkExecutionJobAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesWorkExecutionJobAssignment;
+
+  /// No description provided for @servicesWorkExecutionEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesWorkExecutionEnquiry;
+
+  /// No description provided for @servicesWorkExecutionJobOrderReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Job order reference'**
+  String get servicesWorkExecutionJobOrderReference;
+
+  /// No description provided for @servicesWorkExecutionQuotationReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotation reference'**
+  String get servicesWorkExecutionQuotationReference;
+
+  /// No description provided for @servicesWorkExecutionCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get servicesWorkExecutionCustomer;
+
+  /// No description provided for @servicesWorkExecutionTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get servicesWorkExecutionTenant;
+
+  /// No description provided for @servicesWorkExecutionBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get servicesWorkExecutionBuilding;
+
+  /// No description provided for @servicesWorkExecutionUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get servicesWorkExecutionUnit;
+
+  /// No description provided for @servicesWorkExecutionComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint type'**
+  String get servicesWorkExecutionComplaint;
+
+  /// No description provided for @servicesWorkExecutionPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesWorkExecutionPriority;
+
+  /// No description provided for @servicesWorkExecutionMaterialReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Material received'**
+  String get servicesWorkExecutionMaterialReceived;
+
+  /// No description provided for @servicesWorkExecutionRootCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Root cause'**
+  String get servicesWorkExecutionRootCause;
+
+  /// No description provided for @servicesWorkExecutionChargeResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge responsibility'**
+  String get servicesWorkExecutionChargeResponsibility;
+
+  /// No description provided for @servicesWorkExecutionTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician'**
+  String get servicesWorkExecutionTechnician;
+
+  /// No description provided for @servicesWorkExecutionChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get servicesWorkExecutionChecklist;
+
+  /// No description provided for @servicesWorkExecutionInspectedPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspected points'**
+  String get servicesWorkExecutionInspectedPoints;
+
+  /// No description provided for @servicesWorkExecutionMaterialRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Material requirements'**
+  String get servicesWorkExecutionMaterialRequirements;
+
+  /// No description provided for @servicesWorkExecutionLinkedMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked material requests'**
+  String get servicesWorkExecutionLinkedMaterialRequests;
+
+  /// No description provided for @servicesWorkExecutionMaterialRequestItems.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String servicesWorkExecutionMaterialRequestItems(String count);
+
+  /// No description provided for @servicesWorkExecutionAddFromMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Add from material request'**
+  String get servicesWorkExecutionAddFromMaterialRequest;
+
+  /// No description provided for @servicesWorkExecutionNoLinkedRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked material requests.'**
+  String get servicesWorkExecutionNoLinkedRequests;
+
+  /// No description provided for @servicesWorkExecutionLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work item {index}'**
+  String servicesWorkExecutionLineTitle(String index);
+
+  /// No description provided for @servicesWorkExecutionMaterialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material {index}'**
+  String servicesWorkExecutionMaterialTitle(String index);
+
+  /// No description provided for @servicesWorkExecutionPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo evidence {index}'**
+  String servicesWorkExecutionPhotoTitle(String index);
+
+  /// No description provided for @servicesWorkExecutionWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get servicesWorkExecutionWork;
+
+  /// No description provided for @servicesWorkExecutionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesWorkExecutionDescription;
+
+  /// No description provided for @servicesWorkExecutionTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get servicesWorkExecutionTeam;
+
+  /// No description provided for @servicesWorkExecutionEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual employee'**
+  String get servicesWorkExecutionEmployee;
+
+  /// No description provided for @servicesWorkExecutionStartTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get servicesWorkExecutionStartTime;
+
+  /// No description provided for @servicesWorkExecutionEndTime.
+  ///
+  /// In en, this message translates to:
+  /// **'End time'**
+  String get servicesWorkExecutionEndTime;
+
+  /// No description provided for @servicesWorkExecutionNoLines.
+  ///
+  /// In en, this message translates to:
+  /// **'No work items.'**
+  String get servicesWorkExecutionNoLines;
+
+  /// No description provided for @servicesWorkExecutionAddLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add work item'**
+  String get servicesWorkExecutionAddLine;
+
+  /// No description provided for @servicesWorkExecutionRemoveLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove work item'**
+  String get servicesWorkExecutionRemoveLine;
+
+  /// No description provided for @servicesWorkExecutionCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesWorkExecutionCode;
+
+  /// No description provided for @servicesWorkExecutionNoMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'No material used.'**
+  String get servicesWorkExecutionNoMaterials;
+
+  /// No description provided for @servicesWorkExecutionAddMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Add material used'**
+  String get servicesWorkExecutionAddMaterial;
+
+  /// No description provided for @servicesWorkExecutionRemoveMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove material used'**
+  String get servicesWorkExecutionRemoveMaterial;
+
+  /// No description provided for @servicesWorkExecutionPhotoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesWorkExecutionPhotoDescription;
+
+  /// No description provided for @servicesWorkExecutionPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get servicesWorkExecutionPhotos;
+
+  /// No description provided for @servicesWorkExecutionAddPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get servicesWorkExecutionAddPhotos;
+
+  /// No description provided for @servicesWorkExecutionNoPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos.'**
+  String get servicesWorkExecutionNoPhotos;
+
+  /// No description provided for @servicesWorkExecutionAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo evidence'**
+  String get servicesWorkExecutionAddPhoto;
+
+  /// No description provided for @servicesWorkExecutionRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo evidence'**
+  String get servicesWorkExecutionRemovePhoto;
+
+  /// No description provided for @servicesWorkExecutionCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution created.'**
+  String get servicesWorkExecutionCreated;
+
+  /// No description provided for @servicesWorkExecutionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution updated.'**
+  String get servicesWorkExecutionUpdated;
+
+  /// No description provided for @servicesWorkExecutionWorkRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the work for each line.'**
+  String get servicesWorkExecutionWorkRequired;
+
+  /// No description provided for @servicesWorkExecutionDetailReferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow references'**
+  String get servicesWorkExecutionDetailReferences;
+
+  /// No description provided for @servicesWorkExecutionDetailContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & service context'**
+  String get servicesWorkExecutionDetailContext;
+
+  /// No description provided for @servicesWorkExecutionDetailWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work items'**
+  String get servicesWorkExecutionDetailWork;
+
+  /// No description provided for @servicesWorkExecutionDetailMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used'**
+  String get servicesWorkExecutionDetailMaterials;
+
+  /// No description provided for @servicesWorkExecutionDetailPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get servicesWorkExecutionDetailPhotos;
+
+  /// No description provided for @servicesWorkExecutionDetailAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesWorkExecutionDetailAudit;
+
+  /// No description provided for @servicesWorkExecutionDetailActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesWorkExecutionDetailActivity;
+
+  /// No description provided for @servicesWorkExecutionStartWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Start work'**
+  String get servicesWorkExecutionStartWork;
+
+  /// No description provided for @servicesWorkExecutionEndWork.
+  ///
+  /// In en, this message translates to:
+  /// **'End work'**
+  String get servicesWorkExecutionEndWork;
+
+  /// No description provided for @servicesWorkExecutionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete work execution'**
+  String get servicesWorkExecutionComplete;
+
+  /// No description provided for @servicesWorkExecutionCompleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete work execution?'**
+  String get servicesWorkExecutionCompleteConfirmTitle;
+
+  /// No description provided for @servicesWorkExecutionCompleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The work execution becomes read-only and stays available historically.'**
+  String get servicesWorkExecutionCompleteConfirmMessage;
+
+  /// No description provided for @servicesWorkExecutionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution completed.'**
+  String get servicesWorkExecutionCompleted;
+
+  /// No description provided for @servicesWorkExecutionPreparedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared by'**
+  String get servicesWorkExecutionPreparedBy;
+
+  /// No description provided for @servicesWorkExecutionCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get servicesWorkExecutionCreatedAt;
+
+  /// No description provided for @servicesWorkExecutionUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesWorkExecutionUpdatedBy;
+
+  /// No description provided for @servicesWorkExecutionUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get servicesWorkExecutionUpdatedAt;
+
+  /// No description provided for @servicesWorkExecutionVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get servicesWorkExecutionVersion;
+
+  /// No description provided for @servicesWorkExecutionNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesWorkExecutionNoActivity;
+
+  /// No description provided for @servicesWorkExecutionWorkStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work started.'**
+  String get servicesWorkExecutionWorkStarted;
+
+  /// No description provided for @servicesWorkExecutionWorkEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Work ended.'**
+  String get servicesWorkExecutionWorkEnded;
+
+  /// No description provided for @servicesWorkExecutionMaterialAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used added.'**
+  String get servicesWorkExecutionMaterialAdded;
+
+  /// No description provided for @servicesWorkExecutionMaterialRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Material used removed.'**
+  String get servicesWorkExecutionMaterialRemoved;
+
+  /// No description provided for @servicesWorkExecutionPhotoAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo evidence added.'**
+  String get servicesWorkExecutionPhotoAdded;
+
+  /// No description provided for @servicesWorkExecutionPhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo evidence removed.'**
+  String get servicesWorkExecutionPhotoRemoved;
+
+  /// No description provided for @servicesWorkExecutionBeforeWorkPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Before work photos'**
+  String get servicesWorkExecutionBeforeWorkPhotos;
+
+  /// No description provided for @servicesWorkExecutionAfterWorkPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'After work photos'**
+  String get servicesWorkExecutionAfterWorkPhotos;
+
+  /// No description provided for @servicesWorkExecutionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit work execution'**
+  String get servicesWorkExecutionEdit;
+
+  /// No description provided for @servicesWorkExecutionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesWorkExecutionDenied;
+
+  /// No description provided for @servicesWorkExecutionNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution not found.'**
+  String get servicesWorkExecutionNotFound;
+
+  /// No description provided for @servicesWorkExecutionNotEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only pending or in-progress work executions can be edited.'**
+  String get servicesWorkExecutionNotEditable;
+
+  /// No description provided for @servicesWorkExecutionNotCompletable.
+  ///
+  /// In en, this message translates to:
+  /// **'All required work items must be started and ended before completion.'**
+  String get servicesWorkExecutionNotCompletable;
+
+  /// No description provided for @servicesWorkExecutionAlreadyCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This work execution is already completed.'**
+  String get servicesWorkExecutionAlreadyCompleted;
+
+  /// No description provided for @servicesWorkExecutionLineAlreadyStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item is already started.'**
+  String get servicesWorkExecutionLineAlreadyStarted;
+
+  /// No description provided for @servicesWorkExecutionLineNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the work item before ending it.'**
+  String get servicesWorkExecutionLineNotStarted;
+
+  /// No description provided for @servicesWorkExecutionLineAlreadyEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item is already ended.'**
+  String get servicesWorkExecutionLineAlreadyEnded;
+
+  /// No description provided for @servicesWorkExecutionInvalidTimeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'The end time cannot be before the start time.'**
+  String get servicesWorkExecutionInvalidTimeRange;
+
+  /// No description provided for @servicesWorkExecutionInspectionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an inspection.'**
+  String get servicesWorkExecutionInspectionRequired;
+
+  /// No description provided for @servicesWorkExecutionInspectionNotEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected inspection is not eligible.'**
+  String get servicesWorkExecutionInspectionNotEligible;
+
+  /// No description provided for @servicesWorkExecutionAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'An active work execution already exists for this inspection.'**
+  String get servicesWorkExecutionAlreadyActive;
+
+  /// No description provided for @servicesWorkExecutionSequenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not allocate a work execution number.'**
+  String get servicesWorkExecutionSequenceFailed;
+
+  /// No description provided for @servicesWorkExecutionLinesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one work item.'**
+  String get servicesWorkExecutionLinesRequired;
+
+  /// No description provided for @servicesWorkExecutionCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code for each material used line.'**
+  String get servicesWorkExecutionCodeRequired;
+
+  /// No description provided for @servicesWorkExecutionDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the description for each material used line.'**
+  String get servicesWorkExecutionDescriptionRequired;
+
+  /// No description provided for @servicesWorkExecutionPhotoDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a description for each photo entry.'**
+  String get servicesWorkExecutionPhotoDescriptionRequired;
+
+  /// No description provided for @servicesWorkExecutionTeamInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected team is not available.'**
+  String get servicesWorkExecutionTeamInvalid;
+
+  /// No description provided for @servicesWorkExecutionEmployeeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected employee is not available.'**
+  String get servicesWorkExecutionEmployeeInvalid;
+
+  /// No description provided for @servicesWorkExecutionMaterialRequestLineInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected material request line is not available.'**
+  String get servicesWorkExecutionMaterialRequestLineInvalid;
+
+  /// No description provided for @servicesOverviewWorkExecutionsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending work executions'**
+  String get servicesOverviewWorkExecutionsPending;
+
+  /// No description provided for @servicesOverviewWorkExecutionsInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Work in progress'**
+  String get servicesOverviewWorkExecutionsInProgress;
+
+  /// No description provided for @servicesOverviewWorkExecutionsCompletedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed today'**
+  String get servicesOverviewWorkExecutionsCompletedToday;
+
+  /// No description provided for @servicesOverviewRecentWorkExecutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent work executions'**
+  String get servicesOverviewRecentWorkExecutions;
+
+  /// No description provided for @servicesOverviewNoWorkExecutions.
+  ///
+  /// In en, this message translates to:
+  /// **'No work executions yet.'**
+  String get servicesOverviewNoWorkExecutions;
+
+  /// No description provided for @servicesInspectionWorkExecutionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution'**
+  String get servicesInspectionWorkExecutionSection;
+
+  /// No description provided for @servicesInspectionCreateWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Create work execution'**
+  String get servicesInspectionCreateWorkExecution;
+
+  /// No description provided for @servicesInspectionNoWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'No work execution yet.'**
+  String get servicesInspectionNoWorkExecution;
+
+  /// No description provided for @servicesAssignmentWorkExecutionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution'**
+  String get servicesAssignmentWorkExecutionSection;
+
+  /// No description provided for @servicesEnquiryWorkExecutionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution'**
+  String get servicesEnquiryWorkExecutionSection;
+
+  /// No description provided for @servicesWorkflowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow'**
+  String get servicesWorkflowTitle;
+
+  /// No description provided for @servicesWorkflowStageEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Service enquiry'**
+  String get servicesWorkflowStageEnquiry;
+
+  /// No description provided for @servicesWorkflowStageJobAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesWorkflowStageJobAssignment;
+
+  /// No description provided for @servicesWorkflowStageInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesWorkflowStageInspection;
+
+  /// No description provided for @servicesWorkflowStageMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Material request'**
+  String get servicesWorkflowStageMaterialRequest;
+
+  /// No description provided for @servicesWorkflowStageWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution'**
+  String get servicesWorkflowStageWorkExecution;
+
+  /// No description provided for @servicesWorkflowNotCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not required / none created'**
+  String get servicesWorkflowNotCreated;
+
+  /// No description provided for @servicesWorkflowNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get servicesWorkflowNotAvailable;
+
+  /// No description provided for @servicesWorkflowOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get servicesWorkflowOptional;
+
+  /// No description provided for @servicesWorkflowStatusAwaitingAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting assignment'**
+  String get servicesWorkflowStatusAwaitingAssignment;
+
+  /// No description provided for @servicesWorkflowStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get servicesWorkflowStatusScheduled;
+
+  /// No description provided for @servicesWorkflowStatusInspectionPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection pending'**
+  String get servicesWorkflowStatusInspectionPending;
+
+  /// No description provided for @servicesWorkflowStatusInspectionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection completed'**
+  String get servicesWorkflowStatusInspectionCompleted;
+
+  /// No description provided for @servicesWorkflowStatusMaterialsRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials requested'**
+  String get servicesWorkflowStatusMaterialsRequested;
+
+  /// No description provided for @servicesWorkflowStatusWorkInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Work in progress'**
+  String get servicesWorkflowStatusWorkInProgress;
+
+  /// No description provided for @servicesWorkflowStatusWorkCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work completed'**
+  String get servicesWorkflowStatusWorkCompleted;
+
+  /// No description provided for @servicesWorkflowStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesWorkflowStatusCancelled;
+
+  /// No description provided for @servicesWorkflowStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get servicesWorkflowStatusUnknown;
+
+  /// No description provided for @servicesWorkflowActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow activity'**
+  String get servicesWorkflowActivityTitle;
+
+  /// No description provided for @servicesWorkflowNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No workflow activity yet.'**
+  String get servicesWorkflowNoActivity;
+
+  /// No description provided for @servicesWorkflowNextActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Next actions'**
+  String get servicesWorkflowNextActions;
+
+  /// No description provided for @servicesWorkflowMaterialWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} material requirement(s) waiting'**
+  String servicesWorkflowMaterialWaiting(String count);
+
+  /// No description provided for @servicesWorkflowActionCreateAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesWorkflowActionCreateAssignment;
+
+  /// No description provided for @servicesWorkflowActionViewAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'View job assignment'**
+  String get servicesWorkflowActionViewAssignment;
+
+  /// No description provided for @servicesWorkflowActionCreateInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Create inspection'**
+  String get servicesWorkflowActionCreateInspection;
+
+  /// No description provided for @servicesWorkflowActionViewInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'View inspection'**
+  String get servicesWorkflowActionViewInspection;
+
+  /// No description provided for @servicesWorkflowActionCreateMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Create material request'**
+  String get servicesWorkflowActionCreateMaterialRequest;
+
+  /// No description provided for @servicesWorkflowActionViewMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'View material request'**
+  String get servicesWorkflowActionViewMaterialRequest;
+
+  /// No description provided for @servicesWorkflowActionCreateWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Create work execution'**
+  String get servicesWorkflowActionCreateWorkExecution;
+
+  /// No description provided for @servicesWorkflowActionViewWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'View work execution'**
+  String get servicesWorkflowActionViewWorkExecution;
+
+  /// No description provided for @servicesWorkflowActionPerform.
+  ///
+  /// In en, this message translates to:
+  /// **'Start / end work'**
+  String get servicesWorkflowActionPerform;
+
+  /// No description provided for @servicesWorkflowActionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get servicesWorkflowActionComplete;
+
+  /// No description provided for @servicesWorkflowActionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get servicesWorkflowActionCancel;
+
+  /// No description provided for @servicesWorkflowActionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get servicesWorkflowActionEdit;
+
+  /// No description provided for @servicesWorkflowActionPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get servicesWorkflowActionPrint;
+
+  /// No description provided for @servicesWorkflowEvidenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work evidence'**
+  String get servicesWorkflowEvidenceTitle;
+
+  /// No description provided for @servicesWorkflowBeforeWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Before work'**
+  String get servicesWorkflowBeforeWork;
+
+  /// No description provided for @servicesWorkflowAfterWork.
+  ///
+  /// In en, this message translates to:
+  /// **'After work'**
+  String get servicesWorkflowAfterWork;
+
+  /// No description provided for @servicesWorkflowNoBeforePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No before-work photos.'**
+  String get servicesWorkflowNoBeforePhotos;
+
+  /// No description provided for @servicesWorkflowNoAfterPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No after-work photos.'**
+  String get servicesWorkflowNoAfterPhotos;
+
+  /// No description provided for @servicesOverviewMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'My work'**
+  String get servicesOverviewMyWork;
+
+  /// No description provided for @servicesOverviewMyWorkAssignments.
+  ///
+  /// In en, this message translates to:
+  /// **'My assignments'**
+  String get servicesOverviewMyWorkAssignments;
+
+  /// No description provided for @servicesOverviewMyWorkInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'My pending inspections'**
+  String get servicesOverviewMyWorkInspections;
+
+  /// No description provided for @servicesOverviewMyWorkExecutions.
+  ///
+  /// In en, this message translates to:
+  /// **'My active work'**
+  String get servicesOverviewMyWorkExecutions;
+
+  /// No description provided for @servicesOverviewNoMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'No assigned work right now.'**
+  String get servicesOverviewNoMyWork;
+
+  /// No description provided for @servicesOverviewWorkflowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational workflow'**
+  String get servicesOverviewWorkflowTitle;
 }
 
 class _AppLocalizationsDelegate

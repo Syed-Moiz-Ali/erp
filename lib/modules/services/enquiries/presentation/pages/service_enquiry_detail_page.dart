@@ -12,7 +12,12 @@ import 'package:modular_erp/modules/services/enquiries/presentation/widgets/enqu
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/presentation/widgets/enquiry_job_assignment_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/enquiry_work_execution_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/service_workflow_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceEnquiryDetailPage extends StatelessWidget {
@@ -20,9 +25,13 @@ class ServiceEnquiryDetailPage extends StatelessWidget {
     super.key,
     required this.enquiryId,
     this.jobAssignments,
+    this.workExecutions,
+    this.workflow,
   });
   final String enquiryId;
   final ServiceJobAssignmentRepository? jobAssignments;
+  final ServiceWorkExecutionRepository? workExecutions;
+  final ServiceWorkflowRepository? workflow;
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +155,14 @@ class ServiceEnquiryDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
+              if (workflow != null) ...[
+                ServiceWorkflowSection(
+                  repository: workflow!,
+                  enquiryId: e.id,
+                  focus: ServiceWorkflowStage.enquiry,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
               AppFormSection(
                 title: l.servicesEnquiryDetailCustomerSection,
                 child: AppDetailsGrid(
@@ -258,6 +275,13 @@ class ServiceEnquiryDetailPage extends StatelessWidget {
                   repository: jobAssignments!,
                   enquiryId: e.id,
                   enquiryStatus: e.status,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (workExecutions != null) ...[
+                EnquiryWorkExecutionSection(
+                  repository: workExecutions!,
+                  enquiryId: e.id,
                 ),
                 const SizedBox(height: AppSpacing.xxl),
               ],

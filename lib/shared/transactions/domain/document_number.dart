@@ -38,7 +38,7 @@ class DocumentSequenceType {
   );
   static const workExecution = DocumentSequenceType(
     key: 'workExecution',
-    prefix: 'EXEC',
+    prefix: 'WE',
   );
 
   // Services Phase 1 directory/team display codes.

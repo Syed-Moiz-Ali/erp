@@ -38,11 +38,19 @@ extension ServiceInspectionChecklistStatusX
       );
 }
 
-/// Material requirement status. WAITING is source-confirmed by the client.
-enum ServiceInspectionMaterialStatus { waiting }
+/// Material requirement status.
+///
+/// WAITING is source-confirmed by the client. Phase 5 adds REQUESTED: a
+/// requirement included in an active (non-cancelled) Material Request. Further
+/// statuses (approved/issued/received/used) are NOT modelled — the client
+/// reference does not establish those workflows.
+enum ServiceInspectionMaterialStatus { waiting, requested }
 
 extension ServiceInspectionMaterialStatusX on ServiceInspectionMaterialStatus {
   String get wire => name;
+  bool get isWaiting => this == ServiceInspectionMaterialStatus.waiting;
+  bool get isRequested => this == ServiceInspectionMaterialStatus.requested;
+
   static ServiceInspectionMaterialStatus fromWire(String value) =>
       ServiceInspectionMaterialStatus.values.firstWhere(
         (s) => s.name == value,

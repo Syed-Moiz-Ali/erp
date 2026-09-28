@@ -19,8 +19,18 @@ const _routes = [
   '/app/services/inspections',
   '/app/services/inspections/new',
   '/app/services/inspections/demo-ins-1',
+  '/app/services/material-requests',
+  '/app/services/material-requests/new',
+  '/app/services/material-requests/demo-mr-1',
+  '/app/services/material-requests/demo-mr-1/edit',
+  '/app/services/material-requests/demo-mr-1/print',
+  '/app/services/work-executions',
+  '/app/services/work-executions/new',
+  '/app/services/work-executions/demo-we-1',
+  '/app/services/work-executions/demo-we-1/edit',
   '/app/services/settings/root-causes',
   '/app/services/settings/charge-responsibilities',
+  '/app/services/settings/material-request-purposes',
   '/app/services/customers',
   '/app/services/customers/new',
   '/app/services/sites',
@@ -205,6 +215,70 @@ void main() {
     expect(
       find.text('Inspect the distribution board and emergency lighting'),
       findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+    await harness.unmount(tester, h);
+  });
+
+  testWidgets('material request list and detail render material lines', (
+    tester,
+  ) async {
+    harness.viewport(tester, 1280);
+    final h = await harness.mount(
+      tester,
+      AppLanguage.english,
+      withServices: true,
+    );
+    h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
+    await harness.pump(tester);
+    final context = tester.element(find.byType(AppShell));
+    final router = harness.router(tester);
+
+    router.go('/app/services/material-requests');
+    await harness.pump(tester);
+    expect(find.text(context.l10n.servicesMaterialRequestsTitle), findsWidgets);
+
+    router.go('/app/services/material-requests/demo-mr-1');
+    await harness.pump(tester);
+    expect(
+      find.text(context.l10n.servicesMaterialRequestDetailMaterials),
+      findsWidgets,
+    );
+    expect(find.text('35uF capacitor'), findsOneWidget);
+    expect(find.text('2.5mm electrical wire'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await harness.unmount(tester, h);
+  });
+
+  testWidgets('work execution list and detail render work items', (
+    tester,
+  ) async {
+    harness.viewport(tester, 1280);
+    final h = await harness.mount(
+      tester,
+      AppLanguage.english,
+      withServices: true,
+    );
+    h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
+    await harness.pump(tester);
+    final context = tester.element(find.byType(AppShell));
+    final router = harness.router(tester);
+
+    router.go('/app/services/work-executions');
+    await harness.pump(tester);
+    expect(find.text(context.l10n.servicesWorkExecutionsTitle), findsWidgets);
+
+    router.go('/app/services/work-executions/demo-we-1');
+    await harness.pump(tester);
+    expect(
+      find.text(context.l10n.servicesWorkExecutionDetailWork),
+      findsWidgets,
+    );
+    expect(find.text('Inspect and replace faulty capacitor'), findsWidgets);
+    expect(find.text('CAP-35UF'), findsWidgets);
+    expect(
+      find.text('New capacitor installed and unit restored'),
+      findsWidgets,
     );
     expect(tester.takeException(), isNull);
     await harness.unmount(tester, h);

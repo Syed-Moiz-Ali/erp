@@ -39,7 +39,12 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
   }
   final base = {...selfService};
   return PermissionSet(switch (scenario) {
-    DemoScenario.employee => base,
+    DemoScenario.employee => {
+      ...base,
+      // Assigned-technician style persona: can perform assigned field work.
+      AppPermission.serviceWorkExecutionViewAssigned,
+      AppPermission.serviceWorkExecutionPerform,
+    },
     DemoScenario.manager => {
       ...base,
       AppPermission.employeeViewTeam,
@@ -54,6 +59,8 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.serviceEnquiryView,
       AppPermission.serviceJobAssignmentViewAssigned,
       AppPermission.serviceInspectionViewAssigned,
+      AppPermission.serviceMaterialRequestViewAssigned,
+      AppPermission.serviceWorkExecutionViewAssigned,
     },
     DemoScenario.hr => {
       ...base,
@@ -122,6 +129,21 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.serviceRootCauseManage,
       AppPermission.serviceChargeResponsibilityView,
       AppPermission.serviceChargeResponsibilityManage,
+      // Full Services Phase 5 material request + purpose management.
+      AppPermission.serviceMaterialRequestViewAll,
+      AppPermission.serviceMaterialRequestCreate,
+      AppPermission.serviceMaterialRequestEdit,
+      AppPermission.serviceMaterialRequestCancel,
+      AppPermission.serviceMaterialRequestPrint,
+      AppPermission.serviceMaterialRequestPurposeView,
+      AppPermission.serviceMaterialRequestPurposeManage,
+      // Full Services Phase 6 work execution management.
+      AppPermission.serviceWorkExecutionViewAll,
+      AppPermission.serviceWorkExecutionCreate,
+      AppPermission.serviceWorkExecutionEdit,
+      AppPermission.serviceWorkExecutionPerform,
+      AppPermission.serviceWorkExecutionComplete,
+      AppPermission.serviceWorkExecutionCancel,
     },
     _ => <AppPermission>{},
   });

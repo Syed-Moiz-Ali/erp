@@ -66,9 +66,30 @@ abstract final class ServicesRoutes {
   static String chargeResponsibilityEdit(String id) =>
       '${chargeResponsibility(id)}/edit';
 
+  static const materialRequestPurposes = '$settings/material-request-purposes';
+  static const materialRequestPurposesNew = '$materialRequestPurposes/new';
+  static String materialRequestPurpose(String id) =>
+      '$materialRequestPurposes/${Uri.encodeComponent(id)}';
+  static String materialRequestPurposeEdit(String id) =>
+      '${materialRequestPurpose(id)}/edit';
+
   static const inspections = '$root/inspections';
   static const inspectionsNew = '$inspections/new';
   static String inspection(String id) =>
       '$inspections/${Uri.encodeComponent(id)}';
   static String inspectionEdit(String id) => '${inspection(id)}/edit';
+
+  static const materialRequests = '$root/material-requests';
+  static const materialRequestsNew = '$materialRequests/new';
+  static String materialRequest(String id) =>
+      '$materialRequests/${Uri.encodeComponent(id)}';
+  static String materialRequestEdit(String id) => '${materialRequest(id)}/edit';
+  static String materialRequestPrint(String id) =>
+      '${materialRequest(id)}/print';
+
+  static const workExecutions = '$root/work-executions';
+  static const workExecutionsNew = '$workExecutions/new';
+  static String workExecution(String id) =>
+      '$workExecutions/${Uri.encodeComponent(id)}';
+  static String workExecutionEdit(String id) => '${workExecution(id)}/edit';
 }

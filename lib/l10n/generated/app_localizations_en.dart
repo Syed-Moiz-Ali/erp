@@ -7009,4 +7009,1218 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifServiceInspectionAssignedBody =>
       'You have been assigned a service inspection.';
+
+  @override
+  String get servicesPermSubMaterialRequests => 'Material requests';
+
+  @override
+  String get servicesPermMaterialRequestsView => 'View material requests';
+
+  @override
+  String get servicesPermMaterialRequestsViewDesc =>
+      'View the company material request queue within your record scope.';
+
+  @override
+  String get servicesPermMaterialRequestsCreate => 'Create material request';
+
+  @override
+  String get servicesPermMaterialRequestsCreateDesc =>
+      'Create a material request from an eligible completed inspection, including restricted inspection reference lookup.';
+
+  @override
+  String get servicesPermMaterialRequestsEdit => 'Edit material request';
+
+  @override
+  String get servicesPermMaterialRequestsEditDesc =>
+      'Edit an open material request.';
+
+  @override
+  String get servicesPermMaterialRequestsCancel => 'Cancel material request';
+
+  @override
+  String get servicesPermMaterialRequestsCancelDesc =>
+      'Cancel an open material request (kept historically).';
+
+  @override
+  String get servicesPermMaterialRequestsPrint => 'Print material request';
+
+  @override
+  String get servicesPermMaterialRequestsPrintDesc =>
+      'Print a material request document.';
+
+  @override
+  String get servicesPermMaterialRequestPurposesView =>
+      'View material request purposes';
+
+  @override
+  String get servicesPermMaterialRequestPurposesViewDesc =>
+      'See configured material request purposes.';
+
+  @override
+  String get servicesPermMaterialRequestPurposesManage =>
+      'Manage material request purposes';
+
+  @override
+  String get servicesPermMaterialRequestPurposesManageDesc =>
+      'Create and edit material request purposes.';
+
+  @override
+  String get permissionServiceMaterialRequestView => 'View material requests';
+
+  @override
+  String get permissionServiceMaterialRequestCreate =>
+      'Create material request';
+
+  @override
+  String get permissionServiceMaterialRequestEdit => 'Edit material request';
+
+  @override
+  String get permissionServiceMaterialRequestCancel =>
+      'Cancel material request';
+
+  @override
+  String get permissionServiceMaterialRequestPrint => 'Print material request';
+
+  @override
+  String get servicesNavMaterialRequests => 'Material Requests';
+
+  @override
+  String get servicesMaterialRequestPurposesTitle =>
+      'Material request purposes';
+
+  @override
+  String get servicesMaterialRequestsTitle => 'Material requests';
+
+  @override
+  String servicesMaterialRequestCount(String filtered, String total) {
+    return '$filtered of $total material requests';
+  }
+
+  @override
+  String get servicesMaterialRequestSearch =>
+      'Search by request, inspection, job assignment, enquiry, job order, customer, code or description';
+
+  @override
+  String get servicesMaterialRequestAllStatuses => 'All statuses';
+
+  @override
+  String get servicesMaterialRequestStatusOpen => 'Open';
+
+  @override
+  String get servicesMaterialRequestStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesMaterialRequestEmpty => 'No material requests yet.';
+
+  @override
+  String get servicesMaterialRequestEmptyMessage =>
+      'Create a material request from a completed inspection.';
+
+  @override
+  String get servicesMaterialRequestNoResults =>
+      'No material requests match your filters.';
+
+  @override
+  String get servicesMaterialRequestAdd => 'New material request';
+
+  @override
+  String get servicesMaterialRequestColumnRequest => 'Request';
+
+  @override
+  String get servicesMaterialRequestColumnDate => 'Date';
+
+  @override
+  String get servicesMaterialRequestColumnInspection => 'Inspection';
+
+  @override
+  String get servicesMaterialRequestColumnCustomerSite => 'Customer / site';
+
+  @override
+  String get servicesMaterialRequestColumnPurpose => 'Purpose';
+
+  @override
+  String get servicesMaterialRequestColumnItems => 'Items';
+
+  @override
+  String get servicesMaterialRequestColumnTotalQty => 'Total qty';
+
+  @override
+  String get servicesMaterialRequestColumnStatus => 'Status';
+
+  @override
+  String get servicesMaterialRequestColumnPreparedBy => 'Prepared by';
+
+  @override
+  String get servicesMaterialRequestColumnCreated => 'Created';
+
+  @override
+  String get servicesMaterialRequestFilterTitle => 'Filters';
+
+  @override
+  String get servicesMaterialRequestFilterStatus => 'Status';
+
+  @override
+  String get servicesMaterialRequestFilterPurpose => 'Purpose';
+
+  @override
+  String get servicesMaterialRequestFilterInspection => 'Inspection';
+
+  @override
+  String get servicesMaterialRequestFilterFrom => 'From date';
+
+  @override
+  String get servicesMaterialRequestFilterTo => 'To date';
+
+  @override
+  String get servicesMaterialRequestFormNew => 'New material request';
+
+  @override
+  String get servicesMaterialRequestFormEdit => 'Edit material request';
+
+  @override
+  String get servicesMaterialRequestCreate => 'Create material request';
+
+  @override
+  String get servicesMaterialRequestSaveChanges => 'Save changes';
+
+  @override
+  String get servicesMaterialRequestSectionRequest => 'Request';
+
+  @override
+  String get servicesMaterialRequestSectionContext => 'Service context';
+
+  @override
+  String get servicesMaterialRequestSectionInformation => 'Request information';
+
+  @override
+  String get servicesMaterialRequestSectionMaterials => 'Materials';
+
+  @override
+  String get servicesMaterialRequestSectionAcknowledgement => 'Acknowledgement';
+
+  @override
+  String get servicesMaterialRequestSectionSummary => 'Summary';
+
+  @override
+  String get servicesMaterialRequestSectionAudit => 'Record';
+
+  @override
+  String get servicesMaterialRequestSectionActivity => 'Activity';
+
+  @override
+  String get servicesMaterialRequestNo => 'Request no';
+
+  @override
+  String get servicesMaterialRequestDate => 'Request date';
+
+  @override
+  String get servicesMaterialRequestSourceInspection => 'Source inspection';
+
+  @override
+  String get servicesMaterialRequestSelectInspection =>
+      'Select an eligible completed inspection';
+
+  @override
+  String get servicesMaterialRequestInspection => 'Inspection';
+
+  @override
+  String get servicesMaterialRequestJobAssignment => 'Job assignment';
+
+  @override
+  String get servicesMaterialRequestEnquiry => 'Enquiry';
+
+  @override
+  String get servicesMaterialRequestCustomer => 'Customer';
+
+  @override
+  String get servicesMaterialRequestSite => 'Site';
+
+  @override
+  String get servicesMaterialRequestTenant => 'Tenant';
+
+  @override
+  String get servicesMaterialRequestBuilding => 'Building';
+
+  @override
+  String get servicesMaterialRequestUnit => 'Unit';
+
+  @override
+  String get servicesMaterialRequestMaterialReceived => 'Material received';
+
+  @override
+  String get servicesMaterialRequestJobOrderReference => 'Job order reference';
+
+  @override
+  String get servicesMaterialRequestJobOrderHint =>
+      'Optional external job order number';
+
+  @override
+  String get servicesMaterialRequestPurpose => 'Purpose';
+
+  @override
+  String get servicesMaterialRequestRemarks => 'Remarks';
+
+  @override
+  String get servicesMaterialRequestAcknowledge => 'Acknowledge';
+
+  @override
+  String get servicesMaterialRequestReceivedBy => 'Received by';
+
+  @override
+  String get servicesMaterialRequestPreparedBy => 'Prepared by';
+
+  @override
+  String servicesMaterialRequestLineTitle(String index) {
+    return 'Material $index';
+  }
+
+  @override
+  String get servicesMaterialRequestCode => 'Code';
+
+  @override
+  String get servicesMaterialRequestDescription => 'Description';
+
+  @override
+  String get servicesMaterialRequestBatchNumber => 'Batch no';
+
+  @override
+  String get servicesMaterialRequestQuantity => 'Quantity';
+
+  @override
+  String get servicesMaterialRequestRemark => 'Remark';
+
+  @override
+  String get servicesMaterialRequestAddMaterial => 'Add material';
+
+  @override
+  String get servicesMaterialRequestRemoveMaterial => 'Remove material';
+
+  @override
+  String get servicesMaterialRequestTotalQuantity => 'Total quantity';
+
+  @override
+  String servicesMaterialRequestItemCount(String count) {
+    return '$count items';
+  }
+
+  @override
+  String get servicesMaterialRequestEdit => 'Edit request';
+
+  @override
+  String get servicesMaterialRequestPrint => 'Print';
+
+  @override
+  String get servicesMaterialRequestCancel => 'Cancel material request';
+
+  @override
+  String get servicesMaterialRequestCancelConfirmTitle =>
+      'Cancel material request?';
+
+  @override
+  String get servicesMaterialRequestCancelConfirmMessage =>
+      'The cancelled request stays available historically and cannot be edited afterwards.';
+
+  @override
+  String get servicesMaterialRequestCreated => 'Material request created.';
+
+  @override
+  String get servicesMaterialRequestUpdated => 'Material request updated.';
+
+  @override
+  String get servicesMaterialRequestCancelled => 'Material request cancelled.';
+
+  @override
+  String get servicesMaterialRequestPrinted =>
+      'Material request prepared for printing.';
+
+  @override
+  String get servicesMaterialRequestNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesMaterialRequestNoMaterials => 'No material lines.';
+
+  @override
+  String get servicesMaterialRequestCreatedBy => 'Created by';
+
+  @override
+  String get servicesMaterialRequestCreatedAt => 'Created at';
+
+  @override
+  String get servicesMaterialRequestUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesMaterialRequestUpdatedAt => 'Updated at';
+
+  @override
+  String get servicesMaterialRequestVersion => 'Version';
+
+  @override
+  String get servicesMaterialRequestDetailContext => 'Source context';
+
+  @override
+  String get servicesMaterialRequestDetailMaterials => 'Material lines';
+
+  @override
+  String get servicesMaterialRequestDetailAcknowledgement => 'Acknowledgement';
+
+  @override
+  String get servicesMaterialRequestDetailAudit => 'Record';
+
+  @override
+  String get servicesMaterialRequestDetailActivity => 'Activity';
+
+  @override
+  String get servicesMaterialRequestResetForm => 'Reset form';
+
+  @override
+  String get servicesMaterialRequestResetConfirmTitle => 'Reset form?';
+
+  @override
+  String get servicesMaterialRequestResetConfirmMessage =>
+      'This clears the unsaved material request.';
+
+  @override
+  String get servicesMaterialRequestDiscardChanges => 'Discard changes';
+
+  @override
+  String get servicesMaterialRequestCreateFromInspection =>
+      'Create material request';
+
+  @override
+  String get servicesMaterialRequestSectionForInspection => 'Material requests';
+
+  @override
+  String get servicesMaterialRequestNoneForInspection =>
+      'No material requests yet.';
+
+  @override
+  String get servicesMaterialRequestInspectionRequired =>
+      'Select an inspection.';
+
+  @override
+  String get servicesMaterialRequestInspectionInvalid =>
+      'The selected inspection is not eligible.';
+
+  @override
+  String get servicesMaterialRequestPurposeInvalid =>
+      'The selected purpose is not available.';
+
+  @override
+  String get servicesMaterialRequestLinesRequired =>
+      'Add at least one material line.';
+
+  @override
+  String get servicesMaterialRequestCodeRequired =>
+      'Enter the code for each material line.';
+
+  @override
+  String get servicesMaterialRequestDescriptionRequired =>
+      'Enter the description for each material line.';
+
+  @override
+  String get servicesMaterialRequestQuantityRequired =>
+      'Enter a quantity greater than zero for each material line.';
+
+  @override
+  String get servicesMaterialRequestNotFound => 'Material request not found.';
+
+  @override
+  String get servicesMaterialRequestNotEditable =>
+      'Only open material requests can be edited.';
+
+  @override
+  String get servicesMaterialRequestAlreadyCancelled =>
+      'This material request is already cancelled.';
+
+  @override
+  String get servicesMaterialRequestRequirementLinked =>
+      'A selected material requirement is already linked to an active request.';
+
+  @override
+  String get servicesMaterialRequestSequenceFailed =>
+      'Could not allocate a request number.';
+
+  @override
+  String get servicesMaterialRequestDenied =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get servicesMaterialRequestStorageError =>
+      'Could not save the material request. Please try again.';
+
+  @override
+  String get servicesMaterialRequestPrintFailed =>
+      'Could not prepare the printable document.';
+
+  @override
+  String get servicesInspectionMaterialStatusRequested => 'Requested';
+
+  @override
+  String get servicesOverviewMaterialRequestsOpen => 'Open material requests';
+
+  @override
+  String get servicesOverviewMaterialRequestsToday => 'Material requests today';
+
+  @override
+  String get servicesOverviewMaterialRequestsLines =>
+      'Requested material lines';
+
+  @override
+  String get servicesOverviewRecentMaterialRequests =>
+      'Recent material requests';
+
+  @override
+  String get servicesOverviewNoMaterialRequests => 'No material requests yet.';
+
+  @override
+  String get servicesMaterialRequestPrintTitle => 'Material request';
+
+  @override
+  String get servicesActivityLinesChanged => 'Material lines changed';
+
+  @override
+  String get servicesNavWorkExecution => 'Work Execution';
+
+  @override
+  String get servicesPermSubWorkExecutions => 'Work Execution';
+
+  @override
+  String get servicesPermWorkExecutionsView => 'View Work Executions';
+
+  @override
+  String get servicesPermWorkExecutionsViewDesc =>
+      'View the Work Execution queue within your record scope.';
+
+  @override
+  String get servicesPermWorkExecutionsCreate => 'Create Work Execution';
+
+  @override
+  String get servicesPermWorkExecutionsCreateDesc =>
+      'Create a Work Execution from a completed inspection, with a restricted eligible-inspection search.';
+
+  @override
+  String get servicesPermWorkExecutionsEdit => 'Edit Work Execution';
+
+  @override
+  String get servicesPermWorkExecutionsEditDesc =>
+      'Modify header references and work lines while eligible.';
+
+  @override
+  String get servicesPermWorkExecutionsPerform => 'Perform Work';
+
+  @override
+  String get servicesPermWorkExecutionsPerformDesc =>
+      'Start and end assigned work, record material used and add after-work photos.';
+
+  @override
+  String get servicesPermWorkExecutionsComplete => 'Complete Work Execution';
+
+  @override
+  String get servicesPermWorkExecutionsCompleteDesc =>
+      'Finalize a Work Execution once all required work is finished.';
+
+  @override
+  String get servicesPermWorkExecutionsCancel => 'Cancel Work Execution';
+
+  @override
+  String get servicesPermWorkExecutionsCancelDesc =>
+      'Cancel a Work Execution (kept historically).';
+
+  @override
+  String get permissionServiceWorkExecutionView => 'View Work Executions';
+
+  @override
+  String get permissionServiceWorkExecutionCreate => 'Create Work Execution';
+
+  @override
+  String get permissionServiceWorkExecutionEdit => 'Edit Work Execution';
+
+  @override
+  String get permissionServiceWorkExecutionPerform => 'Perform Work';
+
+  @override
+  String get permissionServiceWorkExecutionComplete =>
+      'Complete Work Execution';
+
+  @override
+  String get permissionServiceWorkExecutionCancel => 'Cancel Work Execution';
+
+  @override
+  String get servicesActivityWorkStarted => 'Work started';
+
+  @override
+  String get servicesActivityWorkEnded => 'Work ended';
+
+  @override
+  String get servicesActivityMaterialUsedAdded => 'Material used added';
+
+  @override
+  String get servicesActivityMaterialUsedRemoved => 'Material used removed';
+
+  @override
+  String get servicesActivityPhotoAdded => 'After-work photos added';
+
+  @override
+  String get servicesActivityPhotoUpdated => 'After-work photo updated';
+
+  @override
+  String get servicesActivityPhotoRemoved => 'After-work photo removed';
+
+  @override
+  String get servicesWorkExecutionStatusPending => 'Pending';
+
+  @override
+  String get servicesWorkExecutionStatusInProgress => 'In progress';
+
+  @override
+  String get servicesWorkExecutionStatusCompleted => 'Completed';
+
+  @override
+  String get servicesWorkExecutionStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesWorkExecutionLineStateNotStarted => 'Not started';
+
+  @override
+  String get servicesWorkExecutionLineStateInProgress => 'In progress';
+
+  @override
+  String get servicesWorkExecutionLineStateFinished => 'Finished';
+
+  @override
+  String get servicesWorkExecutionsTitle => 'Work Execution';
+
+  @override
+  String servicesWorkExecutionCount(String filtered, String total) {
+    return '$filtered of $total work executions';
+  }
+
+  @override
+  String get servicesWorkExecutionAdd => 'New work execution';
+
+  @override
+  String get servicesWorkExecutionEmpty => 'No work executions yet.';
+
+  @override
+  String get servicesWorkExecutionEmptyMessage =>
+      'Create a work execution from a completed inspection.';
+
+  @override
+  String get servicesWorkExecutionNoResults =>
+      'No work executions match your filters.';
+
+  @override
+  String get servicesWorkExecutionSearch =>
+      'Search by execution, inspection, assignment, enquiry, job order reference, quotation reference, customer, site, employee, team or material code';
+
+  @override
+  String get servicesWorkExecutionFilterTitle => 'Filters';
+
+  @override
+  String get servicesWorkExecutionFilterStatus => 'Status';
+
+  @override
+  String get servicesWorkExecutionFilterFrom => 'From date';
+
+  @override
+  String get servicesWorkExecutionFilterTo => 'To date';
+
+  @override
+  String get servicesWorkExecutionAllStatuses => 'All statuses';
+
+  @override
+  String get servicesWorkExecutionColumnExecution => 'Execution';
+
+  @override
+  String get servicesWorkExecutionColumnInspection => 'Inspection';
+
+  @override
+  String get servicesWorkExecutionColumnCustomerSite => 'Customer / site';
+
+  @override
+  String get servicesWorkExecutionColumnAssignedTo => 'Assigned to';
+
+  @override
+  String get servicesWorkExecutionColumnState => 'Execution state';
+
+  @override
+  String get servicesWorkExecutionColumnStarted => 'Started';
+
+  @override
+  String get servicesWorkExecutionColumnCompleted => 'Completed';
+
+  @override
+  String get servicesWorkExecutionColumnStatus => 'Status';
+
+  @override
+  String get servicesWorkExecutionColumnCreated => 'Created';
+
+  @override
+  String get servicesWorkExecutionCancel => 'Cancel work execution';
+
+  @override
+  String get servicesWorkExecutionCancelConfirmTitle =>
+      'Cancel work execution?';
+
+  @override
+  String get servicesWorkExecutionCancelConfirmMessage =>
+      'The cancelled work execution stays available historically and cannot be edited afterwards.';
+
+  @override
+  String get servicesWorkExecutionCancelled =>
+      'This work execution is cancelled.';
+
+  @override
+  String get servicesWorkExecutionStorageError =>
+      'Could not save the work execution. Please try again.';
+
+  @override
+  String get servicesWorkExecutionFormNew => 'New work execution';
+
+  @override
+  String get servicesWorkExecutionFormEdit => 'Edit work execution';
+
+  @override
+  String get servicesWorkExecutionCreate => 'Create work execution';
+
+  @override
+  String get servicesWorkExecutionSaveChanges => 'Save changes';
+
+  @override
+  String get servicesWorkExecutionResetForm => 'Reset form';
+
+  @override
+  String get servicesWorkExecutionResetConfirmTitle => 'Reset form?';
+
+  @override
+  String get servicesWorkExecutionResetConfirmMessage =>
+      'This clears the unsaved work execution.';
+
+  @override
+  String get servicesWorkExecutionSectionContext => 'Work execution context';
+
+  @override
+  String get servicesWorkExecutionSectionReferences => 'Workflow references';
+
+  @override
+  String get servicesWorkExecutionSectionCustomer =>
+      'Customer & service context';
+
+  @override
+  String get servicesWorkExecutionSectionInspection => 'Inspection summary';
+
+  @override
+  String get servicesWorkExecutionSectionWork => 'Work execution';
+
+  @override
+  String get servicesWorkExecutionSectionMaterials => 'Material used';
+
+  @override
+  String get servicesWorkExecutionSectionPhotos => 'Photos after work';
+
+  @override
+  String get servicesWorkExecutionNo => 'Execution no';
+
+  @override
+  String get servicesWorkExecutionDate => 'Execution date';
+
+  @override
+  String get servicesWorkExecutionSourceInspection => 'Source inspection';
+
+  @override
+  String get servicesWorkExecutionSelectInspection =>
+      'Select an eligible completed inspection';
+
+  @override
+  String get servicesWorkExecutionInspection => 'Inspection';
+
+  @override
+  String get servicesWorkExecutionJobAssignment => 'Job assignment';
+
+  @override
+  String get servicesWorkExecutionEnquiry => 'Enquiry';
+
+  @override
+  String get servicesWorkExecutionJobOrderReference => 'Job order reference';
+
+  @override
+  String get servicesWorkExecutionQuotationReference => 'Quotation reference';
+
+  @override
+  String get servicesWorkExecutionCustomer => 'Customer';
+
+  @override
+  String get servicesWorkExecutionTenant => 'Tenant';
+
+  @override
+  String get servicesWorkExecutionBuilding => 'Building';
+
+  @override
+  String get servicesWorkExecutionUnit => 'Unit';
+
+  @override
+  String get servicesWorkExecutionComplaint => 'Complaint type';
+
+  @override
+  String get servicesWorkExecutionPriority => 'Priority';
+
+  @override
+  String get servicesWorkExecutionMaterialReceived => 'Material received';
+
+  @override
+  String get servicesWorkExecutionRootCause => 'Root cause';
+
+  @override
+  String get servicesWorkExecutionChargeResponsibility =>
+      'Charge responsibility';
+
+  @override
+  String get servicesWorkExecutionTechnician => 'Technician';
+
+  @override
+  String get servicesWorkExecutionChecklist => 'Checklist';
+
+  @override
+  String get servicesWorkExecutionInspectedPoints => 'Inspected points';
+
+  @override
+  String get servicesWorkExecutionMaterialRequirements =>
+      'Material requirements';
+
+  @override
+  String get servicesWorkExecutionLinkedMaterialRequests =>
+      'Linked material requests';
+
+  @override
+  String servicesWorkExecutionMaterialRequestItems(String count) {
+    return '$count items';
+  }
+
+  @override
+  String get servicesWorkExecutionAddFromMaterialRequest =>
+      'Add from material request';
+
+  @override
+  String get servicesWorkExecutionNoLinkedRequests =>
+      'No linked material requests.';
+
+  @override
+  String servicesWorkExecutionLineTitle(String index) {
+    return 'Work item $index';
+  }
+
+  @override
+  String servicesWorkExecutionMaterialTitle(String index) {
+    return 'Material $index';
+  }
+
+  @override
+  String servicesWorkExecutionPhotoTitle(String index) {
+    return 'Photo evidence $index';
+  }
+
+  @override
+  String get servicesWorkExecutionWork => 'Work';
+
+  @override
+  String get servicesWorkExecutionDescription => 'Description';
+
+  @override
+  String get servicesWorkExecutionTeam => 'Team';
+
+  @override
+  String get servicesWorkExecutionEmployee => 'Individual employee';
+
+  @override
+  String get servicesWorkExecutionStartTime => 'Start time';
+
+  @override
+  String get servicesWorkExecutionEndTime => 'End time';
+
+  @override
+  String get servicesWorkExecutionNoLines => 'No work items.';
+
+  @override
+  String get servicesWorkExecutionAddLine => 'Add work item';
+
+  @override
+  String get servicesWorkExecutionRemoveLine => 'Remove work item';
+
+  @override
+  String get servicesWorkExecutionCode => 'Code';
+
+  @override
+  String get servicesWorkExecutionNoMaterials => 'No material used.';
+
+  @override
+  String get servicesWorkExecutionAddMaterial => 'Add material used';
+
+  @override
+  String get servicesWorkExecutionRemoveMaterial => 'Remove material used';
+
+  @override
+  String get servicesWorkExecutionPhotoDescription => 'Description';
+
+  @override
+  String get servicesWorkExecutionPhotos => 'Photos';
+
+  @override
+  String get servicesWorkExecutionAddPhotos => 'Add photos';
+
+  @override
+  String get servicesWorkExecutionNoPhotos => 'No photos.';
+
+  @override
+  String get servicesWorkExecutionAddPhoto => 'Add photo evidence';
+
+  @override
+  String get servicesWorkExecutionRemovePhoto => 'Remove photo evidence';
+
+  @override
+  String get servicesWorkExecutionCreated => 'Work execution created.';
+
+  @override
+  String get servicesWorkExecutionUpdated => 'Work execution updated.';
+
+  @override
+  String get servicesWorkExecutionWorkRequired =>
+      'Enter the work for each line.';
+
+  @override
+  String get servicesWorkExecutionDetailReferences => 'Workflow references';
+
+  @override
+  String get servicesWorkExecutionDetailContext => 'Customer & service context';
+
+  @override
+  String get servicesWorkExecutionDetailWork => 'Work items';
+
+  @override
+  String get servicesWorkExecutionDetailMaterials => 'Material used';
+
+  @override
+  String get servicesWorkExecutionDetailPhotos => 'Photos';
+
+  @override
+  String get servicesWorkExecutionDetailAudit => 'Record';
+
+  @override
+  String get servicesWorkExecutionDetailActivity => 'Activity';
+
+  @override
+  String get servicesWorkExecutionStartWork => 'Start work';
+
+  @override
+  String get servicesWorkExecutionEndWork => 'End work';
+
+  @override
+  String get servicesWorkExecutionComplete => 'Complete work execution';
+
+  @override
+  String get servicesWorkExecutionCompleteConfirmTitle =>
+      'Complete work execution?';
+
+  @override
+  String get servicesWorkExecutionCompleteConfirmMessage =>
+      'The work execution becomes read-only and stays available historically.';
+
+  @override
+  String get servicesWorkExecutionCompleted => 'Work execution completed.';
+
+  @override
+  String get servicesWorkExecutionPreparedBy => 'Prepared by';
+
+  @override
+  String get servicesWorkExecutionCreatedAt => 'Created at';
+
+  @override
+  String get servicesWorkExecutionUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesWorkExecutionUpdatedAt => 'Updated at';
+
+  @override
+  String get servicesWorkExecutionVersion => 'Version';
+
+  @override
+  String get servicesWorkExecutionNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesWorkExecutionWorkStarted => 'Work started.';
+
+  @override
+  String get servicesWorkExecutionWorkEnded => 'Work ended.';
+
+  @override
+  String get servicesWorkExecutionMaterialAdded => 'Material used added.';
+
+  @override
+  String get servicesWorkExecutionMaterialRemoved => 'Material used removed.';
+
+  @override
+  String get servicesWorkExecutionPhotoAdded => 'Photo evidence added.';
+
+  @override
+  String get servicesWorkExecutionPhotoRemoved => 'Photo evidence removed.';
+
+  @override
+  String get servicesWorkExecutionBeforeWorkPhotos => 'Before work photos';
+
+  @override
+  String get servicesWorkExecutionAfterWorkPhotos => 'After work photos';
+
+  @override
+  String get servicesWorkExecutionEdit => 'Edit work execution';
+
+  @override
+  String get servicesWorkExecutionDenied =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get servicesWorkExecutionNotFound => 'Work execution not found.';
+
+  @override
+  String get servicesWorkExecutionNotEditable =>
+      'Only pending or in-progress work executions can be edited.';
+
+  @override
+  String get servicesWorkExecutionNotCompletable =>
+      'All required work items must be started and ended before completion.';
+
+  @override
+  String get servicesWorkExecutionAlreadyCompleted =>
+      'This work execution is already completed.';
+
+  @override
+  String get servicesWorkExecutionLineAlreadyStarted =>
+      'This work item is already started.';
+
+  @override
+  String get servicesWorkExecutionLineNotStarted =>
+      'Start the work item before ending it.';
+
+  @override
+  String get servicesWorkExecutionLineAlreadyEnded =>
+      'This work item is already ended.';
+
+  @override
+  String get servicesWorkExecutionInvalidTimeRange =>
+      'The end time cannot be before the start time.';
+
+  @override
+  String get servicesWorkExecutionInspectionRequired => 'Select an inspection.';
+
+  @override
+  String get servicesWorkExecutionInspectionNotEligible =>
+      'The selected inspection is not eligible.';
+
+  @override
+  String get servicesWorkExecutionAlreadyActive =>
+      'An active work execution already exists for this inspection.';
+
+  @override
+  String get servicesWorkExecutionSequenceFailed =>
+      'Could not allocate a work execution number.';
+
+  @override
+  String get servicesWorkExecutionLinesRequired =>
+      'Add at least one work item.';
+
+  @override
+  String get servicesWorkExecutionCodeRequired =>
+      'Enter the code for each material used line.';
+
+  @override
+  String get servicesWorkExecutionDescriptionRequired =>
+      'Enter the description for each material used line.';
+
+  @override
+  String get servicesWorkExecutionPhotoDescriptionRequired =>
+      'Enter a description for each photo entry.';
+
+  @override
+  String get servicesWorkExecutionTeamInvalid =>
+      'The selected team is not available.';
+
+  @override
+  String get servicesWorkExecutionEmployeeInvalid =>
+      'The selected employee is not available.';
+
+  @override
+  String get servicesWorkExecutionMaterialRequestLineInvalid =>
+      'The selected material request line is not available.';
+
+  @override
+  String get servicesOverviewWorkExecutionsPending => 'Pending work executions';
+
+  @override
+  String get servicesOverviewWorkExecutionsInProgress => 'Work in progress';
+
+  @override
+  String get servicesOverviewWorkExecutionsCompletedToday => 'Completed today';
+
+  @override
+  String get servicesOverviewRecentWorkExecutions => 'Recent work executions';
+
+  @override
+  String get servicesOverviewNoWorkExecutions => 'No work executions yet.';
+
+  @override
+  String get servicesInspectionWorkExecutionSection => 'Work execution';
+
+  @override
+  String get servicesInspectionCreateWorkExecution => 'Create work execution';
+
+  @override
+  String get servicesInspectionNoWorkExecution => 'No work execution yet.';
+
+  @override
+  String get servicesAssignmentWorkExecutionSection => 'Work execution';
+
+  @override
+  String get servicesEnquiryWorkExecutionSection => 'Work execution';
+
+  @override
+  String get servicesWorkflowTitle => 'Workflow';
+
+  @override
+  String get servicesWorkflowStageEnquiry => 'Service enquiry';
+
+  @override
+  String get servicesWorkflowStageJobAssignment => 'Job assignment';
+
+  @override
+  String get servicesWorkflowStageInspection => 'Inspection';
+
+  @override
+  String get servicesWorkflowStageMaterialRequest => 'Material request';
+
+  @override
+  String get servicesWorkflowStageWorkExecution => 'Work execution';
+
+  @override
+  String get servicesWorkflowNotCreated => 'Not required / none created';
+
+  @override
+  String get servicesWorkflowNotAvailable => 'Not available';
+
+  @override
+  String get servicesWorkflowOptional => 'Optional';
+
+  @override
+  String get servicesWorkflowStatusAwaitingAssignment => 'Awaiting assignment';
+
+  @override
+  String get servicesWorkflowStatusScheduled => 'Scheduled';
+
+  @override
+  String get servicesWorkflowStatusInspectionPending => 'Inspection pending';
+
+  @override
+  String get servicesWorkflowStatusInspectionCompleted =>
+      'Inspection completed';
+
+  @override
+  String get servicesWorkflowStatusMaterialsRequested => 'Materials requested';
+
+  @override
+  String get servicesWorkflowStatusWorkInProgress => 'Work in progress';
+
+  @override
+  String get servicesWorkflowStatusWorkCompleted => 'Work completed';
+
+  @override
+  String get servicesWorkflowStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesWorkflowStatusUnknown => 'In progress';
+
+  @override
+  String get servicesWorkflowActivityTitle => 'Workflow activity';
+
+  @override
+  String get servicesWorkflowNoActivity => 'No workflow activity yet.';
+
+  @override
+  String get servicesWorkflowNextActions => 'Next actions';
+
+  @override
+  String servicesWorkflowMaterialWaiting(String count) {
+    return '$count material requirement(s) waiting';
+  }
+
+  @override
+  String get servicesWorkflowActionCreateAssignment => 'Create job assignment';
+
+  @override
+  String get servicesWorkflowActionViewAssignment => 'View job assignment';
+
+  @override
+  String get servicesWorkflowActionCreateInspection => 'Create inspection';
+
+  @override
+  String get servicesWorkflowActionViewInspection => 'View inspection';
+
+  @override
+  String get servicesWorkflowActionCreateMaterialRequest =>
+      'Create material request';
+
+  @override
+  String get servicesWorkflowActionViewMaterialRequest =>
+      'View material request';
+
+  @override
+  String get servicesWorkflowActionCreateWorkExecution =>
+      'Create work execution';
+
+  @override
+  String get servicesWorkflowActionViewWorkExecution => 'View work execution';
+
+  @override
+  String get servicesWorkflowActionPerform => 'Start / end work';
+
+  @override
+  String get servicesWorkflowActionComplete => 'Complete';
+
+  @override
+  String get servicesWorkflowActionCancel => 'Cancel';
+
+  @override
+  String get servicesWorkflowActionEdit => 'Edit';
+
+  @override
+  String get servicesWorkflowActionPrint => 'Print';
+
+  @override
+  String get servicesWorkflowEvidenceTitle => 'Work evidence';
+
+  @override
+  String get servicesWorkflowBeforeWork => 'Before work';
+
+  @override
+  String get servicesWorkflowAfterWork => 'After work';
+
+  @override
+  String get servicesWorkflowNoBeforePhotos => 'No before-work photos.';
+
+  @override
+  String get servicesWorkflowNoAfterPhotos => 'No after-work photos.';
+
+  @override
+  String get servicesOverviewMyWork => 'My work';
+
+  @override
+  String get servicesOverviewMyWorkAssignments => 'My assignments';
+
+  @override
+  String get servicesOverviewMyWorkInspections => 'My pending inspections';
+
+  @override
+  String get servicesOverviewMyWorkExecutions => 'My active work';
+
+  @override
+  String get servicesOverviewNoMyWork => 'No assigned work right now.';
+
+  @override
+  String get servicesOverviewWorkflowTitle => 'Operational workflow';
 }

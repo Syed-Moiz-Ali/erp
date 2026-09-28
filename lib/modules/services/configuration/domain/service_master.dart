@@ -7,6 +7,7 @@ enum ServiceMasterKind {
   ticketType,
   rootCause,
   chargeResponsibility,
+  materialRequestPurpose,
 }
 
 extension ServiceMasterKindX on ServiceMasterKind {
@@ -17,6 +18,8 @@ extension ServiceMasterKindX on ServiceMasterKind {
     ServiceMasterKind.ticketType => 'service_ticket_types',
     ServiceMasterKind.rootCause => 'service_root_causes',
     ServiceMasterKind.chargeResponsibility => 'service_charge_responsibilities',
+    ServiceMasterKind.materialRequestPurpose =>
+      'service_material_request_purposes',
   };
   String get entityType => switch (this) {
     ServiceMasterKind.serviceType => 'serviceType',
@@ -25,6 +28,7 @@ extension ServiceMasterKindX on ServiceMasterKind {
     ServiceMasterKind.ticketType => 'serviceTicketType',
     ServiceMasterKind.rootCause => 'serviceRootCause',
     ServiceMasterKind.chargeResponsibility => 'serviceChargeResponsibility',
+    ServiceMasterKind.materialRequestPurpose => 'serviceMaterialRequestPurpose',
   };
   String get createOperation => switch (this) {
     ServiceMasterKind.serviceType => 'SERVICES_SERVICE_TYPE_CREATE',
@@ -34,6 +38,8 @@ extension ServiceMasterKindX on ServiceMasterKind {
     ServiceMasterKind.rootCause => 'SERVICES_ROOT_CAUSE_CREATE',
     ServiceMasterKind.chargeResponsibility =>
       'SERVICES_CHARGE_RESPONSIBILITY_CREATE',
+    ServiceMasterKind.materialRequestPurpose =>
+      'SERVICES_MATERIAL_REQUEST_PURPOSE_CREATE',
   };
 }
 

@@ -9,10 +9,16 @@ import 'package:modular_erp/modules/services/job_assignments/data/local_service_
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/inspections/data/local_service_inspection_repository.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
+import 'package:modular_erp/modules/services/material_requests/data/local_service_material_request_repository.dart';
+import 'package:modular_erp/modules/services/material_requests/domain/service_material_request_repository.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
 import 'package:modular_erp/modules/services/teams/domain/service_team_repository.dart';
+import 'package:modular_erp/modules/services/work_executions/data/local_service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/workflow/data/local_service_workflow_repository.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 
 /// Services module dependency composition. Services owns its repositories; the
 /// core bootstrap stays free of Services internals.
@@ -76,6 +82,38 @@ void configureServicesDependencies(GetIt services) {
       services(),
       services(),
       notifications: services(),
+    ),
+  );
+  services.registerLazySingleton<ServiceMaterialRequestRepository>(
+    () => LocalServiceMaterialRequestRepository(
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+    ),
+  );
+  services.registerLazySingleton<ServiceWorkExecutionRepository>(
+    () => LocalServiceWorkExecutionRepository(
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+    ),
+  );
+  services.registerLazySingleton<ServiceWorkflowRepository>(
+    () => LocalServiceWorkflowRepository(
+      db: services(),
+      enquiries: services(),
+      jobAssignments: services(),
+      inspections: services(),
+      materialRequests: services(),
+      workExecutions: services(),
+      activity: services(),
     ),
   );
 }

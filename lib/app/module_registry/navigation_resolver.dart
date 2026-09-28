@@ -246,6 +246,105 @@ class NavigationResolver {
       }
       return RouteAccess.allowed;
     }
+    if (owner?.id == 'services-material-requests') {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceMaterialRequestCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceMaterialRequestEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/print')) {
+        return p.can(AppPermission.serviceMaterialRequestPrint)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      final segments = Uri.parse(path).pathSegments;
+      final isDetail =
+          segments.isNotEmpty && segments.last != 'material-requests';
+      if (isDetail) {
+        return p.canAny([
+              AppPermission.serviceMaterialRequestViewAssigned,
+              AppPermission.serviceMaterialRequestViewTeam,
+              AppPermission.serviceMaterialRequestViewAll,
+            ])
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
+    if (owner?.id == 'services-work-executions') {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceWorkExecutionCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceWorkExecutionEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      final segments = Uri.parse(path).pathSegments;
+      final isDetail =
+          segments.isNotEmpty && segments.last != 'work-executions';
+      if (isDetail) {
+        return p.canAny([
+              AppPermission.serviceWorkExecutionViewAssigned,
+              AppPermission.serviceWorkExecutionViewTeam,
+              AppPermission.serviceWorkExecutionViewAll,
+            ])
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
+    const servicesMasterManage = <String, AppPermission>{
+      'services-service-types': AppPermission.serviceTypeManage,
+      'services-complaint-types': AppPermission.complaintTypeManage,
+      'services-priorities': AppPermission.servicePriorityManage,
+      'services-ticket-types': AppPermission.serviceTicketTypeManage,
+      'services-root-causes': AppPermission.serviceRootCauseManage,
+      'services-charge-responsibilities':
+          AppPermission.serviceChargeResponsibilityManage,
+      'services-material-request-purposes':
+          AppPermission.serviceMaterialRequestPurposeManage,
+    };
+    final masterManage = servicesMasterManage[owner?.id];
+    if (masterManage != null) {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new') || path.endsWith('/edit')) {
+        return p.can(masterManage)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
     return owner == null
         ? RouteAccess.unknown
         : access(

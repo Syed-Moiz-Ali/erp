@@ -1,1430 +1,309 @@
-```text
-SERVICES PHASE 5 — REQUEST FOR MATERIAL
-CLIENT-REFERENCE-ACCURATE IMPLEMENTATION
-WITH CORRECT MATERIAL-RECEIVED INHERITANCE
+PHASE 8 — SERVICES BACKEND API REQUIREMENT EXTRACTION
+GENERATE COMPLETE BACKEND CONTRACT FROM THE IMPLEMENTED SERVICES MODULE
 
-Continue working on the EXISTING Flutter ERP application.
+IMPORTANT:
 
-Completed before this phase:
+DO NOT IMPLEMENT BACKEND APIs.
 
-- ERP modular architecture
-- permission + scope-driven access
-- runtime permission wiring
-- one global centered ERP content width
-- Customers / Sites / Service Teams
-- Services configuration
-- Service Enquiry
-- Enquiry Detail Lines + Photos
-- Job Assignment & Scheduling
-- Inspection
-- Inspection Checklist
-- Before Work Photos
-- Inspected Points
-- Inspection Material Requirements
-- shared sequences
-- attachments
-- activity
-- outbox/idempotency
+DO NOT MODIFY BUSINESS FUNCTIONALITY.
 
-THIS PHASE IMPLEMENTS:
+DO NOT START SERVICE REPORTS.
 
-REQUEST FOR MATERIAL
+DO NOT CREATE JOB ORDER / QUOTATION / INVENTORY / BILLING FEATURES.
 
-DO NOT START WORK EXECUTION.
+The task is to inspect the ACTUAL completed ERP codebase after Services Phase 7
+and generate a complete backend-facing API requirement document for the
+Services module.
 
 ==================================================
-0. CRITICAL WORKFLOW RULE — MATERIAL RECEIVED
+0. OUTPUT
 ==================================================
 
-LOCK THIS RULE:
+Generate:
 
-`Material Received` originates in:
+docs/backend/services_backend_api_requirements.md
 
-SERVICE ENQUIRY.
+The final document is for the BACKEND DEVELOPER.
 
-Example:
+The final document MUST be:
 
-ServiceEnquiry.materialReceived = YES / NO
+- stack-neutral
+- backend-oriented
+- explicit
+- implementation-ready
+- independent of frontend framework terminology.
 
-This is the current SOURCE OF TRUTH.
+DO NOT mention:
 
-The same value is inherited/displayed downstream:
+Flutter
 
-Service Enquiry
-    materialReceived
-          ↓
-Job Assignment
-    read-only inherited value
-          ↓
-Inspection
-    read-only inherited value.
+Dart
 
-DO NOT create independent editable:
+BLoC
 
-JobAssignment.materialReceived
+Cubit
 
-Inspection.materialReceived
+Drift
 
-values that can contradict the Enquiry.
+go_router
 
-==================================================
-1. MATERIAL RECEIVED IS NOT MATERIAL REQUEST
-==================================================
+widgets
 
-These are TWO different business concepts.
+screens as implementation technology
 
-A)
+frontend repository class names unless necessary only in a separate internal
+traceability appendix.
 
-Material Received = YES / NO
-
-is information captured on the Service Enquiry.
-
-B)
-
-Request for Material
-
-is a transaction containing actual requested material lines:
-
-Code
-Description
-Batch No
-Qty
-Remark.
-
-DO NOT implement rules such as:
-
-Material Received = YES
-→ block Material Request
-
-or:
-
-Material Received = NO
-→ automatically create Material Request.
-
-There is currently NO client evidence supporting either rule.
-
-Material Request creation is driven by:
-
-Inspection
-+
-Material Required findings
-
-not by guessing the meaning of Enquiry.materialReceived.
+The backend developer should be able to build the Services API from this
+document without understanding the frontend technology.
 
 ==================================================
-2. DOWNSTREAM MATERIAL RECEIVED ACCESS
+1. SOURCE OF TRUTH
 ==================================================
 
-When Job Assignment or Inspection needs the value:
+Do NOT generate a generic Services API from assumptions.
 
-resolve through lineage:
+Inspect the ACTUAL implemented application.
 
-Job Assignment
-→ sourceEnquiryId
-→ ServiceEnquiry.materialReceived
+Review at minimum:
 
-Inspection
-→ sourceJobAssignmentId
-→ Job Assignment.sourceEnquiryId
-→ ServiceEnquiry.materialReceived.
+Services domain models
 
-A typed read-model convenience field may expose it to UI.
+database schema
 
-Do not create another authoritative stored boolean unless the architecture
-requires a historical snapshot.
+repositories
 
-If a snapshot is stored:
+application/use cases
 
-it is immutable historical context
+permission catalog
 
-NOT an independently editable business value.
+scope resolvers
 
-==================================================
-3. CLIENT REQUEST FOR MATERIAL REFERENCE
-==================================================
+routes/business workflows
 
-The supplied client screen contains:
+outbox contracts
 
-HEADER
+attachment ownership
 
-Company Name
+activity events
 
-Request No
+notifications
 
-Date
+company context
 
-JOB Order No
+time handling
 
-Purpose
+Services workflow documentation
 
-Acknowledge
+client reference traceability
 
-Received By
+permission coverage
 
-Remarks
+Phase 1 through Phase 7 documentation.
 
-Prepared By
-
-DETAIL LINES
-
-S.No
-
-Code
-
-Description
-
-Batch No
-
-Qty
-
-Remark
-
-Action / Add Row
-
-SUMMARY
-
-Total Qty
-
-ACTIONS
-
-Save
-
-Print
-
-Clear
-
-Delete.
-
-Preserve all of these BUSINESS concepts.
-
-Do NOT copy the old UI.
+The generated API requirements must reflect what is actually implemented.
 
 ==================================================
-4. WORKFLOW POSITION
+2. SERVICES SCOPE
 ==================================================
 
-Current workflow:
+Cover the complete implemented Services module:
 
-Service Enquiry
-        ↓
-Job Assignment & Scheduling
-        ↓
-Inspection
-        ↓
-Request for Material
-        ↓
-Work Execution
+1. Services Overview
 
-Phase 5 implements ONLY:
+2. Customers
 
-Request for Material.
+3. Service Sites
+
+4. Service Teams
+
+5. Services Masters / Configuration
+
+6. Service Enquiries
+
+7. Enquiry Detail Lines
+
+8. Enquiry Photos
+
+9. Job Assignment & Scheduling
+
+10. Inspections
+
+11. Inspection Checklist
+
+12. Before Work Photos
+
+13. Inspected Points
+
+14. Inspection Material Requirements
+
+15. Material Requests
+
+16. Material Request Lines
+
+17. Work Executions
+
+18. Work Execution Lines
+
+19. Material Used
+
+20. After Work Photos
+
+21. Services workflow timeline / lineage
+
+22. Services notifications/deep links where backend participation is required
+
+23. Services dashboard/summary queries.
 
 ==================================================
-5. DO NOT IMPLEMENT
+3. EXCLUDED / UNRESOLVED DOMAINS
 ==================================================
 
-DO NOT implement:
+DO NOT invent APIs for:
 
-Inventory module
+Job Order CRUD
 
-Product/Item master
+Quotation CRUD
+
+Inventory
 
 Warehouse
 
-Stock quantity
-
-Stock reservation
-
-Stock issue
-
-Goods receipt
+Stock
 
 Purchase
 
-Material approval queue
-
-Material issuing
-
-Material consumption
-
-Work Execution
-
-Start/End Work
-
-After Work Photos
-
-Quotation
-
-Job Order creation
+Sales
 
 Invoice
 
-Payment.
+Payment
 
-==================================================
-6. TRACEABILITY UPDATE
-==================================================
+Service Reports without defined requirements.
 
-Update:
-
-docs/services/client_reference_traceability.md
-
-Add complete Request for Material mapping.
-
-Also update the cross-phase rule:
-
-Material Received
-→ source: ServiceEnquiry
-→ downstream display: inherited/read-only
-→ DOES NOT equal Material Request.
-
-==================================================
-7. CLIENT FIELD MAPPING
-==================================================
-
-Map:
-
-Company Name
-→ active CompanyContext
-→ SYSTEM-DERIVED.
-
-Request No
-→ ServiceMaterialRequest.requestNumber
-→ shared company-scoped sequence.
-
-Date
-→ requestDate
-→ CompanyTimeService.
-
-JOB Order No
-→ jobOrderReference
-→ business reference preserved
-→ authoritative owner still TBD.
-
-Purpose
-→ Material Request Purpose configuration.
-
-Acknowledge
-→ acknowledgement metadata
-→ exact business semantics TBD.
-
-Received By
-→ receivedBy metadata
-→ identity type TBD.
-
-Remarks
-→ request-level remarks.
-
-Prepared By
-→ createdByUserId / audit actor
-→ SYSTEM-DERIVED.
-
-Code
-→ line.code.
-
-Description
-→ line.description.
-
-Batch No
-→ line.batchNumber.
-
-Qty
-→ line.quantity.
-
-Remark
-→ line.remark.
-
-Total Qty
-→ derived sum of quantities.
-
-Save
-→ Create / Save Changes.
-
-Print
-→ Print Material Request.
-
-Clear
-→ Reset/Discard unsaved changes.
-
-Delete
-→ Cancel Material Request.
-
-==================================================
-8. SOURCE TRANSACTION
-==================================================
-
-Our modern workflow has Inspection immediately before Request for Material.
-
-Therefore:
-
-ServiceMaterialRequest
-
-must reference:
-
-sourceInspectionId.
-
-The selected Inspection must be:
-
-same company
-
-COMPLETED
-
-not CANCELLED
-
-inside the user's allowed Service scope.
-
-==================================================
-9. INSPECTION MATERIAL REQUIREMENTS
-==================================================
-
-Phase 4 created:
-
-ServiceInspectionMaterialRequirement
-
-with:
-
-code
-
-description
-
-status.
-
-Current confirmed initial status:
-
-WAITING.
-
-Material Request should consume these requirements.
-
-==================================================
-10. PREFILL FROM INSPECTION
-==================================================
-
-When creating Request from Inspection:
-
-find eligible Material Requirements where:
-
-status == WAITING.
-
-Prefill Material Request lines from those requirements.
-
-Example:
-
-Inspection requirement:
-
-Code:
-CAP-35UF
-
-Description:
-35µF capacitor
-
-Status:
-WAITING
-
-becomes:
-
-Material Request line
-
-Code:
-CAP-35UF
-
-Description:
-35µF capacitor
-
-Batch No:
-optional
-
-Qty:
-operator enters quantity
-
-Remark:
-optional.
-
-==================================================
-11. NO MATERIAL REQUIRED
-==================================================
-
-If Inspection has no WAITING Material Requirements:
-
-do NOT automatically create an empty Material Request from Inspection.
-
-The general Material Request create screen may still allow manual creation
-against an eligible Inspection if the product permits it.
-
-==================================================
-12. DOMAIN AGGREGATE
-==================================================
-
-Create:
-
-ServiceMaterialRequest
-   └── lines[]
-         └── ServiceMaterialRequestLine
-
-==================================================
-13. REQUEST HEADER MODEL
-==================================================
-
-Suggested fields:
-
-id
-
-companyId
-
-requestNumber
-
-requestDate
-
-sourceInspectionId
-
-sourceJobAssignmentId
-
-sourceEnquiryId
-
-jobOrderReference nullable
-
-purposeId
-
-acknowledgement nullable
-
-receivedBy nullable
-
-remarks nullable
-
-status
-
-createdAt
-
-updatedAt
-
-createdByUserId
-
-updatedByUserId
-
-requestId
-
-syncStatus
-
-version.
-
-Use actual transaction conventions.
-
-==================================================
-14. SOURCE LINEAGE
-==================================================
-
-Maintain durable lineage:
-
-Material Request
-→ Inspection
-→ Job Assignment
-→ Enquiry.
-
-Do not duplicate these as disconnected transactions.
-
-==================================================
-15. CUSTOMER/SITE CONTEXT
-==================================================
-
-Material Request Detail/Create may display read-only context inherited through
-the workflow:
-
-Enquiry No
-
-Customer
-
-Mobile
-
-Site
-
-Tenant
-
-Building
-
-Unit
-
-Complaint Type
-
-Priority
-
-Material Received
-
-Job Assignment
-
-Inspection.
-
-==================================================
-16. MATERIAL RECEIVED DISPLAY
-==================================================
-
-If Material Received is displayed on Request for Material for context:
-
-resolve:
-
-source Enquiry.materialReceived.
-
-It must be:
-
-READ ONLY.
-
-It is NOT a field of Material Request business entry.
-
-Do not allow changing it here.
-
-==================================================
-17. JOB ORDER NO — IMPORTANT
-==================================================
-
-The client Material Request screen explicitly contains:
-
-JOB Order No.
-
-However current supplied references do NOT establish:
-
-where Job Order is created
-
-which module owns it
-
-how it is linked to Quotation
-
-whether it belongs to Sales
-
-whether Services creates it.
-
-Therefore:
-
-DO NOT create JobOrder entity/module/workflow.
-
-==================================================
-18. JOB ORDER COMPATIBILITY
-==================================================
-
-Preserve:
+If current Services records contain:
 
 jobOrderReference
 
-as an optional business/reference value.
+quotationReference
 
-Use a typed value object if appropriate.
+document them only as compatibility/reference fields.
 
-For now it is NOT an authoritative JobOrder FK.
+Clearly mark:
 
-Document:
-
-TBD — authoritative Job Order source.
+authoritative source = TBD / future integration.
 
 ==================================================
-19. DO NOT FAKE JOB ORDER DROPDOWN
+4. SHARED API CONVENTIONS
 ==================================================
 
-Do NOT create a dropdown populated with fake Job Orders.
+Use the application's existing backend conventions.
 
-If no authoritative Job Order data exists:
+Document a consistent base such as:
 
-render an optional:
+/api/v1
 
-Job Order Reference
+All authenticated endpoints require:
 
-field according to current requirements.
+Authorization: Bearer <token>
 
-Later migration can replace it with:
+Company-scoped requests require:
 
-jobOrderId
+X-Company-Id: <company-uuid>
+
+Mutation requests should support:
+
+X-Request-Id
+
+and where applicable:
+
+Idempotency-Key.
+
+Localization-sensitive responses may use:
+
+Accept-Language: en
+Accept-Language: ar.
+
+Document exact conventions once globally.
+
+==================================================
+5. TENANT / COMPANY SECURITY
+==================================================
+
+Backend MUST NEVER trust company ownership supplied blindly by client body.
+
+Authenticated user
+
 +
-jobOrderNumber snapshot.
+selected company
 
-==================================================
-20. PURPOSE MASTER
-==================================================
-
-The client has:
-
-Purpose
-
-as a selector.
-
-Create:
-
-ServiceMaterialRequestPurpose.
-
-Fields:
-
-id
-companyId
-code
-name
-description optional
-status
-sortOrder optional
-createdAt
-updatedAt
-sync metadata.
-
-==================================================
-21. PURPOSE SETTINGS
-==================================================
-
-Add:
-
-Services Settings
-→ Material Request Purposes
-
-Route:
-
-/app/services/settings/material-request-purposes
-
-==================================================
-22. PURPOSE PERMISSIONS
-==================================================
-
-Register:
-
-services.materialRequestPurposes.view
-
-services.materialRequestPurposes.manage
-
-or naming matching current catalog.
-
-==================================================
-23. PURPOSE VALUES
-==================================================
-
-The client screenshot does not expose dropdown values.
-
-Do NOT invent production options.
-
-Use demo data only where necessary.
-
-Document exact options:
-
-TBD — client confirmation.
-
-==================================================
-24. ACKNOWLEDGE
-==================================================
-
-Preserve the client field.
-
-But the screenshot does not tell us whether this represents:
-
-boolean acknowledgement
-
-text
-
-person
-
-reference number
-
-workflow state.
-
-Therefore do NOT invent a lifecycle.
-
-==================================================
-25. ACKNOWLEDGEMENT V1
-==================================================
-
-Store optional:
-
-acknowledgement
-
-as safe metadata/text.
-
-It must NOT automatically:
-
-approve
-
-issue
-
-receive
-
-complete
-
-the Material Request.
-
-==================================================
-26. RECEIVED BY
-==================================================
-
-Preserve client field:
-
-Received By.
-
-Current reference does not prove this is:
-
-Employee
-
-Store user
-
-Tenant
-
-Customer
-
-free-text person.
-
-Therefore V1 stores a safe optional value.
-
-Do not force Employee relationship yet.
-
-==================================================
-27. PREPARED BY
-==================================================
-
-Map:
-
-Prepared By
-
-to authenticated:
-
-createdByUserId.
-
-Display through audit metadata.
-
-Not editable.
-
-==================================================
-28. REQUEST STATUS
-==================================================
-
-Use minimal transaction lifecycle:
-
-OPEN
-
-CANCELLED.
-
-Do NOT invent:
-
-APPROVED
-
-REJECTED
-
-ISSUED
-
-RECEIVED
-
-PARTIALLY_ISSUED
-
-CONSUMED.
-
-Those workflows are not currently supported by client reference.
-
-==================================================
-29. OPEN
-==================================================
-
-Editable according to permission.
-
-Printable.
-
-==================================================
-30. CANCELLED
-==================================================
-
-Historical/read-only.
-
-No normal edit.
-
-No second cancel.
-
-==================================================
-31. MATERIAL REQUEST LINE
-==================================================
-
-Create:
-
-ServiceMaterialRequestLine.
-
-Fields:
-
-id
-
-companyId
-
-materialRequestId
-
-sourceInspectionMaterialRequirementId nullable
-
-lineNumber / sortOrder
-
-code
-
-description
-
-batchNumber nullable
-
-quantity
-
-remark nullable
-
-createdAt
-
-updatedAt.
-
-==================================================
-32. LINE IDENTITY
-==================================================
-
-Stable UUID.
-
-S.No is display order only.
-
-==================================================
-33. SOURCE REQUIREMENT LINK
-==================================================
-
-When generated from Inspection requirement:
-
-store:
-
-sourceInspectionMaterialRequirementId.
-
-This provides:
-
-Inspection Requirement
-→ Material Request Line
-
-traceability.
-
-==================================================
-34. MANUAL LINES
-==================================================
-
-Client supports Add Row.
-
-Therefore allow additional manual lines.
-
-For manual line:
-
-sourceInspectionMaterialRequirementId = null.
-
-==================================================
-35. CODE
-==================================================
-
-Material Code remains text/business code for now.
-
-No Product/Inventory entity.
-
-==================================================
-36. DESCRIPTION
-==================================================
-
-Required meaningful material description.
-
-==================================================
-37. BATCH NUMBER
-==================================================
-
-Optional.
-
-Preserve the client field.
-
-Do NOT validate against warehouse batches.
-
-==================================================
-38. QUANTITY
-==================================================
-
-Use numeric domain type.
-
-Must be:
-
-> 0.
-
-Do not store formatted text.
-
-==================================================
-39. FRACTIONAL QUANTITY
-==================================================
-
-If current numeric architecture allows:
-
-support reasonable decimal quantities.
-
-Use consistent precision.
-
-Do not overbuild units/UOM yet.
-
-==================================================
-40. NO UOM
-==================================================
-
-Client Request for Material reference does not show UOM.
-
-Do NOT add UOM in this phase.
-
-==================================================
-41. LINE REMARK
-==================================================
-
-Optional.
-
-Distinct from transaction-level Remarks.
-
-==================================================
-42. TOTAL QTY
-==================================================
-
-Calculate:
-
-sum(lines.quantity).
-
-Read-only.
-
-Never entered manually.
-
-==================================================
-43. TOTAL QTY DOMAIN LOGIC
-==================================================
-
-Calculation belongs in:
-
-domain/application/read model
-
-not duplicated in UI widgets.
-
-==================================================
-44. MULTIPLE LINES
-==================================================
-
-Support:
-
-1..N.
-
-Do NOT hardcode 5.
-
-==================================================
-45. MINIMUM LINE
-==================================================
-
-At least one valid line required before creation.
-
-==================================================
-46. ADD MATERIAL
-==================================================
-
-Modern CTA:
-
-+ Add material
-
-Do NOT place `Add Row` on every row.
-
-==================================================
-47. REMOVE MATERIAL
-==================================================
-
-Allow removal while Request OPEN.
-
-Do not allow removing the final line without replacement.
-
-==================================================
-48. INSPECTION REQUIREMENT STATUS
-==================================================
-
-Phase 4 status:
-
-WAITING.
-
-Now Phase 5 introduces a justified new status:
-
-REQUESTED.
-
-Transition:
-
-WAITING
-   ↓ included in active Material Request
-REQUESTED.
-
-==================================================
-49. NO FURTHER MATERIAL STATUSES
-==================================================
-
-Do NOT add:
-
-APPROVED
-
-ISSUED
-
-RECEIVED
-
-USED
-
-CONSUMED.
-
-Those require future workflow evidence.
-
-==================================================
-50. DUPLICATE ACTIVE REQUEST PROTECTION
-==================================================
-
-A specific:
-
-ServiceInspectionMaterialRequirement
-
-must not be linked to more than one non-cancelled Material Request.
-
-==================================================
-51. REQUEST CANCELLATION
-==================================================
-
-When Request is CANCELLED:
-
-linked Inspection Material Requirements revert:
-
-REQUESTED → WAITING
-
-provided they are not validly linked elsewhere.
-
-Perform atomically.
-
-==================================================
-52. MULTIPLE REQUESTS PER INSPECTION
-==================================================
-
-Allow:
-
-Inspection
-→ multiple Material Requests
++
+company membership/access
 
-because:
+must determine allowed tenant context.
 
-some materials may be requested later
+Every Services query and mutation must enforce:
 
-partial requirements may be grouped separately.
+record.companyId == active authorized company.
 
-But each individual source requirement has only one active request linkage.
+No cross-company IDs may be accepted even if technically valid UUIDs.
 
 ==================================================
-53. CREATE FROM INSPECTION
+6. SERVER-SIDE AUTHORIZATION
 ==================================================
 
-On COMPLETED Inspection Detail:
+Backend authorization MUST use the same effective access model as the
+application:
 
-if there are WAITING Material Requirements
+Company module enabled
 
 AND
 
-user has:
+permission granted
 
-services.materialRequests.create
+AND
 
-show:
+required Employee link valid where applicable
 
-Create Material Request.
+AND
 
-==================================================
-54. INSPECTION DETAIL AFTER REQUEST
-==================================================
+requested record lies inside permitted scope
 
-When requests exist:
+AND
 
-show:
+company matches.
 
-Material Requests
+Never authorize using labels such as:
 
-MR-000001
-OPEN
-Total Qty: ...
+Admin
 
-and Material Requirement status:
+Technician
 
-REQUESTED
+Inspector
 
-with linked request where authorized.
+Manager
 
-==================================================
-55. CREATE FROM MATERIAL REQUEST LIST
-==================================================
+Service Manager.
 
-Also support:
-
-New Material Request.
-
-First choose an eligible completed Inspection.
+Runtime authorization is permission/scope-driven.
 
 ==================================================
-56. RESTRICTED INSPECTION SELECTOR
+7. SERVICES SCOPES
 ==================================================
 
-A Material Request creator gets restricted eligible Inspection reference access.
+Document semantics for:
 
-This does NOT grant:
+NONE
 
-full Inspection ALL access.
+ASSIGNED
 
-==================================================
-57. SELECTING INSPECTION
-==================================================
+TEAM
 
-After selection automatically populate/read:
+ALL.
 
-Inspection No
+SELF should only be documented where actually used.
 
-Job Assignment No
-
-Enquiry No
-
-Customer
-
-Mobile
-
-Site
-
-Tenant
-
-Building
-
-Unit
-
-Complaint/Priority where useful
-
-Material Received inherited from Enquiry
-
-Inspector/Technician
-
-Material Required lines.
-
-==================================================
-58. MATERIAL RECEIVED REMAINS READ ONLY
-==================================================
-
-Again:
-
-Material Received displayed here is:
-
-Enquiry.materialReceived.
-
-Request for Material must never overwrite it.
-
-==================================================
-59. CREATE FORM — GLOBAL LAYOUT
-==================================================
-
-Use ONE GLOBAL CENTERED ERP CONTENT WIDTH.
-
-Same width as:
-
-Employees
-
-Enquiries
-
-Job Assignments
-
-Inspections
-
-Customers.
-
-Equal left/right workspace whitespace.
-
-==================================================
-60. CREATE FORM SECTIONS
-==================================================
-
-Recommended:
-
-REQUEST
-
-Request No
-Request Date
-Source Inspection
-
-SERVICE CONTEXT
-
-Inspection
-Job Assignment
-Enquiry
-Customer
-Site
-Tenant
-Building
-Unit
-Material Received
-
-REQUEST INFORMATION
-
-Job Order Reference
-Purpose
-Remarks
-
-MATERIALS
-
-repeatable requested materials
-
-ACKNOWLEDGEMENT
-
-Acknowledge
-Received By
-
-SUMMARY
-
-Total Quantity.
-
-==================================================
-61. MATERIAL LINE DESKTOP UX
-==================================================
-
-Use modern compact repeater/table-card.
-
-Fields:
-
-Code
-
-Description
-
-Batch No
-
-Quantity
-
-Remark
-
-Remove.
-
-Stay inside global content width.
-
-==================================================
-62. MATERIAL LINE MOBILE UX
-==================================================
-
-Use cards.
-
-Do not force horizontal editable spreadsheet.
-
-==================================================
-63. SAVE
-==================================================
-
-Create screen:
-
-Create Material Request.
-
-Edit:
-
-Save Changes.
-
-==================================================
-64. CLEAR
-==================================================
-
-Legacy Clear becomes:
-
-Reset Form
-
-on unsaved Create.
-
-If form contains changes:
-
-confirm reset.
-
-Existing Request Edit:
-
-use:
-
-Discard Changes
-
-instead of wiping persisted data.
-
-==================================================
-65. DELETE
-==================================================
-
-Legacy Delete becomes:
-
-Cancel Material Request.
-
-Never hard delete the transaction.
-
-==================================================
-66. PRINT
-==================================================
-
-Client explicitly requires Print.
-
-Implement:
-
-Print Material Request.
-
-==================================================
-67. PRINT PERMISSION
-==================================================
-
-Add:
-
-services.materialRequests.print
-
-if current permission system separates export/print.
-
-==================================================
-68. PRINT OUTPUT
-==================================================
-
-Professional printable document includes:
-
-Company Name
-
-Request No
-
-Date
-
-Inspection No
-
-Job Assignment No
-
-Enquiry No
-
-Job Order Reference
-
-Purpose
-
-Customer / Site
-
-Material Received if included as context
-
-Acknowledge
-
-Received By
-
-Remarks
-
-Prepared By
-
-material table:
-
-S.No
-Code
-Description
-Batch No
-Qty
-Remark
-
-Total Qty.
-
-==================================================
-69. PRINT INFRASTRUCTURE
-==================================================
-
-Reuse existing export/report/print system.
-
-Do not build random widget-specific printing.
-
-==================================================
-70. MATERIAL REQUEST PERMISSIONS
-==================================================
-
-Register:
-
-services.materialRequests.view
-
-services.materialRequests.create
-
-services.materialRequests.edit
-
-services.materialRequests.cancel
-
-services.materialRequests.print.
-
-==================================================
-71. VIEW SCOPES
-==================================================
-
-View supports:
+For operational Services transactions, primarily document:
 
 ASSIGNED
 
@@ -1433,532 +312,1020 @@ TEAM
 ALL.
 
 ==================================================
-72. ASSIGNED SCOPE
+8. ASSIGNED SCOPE
 ==================================================
 
-Resolve from source workflow relationships such as:
+Precisely document actual implemented ASSIGNED semantics for:
 
-Inspection technician
+Job Assignments
 
-source Job Assignment direct Employee
-
-source assigned Service Team.
-
-Use existing Services scope resolver.
-
-==================================================
-73. TEAM SCOPE
-==================================================
-
-Use ServiceTeamScopeResolver.
-
-TEAM never expands to ALL.
-
-==================================================
-74. ALL SCOPE
-==================================================
-
-Company-wide within active Company only.
-
-==================================================
-75. ACCESS UI
-==================================================
-
-Existing:
-
-Settings
-→ Users & Access
-
-automatically shows:
-
-Services
-→ Material Requests
-
-View:
-No Access / Assigned / Team / All
-
-Create
-
-Edit
-
-Cancel
-
-Print.
-
-Also:
-
-Material Request Purposes
-
-View
-
-Manage.
-
-==================================================
-76. SERVICES NAVIGATION
-==================================================
-
-Add permission-aware:
+Inspections
 
 Material Requests
 
-to:
+Work Executions.
 
-Services
-  Overview
-  Enquiries
-  Job Assignments
-  Inspections
-  Material Requests
-  Customers
-  Sites
-  Teams
-  Settings.
+Do not write vague:
 
-==================================================
-77. ROUTES
-==================================================
+"user can see assigned records."
 
-Canonical:
+State exactly what relationships qualify.
 
-/app/services/material-requests
+Examples based on actual implementation may include:
 
-/app/services/material-requests/new
+direct Employee assignment
 
-/app/services/material-requests/:requestId
+Inspection technician
 
-/app/services/material-requests/:requestId/edit
+Work Execution employee
 
-Print may use:
+Service Team membership
 
-/app/services/material-requests/:requestId/print
+source workflow relationship.
 
-or existing print-action architecture.
+Use actual implemented resolver behavior.
 
 ==================================================
-78. LIST PAGE
+9. TEAM SCOPE
 ==================================================
 
-Use same centered width.
+Document exact Service Team resolution.
 
-Suggested columns:
+Department or designation must NOT imply Services TEAM access unless actual
+implementation says so.
 
-Request
+==================================================
+10. ALL SCOPE
+==================================================
 
-Date
+ALL means all permitted records in selected company.
+
+Never global cross-company ALL.
+
+==================================================
+11. STANDARD RESPONSE ENVELOPE
+==================================================
+
+Define common success response.
+
+Example conceptual:
+
+{
+  "success": true,
+  "data": {},
+  "meta": {},
+  "requestId": "..."
+}
+
+Define actual desired convention consistently.
+
+Also define list metadata:
+
+page
+
+pageSize
+
+total
+
+hasNext
+
+or cursor approach according to project backend convention.
+
+==================================================
+12. STANDARD ERROR ENVELOPE
+==================================================
+
+Define one backend-wide error shape.
+
+Example conceptual:
+
+{
+  "success": false,
+  "error": {
+    "code": "SERVICES_ENQUIRY_NOT_FOUND",
+    "message": "...",
+    "fieldErrors": [],
+    "details": {}
+  },
+  "requestId": "..."
+}
+
+Define:
+
+HTTP status
+
+machine code
+
+localized/display-safe message approach
+
+field validation errors
+
+requestId.
+
+==================================================
+13. CONCURRENCY
+==================================================
+
+Document optimistic concurrency where records can be edited.
+
+Use:
+
+version
+
+revision
+
+updatedAt precondition
+
+or project's established convention.
+
+Explicitly specify behavior for stale updates.
+
+Example:
+
+409 CONFLICT
+
+RECORD_VERSION_CONFLICT.
+
+==================================================
+14. IDEMPOTENCY
+==================================================
+
+Mutation endpoints that can be retried must support idempotency.
+
+Especially:
+
+Enquiry create
+
+Job Assignment create
+
+Inspection create
+
+Material Request create
+
+Work Execution create
+
+Start Work
+
+End Work
+
+Complete actions
+
+Cancel actions.
+
+Repeated request must not create duplicate:
+
+records
+
+sequence numbers
+
+children
+
+activity events
+
+state transitions.
+
+==================================================
+15. COMPANY TIME
+==================================================
+
+Document:
+
+company timezone
+
+business dates
+
+UTC timestamps.
+
+Rules:
+
+business date fields use company-local date semantics.
+
+event timestamps are persisted/returned as UTC ISO 8601 timestamps.
+
+Backend must not infer company business date from server timezone.
+
+==================================================
+16. IDENTIFIERS
+==================================================
+
+Use UUIDs as internal IDs.
+
+Human-readable business numbers are separate:
+
+Enquiry Number
+
+Job Assignment Number
+
+Inspection Number
+
+Material Request Number
+
+Work Execution Number.
+
+Backend owns final sequence integrity.
+
+==================================================
+17. SEQUENCE REQUIREMENTS
+==================================================
+
+Document company-scoped sequence requirements for:
+
+Enquiry
+
+Job Assignment
 
 Inspection
 
-Customer / Site
+Material Request
 
-Purpose
+Work Execution.
 
-Items
+Backend must allocate sequence atomically.
 
-Total Qty
+No duplicate numbers.
 
-Status
-
-Prepared By
-
-Actions.
+No client-authoritative number generation.
 
 ==================================================
-79. SEARCH
+18. AUDIT METADATA
 ==================================================
 
-Search:
-
-Request No
-
-Inspection No
-
-Job Assignment No
-
-Enquiry No
-
-Job Order Reference
-
-Customer
-
-Code
-
-Description.
-
-==================================================
-80. FILTERS
-==================================================
-
-Useful:
-
-Status
-
-Date range
-
-Purpose
-
-Inspection
-
-Customer
-
-Employee/Team where useful.
-
-Security scope first.
-
-==================================================
-81. DETAIL PAGE
-==================================================
-
-Header:
-
-Request No
-
-Status
-
-Date
-
-Purpose.
-
-Actions:
-
-Edit
-
-Print
-
-Cancel
-
-according to permission and state.
-
-==================================================
-82. DETAIL CONTEXT
-==================================================
-
-Show:
-
-Inspection No
-
-Job Assignment No
-
-Enquiry No
-
-Job Order Reference
-
-Customer
-
-Mobile
-
-Site
-
-Tenant
-
-Building
-
-Unit
-
-Material Received inherited from Enquiry.
-
-==================================================
-83. MATERIAL DETAILS
-==================================================
-
-Display:
-
-Code
-
-Description
-
-Batch No
-
-Qty
-
-Remark.
-
-Show Total Qty clearly.
-
-==================================================
-84. ACKNOWLEDGEMENT SECTION
-==================================================
-
-Show:
-
-Acknowledge
-
-Received By
-
-Remarks.
-
-Do not imply unsupported workflow states.
-
-==================================================
-85. AUDIT
-==================================================
-
-Use shared AuditMetadataBlock.
-
-Prepared By maps to:
-
-Created By.
-
-Also show:
-
-Created At
-
-Updated By
-
-Updated At.
-
-==================================================
-86. ACTIVITY
-==================================================
-
-Structured events:
-
-services.materialRequest.created
-
-services.materialRequest.updated
-
-services.materialRequest.cancelled
-
-material lines changed.
-
-Do not record every keystroke.
-
-==================================================
-87. SERVICES OVERVIEW
-==================================================
-
-Add REAL Material Request metrics where permitted.
-
-Possible:
-
-Open Material Requests
-
-Material Requests Today
-
-Requested Material Lines
-
-Recent Material Requests.
-
-==================================================
-88. DO NOT SHOW FAKE STORE METRICS
-==================================================
-
-Do NOT show:
-
-Pending Approval
-
-Pending Issue
-
-Stock Available
-
-Material Received
-
-Store Pending
-
-unless those workflows actually exist.
-
-==================================================
-89. DATABASE
-==================================================
-
-Inspect current latest schema version.
-
-Add:
-
-ServiceMaterialRequests
-
-ServiceMaterialRequestLines
-
-ServiceMaterialRequestPurposes.
-
-Increment schema exactly once.
-
-==================================================
-90. REQUEST TABLE
-==================================================
-
-Fields conceptually:
-
-id
-
-companyId
-
-requestNumber
-
-requestDate
-
-sourceInspectionId
-
-sourceJobAssignmentId
-
-sourceEnquiryId
-
-jobOrderReference
-
-purposeId
-
-acknowledgement
-
-receivedBy
-
-remarks
-
-status
+For mutable business records define:
 
 createdAt
 
+createdBy
+
 updatedAt
+
+updatedBy
+
+version
+
+where applicable.
+
+Backend derives audit actor from authenticated user.
+
+Client must not supply authoritative:
 
 createdByUserId
 
-updatedByUserId
-
-requestId
-
-syncStatus
-
-version.
-
-DO NOT store a new editable materialReceived field here.
+updatedByUserId.
 
 ==================================================
-91. LINE TABLE
+19. ACTIVITY EVENTS
 ==================================================
 
-Fields:
+Document backend requirements for structured business activity events.
+
+Do NOT store only English sentences.
+
+Use:
+
+eventType
+
+entityType
+
+entityId
+
+actor
+
+timestamp
+
+structured metadata.
+
+Examples:
+
+services.enquiry.created
+
+services.jobAssignment.created
+
+services.inspection.completed
+
+services.materialRequest.cancelled
+
+services.workExecution.workStarted.
+
+==================================================
+20. ATTACHMENT ARCHITECTURE
+==================================================
+
+Document generic attachment API requirements used by Services.
+
+Attachments exist for:
+
+Enquiry Detail Photos
+
+Inspection Before Work Photos
+
+Work Execution After Work Photos.
+
+Do NOT send binary data embedded inside transaction JSON.
+
+Use:
+
+upload initialization / direct upload
+
+attachment metadata
+
+owner linkage
+
+upload completion
+
+delete/remove
+
+download/view authorization.
+
+==================================================
+21. ATTACHMENT OWNERSHIP
+==================================================
+
+Document owner categories actually implemented, such as:
+
+SERVICE_ENQUIRY_DETAIL
+
+SERVICE_INSPECTION_CHECKLIST_ITEM
+
+SERVICE_WORK_EXECUTION_PHOTO_ENTRY.
+
+Use actual implementation identifiers.
+
+==================================================
+22. ATTACHMENT AUTHORIZATION
+==================================================
+
+Backend must authorize attachment access through the owning business record.
+
+Knowing attachment UUID alone must never grant access.
+
+==================================================
+23. SERVICES OVERVIEW API
+==================================================
+
+Document endpoint(s) for Services operational summary.
+
+Example conceptual:
+
+GET /api/v1/services/overview
+
+Return only metrics user is authorized to view.
+
+Possible actual metrics:
+
+open enquiries
+
+scheduled assignments
+
+pending inspections
+
+open material requests
+
+work in progress
+
+completed work today
+
+my upcoming work.
+
+Use actual Phase 7 implementation.
+
+==================================================
+24. OVERVIEW SCOPE
+==================================================
+
+Summary counts MUST respect:
+
+ASSIGNED
+
+TEAM
+
+ALL
+
+and permissions.
+
+Do not calculate company-wide count then hide rows only in UI.
+
+==================================================
+25. CUSTOMER API
+==================================================
+
+Document complete Customer endpoints required by implemented Services module.
+
+Likely:
+
+GET /services/customers
+
+POST /services/customers
+
+GET /services/customers/{customerId}
+
+PATCH /services/customers/{customerId}
+
+POST /services/customers/{customerId}/deactivate
+
+and any search/reference endpoints actually required.
+
+For every endpoint include:
+
+Purpose
+
+Method
+
+Path
+
+Permission
+
+Scope
+
+Headers
+
+Path params
+
+Query params
+
+Request body
+
+field definitions
+
+validation
+
+response
+
+errors
+
+audit
+
+idempotency where applicable.
+
+==================================================
+26. CUSTOMER SEARCH
+==================================================
+
+Document:
+
+search
+
+status filtering
+
+pagination
+
+sorting
+
+reference lookup.
+
+Do not expose unrestricted customer data through reference selectors.
+
+==================================================
+27. SERVICE SITE API
+==================================================
+
+Cover:
+
+list
+
+create
+
+detail
+
+edit
+
+deactivate
+
+customer-scoped sites
+
+reference search.
+
+Fields may include actual implemented:
+
+site code
+
+site name
+
+customer
+
+tenant name
+
+building
+
+unit
+
+contacts
+
+address
+
+coordinates
+
+status.
+
+Use actual model, not assumptions.
+
+==================================================
+28. SERVICE TEAM API
+==================================================
+
+Cover:
+
+list
+
+create
+
+detail
+
+edit
+
+activate/deactivate
+
+membership changes
+
+team lead if implemented
+
+Employee reference selection.
+
+==================================================
+29. TEAM MEMBERSHIP RULES
+==================================================
+
+Document:
+
+Employee same company
+
+active Employee requirements
+
+multiple Team membership support if implemented
+
+membership does NOT grant permission.
+
+==================================================
+30. WORKFORCE REFERENCES
+==================================================
+
+Services needs safe Employee reference endpoints.
+
+Backend must allow contextual Employee lookup without automatically granting
+full HR Employee-directory access.
+
+Document a restricted endpoint such as conceptual:
+
+GET /services/references/employees
+
+with permitted fields only.
+
+Do not expose HR-private fields.
+
+==================================================
+31. SERVICES CONFIGURATION APIs
+==================================================
+
+Cover every implemented Services master:
+
+Service Types
+
+Complaint Types
+
+Priorities
+
+Ticket Types
+
+Root Causes
+
+Charge Responsibilities
+
+Material Request Purposes
+
+and any additional actually implemented Services configuration.
+
+==================================================
+32. MASTER API PATTERN
+==================================================
+
+For each master document:
+
+list
+
+active reference list
+
+create
+
+update
+
+activate/deactivate.
+
+Historical inactive values must remain resolvable for existing transactions.
+
+==================================================
+33. SERVICE ENQUIRY API
+==================================================
+
+Document:
+
+GET /services/enquiries
+
+POST /services/enquiries
+
+GET /services/enquiries/{id}
+
+PATCH /services/enquiries/{id}
+
+POST /services/enquiries/{id}/cancel
+
+plus any reference/search endpoint.
+
+Use final implemented paths/conventions.
+
+==================================================
+34. ENQUIRY HEADER
+==================================================
+
+Document actual fields including:
+
+enquiryNumber
+
+business date
+
+customerId
+
+siteId
+
+serviceTypeId if implemented
+
+complaintTypeId
+
+priorityId
+
+ticketTypeId
+
+materialReceived
+
+status
+
+snapshot/context fields according to actual domain.
+
+==================================================
+35. MATERIAL RECEIVED — API RULE
+==================================================
+
+Material Received is owned by Service Enquiry.
+
+Backend contract must make this explicit.
+
+Downstream APIs MUST NOT expose independent mutable materialReceived fields.
+
+Downstream read DTOs may include:
+
+materialReceived
+
+as inherited/read-only context.
+
+==================================================
+36. ENQUIRY DETAIL LINES
+==================================================
+
+Enquiry aggregate includes:
+
+1..N detail/issue lines.
+
+Document fields:
 
 id
 
-companyId
+description
 
-materialRequestId
+status
 
-sourceInspectionMaterialRequirementId nullable
+sort order
 
-lineNumber
+attachment references
+
+and actual implemented metadata.
+
+==================================================
+37. ENQUIRY VALIDATION
+==================================================
+
+Document actual validation:
+
+customer/site relationship
+
+active masters
+
+minimum detail count
+
+same company
+
+cancel rules
+
+edit restrictions after assignment
+
+etc.
+
+Use implemented business logic.
+
+==================================================
+38. ENQUIRY STATUS
+==================================================
+
+Document actual current lifecycle:
+
+OPEN
+
+ASSIGNED
+
+CANCELLED
+
+or final actual implementation.
+
+Do not add guessed values.
+
+==================================================
+39. ENQUIRY REFERENCE LOOKUP
+==================================================
+
+Job Assignment Create may need eligible Enquiry references without requiring
+full Enquiry ALL access.
+
+Document safe contextual endpoint.
+
+Example conceptual:
+
+GET /services/job-assignments/eligible-enquiries
+
+or reference equivalent.
+
+==================================================
+40. JOB ASSIGNMENT API
+==================================================
+
+Cover:
+
+list
+
+create
+
+detail
+
+update
+
+cancel
+
+eligible Enquiry lookup.
+
+==================================================
+41. JOB ASSIGNMENT CREATE BODY
+==================================================
+
+Document actual body.
+
+Conceptually:
+
+sourceEnquiryId
+
+scheduledVisitDate
+
+lines [
+  work
+  assignedEmployeeId
+  assignedTeamId
+  status
+  descriptionForWork
+]
+
+Do not require client to send Customer/Site duplicate fields.
+
+==================================================
+42. JOB ASSIGNMENT SERVER DERIVATION
+==================================================
+
+Backend derives/validates:
+
+Customer
+
+Site
+
+Complaint
+
+Priority
+
+Material Received
+
+Enquiry lineage.
+
+Client cannot submit mismatched context.
+
+==================================================
+43. JOB ASSIGNMENT VALIDATION
+==================================================
+
+Document:
+
+Enquiry eligible/open
+
+same company
+
+one active Assignment per Enquiry if final V1 rule remains
+
+Employee validity
+
+Team validity
+
+at least one work line
+
+Employee/Team relationship rules
+
+Visit Date rules.
+
+==================================================
+44. JOB ASSIGNMENT SCOPING
+==================================================
+
+Document exact ASSIGNED / TEAM / ALL rules.
+
+==================================================
+45. JOB ASSIGNMENT CANCEL
+==================================================
+
+Document transactional behavior.
+
+If final implementation does:
+
+Assignment ACTIVE → CANCELLED
+
+and Enquiry ASSIGNED → OPEN
+
+describe exact conditions.
+
+==================================================
+46. INSPECTION API
+==================================================
+
+Cover:
+
+list
+
+create
+
+detail
+
+update
+
+complete
+
+cancel
+
+eligible Job Assignment refs.
+
+==================================================
+47. INSPECTION CREATE BODY
+==================================================
+
+Document actual model:
+
+sourceJobAssignmentId
+
+visitDate
+
+visitTime
+
+technicianEmployeeId
+
+rootCauseId
+
+chargeResponsibilityId
+
+checklistItems
+
+inspectedPoints
+
+materialRequirements.
+
+==================================================
+48. INSPECTION SERVER DERIVATION
+==================================================
+
+Backend derives:
+
+source Enquiry
+
+Customer/Site context
+
+Complaint/Priority
+
+Material Received
+
+Job Assignment work context.
+
+Never trust mismatched client-supplied lineage.
+
+==================================================
+49. INSPECTION CHECKLIST
+==================================================
+
+Document:
+
+sourceJobAssignmentLineId
+
+workType
+
+descriptionForWork
+
+status
+
+Before Work attachment ownership.
+
+==================================================
+50. INSPECTED POINTS
+==================================================
+
+Document 0..N observations.
+
+==================================================
+51. INSPECTION MATERIAL REQUIREMENTS
+==================================================
+
+Document:
 
 code
 
 description
 
-batchNumber
+status.
 
-quantity
+Current statuses must reflect actual implementation:
 
-remark
+WAITING
 
-createdAt
+REQUESTED
 
-updatedAt.
+only if Phase 5 implemented this transition.
 
-==================================================
-92. CONSTRAINTS
-==================================================
-
-Enforce:
-
-requestNumber unique within company
-
-Inspection same company
-
-Job Assignment lineage same company
-
-Enquiry lineage same company
-
-Purpose same company
-
-lines same company/request
-
-quantity > 0
-
-source requirement belongs to source Inspection.
+Do not invent inventory states.
 
 ==================================================
-93. ATOMIC CREATE
+52. INSPECTION COMPLETE ENDPOINT
 ==================================================
 
-One transaction:
+Document explicit command.
 
-allocate sequence
+Example conceptual:
 
-create Material Request
+POST /services/inspections/{id}/complete
 
-create lines
+Include:
 
-WAITING → REQUESTED source requirement transitions
+permission
 
-activity
+scope
 
-outbox.
+valid source state
 
-==================================================
-94. ATOMIC UPDATE
-==================================================
+required data
 
-Reconcile material lines and source links safely.
+attachment constraints
 
-New source requirement:
+state conflict errors
 
-WAITING → REQUESTED.
+idempotency
 
-Removed source requirement:
-
-REQUESTED → WAITING
-
-if no other active relationship.
+activity.
 
 ==================================================
-95. ATOMIC CANCEL
+53. MATERIAL REQUEST API
 ==================================================
 
-Request:
+Cover:
 
-OPEN → CANCELLED.
+list
 
-Reconcile source requirements:
+create
 
-REQUESTED → WAITING.
+detail
 
-Activity + outbox in same transaction.
+update
 
-==================================================
-96. OUTBOX
-==================================================
+cancel
 
-Register:
+print data
 
-SERVICES_MATERIAL_REQUEST_CREATE
-
-SERVICES_MATERIAL_REQUEST_UPDATE
-
-SERVICES_MATERIAL_REQUEST_CANCEL
-
-plus Purpose configuration mutation keys.
+eligible Inspection lookup.
 
 ==================================================
-97. OUTBOX PAYLOAD
+54. MATERIAL REQUEST CREATE
 ==================================================
 
-Payload:
+Document actual request structure:
 
-request header
+sourceInspectionId
 
-source Inspection ID
-
-source Assignment/Enquiry lineage
-
-jobOrderReference
+jobOrderReference optional
 
 purposeId
 
-acknowledgement
+acknowledgement optional
 
-receivedBy
+receivedBy optional
 
 remarks
 
 lines [
-  id
-  sourceInspectionMaterialRequirementId
+  sourceInspectionMaterialRequirementId optional
   code
   description
   batchNumber
@@ -1966,656 +1333,1902 @@ lines [
   remark
 ]
 
-No binary attachments.
-
 ==================================================
-98. IDEMPOTENCY
+55. MATERIAL REQUEST SERVER RULES
 ==================================================
 
-Repeated requestId must NOT create:
+Backend validates:
 
-duplicate Request
+Inspection eligible/completed
 
-duplicate lines
+same company
 
-duplicate status transitions
+source requirement belongs to Inspection
 
-duplicate outbox events.
+source requirement WAITING
+
+no duplicate active Request linkage
+
+quantity > 0
+
+Purpose valid.
 
 ==================================================
-99. REPOSITORY
+56. REQUIREMENT STATE TRANSITION
 ==================================================
 
-Create:
+Document atomic:
 
-ServiceMaterialRequestRepository
+WAITING → REQUESTED
 
-following current architecture.
+when included in active Material Request.
 
-Support actual UI needs:
+On valid cancellation:
 
-watch requests
+REQUESTED → WAITING
 
-detail
+where applicable.
+
+==================================================
+57. MULTIPLE REQUESTS PER INSPECTION
+==================================================
+
+Document actual implemented rule.
+
+Allow multiple Requests if Phase 5 did.
+
+But one source requirement cannot be in multiple active requests.
+
+==================================================
+58. MATERIAL REQUEST TOTAL
+==================================================
+
+Total quantity is derived from lines.
+
+Backend may return:
+
+totalQuantity.
+
+Do not trust client-authoritative total.
+
+==================================================
+59. MATERIAL REQUEST PRINT
+==================================================
+
+Document backend responsibilities according to actual architecture.
+
+If backend should return structured print data:
+
+define endpoint.
+
+If backend eventually generates PDF:
+
+document as future/optional unless required.
+
+At minimum backend authorization for printable record data must be defined.
+
+==================================================
+60. WORK EXECUTION API
+==================================================
+
+Cover:
+
+list
 
 create
+
+detail
 
 update
 
 cancel
 
-eligible Inspection refs
+complete
 
-requests for Inspection
+Start Work
 
-summary/recent queries.
+End Work
 
-==================================================
-100. USE CASES
-==================================================
+Material Used changes
 
-Create/use:
-
-CreateServiceMaterialRequest
-
-UpdateServiceMaterialRequest
-
-CancelServiceMaterialRequest
-
-PrintServiceMaterialRequest
-
-WatchServiceMaterialRequests
-
-GetServiceMaterialRequest.
+After Work Photos.
 
 ==================================================
-101. NO BUSINESS LOGIC IN WIDGETS
+61. WORK EXECUTION CREATE
 ==================================================
 
-Quantity validation
+Document source:
 
-Total Qty calculation
+sourceInspectionId.
 
-source requirement transitions
-
-cancellation reconciliation
-
-permission/scope
-
-must live outside presentation.
-
-==================================================
-102. COMPANY ISOLATION
-==================================================
-
-No cross-company access or linking.
-
-==================================================
-103. DIRECT URL SECURITY
-==================================================
-
-All routes enforce permissions/object scope.
-
-==================================================
-104. PRINT SECURITY
-==================================================
-
-Direct print invocation also enforces:
-
-View + Print + object scope.
-
-==================================================
-105. NOTIFICATIONS
-==================================================
-
-Do NOT create Store/Approval notifications.
-
-The client reference does not establish recipients/workflow yet.
-
-Activity is enough.
-
-==================================================
-106. DEMO DATA
-==================================================
-
-Seed realistic Material Request from completed Inspection.
-
-Use existing:
-
-Inspection
+Backend derives:
 
 Job Assignment
 
 Enquiry
 
-Customer
-
-Material Requirements.
-
-Example:
-
-MR-000001
-
-Purpose:
-Service Work
-(demo-only configurable value)
-
-Material:
-
-CAP-35UF
-35µF capacitor
-Qty 1
-
-WIRE-2.5
-2.5mm electrical wire
-Qty 3.
-
-Total Qty:
-4.
+Customer/Site workflow context.
 
 ==================================================
-107. TEST — MATERIAL RECEIVED SOURCE
+62. WORK EXECUTION HEADER
 ==================================================
 
-Critical test:
+Document:
 
-Enquiry:
-materialReceived = YES
+executionNumber
 
-Job Assignment derived display:
-YES
+executionDate
 
-Inspection derived display:
-YES
+sourceInspectionId
 
-Material Request context if displayed:
-YES.
+sourceJobAssignmentId derived
 
-No downstream transaction stores an independently editable conflicting value.
+sourceEnquiryId derived
 
-==================================================
-108. TEST — MATERIAL RECEIVED NO
-==================================================
+jobOrderReference optional
 
-Same for NO.
+quotationReference optional
 
-Creating Material Request must still follow Inspection requirements.
+status
 
-Do NOT automatically block request because Material Received is YES.
-
-Do NOT automatically force request because value is NO.
+audit/version.
 
 ==================================================
-109. TEST — PREFILL
+63. JOB ORDER / QUOTATION REFERENCES
 ==================================================
 
-WAITING Inspection requirements correctly generate draft Request lines.
+Document these only as:
+
+compatibility/external reference fields.
+
+Do not define lookup APIs unless an authoritative provider exists.
+
+Explicitly mark:
+
+owner/source TBD.
 
 ==================================================
-110. TEST — SOURCE TRACEABILITY
+64. WORK EXECUTION LINES
 ==================================================
 
-Each generated line retains:
+Document:
 
-sourceInspectionMaterialRequirementId.
+id
 
-==================================================
-111. TEST — MANUAL LINE
-==================================================
+sourceJobAssignmentLineId optional
 
-Additional manually-added material works with null source requirement.
+lineNumber
 
-==================================================
-112. TEST — TOTAL QTY
-==================================================
+work
 
-Always sum current quantities.
+description
 
-==================================================
-113. TEST — CANCEL RECONCILIATION
-==================================================
+serviceTeamId optional
 
-REQUESTED source requirement reverts to WAITING on cancellation where valid.
+employeeId optional
 
-==================================================
-114. TEST — MULTIPLE REQUESTS
-==================================================
+startedAt
 
-Inspection can have multiple Requests.
+endedAt
 
-One specific requirement cannot be in multiple active Requests.
+derived execution state.
 
 ==================================================
-115. TEST — JOB ORDER REFERENCE
+65. WORK LINE STATE
 ==================================================
 
-Job Order business concept is preserved.
+Document modern state:
 
-No fake JobOrder entity/module created.
+NOT_STARTED
 
-==================================================
-116. TEST — PURPOSE
-==================================================
+IN_PROGRESS
 
-Active purpose selectable.
+FINISHED
 
-Inactive historical value resolves.
+derived from timestamps unless actual implementation persists typed state.
 
-==================================================
-117. TEST — PRINT
-==================================================
-
-Printable document includes client-required data.
+Do not reproduce unknown legacy status vocabulary.
 
 ==================================================
-118. TEST — ASSIGNED
+66. START WORK ENDPOINT
 ==================================================
 
-ASSIGNED visibility works.
+Define explicit command endpoint.
+
+Conceptual:
+
+POST /services/work-executions/{executionId}/lines/{lineId}/start
+
+Permission:
+
+services.workExecutions.perform
+
+Server determines:
+
+actual start timestamp
+
+using authoritative clock.
+
+Do not trust arbitrary client start timestamp unless correction workflow exists.
 
 ==================================================
-119. TEST — TEAM
+67. END WORK ENDPOINT
 ==================================================
 
-TEAM visibility works without leakage.
+Conceptual:
+
+POST /services/work-executions/{executionId}/lines/{lineId}/end
+
+Server determines end timestamp.
+
+Validate:
+
+line started
+
+not already ended
+
+end >= start.
 
 ==================================================
-120. TEST — ALL
+68. START/END IDEMPOTENCY
 ==================================================
 
-ALL remains company-scoped.
+Double-tap/retry must not create duplicate events or timestamps.
+
+Document conflict/idempotent response behavior.
 
 ==================================================
-121. TEST — CREATE WITHOUT FULL INSPECTION ACCESS
+69. MATERIAL USED API
 ==================================================
 
-Restricted eligible Inspection selector works.
-
-Does not expose unrestricted Inspection data.
-
-==================================================
-122. TEST — LIVE PERMISSION UPDATE
-==================================================
-
-Grant/remove permissions updates navigation/actions/routes without relogin.
-
-==================================================
-123. RESPONSIVE
-==================================================
-
-390
-
-768
-
-1024
-
-1280
-
-1440
-
-1920.
-
-Same global centered max width on every screen.
-
-==================================================
-124. MOBILE MATERIAL EDITOR
-==================================================
-
-Use cards.
-
-No legacy horizontal table.
-
-==================================================
-125. ARABIC / RTL
-==================================================
-
-Localize:
-
-Material Requests
-
-Request No
-
-Request Date
-
-Job Order Reference
-
-Purpose
-
-Acknowledge
-
-Received By
-
-Remarks
-
-Prepared By
+Document actual confirmed Phase 6 fields:
 
 Code
 
 Description
 
-Batch No
+optional sourceMaterialRequestLineId.
 
-Quantity
+DO NOT include:
 
-Total Quantity
+Qty
 
-Print
+UOM
 
-Cancel Material Request.
+Batch
 
-==================================================
-126. DOCUMENTATION
-==================================================
+Cost
 
-Create:
-
-docs/services/phase_5_material_request.md
-
-Document:
-
-client mapping
-
-Material Received inheritance rule
-
-Inspection source
-
-material requirement handoff
-
-Job Order compatibility strategy
-
-Purpose
-
-Acknowledge TBD
-
-Received By TBD
-
-request lifecycle
-
-line model
-
-status transitions
-
-permissions
-
-scopes
-
-routes
-
-repository
-
-print
-
-outbox
-
-next-phase handoff.
+unless actual Phase 6 implementation contains them from confirmed scope.
 
 ==================================================
-127. PERMISSION COVERAGE
+70. MATERIAL USED RULE
 ==================================================
 
-Update:
+Recording Material Used does NOT mutate:
 
-docs/architecture/permission_coverage.md
+stock
 
-for all Phase 5 permissions.
+inventory
 
-==================================================
-128. CLIENT TRACEABILITY QUESTIONS
-==================================================
+Material Request lifecycle.
 
-Keep these explicitly unresolved:
-
-1. Where is Job Order created and which module owns it?
-
-2. What are the client's actual Purpose options?
-
-3. What exactly does Acknowledge mean?
-
-4. Who/what can Received By represent?
-
-5. Does a later Store process approve/issue the request?
-
-Do NOT guess.
+State this explicitly.
 
 ==================================================
-129. FUTURE WORK EXECUTION
+71. AFTER WORK PHOTOS
 ==================================================
 
-The client Work Execution screen references:
+Document Work Execution photo evidence:
 
-Job Order No
+photo-entry description
 
-Quotation No
+attachment ownership
 
-Inspection No
+multiple images.
 
-Job Assignment No
+Photo mandatory-for-completion remains TBD unless actual Phase 7/confirmed
+business rule changed it.
 
-Enquiry No
+==================================================
+72. COMPLETE WORK EXECUTION
+==================================================
 
-plus:
+Define explicit endpoint.
 
-Work
+Conceptual:
+
+POST /services/work-executions/{id}/complete
+
+Backend validates actual completion requirements.
+
+At minimum:
+
+valid status
+
+required lines finished
+
+time ranges valid
+
+required aggregate data valid.
+
+Do not make photos mandatory unless confirmed.
+
+==================================================
+73. WORK EXECUTION CANCEL
+==================================================
+
+Define historical cancel command.
+
+No hard delete.
+
+==================================================
+74. SERVICES WORKFLOW API
+==================================================
+
+Phase 7 may have created a workflow read model.
+
+Document endpoint if backend support is needed.
+
+Conceptual:
+
+GET /services/workflows/by-enquiry/{enquiryId}
+
+or:
+
+GET /services/enquiries/{id}/workflow
+
+Return authorized linked nodes only.
+
+==================================================
+75. WORKFLOW RESPONSE
+==================================================
+
+Possible structure:
+
+enquiry
+
+jobAssignment
+
+inspection
+
+materialRequests[]
+
+workExecution
+
+derivedCurrentStage
+
+availableActions.
+
+Use actual Phase 7 model.
+
+==================================================
+76. AVAILABLE ACTIONS
+==================================================
+
+If server should expose workflow action availability:
+
+document it carefully.
+
+Do not make UI the only source of valid transition logic.
+
+Backend mutations must enforce the same rules independently.
+
+==================================================
+77. OPTIONAL MATERIAL REQUEST BRANCH
+==================================================
+
+Backend workflow must support:
+
+Enquiry
+→ Assignment
+→ Inspection
+→ Work Execution
+
+when no Material Request is required.
+
+AND:
+
+Enquiry
+→ Assignment
+→ Inspection
+→ Material Request
+→ Work Execution.
+
+Do not require Material Request globally.
+
+==================================================
+78. SERVICES DASHBOARD ENDPOINT
+==================================================
+
+Document scope-aware operational dashboard response.
+
+Possible sections from Phase 7:
+
+counts
+
+upcoming assignments
+
+pending inspections
+
+active work
+
+recent activity.
+
+Use actual implementation only.
+
+==================================================
+79. MY WORK ENDPOINT
+==================================================
+
+If Phase 7 has My Work:
+
+document endpoint or query contract.
+
+It should derive Employee from authenticated UserAccount relationship.
+
+Do NOT trust arbitrary employeeId to access another person's ASSIGNED data.
+
+==================================================
+80. TEAM WORK
+==================================================
+
+If Team view exists:
+
+backend resolves Team scope from effective grant + Service Team relationships.
+
+==================================================
+81. SEARCH / FILTER STANDARD
+==================================================
+
+Define common query conventions.
+
+Example:
+
+q
+
+status
+
+customerId
+
+siteId
+
+employeeId
+
+teamId
+
+dateFrom
+
+dateTo
+
+sort
+
+page
+
+pageSize.
+
+Do not invent unsupported filters.
+
+List exact filters per endpoint.
+
+==================================================
+82. SORTING
+==================================================
+
+Document allowed server-side sort keys for every list.
+
+Reject arbitrary unsafe field names.
+
+==================================================
+83. PAGINATION
+==================================================
+
+Use one consistent pagination model.
+
+Document maximum page size.
+
+==================================================
+84. REFERENCE ENDPOINTS
+==================================================
+
+Define lightweight, permission-safe reference endpoints required for selectors:
+
+Customers
+
+Sites
+
+Employees
+
+Service Teams
+
+eligible Enquiries
+
+eligible Job Assignments
+
+eligible Inspections
+
+Services masters.
+
+Reference responses must return only needed fields.
+
+==================================================
+85. REFERENCE ACCESS ≠ DIRECTORY ACCESS
+==================================================
+
+This is critical.
+
+Example:
+
+Inspection creator may select relevant Employee.
+
+That does NOT grant full HR Employee API access.
+
+Job Assignment creator may search Customer reference.
+
+That does NOT automatically grant Customer management access.
+
+==================================================
+86. NOTIFICATIONS
+==================================================
+
+Document Services notification events that genuinely require backend support.
+
+Likely:
+
+Job assignment created/assigned
+
+Inspection assigned where implemented
+
+Work Execution ready where implemented.
+
+Use actual Phase 7 policy.
+
+==================================================
+87. NOTIFICATION PAYLOAD
+==================================================
+
+Use IDs/deep-link metadata rather than storing frontend URLs as authoritative
+business data.
+
+Example:
+
+type
+
+companyId
+
+entityType
+
+entityId
+
+transactionNumber
+
+recipientUserId
+
+createdAt.
+
+==================================================
+88. NOTIFICATION SECURITY
+==================================================
+
+Receiving a notification does not guarantee future read access.
+
+Record endpoint rechecks permission/scope.
+
+==================================================
+89. SYNC CONTRACT
+==================================================
+
+The application uses local-first/outbox semantics.
+
+Document backend mutation expectations needed for safe synchronization:
+
+requestId
+
+idempotency
+
+server version
+
+updatedAt
+
+soft cancellation
+
+conflict response.
+
+==================================================
+90. CLIENT-GENERATED UUIDS
+==================================================
+
+Inspect actual application behavior.
+
+If client creates UUID before sync:
+
+document whether backend accepts the supplied UUID as idempotent entity
+identity.
+
+If backend owns UUID instead:
+
+document ID mapping strategy.
+
+Do not leave ambiguous.
+
+==================================================
+91. CREATE RESPONSE
+==================================================
+
+Every create response should return authoritative:
+
+id
+
+business number
+
+status
+
+audit metadata
+
+version
+
+server timestamps
+
+and complete normalized representation needed for local reconciliation.
+
+==================================================
+92. UPDATE RESPONSE
+==================================================
+
+Return updated authoritative record + version.
+
+==================================================
+93. CANCEL/COMMAND RESPONSE
+==================================================
+
+Return updated aggregate/state.
+
+Do not respond only:
+
+"success": true
+
+when clients need state reconciliation.
+
+==================================================
+94. DELETE POLICY
+==================================================
+
+Business transactions generally must NOT expose hard DELETE endpoints:
+
+Enquiries
+
+Assignments
+
+Inspections
+
+Material Requests
+
+Work Executions.
+
+Use explicit cancel endpoints.
+
+For configuration/master records use deactivate where implemented.
+
+==================================================
+95. ACTIVITY API
+==================================================
+
+Document generic or Services-specific timeline endpoint if required.
+
+Example conceptual:
+
+GET /services/{entityType}/{id}/activity
+
+or shared:
+
+GET /activity?entityType=&entityId=.
+
+Apply record authorization.
+
+==================================================
+96. WORKFLOW ACTIVITY
+==================================================
+
+If Phase 7 combines activity across workflow:
+
+document how backend retrieves authorized merged activity.
+
+==================================================
+97. AUDIT API
+==================================================
+
+Do not expose sensitive internal audit data beyond required fields.
+
+==================================================
+98. PERFORMANCE REQUIREMENTS
+==================================================
+
+Document expected backend behavior:
+
+pagination
+
+indexed search fields
+
+avoid N+1
+
+batch/join list projections
+
+dashboard aggregate queries
+
+efficient scope filtering.
+
+==================================================
+99. DATABASE INDEX GUIDANCE
+==================================================
+
+Backend document is stack-neutral, but include logical indexing needs:
+
+companyId + status
+
+companyId + business number
+
+source transaction IDs
+
+employee/team assignment relationships
+
+visit/execution date
+
+createdAt
+
+searchable normalized fields.
+
+Do not prescribe a specific DB engine unless backend team already selected one.
+
+==================================================
+100. ATOMIC TRANSACTIONS
+==================================================
+
+Explicitly identify operations requiring atomicity.
+
+Examples:
+
+Create Job Assignment:
+sequence
++ assignment
++ lines
++ Enquiry status
++ activity.
+
+Create Inspection:
+sequence
++ header
++ child rows
++ activity.
+
+Create Material Request:
+sequence
++ lines
++ requirement WAITING→REQUESTED
++ activity.
+
+Cancel Material Request:
+status
++ requirement reconciliation
++ activity.
+
+Create Work Execution:
+sequence
++ lines
++ activity.
+
+Start Work:
+timestamp
++ aggregate status
++ activity.
+
+==================================================
+101. VALIDATION CATALOG
+==================================================
+
+Provide validation rules per domain.
+
+Do not merely write:
+
+"validate input."
+
+Include concrete conditions.
+
+==================================================
+102. ERROR CATALOG
+==================================================
+
+Define machine-readable codes.
+
+Examples should be based on actual domain:
+
+SERVICES_ENQUIRY_NOT_FOUND
+
+SERVICES_ENQUIRY_NOT_ASSIGNABLE
+
+SERVICES_ASSIGNMENT_ALREADY_EXISTS
+
+SERVICES_INSPECTION_NOT_ELIGIBLE
+
+SERVICES_MATERIAL_REQUIREMENT_ALREADY_REQUESTED
+
+SERVICES_WORK_ALREADY_STARTED
+
+SERVICES_WORK_NOT_STARTED
+
+SERVICES_WORK_ALREADY_ENDED
+
+SERVICES_PERMISSION_DENIED
+
+COMPANY_SCOPE_MISMATCH
+
+VERSION_CONFLICT.
+
+Use clean consistent naming.
+
+==================================================
+103. 400 VS 403 VS 404 VS 409
+==================================================
+
+Document error semantics.
+
+400:
+validation.
+
+401:
+authentication.
+
+403:
+known but unauthorized operation.
+
+404:
+resource unavailable/not found according to security policy.
+
+409:
+state/concurrency/idempotency conflict.
+
+422 only if backend convention uses it.
+
+==================================================
+104. FIELD TABLES
+==================================================
+
+For every request/response DTO provide a field table:
+
+Field
+
+Type
+
+Required
+
+Nullable
+
+Source
 
 Description
 
-Team Selection
+Validation
 
-Individual Employee
+Example.
 
-Start Time
+==================================================
+105. ENUM TABLES
+==================================================
 
-End Time
+Provide enum/status tables ONLY for statuses actually implemented/confirmed.
 
-Status
+For each:
+
+value
+
+meaning
+
+allowed transitions.
+
+Do NOT invent client legacy statuses.
+
+==================================================
+106. SERVICES PERMISSION MATRIX
+==================================================
+
+Add a complete backend permission matrix.
+
+Rows:
+
+endpoint/action
+
+permission key
+
+scope support
+
+employee link requirement
+
+notes.
+
+Cover all Services permissions.
+
+==================================================
+107. ENDPOINT MATRIX
+==================================================
+
+Create a master endpoint table:
+
+Domain
+
+Method
+
+Path
+
+Permission
+
+Scope
+
+Idempotent?
+
+Purpose.
+
+This should provide a quick backend implementation checklist.
+
+==================================================
+108. WORKFLOW TRANSITION MATRIX
+==================================================
+
+Include all actual transitions.
+
+Examples:
+
+Enquiry:
+OPEN → ASSIGNED
+OPEN → CANCELLED
+
+Assignment:
+ACTIVE → CANCELLED
+
+Inspection:
+PENDING → COMPLETED
+PENDING → CANCELLED
+
+Inspection Material Requirement:
+WAITING → REQUESTED
+REQUESTED → WAITING on request cancellation
+
+Material Request:
+OPEN → CANCELLED
+
+Work Execution:
+PENDING → IN_PROGRESS
+IN_PROGRESS → COMPLETED
+eligible states → CANCELLED.
+
+Use actual implemented statuses if names differ.
+
+==================================================
+109. SOURCE-OF-TRUTH MATRIX
+==================================================
+
+Include:
+
+Concept | Authoritative Owner | Downstream Read
+
+Material Received
+→ Enquiry
+
+Customer historical snapshot
+→ Enquiry
+
+Visit Date
+→ Job Assignment
+
+Root Cause
+→ Inspection
+
+Before Work Photos
+→ Inspection
+
+Material Required
+→ Inspection
+
+Requested Qty
+→ Material Request
+
+Actual Start/End
+→ Work Execution
 
 Material Used
+→ Work Execution
+
+After Work Photos
+→ Work Execution
+
+Job Order
+→ TBD
+
+Quotation
+→ TBD.
+
+==================================================
+110. API DEPENDENCY MAP
+==================================================
+
+Document relationships:
+
+Customer
+→ Sites
+
+Enquiry
+→ Customer/Site
+
+Assignment
+→ Enquiry
+
+Inspection
+→ Assignment
+
+Material Request
+→ Inspection
+
+Work Execution
+→ Inspection
+
+Material Request Line
+→ optional Inspection Material Requirement
+
+Material Used
+→ optional Material Request Line.
+
+==================================================
+111. SECURITY RULES
+==================================================
+
+Backend MUST NOT trust client to provide:
+
+companyId ownership
+
+createdBy
+
+updatedBy
+
+derived Enquiry IDs
+
+derived Job Assignment lineage
+
+Customer context from downstream request
+
+Material Received downstream
+
+scope decisions
+
+workflow transition validity.
+
+Server verifies/derives these.
+
+==================================================
+112. MASS ASSIGNMENT PROTECTION
+==================================================
+
+Document server allow-list for mutable fields per operation.
+
+Do not allow arbitrary DTO-to-entity patching.
+
+==================================================
+113. ATTACHMENT SECURITY
+==================================================
+
+Define:
+
+allowed mime types
+
+max file size if known
+
+image count if known
+
+authorization
+
+malware/content scanning integration as backend concern where appropriate.
+
+If limits are not defined in current app:
+
+mark them TBD instead of inventing numeric limits.
+
+==================================================
+114. SEARCH SECURITY
+==================================================
+
+Reference/search endpoints must apply permission/scope before search results.
+
+Search must never be used to enumerate inaccessible records.
+
+==================================================
+115. DATA RETENTION
+==================================================
+
+Do not invent retention periods.
+
+State:
+
+TBD / organization policy
+
+where relevant.
+
+==================================================
+116. SOFT CANCELLATION
+==================================================
+
+Transaction cancellation is a business status, not database deletion.
+
+Backend records remain auditable.
+
+==================================================
+117. CONFIGURATION DEACTIVATION
+==================================================
+
+Masters use active/inactive behavior.
+
+Inactive master:
+
+not selectable in new transactions
+
+still resolvable historically.
+
+==================================================
+118. SERVICES MODULE ENABLEMENT
+==================================================
+
+All Services endpoints must reject access when Services module is disabled for
+selected company.
+
+Document error behavior.
+
+==================================================
+119. EMPLOYEE LINK
+==================================================
+
+Backend must know authenticated UserAccount → Employee relationship where
+ASSIGNED/perform operations require it.
+
+Document expected identity context from platform/auth bootstrap.
+
+Do not create duplicate Services Employee identity.
+
+==================================================
+120. WORK EXECUTION PERFORM SECURITY
+==================================================
+
+This is especially important.
+
+A user with:
+
+services.workExecutions.perform
+
+must still satisfy:
+
+record scope
+
+line relationship/policy
+
+company
+
+valid execution state.
+
+Permission alone does not permit performing every Work Execution.
+
+==================================================
+121. BUSINESS ACTION PERMISSIONS
+==================================================
+
+Explicitly distinguish:
+
+View
+
+Create
+
+Edit
+
+Perform
+
+Complete
+
+Cancel
+
+Print
+
+Manage configuration.
+
+Do not collapse to one generic Services write permission.
+
+==================================================
+122. SERVICES SETTINGS PERMISSIONS
+==================================================
+
+Document all configuration permission endpoints separately from transaction
+permissions.
+
+==================================================
+123. PRINT / EXPORT
+==================================================
+
+Material Request Print must enforce:
+
+record View
+
+Print permission
+
+scope.
+
+If additional exports currently exist, document them.
+
+==================================================
+124. NO SERVICE REPORT APIs
+==================================================
+
+Do NOT create endpoints such as:
+
+/services/reports/revenue
+
+/services/reports/technician-performance
+
+/services/reports/sla
+
+unless actual report functionality exists.
+
+Client Service Reports requirements remain unavailable.
+
+==================================================
+125. NO SLA ASSUMPTIONS
+==================================================
+
+Priority does not automatically imply SLA unless actual implementation contains
+confirmed SLA policy.
+
+Do not document guessed deadlines.
+
+==================================================
+126. NO BILLING ASSUMPTIONS
+==================================================
+
+Charge Responsibility is NOT an Invoice.
+
+Do not create financial endpoints from it.
+
+==================================================
+127. JOB ORDER TBD
+==================================================
+
+Create a dedicated "Open Integration Questions" section.
+
+State:
+
+Job Order Number is preserved as compatibility/reference data in relevant
+transactions.
+
+Authoritative owner/source not yet confirmed.
+
+No Job Order API should be implemented from this document.
+
+==================================================
+128. QUOTATION TBD
+==================================================
+
+Same:
+
+Quotation Number compatibility/reference only.
+
+No Quotation API from this spec.
+
+==================================================
+129. ACKNOWLEDGE TBD
+==================================================
+
+Material Request Acknowledge exists as metadata.
+
+Its full business semantics are not confirmed.
+
+Do not invent acknowledgement command/status APIs.
+
+==================================================
+130. RECEIVED BY TBD
+==================================================
+
+Preserve current field semantics.
+
+Do not assume Employee FK unless actual implementation/client confirmation
+establishes it.
+
+==================================================
+131. AFTER PHOTO REQUIREMENT TBD
+==================================================
+
+Photo functionality exists.
+
+Whether photo is mandatory to complete Work Execution remains TBD unless
+confirmed by implemented Phase 7 rules.
+
+==================================================
+132. MATERIAL USED QTY/UOM
+==================================================
+
+Do not add Qty/UOM to Work Execution Material Used APIs unless current
+implementation actually has them.
+
+Future Inventory integration may change this.
+
+==================================================
+133. OPENAPI READINESS
+==================================================
+
+Structure the document so backend developer can directly translate it to:
+
+OpenAPI 3.x
+
+Swagger
+
+Postman collections.
+
+Provide:
+
+paths
+
+DTO schemas
+
+enum definitions
+
+error schemas
+
+security schemes.
+
+But do NOT generate a full OpenAPI YAML unless separately requested.
+
+==================================================
+134. API SECTION FORMAT
+==================================================
+
+EVERY endpoint section MUST follow this structure:
+
+### Endpoint Name
+
+Purpose:
+
+Method:
+
+Path:
+
+Authentication:
+
+Company Context:
+
+Required Permission:
+
+Supported Scope:
+
+Required Employee Context:
+
+Headers:
+
+Path Parameters:
+
+Query Parameters:
+
+Request Body:
+
+Request Field Table:
+
+Server-Derived Fields:
+
+Business Validations:
+
+Authorization / Object Scope Rules:
+
+Transactional Side Effects:
+
+Activity Event:
+
+Notification Side Effects:
+
+Idempotency:
+
+Concurrency:
+
+Success Response:
+
+Response Field Table:
+
+Errors:
+
+Notes.
+
+Do not omit sections just because they are empty.
+
+Write:
+
+None / Not applicable
+
+where appropriate.
+
+==================================================
+135. EXAMPLE REQUESTS
+==================================================
+
+Provide representative JSON examples.
+
+Use safe synthetic IDs/data.
+
+==================================================
+136. EXAMPLE RESPONSES
+==================================================
+
+Provide representative success and error payloads.
+
+==================================================
+137. DO NOT EXPOSE INTERNAL IMPLEMENTATION TERMINOLOGY
+==================================================
+
+The backend requirement document must not say things like:
+
+"The BLoC expects..."
+
+"The Flutter page..."
+
+"Drift stores..."
+
+"go_router route..."
+
+Instead translate actual implementation requirements into backend concepts:
+
+client application
+
+API consumer
+
+local synchronization client
+
+transaction
+
+resource
+
+command.
+
+==================================================
+138. INTERNAL TRACEABILITY APPENDIX
+==================================================
+
+Optionally, if useful, add a FINAL appendix:
+
+"Implementation Traceability"
+
+This appendix may list:
+
+Domain concept
+→ existing source files/classes
+
+ONLY for internal engineering verification.
+
+But keep it clearly separate from the backend contract.
+
+Do not make backend developer read frontend implementation details to
+understand the API.
+
+==================================================
+139. DOCUMENT ORGANIZATION
+==================================================
+
+Use this overall document structure:
+
+1. Purpose & Scope
+
+2. Explicit Exclusions
+
+3. API Standards
+
+4. Authentication
+
+5. Company / Tenant Context
+
+6. Authorization & Scopes
+
+7. Employee / Workforce Context
+
+8. Common Headers
+
+9. Response Envelope
+
+10. Error Model
+
+11. Pagination / Search / Sort
+
+12. Dates & Timezones
+
+13. IDs & Business Numbers
+
+14. Idempotency
+
+15. Concurrency
+
+16. Audit & Activity
+
+17. Attachments
+
+18. Services Overview
+
+19. Customers
+
+20. Sites
+
+21. Teams
+
+22. Services Configuration Masters
+
+23. Enquiries
+
+24. Job Assignments
+
+25. Inspections
+
+26. Material Requests
+
+27. Work Executions
+
+28. Workflow / Lineage
+
+29. Notifications
+
+30. Reference Lookup APIs
+
+31. Sync Requirements
+
+32. Endpoint Matrix
+
+33. Permission Matrix
+
+34. Workflow Transition Matrix
+
+35. Source-of-Truth Matrix
+
+36. Error Code Catalog
+
+37. DTO Catalog
+
+38. Security Requirements
+
+39. Performance / Indexing Requirements
+
+40. OpenAPI Implementation Notes
+
+41. Open Integration Questions / TBDs
+
+42. Completeness Checklist
+
+43. Optional Internal Traceability Appendix.
+
+==================================================
+140. COMPLETENESS CHECK
+==================================================
+
+Before finalizing, compare the generated API contract against:
+
+all Services repository operations
+
+all mutation use cases
+
+all permission keys
+
+all routes/business actions
+
+all outbox actions
+
+all transaction models
+
+all child entities
+
+all attachment categories
+
+all Phase 7 workflow actions.
+
+Nothing implemented in Services may be silently omitted.
+
+==================================================
+141. SCREEN / WORKFLOW TO API MATRIX
+==================================================
+
+Add a backend-facing usage matrix.
+
+Examples:
+
+Services Overview
+→ overview endpoints
+
+Enquiries List
+→ enquiry list
+
+New Enquiry
+→ create + customer/site/master references
+
+Enquiry Detail
+→ detail + activity + attachments
+
+Job Assignment Create
+→ eligible enquiry refs + employee/team refs + create
+
+Inspection
+→ eligible assignment refs + configuration refs + create/update/complete
+
+Material Request
+→ eligible Inspection + purposes + create/update/print
+
+Work Execution
+→ eligible Inspection + create + Start/End + attachments.
+
+Do not mention frontend framework.
+
+==================================================
+142. REPOSITORY/COMMAND COMPLETENESS
+==================================================
+
+Cross-check actual source implementation to ensure every operation has backend
+coverage.
+
+If an operation is local-only/demo and should NOT have backend endpoint:
+
+explicitly document why.
+
+==================================================
+143. NO SILENT INVENTION
+==================================================
+
+If application code and client docs do not establish a business rule:
+
+mark:
+
+TBD
+
+instead of inventing backend behavior.
+
+==================================================
+144. NO SILENT OMISSION
+==================================================
+
+Conversely, if a client-visible concept is already implemented:
+
+it must appear in the backend requirement.
+
+==================================================
+145. VALIDATE MATERIAL RECEIVED SPECIFICALLY
+==================================================
+
+Ensure backend document says:
+
+Service Enquiry owns `materialReceived`.
+
+Job Assignment, Inspection, Material Request context and Work Execution context
+may read it through Enquiry lineage.
+
+There must be no downstream independent mutable Material Received field.
+
+==================================================
+146. VALIDATE MATERIAL CONCEPTS
+==================================================
+
+Clearly distinguish:
+
+Material Received
+→ Enquiry Yes/No context
+
+Material Required
+→ Inspection finding
+
+Material Request
+→ requested material lines + quantity
+
+Material Used
+→ Work Execution Code + Description.
+
+Do not merge these APIs/models.
+
+==================================================
+147. VALIDATE PHOTO CONCEPTS
+==================================================
+
+Clearly distinguish:
+
+Enquiry Photos
+
+Before Work Photos
 
 After Work Photos.
 
-Phase 6 will implement those business concepts separately.
-
-Do NOT start them now.
+Each has correct owner.
 
 ==================================================
-130. QUALITY GATE
+148. VALIDATE EMPLOYEE / TEAM CONCEPTS
 ==================================================
 
-Run:
+No Technician entity.
 
-localization merge/generation
+No Inspector entity.
 
-build_runner where required
+No Worker entity.
 
-dart format .
+They are existing Employees referenced by Services transactions.
 
-flutter analyze
-
-flutter test
-
-flutter build web --release --dart-define=DEMO_AUTH=true
+Service Team is separate from Department.
 
 ==================================================
-131. COMPLETION REPORT
+149. VALIDATE PERMISSION MODEL
 ==================================================
 
-Report:
+No runtime authorization based on:
 
-1. Request for Material client mapping
-2. Material Received inheritance verification
-3. proof no duplicate editable materialReceived fields were created
-4. ServiceMaterialRequest model
-5. ServiceMaterialRequestLine model
-6. request sequence
-7. request Date
-8. source Inspection relationship
-9. source Job Assignment relationship
-10. source Enquiry relationship
-11. Job Order compatibility handling
-12. Purpose master
-13. Acknowledge implementation/TBD
-14. Received By implementation/TBD
-15. Prepared By audit mapping
-16. Inspection requirement prefill
-17. WAITING → REQUESTED
-18. cancellation reconciliation
-19. manual material lines
-20. Code
-21. Description
-22. Batch No
-23. Quantity
-24. Remark
-25. Total Qty
-26. Print
-27. permissions
-28. ASSIGNED scope
-29. TEAM scope
-30. ALL scope
-31. navigation
-32. routes
-33. list
-34. create form
-35. detail
-36. edit
-37. cancel
-38. Inspection Detail integration
-39. Services Overview integration
-40. database migration
-41. activity
-42. outbox
-43. idempotency
-44. company isolation
-45. centered layout
-46. Desktop
-47. Mobile
-48. Arabic/RTL
-49. tests
-50. flutter analyze
-51. flutter test count/result
-52. Web release build
-53. remaining genuine TBDs.
+role name
+
+designation
+
+team name
+
+department name.
+
+Explicit permissions + scopes only.
 
 ==================================================
-132. HARD STOP
+150. FINAL QUALITY REVIEW
 ==================================================
 
-PHASE 5 IS COMPLETE ONLY WHEN:
+Before considering document complete:
 
-✓ every visible Request for Material client field has an explicit modern mapping
+- verify every endpoint method/path is consistent
+- verify all permissions are real
+- verify every scope is real
+- verify company isolation
+- verify state transitions
+- verify source lineage
+- verify attachment ownership
+- verify idempotency
+- verify audit behavior
+- verify no unresolved domain was invented
+- verify no frontend-framework terminology remains in the backend-facing body
+- verify request/response examples match DTO definitions.
 
-✓ Material Received remains owned by Service Enquiry
+==================================================
+151. FINAL COMPLETION REPORT
+==================================================
 
-✓ Job Assignment only inherits Material Received
+After generating the document, report:
 
-✓ Inspection only inherits Material Received
+1. output file path
 
-✓ Material Request does not create another authoritative Material Received value
+2. Services domains covered
 
-✓ Material Received YES does not automatically block Material Request
+3. total endpoint requirements documented
 
-✓ Material Received NO does not automatically generate Material Request
+4. configuration endpoints covered
 
-✓ Material Request is driven by Inspection Material Requirements
+5. transaction endpoints covered
 
-✓ Company is system-derived
+6. command endpoints covered
 
-✓ Request No is sequence-generated
+7. reference lookup endpoints covered
 
-✓ Date is represented
+8. attachment requirements covered
 
-✓ Job Order reference is preserved without inventing Job Order module
+9. permissions/scopes covered
 
-✓ Purpose exists as configurable master
+10. source-of-truth rules covered
 
-✓ Acknowledge is preserved without invented lifecycle
+11. workflow transitions covered
 
-✓ Received By is preserved without guessing identity type
+12. idempotency rules covered
 
-✓ Prepared By is audit-derived
+13. concurrency rules covered
 
-✓ multiple material lines work
+14. company isolation covered
 
-✓ Code exists
+15. audit/activity covered
 
-✓ Description exists
+16. notification requirements covered
 
-✓ Batch No exists
+17. dashboard requirements covered
 
-✓ Qty exists and is numeric
+18. print requirements covered
 
-✓ Remark exists
+19. TBDs preserved
 
-✓ Total Qty is calculated
+20. confirmation that no Job Order APIs were invented
 
-✓ 5 rows are not hardcoded
+21. confirmation that no Quotation APIs were invented
 
-✓ Inspection WAITING material requirements prefill Request
+22. confirmation that no Inventory APIs were invented
 
-✓ source requirement lineage is preserved
+23. confirmation that no Service Reports APIs were invented
 
-✓ manual lines are supported
+24. confirmation that the final backend-facing document contains no Flutter/
+    frontend-framework implementation language.
 
-✓ source requirement WAITING → REQUESTED works
+==================================================
+152. HARD STOP
+==================================================
 
-✓ cancelled Request reconciles REQUESTED → WAITING
+PHASE 8 IS COMPLETE ONLY WHEN:
 
-✓ one requirement cannot be in multiple active Requests
+✓ docs/backend/services_backend_api_requirements.md exists
 
-✓ multiple Requests per Inspection are supported
+✓ it reflects the ACTUAL completed Services module
 
-✓ Request is never hard-deleted
+✓ all Services domains are covered
 
-✓ Print works
+✓ every client-visible implemented transaction has backend requirements
 
-✓ permissions are fully wired
+✓ all CRUD/command operations are accounted for
 
-✓ ASSIGNED / TEAM / ALL work
+✓ permissions are specified endpoint-by-endpoint
 
-✓ direct URLs are protected
+✓ scopes are specified endpoint-by-endpoint
 
-✓ use cases enforce permission
+✓ tenant/company rules are explicit
 
-✓ no Inventory module was introduced
+✓ restricted reference APIs are documented
 
-✓ no Stock workflow was introduced
+✓ Employee reference access does not expose HR-private data
 
-✓ no approval workflow was guessed
+✓ human-readable sequence numbers are backend-authoritative
 
-✓ no material issue workflow was guessed
+✓ business dates/timezones are defined
 
-✓ no Work Execution was implemented
+✓ idempotency is defined
 
-✓ no Job Order ownership was guessed
+✓ concurrency is defined
 
-✓ no Quotation ownership was guessed
+✓ activity/audit behavior is defined
 
-✓ one global centered page width remains intact
+✓ attachment APIs/security are defined
 
-✓ Desktop works
+✓ Enquiry owns Material Received
 
-✓ Mobile works
+✓ downstream Material Received is read-only/inherited
 
-✓ English works
+✓ Inspection owns Material Required
 
-✓ Arabic/RTL works
+✓ Material Request owns requested Qty
 
-✓ permission coverage updated
+✓ Work Execution owns Material Used
 
-✓ traceability updated
+✓ Enquiry / Before / After photos have distinct ownership
 
-✓ flutter analyze passes
+✓ Enquiry → Assignment lineage is defined
 
-✓ flutter test passes
+✓ Assignment → Inspection lineage is defined
 
-✓ Web release build succeeds
+✓ Inspection → Material Request lineage is defined
+
+✓ Inspection → Work Execution lineage is defined
+
+✓ optional Material Request branch is supported
+
+✓ Job Order stays a compatibility reference only
+
+✓ Quotation stays a compatibility reference only
+
+✓ no Inventory API was invented
+
+✓ no Service Reports API was invented
+
+✓ all known TBDs remain explicitly documented
+
+✓ endpoint matrix exists
+
+✓ permission matrix exists
+
+✓ transition matrix exists
+
+✓ source-of-truth matrix exists
+
+✓ DTO catalog exists
+
+✓ error catalog exists
+
+✓ API document can be handed directly to backend engineer
+
+✓ final backend-facing document does NOT depend on frontend framework knowledge
 
 THEN STOP.
 
-DO NOT START PHASE 6 AUTOMATICALLY.
+DO NOT IMPLEMENT BACKEND CODE.
 
-NEXT PHASE:
+DO NOT START SERVICE REPORTS.
 
-SERVICES PHASE 6 — WORK EXECUTION
-
-based directly on the supplied client Work Execution references.
-```
+DO NOT START A NEW BUSINESS MODULE.

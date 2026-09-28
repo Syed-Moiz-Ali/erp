@@ -34,6 +34,9 @@ import 'package:modular_erp/modules/services/domain/contracts/workforce_director
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
+import 'package:modular_erp/modules/services/material_requests/domain/service_material_request_repository.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
@@ -73,6 +76,9 @@ ModuleRegistry createErpRegistry(
   ServiceEnquiryRepository? serviceEnquiryRepository,
   ServiceJobAssignmentRepository? serviceJobAssignmentRepository,
   ServiceInspectionRepository? serviceInspectionRepository,
+  ServiceMaterialRequestRepository? serviceMaterialRequestRepository,
+  ServiceWorkExecutionRepository? serviceWorkExecutionRepository,
+  ServiceWorkflowRepository? serviceWorkflowRepository,
   WorkforceDirectory? workforceDirectory,
   ActivityRepository? activityRepository,
 }) {
@@ -233,6 +239,9 @@ ModuleRegistry createErpRegistry(
       enquiries: serviceEnquiryRepository,
       jobAssignments: serviceJobAssignmentRepository,
       inspections: serviceInspectionRepository,
+      materialRequests: serviceMaterialRequestRepository,
+      workExecutions: serviceWorkExecutionRepository,
+      workflow: serviceWorkflowRepository,
       workforce: workforceDirectory,
       activity: activityRepository,
     ),

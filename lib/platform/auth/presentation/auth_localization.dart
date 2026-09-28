@@ -133,5 +133,34 @@ extension AppPermissionLocalization on AppPermission {
     AppPermission.serviceChargeResponsibilityView ||
     AppPermission.serviceChargeResponsibilityManage =>
       l10n.servicesPermChargeResponsibilitiesView,
+    AppPermission.serviceMaterialRequestViewAssigned ||
+    AppPermission.serviceMaterialRequestViewTeam ||
+    AppPermission.serviceMaterialRequestViewAll =>
+      l10n.permissionServiceMaterialRequestView,
+    AppPermission.serviceMaterialRequestCreate =>
+      l10n.permissionServiceMaterialRequestCreate,
+    AppPermission.serviceMaterialRequestEdit =>
+      l10n.permissionServiceMaterialRequestEdit,
+    AppPermission.serviceMaterialRequestCancel =>
+      l10n.permissionServiceMaterialRequestCancel,
+    AppPermission.serviceMaterialRequestPrint =>
+      l10n.permissionServiceMaterialRequestPrint,
+    AppPermission.serviceMaterialRequestPurposeView ||
+    AppPermission.serviceMaterialRequestPurposeManage =>
+      l10n.servicesPermMaterialRequestPurposesView,
+    AppPermission.serviceWorkExecutionViewAssigned ||
+    AppPermission.serviceWorkExecutionViewTeam ||
+    AppPermission.serviceWorkExecutionViewAll =>
+      l10n.permissionServiceWorkExecutionView,
+    AppPermission.serviceWorkExecutionCreate =>
+      l10n.permissionServiceWorkExecutionCreate,
+    AppPermission.serviceWorkExecutionEdit =>
+      l10n.permissionServiceWorkExecutionEdit,
+    AppPermission.serviceWorkExecutionPerform =>
+      l10n.permissionServiceWorkExecutionPerform,
+    AppPermission.serviceWorkExecutionComplete =>
+      l10n.permissionServiceWorkExecutionComplete,
+    AppPermission.serviceWorkExecutionCancel =>
+      l10n.permissionServiceWorkExecutionCancel,
   };
 }

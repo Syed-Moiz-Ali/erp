@@ -6894,4 +6894,1188 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notifServiceInspectionAssignedBody => 'تم تكليفك بفحص خدمة.';
+
+  @override
+  String get servicesPermSubMaterialRequests => 'طلبات المواد';
+
+  @override
+  String get servicesPermMaterialRequestsView => 'عرض طلبات المواد';
+
+  @override
+  String get servicesPermMaterialRequestsViewDesc =>
+      'عرض قائمة طلبات المواد ضمن نطاق سجلاتك.';
+
+  @override
+  String get servicesPermMaterialRequestsCreate => 'إنشاء طلب مواد';
+
+  @override
+  String get servicesPermMaterialRequestsCreateDesc =>
+      'إنشاء طلب مواد من فحص مكتمل مؤهل، مع البحث المقيّد عن الفحص.';
+
+  @override
+  String get servicesPermMaterialRequestsEdit => 'تعديل طلب المواد';
+
+  @override
+  String get servicesPermMaterialRequestsEditDesc => 'تعديل طلب مواد مفتوح.';
+
+  @override
+  String get servicesPermMaterialRequestsCancel => 'إلغاء طلب المواد';
+
+  @override
+  String get servicesPermMaterialRequestsCancelDesc =>
+      'إلغاء طلب مواد مفتوح (يُحفظ تاريخيًا).';
+
+  @override
+  String get servicesPermMaterialRequestsPrint => 'طباعة طلب المواد';
+
+  @override
+  String get servicesPermMaterialRequestsPrintDesc => 'طباعة مستند طلب المواد.';
+
+  @override
+  String get servicesPermMaterialRequestPurposesView => 'عرض أغراض طلب المواد';
+
+  @override
+  String get servicesPermMaterialRequestPurposesViewDesc =>
+      'عرض أغراض طلب المواد المُعدَّة.';
+
+  @override
+  String get servicesPermMaterialRequestPurposesManage =>
+      'إدارة أغراض طلب المواد';
+
+  @override
+  String get servicesPermMaterialRequestPurposesManageDesc =>
+      'إنشاء وتعديل أغراض طلب المواد.';
+
+  @override
+  String get permissionServiceMaterialRequestView => 'عرض طلبات المواد';
+
+  @override
+  String get permissionServiceMaterialRequestCreate => 'إنشاء طلب مواد';
+
+  @override
+  String get permissionServiceMaterialRequestEdit => 'تعديل طلب المواد';
+
+  @override
+  String get permissionServiceMaterialRequestCancel => 'إلغاء طلب المواد';
+
+  @override
+  String get permissionServiceMaterialRequestPrint => 'طباعة طلب المواد';
+
+  @override
+  String get servicesNavMaterialRequests => 'طلبات المواد';
+
+  @override
+  String get servicesMaterialRequestPurposesTitle => 'أغراض طلب المواد';
+
+  @override
+  String get servicesMaterialRequestsTitle => 'طلبات المواد';
+
+  @override
+  String servicesMaterialRequestCount(String filtered, String total) {
+    return '$filtered من $total طلب مواد';
+  }
+
+  @override
+  String get servicesMaterialRequestSearch =>
+      'ابحث برقم الطلب أو الفحص أو التكليف أو الاستفسار أو أمر العمل أو العميل أو الرمز أو الوصف';
+
+  @override
+  String get servicesMaterialRequestAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesMaterialRequestStatusOpen => 'مفتوح';
+
+  @override
+  String get servicesMaterialRequestStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesMaterialRequestEmpty => 'لا توجد طلبات مواد بعد.';
+
+  @override
+  String get servicesMaterialRequestEmptyMessage =>
+      'أنشئ طلب مواد من فحص مكتمل.';
+
+  @override
+  String get servicesMaterialRequestNoResults =>
+      'لا توجد طلبات مواد مطابقة للمرشحات.';
+
+  @override
+  String get servicesMaterialRequestAdd => 'طلب مواد جديد';
+
+  @override
+  String get servicesMaterialRequestColumnRequest => 'الطلب';
+
+  @override
+  String get servicesMaterialRequestColumnDate => 'التاريخ';
+
+  @override
+  String get servicesMaterialRequestColumnInspection => 'الفحص';
+
+  @override
+  String get servicesMaterialRequestColumnCustomerSite => 'العميل / الموقع';
+
+  @override
+  String get servicesMaterialRequestColumnPurpose => 'الغرض';
+
+  @override
+  String get servicesMaterialRequestColumnItems => 'الأصناف';
+
+  @override
+  String get servicesMaterialRequestColumnTotalQty => 'إجمالي الكمية';
+
+  @override
+  String get servicesMaterialRequestColumnStatus => 'الحالة';
+
+  @override
+  String get servicesMaterialRequestColumnPreparedBy => 'أعدّه';
+
+  @override
+  String get servicesMaterialRequestColumnCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesMaterialRequestFilterTitle => 'المرشحات';
+
+  @override
+  String get servicesMaterialRequestFilterStatus => 'الحالة';
+
+  @override
+  String get servicesMaterialRequestFilterPurpose => 'الغرض';
+
+  @override
+  String get servicesMaterialRequestFilterInspection => 'الفحص';
+
+  @override
+  String get servicesMaterialRequestFilterFrom => 'من تاريخ';
+
+  @override
+  String get servicesMaterialRequestFilterTo => 'إلى تاريخ';
+
+  @override
+  String get servicesMaterialRequestFormNew => 'طلب مواد جديد';
+
+  @override
+  String get servicesMaterialRequestFormEdit => 'تعديل طلب المواد';
+
+  @override
+  String get servicesMaterialRequestCreate => 'إنشاء طلب مواد';
+
+  @override
+  String get servicesMaterialRequestSaveChanges => 'حفظ التغييرات';
+
+  @override
+  String get servicesMaterialRequestSectionRequest => 'الطلب';
+
+  @override
+  String get servicesMaterialRequestSectionContext => 'سياق الخدمة';
+
+  @override
+  String get servicesMaterialRequestSectionInformation => 'معلومات الطلب';
+
+  @override
+  String get servicesMaterialRequestSectionMaterials => 'المواد';
+
+  @override
+  String get servicesMaterialRequestSectionAcknowledgement => 'الإقرار';
+
+  @override
+  String get servicesMaterialRequestSectionSummary => 'الملخص';
+
+  @override
+  String get servicesMaterialRequestSectionAudit => 'السجل';
+
+  @override
+  String get servicesMaterialRequestSectionActivity => 'النشاط';
+
+  @override
+  String get servicesMaterialRequestNo => 'رقم الطلب';
+
+  @override
+  String get servicesMaterialRequestDate => 'تاريخ الطلب';
+
+  @override
+  String get servicesMaterialRequestSourceInspection => 'الفحص المصدر';
+
+  @override
+  String get servicesMaterialRequestSelectInspection =>
+      'اختر فحصًا مكتملًا مؤهلًا';
+
+  @override
+  String get servicesMaterialRequestInspection => 'الفحص';
+
+  @override
+  String get servicesMaterialRequestJobAssignment => 'تكليف العمل';
+
+  @override
+  String get servicesMaterialRequestEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesMaterialRequestCustomer => 'العميل';
+
+  @override
+  String get servicesMaterialRequestSite => 'الموقع';
+
+  @override
+  String get servicesMaterialRequestTenant => 'المستأجر';
+
+  @override
+  String get servicesMaterialRequestBuilding => 'المبنى';
+
+  @override
+  String get servicesMaterialRequestUnit => 'الوحدة';
+
+  @override
+  String get servicesMaterialRequestMaterialReceived => 'المواد المستلمة';
+
+  @override
+  String get servicesMaterialRequestJobOrderReference => 'مرجع أمر العمل';
+
+  @override
+  String get servicesMaterialRequestJobOrderHint => 'رقم أمر عمل خارجي اختياري';
+
+  @override
+  String get servicesMaterialRequestPurpose => 'الغرض';
+
+  @override
+  String get servicesMaterialRequestRemarks => 'ملاحظات';
+
+  @override
+  String get servicesMaterialRequestAcknowledge => 'الإقرار';
+
+  @override
+  String get servicesMaterialRequestReceivedBy => 'استلمها';
+
+  @override
+  String get servicesMaterialRequestPreparedBy => 'أعدّه';
+
+  @override
+  String servicesMaterialRequestLineTitle(String index) {
+    return 'مادة $index';
+  }
+
+  @override
+  String get servicesMaterialRequestCode => 'الرمز';
+
+  @override
+  String get servicesMaterialRequestDescription => 'الوصف';
+
+  @override
+  String get servicesMaterialRequestBatchNumber => 'رقم الدفعة';
+
+  @override
+  String get servicesMaterialRequestQuantity => 'الكمية';
+
+  @override
+  String get servicesMaterialRequestRemark => 'ملاحظة';
+
+  @override
+  String get servicesMaterialRequestAddMaterial => 'إضافة مادة';
+
+  @override
+  String get servicesMaterialRequestRemoveMaterial => 'إزالة المادة';
+
+  @override
+  String get servicesMaterialRequestTotalQuantity => 'إجمالي الكمية';
+
+  @override
+  String servicesMaterialRequestItemCount(String count) {
+    return '$count صنف';
+  }
+
+  @override
+  String get servicesMaterialRequestEdit => 'تعديل الطلب';
+
+  @override
+  String get servicesMaterialRequestPrint => 'طباعة';
+
+  @override
+  String get servicesMaterialRequestCancel => 'إلغاء طلب المواد';
+
+  @override
+  String get servicesMaterialRequestCancelConfirmTitle => 'إلغاء طلب المواد؟';
+
+  @override
+  String get servicesMaterialRequestCancelConfirmMessage =>
+      'يبقى الطلب الملغى متاحًا تاريخيًا ولا يمكن تعديله بعد ذلك.';
+
+  @override
+  String get servicesMaterialRequestCreated => 'تم إنشاء طلب المواد.';
+
+  @override
+  String get servicesMaterialRequestUpdated => 'تم تحديث طلب المواد.';
+
+  @override
+  String get servicesMaterialRequestCancelled => 'تم إلغاء طلب المواد.';
+
+  @override
+  String get servicesMaterialRequestPrinted => 'تم تجهيز طلب المواد للطباعة.';
+
+  @override
+  String get servicesMaterialRequestNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesMaterialRequestNoMaterials => 'لا توجد بنود مواد.';
+
+  @override
+  String get servicesMaterialRequestCreatedBy => 'أنشأه';
+
+  @override
+  String get servicesMaterialRequestCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesMaterialRequestUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesMaterialRequestUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesMaterialRequestVersion => 'الإصدار';
+
+  @override
+  String get servicesMaterialRequestDetailContext => 'السياق المصدر';
+
+  @override
+  String get servicesMaterialRequestDetailMaterials => 'بنود المواد';
+
+  @override
+  String get servicesMaterialRequestDetailAcknowledgement => 'الإقرار';
+
+  @override
+  String get servicesMaterialRequestDetailAudit => 'السجل';
+
+  @override
+  String get servicesMaterialRequestDetailActivity => 'النشاط';
+
+  @override
+  String get servicesMaterialRequestResetForm => 'إعادة تعيين النموذج';
+
+  @override
+  String get servicesMaterialRequestResetConfirmTitle => 'إعادة تعيين النموذج؟';
+
+  @override
+  String get servicesMaterialRequestResetConfirmMessage =>
+      'سيؤدي هذا إلى مسح طلب المواد غير المحفوظ.';
+
+  @override
+  String get servicesMaterialRequestDiscardChanges => 'تجاهل التغييرات';
+
+  @override
+  String get servicesMaterialRequestCreateFromInspection => 'إنشاء طلب مواد';
+
+  @override
+  String get servicesMaterialRequestSectionForInspection => 'طلبات المواد';
+
+  @override
+  String get servicesMaterialRequestNoneForInspection =>
+      'لا توجد طلبات مواد بعد.';
+
+  @override
+  String get servicesMaterialRequestInspectionRequired => 'اختر فحصًا.';
+
+  @override
+  String get servicesMaterialRequestInspectionInvalid =>
+      'الفحص المحدد غير مؤهل.';
+
+  @override
+  String get servicesMaterialRequestPurposeInvalid => 'الغرض المحدد غير متاح.';
+
+  @override
+  String get servicesMaterialRequestLinesRequired =>
+      'أضف بند مادة واحدًا على الأقل.';
+
+  @override
+  String get servicesMaterialRequestCodeRequired => 'أدخل الرمز لكل بند مادة.';
+
+  @override
+  String get servicesMaterialRequestDescriptionRequired =>
+      'أدخل الوصف لكل بند مادة.';
+
+  @override
+  String get servicesMaterialRequestQuantityRequired =>
+      'أدخل كمية أكبر من صفر لكل بند مادة.';
+
+  @override
+  String get servicesMaterialRequestNotFound => 'طلب المواد غير موجود.';
+
+  @override
+  String get servicesMaterialRequestNotEditable =>
+      'يمكن تعديل طلبات المواد المفتوحة فقط.';
+
+  @override
+  String get servicesMaterialRequestAlreadyCancelled =>
+      'طلب المواد هذا ملغى بالفعل.';
+
+  @override
+  String get servicesMaterialRequestRequirementLinked =>
+      'بند مادة محدد مرتبط بالفعل بطلب نشط.';
+
+  @override
+  String get servicesMaterialRequestSequenceFailed => 'تعذّر تخصيص رقم للطلب.';
+
+  @override
+  String get servicesMaterialRequestDenied =>
+      'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get servicesMaterialRequestStorageError =>
+      'تعذّر حفظ طلب المواد. حاول مرة أخرى.';
+
+  @override
+  String get servicesMaterialRequestPrintFailed =>
+      'تعذّر تجهيز المستند القابل للطباعة.';
+
+  @override
+  String get servicesInspectionMaterialStatusRequested => 'مطلوب';
+
+  @override
+  String get servicesOverviewMaterialRequestsOpen => 'طلبات المواد المفتوحة';
+
+  @override
+  String get servicesOverviewMaterialRequestsToday => 'طلبات المواد اليوم';
+
+  @override
+  String get servicesOverviewMaterialRequestsLines => 'بنود المواد المطلوبة';
+
+  @override
+  String get servicesOverviewRecentMaterialRequests => 'أحدث طلبات المواد';
+
+  @override
+  String get servicesOverviewNoMaterialRequests => 'لا توجد طلبات مواد بعد.';
+
+  @override
+  String get servicesMaterialRequestPrintTitle => 'طلب مواد';
+
+  @override
+  String get servicesActivityLinesChanged => 'تم تغيير بنود المواد';
+
+  @override
+  String get servicesNavWorkExecution => 'تنفيذ العمل';
+
+  @override
+  String get servicesPermSubWorkExecutions => 'تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsView => 'عرض تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsViewDesc =>
+      'عرض قائمة تنفيذ العمل ضمن نطاق سجلاتك.';
+
+  @override
+  String get servicesPermWorkExecutionsCreate => 'إنشاء تنفيذ عمل';
+
+  @override
+  String get servicesPermWorkExecutionsCreateDesc =>
+      'إنشاء تنفيذ عمل من فحص مكتمل، مع بحث مقيّد عن الفحص المؤهل.';
+
+  @override
+  String get servicesPermWorkExecutionsEdit => 'تعديل تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsEditDesc =>
+      'تعديل مراجع الرأس وبنود العمل أثناء صلاحية السجل.';
+
+  @override
+  String get servicesPermWorkExecutionsPerform => 'تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsPerformDesc =>
+      'بدء وإنهاء العمل المكلّف، وتسجيل المواد المستخدمة وإضافة صور بعد العمل.';
+
+  @override
+  String get servicesPermWorkExecutionsComplete => 'إكمال تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsCompleteDesc =>
+      'إنهاء تنفيذ العمل بعد اكتمال كل العمل المطلوب.';
+
+  @override
+  String get servicesPermWorkExecutionsCancel => 'إلغاء تنفيذ العمل';
+
+  @override
+  String get servicesPermWorkExecutionsCancelDesc =>
+      'إلغاء تنفيذ العمل (يُحفظ تاريخيًا).';
+
+  @override
+  String get permissionServiceWorkExecutionView => 'عرض تنفيذ العمل';
+
+  @override
+  String get permissionServiceWorkExecutionCreate => 'إنشاء تنفيذ عمل';
+
+  @override
+  String get permissionServiceWorkExecutionEdit => 'تعديل تنفيذ العمل';
+
+  @override
+  String get permissionServiceWorkExecutionPerform => 'تنفيذ العمل';
+
+  @override
+  String get permissionServiceWorkExecutionComplete => 'إكمال تنفيذ العمل';
+
+  @override
+  String get permissionServiceWorkExecutionCancel => 'إلغاء تنفيذ العمل';
+
+  @override
+  String get servicesActivityWorkStarted => 'بدء العمل';
+
+  @override
+  String get servicesActivityWorkEnded => 'إنهاء العمل';
+
+  @override
+  String get servicesActivityMaterialUsedAdded => 'إضافة مادة مستخدمة';
+
+  @override
+  String get servicesActivityMaterialUsedRemoved => 'إزالة مادة مستخدمة';
+
+  @override
+  String get servicesActivityPhotoAdded => 'إضافة صور بعد العمل';
+
+  @override
+  String get servicesActivityPhotoUpdated => 'تحديث صورة بعد العمل';
+
+  @override
+  String get servicesActivityPhotoRemoved => 'إزالة صورة بعد العمل';
+
+  @override
+  String get servicesWorkExecutionStatusPending => 'قيد الانتظار';
+
+  @override
+  String get servicesWorkExecutionStatusInProgress => 'قيد التنفيذ';
+
+  @override
+  String get servicesWorkExecutionStatusCompleted => 'مكتمل';
+
+  @override
+  String get servicesWorkExecutionStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesWorkExecutionLineStateNotStarted => 'لم يبدأ';
+
+  @override
+  String get servicesWorkExecutionLineStateInProgress => 'قيد التنفيذ';
+
+  @override
+  String get servicesWorkExecutionLineStateFinished => 'منتهٍ';
+
+  @override
+  String get servicesWorkExecutionsTitle => 'تنفيذ العمل';
+
+  @override
+  String servicesWorkExecutionCount(String filtered, String total) {
+    return '$filtered من $total تنفيذ عمل';
+  }
+
+  @override
+  String get servicesWorkExecutionAdd => 'تنفيذ عمل جديد';
+
+  @override
+  String get servicesWorkExecutionEmpty => 'لا يوجد تنفيذ عمل بعد.';
+
+  @override
+  String get servicesWorkExecutionEmptyMessage =>
+      'أنشئ تنفيذ عمل من فحص مكتمل.';
+
+  @override
+  String get servicesWorkExecutionNoResults =>
+      'لا يوجد تنفيذ عمل مطابق للمرشحات.';
+
+  @override
+  String get servicesWorkExecutionSearch =>
+      'ابحث برقم التنفيذ أو الفحص أو التكليف أو الاستفسار أو مرجع أمر العمل أو مرجع عرض السعر أو العميل أو الموقع أو الموظف أو الفريق أو رمز المادة';
+
+  @override
+  String get servicesWorkExecutionFilterTitle => 'المرشحات';
+
+  @override
+  String get servicesWorkExecutionFilterStatus => 'الحالة';
+
+  @override
+  String get servicesWorkExecutionFilterFrom => 'من تاريخ';
+
+  @override
+  String get servicesWorkExecutionFilterTo => 'إلى تاريخ';
+
+  @override
+  String get servicesWorkExecutionAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesWorkExecutionColumnExecution => 'التنفيذ';
+
+  @override
+  String get servicesWorkExecutionColumnInspection => 'الفحص';
+
+  @override
+  String get servicesWorkExecutionColumnCustomerSite => 'العميل / الموقع';
+
+  @override
+  String get servicesWorkExecutionColumnAssignedTo => 'مُكلَّف إلى';
+
+  @override
+  String get servicesWorkExecutionColumnState => 'حالة التنفيذ';
+
+  @override
+  String get servicesWorkExecutionColumnStarted => 'البدء';
+
+  @override
+  String get servicesWorkExecutionColumnCompleted => 'الاكتمال';
+
+  @override
+  String get servicesWorkExecutionColumnStatus => 'الحالة';
+
+  @override
+  String get servicesWorkExecutionColumnCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesWorkExecutionCancel => 'إلغاء تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionCancelConfirmTitle => 'إلغاء تنفيذ العمل؟';
+
+  @override
+  String get servicesWorkExecutionCancelConfirmMessage =>
+      'يبقى تنفيذ العمل الملغى متاحًا تاريخيًا ولا يمكن تعديله بعد ذلك.';
+
+  @override
+  String get servicesWorkExecutionCancelled => 'تنفيذ العمل هذا ملغى.';
+
+  @override
+  String get servicesWorkExecutionStorageError =>
+      'تعذّر حفظ تنفيذ العمل. حاول مرة أخرى.';
+
+  @override
+  String get servicesWorkExecutionFormNew => 'تنفيذ عمل جديد';
+
+  @override
+  String get servicesWorkExecutionFormEdit => 'تعديل تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionCreate => 'إنشاء تنفيذ عمل';
+
+  @override
+  String get servicesWorkExecutionSaveChanges => 'حفظ التغييرات';
+
+  @override
+  String get servicesWorkExecutionResetForm => 'إعادة تعيين النموذج';
+
+  @override
+  String get servicesWorkExecutionResetConfirmTitle => 'إعادة تعيين النموذج؟';
+
+  @override
+  String get servicesWorkExecutionResetConfirmMessage =>
+      'سيؤدي هذا إلى مسح تنفيذ العمل غير المحفوظ.';
+
+  @override
+  String get servicesWorkExecutionSectionContext => 'سياق تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionSectionReferences => 'مراجع سير العمل';
+
+  @override
+  String get servicesWorkExecutionSectionCustomer => 'سياق العميل والخدمة';
+
+  @override
+  String get servicesWorkExecutionSectionInspection => 'ملخص الفحص';
+
+  @override
+  String get servicesWorkExecutionSectionWork => 'تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionSectionMaterials => 'المواد المستخدمة';
+
+  @override
+  String get servicesWorkExecutionSectionPhotos => 'صور بعد العمل';
+
+  @override
+  String get servicesWorkExecutionNo => 'رقم التنفيذ';
+
+  @override
+  String get servicesWorkExecutionDate => 'تاريخ التنفيذ';
+
+  @override
+  String get servicesWorkExecutionSourceInspection => 'الفحص المصدر';
+
+  @override
+  String get servicesWorkExecutionSelectInspection =>
+      'اختر فحصًا مكتملًا مؤهلًا';
+
+  @override
+  String get servicesWorkExecutionInspection => 'الفحص';
+
+  @override
+  String get servicesWorkExecutionJobAssignment => 'تكليف العمل';
+
+  @override
+  String get servicesWorkExecutionEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesWorkExecutionJobOrderReference => 'مرجع أمر العمل';
+
+  @override
+  String get servicesWorkExecutionQuotationReference => 'مرجع عرض السعر';
+
+  @override
+  String get servicesWorkExecutionCustomer => 'العميل';
+
+  @override
+  String get servicesWorkExecutionTenant => 'المستأجر';
+
+  @override
+  String get servicesWorkExecutionBuilding => 'المبنى';
+
+  @override
+  String get servicesWorkExecutionUnit => 'الوحدة';
+
+  @override
+  String get servicesWorkExecutionComplaint => 'نوع الشكوى';
+
+  @override
+  String get servicesWorkExecutionPriority => 'الأولوية';
+
+  @override
+  String get servicesWorkExecutionMaterialReceived => 'المواد المستلمة';
+
+  @override
+  String get servicesWorkExecutionRootCause => 'السبب الجذري';
+
+  @override
+  String get servicesWorkExecutionChargeResponsibility => 'جهة التحميل';
+
+  @override
+  String get servicesWorkExecutionTechnician => 'الفني';
+
+  @override
+  String get servicesWorkExecutionChecklist => 'قائمة التحقق';
+
+  @override
+  String get servicesWorkExecutionInspectedPoints => 'النقاط المفحوصة';
+
+  @override
+  String get servicesWorkExecutionMaterialRequirements => 'المواد المطلوبة';
+
+  @override
+  String get servicesWorkExecutionLinkedMaterialRequests =>
+      'طلبات المواد المرتبطة';
+
+  @override
+  String servicesWorkExecutionMaterialRequestItems(String count) {
+    return '$count صنف';
+  }
+
+  @override
+  String get servicesWorkExecutionAddFromMaterialRequest => 'إضافة من طلب مواد';
+
+  @override
+  String get servicesWorkExecutionNoLinkedRequests =>
+      'لا توجد طلبات مواد مرتبطة.';
+
+  @override
+  String servicesWorkExecutionLineTitle(String index) {
+    return 'بند العمل $index';
+  }
+
+  @override
+  String servicesWorkExecutionMaterialTitle(String index) {
+    return 'مادة $index';
+  }
+
+  @override
+  String servicesWorkExecutionPhotoTitle(String index) {
+    return 'دليل مصوّر $index';
+  }
+
+  @override
+  String get servicesWorkExecutionWork => 'العمل';
+
+  @override
+  String get servicesWorkExecutionDescription => 'الوصف';
+
+  @override
+  String get servicesWorkExecutionTeam => 'الفريق';
+
+  @override
+  String get servicesWorkExecutionEmployee => 'الموظف';
+
+  @override
+  String get servicesWorkExecutionStartTime => 'وقت البدء';
+
+  @override
+  String get servicesWorkExecutionEndTime => 'وقت الانتهاء';
+
+  @override
+  String get servicesWorkExecutionNoLines => 'لا توجد بنود عمل.';
+
+  @override
+  String get servicesWorkExecutionAddLine => 'إضافة بند عمل';
+
+  @override
+  String get servicesWorkExecutionRemoveLine => 'إزالة بند العمل';
+
+  @override
+  String get servicesWorkExecutionCode => 'الرمز';
+
+  @override
+  String get servicesWorkExecutionNoMaterials => 'لا توجد مواد مستخدمة.';
+
+  @override
+  String get servicesWorkExecutionAddMaterial => 'إضافة مادة مستخدمة';
+
+  @override
+  String get servicesWorkExecutionRemoveMaterial => 'إزالة المادة المستخدمة';
+
+  @override
+  String get servicesWorkExecutionPhotoDescription => 'الوصف';
+
+  @override
+  String get servicesWorkExecutionPhotos => 'الصور';
+
+  @override
+  String get servicesWorkExecutionAddPhotos => 'إضافة صور';
+
+  @override
+  String get servicesWorkExecutionNoPhotos => 'لا توجد صور.';
+
+  @override
+  String get servicesWorkExecutionAddPhoto => 'إضافة دليل مصوّر';
+
+  @override
+  String get servicesWorkExecutionRemovePhoto => 'إزالة الدليل المصوّر';
+
+  @override
+  String get servicesWorkExecutionCreated => 'تم إنشاء تنفيذ العمل.';
+
+  @override
+  String get servicesWorkExecutionUpdated => 'تم تحديث تنفيذ العمل.';
+
+  @override
+  String get servicesWorkExecutionWorkRequired => 'أدخل العمل لكل بند.';
+
+  @override
+  String get servicesWorkExecutionDetailReferences => 'مراجع سير العمل';
+
+  @override
+  String get servicesWorkExecutionDetailContext => 'سياق العميل والخدمة';
+
+  @override
+  String get servicesWorkExecutionDetailWork => 'بنود العمل';
+
+  @override
+  String get servicesWorkExecutionDetailMaterials => 'المواد المستخدمة';
+
+  @override
+  String get servicesWorkExecutionDetailPhotos => 'الصور';
+
+  @override
+  String get servicesWorkExecutionDetailAudit => 'السجل';
+
+  @override
+  String get servicesWorkExecutionDetailActivity => 'النشاط';
+
+  @override
+  String get servicesWorkExecutionStartWork => 'بدء العمل';
+
+  @override
+  String get servicesWorkExecutionEndWork => 'إنهاء العمل';
+
+  @override
+  String get servicesWorkExecutionComplete => 'إكمال تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionCompleteConfirmTitle => 'إكمال تنفيذ العمل؟';
+
+  @override
+  String get servicesWorkExecutionCompleteConfirmMessage =>
+      'يصبح تنفيذ العمل للقراءة فقط ويبقى متاحًا تاريخيًا.';
+
+  @override
+  String get servicesWorkExecutionCompleted => 'تم إكمال تنفيذ العمل.';
+
+  @override
+  String get servicesWorkExecutionPreparedBy => 'أنشأه';
+
+  @override
+  String get servicesWorkExecutionCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesWorkExecutionUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesWorkExecutionUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesWorkExecutionVersion => 'الإصدار';
+
+  @override
+  String get servicesWorkExecutionNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesWorkExecutionWorkStarted => 'تم بدء العمل.';
+
+  @override
+  String get servicesWorkExecutionWorkEnded => 'تم إنهاء العمل.';
+
+  @override
+  String get servicesWorkExecutionMaterialAdded => 'تمت إضافة مادة مستخدمة.';
+
+  @override
+  String get servicesWorkExecutionMaterialRemoved =>
+      'تمت إزالة المادة المستخدمة.';
+
+  @override
+  String get servicesWorkExecutionPhotoAdded => 'تمت إضافة دليل مصوّر.';
+
+  @override
+  String get servicesWorkExecutionPhotoRemoved => 'تمت إزالة الدليل المصوّر.';
+
+  @override
+  String get servicesWorkExecutionBeforeWorkPhotos => 'صور قبل العمل';
+
+  @override
+  String get servicesWorkExecutionAfterWorkPhotos => 'صور بعد العمل';
+
+  @override
+  String get servicesWorkExecutionEdit => 'تعديل تنفيذ العمل';
+
+  @override
+  String get servicesWorkExecutionDenied =>
+      'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get servicesWorkExecutionNotFound => 'تنفيذ العمل غير موجود.';
+
+  @override
+  String get servicesWorkExecutionNotEditable =>
+      'يمكن تعديل تنفيذ العمل قيد الانتظار أو قيد التنفيذ فقط.';
+
+  @override
+  String get servicesWorkExecutionNotCompletable =>
+      'يجب بدء وإنهاء كل بنود العمل المطلوبة قبل الإكمال.';
+
+  @override
+  String get servicesWorkExecutionAlreadyCompleted =>
+      'تنفيذ العمل هذا مكتمل بالفعل.';
+
+  @override
+  String get servicesWorkExecutionLineAlreadyStarted =>
+      'بند العمل هذا بدأ بالفعل.';
+
+  @override
+  String get servicesWorkExecutionLineNotStarted =>
+      'ابدأ بند العمل قبل إنهائه.';
+
+  @override
+  String get servicesWorkExecutionLineAlreadyEnded =>
+      'بند العمل هذا منتهٍ بالفعل.';
+
+  @override
+  String get servicesWorkExecutionInvalidTimeRange =>
+      'لا يمكن أن يكون وقت الانتهاء قبل وقت البدء.';
+
+  @override
+  String get servicesWorkExecutionInspectionRequired => 'اختر فحصًا.';
+
+  @override
+  String get servicesWorkExecutionInspectionNotEligible =>
+      'الفحص المحدد غير مؤهل.';
+
+  @override
+  String get servicesWorkExecutionAlreadyActive =>
+      'يوجد تنفيذ عمل نشط لهذا الفحص بالفعل.';
+
+  @override
+  String get servicesWorkExecutionSequenceFailed =>
+      'تعذّر تخصيص رقم لتنفيذ العمل.';
+
+  @override
+  String get servicesWorkExecutionLinesRequired =>
+      'أضف بند عمل واحدًا على الأقل.';
+
+  @override
+  String get servicesWorkExecutionCodeRequired =>
+      'أدخل الرمز لكل بند مادة مستخدمة.';
+
+  @override
+  String get servicesWorkExecutionDescriptionRequired =>
+      'أدخل الوصف لكل بند مادة مستخدمة.';
+
+  @override
+  String get servicesWorkExecutionPhotoDescriptionRequired =>
+      'أدخل وصفًا لكل دليل مصوّر.';
+
+  @override
+  String get servicesWorkExecutionTeamInvalid => 'الفريق المحدد غير متاح.';
+
+  @override
+  String get servicesWorkExecutionEmployeeInvalid => 'الموظف المحدد غير متاح.';
+
+  @override
+  String get servicesWorkExecutionMaterialRequestLineInvalid =>
+      'بند طلب المواد المحدد غير متاح.';
+
+  @override
+  String get servicesOverviewWorkExecutionsPending => 'تنفيذ عمل قيد الانتظار';
+
+  @override
+  String get servicesOverviewWorkExecutionsInProgress => 'عمل قيد التنفيذ';
+
+  @override
+  String get servicesOverviewWorkExecutionsCompletedToday => 'المكتمل اليوم';
+
+  @override
+  String get servicesOverviewRecentWorkExecutions => 'أحدث تنفيذ العمل';
+
+  @override
+  String get servicesOverviewNoWorkExecutions => 'لا يوجد تنفيذ عمل بعد.';
+
+  @override
+  String get servicesInspectionWorkExecutionSection => 'تنفيذ العمل';
+
+  @override
+  String get servicesInspectionCreateWorkExecution => 'إنشاء تنفيذ عمل';
+
+  @override
+  String get servicesInspectionNoWorkExecution => 'لا يوجد تنفيذ عمل بعد.';
+
+  @override
+  String get servicesAssignmentWorkExecutionSection => 'تنفيذ العمل';
+
+  @override
+  String get servicesEnquiryWorkExecutionSection => 'تنفيذ العمل';
+
+  @override
+  String get servicesWorkflowTitle => 'سير العمل';
+
+  @override
+  String get servicesWorkflowStageEnquiry => 'استفسار الخدمة';
+
+  @override
+  String get servicesWorkflowStageJobAssignment => 'إسناد العمل';
+
+  @override
+  String get servicesWorkflowStageInspection => 'الفحص';
+
+  @override
+  String get servicesWorkflowStageMaterialRequest => 'طلب المواد';
+
+  @override
+  String get servicesWorkflowStageWorkExecution => 'تنفيذ العمل';
+
+  @override
+  String get servicesWorkflowNotCreated => 'غير مطلوب / لم يتم الإنشاء';
+
+  @override
+  String get servicesWorkflowNotAvailable => 'غير متاح';
+
+  @override
+  String get servicesWorkflowOptional => 'اختياري';
+
+  @override
+  String get servicesWorkflowStatusAwaitingAssignment => 'بانتظار الإسناد';
+
+  @override
+  String get servicesWorkflowStatusScheduled => 'مجدول';
+
+  @override
+  String get servicesWorkflowStatusInspectionPending => 'الفحص معلّق';
+
+  @override
+  String get servicesWorkflowStatusInspectionCompleted => 'اكتمل الفحص';
+
+  @override
+  String get servicesWorkflowStatusMaterialsRequested => 'تم طلب المواد';
+
+  @override
+  String get servicesWorkflowStatusWorkInProgress => 'العمل قيد التنفيذ';
+
+  @override
+  String get servicesWorkflowStatusWorkCompleted => 'اكتمل العمل';
+
+  @override
+  String get servicesWorkflowStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesWorkflowStatusUnknown => 'قيد المعالجة';
+
+  @override
+  String get servicesWorkflowActivityTitle => 'نشاط سير العمل';
+
+  @override
+  String get servicesWorkflowNoActivity => 'لا يوجد نشاط لسير العمل بعد.';
+
+  @override
+  String get servicesWorkflowNextActions => 'الإجراءات التالية';
+
+  @override
+  String servicesWorkflowMaterialWaiting(String count) {
+    return '$count متطلبات مواد بانتظار';
+  }
+
+  @override
+  String get servicesWorkflowActionCreateAssignment => 'إنشاء إسناد عمل';
+
+  @override
+  String get servicesWorkflowActionViewAssignment => 'عرض إسناد العمل';
+
+  @override
+  String get servicesWorkflowActionCreateInspection => 'إنشاء فحص';
+
+  @override
+  String get servicesWorkflowActionViewInspection => 'عرض الفحص';
+
+  @override
+  String get servicesWorkflowActionCreateMaterialRequest => 'إنشاء طلب مواد';
+
+  @override
+  String get servicesWorkflowActionViewMaterialRequest => 'عرض طلب المواد';
+
+  @override
+  String get servicesWorkflowActionCreateWorkExecution => 'إنشاء تنفيذ عمل';
+
+  @override
+  String get servicesWorkflowActionViewWorkExecution => 'عرض تنفيذ العمل';
+
+  @override
+  String get servicesWorkflowActionPerform => 'بدء / إنهاء العمل';
+
+  @override
+  String get servicesWorkflowActionComplete => 'إكمال';
+
+  @override
+  String get servicesWorkflowActionCancel => 'إلغاء';
+
+  @override
+  String get servicesWorkflowActionEdit => 'تعديل';
+
+  @override
+  String get servicesWorkflowActionPrint => 'طباعة';
+
+  @override
+  String get servicesWorkflowEvidenceTitle => 'أدلة العمل';
+
+  @override
+  String get servicesWorkflowBeforeWork => 'قبل العمل';
+
+  @override
+  String get servicesWorkflowAfterWork => 'بعد العمل';
+
+  @override
+  String get servicesWorkflowNoBeforePhotos => 'لا توجد صور قبل العمل.';
+
+  @override
+  String get servicesWorkflowNoAfterPhotos => 'لا توجد صور بعد العمل.';
+
+  @override
+  String get servicesOverviewMyWork => 'عملي';
+
+  @override
+  String get servicesOverviewMyWorkAssignments => 'إسناداتي';
+
+  @override
+  String get servicesOverviewMyWorkInspections => 'فحوصاتي المعلّقة';
+
+  @override
+  String get servicesOverviewMyWorkExecutions => 'عملي النشط';
+
+  @override
+  String get servicesOverviewNoMyWork => 'لا يوجد عمل مُسند حالياً.';
+
+  @override
+  String get servicesOverviewWorkflowTitle => 'سير العمل التشغيلي';
 }

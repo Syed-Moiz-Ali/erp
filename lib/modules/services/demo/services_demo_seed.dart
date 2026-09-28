@@ -524,12 +524,32 @@ Future<void> seedServiceEnquiriesDemoData(
       ),
     ],
   );
+  // Example B: completes the whole workflow with no material requirement.
+  await enquiry(
+    id: 'demo-enq-5',
+    number: 'ENQ-000005',
+    c: abc,
+    s: site1,
+    serviceTypeId: 'demo-st-plumbing',
+    complaintTypeId: 'demo-ct-leak',
+    priorityId: 'demo-pr-normal',
+    ticketTypeId: 'demo-tt-complaint',
+    description: 'Minor tap leak in the pantry.',
+    status: ServiceEnquiryStatus.open,
+    createdAt: now.subtract(const Duration(days: 4, hours: 6)),
+    details: [
+      (
+        description: 'Tap drips continuously when closed.',
+        status: ServiceEnquiryDetailStatus.open,
+      ),
+    ],
+  );
 
   // Keep the local sequence ahead of the seeded display numbers.
   await numbers.adoptServerNumber(
     companyId: companyId,
     type: DocumentSequenceType.serviceEnquiry,
-    displayNumber: 'ENQ-000004',
+    displayNumber: 'ENQ-000005',
   );
 }
 
@@ -689,11 +709,29 @@ Future<void> seedServiceJobAssignmentDemoData(
       ),
     ],
   );
+  await assign(
+    id: 'demo-ja-3',
+    number: 'JA-000003',
+    enquiryId: 'demo-enq-5',
+    visitDate: DateTime.utc(
+      now.year,
+      now.month,
+      now.day,
+    ).add(const Duration(days: 3)),
+    lines: [
+      (
+        work: 'Repair the pantry tap leak',
+        employeeId: employeeId,
+        teamId: teamId,
+        description: 'Replace the tap washer and verify no drip remains.',
+      ),
+    ],
+  );
 
   await numbers.adoptServerNumber(
     companyId: companyId,
     type: DocumentSequenceType.serviceJobAssignment,
-    displayNumber: 'JA-000002',
+    displayNumber: 'JA-000003',
   );
 }
 
@@ -833,7 +871,7 @@ Future<void> seedServiceInspectionDemoData(
           technicianEmployeeId: Value(technicianId),
           rootCauseId: const Value('demo-rc-electrical'),
           chargeResponsibilityId: const Value('demo-ch-tenant'),
-          status: 'pending',
+          status: 'completed',
           createdAt: now,
           updatedAt: now,
           createdByUserId: admin.user.id,
@@ -902,9 +940,511 @@ Future<void> seedServiceInspectionDemoData(
         ),
         mode: InsertMode.insertOrIgnore,
       );
+  // Example B: a completed inspection with no material requirement.
+  final assignment2 =
+      await (db.select(db.serviceJobAssignments)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ja-3'),
+          ))
+          .getSingleOrNull();
+  if (assignment2 != null) {
+    final lines2 =
+        await (db.select(db.serviceJobAssignmentLines)
+              ..where(
+                (t) =>
+                    t.companyId.equals(companyId) &
+                    t.assignmentId.equals('demo-ja-3') &
+                    t.removedAt.isNull(),
+              )
+              ..orderBy([(t) => OrderingTerm.asc(t.lineNumber)]))
+            .get();
+    await db
+        .into(db.serviceInspections)
+        .insert(
+          ServiceInspectionsCompanion.insert(
+            id: 'demo-ins-2',
+            companyId: companyId,
+            inspectionNumber: 'INS-000002',
+            inspectionDate: now,
+            sourceJobAssignmentId: 'demo-ja-3',
+            sourceEnquiryId: assignment2.sourceEnquiryId,
+            visitDate: DateTime.utc(
+              now.year,
+              now.month,
+              now.day,
+            ).add(const Duration(days: 3)),
+            visitMinutes: const Value(600),
+            technicianEmployeeId: Value(technicianId),
+            rootCauseId: const Value('demo-rc-leak'),
+            chargeResponsibilityId: const Value('demo-ch-tenant'),
+            status: 'completed',
+            createdAt: now,
+            updatedAt: now,
+            createdByUserId: admin.user.id,
+            updatedByUserId: admin.user.id,
+            requestId: const Value('demo-inspection-2'),
+            syncStatus: 'synced',
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+    var order2 = 0;
+    for (final line in lines2) {
+      order2++;
+      await db
+          .into(db.serviceInspectionChecklistItems)
+          .insert(
+            ServiceInspectionChecklistItemsCompanion.insert(
+              id: 'demo-ins-2-c$order2',
+              companyId: companyId,
+              inspectionId: 'demo-ins-2',
+              sourceJobAssignmentLineId: Value(line.id),
+              lineNumber: order2,
+              workType: line.work,
+              descriptionForWork: Value(line.descriptionForWork),
+              status: 'pending',
+              createdAt: now,
+              updatedAt: now,
+              createdByUserId: admin.user.id,
+              updatedByUserId: admin.user.id,
+              syncStatus: 'synced',
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
+    }
+    await db
+        .into(db.serviceInspectionPoints)
+        .insert(
+          ServiceInspectionPointsCompanion.insert(
+            id: 'demo-ins-2-p1',
+            companyId: companyId,
+            inspectionId: 'demo-ins-2',
+            lineNumber: 1,
+            description: 'Worn tap washer identified',
+            createdAt: now,
+            updatedAt: now,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+  }
+
   await LocalDocumentNumberService(db, clock).adoptServerNumber(
     companyId: companyId,
     type: DocumentSequenceType.serviceInspection,
-    displayNumber: 'INS-000001',
+    displayNumber: 'INS-000002',
+  );
+}
+
+/// Deterministic, idempotent Material Request demo seed (purpose master and one
+/// request MR-000001 built from the completed demo Inspection requirements).
+Future<void> seedServiceMaterialRequestDemoData(
+  AppDatabase db,
+  AuthContext admin,
+  AppClock clock,
+) async {
+  final companyId = admin.company.id;
+  final now = clock.now();
+
+  Future<void> master(
+    TableInfo table,
+    String id,
+    String code,
+    String name, {
+    int sort = 0,
+  }) async {
+    final columns =
+        (await db
+                .customSelect('PRAGMA table_info(${table.actualTableName})')
+                .get())
+            .map((r) => r.read<String>('name'))
+            .toSet();
+    final row = {
+      'id': id,
+      'company_id': companyId,
+      'code': code,
+      'name': name,
+      'status': 'active',
+      'sort_order': sort,
+      'created_at': now,
+      'updated_at': now,
+      'sync_status': 'synced',
+    };
+    final filtered = {
+      for (final e in row.entries)
+        if (columns.contains(e.key)) e.key: e.value,
+    };
+    await db.customInsert(
+      'INSERT OR IGNORE INTO ${table.actualTableName} '
+      '(${filtered.keys.join(',')}) VALUES (${filtered.keys.map((_) => '?').join(',')})',
+      variables: [for (final v in filtered.values) Variable(v)],
+    );
+  }
+
+  await master(
+    db.serviceMaterialRequestPurposes,
+    'demo-mrp-service',
+    'SERVICE_WORK',
+    'Service Work',
+    sort: 1,
+  );
+
+  final existing = await (db.select(
+    db.serviceMaterialRequests,
+  )..where((t) => t.companyId.equals(companyId))).get();
+  if (existing.isNotEmpty) return;
+
+  final inspection =
+      await (db.select(db.serviceInspections)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ins-1'),
+          ))
+          .getSingleOrNull();
+  if (inspection == null) return;
+  final requirement =
+      await (db.select(db.serviceInspectionMaterialRequirements)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ins-1-m1'),
+          ))
+          .getSingleOrNull();
+
+  await db
+      .into(db.serviceMaterialRequests)
+      .insert(
+        ServiceMaterialRequestsCompanion.insert(
+          id: 'demo-mr-1',
+          companyId: companyId,
+          requestNumber: 'MR-000001',
+          requestDate: now,
+          sourceInspectionId: inspection.id,
+          sourceJobAssignmentId: inspection.sourceJobAssignmentId,
+          sourceEnquiryId: inspection.sourceEnquiryId,
+          purposeId: const Value('demo-mrp-service'),
+          jobOrderReference: const Value('JOB-000001'),
+          remarks: const Value('Demo request for material.'),
+          status: 'open',
+          createdAt: now,
+          updatedAt: now,
+          createdByUserId: admin.user.id,
+          updatedByUserId: admin.user.id,
+          requestId: const Value('demo-material-request-1'),
+          syncStatus: 'synced',
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  var order = 0;
+  for (final line in [
+    (
+      id: 'demo-mr-1-l1',
+      requirementId: requirement?.id,
+      code: 'CAP-35UF',
+      description: '35uF capacitor',
+      quantity: 1.0,
+    ),
+    (
+      id: 'demo-mr-1-l2',
+      requirementId: null,
+      code: 'WIRE-2.5',
+      description: '2.5mm electrical wire',
+      quantity: 3.0,
+    ),
+  ]) {
+    order++;
+    await db
+        .into(db.serviceMaterialRequestLines)
+        .insert(
+          ServiceMaterialRequestLinesCompanion.insert(
+            id: line.id,
+            companyId: companyId,
+            materialRequestId: 'demo-mr-1',
+            sourceInspectionMaterialRequirementId: Value(line.requirementId),
+            activeRequirementId: Value(line.requirementId),
+            lineNumber: order,
+            code: line.code,
+            description: line.description,
+            quantity: line.quantity,
+            createdAt: now,
+            updatedAt: now,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+  }
+  if (requirement != null) {
+    await db.customUpdate(
+      "UPDATE service_inspection_material_requirements SET status='requested', updated_at=? WHERE company_id=? AND id=?",
+      variables: [Variable(now), Variable(companyId), Variable(requirement.id)],
+    );
+  }
+  await LocalActivityRepository(db).append(
+    BusinessActivityEvent(
+      id: 'demo-material-request-activity-1',
+      companyId: companyId,
+      moduleKey: 'services',
+      entityType: 'serviceMaterialRequest',
+      entityId: 'demo-mr-1',
+      eventType: 'services.materialRequest.created',
+      occurredAt: now,
+      actorUserId: admin.user.id,
+      syncStatus: 'synced',
+      metadata: {
+        'requestNumber': 'MR-000001',
+        'sourceInspectionId': inspection.id,
+      },
+    ),
+  );
+  await LocalDocumentNumberService(db, clock).adoptServerNumber(
+    companyId: companyId,
+    type: DocumentSequenceType.materialRequest,
+    displayNumber: 'MR-000001',
+  );
+}
+
+/// Deterministic, idempotent Work Execution demo seed (one execution
+/// WE-000001 built from the completed demo Inspection, Job Assignment and
+/// Enquiry lineage). Never creates Job Order/Quotation entities.
+Future<void> seedServiceWorkExecutionDemoData(
+  AppDatabase db,
+  AuthContext admin,
+  AppClock clock,
+) async {
+  final companyId = admin.company.id;
+  final now = clock.now();
+
+  final existing = await (db.select(
+    db.serviceWorkExecutions,
+  )..where((t) => t.companyId.equals(companyId))).get();
+  if (existing.isNotEmpty) return;
+
+  final inspection =
+      await (db.select(db.serviceInspections)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ins-1'),
+          ))
+          .getSingleOrNull();
+  if (inspection == null) return;
+
+  final assignmentLines =
+      await (db.select(db.serviceJobAssignmentLines)
+            ..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.assignmentId.equals(inspection.sourceJobAssignmentId) &
+                  t.removedAt.isNull(),
+            )
+            ..orderBy([(t) => OrderingTerm.asc(t.lineNumber)]))
+          .get();
+  final employees =
+      await (db.select(db.workforceEmployees)
+            ..where((t) => t.companyId.equals(companyId))
+            ..limit(1))
+          .get();
+  final employeeId = employees.isEmpty ? null : employees.first.id;
+  final teams = await (db.select(
+    db.serviceTeams,
+  )..where((t) => t.companyId.equals(companyId))).get();
+  final teamId = teams.isNotEmpty ? teams.first.id : null;
+  final sourceLine = assignmentLines.isNotEmpty ? assignmentLines.first : null;
+
+  final startedAt = now.subtract(const Duration(hours: 3));
+  final endedAt = now.subtract(const Duration(hours: 2));
+
+  await db
+      .into(db.serviceWorkExecutions)
+      .insert(
+        ServiceWorkExecutionsCompanion.insert(
+          id: 'demo-we-1',
+          companyId: companyId,
+          executionNumber: 'WE-000001',
+          executionDate: now,
+          sourceInspectionId: inspection.id,
+          sourceJobAssignmentId: inspection.sourceJobAssignmentId,
+          sourceEnquiryId: inspection.sourceEnquiryId,
+          jobOrderReference: const Value('JOB-000001'),
+          status: 'inProgress',
+          createdAt: now,
+          updatedAt: now,
+          createdByUserId: admin.user.id,
+          updatedByUserId: admin.user.id,
+          requestId: const Value('demo-work-execution-1'),
+          syncStatus: 'synced',
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await db
+      .into(db.serviceWorkExecutionLines)
+      .insert(
+        ServiceWorkExecutionLinesCompanion.insert(
+          id: 'demo-we-1-l1',
+          companyId: companyId,
+          workExecutionId: 'demo-we-1',
+          sourceJobAssignmentLineId: Value(sourceLine?.id),
+          lineNumber: 1,
+          work: 'Inspect and replace faulty capacitor',
+          description: const Value(
+            'Replace defective capacitor and test cooling',
+          ),
+          serviceTeamId: Value(teamId),
+          employeeId: Value(employeeId),
+          startedAtUtc: Value(startedAt),
+          endedAtUtc: Value(endedAt),
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await db
+      .into(db.serviceWorkExecutionLines)
+      .insert(
+        ServiceWorkExecutionLinesCompanion.insert(
+          id: 'demo-we-1-l2',
+          companyId: companyId,
+          workExecutionId: 'demo-we-1',
+          lineNumber: 2,
+          work: 'Verify airflow',
+          employeeId: Value(employeeId),
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await db
+      .into(db.serviceWorkExecutionMaterialsUsed)
+      .insert(
+        ServiceWorkExecutionMaterialsUsedCompanion.insert(
+          id: 'demo-we-1-m1',
+          companyId: companyId,
+          workExecutionId: 'demo-we-1',
+          sourceMaterialRequestLineId: const Value('demo-mr-1-l1'),
+          lineNumber: 1,
+          code: 'CAP-35UF',
+          description: '35µF capacitor',
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await db
+      .into(db.serviceWorkExecutionPhotoEntries)
+      .insert(
+        ServiceWorkExecutionPhotoEntriesCompanion.insert(
+          id: 'demo-we-1-p1',
+          companyId: companyId,
+          workExecutionId: 'demo-we-1',
+          lineNumber: 1,
+          description: 'New capacitor installed and unit restored',
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await LocalActivityRepository(db).append(
+    BusinessActivityEvent(
+      id: 'demo-work-execution-activity-1',
+      companyId: companyId,
+      moduleKey: 'services',
+      entityType: 'serviceWorkExecution',
+      entityId: 'demo-we-1',
+      eventType: 'services.workExecution.created',
+      occurredAt: now,
+      actorUserId: admin.user.id,
+      syncStatus: 'synced',
+      metadata: {
+        'executionNumber': 'WE-000001',
+        'sourceInspectionId': inspection.id,
+      },
+    ),
+  );
+  // Example B: a completed work execution with no material used.
+  final inspection2 =
+      await (db.select(db.serviceInspections)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ins-2'),
+          ))
+          .getSingleOrNull();
+  if (inspection2 != null) {
+    final lines2 =
+        await (db.select(db.serviceJobAssignmentLines)
+              ..where(
+                (t) =>
+                    t.companyId.equals(companyId) &
+                    t.assignmentId.equals(inspection2.sourceJobAssignmentId) &
+                    t.removedAt.isNull(),
+              )
+              ..orderBy([(t) => OrderingTerm.asc(t.lineNumber)]))
+            .get();
+    final sourceLine2 = lines2.isNotEmpty ? lines2.first : null;
+    final started2 = now.subtract(const Duration(days: 2, hours: 4));
+    final ended2 = now.subtract(const Duration(days: 2, hours: 3));
+    await db
+        .into(db.serviceWorkExecutions)
+        .insert(
+          ServiceWorkExecutionsCompanion.insert(
+            id: 'demo-we-2',
+            companyId: companyId,
+            executionNumber: 'WE-000002',
+            executionDate: now.subtract(const Duration(days: 2)),
+            sourceInspectionId: inspection2.id,
+            sourceJobAssignmentId: inspection2.sourceJobAssignmentId,
+            sourceEnquiryId: inspection2.sourceEnquiryId,
+            status: 'completed',
+            createdAt: now.subtract(const Duration(days: 2)),
+            updatedAt: now,
+            createdByUserId: admin.user.id,
+            updatedByUserId: admin.user.id,
+            requestId: const Value('demo-work-execution-2'),
+            syncStatus: 'synced',
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+    await db
+        .into(db.serviceWorkExecutionLines)
+        .insert(
+          ServiceWorkExecutionLinesCompanion.insert(
+            id: 'demo-we-2-l1',
+            companyId: companyId,
+            workExecutionId: 'demo-we-2',
+            sourceJobAssignmentLineId: Value(sourceLine2?.id),
+            lineNumber: 1,
+            work: 'Repair pantry tap leak',
+            description: const Value('Replace washer and confirm no drip'),
+            serviceTeamId: Value(teamId),
+            employeeId: Value(employeeId),
+            startedAtUtc: Value(started2),
+            endedAtUtc: Value(ended2),
+            createdAt: now.subtract(const Duration(days: 2)),
+            updatedAt: now,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+    await db
+        .into(db.serviceWorkExecutionPhotoEntries)
+        .insert(
+          ServiceWorkExecutionPhotoEntriesCompanion.insert(
+            id: 'demo-we-2-p1',
+            companyId: companyId,
+            workExecutionId: 'demo-we-2',
+            lineNumber: 1,
+            description: 'Tap repaired with no leak',
+            createdAt: now.subtract(const Duration(days: 2)),
+            updatedAt: now,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+    await LocalActivityRepository(db).append(
+      BusinessActivityEvent(
+        id: 'demo-work-execution-activity-2',
+        companyId: companyId,
+        moduleKey: 'services',
+        entityType: 'serviceWorkExecution',
+        entityId: 'demo-we-2',
+        eventType: 'services.workExecution.completed',
+        occurredAt: now,
+        actorUserId: admin.user.id,
+        syncStatus: 'synced',
+        metadata: {
+          'executionNumber': 'WE-000002',
+          'sourceInspectionId': inspection2.id,
+        },
+      ),
+    );
+  }
+
+  await LocalDocumentNumberService(db, clock).adoptServerNumber(
+    companyId: companyId,
+    type: DocumentSequenceType.workExecution,
+    displayNumber: 'WE-000002',
   );
 }

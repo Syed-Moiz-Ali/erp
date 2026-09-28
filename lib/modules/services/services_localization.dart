@@ -4,6 +4,8 @@ import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
+import 'package:modular_erp/modules/services/material_requests/domain/service_material_request.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution.dart';
 import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/shared/transactions/domain/attachment.dart';
 
@@ -86,13 +88,13 @@ String attachmentUploadStatusLabel(
   AttachmentUploadStatus.localOnly => l.attachmentLocalOnly,
 };
 
-/// Localizes a Services activity event key (for example
+/// Localizes a Services activity event type key (for example
 /// `services.customer.created`) without persisting English sentences.
-String serviceActivityLabel(BusinessActivityEvent event, AppLocalizations l) {
-  if (event.eventType.contains('members')) {
+String serviceActivityEventLabel(String eventType, AppLocalizations l) {
+  if (eventType.contains('members')) {
     return l.servicesActivityMembersUpdated;
   }
-  return switch (event.eventType.split('.').last) {
+  return switch (eventType.split('.').last) {
     'created' => l.servicesActivityCreated,
     'updated' => l.servicesActivityUpdated,
     'activated' => l.servicesActivityActivated,
@@ -101,22 +103,41 @@ String serviceActivityLabel(BusinessActivityEvent event, AppLocalizations l) {
     'assigned' => l.servicesActivityAssigned,
     'reopened' => l.servicesActivityReopened,
     'completed' => l.servicesActivityCompleted,
+    'linesChanged' => l.servicesActivityLinesChanged,
+    'workStarted' => l.servicesActivityWorkStarted,
+    'workEnded' => l.servicesActivityWorkEnded,
+    'materialUsedAdded' => l.servicesActivityMaterialUsedAdded,
+    'materialUsedRemoved' => l.servicesActivityMaterialUsedRemoved,
+    'photoAdded' => l.servicesActivityPhotoAdded,
+    'photoUpdated' => l.servicesActivityPhotoUpdated,
+    'photoRemoved' => l.servicesActivityPhotoRemoved,
     _ => l.servicesActivityUnknown,
   };
 }
 
+/// Localizes a Services activity event (see [serviceActivityEventLabel]).
+String serviceActivityLabel(BusinessActivityEvent event, AppLocalizations l) =>
+    serviceActivityEventLabel(event.eventType, l);
+
+/// Localizes an activity entity type (`serviceJobAssignment` → nav label).
+String serviceActivityEntityTypeLabel(String entityType, AppLocalizations l) =>
+    switch (entityType) {
+      'serviceCustomer' => l.servicesNavCustomers,
+      'serviceSite' => l.servicesNavSites,
+      'serviceTeam' => l.servicesNavTeams,
+      'serviceEnquiry' => l.servicesNavEnquiries,
+      'serviceJobAssignment' => l.servicesNavJobAssignments,
+      'serviceInspection' => l.servicesNavInspections,
+      'serviceMaterialRequest' => l.servicesNavMaterialRequests,
+      'serviceMaterialRequestPurpose' => l.servicesMaterialRequestPurposesTitle,
+      'serviceWorkExecution' => l.servicesNavWorkExecution,
+      _ => l.servicesPermModuleServices,
+    };
+
 String serviceActivityEntityLabel(
   BusinessActivityEvent event,
   AppLocalizations l,
-) => switch (event.entityType) {
-  'serviceCustomer' => l.servicesNavCustomers,
-  'serviceSite' => l.servicesNavSites,
-  'serviceTeam' => l.servicesNavTeams,
-  'serviceEnquiry' => l.servicesNavEnquiries,
-  'serviceJobAssignment' => l.servicesNavJobAssignments,
-  'serviceInspection' => l.servicesNavInspections,
-  _ => l.servicesPermModuleServices,
-};
+) => serviceActivityEntityTypeLabel(event.entityType, l);
 
 AppStatus serviceInspectionStatus(ServiceInspectionStatus status) =>
     switch (status) {
@@ -142,7 +163,22 @@ String serviceInspectionChecklistStatusLabel(
 String serviceInspectionMaterialStatusLabel(
   ServiceInspectionMaterialStatus status,
   AppLocalizations l,
-) => l.servicesInspectionMaterialStatusWaiting;
+) => switch (status) {
+  ServiceInspectionMaterialStatus.waiting =>
+    l.servicesInspectionMaterialStatusWaiting,
+  ServiceInspectionMaterialStatus.requested =>
+    l.servicesInspectionMaterialStatusRequested,
+};
+
+AppStatus serviceMaterialRequestStatus(ServiceMaterialRequestStatus status) =>
+    status.isOpen ? AppStatus.info : AppStatus.neutral;
+
+String serviceMaterialRequestStatusLabel(
+  ServiceMaterialRequestStatus status,
+  AppLocalizations l,
+) => status.isOpen
+    ? l.servicesMaterialRequestStatusOpen
+    : l.servicesMaterialRequestStatusCancelled;
 
 /// Localizes a Services repository failure code. Returns `null` for unknown or
 /// generic codes so the caller can fall back to a generic storage message.
@@ -324,5 +360,135 @@ String? serviceInspectionFailureMessage(
   'servicesInspectionMaterialDescriptionRequired' =>
     l.servicesInspectionMaterialDescriptionRequired,
   'servicesInspectionSequenceFailed' => l.servicesInspectionSequenceFailed,
+  _ => null,
+};
+
+/// Localizes a Material Request failure code (null for generic codes).
+String? serviceMaterialRequestFailureMessage(
+  String? code,
+  AppLocalizations l,
+) => switch (code) {
+  'servicesMaterialRequestDenied' => l.servicesMaterialRequestDenied,
+  'servicesMaterialRequestNotFound' => l.servicesMaterialRequestNotFound,
+  'servicesMaterialRequestNotEditable' => l.servicesMaterialRequestNotEditable,
+  'servicesMaterialRequestAlreadyCancelled' =>
+    l.servicesMaterialRequestAlreadyCancelled,
+  'servicesMaterialRequestInspectionRequired' =>
+    l.servicesMaterialRequestInspectionRequired,
+  'servicesMaterialRequestInspectionInvalid' =>
+    l.servicesMaterialRequestInspectionInvalid,
+  'servicesMaterialRequestPurposeInvalid' =>
+    l.servicesMaterialRequestPurposeInvalid,
+  'servicesMaterialRequestLinesRequired' =>
+    l.servicesMaterialRequestLinesRequired,
+  'servicesMaterialRequestCodeRequired' =>
+    l.servicesMaterialRequestCodeRequired,
+  'servicesMaterialRequestDescriptionRequired' =>
+    l.servicesMaterialRequestDescriptionRequired,
+  'servicesMaterialRequestQuantityRequired' =>
+    l.servicesMaterialRequestQuantityRequired,
+  'servicesMaterialRequestRequirementLinked' =>
+    l.servicesMaterialRequestRequirementLinked,
+  'servicesMaterialRequestSequenceFailed' =>
+    l.servicesMaterialRequestSequenceFailed,
+  _ => null,
+};
+
+/// Work Execution overall status presentation.
+AppStatus serviceWorkExecutionStatus(ServiceWorkExecutionStatus status) =>
+    switch (status) {
+      ServiceWorkExecutionStatus.pending => AppStatus.info,
+      ServiceWorkExecutionStatus.inProgress => AppStatus.brand,
+      ServiceWorkExecutionStatus.completed => AppStatus.success,
+      ServiceWorkExecutionStatus.cancelled => AppStatus.neutral,
+    };
+
+String serviceWorkExecutionStatusLabel(
+  ServiceWorkExecutionStatus status,
+  AppLocalizations l,
+) => switch (status) {
+  ServiceWorkExecutionStatus.pending => l.servicesWorkExecutionStatusPending,
+  ServiceWorkExecutionStatus.inProgress =>
+    l.servicesWorkExecutionStatusInProgress,
+  ServiceWorkExecutionStatus.completed =>
+    l.servicesWorkExecutionStatusCompleted,
+  ServiceWorkExecutionStatus.cancelled =>
+    l.servicesWorkExecutionStatusCancelled,
+};
+
+/// Derived work line execution state presentation.
+AppStatus serviceWorkLineStateStatus(ServiceWorkLineState state) =>
+    switch (state) {
+      ServiceWorkLineState.notStarted => AppStatus.neutral,
+      ServiceWorkLineState.inProgress => AppStatus.brand,
+      ServiceWorkLineState.finished => AppStatus.success,
+    };
+
+String serviceWorkLineStateLabel(
+  ServiceWorkLineState state,
+  AppLocalizations l,
+) => switch (state) {
+  ServiceWorkLineState.notStarted => l.servicesWorkExecutionLineStateNotStarted,
+  ServiceWorkLineState.inProgress => l.servicesWorkExecutionLineStateInProgress,
+  ServiceWorkLineState.finished => l.servicesWorkExecutionLineStateFinished,
+};
+
+String serviceWorkMaterialRequestStatusLabel(
+  String status,
+  AppLocalizations l,
+) => status == 'cancelled'
+    ? l.servicesMaterialRequestStatusCancelled
+    : l.servicesMaterialRequestStatusOpen;
+
+/// Localizes a Work Execution failure code (null for generic codes).
+String? serviceWorkExecutionFailureMessage(
+  String? code,
+  AppLocalizations l,
+) => switch (code) {
+  'servicesWorkExecutionDenied' => l.servicesWorkExecutionDenied,
+  'servicesWorkExecutionNotFound' => l.servicesWorkExecutionNotFound,
+  'servicesWorkExecutionNotEditable' => l.servicesWorkExecutionNotEditable,
+  'servicesWorkExecutionNotCompletable' =>
+    l.servicesWorkExecutionNotCompletable,
+  'servicesWorkExecutionAlreadyCompleted' =>
+    l.servicesWorkExecutionAlreadyCompleted,
+  'servicesWorkExecutionCancelled' => l.servicesWorkExecutionCancelled,
+  'servicesWorkExecutionLineAlreadyStarted' =>
+    l.servicesWorkExecutionLineAlreadyStarted,
+  'servicesWorkExecutionLineNotStarted' =>
+    l.servicesWorkExecutionLineNotStarted,
+  'servicesWorkExecutionLineAlreadyEnded' =>
+    l.servicesWorkExecutionLineAlreadyEnded,
+  'servicesWorkExecutionInvalidTimeRange' =>
+    l.servicesWorkExecutionInvalidTimeRange,
+  'servicesWorkExecutionInspectionRequired' =>
+    l.servicesWorkExecutionInspectionRequired,
+  'servicesWorkExecutionInspectionNotEligible' =>
+    l.servicesWorkExecutionInspectionNotEligible,
+  'servicesWorkExecutionAlreadyActive' => l.servicesWorkExecutionAlreadyActive,
+  'servicesWorkExecutionSequenceFailed' =>
+    l.servicesWorkExecutionSequenceFailed,
+  'servicesWorkExecutionLinesRequired' => l.servicesWorkExecutionLinesRequired,
+  'servicesWorkExecutionWorkRequired' => l.servicesWorkExecutionWorkRequired,
+  'servicesWorkExecutionCodeRequired' => l.servicesWorkExecutionCodeRequired,
+  'servicesWorkExecutionDescriptionRequired' =>
+    l.servicesWorkExecutionDescriptionRequired,
+  'servicesWorkExecutionPhotoDescriptionRequired' =>
+    l.servicesWorkExecutionPhotoDescriptionRequired,
+  'servicesWorkExecutionTeamInvalid' => l.servicesWorkExecutionTeamInvalid,
+  'servicesWorkExecutionEmployeeInvalid' =>
+    l.servicesWorkExecutionEmployeeInvalid,
+  'servicesWorkExecutionMaterialRequestLineInvalid' =>
+    l.servicesWorkExecutionMaterialRequestLineInvalid,
+  _ => null,
+};
+
+/// Maps a Work Execution failure code to the form field it should highlight.
+String? serviceWorkExecutionFieldForFailure(String? code) => switch (code) {
+  'servicesWorkExecutionLinesRequired' ||
+  'servicesWorkExecutionWorkRequired' => 'workLines',
+  'servicesWorkExecutionCodeRequired' ||
+  'servicesWorkExecutionDescriptionRequired' => 'materialsUsed',
+  'servicesWorkExecutionPhotoDescriptionRequired' => 'photos',
   _ => null,
 };

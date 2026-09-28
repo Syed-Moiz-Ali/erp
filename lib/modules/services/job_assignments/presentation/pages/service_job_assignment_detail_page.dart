@@ -12,7 +12,12 @@ import 'package:modular_erp/modules/services/job_assignments/presentation/bloc/s
 import 'package:modular_erp/modules/services/job_assignments/presentation/widgets/job_assignment_widgets.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/presentation/widgets/assignment_inspection_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/assignment_work_execution_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/service_workflow_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceJobAssignmentDetailPage extends StatelessWidget {
@@ -20,9 +25,13 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
     super.key,
     required this.assignmentId,
     this.inspections,
+    this.workExecutions,
+    this.workflow,
   });
   final String assignmentId;
   final ServiceInspectionRepository? inspections;
+  final ServiceWorkExecutionRepository? workExecutions;
+  final ServiceWorkflowRepository? workflow;
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +135,14 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
+              if (workflow != null) ...[
+                ServiceWorkflowSection(
+                  repository: workflow!,
+                  enquiryId: a.sourceEnquiryId,
+                  focus: ServiceWorkflowStage.jobAssignment,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
               AppFormSection(
                 title: l.servicesJobAssignmentDetailContext,
                 child: AppDetailsGrid(
@@ -186,6 +203,13 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
                   repository: inspections!,
                   jobAssignmentId: a.id,
                   assignmentActive: a.isActive,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (workExecutions != null) ...[
+                AssignmentWorkExecutionSection(
+                  repository: workExecutions!,
+                  jobAssignmentId: a.id,
                 ),
                 const SizedBox(height: AppSpacing.xxl),
               ],

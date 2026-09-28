@@ -9,13 +9,29 @@ import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/enquiries/presentation/widgets/enquiry_detail_editor.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
 import 'package:modular_erp/modules/services/inspections/presentation/bloc/service_inspection_blocs.dart';
+import 'package:modular_erp/modules/services/material_requests/domain/service_material_request_repository.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/inspection_material_request_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/inspection_work_execution_section.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/service_workflow_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
+import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution_repository.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
+import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceInspectionDetailPage extends StatelessWidget {
-  const ServiceInspectionDetailPage({super.key, required this.inspectionId});
+  const ServiceInspectionDetailPage({
+    super.key,
+    required this.inspectionId,
+    this.materialRequests,
+    this.workExecutions,
+    this.workflow,
+  });
   final String inspectionId;
+  final ServiceMaterialRequestRepository? materialRequests;
+  final ServiceWorkExecutionRepository? workExecutions;
+  final ServiceWorkflowRepository? workflow;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +190,14 @@ class ServiceInspectionDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
+              if (workflow != null) ...[
+                ServiceWorkflowSection(
+                  repository: workflow!,
+                  enquiryId: i.sourceEnquiryId,
+                  focus: ServiceWorkflowStage.inspection,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
               AppFormSection(
                 title: l.servicesInspectionDetailContext,
                 child: AppDetailsGrid(
@@ -324,6 +348,25 @@ class ServiceInspectionDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
+              if (materialRequests != null) ...[
+                InspectionMaterialRequestSection(
+                  repository: materialRequests!,
+                  inspectionId: i.id,
+                  inspectionCompleted: i.isCompleted,
+                  waitingRequirementCount: i.materialRequirements
+                      .where((m) => m.status.isWaiting)
+                      .length,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (workExecutions != null) ...[
+                InspectionWorkExecutionSection(
+                  repository: workExecutions!,
+                  inspectionId: i.id,
+                  inspectionCompleted: i.isCompleted,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
               AppFormSection(
                 title: l.servicesInspectionDetailAudit,
                 child: AppDetailsGrid(

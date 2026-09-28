@@ -1,17 +1,25 @@
 # Services module
 
-`lib/modules/services/` is a foundation only. Services Phase 1 begins the
-business implementation (Service Enquiry, Job Assignment, Scheduling,
-Inspection, Material Request, Work Execution). Nothing in that list is
-implemented yet.
+`lib/modules/services/` is the business implementation of the Services chain.
+Phases 1–6 are implemented: Customers, Sites, Service Teams, Services
+configuration, Service Enquiry (with detail lines + photos + Material
+Received), Job Assignment & Scheduling, Inspection (checklist, inspected points,
+material requirements, before-work photos), Request for Material, and Work
+Execution. The client-reference mapping lives in
+[`../services/client_reference_traceability.md`](../services/client_reference_traceability.md).
 
 ```text
 modules/services/
   domain/contracts/workforce_directory.dart   public workforce contract
   module/services_routes.dart                 ServicesRoutes (/app/services)
-  module/services_module_registration.dart    buildServicesModules() -> const []
+  module/services_module_registration.dart    buildServicesModules()
   module/services_dependencies.dart           ServicesModuleDependencies
   l10n/services_en.arb, services_ar.arb       Services localization source
+  customers/, sites/, teams/, configuration/  directory + configuration
+  enquiries/, job_assignments/, inspections/  enquiry → assignment → inspection
+  material_requests/, work_executions/        material request → work execution
+  overview/, presentation/                    overview + shared Services widgets
+  demo/, access/                              demo seed + permission catalog
 ```
 
 ## Mandatory development rules
@@ -45,10 +53,11 @@ Every Services record must follow the shared foundation
 
 ## Routes
 
-Only `/app/services` is reserved. Phase 1+ adds
-`/app/services/enquiries`, `/app/services/jobs`, `/app/services/schedule`,
+Only `/app/services` is reserved. The implemented transactions add
+`/app/services/enquiries`, `/app/services/job-assignments`,
 `/app/services/inspections`, `/app/services/material-requests`,
-`/app/services/work-executions`, `/app/services/reports` and
+`/app/services/work-executions`, the directory routes
+(`/app/services/customers`, `/app/services/sites`, `/app/services/teams`) and
 `/app/services/settings`.
 
 ## Unresolved client workflow questions

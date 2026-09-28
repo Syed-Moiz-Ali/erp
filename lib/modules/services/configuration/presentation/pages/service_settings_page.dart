@@ -71,6 +71,14 @@ class ServiceSettingsPage extends StatelessWidget {
               onPressed: () =>
                   context.go(ServicesRoutes.chargeResponsibilities),
             ),
+          if (can(AppPermission.serviceMaterialRequestPurposeView))
+            AppSettingsRow(
+              title: l.servicesMaterialRequestPurposesTitle,
+              description: l.servicesPermMaterialRequestPurposesViewDesc,
+              icon: Icons.request_quote_outlined,
+              onPressed: () =>
+                  context.go(ServicesRoutes.materialRequestPurposes),
+            ),
         ],
       ),
     );
