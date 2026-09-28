@@ -1,6 +1,13 @@
 import 'package:modular_erp/core/models/configuration_record.dart';
 
-enum ServiceMasterKind { serviceType, complaintType, priority, ticketType }
+enum ServiceMasterKind {
+  serviceType,
+  complaintType,
+  priority,
+  ticketType,
+  rootCause,
+  chargeResponsibility,
+}
 
 extension ServiceMasterKindX on ServiceMasterKind {
   String get table => switch (this) {
@@ -8,18 +15,25 @@ extension ServiceMasterKindX on ServiceMasterKind {
     ServiceMasterKind.complaintType => 'complaint_types',
     ServiceMasterKind.priority => 'service_priorities',
     ServiceMasterKind.ticketType => 'service_ticket_types',
+    ServiceMasterKind.rootCause => 'service_root_causes',
+    ServiceMasterKind.chargeResponsibility => 'service_charge_responsibilities',
   };
   String get entityType => switch (this) {
     ServiceMasterKind.serviceType => 'serviceType',
     ServiceMasterKind.complaintType => 'complaintType',
     ServiceMasterKind.priority => 'servicePriority',
     ServiceMasterKind.ticketType => 'serviceTicketType',
+    ServiceMasterKind.rootCause => 'serviceRootCause',
+    ServiceMasterKind.chargeResponsibility => 'serviceChargeResponsibility',
   };
   String get createOperation => switch (this) {
     ServiceMasterKind.serviceType => 'SERVICES_SERVICE_TYPE_CREATE',
     ServiceMasterKind.complaintType => 'SERVICES_COMPLAINT_TYPE_CREATE',
     ServiceMasterKind.priority => 'SERVICES_PRIORITY_CREATE',
     ServiceMasterKind.ticketType => 'SERVICES_TICKET_TYPE_CREATE',
+    ServiceMasterKind.rootCause => 'SERVICES_ROOT_CAUSE_CREATE',
+    ServiceMasterKind.chargeResponsibility =>
+      'SERVICES_CHARGE_RESPONSIBILITY_CREATE',
   };
 }
 

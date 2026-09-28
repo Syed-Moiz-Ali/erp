@@ -77,6 +77,12 @@ class SyncOutbox extends Table {
     ServiceEnquiryDetails,
     ServiceJobAssignments,
     ServiceJobAssignmentLines,
+    ServiceRootCauses,
+    ServiceChargeResponsibilities,
+    ServiceInspections,
+    ServiceInspectionChecklistItems,
+    ServiceInspectionPoints,
+    ServiceInspectionMaterialRequirements,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -92,7 +98,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 16;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -128,7 +134,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 14 || to != 15) {
+      if (from < 1 || from > 15 || to != 16) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -252,6 +258,15 @@ class AppDatabase extends _$AppDatabase {
         // Services Phase 3: Job Assignment & Scheduling.
         await _ensureTable(m, serviceJobAssignments);
         await _ensureTable(m, serviceJobAssignmentLines);
+      }
+      if (from < 16) {
+        // Services Phase 4: Inspection + Root Cause / Charge Responsibility masters.
+        await _ensureTable(m, serviceRootCauses);
+        await _ensureTable(m, serviceChargeResponsibilities);
+        await _ensureTable(m, serviceInspections);
+        await _ensureTable(m, serviceInspectionChecklistItems);
+        await _ensureTable(m, serviceInspectionPoints);
+        await _ensureTable(m, serviceInspectionMaterialRequirements);
       }
     },
     beforeOpen: (details) async {
@@ -442,6 +457,41 @@ class AppDatabase extends _$AppDatabase {
       await customStatement(
         'CREATE INDEX IF NOT EXISTS service_job_assignment_lines_team ON service_job_assignment_lines(company_id, assigned_team_id)',
       );
+      for (final table in [
+        'service_root_causes',
+        'service_charge_responsibilities',
+      ]) {
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS ${table}_company_status ON $table(company_id, status, name)',
+        );
+      }
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_inspections_company_status ON service_inspections(company_id, status, visit_date)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_inspections_company_assignment ON service_inspections(company_id, source_job_assignment_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_inspections_company_enquiry ON service_inspections(company_id, source_enquiry_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_inspections_company_technician ON service_inspections(company_id, technician_employee_id)',
+      );
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS service_inspections_company_visit ON service_inspections(company_id, visit_date)',
+      );
+      await customStatement(
+        "CREATE UNIQUE INDEX IF NOT EXISTS service_inspections_active_assignment ON service_inspections(company_id, source_job_assignment_id) WHERE status <> 'cancelled'",
+      );
+      for (final table in [
+        'service_inspection_checklist_items',
+        'service_inspection_points',
+        'service_inspection_material_requirements',
+      ]) {
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS ${table}_inspection ON $table(company_id, inspection_id, line_number)',
+        );
+      }
     },
   );
 }

@@ -284,3 +284,106 @@ class ServiceJobAssignmentLines extends Table {
   @override
   Set<Column<Object>> get primaryKey => {id};
 }
+
+@DataClassName('ServiceRootCauseRow')
+class ServiceRootCauses extends Table with ServiceMasterColumns {
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {companyId, code},
+  ];
+}
+
+@DataClassName('ServiceChargeResponsibilityRow')
+class ServiceChargeResponsibilities extends Table with ServiceMasterColumns {
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {companyId, code},
+  ];
+}
+
+/// Services Phase 4: the Service Inspection transaction (header).
+///
+/// One non-cancelled Inspection per active Job Assignment (V1, partial unique
+/// index). Customer/site/priority context is read from the source Enquiry.
+@DataClassName('ServiceInspectionRow')
+class ServiceInspections extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get inspectionNumber => text()();
+  DateTimeColumn get inspectionDate => dateTime()();
+  TextColumn get sourceJobAssignmentId => text()();
+  TextColumn get sourceEnquiryId => text()();
+  DateTimeColumn get visitDate => dateTime()();
+
+  /// Minutes-of-day (company-local), a typed time-only value.
+  IntColumn get visitMinutes => integer().nullable()();
+  TextColumn get technicianEmployeeId => text().nullable()();
+  TextColumn get rootCauseId => text().nullable()();
+  TextColumn get chargeResponsibilityId => text().nullable()();
+  TextColumn get status => text()();
+  IntColumn get version => integer().withDefault(const Constant(1))();
+  TextColumn get searchText => text().withDefault(const Constant(''))();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get createdByUserId => text()();
+  TextColumn get updatedByUserId => text()();
+  TextColumn get requestId => text().nullable()();
+  TextColumn get syncStatus => text()();
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {companyId, inspectionNumber},
+    {companyId, requestId},
+  ];
+}
+
+@DataClassName('ServiceInspectionChecklistItemRow')
+class ServiceInspectionChecklistItems extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get inspectionId => text()();
+  TextColumn get sourceJobAssignmentLineId => text().nullable()();
+  IntColumn get lineNumber => integer()();
+  TextColumn get workType => text()();
+  TextColumn get descriptionForWork => text().withDefault(const Constant(''))();
+  TextColumn get status => text()();
+  DateTimeColumn get removedAt => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get createdByUserId => text()();
+  TextColumn get updatedByUserId => text()();
+  TextColumn get syncStatus => text()();
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+@DataClassName('ServiceInspectionPointRow')
+class ServiceInspectionPoints extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get inspectionId => text()();
+  IntColumn get lineNumber => integer()();
+  TextColumn get description => text()();
+  DateTimeColumn get removedAt => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+@DataClassName('ServiceInspectionMaterialRequirementRow')
+class ServiceInspectionMaterialRequirements extends Table {
+  TextColumn get id => text()();
+  TextColumn get companyId => text()();
+  TextColumn get inspectionId => text()();
+  IntColumn get lineNumber => integer()();
+  TextColumn get code => text()();
+  TextColumn get description => text()();
+  TextColumn get status => text()();
+  DateTimeColumn get removedAt => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}

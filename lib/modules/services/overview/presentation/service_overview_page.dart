@@ -31,6 +31,7 @@ class ServiceOverviewPage extends StatelessWidget {
         }
         final summary = state.enquirySummary;
         final assignmentSummary = state.assignmentSummary;
+        final inspectionSummary = state.inspectionSummary;
         final metrics = <Widget>[
           if (summary != null) ...[
             AppMetricCard(
@@ -71,6 +72,24 @@ class ServiceOverviewPage extends StatelessWidget {
               label: l.servicesOverviewAssignmentsUpcoming,
               value: numbers.integer(assignmentSummary.upcomingCount),
               icon: Icons.event_outlined,
+            ),
+          ],
+          if (inspectionSummary != null) ...[
+            AppMetricCard(
+              label: l.servicesOverviewInspectionsPending,
+              value: numbers.integer(inspectionSummary.pendingCount),
+              icon: Icons.fact_check_outlined,
+              onTap: () => context.go(ServicesRoutes.inspections),
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewInspectionsToday,
+              value: numbers.integer(inspectionSummary.todayCount),
+              icon: Icons.today_outlined,
+            ),
+            AppMetricCard(
+              label: l.servicesOverviewInspectionsCompleted,
+              value: numbers.integer(inspectionSummary.completedCount),
+              icon: Icons.task_alt_outlined,
             ),
           ],
           if (state.customers != null)
@@ -163,6 +182,36 @@ class ServiceOverviewPage extends StatelessWidget {
                           ),
                           onPressed: () =>
                               context.go(ServicesRoutes.assignment(item.id)),
+                        ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+              if (inspectionSummary != null) ...[
+                AppSettingsSection(
+                  title: l.servicesOverviewRecentInspections,
+                  children: [
+                    if (state.recentInspections.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        child: Text(l.servicesOverviewNoInspections),
+                      )
+                    else
+                      for (final item in state.recentInspections)
+                        AppSettingsRow(
+                          title: item.inspectionNumber,
+                          description: [
+                            item.customerName,
+                            if (item.technicianName != null)
+                              item.technicianName!,
+                          ].join(' · '),
+                          icon: Icons.fact_check_outlined,
+                          trailing: serviceInspectionStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          onPressed: () =>
+                              context.go(ServicesRoutes.inspection(item.id)),
                         ),
                   ],
                 ),

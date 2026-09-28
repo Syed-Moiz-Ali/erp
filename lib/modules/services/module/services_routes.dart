@@ -52,4 +52,23 @@ abstract final class ServicesRoutes {
   static String ticketType(String id) =>
       '$ticketTypes/${Uri.encodeComponent(id)}';
   static String ticketTypeEdit(String id) => '${ticketType(id)}/edit';
+
+  static const rootCauses = '$settings/root-causes';
+  static const rootCausesNew = '$rootCauses/new';
+  static String rootCause(String id) =>
+      '$rootCauses/${Uri.encodeComponent(id)}';
+  static String rootCauseEdit(String id) => '${rootCause(id)}/edit';
+
+  static const chargeResponsibilities = '$settings/charge-responsibilities';
+  static const chargeResponsibilitiesNew = '$chargeResponsibilities/new';
+  static String chargeResponsibility(String id) =>
+      '$chargeResponsibilities/${Uri.encodeComponent(id)}';
+  static String chargeResponsibilityEdit(String id) =>
+      '${chargeResponsibility(id)}/edit';
+
+  static const inspections = '$root/inspections';
+  static const inspectionsNew = '$inspections/new';
+  static String inspection(String id) =>
+      '$inspections/${Uri.encodeComponent(id)}';
+  static String inspectionEdit(String id) => '${inspection(id)}/edit';
 }

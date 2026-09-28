@@ -7,6 +7,8 @@ import 'package:modular_erp/modules/services/enquiries/data/local_service_enquir
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/data/local_service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
+import 'package:modular_erp/modules/services/inspections/data/local_service_inspection_repository.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
@@ -54,6 +56,18 @@ void configureServicesDependencies(GetIt services) {
   );
   services.registerLazySingleton<ServiceJobAssignmentRepository>(
     () => LocalServiceJobAssignmentRepository(
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      services(),
+      notifications: services(),
+    ),
+  );
+  services.registerLazySingleton<ServiceInspectionRepository>(
+    () => LocalServiceInspectionRepository(
       services(),
       services(),
       services(),

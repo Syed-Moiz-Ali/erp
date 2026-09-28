@@ -1,454 +1,209 @@
 ```text
-SERVICES PHASE 3 — JOB ASSIGNMENT & SCHEDULING
+SERVICES PHASE 5 — REQUEST FOR MATERIAL
 CLIENT-REFERENCE-ACCURATE IMPLEMENTATION
+WITH CORRECT MATERIAL-RECEIVED INHERITANCE
 
 Continue working on the EXISTING Flutter ERP application.
 
-DO NOT redesign existing foundations.
-
 Completed before this phase:
 
+- ERP modular architecture
 - permission + scope-driven access
 - runtime permission wiring
-- shared transaction infrastructure
-- one centered global ERP content width
-- Customers
-- Service Sites
-- Service Teams
-- Service configuration masters
+- one global centered ERP content width
+- Customers / Sites / Service Teams
+- Services configuration
 - Service Enquiry
-- Enquiry detail lines
-- Enquiry photos
-- Material Received
-- client-reference traceability architecture
+- Enquiry Detail Lines + Photos
+- Job Assignment & Scheduling
+- Inspection
+- Inspection Checklist
+- Before Work Photos
+- Inspected Points
+- Inspection Material Requirements
+- shared sequences
+- attachments
+- activity
+- outbox/idempotency
 
 THIS PHASE IMPLEMENTS:
 
-JOB ASSIGNMENT & SCHEDULING
+REQUEST FOR MATERIAL
 
-using the actual client reference requirements already extracted below.
+DO NOT START WORK EXECUTION.
 
 ==================================================
-0. CLIENT REFERENCE — AUTHORITATIVE BUSINESS INPUT
+0. CRITICAL WORKFLOW RULE — MATERIAL RECEIVED
 ==================================================
 
-The client Job Assignment & Scheduling screen contains:
+LOCK THIS RULE:
 
-HEADER / TRANSACTION FIELDS
+`Material Received` originates in:
+
+SERVICE ENQUIRY.
+
+Example:
+
+ServiceEnquiry.materialReceived = YES / NO
+
+This is the current SOURCE OF TRUTH.
+
+The same value is inherited/displayed downstream:
+
+Service Enquiry
+    materialReceived
+          ↓
+Job Assignment
+    read-only inherited value
+          ↓
+Inspection
+    read-only inherited value.
+
+DO NOT create independent editable:
+
+JobAssignment.materialReceived
+
+Inspection.materialReceived
+
+values that can contradict the Enquiry.
+
+==================================================
+1. MATERIAL RECEIVED IS NOT MATERIAL REQUEST
+==================================================
+
+These are TWO different business concepts.
+
+A)
+
+Material Received = YES / NO
+
+is information captured on the Service Enquiry.
+
+B)
+
+Request for Material
+
+is a transaction containing actual requested material lines:
+
+Code
+Description
+Batch No
+Qty
+Remark.
+
+DO NOT implement rules such as:
+
+Material Received = YES
+→ block Material Request
+
+or:
+
+Material Received = NO
+→ automatically create Material Request.
+
+There is currently NO client evidence supporting either rule.
+
+Material Request creation is driven by:
+
+Inspection
++
+Material Required findings
+
+not by guessing the meaning of Enquiry.materialReceived.
+
+==================================================
+2. DOWNSTREAM MATERIAL RECEIVED ACCESS
+==================================================
+
+When Job Assignment or Inspection needs the value:
+
+resolve through lineage:
+
+Job Assignment
+→ sourceEnquiryId
+→ ServiceEnquiry.materialReceived
+
+Inspection
+→ sourceJobAssignmentId
+→ Job Assignment.sourceEnquiryId
+→ ServiceEnquiry.materialReceived.
+
+A typed read-model convenience field may expose it to UI.
+
+Do not create another authoritative stored boolean unless the architecture
+requires a historical snapshot.
+
+If a snapshot is stored:
+
+it is immutable historical context
+
+NOT an independently editable business value.
+
+==================================================
+3. CLIENT REQUEST FOR MATERIAL REFERENCE
+==================================================
+
+The supplied client screen contains:
+
+HEADER
 
 Company Name
 
-Job Assignment No
+Request No
 
 Date
 
-Enquiry No
+JOB Order No
 
-Customer Name
+Purpose
 
-Mobile No
+Acknowledge
 
-Complaint Type
+Received By
 
-Priority Type
+Remarks
 
-Tenant Name
+Prepared By
 
-Building
-
-Unit No
-
-Material Received
-
-Visit Date
-
-Insert By
-
-Update By
-
-REPEATING JOB ASSIGNMENT ROWS
+DETAIL LINES
 
 S.No
 
-Work
+Code
 
-Technician Name
+Description
 
-Team
+Batch No
 
-Status
+Qty
 
-Description For Work
+Remark
 
-Add row
+Action / Add Row
 
-Delete row
+SUMMARY
 
-Bottom transaction actions:
+Total Qty
+
+ACTIONS
 
 Save
+
+Print
 
 Clear
 
 Delete.
 
-These are BUSINESS requirements.
+Preserve all of these BUSINESS concepts.
 
-DO NOT copy the old visual design.
-
-Modernize them into our current ERP architecture.
+Do NOT copy the old UI.
 
 ==================================================
-1. MODERN FIELD MAPPING
+4. WORKFLOW POSITION
 ==================================================
 
-Implement the legacy fields as follows.
-
-Company Name
-
-→ active CompanyContext
-
-→ system-derived
-
-→ NOT editable.
-
-Job Assignment No
-
-→ generated company-scoped transaction number
-
-→ shared sequence infrastructure
-
-→ NOT manually typed.
-
-Date
-
-→ assignment business date
-
-→ company timezone
-
-→ generated when created
-
-→ display it clearly.
-
-Enquiry No
-
-→ searchable selector of eligible Service Enquiries.
-
-Customer Name
-
-→ derived from selected Enquiry.
-
-Mobile No
-
-→ derived from selected Enquiry/customer snapshot.
-
-Complaint Type
-
-→ derived from selected Enquiry.
-
-Priority Type
-
-→ derived from selected Enquiry.
-
-Tenant Name
-
-→ derived from selected Enquiry ServiceSite snapshot.
-
-Building
-
-→ derived from ServiceSite snapshot.
-
-Unit No
-
-→ derived from ServiceSite snapshot.
-
-Material Received
-
-→ carry from Service Enquiry
-
-→ read-only here unless future business evidence proves it changes during
-Assignment.
-
-Visit Date
-
-→ actual scheduling input for this phase.
-
-Insert By
-
-→ createdBy / audit metadata
-
-→ NOT editable.
-
-Update By
-
-→ updatedBy / audit metadata
-
-→ NOT editable.
-
-==================================================
-2. CLIENT DETAIL ROW MAPPING
-==================================================
-
-Legacy:
-
-S.No
-
-→ UI line number only.
-
-Do not use as database identity.
-
-Legacy:
-
-Work
-
-→ JobAssignmentLine.work
-
-This describes the work/task to be assigned.
-
-Legacy:
-
-Technician Name
-
-→ existing Employee selected through WorkforceDirectory.
-
-Do NOT create Technician table.
-
-Legacy:
-
-Team
-
-→ modernize to an explicit Service Team selection.
-
-The old checkbox is too ambiguous for a modern ERP.
-
-Use existing:
-
-ServiceTeam.
-
-Legacy:
-
-Status
-
-→ JobAssignmentLine.status.
-
-Preserve the field.
-
-Legacy:
-
-Description For Work
-
-→ JobAssignmentLine.instructions / descriptionForWork.
-
-Legacy:
-
-+
-
-→ Add work item.
-
-Legacy:
-
-trash
-
-→ Remove eligible work item.
-
-==================================================
-3. IMPORTANT TEAM / TECHNICIAN DECISION
-==================================================
-
-The client reference contains BOTH:
-
-Technician Name
-
-and
-
-Team.
-
-Therefore do NOT force a false either/or model.
-
-A work line may contain:
-
-assignedEmployeeId optional
-
-assignedTeamId optional.
-
-At least ONE must normally exist before the assignment is finalized.
-
-Possible:
-
-Individual Employee only
-
-Service Team only
-
-Employee + Service Team.
-
-This preserves more of the client workflow than assuming mutual exclusivity.
-
-==================================================
-4. TEAM UI MODERNIZATION
-==================================================
-
-DO NOT reproduce the legacy Team checkbox.
-
-Use:
-
-Service Team
-[ Search/select team ]
-
-This makes the assignment explicit.
-
-If no team is selected:
-
-the row may still be assigned directly to an Employee.
-
-==================================================
-5. TECHNICIAN UI
-==================================================
-
-Use:
-
-Assigned employee / Technician
-
-with searchable workforce selector.
-
-The user-facing label may say:
-
-Technician
-
-if that terminology matches the client.
-
-But domain identity is:
-
-Employee.
-
-==================================================
-6. NO TECHNICIAN ENTITY
-==================================================
-
-DO NOT CREATE:
-
-Technician
-
-TechnicianPerson
-
-TechnicianProfile
-
-TechnicianUser.
-
-Use:
-
-Employee
-+
-Service permissions
-+
-Job Assignment.
-
-==================================================
-7. CLIENT REFERENCE TRACEABILITY
-==================================================
-
-Update:
-
-docs/services/client_reference_traceability.md
-
-Add the Job Assignment & Scheduling section with EXACT mappings:
-
-Company Name
-→ CompanyContext
-→ SYSTEM-DERIVED
-
-Job Assignment No
-→ sequence-generated display number
-→ MODERNIZED
-
-Date
-→ company business date
-→ MODERNIZED
-
-Enquiry No
-→ source ServiceEnquiry
-→ IMPLEMENT
-
-Customer Name
-→ enquiry/customer snapshot
-→ MODERNIZED
-
-Mobile No
-→ enquiry party snapshot
-→ MODERNIZED
-
-Complaint Type
-→ source Enquiry ComplaintType
-→ MODERNIZED
-
-Priority Type
-→ source Enquiry Priority
-→ MODERNIZED
-
-Tenant Name
-→ source Site snapshot
-→ MODERNIZED
-
-Building
-→ source Site snapshot
-→ MODERNIZED
-
-Unit No
-→ source Site snapshot
-→ MODERNIZED
-
-Material Received
-→ source Enquiry value
-→ IMPLEMENT
-
-Visit Date
-→ scheduledVisitDate
-→ IMPLEMENT
-
-Insert By
-→ createdBy
-→ SYSTEM-DERIVED
-
-Update By
-→ updatedBy
-→ SYSTEM-DERIVED
-
-Work
-→ ServiceJobAssignmentLine.work
-→ IMPLEMENT
-
-Technician Name
-→ Employee / WorkforceDirectory
-→ MODERNIZED
-
-Team checkbox
-→ explicit ServiceTeam selector
-→ MODERNIZED
-
-Status
-→ ServiceJobAssignmentLine.status
-→ IMPLEMENT
-
-Description For Work
-→ ServiceJobAssignmentLine.descriptionForWork
-→ IMPLEMENT
-
-+
-→ Add work item
-→ MODERNIZED
-
-Delete row
-→ Remove work item
-→ MODERNIZED
-
-Delete transaction
-→ Cancel Assignment
-→ MODERNIZED.
-
-==================================================
-8. WORKFLOW POSITION
-==================================================
-
-Client workflow remains:
+Current workflow:
 
 Service Enquiry
         ↓
@@ -456,77 +211,45 @@ Job Assignment & Scheduling
         ↓
 Inspection
         ↓
-Request of Material
+Request for Material
         ↓
 Work Execution
 
-Do not skip stages.
+Phase 5 implements ONLY:
+
+Request for Material.
 
 ==================================================
-9. PHASE SCOPE
-==================================================
-
-Implement:
-
-Job Assignment list
-
-Job Assignment create
-
-Job Assignment detail
-
-Job Assignment edit
-
-Job Assignment cancellation
-
-Scheduling by Visit Date
-
-Multiple work assignment lines
-
-Employee assignment
-
-Service Team assignment
-
-permissions/scopes
-
-notifications
-
-activity
-
-outbox
-
-Services Overview integration
-
-Enquiry integration.
-
-==================================================
-10. DO NOT IMPLEMENT
+5. DO NOT IMPLEMENT
 ==================================================
 
 DO NOT implement:
 
-Inspection
+Inventory module
 
-Root Cause
+Product/Item master
 
-Before Work Photos
+Warehouse
 
-Inspection Checklist
+Stock quantity
 
-Inspected Points
+Stock reservation
 
-Inspection Material Requirement
+Stock issue
 
-Request For Material
+Goods receipt
 
-Material Issue
+Purchase
 
-Material Receipt workflow
+Material approval queue
+
+Material issuing
+
+Material consumption
 
 Work Execution
 
-Work start/end time
-
-Material Used
+Start/End Work
 
 After Work Photos
 
@@ -538,1328 +261,234 @@ Invoice
 
 Payment.
 
-Those belong to later phases.
-
 ==================================================
-11. DOMAIN NAME
+6. TRACEABILITY UPDATE
 ==================================================
 
-Create:
+Update:
 
-ServiceJobAssignment
+docs/services/client_reference_traceability.md
 
-Do NOT name it:
+Add complete Request for Material mapping.
 
-JobOrder.
-
-The client's system clearly has Job Assignment as its own transaction.
-
-Job Order is referenced separately in later client workflows.
-
-==================================================
-12. AGGREGATE STRUCTURE
-==================================================
-
-Use:
-
-ServiceJobAssignment
-    │
-    └── lines[]
-          └── ServiceJobAssignmentLine
-
-This matches the client repeating row structure.
-
-==================================================
-13. SERVICE JOB ASSIGNMENT HEADER
-==================================================
-
-Suggested typed fields:
-
-id
-
-companyId
-
-assignmentNumber
-
-assignmentDate
-
-sourceEnquiryId
-
-scheduledVisitDate
-
-status
-
-createdAt
-
-updatedAt
-
-createdByUserId
-
-updatedByUserId
-
-requestId
-
-syncStatus
-
-version
-
-plus only metadata required by existing transaction conventions.
-
-==================================================
-14. DO NOT DUPLICATE ENQUIRY DATA AS EDITABLE FIELDS
-==================================================
-
-Customer
-
-Mobile
-
-Complaint Type
-
-Priority
-
-Tenant
-
-Building
-
-Unit
+Also update the cross-phase rule:
 
 Material Received
-
-come from the selected Enquiry.
-
-They should be shown as assignment context.
-
-Do NOT ask operator to type them again.
+→ source: ServiceEnquiry
+→ downstream display: inherited/read-only
+→ DOES NOT equal Material Request.
 
 ==================================================
-15. TRANSACTION SNAPSHOT
+7. CLIENT FIELD MAPPING
 ==================================================
 
-The selected Enquiry already has historical customer/site context.
+Map:
 
-The Job Assignment must preserve its relationship to that Enquiry.
+Company Name
+→ active CompanyContext
+→ SYSTEM-DERIVED.
 
-Use the Enquiry transaction snapshot for display where appropriate.
+Request No
+→ ServiceMaterialRequest.requestNumber
+→ shared company-scoped sequence.
 
-If a dedicated lightweight assignment snapshot is required for durable
-backend-ready reads, make it typed.
+Date
+→ requestDate
+→ CompanyTimeService.
 
-Do NOT use untyped Maps.
+JOB Order No
+→ jobOrderReference
+→ business reference preserved
+→ authoritative owner still TBD.
 
-==================================================
-16. ONE ACTIVE ASSIGNMENT PER ENQUIRY — V1
-==================================================
+Purpose
+→ Material Request Purpose configuration.
 
-Based on the client flow:
+Acknowledge
+→ acknowledgement metadata
+→ exact business semantics TBD.
 
-one Job Assignment transaction selects one Enquiry
+Received By
+→ receivedBy metadata
+→ identity type TBD.
 
-and contains multiple work rows.
+Remarks
+→ request-level remarks.
 
-Implement V1 as:
+Prepared By
+→ createdByUserId / audit actor
+→ SYSTEM-DERIVED.
 
-ONE ACTIVE Job Assignment per Service Enquiry.
+Code
+→ line.code.
 
-Multiple pieces of work belong inside:
+Description
+→ line.description.
 
-ServiceJobAssignmentLine[].
+Batch No
+→ line.batchNumber.
 
-Do not create five separate Job Assignment records for the same Enquiry just
-because there are five work rows.
+Qty
+→ line.quantity.
 
-==================================================
-17. ENQUIRY STATE TRANSITION
-==================================================
+Remark
+→ line.remark.
 
-Extend the current Enquiry lifecycle carefully.
+Total Qty
+→ derived sum of quantities.
 
-Current:
+Save
+→ Create / Save Changes.
 
-OPEN
+Print
+→ Print Material Request.
 
-CANCELLED.
+Clear
+→ Reset/Discard unsaved changes.
 
-Add:
-
-ASSIGNED.
-
-Flow:
-
-OPEN
-   ↓ Create Job Assignment
-ASSIGNED
-
-CANCELLED remains terminal.
-
-==================================================
-18. ENQUIRY EDITING AFTER ASSIGNMENT
-==================================================
-
-Once Enquiry becomes:
-
-ASSIGNED
-
-it should no longer be freely editable like an OPEN Enquiry.
-
-The Assignment now represents operational execution of that Enquiry.
-
-Enquiry detail remains readable.
+Delete
+→ Cancel Material Request.
 
 ==================================================
-19. CANCEL ASSIGNMENT
+8. SOURCE TRANSACTION
 ==================================================
 
-Do not hard-delete Job Assignment.
+Our modern workflow has Inspection immediately before Request for Material.
 
-Modernize the legacy Delete action into:
+Therefore:
 
-Cancel Assignment.
+ServiceMaterialRequest
 
-When the ONLY active Assignment for the Enquiry is cancelled:
+must reference:
 
-Enquiry may return:
+sourceInspectionId.
 
-ASSIGNED → OPEN
+The selected Inspection must be:
 
-so it can be assigned again.
-
-Do this transactionally.
-
-==================================================
-20. ASSIGNMENT STATUS
-==================================================
-
-Use a typed transaction-level status.
-
-V1:
-
-ACTIVE
-
-CANCELLED
-
-or more appropriate existing naming.
-
-Do not invent:
-
-INSPECTED
-
-EXECUTED
+same company
 
 COMPLETED
 
-until those phases exist.
+not CANCELLED
+
+inside the user's allowed Service scope.
 
 ==================================================
-21. JOB ASSIGNMENT LINE
+9. INSPECTION MATERIAL REQUIREMENTS
+==================================================
+
+Phase 4 created:
+
+ServiceInspectionMaterialRequirement
+
+with:
+
+code
+
+description
+
+status.
+
+Current confirmed initial status:
+
+WAITING.
+
+Material Request should consume these requirements.
+
+==================================================
+10. PREFILL FROM INSPECTION
+==================================================
+
+When creating Request from Inspection:
+
+find eligible Material Requirements where:
+
+status == WAITING.
+
+Prefill Material Request lines from those requirements.
+
+Example:
+
+Inspection requirement:
+
+Code:
+CAP-35UF
+
+Description:
+35µF capacitor
+
+Status:
+WAITING
+
+becomes:
+
+Material Request line
+
+Code:
+CAP-35UF
+
+Description:
+35µF capacitor
+
+Batch No:
+optional
+
+Qty:
+operator enters quantity
+
+Remark:
+optional.
+
+==================================================
+11. NO MATERIAL REQUIRED
+==================================================
+
+If Inspection has no WAITING Material Requirements:
+
+do NOT automatically create an empty Material Request from Inspection.
+
+The general Material Request create screen may still allow manual creation
+against an eligible Inspection if the product permits it.
+
+==================================================
+12. DOMAIN AGGREGATE
 ==================================================
 
 Create:
 
-ServiceJobAssignmentLine
+ServiceMaterialRequest
+   └── lines[]
+         └── ServiceMaterialRequestLine
 
-Fields:
+==================================================
+13. REQUEST HEADER MODEL
+==================================================
+
+Suggested fields:
 
 id
 
 companyId
 
-assignmentId
+requestNumber
 
-lineNumber / sortOrder
+requestDate
 
-work
+sourceInspectionId
 
-assignedEmployeeId nullable
-
-assignedTeamId nullable
-
-status
-
-descriptionForWork
-
-createdAt
-
-updatedAt
-
-sync metadata if required.
-
-==================================================
-22. LINE IDENTITY
-==================================================
-
-Every line gets stable UUID.
-
-S.No is display order only.
-
-==================================================
-23. MULTIPLE WORK ITEMS
-==================================================
-
-Support:
-
-1..N work items.
-
-Do NOT hardcode exactly 5 rows.
-
-Legacy screen showing 5 empty rows is merely old UI.
-
-Modern UI dynamically adds rows.
-
-==================================================
-24. MINIMUM WORK ITEM
-==================================================
-
-Require at least one valid work line before creating Assignment.
-
-==================================================
-25. WORK FIELD
-==================================================
-
-`work` is required.
-
-Use multiline or appropriately sized input.
-
-This is the actual work/task being assigned.
-
-==================================================
-26. DESCRIPTION FOR WORK
-==================================================
-
-Keep separate from `work`.
-
-`work`
-
-→ work/task title or scope.
-
-`descriptionForWork`
-
-→ detailed instructions / notes.
-
-Do not collapse them into one field because the client uses both.
-
-==================================================
-27. EMPLOYEE ASSIGNMENT
-==================================================
-
-Use:
-
-WorkforceDirectory.
-
-Never directly import:
-
-HR DAO
-
-HR Drift tables
-
-HR BLoCs
-
-HR presentation.
-
-==================================================
-28. EMPLOYEE SELECTOR
-==================================================
-
-Search:
-
-Employee name
-
-Employee code
-
-designation if useful.
-
-Display lightweight:
-
-Name
-
-Employee Code
-
-Designation
-
-Department where helpful.
-
-==================================================
-29. ACTIVE EMPLOYEE RULE
-==================================================
-
-New Assignment can select only:
-
-ACTIVE Employee
-
-same company.
-
-Historical inactive assigned Employees remain resolvable.
-
-==================================================
-30. SERVICE TEAM SELECTOR
-==================================================
-
-Use existing:
-
-ServiceTeamRepository / reference lookup.
-
-Only:
-
-ACTIVE team
-
-same company
-
-may receive a new assignment.
-
-==================================================
-31. EMPLOYEE + TEAM VALIDATION
-==================================================
-
-If both Employee and Team are selected:
-
-prefer Employee being a member of that Service Team.
-
-If not:
-
-show validation/warning according to existing business architecture.
-
-Do NOT silently change team membership.
-
-Do NOT add Employee to Team automatically.
-
-==================================================
-32. TEAM MEMBERSHIP DOES NOT GRANT APP ACCESS
-==================================================
-
-ServiceTeam membership still does NOT grant Services permission.
-
-Permissions remain explicit.
-
-==================================================
-33. ASSIGNMENT DOES NOT GRANT APP ACCESS
-==================================================
-
-Assigning work to an Employee does NOT automatically grant them application
-permissions.
-
-If Employee has no Services job access:
-
-assignment still exists
-
-but they cannot access ERP operational screens until permission is granted.
-
-==================================================
-34. SCHEDULE FIELD
-==================================================
-
-The client Job Assignment screen contains:
-
-Visit Date.
-
-Implement:
-
-scheduledVisitDate.
-
-DO NOT invent:
-
-Visit Start Time
-
-Visit End Time
-
-Duration
-
-time slot
-
-recurrence
-
-because this client screen does not contain those.
-
-==================================================
-35. VISIT DATE VALIDATION
-==================================================
-
-Use:
-
-CompanyTimeService.
-
-Validate according to realistic rules.
-
-Do not allow obviously invalid dates.
-
-Do not use raw server/device local time assumptions.
-
-==================================================
-36. JOB ASSIGNMENT NUMBER
-==================================================
-
-Use shared DocumentSequence infrastructure.
-
-Register:
-
-services.jobAssignment
-
-or project-equivalent sequence key.
-
-Example display only:
-
-JA-000001
-
-or client-compatible company prefix.
-
-Do not hardcode prefix across feature.
-
-==================================================
-37. ASSIGNMENT DATE
-==================================================
-
-Display:
-
-assignmentDate
-
-using company business date.
-
-It is system-derived.
-
-Do not require manual typing.
-
-==================================================
-38. MATERIAL RECEIVED
-==================================================
-
-Display the value inherited from Enquiry.
-
-Do NOT introduce materials/inventory behavior.
-
-This is informational in Phase 3.
-
-==================================================
-39. STATUS PER WORK LINE
-==================================================
-
-The client reference contains a Status selector PER work line.
-
-Therefore preserve:
-
-ServiceJobAssignmentLine.status.
-
-IMPORTANT:
-
-the screenshot does not reveal the allowed values.
-
-Do NOT invent a complex lifecycle.
-
-If the codebase/client traceability contains no confirmed values:
-
-use a minimal typed default:
-
-PENDING
-
-and keep the field architecture ready for confirmed status values.
-
-Do not let guessed line status control Inspection or Work Execution.
-
-Document:
-
-TBD — client confirmation required for complete Job Assignment line status
-vocabulary.
-
-==================================================
-40. DO NOT CREATE A FAKE STATUS MASTER
-==================================================
-
-Do not create a configurable status-master screen merely to avoid this
-uncertainty.
-
-Keep status typed and minimal.
-
-==================================================
-41. PERMISSIONS
-==================================================
-
-Register actual Phase 3 permissions.
-
-Use names consistent with existing catalog.
-
-Recommended:
-
-services.jobAssignments.view
-
-services.jobAssignments.create
-
-services.jobAssignments.edit
-
-services.jobAssignments.cancel
-
-==================================================
-42. VIEW SCOPE
-==================================================
-
-services.jobAssignments.view supports:
-
-ASSIGNED
-
-TEAM
-
-ALL.
-
-This is the first Services transaction where these scopes have real operational
-meaning.
-
-==================================================
-43. ASSIGNED SCOPE
-==================================================
-
-ASSIGNED includes a Job Assignment when current linked Employee is:
-
-directly selected on one or more lines
-
-OR
-
-belongs to an assigned Service Team according to Services scope policy.
-
-==================================================
-44. TEAM SCOPE
-==================================================
-
-TEAM uses the existing:
-
-ServiceTeamScopeResolver.
-
-TEAM visibility must never silently become company-wide ALL.
-
-==================================================
-45. ALL SCOPE
-==================================================
-
-ALL returns company-wide Job Assignments within the active company.
-
-No cross-company data.
-
-==================================================
-46. CREATE PERMISSION
-==================================================
-
-services.jobAssignments.create
-
-controls:
-
-New Job Assignment action
-
-/new route
-
-create use case.
-
-==================================================
-47. EDIT PERMISSION
-==================================================
-
-services.jobAssignments.edit
-
-controls:
-
-Edit
-
-reassignment of lines
-
-Visit Date updates
-
-work/instruction updates
-
-while transaction is ACTIVE.
-
-==================================================
-48. CANCEL PERMISSION
-==================================================
-
-services.jobAssignments.cancel
-
-controls:
-
-Cancel Assignment.
-
-No hard delete.
-
-==================================================
-49. PERMISSION DEPENDENCIES
-==================================================
-
-Create/Edit/Cancel require enough View access to use the resulting transaction.
-
-Normalize this centrally using existing permission dependencies.
-
-Do not duplicate dependency logic in screens.
-
-==================================================
-50. ACCESS UI
-==================================================
-
-Existing:
-
-Settings
-→ Users & Access
-
-must automatically show:
-
-Services
-  → Job Assignments
-
-View Job Assignments
-scope:
-No Access / Assigned / Team / All
-
-Create Job Assignment
-
-Edit Job Assignment
-
-Cancel Job Assignment.
-
-No Services-specific access-screen code.
-
-==================================================
-51. SERVICES NAVIGATION
-==================================================
-
-Services navigation becomes:
-
-Overview
-
-Enquiries
-
-Job Assignments
-
-Customers
-
-Sites
-
-Teams
-
-Settings
-
-according to permissions.
-
-==================================================
-52. ROUTES
-==================================================
-
-Create:
-
-/app/services/job-assignments
-
-/app/services/job-assignments/new
-
-/app/services/job-assignments/:assignmentId
-
-/app/services/job-assignments/:assignmentId/edit
-
-==================================================
-53. CREATE FROM ENQUIRY
-==================================================
-
-On eligible:
-
-Service Enquiry Detail
-
-show:
-
-Create Job Assignment
-
-when:
-
-Enquiry == OPEN
-
-AND
-
-user has Job Assignment Create permission.
-
-==================================================
-54. CREATE FROM JOB ASSIGNMENTS
-==================================================
-
-Also allow:
-
-New Job Assignment
-
-from Job Assignments list.
-
-The first field/step selects eligible Enquiry.
-
-==================================================
-55. ELIGIBLE ENQUIRY REFERENCE ACCESS
-==================================================
-
-A user with Job Assignment Create permission needs a restricted Enquiry
-reference selector.
-
-They do NOT necessarily need unrestricted:
-
-services.enquiries.view / ALL.
-
-Provide safe reference access for eligible assignable Enquiries.
-
-==================================================
-56. ELIGIBLE ENQUIRIES
-==================================================
-
-Selector returns only:
-
-same company
-
-OPEN
-
-not already actively assigned
-
-valid Customer/Site context.
-
-==================================================
-57. SELECTING ENQUIRY
-==================================================
-
-After selecting Enquiry:
-
-automatically display:
-
-Enquiry Number
-
-Customer Name
-
-Mobile
-
-Complaint Type
-
-Priority
-
-Tenant
-
-Building
-
-Unit
-
-Material Received
-
-Enquiry issues/details.
-
-Do not require re-entry.
-
-==================================================
-58. ENQUIRY ISSUES
-==================================================
-
-Show Phase 2.1 Enquiry Detail lines.
-
-Example:
-
-Issue 1
-Description
-Status
-photo count/thumbnails if access permits.
-
-This helps the assignment operator decide:
-
-Work
-
-Technician
-
-Team
-
-instructions.
-
-==================================================
-59. ENQUIRY PHOTOS
-==================================================
-
-Allow viewing source Enquiry photos.
-
-Do not duplicate attachments into Job Assignment.
-
-==================================================
-60. CREATE FORM — MODERN UI
-==================================================
-
-Use current ONE GLOBAL CENTERED ERP CONTENT WIDTH.
-
-Same left/right page bounds as:
-
-Employees
-
-Add Employee
-
-Enquiries
-
-New Enquiry
-
-Customers
-
-etc.
-
-Do not create another page width.
-
-==================================================
-61. CREATE FORM STRUCTURE
-==================================================
-
-Recommended:
-
-JOB CONTEXT
-
-Enquiry selector
-
-Assignment No — generated/read-only
-
-Assignment Date — read-only
-
-SCHEDULE
-
-Visit Date
-
-CUSTOMER & LOCATION
-
-read-only context card:
-
-Customer
-Mobile
-Tenant
-Building
-Unit
-
-SERVICE CONTEXT
-
-Complaint Type
-Priority
-Material Received
-
-SOURCE ENQUIRY ISSUES
-
-read-only issue cards with photos
-
-WORK ASSIGNMENT
-
-repeatable work items.
-
-==================================================
-62. WORK ITEM UI — DESKTOP
-==================================================
-
-Do NOT copy the old giant spreadsheet literally.
-
-Use modern structured work cards or a compact repeater.
-
-Each work item must include:
-
-Work
-
-Assigned Employee / Technician
-
-Service Team
-
-Status
-
-Description For Work
-
-Remove.
-
-==================================================
-63. DESKTOP EXAMPLE
-==================================================
-
-Work item 1
-
-Work
-[ Repair AC compressor                     ]
-
-Technician
-[ Ahmed Khan ▼ ]
-
-Service Team
-[ HVAC Team ▼ ]
-
-Status
-[ Pending ]
-
-Instructions
-[ Inspect compressor and verify pressure... ]
-
-[ Remove work item ]
-
-==================================================
-64. MOBILE WORK ITEM UI
-==================================================
-
-Use stacked cards.
-
-Do NOT use horizontally scrolling editable legacy table as primary UI.
-
-==================================================
-65. ADD WORK ITEM
-==================================================
-
-Use a visible button:
-
-+ Add work item
-
-Do not use tiny unlabeled `+`.
-
-==================================================
-66. REMOVE WORK ITEM
-==================================================
-
-Unsaved line:
-
-remove according to current UX.
-
-Persisted line:
-
-mark within aggregate update.
-
-Never allow zero lines.
-
-==================================================
-67. FORM SUBMISSION
-==================================================
-
-Primary CTA:
-
-Create Job Assignment.
-
-Prevent duplicate submission.
-
-==================================================
-68. DIRTY FORM GUARD
-==================================================
-
-Use existing:
-
-FormNavigationGuard.
-
-==================================================
-69. LIST PAGE
-==================================================
-
-Create:
-
-Job Assignments
-
-using same centered global page width.
-
-Desktop columns should be concise.
-
-Recommended:
-
-Assignment
-
-Enquiry
-
-Customer / Site
-
-Visit Date
-
-Assigned To
-
-Priority
-
-Status
-
-Created
-
-Actions.
-
-==================================================
-70. ASSIGNED TO SUMMARY
-==================================================
-
-If lines contain multiple targets, show compact summary.
-
-Example:
-
-Ahmed Khan + HVAC Team
-+2 more
-
-Do not explode table width.
-
-==================================================
-71. LIST SEARCH
-==================================================
-
-Search:
-
-Assignment No
-
-Enquiry No
-
-Customer
-
-Mobile
-
-Site/Building/Unit
-
-Employee
-
-Team.
-
-==================================================
-72. FILTERS
-==================================================
-
-Useful filters:
-
-Status
-
-Visit Date / range
-
-Priority
-
-Service Team
-
-Employee
-
-Customer
-
-possibly due/today.
-
-Do not overbuild.
-
-==================================================
-73. SCOPE FILTERING
-==================================================
-
-ASSIGNED user:
-
-only relevant assigned records.
-
-TEAM user:
-
-resolved team records.
-
-ALL:
-
-company.
-
-Filtering never expands security scope.
-
-==================================================
-74. DETAIL PAGE
-==================================================
-
-Create operational Job Assignment detail.
-
-Header:
-
-Assignment No
-
-Status
-
-Visit Date
-
-Created date.
-
-Actions:
-
-Edit
-
-Cancel
-
-according to permission/state.
-
-==================================================
-75. DETAIL — ENQUIRY CONTEXT
-==================================================
-
-Show:
-
-Enquiry No
-
-Customer
-
-Mobile
-
-Complaint
-
-Priority
-
-Tenant
-
-Building
-
-Unit
-
-Material Received.
-
-==================================================
-76. DETAIL — WORK ITEMS
-==================================================
-
-For every assignment line show:
-
-Work
-
-Technician
-
-Team
-
-Status
-
-Description For Work.
-
-==================================================
-77. DETAIL — SOURCE ISSUES
-==================================================
-
-Also show source Enquiry issues and photos.
-
-Do not make operator navigate back just to understand assignment context.
-
-==================================================
-78. DETAIL — AUDIT
-==================================================
-
-Use:
-
-AuditMetadataBlock.
-
-Show:
-
-Created By
-
-Created At
-
-Updated By
-
-Updated At.
-
-==================================================
-79. DETAIL — ACTIVITY
-==================================================
-
-Use shared ActivityTimeline.
-
-Events may include:
-
-Job Assignment created
-
-Visit Date changed
-
-Work item updated
-
-Assignment target changed
-
-Job Assignment cancelled.
-
-Use structured events.
-
-==================================================
-80. EDIT
-==================================================
-
-ACTIVE Job Assignment can be edited when permitted.
-
-Editable:
-
-Visit Date
-
-Work
-
-Employee
-
-Team
-
-line status as supported
-
-Description For Work.
-
-Source Enquiry context remains read-only.
-
-==================================================
-81. EDIT TARGET
-==================================================
-
-Reassigning:
-
-Employee
-
-or
-
-Team
-
-must create a structured activity event.
-
-==================================================
-82. CANCEL
-==================================================
-
-Use:
-
-Cancel Assignment
-
-not Delete.
-
-Confirm before cancelling.
-
-Cancelled assignment remains historical.
-
-==================================================
-83. CANCELLED ASSIGNMENT
-==================================================
-
-Read-only.
-
-No Edit.
-
-No second Cancel.
-
-No future Inspection may be created from cancelled assignment.
-
-==================================================
-84. INSPECTION READINESS
-==================================================
-
-Phase 4 will consume an ACTIVE Job Assignment.
-
-Prepare a clean reference DTO such as:
-
-ServiceJobAssignmentRef
-
-containing:
-
-id
-
-assignmentNumber
+sourceJobAssignmentId
 
 sourceEnquiryId
 
-customer/site summary
+jobOrderReference nullable
 
-scheduledVisitDate
+purposeId
 
-assigned employees/teams
+acknowledgement nullable
 
-priority.
+receivedBy nullable
 
-Do NOT implement Inspection yet.
-
-==================================================
-85. DATABASE
-==================================================
-
-Inspect current schemaVersion.
-
-Add:
-
-ServiceJobAssignments
-
-ServiceJobAssignmentLines.
-
-Increment schema exactly once.
-
-==================================================
-86. JOB ASSIGNMENT TABLE
-==================================================
-
-Likely fields:
-
-id
-
-companyId
-
-assignmentNumber
-
-assignmentDate
-
-sourceEnquiryId
-
-scheduledVisitDate
+remarks nullable
 
 status
 
@@ -1877,658 +506,35 @@ syncStatus
 
 version.
 
-==================================================
-87. LINE TABLE
-==================================================
-
-Likely fields:
-
-id
-
-companyId
-
-assignmentId
-
-lineNumber
-
-work
-
-assignedEmployeeId nullable
-
-assignedTeamId nullable
-
-status
-
-descriptionForWork
-
-createdAt
-
-updatedAt.
-
-==================================================
-88. CONSTRAINTS
-==================================================
-
-Enforce:
-
-company-scoped assignmentNumber unique
-
-one ACTIVE Assignment per Enquiry
-
-line belongs to same company/Assignment
-
-Employee same company
-
-Team same company.
-
-==================================================
-89. INDEXES
-==================================================
-
-Useful indexes:
-
-company + status
-
-company + sourceEnquiryId
-
-company + scheduledVisitDate
-
-assignmentId
-
-assignedEmployeeId
-
-assignedTeamId.
-
-==================================================
-90. ATOMIC CREATE
-==================================================
-
-Creating Job Assignment must atomically:
-
-allocate sequence
-
-insert Assignment
-
-insert work lines
-
-transition Enquiry OPEN → ASSIGNED
-
-write activity
-
-write outbox.
-
-No partial state.
-
-==================================================
-91. ATOMIC CANCEL
-==================================================
-
-Cancel must atomically:
-
-Assignment → CANCELLED
-
-Enquiry → OPEN when appropriate
-
-activity
-
-outbox.
-
-==================================================
-92. OUTBOX
-==================================================
-
-Register:
-
-SERVICES_JOB_ASSIGNMENT_CREATE
-
-SERVICES_JOB_ASSIGNMENT_UPDATE
-
-SERVICES_JOB_ASSIGNMENT_CANCEL
-
-or exact project naming convention.
-
-==================================================
-93. OUTBOX PAYLOAD
-==================================================
-
-Backend-ready payload includes:
-
-header
-
-sourceEnquiryId
-
-visitDate
-
-lines:
-  work
-  employeeId
-  teamId
-  status
-  descriptionForWork.
-
-Do not embed Employee/Team display objects as authoritative identity.
-
-==================================================
-94. IDEMPOTENCY
-==================================================
-
-Use requestId.
-
-Retry must not create:
-
-duplicate Assignment
-
-duplicate lines
-
-duplicate Enquiry transition.
-
-==================================================
-95. ACTIVITY EVENTS
-==================================================
-
-Structured events:
-
-services.jobAssignment.created
-
-services.jobAssignment.updated
-
-services.jobAssignment.cancelled
-
-services.jobAssignment.visitDateChanged
-
-services.jobAssignment.assignmentChanged
-
-where useful.
-
-Avoid noisy event spam.
-
-==================================================
-96. NOTIFICATIONS
-==================================================
-
-This phase introduces meaningful assignment notifications.
-
-When work is assigned to a direct Employee:
-
-create notification for that Employee's linked UserAccount where one exists.
-
-Example semantic event:
-
-Service work assigned.
-
-Deep link:
-
-/app/services/job-assignments/:assignmentId
-
-==================================================
-97. TEAM NOTIFICATIONS
-==================================================
-
-For a Service Team assignment:
-
-prefer notifying:
-
-Team Lead
-
-and/or active members according to existing notification architecture.
-
-Do not duplicate notifications unnecessarily.
-
-Document exact policy selected.
-
-==================================================
-98. PERMISSION-AWARE NOTIFICATION
-==================================================
-
-Opening notification re-checks current:
-
-Services module enablement
-
-permission
-
-ASSIGNED/TEAM/ALL scope
-
-record access.
-
-Notification itself never bypasses authorization.
-
-==================================================
-99. USERS WITHOUT LOGIN
-==================================================
-
-An Employee may be assigned work even without UserAccount.
-
-Assignment is still valid.
-
-Simply no in-app notification can be delivered to that Employee yet.
-
-==================================================
-100. SERVICES OVERVIEW
-==================================================
-
-Add REAL Phase 3 data where permission permits.
-
-Possible cards:
-
-Open Enquiries
-
-Scheduled Assignments
-
-Visits Today
-
-Upcoming Visits.
-
-Do not fabricate Inspection metrics.
-
-==================================================
-101. TODAY'S VISITS
-==================================================
-
-Use:
-
-CompanyTimeService
-
-and:
-
-scheduledVisitDate.
-
-No device-time assumptions.
-
-==================================================
-102. RECENT / UPCOMING ASSIGNMENTS
-==================================================
-
-Show useful compact section for authorized user.
-
-ASSIGNED user:
-
-their assignments.
-
-TEAM:
-
-team scope.
-
-ALL:
-
-company scope.
-
-==================================================
-103. ENQUIRY DETAIL INTEGRATION
-==================================================
-
-ASSIGNED Enquiry should display:
-
-Job Assignment
-
-Assignment No
-
-Visit Date
-
-Assigned Employee/Team summary.
-
-Click:
-
-Job Assignment Detail
-
-if user has access.
-
-==================================================
-104. ENQUIRY ACTION
-==================================================
-
-OPEN:
-
-Create Job Assignment
-
-when authorized.
-
-ASSIGNED:
-
-View Job Assignment
-
-when authorized.
+Use actual transaction conventions.
 
-CANCELLED:
-
-no assignment creation.
-
-==================================================
-105. NO N+1
-==================================================
-
-Job Assignment list must efficiently resolve:
-
-Enquiry
-
-Customer/site summary
-
-Priority
-
-Employee/Team summary.
-
-Do not query each row individually.
-
-==================================================
-106. REPOSITORY
-==================================================
-
-Create:
-
-ServiceJobAssignmentRepository.
-
-Likely responsibilities:
-
-watchAssignments
-
-getAssignment
-
-createAssignment
-
-updateAssignment
-
-cancelAssignment
-
-watchUpcomingAssignments
-
-watchAssignmentSummary
-
-searchAssignableEnquiryRefs.
-
-Follow existing architecture conventions.
-
-==================================================
-107. USE CASES
-==================================================
-
-Create application use cases such as:
-
-CreateServiceJobAssignment
-
-UpdateServiceJobAssignment
-
-CancelServiceJobAssignment
-
-WatchServiceJobAssignments
-
-GetServiceJobAssignment.
-
-No business logic in widgets.
-
-==================================================
-108. WORKFORCE CONTRACT
-==================================================
-
-Employee selector uses cross-module:
-
-WorkforceDirectory.
-
-Services must not depend on HR internal DAO.
-
-==================================================
-109. PERMISSION ENFORCEMENT
-==================================================
-
-LIST:
-
-services.jobAssignments.view
-+
-scope.
-
-DETAIL:
-
-same
-+
-object scope.
-
-CREATE:
-
-services.jobAssignments.create.
-
-EDIT:
-
-services.jobAssignments.edit
-+
-record scope.
-
-CANCEL:
-
-services.jobAssignments.cancel
-+
-record scope.
-
-==================================================
-110. OBJECT SECURITY
-==================================================
-
-ASSIGNED Employee A cannot open Employee B's unrelated Assignment through URL.
-
-TEAM cannot access unrelated Service Team Assignment.
-
-ALL remains company-scoped.
-
-==================================================
-111. REFERENCE ACCESS
-==================================================
-
-A user authorized to create/edit Job Assignment receives enough restricted
-reference access for:
-
-eligible Enquiries
-
-Employees
-
-Service Teams
-
-without automatically gaining:
-
-Employees HR directory access
-
-full Customer management
-
-full Team management.
-
-==================================================
-112. DEMO DATA
-==================================================
-
-Seed realistic Assignments from Phase 2 Enquiries.
-
-Example:
-
-Assignment JA-000001
-
-Enquiry:
-AC Not Cooling
-
-Visit:
-25 Sep 2026
-
-Work items:
-
-1.
-Work:
-Inspect indoor and outdoor AC units
-
-Employee:
-existing seeded employee
-
-Team:
-HVAC Team
-
-Description:
-Check cooling pressure and electrical connection.
-
-2.
-Work:
-Verify thermostat and airflow
-
-Team:
-HVAC Team.
-
-Use actual seeded IDs.
-
-==================================================
-113. DEMO PERMISSIONS
-==================================================
-
-Seed explicit grants.
-
-Example test personas by grants only:
-
-A:
-View ALL
-Create
-Edit
-Cancel
-
-B:
-View ASSIGNED
-
-C:
-View TEAM
-
-D:
-No Job Assignment access.
-
-No role authorization.
-
-==================================================
-114. TEST — CREATE FROM ENQUIRY
-==================================================
-
-OPEN Enquiry + create permission:
-
-Create Job Assignment visible.
-
-Successful creation:
-
-Assignment created
-
-Enquiry becomes ASSIGNED.
-
-==================================================
-115. TEST — DUPLICATE ACTIVE ASSIGNMENT
-==================================================
-
-Attempt second ACTIVE Assignment for same Enquiry:
-
-reject.
-
-==================================================
-116. TEST — CANCEL
-==================================================
-
-Cancel active Assignment:
-
-Assignment becomes CANCELLED.
-
-Enquiry returns OPEN when no other active assignment exists.
-
-==================================================
-117. TEST — ASSIGNED SCOPE DIRECT EMPLOYEE
-==================================================
-
-Employee appears in a work line.
-
-User linked to that Employee with ASSIGNED view permission.
-
-Expected:
-
-Assignment visible.
-
-==================================================
-118. TEST — ASSIGNED SCOPE TEAM
-==================================================
-
-Employee belongs to assigned Service Team.
-
-ASSIGNED behavior follows documented Services resolver.
-
-Expected appropriate visibility.
-
-==================================================
-119. TEST — TEAM SCOPE
-==================================================
-
-TEAM grant cannot see unrelated team Assignment.
-
-==================================================
-120. TEST — ALL
-==================================================
-
-ALL sees company Assignments only.
-
-No cross-company.
-
-==================================================
-121. TEST — NO HR DIRECTORY LEAK
-==================================================
-
-Job Assignment creator can search assignable Employee refs.
-
-They cannot thereby open:
-
-HR → Employees
-
-unless separately permitted.
-
-==================================================
-122. TEST — TEAM MANAGEMENT LEAK
-==================================================
-
-Assignment creator can select ServiceTeam refs.
-
-They cannot manage Teams unless separately permitted.
-
-==================================================
-123. TEST — INACTIVE EMPLOYEE
-==================================================
-
-Inactive Employee:
-
-not selectable for new Assignment.
-
-Historical Assignment remains readable.
-
-==================================================
-124. TEST — INACTIVE TEAM
-==================================================
-
-Same.
-
-==================================================
-125. TEST — WRONG COMPANY EMPLOYEE
-==================================================
-
-Reject.
-
 ==================================================
-126. TEST — WRONG COMPANY TEAM
+14. SOURCE LINEAGE
 ==================================================
 
-Reject.
+Maintain durable lineage:
 
-==================================================
-127. TEST — CANCELLED ENQUIRY
-==================================================
+Material Request
+→ Inspection
+→ Job Assignment
+→ Enquiry.
 
-Cannot create Assignment.
+Do not duplicate these as disconnected transactions.
 
 ==================================================
-128. TEST — MATERIAL RECEIVED
+15. CUSTOMER/SITE CONTEXT
 ==================================================
 
-Job Assignment displays the value from Enquiry correctly.
+Material Request Detail/Create may display read-only context inherited through
+the workflow:
 
-It does not create material records.
-
-==================================================
-129. TEST — CUSTOMER/SITE CONTEXT
-==================================================
+Enquiry No
 
 Customer
 
 Mobile
+
+Site
 
 Tenant
 
@@ -2536,259 +542,1888 @@ Building
 
 Unit
 
-come from the selected Enquiry/Site snapshot.
+Complaint Type
 
-No manual duplicate entry.
+Priority
 
-==================================================
-130. TEST — MULTIPLE WORK ITEMS
-==================================================
+Material Received
 
-1..N rows work.
+Job Assignment
 
-No fixed maximum of 5 simply because old screen displays five rows.
+Inspection.
 
 ==================================================
-131. TEST — EMPLOYEE + TEAM
+16. MATERIAL RECEIVED DISPLAY
 ==================================================
 
-Support Employee only.
+If Material Received is displayed on Request for Material for context:
 
-Support Team only.
+resolve:
 
-Support both according to validation policy.
+source Enquiry.materialReceived.
 
-==================================================
-132. TEST — IDEMPOTENCY
-==================================================
+It must be:
 
-Repeated requestId:
+READ ONLY.
 
-no duplicate Assignment
+It is NOT a field of Material Request business entry.
 
-no duplicate work lines
-
-no duplicate Enquiry transition.
+Do not allow changing it here.
 
 ==================================================
-133. TEST — ATOMICITY
+17. JOB ORDER NO — IMPORTANT
 ==================================================
 
-Failure during:
+The client Material Request screen explicitly contains:
 
-line insert
+JOB Order No.
+
+However current supplied references do NOT establish:
+
+where Job Order is created
+
+which module owns it
+
+how it is linked to Quotation
+
+whether it belongs to Sales
+
+whether Services creates it.
+
+Therefore:
+
+DO NOT create JobOrder entity/module/workflow.
+
+==================================================
+18. JOB ORDER COMPATIBILITY
+==================================================
+
+Preserve:
+
+jobOrderReference
+
+as an optional business/reference value.
+
+Use a typed value object if appropriate.
+
+For now it is NOT an authoritative JobOrder FK.
+
+Document:
+
+TBD — authoritative Job Order source.
+
+==================================================
+19. DO NOT FAKE JOB ORDER DROPDOWN
+==================================================
+
+Do NOT create a dropdown populated with fake Job Orders.
+
+If no authoritative Job Order data exists:
+
+render an optional:
+
+Job Order Reference
+
+field according to current requirements.
+
+Later migration can replace it with:
+
+jobOrderId
++
+jobOrderNumber snapshot.
+
+==================================================
+20. PURPOSE MASTER
+==================================================
+
+The client has:
+
+Purpose
+
+as a selector.
+
+Create:
+
+ServiceMaterialRequestPurpose.
+
+Fields:
+
+id
+companyId
+code
+name
+description optional
+status
+sortOrder optional
+createdAt
+updatedAt
+sync metadata.
+
+==================================================
+21. PURPOSE SETTINGS
+==================================================
+
+Add:
+
+Services Settings
+→ Material Request Purposes
+
+Route:
+
+/app/services/settings/material-request-purposes
+
+==================================================
+22. PURPOSE PERMISSIONS
+==================================================
+
+Register:
+
+services.materialRequestPurposes.view
+
+services.materialRequestPurposes.manage
+
+or naming matching current catalog.
+
+==================================================
+23. PURPOSE VALUES
+==================================================
+
+The client screenshot does not expose dropdown values.
+
+Do NOT invent production options.
+
+Use demo data only where necessary.
+
+Document exact options:
+
+TBD — client confirmation.
+
+==================================================
+24. ACKNOWLEDGE
+==================================================
+
+Preserve the client field.
+
+But the screenshot does not tell us whether this represents:
+
+boolean acknowledgement
+
+text
+
+person
+
+reference number
+
+workflow state.
+
+Therefore do NOT invent a lifecycle.
+
+==================================================
+25. ACKNOWLEDGEMENT V1
+==================================================
+
+Store optional:
+
+acknowledgement
+
+as safe metadata/text.
+
+It must NOT automatically:
+
+approve
+
+issue
+
+receive
+
+complete
+
+the Material Request.
+
+==================================================
+26. RECEIVED BY
+==================================================
+
+Preserve client field:
+
+Received By.
+
+Current reference does not prove this is:
+
+Employee
+
+Store user
+
+Tenant
+
+Customer
+
+free-text person.
+
+Therefore V1 stores a safe optional value.
+
+Do not force Employee relationship yet.
+
+==================================================
+27. PREPARED BY
+==================================================
+
+Map:
+
+Prepared By
+
+to authenticated:
+
+createdByUserId.
+
+Display through audit metadata.
+
+Not editable.
+
+==================================================
+28. REQUEST STATUS
+==================================================
+
+Use minimal transaction lifecycle:
+
+OPEN
+
+CANCELLED.
+
+Do NOT invent:
+
+APPROVED
+
+REJECTED
+
+ISSUED
+
+RECEIVED
+
+PARTIALLY_ISSUED
+
+CONSUMED.
+
+Those workflows are not currently supported by client reference.
+
+==================================================
+29. OPEN
+==================================================
+
+Editable according to permission.
+
+Printable.
+
+==================================================
+30. CANCELLED
+==================================================
+
+Historical/read-only.
+
+No normal edit.
+
+No second cancel.
+
+==================================================
+31. MATERIAL REQUEST LINE
+==================================================
+
+Create:
+
+ServiceMaterialRequestLine.
+
+Fields:
+
+id
+
+companyId
+
+materialRequestId
+
+sourceInspectionMaterialRequirementId nullable
+
+lineNumber / sortOrder
+
+code
+
+description
+
+batchNumber nullable
+
+quantity
+
+remark nullable
+
+createdAt
+
+updatedAt.
+
+==================================================
+32. LINE IDENTITY
+==================================================
+
+Stable UUID.
+
+S.No is display order only.
+
+==================================================
+33. SOURCE REQUIREMENT LINK
+==================================================
+
+When generated from Inspection requirement:
+
+store:
+
+sourceInspectionMaterialRequirementId.
+
+This provides:
+
+Inspection Requirement
+→ Material Request Line
+
+traceability.
+
+==================================================
+34. MANUAL LINES
+==================================================
+
+Client supports Add Row.
+
+Therefore allow additional manual lines.
+
+For manual line:
+
+sourceInspectionMaterialRequirementId = null.
+
+==================================================
+35. CODE
+==================================================
+
+Material Code remains text/business code for now.
+
+No Product/Inventory entity.
+
+==================================================
+36. DESCRIPTION
+==================================================
+
+Required meaningful material description.
+
+==================================================
+37. BATCH NUMBER
+==================================================
+
+Optional.
+
+Preserve the client field.
+
+Do NOT validate against warehouse batches.
+
+==================================================
+38. QUANTITY
+==================================================
+
+Use numeric domain type.
+
+Must be:
+
+> 0.
+
+Do not store formatted text.
+
+==================================================
+39. FRACTIONAL QUANTITY
+==================================================
+
+If current numeric architecture allows:
+
+support reasonable decimal quantities.
+
+Use consistent precision.
+
+Do not overbuild units/UOM yet.
+
+==================================================
+40. NO UOM
+==================================================
+
+Client Request for Material reference does not show UOM.
+
+Do NOT add UOM in this phase.
+
+==================================================
+41. LINE REMARK
+==================================================
+
+Optional.
+
+Distinct from transaction-level Remarks.
+
+==================================================
+42. TOTAL QTY
+==================================================
+
+Calculate:
+
+sum(lines.quantity).
+
+Read-only.
+
+Never entered manually.
+
+==================================================
+43. TOTAL QTY DOMAIN LOGIC
+==================================================
+
+Calculation belongs in:
+
+domain/application/read model
+
+not duplicated in UI widgets.
+
+==================================================
+44. MULTIPLE LINES
+==================================================
+
+Support:
+
+1..N.
+
+Do NOT hardcode 5.
+
+==================================================
+45. MINIMUM LINE
+==================================================
+
+At least one valid line required before creation.
+
+==================================================
+46. ADD MATERIAL
+==================================================
+
+Modern CTA:
+
++ Add material
+
+Do NOT place `Add Row` on every row.
+
+==================================================
+47. REMOVE MATERIAL
+==================================================
+
+Allow removal while Request OPEN.
+
+Do not allow removing the final line without replacement.
+
+==================================================
+48. INSPECTION REQUIREMENT STATUS
+==================================================
+
+Phase 4 status:
+
+WAITING.
+
+Now Phase 5 introduces a justified new status:
+
+REQUESTED.
+
+Transition:
+
+WAITING
+   ↓ included in active Material Request
+REQUESTED.
+
+==================================================
+49. NO FURTHER MATERIAL STATUSES
+==================================================
+
+Do NOT add:
+
+APPROVED
+
+ISSUED
+
+RECEIVED
+
+USED
+
+CONSUMED.
+
+Those require future workflow evidence.
+
+==================================================
+50. DUPLICATE ACTIVE REQUEST PROTECTION
+==================================================
+
+A specific:
+
+ServiceInspectionMaterialRequirement
+
+must not be linked to more than one non-cancelled Material Request.
+
+==================================================
+51. REQUEST CANCELLATION
+==================================================
+
+When Request is CANCELLED:
+
+linked Inspection Material Requirements revert:
+
+REQUESTED → WAITING
+
+provided they are not validly linked elsewhere.
+
+Perform atomically.
+
+==================================================
+52. MULTIPLE REQUESTS PER INSPECTION
+==================================================
+
+Allow:
+
+Inspection
+→ multiple Material Requests
+
+because:
+
+some materials may be requested later
+
+partial requirements may be grouped separately.
+
+But each individual source requirement has only one active request linkage.
+
+==================================================
+53. CREATE FROM INSPECTION
+==================================================
+
+On COMPLETED Inspection Detail:
+
+if there are WAITING Material Requirements
+
+AND
+
+user has:
+
+services.materialRequests.create
+
+show:
+
+Create Material Request.
+
+==================================================
+54. INSPECTION DETAIL AFTER REQUEST
+==================================================
+
+When requests exist:
+
+show:
+
+Material Requests
+
+MR-000001
+OPEN
+Total Qty: ...
+
+and Material Requirement status:
+
+REQUESTED
+
+with linked request where authorized.
+
+==================================================
+55. CREATE FROM MATERIAL REQUEST LIST
+==================================================
+
+Also support:
+
+New Material Request.
+
+First choose an eligible completed Inspection.
+
+==================================================
+56. RESTRICTED INSPECTION SELECTOR
+==================================================
+
+A Material Request creator gets restricted eligible Inspection reference access.
+
+This does NOT grant:
+
+full Inspection ALL access.
+
+==================================================
+57. SELECTING INSPECTION
+==================================================
+
+After selection automatically populate/read:
+
+Inspection No
+
+Job Assignment No
+
+Enquiry No
+
+Customer
+
+Mobile
+
+Site
+
+Tenant
+
+Building
+
+Unit
+
+Complaint/Priority where useful
+
+Material Received inherited from Enquiry
+
+Inspector/Technician
+
+Material Required lines.
+
+==================================================
+58. MATERIAL RECEIVED REMAINS READ ONLY
+==================================================
+
+Again:
+
+Material Received displayed here is:
+
+Enquiry.materialReceived.
+
+Request for Material must never overwrite it.
+
+==================================================
+59. CREATE FORM — GLOBAL LAYOUT
+==================================================
+
+Use ONE GLOBAL CENTERED ERP CONTENT WIDTH.
+
+Same width as:
+
+Employees
+
+Enquiries
+
+Job Assignments
+
+Inspections
+
+Customers.
+
+Equal left/right workspace whitespace.
+
+==================================================
+60. CREATE FORM SECTIONS
+==================================================
+
+Recommended:
+
+REQUEST
+
+Request No
+Request Date
+Source Inspection
+
+SERVICE CONTEXT
+
+Inspection
+Job Assignment
+Enquiry
+Customer
+Site
+Tenant
+Building
+Unit
+Material Received
+
+REQUEST INFORMATION
+
+Job Order Reference
+Purpose
+Remarks
+
+MATERIALS
+
+repeatable requested materials
+
+ACKNOWLEDGEMENT
+
+Acknowledge
+Received By
+
+SUMMARY
+
+Total Quantity.
+
+==================================================
+61. MATERIAL LINE DESKTOP UX
+==================================================
+
+Use modern compact repeater/table-card.
+
+Fields:
+
+Code
+
+Description
+
+Batch No
+
+Quantity
+
+Remark
+
+Remove.
+
+Stay inside global content width.
+
+==================================================
+62. MATERIAL LINE MOBILE UX
+==================================================
+
+Use cards.
+
+Do not force horizontal editable spreadsheet.
+
+==================================================
+63. SAVE
+==================================================
+
+Create screen:
+
+Create Material Request.
+
+Edit:
+
+Save Changes.
+
+==================================================
+64. CLEAR
+==================================================
+
+Legacy Clear becomes:
+
+Reset Form
+
+on unsaved Create.
+
+If form contains changes:
+
+confirm reset.
+
+Existing Request Edit:
+
+use:
+
+Discard Changes
+
+instead of wiping persisted data.
+
+==================================================
+65. DELETE
+==================================================
+
+Legacy Delete becomes:
+
+Cancel Material Request.
+
+Never hard delete the transaction.
+
+==================================================
+66. PRINT
+==================================================
+
+Client explicitly requires Print.
+
+Implement:
+
+Print Material Request.
+
+==================================================
+67. PRINT PERMISSION
+==================================================
+
+Add:
+
+services.materialRequests.print
+
+if current permission system separates export/print.
+
+==================================================
+68. PRINT OUTPUT
+==================================================
+
+Professional printable document includes:
+
+Company Name
+
+Request No
+
+Date
+
+Inspection No
+
+Job Assignment No
+
+Enquiry No
+
+Job Order Reference
+
+Purpose
+
+Customer / Site
+
+Material Received if included as context
+
+Acknowledge
+
+Received By
+
+Remarks
+
+Prepared By
+
+material table:
+
+S.No
+Code
+Description
+Batch No
+Qty
+Remark
+
+Total Qty.
+
+==================================================
+69. PRINT INFRASTRUCTURE
+==================================================
+
+Reuse existing export/report/print system.
+
+Do not build random widget-specific printing.
+
+==================================================
+70. MATERIAL REQUEST PERMISSIONS
+==================================================
+
+Register:
+
+services.materialRequests.view
+
+services.materialRequests.create
+
+services.materialRequests.edit
+
+services.materialRequests.cancel
+
+services.materialRequests.print.
+
+==================================================
+71. VIEW SCOPES
+==================================================
+
+View supports:
+
+ASSIGNED
+
+TEAM
+
+ALL.
+
+==================================================
+72. ASSIGNED SCOPE
+==================================================
+
+Resolve from source workflow relationships such as:
+
+Inspection technician
+
+source Job Assignment direct Employee
+
+source assigned Service Team.
+
+Use existing Services scope resolver.
+
+==================================================
+73. TEAM SCOPE
+==================================================
+
+Use ServiceTeamScopeResolver.
+
+TEAM never expands to ALL.
+
+==================================================
+74. ALL SCOPE
+==================================================
+
+Company-wide within active Company only.
+
+==================================================
+75. ACCESS UI
+==================================================
+
+Existing:
+
+Settings
+→ Users & Access
+
+automatically shows:
+
+Services
+→ Material Requests
+
+View:
+No Access / Assigned / Team / All
+
+Create
+
+Edit
+
+Cancel
+
+Print.
+
+Also:
+
+Material Request Purposes
+
+View
+
+Manage.
+
+==================================================
+76. SERVICES NAVIGATION
+==================================================
+
+Add permission-aware:
+
+Material Requests
+
+to:
+
+Services
+  Overview
+  Enquiries
+  Job Assignments
+  Inspections
+  Material Requests
+  Customers
+  Sites
+  Teams
+  Settings.
+
+==================================================
+77. ROUTES
+==================================================
+
+Canonical:
+
+/app/services/material-requests
+
+/app/services/material-requests/new
+
+/app/services/material-requests/:requestId
+
+/app/services/material-requests/:requestId/edit
+
+Print may use:
+
+/app/services/material-requests/:requestId/print
+
+or existing print-action architecture.
+
+==================================================
+78. LIST PAGE
+==================================================
+
+Use same centered width.
+
+Suggested columns:
+
+Request
+
+Date
+
+Inspection
+
+Customer / Site
+
+Purpose
+
+Items
+
+Total Qty
+
+Status
+
+Prepared By
+
+Actions.
+
+==================================================
+79. SEARCH
+==================================================
+
+Search:
+
+Request No
+
+Inspection No
+
+Job Assignment No
+
+Enquiry No
+
+Job Order Reference
+
+Customer
+
+Code
+
+Description.
+
+==================================================
+80. FILTERS
+==================================================
+
+Useful:
+
+Status
+
+Date range
+
+Purpose
+
+Inspection
+
+Customer
+
+Employee/Team where useful.
+
+Security scope first.
+
+==================================================
+81. DETAIL PAGE
+==================================================
+
+Header:
+
+Request No
+
+Status
+
+Date
+
+Purpose.
+
+Actions:
+
+Edit
+
+Print
+
+Cancel
+
+according to permission and state.
+
+==================================================
+82. DETAIL CONTEXT
+==================================================
+
+Show:
+
+Inspection No
+
+Job Assignment No
+
+Enquiry No
+
+Job Order Reference
+
+Customer
+
+Mobile
+
+Site
+
+Tenant
+
+Building
+
+Unit
+
+Material Received inherited from Enquiry.
+
+==================================================
+83. MATERIAL DETAILS
+==================================================
+
+Display:
+
+Code
+
+Description
+
+Batch No
+
+Qty
+
+Remark.
+
+Show Total Qty clearly.
+
+==================================================
+84. ACKNOWLEDGEMENT SECTION
+==================================================
+
+Show:
+
+Acknowledge
+
+Received By
+
+Remarks.
+
+Do not imply unsupported workflow states.
+
+==================================================
+85. AUDIT
+==================================================
+
+Use shared AuditMetadataBlock.
+
+Prepared By maps to:
+
+Created By.
+
+Also show:
+
+Created At
+
+Updated By
+
+Updated At.
+
+==================================================
+86. ACTIVITY
+==================================================
+
+Structured events:
+
+services.materialRequest.created
+
+services.materialRequest.updated
+
+services.materialRequest.cancelled
+
+material lines changed.
+
+Do not record every keystroke.
+
+==================================================
+87. SERVICES OVERVIEW
+==================================================
+
+Add REAL Material Request metrics where permitted.
+
+Possible:
+
+Open Material Requests
+
+Material Requests Today
+
+Requested Material Lines
+
+Recent Material Requests.
+
+==================================================
+88. DO NOT SHOW FAKE STORE METRICS
+==================================================
+
+Do NOT show:
+
+Pending Approval
+
+Pending Issue
+
+Stock Available
+
+Material Received
+
+Store Pending
+
+unless those workflows actually exist.
+
+==================================================
+89. DATABASE
+==================================================
+
+Inspect current latest schema version.
+
+Add:
+
+ServiceMaterialRequests
+
+ServiceMaterialRequestLines
+
+ServiceMaterialRequestPurposes.
+
+Increment schema exactly once.
+
+==================================================
+90. REQUEST TABLE
+==================================================
+
+Fields conceptually:
+
+id
+
+companyId
+
+requestNumber
+
+requestDate
+
+sourceInspectionId
+
+sourceJobAssignmentId
+
+sourceEnquiryId
+
+jobOrderReference
+
+purposeId
+
+acknowledgement
+
+receivedBy
+
+remarks
+
+status
+
+createdAt
+
+updatedAt
+
+createdByUserId
+
+updatedByUserId
+
+requestId
+
+syncStatus
+
+version.
+
+DO NOT store a new editable materialReceived field here.
+
+==================================================
+91. LINE TABLE
+==================================================
+
+Fields:
+
+id
+
+companyId
+
+materialRequestId
+
+sourceInspectionMaterialRequirementId nullable
+
+lineNumber
+
+code
+
+description
+
+batchNumber
+
+quantity
+
+remark
+
+createdAt
+
+updatedAt.
+
+==================================================
+92. CONSTRAINTS
+==================================================
+
+Enforce:
+
+requestNumber unique within company
+
+Inspection same company
+
+Job Assignment lineage same company
+
+Enquiry lineage same company
+
+Purpose same company
+
+lines same company/request
+
+quantity > 0
+
+source requirement belongs to source Inspection.
+
+==================================================
+93. ATOMIC CREATE
+==================================================
+
+One transaction:
+
+allocate sequence
+
+create Material Request
+
+create lines
+
+WAITING → REQUESTED source requirement transitions
 
 activity
 
-outbox
-
-sequence
-
-must rollback transaction.
+outbox.
 
 ==================================================
-134. TEST — LIVE PERMISSION CHANGE
+94. ATOMIC UPDATE
 ==================================================
 
-Remove Job Assignment View while user is inside detail:
+Reconcile material lines and source links safely.
 
-navigation updates
+New source requirement:
 
-route becomes unauthorized
+WAITING → REQUESTED.
 
-safe landing.
+Removed source requirement:
 
-No relogin.
+REQUESTED → WAITING
 
-==================================================
-135. RESPONSIVE UI
-==================================================
-
-Use ONE centered global page max width.
-
-Do not create a different list/form width.
-
-All screens:
-
-equal left/right workspace whitespace on desktop.
+if no other active relationship.
 
 ==================================================
-136. DESKTOP
+95. ATOMIC CANCEL
 ==================================================
 
-Test:
+Request:
+
+OPEN → CANCELLED.
+
+Reconcile source requirements:
+
+REQUESTED → WAITING.
+
+Activity + outbox in same transaction.
+
+==================================================
+96. OUTBOX
+==================================================
+
+Register:
+
+SERVICES_MATERIAL_REQUEST_CREATE
+
+SERVICES_MATERIAL_REQUEST_UPDATE
+
+SERVICES_MATERIAL_REQUEST_CANCEL
+
+plus Purpose configuration mutation keys.
+
+==================================================
+97. OUTBOX PAYLOAD
+==================================================
+
+Payload:
+
+request header
+
+source Inspection ID
+
+source Assignment/Enquiry lineage
+
+jobOrderReference
+
+purposeId
+
+acknowledgement
+
+receivedBy
+
+remarks
+
+lines [
+  id
+  sourceInspectionMaterialRequirementId
+  code
+  description
+  batchNumber
+  quantity
+  remark
+]
+
+No binary attachments.
+
+==================================================
+98. IDEMPOTENCY
+==================================================
+
+Repeated requestId must NOT create:
+
+duplicate Request
+
+duplicate lines
+
+duplicate status transitions
+
+duplicate outbox events.
+
+==================================================
+99. REPOSITORY
+==================================================
+
+Create:
+
+ServiceMaterialRequestRepository
+
+following current architecture.
+
+Support actual UI needs:
+
+watch requests
+
+detail
+
+create
+
+update
+
+cancel
+
+eligible Inspection refs
+
+requests for Inspection
+
+summary/recent queries.
+
+==================================================
+100. USE CASES
+==================================================
+
+Create/use:
+
+CreateServiceMaterialRequest
+
+UpdateServiceMaterialRequest
+
+CancelServiceMaterialRequest
+
+PrintServiceMaterialRequest
+
+WatchServiceMaterialRequests
+
+GetServiceMaterialRequest.
+
+==================================================
+101. NO BUSINESS LOGIC IN WIDGETS
+==================================================
+
+Quantity validation
+
+Total Qty calculation
+
+source requirement transitions
+
+cancellation reconciliation
+
+permission/scope
+
+must live outside presentation.
+
+==================================================
+102. COMPANY ISOLATION
+==================================================
+
+No cross-company access or linking.
+
+==================================================
+103. DIRECT URL SECURITY
+==================================================
+
+All routes enforce permissions/object scope.
+
+==================================================
+104. PRINT SECURITY
+==================================================
+
+Direct print invocation also enforces:
+
+View + Print + object scope.
+
+==================================================
+105. NOTIFICATIONS
+==================================================
+
+Do NOT create Store/Approval notifications.
+
+The client reference does not establish recipients/workflow yet.
+
+Activity is enough.
+
+==================================================
+106. DEMO DATA
+==================================================
+
+Seed realistic Material Request from completed Inspection.
+
+Use existing:
+
+Inspection
+
+Job Assignment
+
+Enquiry
+
+Customer
+
+Material Requirements.
+
+Example:
+
+MR-000001
+
+Purpose:
+Service Work
+(demo-only configurable value)
+
+Material:
+
+CAP-35UF
+35µF capacitor
+Qty 1
+
+WIRE-2.5
+2.5mm electrical wire
+Qty 3.
+
+Total Qty:
+4.
+
+==================================================
+107. TEST — MATERIAL RECEIVED SOURCE
+==================================================
+
+Critical test:
+
+Enquiry:
+materialReceived = YES
+
+Job Assignment derived display:
+YES
+
+Inspection derived display:
+YES
+
+Material Request context if displayed:
+YES.
+
+No downstream transaction stores an independently editable conflicting value.
+
+==================================================
+108. TEST — MATERIAL RECEIVED NO
+==================================================
+
+Same for NO.
+
+Creating Material Request must still follow Inspection requirements.
+
+Do NOT automatically block request because Material Received is YES.
+
+Do NOT automatically force request because value is NO.
+
+==================================================
+109. TEST — PREFILL
+==================================================
+
+WAITING Inspection requirements correctly generate draft Request lines.
+
+==================================================
+110. TEST — SOURCE TRACEABILITY
+==================================================
+
+Each generated line retains:
+
+sourceInspectionMaterialRequirementId.
+
+==================================================
+111. TEST — MANUAL LINE
+==================================================
+
+Additional manually-added material works with null source requirement.
+
+==================================================
+112. TEST — TOTAL QTY
+==================================================
+
+Always sum current quantities.
+
+==================================================
+113. TEST — CANCEL RECONCILIATION
+==================================================
+
+REQUESTED source requirement reverts to WAITING on cancellation where valid.
+
+==================================================
+114. TEST — MULTIPLE REQUESTS
+==================================================
+
+Inspection can have multiple Requests.
+
+One specific requirement cannot be in multiple active Requests.
+
+==================================================
+115. TEST — JOB ORDER REFERENCE
+==================================================
+
+Job Order business concept is preserved.
+
+No fake JobOrder entity/module created.
+
+==================================================
+116. TEST — PURPOSE
+==================================================
+
+Active purpose selectable.
+
+Inactive historical value resolves.
+
+==================================================
+117. TEST — PRINT
+==================================================
+
+Printable document includes client-required data.
+
+==================================================
+118. TEST — ASSIGNED
+==================================================
+
+ASSIGNED visibility works.
+
+==================================================
+119. TEST — TEAM
+==================================================
+
+TEAM visibility works without leakage.
+
+==================================================
+120. TEST — ALL
+==================================================
+
+ALL remains company-scoped.
+
+==================================================
+121. TEST — CREATE WITHOUT FULL INSPECTION ACCESS
+==================================================
+
+Restricted eligible Inspection selector works.
+
+Does not expose unrestricted Inspection data.
+
+==================================================
+122. TEST — LIVE PERMISSION UPDATE
+==================================================
+
+Grant/remove permissions updates navigation/actions/routes without relogin.
+
+==================================================
+123. RESPONSIVE
+==================================================
+
+390
+
+768
+
+1024
 
 1280
 
 1440
 
-1600
-
 1920.
 
-Job Assignment List and Form must use identical global page bounds.
+Same global centered max width on every screen.
 
 ==================================================
-137. MOBILE
+124. MOBILE MATERIAL EDITOR
 ==================================================
 
-390px.
+Use cards.
 
-Work items become cards.
-
-No giant horizontal editable table.
-
-Employee/Team selectors usable.
+No legacy horizontal table.
 
 ==================================================
-138. RTL
+125. ARABIC / RTL
 ==================================================
 
-English + Arabic.
+Localize:
 
-Audit:
+Material Requests
 
-Job Assignment
+Request No
 
-Visit Date
+Request Date
 
-Enquiry context
+Job Order Reference
 
-Work
+Purpose
 
-Technician
+Acknowledge
 
-Service Team
+Received By
 
-Status
+Remarks
 
-Description For Work
+Prepared By
 
-Add Work Item
+Code
 
-Cancel Assignment.
+Description
 
-==================================================
-139. NO LEGACY UI COPY
-==================================================
+Batch No
 
-Do not implement:
+Quantity
 
-five permanent blank rows
+Total Quantity
 
-tiny '+' buttons
+Print
 
-raw checkbox for Team
-
-editable Company field
-
-editable Customer duplicate fields
-
-editable Insert/Update By
-
-hard Delete.
-
-Preserve the BUSINESS behavior while modernizing the interaction.
+Cancel Material Request.
 
 ==================================================
-140. DOCUMENTATION
+126. DOCUMENTATION
 ==================================================
 
 Create:
 
-docs/services/phase_3_job_assignment.md
+docs/services/phase_5_material_request.md
 
 Document:
 
-client reference mapping
+client mapping
 
-domain
+Material Received inheritance rule
 
-header/detail relationship
+Inspection source
 
-Enquiry transition
+material requirement handoff
 
-Employee/Team assignment
+Job Order compatibility strategy
 
-scope behavior
+Purpose
 
-Visit Date
+Acknowledge TBD
+
+Received By TBD
+
+request lifecycle
+
+line model
+
+status transitions
 
 permissions
+
+scopes
 
 routes
 
 repository
 
+print
+
 outbox
 
-notifications
-
-known TBDs.
+next-phase handoff.
 
 ==================================================
-141. PERMISSION COVERAGE
+127. PERMISSION COVERAGE
 ==================================================
 
 Update:
 
 docs/architecture/permission_coverage.md
 
-For every new permission include:
-
-Nav
-
-Route
-
-Read
-
-Action
-
-Mutation
-
-Scope.
+for all Phase 5 permissions.
 
 ==================================================
-142. TRACEABILITY OPEN QUESTION
+128. CLIENT TRACEABILITY QUESTIONS
 ==================================================
 
-The client screenshot visibly includes:
+Keep these explicitly unresolved:
 
-Status
+1. Where is Job Order created and which module owns it?
 
-per Job Assignment work row
+2. What are the client's actual Purpose options?
 
-but does not expose the dropdown values.
+3. What exactly does Acknowledge mean?
 
-Document:
+4. Who/what can Received By represent?
 
-TBD — exact Job Assignment work-line status values require confirmation.
+5. Does a later Store process approve/issue the request?
 
-Do NOT guess a large status workflow.
+Do NOT guess.
 
 ==================================================
-143. JOB ORDER / QUOTATION
+129. FUTURE WORK EXECUTION
 ==================================================
 
-DO NOT introduce:
+The client Work Execution screen references:
 
 Job Order No
 
 Quotation No
 
-into Job Assignment Phase 3.
+Inspection No
 
-Those appear in later client workflows, not this Job Assignment screen.
+Job Assignment No
 
-Their ownership remains unresolved.
+Enquiry No
+
+plus:
+
+Work
+
+Description
+
+Team Selection
+
+Individual Employee
+
+Start Time
+
+End Time
+
+Status
+
+Material Used
+
+After Work Photos.
+
+Phase 6 will implement those business concepts separately.
+
+Do NOT start them now.
 
 ==================================================
-144. QUALITY GATE
+130. QUALITY GATE
 ==================================================
 
 Run:
 
-localization generation/merge
+localization merge/generation
 
 build_runner where required
 
@@ -2801,250 +2436,172 @@ flutter test
 flutter build web --release --dart-define=DEMO_AUTH=true
 
 ==================================================
-145. COMPLETION REPORT
+131. COMPLETION REPORT
 ==================================================
 
 Report:
 
-1. Job Assignment client-reference mapping
-
-2. ServiceJobAssignment model
-
-3. ServiceJobAssignmentLine model
-
-4. Assignment number sequence
-
-5. Enquiry relationship
-
-6. Enquiry OPEN → ASSIGNED transition
-
-7. cancellation/reopen behavior
-
-8. Assignment Date
-
-9. Visit Date
-
-10. Customer mapping
-
-11. Mobile mapping
-
-12. Complaint mapping
-
-13. Priority mapping
-
-14. Tenant mapping
-
-15. Building mapping
-
-16. Unit mapping
-
-17. Material Received mapping
-
-18. Work implementation
-
-19. Technician/Employee implementation
-
-20. Service Team modernization
-
-21. Employee + Team behavior
-
-22. line status implementation/TBD
-
-23. Description For Work implementation
-
-24. permissions
-
-25. ASSIGNED scope
-
-26. TEAM scope
-
-27. ALL scope
-
-28. navigation
-
-29. routes
-
-30. Job Assignment list
-
-31. create form
-
-32. detail page
-
-33. edit
-
-34. cancel
-
-35. Enquiry detail integration
-
-36. Services Overview integration
-
-37. WorkforceDirectory integration
-
-38. ServiceTeam integration
-
-39. notifications
-
+1. Request for Material client mapping
+2. Material Received inheritance verification
+3. proof no duplicate editable materialReceived fields were created
+4. ServiceMaterialRequest model
+5. ServiceMaterialRequestLine model
+6. request sequence
+7. request Date
+8. source Inspection relationship
+9. source Job Assignment relationship
+10. source Enquiry relationship
+11. Job Order compatibility handling
+12. Purpose master
+13. Acknowledge implementation/TBD
+14. Received By implementation/TBD
+15. Prepared By audit mapping
+16. Inspection requirement prefill
+17. WAITING → REQUESTED
+18. cancellation reconciliation
+19. manual material lines
+20. Code
+21. Description
+22. Batch No
+23. Quantity
+24. Remark
+25. Total Qty
+26. Print
+27. permissions
+28. ASSIGNED scope
+29. TEAM scope
+30. ALL scope
+31. navigation
+32. routes
+33. list
+34. create form
+35. detail
+36. edit
+37. cancel
+38. Inspection Detail integration
+39. Services Overview integration
 40. database migration
-
-41. activity events
-
+41. activity
 42. outbox
-
 43. idempotency
-
 44. company isolation
-
-45. responsive layout
-
-46. centered global width compliance
-
-47. Arabic/RTL
-
-48. permission coverage
-
-49. traceability update
-
-50. tests
-
-51. flutter analyze
-
-52. flutter test count/result
-
-53. Web release build
-
-54. remaining genuine TBDs.
+45. centered layout
+46. Desktop
+47. Mobile
+48. Arabic/RTL
+49. tests
+50. flutter analyze
+51. flutter test count/result
+52. Web release build
+53. remaining genuine TBDs.
 
 ==================================================
-146. HARD STOP
+132. HARD STOP
 ==================================================
 
-PHASE 3 IS COMPLETE ONLY WHEN:
+PHASE 5 IS COMPLETE ONLY WHEN:
 
-✓ client Job Assignment screen is fully traceable
+✓ every visible Request for Material client field has an explicit modern mapping
 
-✓ every visible client business field has a modern equivalent
+✓ Material Received remains owned by Service Enquiry
 
-✓ Job Assignment exists as its own transaction
+✓ Job Assignment only inherits Material Received
 
-✓ Job Assignment is NOT called Job Order
+✓ Inspection only inherits Material Received
+
+✓ Material Request does not create another authoritative Material Received value
+
+✓ Material Received YES does not automatically block Material Request
+
+✓ Material Received NO does not automatically generate Material Request
+
+✓ Material Request is driven by Inspection Material Requirements
 
 ✓ Company is system-derived
 
-✓ Job Assignment No is sequence-generated
+✓ Request No is sequence-generated
 
-✓ assignment date is represented
+✓ Date is represented
 
-✓ Enquiry is selectable from eligible OPEN Enquiries
+✓ Job Order reference is preserved without inventing Job Order module
 
-✓ Customer is derived from Enquiry
+✓ Purpose exists as configurable master
 
-✓ Mobile is derived from Enquiry
+✓ Acknowledge is preserved without invented lifecycle
 
-✓ Complaint Type is derived from Enquiry
+✓ Received By is preserved without guessing identity type
 
-✓ Priority is derived from Enquiry
+✓ Prepared By is audit-derived
 
-✓ Tenant is represented
+✓ multiple material lines work
 
-✓ Building is represented
+✓ Code exists
 
-✓ Unit is represented
+✓ Description exists
 
-✓ Material Received is represented
+✓ Batch No exists
 
-✓ Visit Date is implemented
+✓ Qty exists and is numeric
 
-✓ Insert By is audit-derived
+✓ Remark exists
 
-✓ Update By is audit-derived
+✓ Total Qty is calculated
 
-✓ multiple Work rows are supported
+✓ 5 rows are not hardcoded
 
-✓ Work is preserved separately
+✓ Inspection WAITING material requirements prefill Request
 
-✓ Technician uses Employee
+✓ source requirement lineage is preserved
 
-✓ no Technician table exists
+✓ manual lines are supported
 
-✓ Service Team is explicit
+✓ source requirement WAITING → REQUESTED works
 
-✓ old Team checkbox is not copied literally
+✓ cancelled Request reconciles REQUESTED → WAITING
 
-✓ Employee-only assignment works
+✓ one requirement cannot be in multiple active Requests
 
-✓ Team-only assignment works
+✓ multiple Requests per Inspection are supported
 
-✓ Employee + Team assignment works according to validation policy
+✓ Request is never hard-deleted
 
-✓ Status exists per work line
+✓ Print works
 
-✓ unknown status values were not fabricated into a complex workflow
+✓ permissions are fully wired
 
-✓ Description For Work exists separately
-
-✓ Add Work Item works
-
-✓ Remove Work Item works
-
-✓ exactly 5 rows are NOT hardcoded
-
-✓ at least one valid work item is required
-
-✓ one ACTIVE Assignment per Enquiry is enforced in V1
-
-✓ creating Assignment transitions Enquiry to ASSIGNED
-
-✓ cancelling Assignment is historical, not hard delete
-
-✓ cancelled Assignment can make Enquiry assignable again
-
-✓ Job Assignment View supports ASSIGNED / TEAM / ALL
-
-✓ restricted Enquiry reference lookup works
-
-✓ restricted Employee reference lookup works
-
-✓ restricted Team reference lookup works
-
-✓ reference access does not grant full directory management
+✓ ASSIGNED / TEAM / ALL work
 
 ✓ direct URLs are protected
 
-✓ object scope is enforced
+✓ use cases enforce permission
 
-✓ direct use cases enforce permission
+✓ no Inventory module was introduced
 
-✓ assignment notifications work
+✓ no Stock workflow was introduced
 
-✓ notification deep links re-check permission
+✓ no approval workflow was guessed
 
-✓ Services Overview uses real assignment data
+✓ no material issue workflow was guessed
 
-✓ Enquiry Detail links to Assignment
-
-✓ no Inspection functionality was implemented
-
-✓ no Material Request functionality was implemented
-
-✓ no Work Execution functionality was implemented
-
-✓ no Quotation ownership was guessed
+✓ no Work Execution was implemented
 
 ✓ no Job Order ownership was guessed
 
-✓ one global centered ERP page width is preserved
+✓ no Quotation ownership was guessed
 
-✓ desktop works
+✓ one global centered page width remains intact
 
-✓ mobile works
+✓ Desktop works
+
+✓ Mobile works
+
+✓ English works
 
 ✓ Arabic/RTL works
 
-✓ migration preserves all existing data
+✓ permission coverage updated
 
-✓ permission coverage is updated
-
-✓ client-reference traceability is updated
+✓ traceability updated
 
 ✓ flutter analyze passes
 
@@ -3054,52 +2611,11 @@ PHASE 3 IS COMPLETE ONLY WHEN:
 
 THEN STOP.
 
-DO NOT START PHASE 4 AUTOMATICALLY.
+DO NOT START PHASE 6 AUTOMATICALLY.
 
 NEXT PHASE:
 
-SERVICES PHASE 4 — INSPECTION
+SERVICES PHASE 6 — WORK EXECUTION
 
-The Phase 4 requirements will be based directly on the supplied client
-Inspection screens, including:
-
-Inspection No
-
-Job Assignment No
-
-Enquiry No
-
-Customer/Mobile
-
-Complaint/Priority
-
-Tenant/Building/Unit
-
-Material Received
-
-Visit Date
-
-Visit Time
-
-Technician Name
-
-Root Cause
-
-Charged
-
-Status
-
-Checklist rows
-
-Work Type
-
-Description For Work
-
-Before Work Photos
-
-Inspected Points
-
-Material Required
-
-and the remaining visible client Inspection fields.
+based directly on the supplied client Work Execution references.
 ```

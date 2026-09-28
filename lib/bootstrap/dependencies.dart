@@ -50,6 +50,7 @@ void configureApplicationComposition(GetIt services) {
       serviceMasterRepository: services(),
       serviceEnquiryRepository: services(),
       serviceJobAssignmentRepository: services(),
+      serviceInspectionRepository: services(),
       workforceDirectory: services(),
       activityRepository: services(),
     ),

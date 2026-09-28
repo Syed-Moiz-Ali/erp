@@ -696,3 +696,215 @@ Future<void> seedServiceJobAssignmentDemoData(
     displayNumber: 'JA-000002',
   );
 }
+
+/// Deterministic, idempotent Inspection demo seed (root causes, charge
+/// responsibilities and one inspection from a seeded Job Assignment).
+Future<void> seedServiceInspectionDemoData(
+  AppDatabase db,
+  AuthContext admin,
+  AppClock clock,
+) async {
+  final companyId = admin.company.id;
+  final now = clock.now();
+
+  Future<void> master(
+    TableInfo table,
+    String id,
+    String code,
+    String name, {
+    int sort = 0,
+  }) async {
+    final columns =
+        (await db
+                .customSelect('PRAGMA table_info(${table.actualTableName})')
+                .get())
+            .map((r) => r.read<String>('name'))
+            .toSet();
+    final row = {
+      'id': id,
+      'company_id': companyId,
+      'code': code,
+      'name': name,
+      'status': 'active',
+      'sort_order': sort,
+      'created_at': now,
+      'updated_at': now,
+      'sync_status': 'synced',
+    };
+    final filtered = {
+      for (final e in row.entries)
+        if (columns.contains(e.key)) e.key: e.value,
+    };
+    await db.customInsert(
+      'INSERT OR IGNORE INTO ${table.actualTableName} '
+      '(${filtered.keys.join(',')}) VALUES (${filtered.keys.map((_) => '?').join(',')})',
+      variables: [for (final v in filtered.values) Variable(v)],
+    );
+  }
+
+  await master(
+    db.serviceRootCauses,
+    'demo-rc-electrical',
+    'ELECTRICAL',
+    'Electrical fault',
+    sort: 1,
+  );
+  await master(
+    db.serviceRootCauses,
+    'demo-rc-wear',
+    'WEAR',
+    'Wear and tear',
+    sort: 2,
+  );
+  await master(
+    db.serviceRootCauses,
+    'demo-rc-leak',
+    'LEAK',
+    'Leakage',
+    sort: 3,
+  );
+  await master(
+    db.serviceRootCauses,
+    'demo-rc-blockage',
+    'BLOCKAGE',
+    'Blockage',
+    sort: 4,
+  );
+  await master(
+    db.serviceRootCauses,
+    'demo-rc-unknown',
+    'UNKNOWN',
+    'Unknown',
+    sort: 5,
+  );
+  await master(
+    db.serviceChargeResponsibilities,
+    'demo-ch-tenant',
+    'TENANT',
+    'Tenant',
+    sort: 1,
+  );
+
+  final existing = await (db.select(
+    db.serviceInspections,
+  )..where((t) => t.companyId.equals(companyId))).get();
+  if (existing.isNotEmpty) return;
+
+  final assignment =
+      await (db.select(db.serviceJobAssignments)..where(
+            (t) => t.companyId.equals(companyId) & t.id.equals('demo-ja-1'),
+          ))
+          .getSingleOrNull();
+  if (assignment == null) return;
+  final lines =
+      await (db.select(db.serviceJobAssignmentLines)
+            ..where(
+              (t) =>
+                  t.companyId.equals(companyId) &
+                  t.assignmentId.equals('demo-ja-1') &
+                  t.removedAt.isNull(),
+            )
+            ..orderBy([(t) => OrderingTerm.asc(t.lineNumber)]))
+          .get();
+  final employees =
+      await (db.select(db.workforceEmployees)
+            ..where((t) => t.companyId.equals(companyId))
+            ..limit(1))
+          .get();
+  final technicianId = employees.isEmpty ? null : employees.first.id;
+
+  final visitDate = DateTime.utc(
+    now.year,
+    now.month,
+    now.day,
+  ).add(const Duration(days: 1));
+  await db
+      .into(db.serviceInspections)
+      .insert(
+        ServiceInspectionsCompanion.insert(
+          id: 'demo-ins-1',
+          companyId: companyId,
+          inspectionNumber: 'INS-000001',
+          inspectionDate: now,
+          sourceJobAssignmentId: 'demo-ja-1',
+          sourceEnquiryId: assignment.sourceEnquiryId,
+          visitDate: visitDate,
+          visitMinutes: const Value(630),
+          technicianEmployeeId: Value(technicianId),
+          rootCauseId: const Value('demo-rc-electrical'),
+          chargeResponsibilityId: const Value('demo-ch-tenant'),
+          status: 'pending',
+          createdAt: now,
+          updatedAt: now,
+          createdByUserId: admin.user.id,
+          updatedByUserId: admin.user.id,
+          requestId: const Value('demo-inspection-1'),
+          syncStatus: 'synced',
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  var order = 0;
+  for (final line in lines) {
+    order++;
+    await db
+        .into(db.serviceInspectionChecklistItems)
+        .insert(
+          ServiceInspectionChecklistItemsCompanion.insert(
+            id: 'demo-ins-1-c$order',
+            companyId: companyId,
+            inspectionId: 'demo-ins-1',
+            sourceJobAssignmentLineId: Value(line.id),
+            lineNumber: order,
+            workType: line.work,
+            descriptionForWork: Value(line.descriptionForWork),
+            status: 'pending',
+            createdAt: now,
+            updatedAt: now,
+            createdByUserId: admin.user.id,
+            updatedByUserId: admin.user.id,
+            syncStatus: 'synced',
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+  }
+  for (final (index, description) in [
+    'Outdoor unit emits abnormal noise',
+    'Cooling pressure below expected range',
+  ].indexed) {
+    await db
+        .into(db.serviceInspectionPoints)
+        .insert(
+          ServiceInspectionPointsCompanion.insert(
+            id: 'demo-ins-1-p${index + 1}',
+            companyId: companyId,
+            inspectionId: 'demo-ins-1',
+            lineNumber: index + 1,
+            description: description,
+            createdAt: now,
+            updatedAt: now,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+  }
+  await db
+      .into(db.serviceInspectionMaterialRequirements)
+      .insert(
+        ServiceInspectionMaterialRequirementsCompanion.insert(
+          id: 'demo-ins-1-m1',
+          companyId: companyId,
+          inspectionId: 'demo-ins-1',
+          lineNumber: 1,
+          code: 'CAP-35UF',
+          description: '35uF capacitor',
+          status: 'waiting',
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+  await LocalDocumentNumberService(db, clock).adoptServerNumber(
+    companyId: companyId,
+    type: DocumentSequenceType.serviceInspection,
+    displayNumber: 'INS-000001',
+  );
+}

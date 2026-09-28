@@ -24,6 +24,9 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.complaintType => AppPermission.complaintTypeView,
     ServiceMasterKind.priority => AppPermission.servicePriorityView,
     ServiceMasterKind.ticketType => AppPermission.serviceTicketTypeView,
+    ServiceMasterKind.rootCause => AppPermission.serviceRootCauseView,
+    ServiceMasterKind.chargeResponsibility =>
+      AppPermission.serviceChargeResponsibilityView,
   };
 
   AppPermission _managePermission(ServiceMasterKind kind) => switch (kind) {
@@ -31,6 +34,9 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.complaintType => AppPermission.complaintTypeManage,
     ServiceMasterKind.priority => AppPermission.servicePriorityManage,
     ServiceMasterKind.ticketType => AppPermission.serviceTicketTypeManage,
+    ServiceMasterKind.rootCause => AppPermission.serviceRootCauseManage,
+    ServiceMasterKind.chargeResponsibility =>
+      AppPermission.serviceChargeResponsibilityManage,
   };
 
   Failure? _access(
@@ -138,6 +144,8 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
     ServiceMasterKind.complaintType => db.complaintTypes,
     ServiceMasterKind.priority => db.servicePriorities,
     ServiceMasterKind.ticketType => db.serviceTicketTypes,
+    ServiceMasterKind.rootCause => db.serviceRootCauses,
+    ServiceMasterKind.chargeResponsibility => db.serviceChargeResponsibilities,
   };
 
   Future<ServiceMasterRecord?> _raw(
@@ -364,6 +372,40 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
             .into(db.serviceTicketTypes)
             .insertOnConflictUpdate(
               ServiceTicketTypesCompanion.insert(
+                id: record.id,
+                companyId: record.companyId,
+                code: record.code,
+                name: record.name,
+                description: Value(record.description),
+                status: record.status.name,
+                sortOrder: Value(record.sortOrder),
+                createdAt: record.createdAt,
+                updatedAt: now,
+                syncStatus: record.syncStatus.name,
+              ),
+            ),
+      ServiceMasterKind.rootCause =>
+        db
+            .into(db.serviceRootCauses)
+            .insertOnConflictUpdate(
+              ServiceRootCausesCompanion.insert(
+                id: record.id,
+                companyId: record.companyId,
+                code: record.code,
+                name: record.name,
+                description: Value(record.description),
+                status: record.status.name,
+                sortOrder: Value(record.sortOrder),
+                createdAt: record.createdAt,
+                updatedAt: now,
+                syncStatus: record.syncStatus.name,
+              ),
+            ),
+      ServiceMasterKind.chargeResponsibility =>
+        db
+            .into(db.serviceChargeResponsibilities)
+            .insertOnConflictUpdate(
+              ServiceChargeResponsibilitiesCompanion.insert(
                 id: record.id,
                 companyId: record.companyId,
                 code: record.code,

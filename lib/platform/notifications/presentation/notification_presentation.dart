@@ -67,6 +67,10 @@ NotificationContent notificationContent(
     l.notifServiceWorkAssignedTitle,
     l.notifServiceWorkAssignedBody,
   ),
+  AppNotificationType.serviceInspectionAssigned => NotificationContent(
+    l.notifServiceInspectionAssignedTitle,
+    l.notifServiceInspectionAssignedBody,
+  ),
   AppNotificationType.unknown => NotificationContent(
     l.notifUnknownTitle,
     l.notifUnknownBody,
@@ -104,8 +108,17 @@ String? notificationRoute(AppNotification notification) =>
         _assignmentId(notification) != null
             ? ServicesRoutes.assignment(_assignmentId(notification)!)
             : ServicesRoutes.assignments,
+      AppNotificationType.serviceInspectionAssigned =>
+        _inspectionId(notification) != null
+            ? ServicesRoutes.inspection(_inspectionId(notification)!)
+            : ServicesRoutes.inspections,
       AppNotificationType.unknown => notification.route,
     };
+
+String? _inspectionId(AppNotification notification) {
+  final value = notification.payload['inspectionId'];
+  return value is String && value.isNotEmpty ? value : null;
+}
 
 String? _assignmentId(AppNotification notification) {
   final value = notification.payload['assignmentId'];

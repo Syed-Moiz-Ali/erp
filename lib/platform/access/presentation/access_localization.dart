@@ -22,6 +22,7 @@ extension AccessCatalogLocalization on AppLocalizations {
     'teams' => servicesPermSubTeams,
     'enquiries' => servicesPermSubEnquiries,
     'jobAssignments' => servicesPermSubJobAssignments,
+    'inspections' => servicesPermSubInspections,
     _ => key,
   };
 
@@ -93,6 +94,17 @@ extension AccessCatalogLocalization on AppLocalizations {
     'servicesPermJobAssignmentsCreate' => servicesPermJobAssignmentsCreate,
     'servicesPermJobAssignmentsEdit' => servicesPermJobAssignmentsEdit,
     'servicesPermJobAssignmentsCancel' => servicesPermJobAssignmentsCancel,
+    'servicesPermInspectionsView' => servicesPermInspectionsView,
+    'servicesPermInspectionsCreate' => servicesPermInspectionsCreate,
+    'servicesPermInspectionsEdit' => servicesPermInspectionsEdit,
+    'servicesPermInspectionsComplete' => servicesPermInspectionsComplete,
+    'servicesPermInspectionsCancel' => servicesPermInspectionsCancel,
+    'servicesPermRootCausesView' => servicesPermRootCausesView,
+    'servicesPermRootCausesManage' => servicesPermRootCausesManage,
+    'servicesPermChargeResponsibilitiesView' =>
+      servicesPermChargeResponsibilitiesView,
+    'servicesPermChargeResponsibilitiesManage' =>
+      servicesPermChargeResponsibilitiesManage,
     _ => key,
   };
 
@@ -170,6 +182,18 @@ extension AccessCatalogLocalization on AppLocalizations {
     'servicesPermJobAssignmentsEditDesc' => servicesPermJobAssignmentsEditDesc,
     'servicesPermJobAssignmentsCancelDesc' =>
       servicesPermJobAssignmentsCancelDesc,
+    'servicesPermInspectionsViewDesc' => servicesPermInspectionsViewDesc,
+    'servicesPermInspectionsCreateDesc' => servicesPermInspectionsCreateDesc,
+    'servicesPermInspectionsEditDesc' => servicesPermInspectionsEditDesc,
+    'servicesPermInspectionsCompleteDesc' =>
+      servicesPermInspectionsCompleteDesc,
+    'servicesPermInspectionsCancelDesc' => servicesPermInspectionsCancelDesc,
+    'servicesPermRootCausesViewDesc' => servicesPermRootCausesViewDesc,
+    'servicesPermRootCausesManageDesc' => servicesPermRootCausesManageDesc,
+    'servicesPermChargeResponsibilitiesViewDesc' =>
+      servicesPermChargeResponsibilitiesViewDesc,
+    'servicesPermChargeResponsibilitiesManageDesc' =>
+      servicesPermChargeResponsibilitiesManageDesc,
     _ => key,
   };
 

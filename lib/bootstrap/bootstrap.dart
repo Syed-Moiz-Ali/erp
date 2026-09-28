@@ -76,6 +76,13 @@ Future<void> bootstrap() async {
           .context,
       services<AppClock>(),
     );
+    await seedServiceInspectionDemoData(
+      services<AppDatabase>(),
+      services<DemoAuthSource>()
+          .findByScenario(DemoScenario.platformAdmin)!
+          .context,
+      services<AppClock>(),
+    );
   }
   final localeCubit = services<LocaleCubit>();
   await localeCubit.restore(WidgetsBinding.instance.platformDispatcher.locales);

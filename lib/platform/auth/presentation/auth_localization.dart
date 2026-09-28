@@ -117,5 +117,21 @@ extension AppPermissionLocalization on AppPermission {
       l10n.permissionServiceJobAssignmentEdit,
     AppPermission.serviceJobAssignmentCancel =>
       l10n.permissionServiceJobAssignmentCancel,
+    AppPermission.serviceInspectionViewAssigned ||
+    AppPermission.serviceInspectionViewTeam ||
+    AppPermission.serviceInspectionViewAll =>
+      l10n.permissionServiceInspectionView,
+    AppPermission.serviceInspectionCreate =>
+      l10n.permissionServiceInspectionCreate,
+    AppPermission.serviceInspectionEdit => l10n.permissionServiceInspectionEdit,
+    AppPermission.serviceInspectionComplete =>
+      l10n.permissionServiceInspectionComplete,
+    AppPermission.serviceInspectionCancel =>
+      l10n.permissionServiceInspectionCancel,
+    AppPermission.serviceRootCauseView ||
+    AppPermission.serviceRootCauseManage => l10n.servicesPermRootCausesView,
+    AppPermission.serviceChargeResponsibilityView ||
+    AppPermission.serviceChargeResponsibilityManage =>
+      l10n.servicesPermChargeResponsibilitiesView,
   };
 }

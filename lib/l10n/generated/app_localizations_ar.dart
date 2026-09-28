@@ -6397,4 +6397,501 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get servicesJobAssignmentGenerated => 'يُولَّد عند الحفظ';
+
+  @override
+  String get servicesPermSubInspections => 'الفحوصات';
+
+  @override
+  String get servicesPermInspectionsView => 'عرض الفحوصات';
+
+  @override
+  String get servicesPermInspectionsViewDesc =>
+      'عرض قائمة الفحوصات ضمن نطاق سجلاتك.';
+
+  @override
+  String get servicesPermInspectionsCreate => 'إنشاء فحص';
+
+  @override
+  String get servicesPermInspectionsCreateDesc =>
+      'إنشاء فحص من تكليف عمل مؤهل، مع البحث المقيّد عن المراجع.';
+
+  @override
+  String get servicesPermInspectionsEdit => 'تعديل الفحص';
+
+  @override
+  String get servicesPermInspectionsEditDesc => 'تعديل فحص قيد الانتظار.';
+
+  @override
+  String get servicesPermInspectionsComplete => 'إكمال الفحص';
+
+  @override
+  String get servicesPermInspectionsCompleteDesc => 'إنهاء فحص قيد الانتظار.';
+
+  @override
+  String get servicesPermInspectionsCancel => 'إلغاء الفحص';
+
+  @override
+  String get servicesPermInspectionsCancelDesc =>
+      'إلغاء فحص قيد الانتظار (يُحفظ تاريخيًا).';
+
+  @override
+  String get servicesPermRootCausesView => 'عرض الأسباب الجذرية';
+
+  @override
+  String get servicesPermRootCausesViewDesc => 'عرض إعدادات الأسباب الجذرية.';
+
+  @override
+  String get servicesPermRootCausesManage => 'إدارة الأسباب الجذرية';
+
+  @override
+  String get servicesPermRootCausesManageDesc =>
+      'إضافة وتعديل وإلغاء تنشيط الأسباب الجذرية.';
+
+  @override
+  String get servicesPermChargeResponsibilitiesView => 'عرض جهة التحميل';
+
+  @override
+  String get servicesPermChargeResponsibilitiesViewDesc =>
+      'عرض إعدادات جهة التحميل.';
+
+  @override
+  String get servicesPermChargeResponsibilitiesManage => 'إدارة جهة التحميل';
+
+  @override
+  String get servicesPermChargeResponsibilitiesManageDesc =>
+      'إضافة وتعديل وإلغاء تنشيط قيم جهة التحميل.';
+
+  @override
+  String get permissionServiceInspectionView => 'عرض الفحوصات';
+
+  @override
+  String get permissionServiceInspectionCreate => 'إنشاء فحص';
+
+  @override
+  String get permissionServiceInspectionEdit => 'تعديل الفحص';
+
+  @override
+  String get permissionServiceInspectionComplete => 'إكمال الفحص';
+
+  @override
+  String get permissionServiceInspectionCancel => 'إلغاء الفحص';
+
+  @override
+  String get servicesNavInspections => 'الفحوصات';
+
+  @override
+  String get servicesRootCausesTitle => 'الأسباب الجذرية';
+
+  @override
+  String get servicesChargeResponsibilitiesTitle => 'جهة التحميل';
+
+  @override
+  String get servicesInspectionsTitle => 'الفحوصات';
+
+  @override
+  String servicesInspectionCount(String filtered, String total) {
+    return '$filtered من $total فحص';
+  }
+
+  @override
+  String get servicesInspectionSearch =>
+      'ابحث برقم الفحص أو التكليف أو الاستفسار أو العميل أو الجوال أو الموقع أو الفني';
+
+  @override
+  String get servicesInspectionAllStatuses => 'كل الحالات';
+
+  @override
+  String get servicesInspectionStatusPending => 'قيد الانتظار';
+
+  @override
+  String get servicesInspectionStatusCompleted => 'مكتمل';
+
+  @override
+  String get servicesInspectionStatusCancelled => 'ملغى';
+
+  @override
+  String get servicesInspectionEmpty => 'لا توجد فحوصات بعد.';
+
+  @override
+  String get servicesInspectionEmptyMessage => 'أنشئ فحصًا من تكليف عمل نشط.';
+
+  @override
+  String get servicesInspectionNoResults => 'لا توجد فحوصات مطابقة للمرشحات.';
+
+  @override
+  String get servicesInspectionAdd => 'فحص جديد';
+
+  @override
+  String get servicesInspectionColumnInspection => 'الفحص';
+
+  @override
+  String get servicesInspectionColumnAssignment => 'تكليف العمل';
+
+  @override
+  String get servicesInspectionColumnEnquiry => 'الاستفسار';
+
+  @override
+  String get servicesInspectionColumnCustomerSite => 'العميل / الموقع';
+
+  @override
+  String get servicesInspectionColumnVisit => 'الزيارة';
+
+  @override
+  String get servicesInspectionColumnTechnician => 'الفني';
+
+  @override
+  String get servicesInspectionColumnRootCause => 'السبب الجذري';
+
+  @override
+  String get servicesInspectionColumnStatus => 'الحالة';
+
+  @override
+  String get servicesInspectionColumnCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesInspectionFilterTitle => 'المرشحات';
+
+  @override
+  String get servicesInspectionFilterStatus => 'الحالة';
+
+  @override
+  String get servicesInspectionFilterTechnician => 'الفني';
+
+  @override
+  String get servicesInspectionFilterRootCause => 'السبب الجذري';
+
+  @override
+  String get servicesInspectionFilterPriority => 'الأولوية';
+
+  @override
+  String get servicesInspectionFilterVisitFrom => 'الزيارة من';
+
+  @override
+  String get servicesInspectionFilterVisitTo => 'الزيارة إلى';
+
+  @override
+  String get servicesInspectionFormNew => 'فحص جديد';
+
+  @override
+  String get servicesInspectionFormEdit => 'تعديل الفحص';
+
+  @override
+  String get servicesInspectionCreate => 'إنشاء فحص';
+
+  @override
+  String get servicesInspectionSectionContext => 'سياق الفحص';
+
+  @override
+  String get servicesInspectionSectionCustomerService => 'سياق العميل والخدمة';
+
+  @override
+  String get servicesInspectionSectionVisit => 'الزيارة';
+
+  @override
+  String get servicesInspectionSectionAssessment => 'التقييم';
+
+  @override
+  String get servicesInspectionSectionChecklist => 'قائمة التحقق';
+
+  @override
+  String get servicesInspectionSectionPoints => 'النقاط المفحوصة';
+
+  @override
+  String get servicesInspectionSectionMaterials => 'المواد المطلوبة';
+
+  @override
+  String get servicesInspectionNo => 'رقم الفحص';
+
+  @override
+  String get servicesInspectionDate => 'تاريخ الفحص';
+
+  @override
+  String get servicesInspectionJobAssignment => 'تكليف العمل';
+
+  @override
+  String get servicesInspectionSelectAssignment => 'اختر تكليف عمل مؤهلًا';
+
+  @override
+  String get servicesInspectionVisitDate => 'تاريخ الزيارة';
+
+  @override
+  String get servicesInspectionVisitTime => 'وقت الزيارة';
+
+  @override
+  String get servicesInspectionTechnician => 'الفني';
+
+  @override
+  String get servicesInspectionTechnicianOptional => 'غير معيّن';
+
+  @override
+  String get servicesInspectionRootCause => 'السبب الجذري';
+
+  @override
+  String get servicesInspectionChargeResponsibility => 'جهة التحميل';
+
+  @override
+  String servicesInspectionChecklistItemTitle(String index) {
+    return 'بند التحقق $index';
+  }
+
+  @override
+  String get servicesInspectionWorkType => 'نوع العمل';
+
+  @override
+  String get servicesInspectionDescriptionForWork => 'وصف العمل';
+
+  @override
+  String get servicesInspectionChecklistStatus => 'الحالة';
+
+  @override
+  String get servicesInspectionChecklistStatusPending => 'قيد الانتظار';
+
+  @override
+  String get servicesInspectionBeforeWorkPhotos => 'صور قبل العمل';
+
+  @override
+  String get servicesInspectionAddPhotos => 'إضافة صور';
+
+  @override
+  String get servicesInspectionAddChecklist => 'إضافة بند تحقق';
+
+  @override
+  String get servicesInspectionRemoveChecklist => 'إزالة بند التحقق';
+
+  @override
+  String servicesInspectionPointTitle(String index) {
+    return 'نقطة $index';
+  }
+
+  @override
+  String get servicesInspectionPointDescription => 'الوصف';
+
+  @override
+  String get servicesInspectionAddPoint => 'إضافة نقطة مفحوصة';
+
+  @override
+  String get servicesInspectionRemovePoint => 'إزالة النقطة المفحوصة';
+
+  @override
+  String servicesInspectionMaterialTitle(String index) {
+    return 'مادة $index';
+  }
+
+  @override
+  String get servicesInspectionMaterialCode => 'الرمز';
+
+  @override
+  String get servicesInspectionMaterialDescription => 'الوصف';
+
+  @override
+  String get servicesInspectionMaterialStatus => 'الحالة';
+
+  @override
+  String get servicesInspectionMaterialStatusWaiting => 'بالانتظار';
+
+  @override
+  String get servicesInspectionAddMaterial => 'إضافة مادة مطلوبة';
+
+  @override
+  String get servicesInspectionRemoveMaterial => 'إزالة المادة المطلوبة';
+
+  @override
+  String get servicesInspectionDetailContext => 'السياق المصدر';
+
+  @override
+  String get servicesInspectionDetailAssessment => 'التقييم';
+
+  @override
+  String get servicesInspectionDetailChecklist => 'قائمة التحقق';
+
+  @override
+  String get servicesInspectionDetailPoints => 'النقاط المفحوصة';
+
+  @override
+  String get servicesInspectionDetailMaterials => 'المواد المطلوبة';
+
+  @override
+  String get servicesInspectionDetailAudit => 'السجل';
+
+  @override
+  String get servicesInspectionDetailActivity => 'النشاط';
+
+  @override
+  String get servicesInspectionEdit => 'تعديل الفحص';
+
+  @override
+  String get servicesInspectionComplete => 'إكمال الفحص';
+
+  @override
+  String get servicesInspectionCancel => 'إلغاء الفحص';
+
+  @override
+  String get servicesInspectionCompleteConfirmTitle => 'إكمال الفحص؟';
+
+  @override
+  String get servicesInspectionCompleteConfirmMessage =>
+      'يصبح الفحص للقراءة فقط ويمكن استخدامه في خطوات سير العمل اللاحقة.';
+
+  @override
+  String get servicesInspectionCancelConfirmTitle => 'إلغاء الفحص؟';
+
+  @override
+  String get servicesInspectionCancelConfirmMessage =>
+      'يبقى الفحص الملغى متاحًا تاريخيًا ولا يمكن تعديله بعد ذلك.';
+
+  @override
+  String get servicesInspectionCreated => 'تم إنشاء الفحص.';
+
+  @override
+  String get servicesInspectionUpdated => 'تم تحديث الفحص.';
+
+  @override
+  String get servicesInspectionCompleted => 'تم إكمال الفحص.';
+
+  @override
+  String get servicesInspectionCancelled => 'تم إلغاء الفحص.';
+
+  @override
+  String get servicesInspectionNoActivity => 'لا يوجد نشاط بعد.';
+
+  @override
+  String get servicesInspectionCreatedBy => 'أنشأه';
+
+  @override
+  String get servicesInspectionCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesInspectionUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesInspectionUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesInspectionVersion => 'الإصدار';
+
+  @override
+  String get servicesInspectionNoChecklist => 'لا توجد بنود تحقق.';
+
+  @override
+  String get servicesInspectionNoPoints => 'لا توجد نقاط مفحوصة.';
+
+  @override
+  String get servicesInspectionNoMaterials => 'لا توجد مواد مطلوبة.';
+
+  @override
+  String get servicesInspectionDenied => 'ليس لديك صلاحية لتنفيذ هذا الإجراء.';
+
+  @override
+  String get servicesInspectionNotFound => 'الفحص غير موجود.';
+
+  @override
+  String get servicesInspectionNotEditable =>
+      'يمكن تعديل الفحوصات قيد الانتظار فقط.';
+
+  @override
+  String get servicesInspectionNotCompletable =>
+      'يمكن إكمال الفحوصات قيد الانتظار فقط.';
+
+  @override
+  String get servicesInspectionAlreadyCancelled => 'هذا الفحص ملغى بالفعل.';
+
+  @override
+  String get servicesInspectionNotCancellable => 'لا يمكن إلغاء فحص مكتمل.';
+
+  @override
+  String get servicesInspectionAssignmentRequired => 'اختر تكليف عمل.';
+
+  @override
+  String get servicesInspectionAssignmentInvalid =>
+      'تكليف العمل المحدد غير مؤهل.';
+
+  @override
+  String get servicesInspectionAlreadyActive => 'يوجد فحص لهذا التكليف بالفعل.';
+
+  @override
+  String get servicesInspectionVisitDateRequired => 'اختر تاريخ الزيارة.';
+
+  @override
+  String get servicesInspectionVisitTimeRequired => 'اختر وقت الزيارة.';
+
+  @override
+  String get servicesInspectionTechnicianRequired => 'اختر فنيًا.';
+
+  @override
+  String get servicesInspectionTechnicianInvalid =>
+      'الفني المحدد غير مؤهل لهذا التكليف.';
+
+  @override
+  String get servicesInspectionRootCauseRequired => 'اختر السبب الجذري.';
+
+  @override
+  String get servicesInspectionRootCauseInvalid =>
+      'السبب الجذري المحدد غير متاح.';
+
+  @override
+  String get servicesInspectionChargeResponsibilityRequired =>
+      'اختر جهة التحميل.';
+
+  @override
+  String get servicesInspectionChargeResponsibilityInvalid =>
+      'جهة التحميل المحددة غير متاحة.';
+
+  @override
+  String get servicesInspectionAssessmentRequired =>
+      'أضف بند تحقق واحدًا على الأقل أو نقطة مفحوصة.';
+
+  @override
+  String get servicesInspectionWorkTypeRequired =>
+      'أدخل نوع العمل لكل بند تحقق.';
+
+  @override
+  String get servicesInspectionPointRequired => 'أدخل وصفًا لكل نقطة مفحوصة.';
+
+  @override
+  String get servicesInspectionMaterialCodeRequired =>
+      'أدخل الرمز لكل مادة مطلوبة.';
+
+  @override
+  String get servicesInspectionMaterialDescriptionRequired =>
+      'أدخل الوصف لكل مادة مطلوبة.';
+
+  @override
+  String get servicesInspectionSequenceFailed => 'تعذّر تخصيص رقم للفحص.';
+
+  @override
+  String get servicesInspectionStorageError =>
+      'تعذّر حفظ الفحص. حاول مرة أخرى.';
+
+  @override
+  String get servicesActivityCompleted => 'إكمال';
+
+  @override
+  String get servicesOverviewInspectionsPending => 'الفحوصات قيد الانتظار';
+
+  @override
+  String get servicesOverviewInspectionsToday => 'فحوصات اليوم';
+
+  @override
+  String get servicesOverviewInspectionsCompleted => 'الفحوصات المكتملة';
+
+  @override
+  String get servicesOverviewRecentInspections => 'أحدث الفحوصات';
+
+  @override
+  String get servicesOverviewNoInspections => 'لا توجد فحوصات بعد.';
+
+  @override
+  String get servicesAssignmentInspectionSection => 'الفحص';
+
+  @override
+  String get servicesAssignmentCreateInspection => 'إنشاء فحص';
+
+  @override
+  String get servicesAssignmentViewInspection => 'عرض الفحص';
+
+  @override
+  String get notifServiceInspectionAssignedTitle => 'تم تكليفك بفحص';
+
+  @override
+  String get notifServiceInspectionAssignedBody => 'تم تكليفك بفحص خدمة.';
 }

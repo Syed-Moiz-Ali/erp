@@ -214,6 +214,38 @@ class NavigationResolver {
       }
       return RouteAccess.allowed;
     }
+    if (owner?.id == 'services-inspections') {
+      final base = access(
+        owner!,
+        context.company,
+        context.user.permissions,
+        capabilities,
+      );
+      if (base != RouteAccess.allowed) return base;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceInspectionCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceInspectionEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      final segments = Uri.parse(path).pathSegments;
+      final isDetail = segments.isNotEmpty && segments.last != 'inspections';
+      if (isDetail) {
+        return p.canAny([
+              AppPermission.serviceInspectionViewAssigned,
+              AppPermission.serviceInspectionViewTeam,
+              AppPermission.serviceInspectionViewAll,
+            ])
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return RouteAccess.allowed;
+    }
     return owner == null
         ? RouteAccess.unknown
         : access(

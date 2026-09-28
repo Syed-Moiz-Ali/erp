@@ -27,6 +27,11 @@ import 'package:modular_erp/modules/services/job_assignments/presentation/bloc/s
 import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_detail_page.dart';
 import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_form_page.dart';
 import 'package:modular_erp/modules/services/job_assignments/presentation/pages/service_job_assignment_list_page.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
+import 'package:modular_erp/modules/services/inspections/presentation/bloc/service_inspection_blocs.dart';
+import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_detail_page.dart';
+import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_form_page.dart';
+import 'package:modular_erp/modules/services/inspections/presentation/pages/service_inspection_list_page.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/overview/presentation/bloc/service_overview_cubit.dart';
 import 'package:modular_erp/modules/services/overview/presentation/service_overview_page.dart';
@@ -53,6 +58,7 @@ List<AppModule> buildServicesModules({
   ServiceMasterRepository? masters,
   ServiceEnquiryRepository? enquiries,
   ServiceJobAssignmentRepository? jobAssignments,
+  ServiceInspectionRepository? inspections,
   WorkforceDirectory? workforce,
   ActivityRepository? activity,
 }) {
@@ -114,6 +120,20 @@ List<AppModule> buildServicesModules({
         ServicesRoutes.ticketTypes,
         ServicesRoutes.ticketTypesNew,
         ServicesRoutes.ticketType,
+      ),
+      ServiceMasterKind.rootCause => (
+        'services-root-causes',
+        ServicesRoutes.rootCauses,
+        ServicesRoutes.rootCauses,
+        ServicesRoutes.rootCausesNew,
+        ServicesRoutes.rootCause,
+      ),
+      ServiceMasterKind.chargeResponsibility => (
+        'services-charge-responsibilities',
+        ServicesRoutes.chargeResponsibilities,
+        ServicesRoutes.chargeResponsibilities,
+        ServicesRoutes.chargeResponsibilitiesNew,
+        ServicesRoutes.chargeResponsibility,
       ),
     };
     return RegisteredDestination(
@@ -221,6 +241,7 @@ List<AppModule> buildServicesModules({
                 account,
                 enquiries: enquiries,
                 jobAssignments: jobAssignments,
+                inspections: inspections,
               )..load(),
               child: const ServiceOverviewPage(),
             );
@@ -373,6 +394,7 @@ List<AppModule> buildServicesModules({
                     )..start(),
                     child: ServiceJobAssignmentDetailPage(
                       assignmentId: assignmentId,
+                      inspections: inspections,
                     ),
                   );
                 },
@@ -402,6 +424,96 @@ List<AppModule> buildServicesModules({
               ),
             ],
           ),
+        if (inspections != null && workforce != null)
+          destination(
+            ErpModule(
+              id: 'services-inspections',
+              moduleId: AppModuleIds.services,
+              name: (l) => l.servicesNavInspections,
+              icon: Icons.fact_check_outlined,
+              selectedIcon: Icons.fact_check,
+              route: ServicesRoutes.inspections,
+              navigationGroup: NavigationGroup.services,
+              order: 3,
+              anyPermissions: {
+                AppPermission.serviceInspectionViewAssigned,
+                AppPermission.serviceInspectionViewTeam,
+                AppPermission.serviceInspectionViewAll,
+                AppPermission.serviceInspectionCreate,
+              },
+            ),
+            (context) {
+              final account = context.read<AuthBloc>().state.context!;
+              return BlocProvider(
+                create: (_) =>
+                    ServiceInspectionListCubit(inspections, masters, account)
+                      ..start(),
+                child: const ServiceInspectionListPage(),
+              );
+            },
+            children: [
+              GoRoute(
+                path: 'new',
+                name: 'services-inspection-new',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final assignmentId =
+                      state.uri.queryParameters['assignmentId'];
+                  return BlocProvider(
+                    create: (_) => ServiceInspectionFormCubit(
+                      inspections,
+                      masters,
+                      account,
+                      null,
+                      initialJobAssignmentId: assignmentId,
+                    )..init(),
+                    child: const ServiceInspectionFormPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':inspectionId',
+                name: 'services-inspection-details',
+                builder: (context, state) {
+                  final account = context.read<AuthBloc>().state.context!;
+                  final inspectionId = state.pathParameters['inspectionId']!;
+                  return BlocProvider(
+                    create: (_) => ServiceInspectionDetailCubit(
+                      inspections,
+                      activity!,
+                      account,
+                      inspectionId,
+                    )..start(),
+                    child: ServiceInspectionDetailPage(
+                      inspectionId: inspectionId,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    name: 'services-inspection-edit',
+                    builder: (context, state) {
+                      final account = context.read<AuthBloc>().state.context!;
+                      final inspectionId =
+                          state.pathParameters['inspectionId']!;
+                      return BlocProvider(
+                        create: (_) => ServiceInspectionFormCubit(
+                          inspections,
+                          masters,
+                          account,
+                          inspectionId,
+                        )..init(),
+                        child: ServiceInspectionFormPage(
+                          inspectionId: inspectionId,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         destination(
           ErpModule(
             id: 'services-customers',
@@ -410,7 +522,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.business_outlined,
             route: ServicesRoutes.customers,
             navigationGroup: NavigationGroup.services,
-            order: 3,
+            order: 4,
             requiredPermissions: {AppPermission.serviceCustomerView},
           ),
           (context) {
@@ -486,7 +598,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.location_on_outlined,
             route: ServicesRoutes.sites,
             navigationGroup: NavigationGroup.services,
-            order: 4,
+            order: 5,
             requiredPermissions: {AppPermission.serviceSiteView},
           ),
           (context) {
@@ -564,7 +676,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.groups_outlined,
             route: ServicesRoutes.teams,
             navigationGroup: NavigationGroup.services,
-            order: 5,
+            order: 6,
             requiredPermissions: {AppPermission.serviceTeamView},
           ),
           (context) {
@@ -630,7 +742,7 @@ List<AppModule> buildServicesModules({
             icon: Icons.settings_outlined,
             route: ServicesRoutes.settings,
             navigationGroup: NavigationGroup.services,
-            order: 6,
+            order: 7,
             anyPermissions: {
               AppPermission.serviceTypeView,
               AppPermission.complaintTypeView,
@@ -644,6 +756,8 @@ List<AppModule> buildServicesModules({
         masterDestination(ServiceMasterKind.complaintType),
         masterDestination(ServiceMasterKind.priority),
         masterDestination(ServiceMasterKind.ticketType),
+        masterDestination(ServiceMasterKind.rootCause),
+        masterDestination(ServiceMasterKind.chargeResponsibility),
       ],
     ),
   ];
@@ -654,4 +768,7 @@ AppPermission _masterView(ServiceMasterKind kind) => switch (kind) {
   ServiceMasterKind.complaintType => AppPermission.complaintTypeView,
   ServiceMasterKind.priority => AppPermission.servicePriorityView,
   ServiceMasterKind.ticketType => AppPermission.serviceTicketTypeView,
+  ServiceMasterKind.rootCause => AppPermission.serviceRootCauseView,
+  ServiceMasterKind.chargeResponsibility =>
+    AppPermission.serviceChargeResponsibilityView,
 };

@@ -7,15 +7,22 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/presentation/bloc/service_job_assignment_blocs.dart';
 import 'package:modular_erp/modules/services/job_assignments/presentation/widgets/job_assignment_widgets.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/assignment_inspection_section.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceJobAssignmentDetailPage extends StatelessWidget {
-  const ServiceJobAssignmentDetailPage({super.key, required this.assignmentId});
+  const ServiceJobAssignmentDetailPage({
+    super.key,
+    required this.assignmentId,
+    this.inspections,
+  });
   final String assignmentId;
+  final ServiceInspectionRepository? inspections;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +181,14 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxl),
               SourceEnquiryIssues(details: view.enquiryDetails),
               const SizedBox(height: AppSpacing.xxl),
+              if (inspections != null) ...[
+                AssignmentInspectionSection(
+                  repository: inspections!,
+                  jobAssignmentId: a.id,
+                  assignmentActive: a.isActive,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
               AppFormSection(
                 title: l.servicesJobAssignmentDetailWork,
                 child: Column(

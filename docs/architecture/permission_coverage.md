@@ -136,6 +136,31 @@ Notes:
   `/edit` → edit, `/:id` → any view scope); the repository re-checks every
   mutation and the record scope on every read.
 
+## Services (Phase 4 — Inspection)
+
+| Permission | Scope | Nav | Route | Read | Action | Mutation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `services.inspections.view` | `assigned`/`team`/`all` | Services + Inspections | `/app/services/inspections`, `/:id` | `watchInspections`/`getInspection`/`summary`/`watchRecentInspections`, job-assignment integration | — | — |
+| `services.inspections.create` | none | Inspections (New) + Assignment action | `/new` | restricted Assignment/Enquiry/Employee/Team reference lookup | New inspection | `createInspection` |
+| `services.inspections.edit` | none | Inspections (Edit) | `/:id/edit` | restricted reference lookup | Edit (PENDING only) | `updateInspection` |
+| `services.inspections.complete` | none | Inspections (Complete) | — | — | Complete (PENDING only) | `completeInspection` |
+| `services.inspections.cancel` | none | Inspections (Cancel) | — | — | Cancel (PENDING only) | `cancelInspection` |
+| `services.rootCauses.view` | none | Settings | `/app/services/settings/root-causes*` | master list | — | — |
+| `services.rootCauses.manage` | none | — | `.../new\|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+| `services.chargeResponsibilities.view` | none | Settings | `/app/services/settings/charge-responsibilities*` | master list | — | — |
+| `services.chargeResponsibilities.manage` | none | — | `.../new\|edit` | — | Add/Edit/Deactivate | `save`/`setActive` |
+
+Notes:
+
+- Create/Edit/Complete/Cancel imply `serviceInspectionViewAll` via
+  `permissionViewDependencies`. Record scope via `ServiceInspectionScopeResolver`
+  (ASSIGNED = technician or directly assigned on the source assignment or in an
+  assigned Service Team; TEAM never ALL; ALL = company).
+- Restricted Assignment/Employee/Team lookups are authorized by Inspection
+  Create/Edit, never by broad Job Assignment/HR/Team directory access.
+- Before-work photo access inherits the owning Inspection (no attachment-id bypass).
+- `*Manage` implies `*View` (root causes / charge responsibility).
+
 ## Notes
 
 - `*Manage` implies `*View` through `permissionViewDependencies` (single

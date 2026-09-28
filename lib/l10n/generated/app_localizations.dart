@@ -12373,6 +12373,942 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Generated when saved'**
   String get servicesJobAssignmentGenerated;
+
+  /// No description provided for @servicesPermSubInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get servicesPermSubInspections;
+
+  /// No description provided for @servicesPermInspectionsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View inspections'**
+  String get servicesPermInspectionsView;
+
+  /// No description provided for @servicesPermInspectionsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the company inspection queue within your record scope.'**
+  String get servicesPermInspectionsViewDesc;
+
+  /// No description provided for @servicesPermInspectionsCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create inspection'**
+  String get servicesPermInspectionsCreate;
+
+  /// No description provided for @servicesPermInspectionsCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an inspection from an eligible job assignment, including restricted reference lookup.'**
+  String get servicesPermInspectionsCreateDesc;
+
+  /// No description provided for @servicesPermInspectionsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit inspection'**
+  String get servicesPermInspectionsEdit;
+
+  /// No description provided for @servicesPermInspectionsEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a pending inspection.'**
+  String get servicesPermInspectionsEditDesc;
+
+  /// No description provided for @servicesPermInspectionsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete inspection'**
+  String get servicesPermInspectionsComplete;
+
+  /// No description provided for @servicesPermInspectionsCompleteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finalize a pending inspection.'**
+  String get servicesPermInspectionsCompleteDesc;
+
+  /// No description provided for @servicesPermInspectionsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel inspection'**
+  String get servicesPermInspectionsCancel;
+
+  /// No description provided for @servicesPermInspectionsCancelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel a pending inspection (kept historically).'**
+  String get servicesPermInspectionsCancelDesc;
+
+  /// No description provided for @servicesPermRootCausesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View root causes'**
+  String get servicesPermRootCausesView;
+
+  /// No description provided for @servicesPermRootCausesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the root cause configuration.'**
+  String get servicesPermRootCausesViewDesc;
+
+  /// No description provided for @servicesPermRootCausesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage root causes'**
+  String get servicesPermRootCausesManage;
+
+  /// No description provided for @servicesPermRootCausesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add, edit and deactivate root causes.'**
+  String get servicesPermRootCausesManageDesc;
+
+  /// No description provided for @servicesPermChargeResponsibilitiesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View charge responsibility'**
+  String get servicesPermChargeResponsibilitiesView;
+
+  /// No description provided for @servicesPermChargeResponsibilitiesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View the charge responsibility configuration.'**
+  String get servicesPermChargeResponsibilitiesViewDesc;
+
+  /// No description provided for @servicesPermChargeResponsibilitiesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage charge responsibility'**
+  String get servicesPermChargeResponsibilitiesManage;
+
+  /// No description provided for @servicesPermChargeResponsibilitiesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add, edit and deactivate charge responsibility values.'**
+  String get servicesPermChargeResponsibilitiesManageDesc;
+
+  /// No description provided for @permissionServiceInspectionView.
+  ///
+  /// In en, this message translates to:
+  /// **'View inspections'**
+  String get permissionServiceInspectionView;
+
+  /// No description provided for @permissionServiceInspectionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create inspection'**
+  String get permissionServiceInspectionCreate;
+
+  /// No description provided for @permissionServiceInspectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit inspection'**
+  String get permissionServiceInspectionEdit;
+
+  /// No description provided for @permissionServiceInspectionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete inspection'**
+  String get permissionServiceInspectionComplete;
+
+  /// No description provided for @permissionServiceInspectionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel inspection'**
+  String get permissionServiceInspectionCancel;
+
+  /// No description provided for @servicesNavInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get servicesNavInspections;
+
+  /// No description provided for @servicesRootCausesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Root causes'**
+  String get servicesRootCausesTitle;
+
+  /// No description provided for @servicesChargeResponsibilitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge responsibility'**
+  String get servicesChargeResponsibilitiesTitle;
+
+  /// No description provided for @servicesInspectionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections'**
+  String get servicesInspectionsTitle;
+
+  /// No description provided for @servicesInspectionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} inspections'**
+  String servicesInspectionCount(String filtered, String total);
+
+  /// No description provided for @servicesInspectionSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by inspection, assignment, enquiry, customer, mobile, site or technician'**
+  String get servicesInspectionSearch;
+
+  /// No description provided for @servicesInspectionAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get servicesInspectionAllStatuses;
+
+  /// No description provided for @servicesInspectionStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get servicesInspectionStatusPending;
+
+  /// No description provided for @servicesInspectionStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get servicesInspectionStatusCompleted;
+
+  /// No description provided for @servicesInspectionStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get servicesInspectionStatusCancelled;
+
+  /// No description provided for @servicesInspectionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspections yet.'**
+  String get servicesInspectionEmpty;
+
+  /// No description provided for @servicesInspectionEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an inspection from an active job assignment.'**
+  String get servicesInspectionEmptyMessage;
+
+  /// No description provided for @servicesInspectionNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspections match your filters.'**
+  String get servicesInspectionNoResults;
+
+  /// No description provided for @servicesInspectionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New inspection'**
+  String get servicesInspectionAdd;
+
+  /// No description provided for @servicesInspectionColumnInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesInspectionColumnInspection;
+
+  /// No description provided for @servicesInspectionColumnAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesInspectionColumnAssignment;
+
+  /// No description provided for @servicesInspectionColumnEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry'**
+  String get servicesInspectionColumnEnquiry;
+
+  /// No description provided for @servicesInspectionColumnCustomerSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer / site'**
+  String get servicesInspectionColumnCustomerSite;
+
+  /// No description provided for @servicesInspectionColumnVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit'**
+  String get servicesInspectionColumnVisit;
+
+  /// No description provided for @servicesInspectionColumnTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician'**
+  String get servicesInspectionColumnTechnician;
+
+  /// No description provided for @servicesInspectionColumnRootCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Root cause'**
+  String get servicesInspectionColumnRootCause;
+
+  /// No description provided for @servicesInspectionColumnStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesInspectionColumnStatus;
+
+  /// No description provided for @servicesInspectionColumnCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesInspectionColumnCreated;
+
+  /// No description provided for @servicesInspectionFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get servicesInspectionFilterTitle;
+
+  /// No description provided for @servicesInspectionFilterStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesInspectionFilterStatus;
+
+  /// No description provided for @servicesInspectionFilterTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician'**
+  String get servicesInspectionFilterTechnician;
+
+  /// No description provided for @servicesInspectionFilterRootCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Root cause'**
+  String get servicesInspectionFilterRootCause;
+
+  /// No description provided for @servicesInspectionFilterPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get servicesInspectionFilterPriority;
+
+  /// No description provided for @servicesInspectionFilterVisitFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit from'**
+  String get servicesInspectionFilterVisitFrom;
+
+  /// No description provided for @servicesInspectionFilterVisitTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit to'**
+  String get servicesInspectionFilterVisitTo;
+
+  /// No description provided for @servicesInspectionFormNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New inspection'**
+  String get servicesInspectionFormNew;
+
+  /// No description provided for @servicesInspectionFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit inspection'**
+  String get servicesInspectionFormEdit;
+
+  /// No description provided for @servicesInspectionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create inspection'**
+  String get servicesInspectionCreate;
+
+  /// No description provided for @servicesInspectionSectionContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection context'**
+  String get servicesInspectionSectionContext;
+
+  /// No description provided for @servicesInspectionSectionCustomerService.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer & service context'**
+  String get servicesInspectionSectionCustomerService;
+
+  /// No description provided for @servicesInspectionSectionVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit'**
+  String get servicesInspectionSectionVisit;
+
+  /// No description provided for @servicesInspectionSectionAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment'**
+  String get servicesInspectionSectionAssessment;
+
+  /// No description provided for @servicesInspectionSectionChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get servicesInspectionSectionChecklist;
+
+  /// No description provided for @servicesInspectionSectionPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspected points'**
+  String get servicesInspectionSectionPoints;
+
+  /// No description provided for @servicesInspectionSectionMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Material required'**
+  String get servicesInspectionSectionMaterials;
+
+  /// No description provided for @servicesInspectionNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection no'**
+  String get servicesInspectionNo;
+
+  /// No description provided for @servicesInspectionDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection date'**
+  String get servicesInspectionDate;
+
+  /// No description provided for @servicesInspectionJobAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Job assignment'**
+  String get servicesInspectionJobAssignment;
+
+  /// No description provided for @servicesInspectionSelectAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an eligible job assignment'**
+  String get servicesInspectionSelectAssignment;
+
+  /// No description provided for @servicesInspectionVisitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit date'**
+  String get servicesInspectionVisitDate;
+
+  /// No description provided for @servicesInspectionVisitTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit time'**
+  String get servicesInspectionVisitTime;
+
+  /// No description provided for @servicesInspectionTechnician.
+  ///
+  /// In en, this message translates to:
+  /// **'Technician'**
+  String get servicesInspectionTechnician;
+
+  /// No description provided for @servicesInspectionTechnicianOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get servicesInspectionTechnicianOptional;
+
+  /// No description provided for @servicesInspectionRootCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Root cause'**
+  String get servicesInspectionRootCause;
+
+  /// No description provided for @servicesInspectionChargeResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge responsibility'**
+  String get servicesInspectionChargeResponsibility;
+
+  /// No description provided for @servicesInspectionChecklistItemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist item {index}'**
+  String servicesInspectionChecklistItemTitle(String index);
+
+  /// No description provided for @servicesInspectionWorkType.
+  ///
+  /// In en, this message translates to:
+  /// **'Work type'**
+  String get servicesInspectionWorkType;
+
+  /// No description provided for @servicesInspectionDescriptionForWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Description for work'**
+  String get servicesInspectionDescriptionForWork;
+
+  /// No description provided for @servicesInspectionChecklistStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesInspectionChecklistStatus;
+
+  /// No description provided for @servicesInspectionChecklistStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get servicesInspectionChecklistStatusPending;
+
+  /// No description provided for @servicesInspectionBeforeWorkPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Before work photos'**
+  String get servicesInspectionBeforeWorkPhotos;
+
+  /// No description provided for @servicesInspectionAddPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get servicesInspectionAddPhotos;
+
+  /// No description provided for @servicesInspectionAddChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Add checklist item'**
+  String get servicesInspectionAddChecklist;
+
+  /// No description provided for @servicesInspectionRemoveChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove checklist item'**
+  String get servicesInspectionRemoveChecklist;
+
+  /// No description provided for @servicesInspectionPointTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Point {index}'**
+  String servicesInspectionPointTitle(String index);
+
+  /// No description provided for @servicesInspectionPointDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesInspectionPointDescription;
+
+  /// No description provided for @servicesInspectionAddPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add inspected point'**
+  String get servicesInspectionAddPoint;
+
+  /// No description provided for @servicesInspectionRemovePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove inspected point'**
+  String get servicesInspectionRemovePoint;
+
+  /// No description provided for @servicesInspectionMaterialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material {index}'**
+  String servicesInspectionMaterialTitle(String index);
+
+  /// No description provided for @servicesInspectionMaterialCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get servicesInspectionMaterialCode;
+
+  /// No description provided for @servicesInspectionMaterialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get servicesInspectionMaterialDescription;
+
+  /// No description provided for @servicesInspectionMaterialStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get servicesInspectionMaterialStatus;
+
+  /// No description provided for @servicesInspectionMaterialStatusWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get servicesInspectionMaterialStatusWaiting;
+
+  /// No description provided for @servicesInspectionAddMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Add material requirement'**
+  String get servicesInspectionAddMaterial;
+
+  /// No description provided for @servicesInspectionRemoveMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove material requirement'**
+  String get servicesInspectionRemoveMaterial;
+
+  /// No description provided for @servicesInspectionDetailContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Source context'**
+  String get servicesInspectionDetailContext;
+
+  /// No description provided for @servicesInspectionDetailAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment'**
+  String get servicesInspectionDetailAssessment;
+
+  /// No description provided for @servicesInspectionDetailChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get servicesInspectionDetailChecklist;
+
+  /// No description provided for @servicesInspectionDetailPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspected points'**
+  String get servicesInspectionDetailPoints;
+
+  /// No description provided for @servicesInspectionDetailMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Material required'**
+  String get servicesInspectionDetailMaterials;
+
+  /// No description provided for @servicesInspectionDetailAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get servicesInspectionDetailAudit;
+
+  /// No description provided for @servicesInspectionDetailActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get servicesInspectionDetailActivity;
+
+  /// No description provided for @servicesInspectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit inspection'**
+  String get servicesInspectionEdit;
+
+  /// No description provided for @servicesInspectionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete inspection'**
+  String get servicesInspectionComplete;
+
+  /// No description provided for @servicesInspectionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel inspection'**
+  String get servicesInspectionCancel;
+
+  /// No description provided for @servicesInspectionCompleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete inspection?'**
+  String get servicesInspectionCompleteConfirmTitle;
+
+  /// No description provided for @servicesInspectionCompleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The inspection becomes read-only and can be used by later workflow steps.'**
+  String get servicesInspectionCompleteConfirmMessage;
+
+  /// No description provided for @servicesInspectionCancelConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel inspection?'**
+  String get servicesInspectionCancelConfirmTitle;
+
+  /// No description provided for @servicesInspectionCancelConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cancelled inspection stays available historically and cannot be edited afterwards.'**
+  String get servicesInspectionCancelConfirmMessage;
+
+  /// No description provided for @servicesInspectionCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection created.'**
+  String get servicesInspectionCreated;
+
+  /// No description provided for @servicesInspectionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection updated.'**
+  String get servicesInspectionUpdated;
+
+  /// No description provided for @servicesInspectionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection completed.'**
+  String get servicesInspectionCompleted;
+
+  /// No description provided for @servicesInspectionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection cancelled.'**
+  String get servicesInspectionCancelled;
+
+  /// No description provided for @servicesInspectionNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet.'**
+  String get servicesInspectionNoActivity;
+
+  /// No description provided for @servicesInspectionCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get servicesInspectionCreatedBy;
+
+  /// No description provided for @servicesInspectionCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get servicesInspectionCreatedAt;
+
+  /// No description provided for @servicesInspectionUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesInspectionUpdatedBy;
+
+  /// No description provided for @servicesInspectionUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get servicesInspectionUpdatedAt;
+
+  /// No description provided for @servicesInspectionVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get servicesInspectionVersion;
+
+  /// No description provided for @servicesInspectionNoChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'No checklist items.'**
+  String get servicesInspectionNoChecklist;
+
+  /// No description provided for @servicesInspectionNoPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspected points.'**
+  String get servicesInspectionNoPoints;
+
+  /// No description provided for @servicesInspectionNoMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'No material requirements.'**
+  String get servicesInspectionNoMaterials;
+
+  /// No description provided for @servicesInspectionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get servicesInspectionDenied;
+
+  /// No description provided for @servicesInspectionNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection not found.'**
+  String get servicesInspectionNotFound;
+
+  /// No description provided for @servicesInspectionNotEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only pending inspections can be edited.'**
+  String get servicesInspectionNotEditable;
+
+  /// No description provided for @servicesInspectionNotCompletable.
+  ///
+  /// In en, this message translates to:
+  /// **'Only pending inspections can be completed.'**
+  String get servicesInspectionNotCompletable;
+
+  /// No description provided for @servicesInspectionAlreadyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This inspection is already cancelled.'**
+  String get servicesInspectionAlreadyCancelled;
+
+  /// No description provided for @servicesInspectionNotCancellable.
+  ///
+  /// In en, this message translates to:
+  /// **'A completed inspection cannot be cancelled.'**
+  String get servicesInspectionNotCancellable;
+
+  /// No description provided for @servicesInspectionAssignmentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a job assignment.'**
+  String get servicesInspectionAssignmentRequired;
+
+  /// No description provided for @servicesInspectionAssignmentInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected job assignment is not eligible.'**
+  String get servicesInspectionAssignmentInvalid;
+
+  /// No description provided for @servicesInspectionAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This job assignment already has an inspection.'**
+  String get servicesInspectionAlreadyActive;
+
+  /// No description provided for @servicesInspectionVisitDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a visit date.'**
+  String get servicesInspectionVisitDateRequired;
+
+  /// No description provided for @servicesInspectionVisitTimeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a visit time.'**
+  String get servicesInspectionVisitTimeRequired;
+
+  /// No description provided for @servicesInspectionTechnicianRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a technician.'**
+  String get servicesInspectionTechnicianRequired;
+
+  /// No description provided for @servicesInspectionTechnicianInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected technician is not eligible for this assignment.'**
+  String get servicesInspectionTechnicianInvalid;
+
+  /// No description provided for @servicesInspectionRootCauseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a root cause.'**
+  String get servicesInspectionRootCauseRequired;
+
+  /// No description provided for @servicesInspectionRootCauseInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected root cause is not available.'**
+  String get servicesInspectionRootCauseInvalid;
+
+  /// No description provided for @servicesInspectionChargeResponsibilityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a charge responsibility.'**
+  String get servicesInspectionChargeResponsibilityRequired;
+
+  /// No description provided for @servicesInspectionChargeResponsibilityInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected charge responsibility is not available.'**
+  String get servicesInspectionChargeResponsibilityInvalid;
+
+  /// No description provided for @servicesInspectionAssessmentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one checklist item or inspected point.'**
+  String get servicesInspectionAssessmentRequired;
+
+  /// No description provided for @servicesInspectionWorkTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the work type for each checklist item.'**
+  String get servicesInspectionWorkTypeRequired;
+
+  /// No description provided for @servicesInspectionPointRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a description for each inspected point.'**
+  String get servicesInspectionPointRequired;
+
+  /// No description provided for @servicesInspectionMaterialCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code for each material requirement.'**
+  String get servicesInspectionMaterialCodeRequired;
+
+  /// No description provided for @servicesInspectionMaterialDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the description for each material requirement.'**
+  String get servicesInspectionMaterialDescriptionRequired;
+
+  /// No description provided for @servicesInspectionSequenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not allocate an inspection number.'**
+  String get servicesInspectionSequenceFailed;
+
+  /// No description provided for @servicesInspectionStorageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the inspection. Please try again.'**
+  String get servicesInspectionStorageError;
+
+  /// No description provided for @servicesActivityCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get servicesActivityCompleted;
+
+  /// No description provided for @servicesOverviewInspectionsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending inspections'**
+  String get servicesOverviewInspectionsPending;
+
+  /// No description provided for @servicesOverviewInspectionsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspections today'**
+  String get servicesOverviewInspectionsToday;
+
+  /// No description provided for @servicesOverviewInspectionsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed inspections'**
+  String get servicesOverviewInspectionsCompleted;
+
+  /// No description provided for @servicesOverviewRecentInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent inspections'**
+  String get servicesOverviewRecentInspections;
+
+  /// No description provided for @servicesOverviewNoInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'No inspections yet.'**
+  String get servicesOverviewNoInspections;
+
+  /// No description provided for @servicesAssignmentInspectionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesAssignmentInspectionSection;
+
+  /// No description provided for @servicesAssignmentCreateInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Create inspection'**
+  String get servicesAssignmentCreateInspection;
+
+  /// No description provided for @servicesAssignmentViewInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'View inspection'**
+  String get servicesAssignmentViewInspection;
+
+  /// No description provided for @notifServiceInspectionAssignedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection assigned'**
+  String get notifServiceInspectionAssignedTitle;
+
+  /// No description provided for @notifServiceInspectionAssignedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been assigned a service inspection.'**
+  String get notifServiceInspectionAssignedBody;
 }
 
 class _AppLocalizationsDelegate

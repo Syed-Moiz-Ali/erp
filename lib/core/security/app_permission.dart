@@ -81,6 +81,28 @@ enum AppPermission {
   serviceJobAssignmentCreate,
   serviceJobAssignmentEdit,
   serviceJobAssignmentCancel,
+  // Services Phase 4 (inspection + configuration masters).
+  serviceRootCauseView,
+  serviceRootCauseManage,
+  serviceChargeResponsibilityView,
+  serviceChargeResponsibilityManage,
+  serviceInspectionViewAssigned,
+  serviceInspectionViewTeam,
+  serviceInspectionViewAll,
+  serviceInspectionCreate,
+  serviceInspectionEdit,
+  serviceInspectionComplete,
+  serviceInspectionCancel,
+  // Services Phase 5 (request for material + purpose master).
+  serviceMaterialRequestPurposeView,
+  serviceMaterialRequestPurposeManage,
+  serviceMaterialRequestViewAssigned,
+  serviceMaterialRequestViewTeam,
+  serviceMaterialRequestViewAll,
+  serviceMaterialRequestCreate,
+  serviceMaterialRequestEdit,
+  serviceMaterialRequestCancel,
+  serviceMaterialRequestPrint,
 }
 
 /// Manage authority implies the matching view authority so a manage-only grant
@@ -112,6 +134,15 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
       AppPermission.serviceJobAssignmentViewAll,
   AppPermission.serviceJobAssignmentCancel:
       AppPermission.serviceJobAssignmentViewAll,
+  AppPermission.serviceRootCauseManage: AppPermission.serviceRootCauseView,
+  AppPermission.serviceChargeResponsibilityManage:
+      AppPermission.serviceChargeResponsibilityView,
+  // Create/Edit/Complete/Cancel need enough visibility to use the transaction.
+  AppPermission.serviceInspectionCreate: AppPermission.serviceInspectionViewAll,
+  AppPermission.serviceInspectionEdit: AppPermission.serviceInspectionViewAll,
+  AppPermission.serviceInspectionComplete:
+      AppPermission.serviceInspectionViewAll,
+  AppPermission.serviceInspectionCancel: AppPermission.serviceInspectionViewAll,
 };
 
 /// Expands a raw grant set so that every `*Manage` grant carries its `*View`

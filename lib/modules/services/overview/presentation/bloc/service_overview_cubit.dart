@@ -11,6 +11,8 @@ import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry.da
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry_repository.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection_repository.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/domain/service_team.dart';
@@ -28,6 +30,8 @@ class ServiceOverviewState {
     this.recentEnquiries = const [],
     this.assignmentSummary,
     this.upcomingAssignments = const [],
+    this.inspectionSummary,
+    this.recentInspections = const [],
     this.failure,
   });
   final bool loading;
@@ -36,6 +40,8 @@ class ServiceOverviewState {
   final List<ServiceEnquiryListItem> recentEnquiries;
   final ServiceJobAssignmentSummary? assignmentSummary;
   final List<ServiceJobAssignmentListItem> upcomingAssignments;
+  final ServiceInspectionSummary? inspectionSummary;
+  final List<ServiceInspectionListItem> recentInspections;
   final String? failure;
 }
 
@@ -48,8 +54,10 @@ class ServiceOverviewCubit extends Cubit<ServiceOverviewState> {
     this.context, {
     ServiceEnquiryRepository? enquiries,
     ServiceJobAssignmentRepository? jobAssignments,
+    ServiceInspectionRepository? inspections,
   }) : _enquiries = enquiries,
        _jobAssignments = jobAssignments,
+       _inspections = inspections,
        super(const ServiceOverviewState());
   final ServiceCustomerRepository customers;
   final ServiceSiteRepository sites;
@@ -57,6 +65,7 @@ class ServiceOverviewCubit extends Cubit<ServiceOverviewState> {
   final ServiceMasterRepository masters;
   final ServiceEnquiryRepository? _enquiries;
   final ServiceJobAssignmentRepository? _jobAssignments;
+  final ServiceInspectionRepository? _inspections;
   final AuthContext context;
 
   bool _can(AppPermission permission) =>
@@ -140,6 +149,28 @@ class ServiceOverviewCubit extends Cubit<ServiceOverviewState> {
         upcoming = value;
       }
     }
+    ServiceInspectionSummary? inspectionSummary;
+    var recentInspections = const <ServiceInspectionListItem>[];
+    final inspections = _inspections;
+    if (inspections != null &&
+        _canAny([
+          AppPermission.serviceInspectionViewAssigned,
+          AppPermission.serviceInspectionViewTeam,
+          AppPermission.serviceInspectionViewAll,
+        ])) {
+      final r = await inspections.summary(context);
+      if (r case Success<ServiceInspectionSummary>(:final value)) {
+        inspectionSummary = value;
+      }
+      final recentResult = await inspections
+          .watchRecentInspections(context, limit: 5)
+          .first;
+      if (recentResult case Success<List<ServiceInspectionListItem>>(
+        :final value,
+      )) {
+        recentInspections = value;
+      }
+    }
     emit(
       ServiceOverviewState(
         loading: false,
@@ -152,6 +183,8 @@ class ServiceOverviewCubit extends Cubit<ServiceOverviewState> {
         recentEnquiries: recent,
         assignmentSummary: assignmentSummary,
         upcomingAssignments: upcoming,
+        inspectionSummary: inspectionSummary,
+        recentInspections: recentInspections,
       ),
     );
   }

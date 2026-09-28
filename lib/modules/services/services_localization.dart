@@ -3,6 +3,7 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment.dart';
+import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
 import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/shared/transactions/domain/attachment.dart';
 
@@ -99,6 +100,7 @@ String serviceActivityLabel(BusinessActivityEvent event, AppLocalizations l) {
     'cancelled' => l.servicesActivityCancelled,
     'assigned' => l.servicesActivityAssigned,
     'reopened' => l.servicesActivityReopened,
+    'completed' => l.servicesActivityCompleted,
     _ => l.servicesActivityUnknown,
   };
 }
@@ -112,8 +114,35 @@ String serviceActivityEntityLabel(
   'serviceTeam' => l.servicesNavTeams,
   'serviceEnquiry' => l.servicesNavEnquiries,
   'serviceJobAssignment' => l.servicesNavJobAssignments,
+  'serviceInspection' => l.servicesNavInspections,
   _ => l.servicesPermModuleServices,
 };
+
+AppStatus serviceInspectionStatus(ServiceInspectionStatus status) =>
+    switch (status) {
+      ServiceInspectionStatus.pending => AppStatus.info,
+      ServiceInspectionStatus.completed => AppStatus.success,
+      ServiceInspectionStatus.cancelled => AppStatus.neutral,
+    };
+
+String serviceInspectionStatusLabel(
+  ServiceInspectionStatus status,
+  AppLocalizations l,
+) => switch (status) {
+  ServiceInspectionStatus.pending => l.servicesInspectionStatusPending,
+  ServiceInspectionStatus.completed => l.servicesInspectionStatusCompleted,
+  ServiceInspectionStatus.cancelled => l.servicesInspectionStatusCancelled,
+};
+
+String serviceInspectionChecklistStatusLabel(
+  ServiceInspectionChecklistStatus status,
+  AppLocalizations l,
+) => l.servicesInspectionChecklistStatusPending;
+
+String serviceInspectionMaterialStatusLabel(
+  ServiceInspectionMaterialStatus status,
+  AppLocalizations l,
+) => l.servicesInspectionMaterialStatusWaiting;
 
 /// Localizes a Services repository failure code. Returns `null` for unknown or
 /// generic codes so the caller can fall back to a generic storage message.
@@ -252,5 +281,48 @@ String? serviceJobAssignmentFailureMessage(
     l.servicesJobAssignmentEmployeeNotInTeam,
   'servicesJobAssignmentSequenceFailed' =>
     l.servicesJobAssignmentSequenceFailed,
+  _ => null,
+};
+
+/// Localizes a Job Assignment failure code (null for generic codes).
+String? serviceInspectionFailureMessage(
+  String? code,
+  AppLocalizations l,
+) => switch (code) {
+  'servicesInspectionDenied' => l.servicesInspectionDenied,
+  'servicesInspectionNotFound' => l.servicesInspectionNotFound,
+  'servicesInspectionNotEditable' => l.servicesInspectionNotEditable,
+  'servicesInspectionNotCompletable' => l.servicesInspectionNotCompletable,
+  'servicesInspectionAlreadyCancelled' => l.servicesInspectionAlreadyCancelled,
+  'servicesInspectionNotCancellable' => l.servicesInspectionNotCancellable,
+  'servicesInspectionAssignmentRequired' =>
+    l.servicesInspectionAssignmentRequired,
+  'servicesInspectionAssignmentInvalid' =>
+    l.servicesInspectionAssignmentInvalid,
+  'servicesInspectionAlreadyActive' => l.servicesInspectionAlreadyActive,
+  'servicesInspectionVisitDateRequired' =>
+    l.servicesInspectionVisitDateRequired,
+  'servicesInspectionVisitTimeRequired' =>
+    l.servicesInspectionVisitTimeRequired,
+  'servicesInspectionTechnicianRequired' =>
+    l.servicesInspectionTechnicianRequired,
+  'servicesInspectionTechnicianInvalid' =>
+    l.servicesInspectionTechnicianInvalid,
+  'servicesInspectionRootCauseRequired' =>
+    l.servicesInspectionRootCauseRequired,
+  'servicesInspectionRootCauseInvalid' => l.servicesInspectionRootCauseInvalid,
+  'servicesInspectionChargeResponsibilityRequired' =>
+    l.servicesInspectionChargeResponsibilityRequired,
+  'servicesInspectionChargeResponsibilityInvalid' =>
+    l.servicesInspectionChargeResponsibilityInvalid,
+  'servicesInspectionAssessmentRequired' =>
+    l.servicesInspectionAssessmentRequired,
+  'servicesInspectionWorkTypeRequired' => l.servicesInspectionWorkTypeRequired,
+  'servicesInspectionPointRequired' => l.servicesInspectionPointRequired,
+  'servicesInspectionMaterialCodeRequired' =>
+    l.servicesInspectionMaterialCodeRequired,
+  'servicesInspectionMaterialDescriptionRequired' =>
+    l.servicesInspectionMaterialDescriptionRequired,
+  'servicesInspectionSequenceFailed' => l.servicesInspectionSequenceFailed,
   _ => null,
 };

@@ -6497,4 +6497,516 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get servicesJobAssignmentGenerated => 'Generated when saved';
+
+  @override
+  String get servicesPermSubInspections => 'Inspections';
+
+  @override
+  String get servicesPermInspectionsView => 'View inspections';
+
+  @override
+  String get servicesPermInspectionsViewDesc =>
+      'View the company inspection queue within your record scope.';
+
+  @override
+  String get servicesPermInspectionsCreate => 'Create inspection';
+
+  @override
+  String get servicesPermInspectionsCreateDesc =>
+      'Create an inspection from an eligible job assignment, including restricted reference lookup.';
+
+  @override
+  String get servicesPermInspectionsEdit => 'Edit inspection';
+
+  @override
+  String get servicesPermInspectionsEditDesc => 'Edit a pending inspection.';
+
+  @override
+  String get servicesPermInspectionsComplete => 'Complete inspection';
+
+  @override
+  String get servicesPermInspectionsCompleteDesc =>
+      'Finalize a pending inspection.';
+
+  @override
+  String get servicesPermInspectionsCancel => 'Cancel inspection';
+
+  @override
+  String get servicesPermInspectionsCancelDesc =>
+      'Cancel a pending inspection (kept historically).';
+
+  @override
+  String get servicesPermRootCausesView => 'View root causes';
+
+  @override
+  String get servicesPermRootCausesViewDesc =>
+      'View the root cause configuration.';
+
+  @override
+  String get servicesPermRootCausesManage => 'Manage root causes';
+
+  @override
+  String get servicesPermRootCausesManageDesc =>
+      'Add, edit and deactivate root causes.';
+
+  @override
+  String get servicesPermChargeResponsibilitiesView =>
+      'View charge responsibility';
+
+  @override
+  String get servicesPermChargeResponsibilitiesViewDesc =>
+      'View the charge responsibility configuration.';
+
+  @override
+  String get servicesPermChargeResponsibilitiesManage =>
+      'Manage charge responsibility';
+
+  @override
+  String get servicesPermChargeResponsibilitiesManageDesc =>
+      'Add, edit and deactivate charge responsibility values.';
+
+  @override
+  String get permissionServiceInspectionView => 'View inspections';
+
+  @override
+  String get permissionServiceInspectionCreate => 'Create inspection';
+
+  @override
+  String get permissionServiceInspectionEdit => 'Edit inspection';
+
+  @override
+  String get permissionServiceInspectionComplete => 'Complete inspection';
+
+  @override
+  String get permissionServiceInspectionCancel => 'Cancel inspection';
+
+  @override
+  String get servicesNavInspections => 'Inspections';
+
+  @override
+  String get servicesRootCausesTitle => 'Root causes';
+
+  @override
+  String get servicesChargeResponsibilitiesTitle => 'Charge responsibility';
+
+  @override
+  String get servicesInspectionsTitle => 'Inspections';
+
+  @override
+  String servicesInspectionCount(String filtered, String total) {
+    return '$filtered of $total inspections';
+  }
+
+  @override
+  String get servicesInspectionSearch =>
+      'Search by inspection, assignment, enquiry, customer, mobile, site or technician';
+
+  @override
+  String get servicesInspectionAllStatuses => 'All statuses';
+
+  @override
+  String get servicesInspectionStatusPending => 'Pending';
+
+  @override
+  String get servicesInspectionStatusCompleted => 'Completed';
+
+  @override
+  String get servicesInspectionStatusCancelled => 'Cancelled';
+
+  @override
+  String get servicesInspectionEmpty => 'No inspections yet.';
+
+  @override
+  String get servicesInspectionEmptyMessage =>
+      'Create an inspection from an active job assignment.';
+
+  @override
+  String get servicesInspectionNoResults =>
+      'No inspections match your filters.';
+
+  @override
+  String get servicesInspectionAdd => 'New inspection';
+
+  @override
+  String get servicesInspectionColumnInspection => 'Inspection';
+
+  @override
+  String get servicesInspectionColumnAssignment => 'Job assignment';
+
+  @override
+  String get servicesInspectionColumnEnquiry => 'Enquiry';
+
+  @override
+  String get servicesInspectionColumnCustomerSite => 'Customer / site';
+
+  @override
+  String get servicesInspectionColumnVisit => 'Visit';
+
+  @override
+  String get servicesInspectionColumnTechnician => 'Technician';
+
+  @override
+  String get servicesInspectionColumnRootCause => 'Root cause';
+
+  @override
+  String get servicesInspectionColumnStatus => 'Status';
+
+  @override
+  String get servicesInspectionColumnCreated => 'Created';
+
+  @override
+  String get servicesInspectionFilterTitle => 'Filters';
+
+  @override
+  String get servicesInspectionFilterStatus => 'Status';
+
+  @override
+  String get servicesInspectionFilterTechnician => 'Technician';
+
+  @override
+  String get servicesInspectionFilterRootCause => 'Root cause';
+
+  @override
+  String get servicesInspectionFilterPriority => 'Priority';
+
+  @override
+  String get servicesInspectionFilterVisitFrom => 'Visit from';
+
+  @override
+  String get servicesInspectionFilterVisitTo => 'Visit to';
+
+  @override
+  String get servicesInspectionFormNew => 'New inspection';
+
+  @override
+  String get servicesInspectionFormEdit => 'Edit inspection';
+
+  @override
+  String get servicesInspectionCreate => 'Create inspection';
+
+  @override
+  String get servicesInspectionSectionContext => 'Inspection context';
+
+  @override
+  String get servicesInspectionSectionCustomerService =>
+      'Customer & service context';
+
+  @override
+  String get servicesInspectionSectionVisit => 'Visit';
+
+  @override
+  String get servicesInspectionSectionAssessment => 'Assessment';
+
+  @override
+  String get servicesInspectionSectionChecklist => 'Checklist';
+
+  @override
+  String get servicesInspectionSectionPoints => 'Inspected points';
+
+  @override
+  String get servicesInspectionSectionMaterials => 'Material required';
+
+  @override
+  String get servicesInspectionNo => 'Inspection no';
+
+  @override
+  String get servicesInspectionDate => 'Inspection date';
+
+  @override
+  String get servicesInspectionJobAssignment => 'Job assignment';
+
+  @override
+  String get servicesInspectionSelectAssignment =>
+      'Select an eligible job assignment';
+
+  @override
+  String get servicesInspectionVisitDate => 'Visit date';
+
+  @override
+  String get servicesInspectionVisitTime => 'Visit time';
+
+  @override
+  String get servicesInspectionTechnician => 'Technician';
+
+  @override
+  String get servicesInspectionTechnicianOptional => 'Not assigned';
+
+  @override
+  String get servicesInspectionRootCause => 'Root cause';
+
+  @override
+  String get servicesInspectionChargeResponsibility => 'Charge responsibility';
+
+  @override
+  String servicesInspectionChecklistItemTitle(String index) {
+    return 'Checklist item $index';
+  }
+
+  @override
+  String get servicesInspectionWorkType => 'Work type';
+
+  @override
+  String get servicesInspectionDescriptionForWork => 'Description for work';
+
+  @override
+  String get servicesInspectionChecklistStatus => 'Status';
+
+  @override
+  String get servicesInspectionChecklistStatusPending => 'Pending';
+
+  @override
+  String get servicesInspectionBeforeWorkPhotos => 'Before work photos';
+
+  @override
+  String get servicesInspectionAddPhotos => 'Add photos';
+
+  @override
+  String get servicesInspectionAddChecklist => 'Add checklist item';
+
+  @override
+  String get servicesInspectionRemoveChecklist => 'Remove checklist item';
+
+  @override
+  String servicesInspectionPointTitle(String index) {
+    return 'Point $index';
+  }
+
+  @override
+  String get servicesInspectionPointDescription => 'Description';
+
+  @override
+  String get servicesInspectionAddPoint => 'Add inspected point';
+
+  @override
+  String get servicesInspectionRemovePoint => 'Remove inspected point';
+
+  @override
+  String servicesInspectionMaterialTitle(String index) {
+    return 'Material $index';
+  }
+
+  @override
+  String get servicesInspectionMaterialCode => 'Code';
+
+  @override
+  String get servicesInspectionMaterialDescription => 'Description';
+
+  @override
+  String get servicesInspectionMaterialStatus => 'Status';
+
+  @override
+  String get servicesInspectionMaterialStatusWaiting => 'Waiting';
+
+  @override
+  String get servicesInspectionAddMaterial => 'Add material requirement';
+
+  @override
+  String get servicesInspectionRemoveMaterial => 'Remove material requirement';
+
+  @override
+  String get servicesInspectionDetailContext => 'Source context';
+
+  @override
+  String get servicesInspectionDetailAssessment => 'Assessment';
+
+  @override
+  String get servicesInspectionDetailChecklist => 'Checklist';
+
+  @override
+  String get servicesInspectionDetailPoints => 'Inspected points';
+
+  @override
+  String get servicesInspectionDetailMaterials => 'Material required';
+
+  @override
+  String get servicesInspectionDetailAudit => 'Record';
+
+  @override
+  String get servicesInspectionDetailActivity => 'Activity';
+
+  @override
+  String get servicesInspectionEdit => 'Edit inspection';
+
+  @override
+  String get servicesInspectionComplete => 'Complete inspection';
+
+  @override
+  String get servicesInspectionCancel => 'Cancel inspection';
+
+  @override
+  String get servicesInspectionCompleteConfirmTitle => 'Complete inspection?';
+
+  @override
+  String get servicesInspectionCompleteConfirmMessage =>
+      'The inspection becomes read-only and can be used by later workflow steps.';
+
+  @override
+  String get servicesInspectionCancelConfirmTitle => 'Cancel inspection?';
+
+  @override
+  String get servicesInspectionCancelConfirmMessage =>
+      'The cancelled inspection stays available historically and cannot be edited afterwards.';
+
+  @override
+  String get servicesInspectionCreated => 'Inspection created.';
+
+  @override
+  String get servicesInspectionUpdated => 'Inspection updated.';
+
+  @override
+  String get servicesInspectionCompleted => 'Inspection completed.';
+
+  @override
+  String get servicesInspectionCancelled => 'Inspection cancelled.';
+
+  @override
+  String get servicesInspectionNoActivity => 'No activity yet.';
+
+  @override
+  String get servicesInspectionCreatedBy => 'Created by';
+
+  @override
+  String get servicesInspectionCreatedAt => 'Created at';
+
+  @override
+  String get servicesInspectionUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesInspectionUpdatedAt => 'Updated at';
+
+  @override
+  String get servicesInspectionVersion => 'Version';
+
+  @override
+  String get servicesInspectionNoChecklist => 'No checklist items.';
+
+  @override
+  String get servicesInspectionNoPoints => 'No inspected points.';
+
+  @override
+  String get servicesInspectionNoMaterials => 'No material requirements.';
+
+  @override
+  String get servicesInspectionDenied =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get servicesInspectionNotFound => 'Inspection not found.';
+
+  @override
+  String get servicesInspectionNotEditable =>
+      'Only pending inspections can be edited.';
+
+  @override
+  String get servicesInspectionNotCompletable =>
+      'Only pending inspections can be completed.';
+
+  @override
+  String get servicesInspectionAlreadyCancelled =>
+      'This inspection is already cancelled.';
+
+  @override
+  String get servicesInspectionNotCancellable =>
+      'A completed inspection cannot be cancelled.';
+
+  @override
+  String get servicesInspectionAssignmentRequired => 'Select a job assignment.';
+
+  @override
+  String get servicesInspectionAssignmentInvalid =>
+      'The selected job assignment is not eligible.';
+
+  @override
+  String get servicesInspectionAlreadyActive =>
+      'This job assignment already has an inspection.';
+
+  @override
+  String get servicesInspectionVisitDateRequired => 'Select a visit date.';
+
+  @override
+  String get servicesInspectionVisitTimeRequired => 'Select a visit time.';
+
+  @override
+  String get servicesInspectionTechnicianRequired => 'Select a technician.';
+
+  @override
+  String get servicesInspectionTechnicianInvalid =>
+      'The selected technician is not eligible for this assignment.';
+
+  @override
+  String get servicesInspectionRootCauseRequired => 'Select a root cause.';
+
+  @override
+  String get servicesInspectionRootCauseInvalid =>
+      'The selected root cause is not available.';
+
+  @override
+  String get servicesInspectionChargeResponsibilityRequired =>
+      'Select a charge responsibility.';
+
+  @override
+  String get servicesInspectionChargeResponsibilityInvalid =>
+      'The selected charge responsibility is not available.';
+
+  @override
+  String get servicesInspectionAssessmentRequired =>
+      'Add at least one checklist item or inspected point.';
+
+  @override
+  String get servicesInspectionWorkTypeRequired =>
+      'Enter the work type for each checklist item.';
+
+  @override
+  String get servicesInspectionPointRequired =>
+      'Enter a description for each inspected point.';
+
+  @override
+  String get servicesInspectionMaterialCodeRequired =>
+      'Enter the code for each material requirement.';
+
+  @override
+  String get servicesInspectionMaterialDescriptionRequired =>
+      'Enter the description for each material requirement.';
+
+  @override
+  String get servicesInspectionSequenceFailed =>
+      'Could not allocate an inspection number.';
+
+  @override
+  String get servicesInspectionStorageError =>
+      'Could not save the inspection. Please try again.';
+
+  @override
+  String get servicesActivityCompleted => 'Completed';
+
+  @override
+  String get servicesOverviewInspectionsPending => 'Pending inspections';
+
+  @override
+  String get servicesOverviewInspectionsToday => 'Inspections today';
+
+  @override
+  String get servicesOverviewInspectionsCompleted => 'Completed inspections';
+
+  @override
+  String get servicesOverviewRecentInspections => 'Recent inspections';
+
+  @override
+  String get servicesOverviewNoInspections => 'No inspections yet.';
+
+  @override
+  String get servicesAssignmentInspectionSection => 'Inspection';
+
+  @override
+  String get servicesAssignmentCreateInspection => 'Create inspection';
+
+  @override
+  String get servicesAssignmentViewInspection => 'View inspection';
+
+  @override
+  String get notifServiceInspectionAssignedTitle => 'Inspection assigned';
+
+  @override
+  String get notifServiceInspectionAssignedBody =>
+      'You have been assigned a service inspection.';
 }

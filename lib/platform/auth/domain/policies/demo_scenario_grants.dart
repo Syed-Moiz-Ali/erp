@@ -53,6 +53,7 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.serviceCustomerView,
       AppPermission.serviceEnquiryView,
       AppPermission.serviceJobAssignmentViewAssigned,
+      AppPermission.serviceInspectionViewAssigned,
     },
     DemoScenario.hr => {
       ...base,
@@ -111,6 +112,16 @@ PermissionSet demoScenarioGrants(DemoScenario scenario) {
       AppPermission.serviceJobAssignmentCreate,
       AppPermission.serviceJobAssignmentEdit,
       AppPermission.serviceJobAssignmentCancel,
+      // Full Services Phase 4 inspection + masters.
+      AppPermission.serviceInspectionViewAll,
+      AppPermission.serviceInspectionCreate,
+      AppPermission.serviceInspectionEdit,
+      AppPermission.serviceInspectionComplete,
+      AppPermission.serviceInspectionCancel,
+      AppPermission.serviceRootCauseView,
+      AppPermission.serviceRootCauseManage,
+      AppPermission.serviceChargeResponsibilityView,
+      AppPermission.serviceChargeResponsibilityManage,
     },
     _ => <AppPermission>{},
   });

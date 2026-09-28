@@ -87,6 +87,33 @@ Repeating job assignment rows:
 | Delete row | Remove work | Remove work item (soft) | `removedAt` | form | 3 | MODERNIZED | HIGH | Never zero lines. |
 | Delete transaction | Cancel | Cancel Assignment (historical) | `status` | list / detail | 3 | MODERNIZED | HIGH | No hard delete. |
 
+## Screen: Add / Update Inspection
+
+Header: Company Name → CompanyContext (SYSTEM-DERIVED); Inspection No → sequence
+(`INS-…`) (MODERNIZED); Date → `inspectionDate` (MODERNIZED); Job Assignment No →
+`sourceJobAssignmentId` (IMPLEMENT); Enquiry No → derived from Assignment
+(MODERNIZED); Customer Name / Mobile No / Complaint Type / Priority Type / Tenant
+Name / Building / Unit No / Material Received → derived from the source
+Job Assignment → Enquiry snapshot (MODERNIZED, read-only); Visit Date →
+`visitDate` (IMPLEMENT); Visit Time → `visitMinutes` (IMPLEMENT); Technician Name →
+`technicianEmployeeId` (Employee, MODERNIZED); Root Cause → `ServiceRootCause`
+master (IMPLEMENT); Charged → `ServiceChargeResponsibility` master, Tenant seeded
+(MODERNIZED); Status → `status` pending/completed/cancelled (IMPLEMENT); Insert By
+/ Update By → audit (SYSTEM-DERIVED).
+
+Checklist: S.No → `lineNumber` (MODERNIZED); Check List/Work Type → `workType`
+(prefilled from Assignment line `work`) (IMPLEMENT); Description For Work →
+`descriptionForWork` (IMPLEMENT); Status → `status` (`pending`, TBD) (IMPLEMENT);
+Before Work Photos → shared attachments (`ownerType=serviceInspectionChecklistItem`,
+`category=beforeWorkPhoto`, multiple) (MODERNIZED); Add row → add checklist item
+(MODERNIZED); Delete row → soft-remove (MODERNIZED).
+
+Inspected Points: S.No / Description → `ServiceInspectionPoint[]` (IMPLEMENT).
+
+Material Required: S.No → order; Code → `code` (business reference, no Inventory);
+Description → `description`; Status → `waiting` (IMPLEMENT). Add row → add
+material requirement (MODERNIZED).
+
 ## Open product-confirmation questions
 
 1. **Material Received** — what does it mean at the Enquiry stage, and is it
@@ -107,3 +134,4 @@ Repeating job assignment rows:
 | 2 | Enquiry header, Customer/Site, masters, status, sequence, permissions. |
 | 2.1 | Detail lines, per-line status, per-line photos, Material Received, traceability doc. |
 | 3 | Job Assignment & Scheduling (header, work lines, Employee/Team, Visit Date, scopes, notifications). |
+| 4 | Inspection (header, checklist + before-work photos, inspected points, material required, Root Cause / Charge Responsibility masters, scopes). |

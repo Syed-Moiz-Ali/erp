@@ -56,6 +56,21 @@ class ServiceSettingsPage extends StatelessWidget {
               icon: Icons.confirmation_number_outlined,
               onPressed: () => context.go(ServicesRoutes.ticketTypes),
             ),
+          if (can(AppPermission.serviceRootCauseView))
+            AppSettingsRow(
+              title: l.servicesRootCausesTitle,
+              description: l.servicesPermRootCausesViewDesc,
+              icon: Icons.troubleshoot_outlined,
+              onPressed: () => context.go(ServicesRoutes.rootCauses),
+            ),
+          if (can(AppPermission.serviceChargeResponsibilityView))
+            AppSettingsRow(
+              title: l.servicesChargeResponsibilitiesTitle,
+              description: l.servicesPermChargeResponsibilitiesViewDesc,
+              icon: Icons.gavel_outlined,
+              onPressed: () =>
+                  context.go(ServicesRoutes.chargeResponsibilities),
+            ),
         ],
       ),
     );

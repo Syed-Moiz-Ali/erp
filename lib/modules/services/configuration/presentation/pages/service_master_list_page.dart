@@ -17,6 +17,9 @@ String serviceMasterTitle(AppLocalizations l, ServiceMasterKind kind) =>
       ServiceMasterKind.complaintType => l.servicesComplaintTypesTitle,
       ServiceMasterKind.priority => l.servicesPrioritiesTitle,
       ServiceMasterKind.ticketType => l.servicesTicketTypesTitle,
+      ServiceMasterKind.rootCause => l.servicesRootCausesTitle,
+      ServiceMasterKind.chargeResponsibility =>
+        l.servicesChargeResponsibilitiesTitle,
     };
 
 AppPermission serviceMasterManagePermission(ServiceMasterKind kind) =>
@@ -25,6 +28,9 @@ AppPermission serviceMasterManagePermission(ServiceMasterKind kind) =>
       ServiceMasterKind.complaintType => AppPermission.complaintTypeManage,
       ServiceMasterKind.priority => AppPermission.servicePriorityManage,
       ServiceMasterKind.ticketType => AppPermission.serviceTicketTypeManage,
+      ServiceMasterKind.rootCause => AppPermission.serviceRootCauseManage,
+      ServiceMasterKind.chargeResponsibility =>
+        AppPermission.serviceChargeResponsibilityManage,
     };
 
 String _newRoute(ServiceMasterKind kind) => switch (kind) {
@@ -32,6 +38,9 @@ String _newRoute(ServiceMasterKind kind) => switch (kind) {
   ServiceMasterKind.complaintType => ServicesRoutes.complaintTypesNew,
   ServiceMasterKind.priority => ServicesRoutes.prioritiesNew,
   ServiceMasterKind.ticketType => ServicesRoutes.ticketTypesNew,
+  ServiceMasterKind.rootCause => ServicesRoutes.rootCausesNew,
+  ServiceMasterKind.chargeResponsibility =>
+    ServicesRoutes.chargeResponsibilitiesNew,
 };
 
 String _editRoute(ServiceMasterKind kind, String id) => switch (kind) {
@@ -39,6 +48,9 @@ String _editRoute(ServiceMasterKind kind, String id) => switch (kind) {
   ServiceMasterKind.complaintType => ServicesRoutes.complaintTypeEdit(id),
   ServiceMasterKind.priority => ServicesRoutes.priorityEdit(id),
   ServiceMasterKind.ticketType => ServicesRoutes.ticketTypeEdit(id),
+  ServiceMasterKind.rootCause => ServicesRoutes.rootCauseEdit(id),
+  ServiceMasterKind.chargeResponsibility =>
+    ServicesRoutes.chargeResponsibilityEdit(id),
 };
 
 class ServiceMasterListPage extends StatelessWidget {
