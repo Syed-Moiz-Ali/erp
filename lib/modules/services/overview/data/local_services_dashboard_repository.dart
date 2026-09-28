@@ -106,6 +106,7 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
   /// Reads the whole snapshot once. Public so tests can assert query behaviour
   /// without opening a long-lived stream.
+  @override
   Future<ServicesDashboardSnapshot> load(AuthContext context) async {
     if (!_enabled(context)) return ServicesDashboardSnapshot.empty;
     final today = _companyDate(context);

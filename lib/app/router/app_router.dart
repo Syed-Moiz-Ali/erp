@@ -30,8 +30,33 @@ import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/shell/app_shell.dart';
 import 'package:modular_erp/app/shell/pages/more_page.dart';
 import 'package:modular_erp/app/shell/pages/route_status_pages.dart';
+import 'package:modular_erp/modules/hr/module/hr_routes.dart';
+import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'app_routes.dart';
 import 'legacy_routes.dart';
+
+/// First permitted destination for a module landing, or the universal
+/// dashboard when the user can reach none of that module's features. Keeping the
+/// preference list explicit preserves the module's documented landing order.
+String _moduleLanding(
+  NavigationResolver navigation,
+  AuthContext account,
+  List<String> preference,
+) {
+  final resolved = navigation
+      .resolve(
+        account.company,
+        account.user.permissions,
+        employee: account.employeeReference,
+      )
+      .destinations
+      .map((destination) => destination.route)
+      .toSet();
+  for (final route in preference) {
+    if (resolved.contains(route)) return route;
+  }
+  return AppRoutes.dashboard;
+}
 
 T? _providerOrNull<T>(BuildContext context) {
   try {
@@ -93,13 +118,17 @@ String? _authRedirect(
   bool safeTarget(String? target) {
     if (target == null) return false;
     final parsed = Uri.tryParse(target);
-    return parsed != null &&
-        !parsed.hasScheme &&
-        !parsed.hasAuthority &&
-        (navigation.registry.ownerOf(parsed.path) != null ||
-            parsed.path == AppRoutes.app ||
-            AppRoutes.utilityPaths.contains(parsed.path) ||
-            (enablePreview && parsed.path == AppRoutes.designSystem));
+    if (parsed == null || parsed.hasScheme || parsed.hasAuthority) return false;
+    final path = parsed.path;
+    return navigation.registry.ownerOf(path) != null ||
+        path == AppRoutes.app ||
+        path == AppRoutes.dashboard ||
+        path == HrRoutes.root ||
+        path.startsWith('${HrRoutes.root}/') ||
+        path == ServicesRoutes.root ||
+        path.startsWith('${ServicesRoutes.root}/') ||
+        AppRoutes.utilityPaths.contains(path) ||
+        (enablePreview && path == AppRoutes.designSystem);
   }
 
   final target = uri.queryParameters['from'];
@@ -195,6 +224,37 @@ GoRouter createAppRouter({
         redirect: (context, state) => AppRoutes.app,
       ),
       GoRoute(path: AppRoutes.app, redirect: (context, state) => landing()),
+      GoRoute(
+        path: HrRoutes.root,
+        redirect: (context, state) {
+          final account = authBloc.state.context;
+          if (account == null) return null;
+          return _moduleLanding(navigation, account, const [
+            AppRoutes.employees,
+            AppRoutes.attendance,
+            AppRoutes.leave,
+            AppRoutes.reports,
+          ]);
+        },
+      ),
+      GoRoute(
+        path: ServicesRoutes.root,
+        redirect: (context, state) {
+          final account = authBloc.state.context;
+          if (account == null) return null;
+          return _moduleLanding(navigation, account, const [
+            ServicesRoutes.enquiries,
+            ServicesRoutes.assignments,
+            ServicesRoutes.inspections,
+            ServicesRoutes.materialRequests,
+            ServicesRoutes.workExecutions,
+            ServicesRoutes.customers,
+            ServicesRoutes.sites,
+            ServicesRoutes.teams,
+            ServicesRoutes.settings,
+          ]);
+        },
+      ),
       GoRoute(
         path: AppRoutes.bootstrap,
         builder: (context, state) => const BootstrapPage(),

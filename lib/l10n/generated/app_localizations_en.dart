@@ -1737,6 +1737,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authDemoSignIn => 'Sign in';
 
   @override
+  String get universalDashboardSubtitle =>
+      'Your work and company activity at a glance';
+
+  @override
+  String get universalDashboardMyDay => 'My day';
+
+  @override
+  String get universalDashboardNeedsAttention => 'Needs attention';
+
+  @override
+  String get universalDashboardMetrics => 'Key metrics';
+
+  @override
+  String get universalDashboardSchedule => 'Today\'s schedule';
+
+  @override
+  String get universalDashboardMyWork => 'My work';
+
+  @override
+  String get universalDashboardTeam => 'Team and company';
+
+  @override
+  String get universalDashboardRecentActivity => 'Recent activity';
+
+  @override
+  String get universalDashboardQuickActions => 'Quick actions';
+
+  @override
+  String get universalDashboardAllClear =>
+      'No tasks require your attention right now.';
+
+  @override
+  String get universalDashboardNoSchedule => 'Nothing scheduled for today.';
+
+  @override
+  String get universalDashboardNoWork =>
+      'Nothing is assigned to you right now.';
+
+  @override
+  String get universalDashboardNoActivity => 'No recent activity.';
+
+  @override
+  String get universalDashboardEmptyTitle => 'You\'re all caught up';
+
+  @override
+  String get universalDashboardError =>
+      'We couldn\'t load your dashboard. Please try again.';
+
+  @override
+  String get universalDashboardPartial =>
+      'Some dashboard sections could not be loaded.';
+
+  @override
+  String get universalDashboardRefresh => 'Refresh';
+
+  @override
+  String get universalDashboardRefreshing => 'Refreshing dashboard';
+
+  @override
+  String get universalDashboardViewAll => 'View all';
+
+  @override
+  String get universalDashboardToday => 'Today';
+
+  @override
+  String get universalDashboardOpen => 'Open';
+
+  @override
   String get dashboard => 'Dashboard';
 
   @override

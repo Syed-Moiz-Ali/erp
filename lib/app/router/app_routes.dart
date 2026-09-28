@@ -14,7 +14,7 @@ abstract final class AppRoutes {
       login = '/login',
       forgotPassword = '/forgot-password',
       app = PlatformRoutes.app,
-      dashboard = HrRoutes.root,
+      dashboard = PlatformRoutes.dashboard,
       employees = HrRoutes.employees,
       attendance = HrRoutes.attendance,
       leave = HrRoutes.leave,

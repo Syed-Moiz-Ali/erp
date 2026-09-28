@@ -44,6 +44,10 @@ import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/application/hr_dashboard_contributor.dart';
+import 'package:modular_erp/modules/services/overview/data/local_services_dashboard_repository.dart';
+import 'package:modular_erp/modules/services/overview/application/services_dashboard_contributor.dart';
+import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
 import 'package:modular_erp/platform/module/platform_registration.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
 import 'package:modular_erp/shared/presentation/configuration_landing_page.dart';
@@ -91,16 +95,33 @@ ModuleRegistry createErpRegistry(
   final dashboard =
       dashboardRepository ??
       LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled);
+  final servicesDashboard =
+      (database != null && clock != null && companyTimeService != null)
+      ? LocalServicesDashboardRepository(
+          db: database,
+          clock: clock,
+          time: companyTimeService,
+          workforce: workforceDirectory,
+        )
+      : null;
+  final coordinator = UniversalDashboardCoordinator([
+    HrDashboardContributor(
+      repository: dashboard,
+      leaveRepository: leaveRepository,
+    ),
+    if (servicesDashboard != null)
+      ServicesDashboardContributor(repository: servicesDashboard),
+  ]);
   late final ModuleRegistry registry;
 
   final platformModules = buildPlatformModules(
     registry: () => registry,
     authRepository: authRepository,
+    dashboardCoordinator: coordinator,
     employeeRepository: employeeRepository,
   );
   final hr = buildHrModules(
     registry: () => registry,
-    dashboardRepository: dashboard,
     employeeRepository: employeeRepository,
     shiftRepository: shiftRepository,
     workLocationRepository: workLocationRepository,

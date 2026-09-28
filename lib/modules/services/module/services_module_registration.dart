@@ -47,11 +47,6 @@ import 'package:modular_erp/modules/services/work_executions/presentation/pages/
 import 'package:modular_erp/modules/services/work_executions/presentation/pages/service_work_execution_list_page.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
-import 'package:modular_erp/modules/services/overview/data/local_services_dashboard_repository.dart';
-import 'package:modular_erp/modules/services/overview/presentation/bloc/service_dashboard_cubit.dart';
-import 'package:modular_erp/modules/services/overview/presentation/bloc/service_overview_cubit.dart';
-import 'package:modular_erp/modules/services/overview/presentation/service_dashboard_page.dart';
-import 'package:modular_erp/modules/services/overview/presentation/service_overview_page.dart';
 import 'package:modular_erp/modules/services/sites/domain/service_site_repository.dart';
 import 'package:modular_erp/modules/services/sites/presentation/bloc/service_site_blocs.dart';
 import 'package:modular_erp/modules/services/sites/presentation/pages/service_site_detail_page.dart';
@@ -88,45 +83,6 @@ List<AppModule> buildServicesModules({
   if (customers == null || sites == null || teams == null || masters == null) {
     return const [];
   }
-  final dashboard = (database != null && clock != null && time != null)
-      ? LocalServicesDashboardRepository(
-          db: database,
-          clock: clock,
-          time: time,
-          workforce: workforce,
-        )
-      : null;
-  final allViewPermissions = {
-    AppPermission.serviceCustomerView,
-    AppPermission.serviceSiteView,
-    AppPermission.serviceTeamView,
-    AppPermission.serviceTypeView,
-    AppPermission.complaintTypeView,
-    AppPermission.servicePriorityView,
-    AppPermission.serviceTicketTypeView,
-    // The operational dashboard is reachable by every Services user, not only
-    // directory viewers: an ASSIGNED field employee or a create-only operator
-    // must be able to open their own Overview.
-    AppPermission.serviceEnquiryView,
-    AppPermission.serviceEnquiryCreate,
-    AppPermission.serviceJobAssignmentViewAssigned,
-    AppPermission.serviceJobAssignmentViewTeam,
-    AppPermission.serviceJobAssignmentViewAll,
-    AppPermission.serviceJobAssignmentCreate,
-    AppPermission.serviceInspectionViewAssigned,
-    AppPermission.serviceInspectionViewTeam,
-    AppPermission.serviceInspectionViewAll,
-    AppPermission.serviceInspectionCreate,
-    AppPermission.serviceMaterialRequestViewAssigned,
-    AppPermission.serviceMaterialRequestViewTeam,
-    AppPermission.serviceMaterialRequestViewAll,
-    AppPermission.serviceMaterialRequestCreate,
-    AppPermission.serviceWorkExecutionViewAssigned,
-    AppPermission.serviceWorkExecutionViewTeam,
-    AppPermission.serviceWorkExecutionViewAll,
-    AppPermission.serviceWorkExecutionCreate,
-    AppPermission.serviceWorkExecutionPerform,
-  };
   RegisteredDestination destination(
     ErpModule navigation,
     WidgetBuilder builder, {
@@ -278,44 +234,6 @@ List<AppModule> buildServicesModules({
     AppModule(
       id: AppModuleIds.services,
       destinations: [
-        destination(
-          ErpModule(
-            id: 'services',
-            moduleId: AppModuleIds.services,
-            name: (l) => l.servicesPermModuleServices,
-            icon: Icons.handyman_outlined,
-            selectedIcon: Icons.handyman,
-            route: ServicesRoutes.root,
-            navigationGroup: NavigationGroup.services,
-            order: 0,
-            anyPermissions: allViewPermissions,
-          ),
-          (context) {
-            final account = context.read<AuthBloc>().state.context!;
-            if (dashboard != null) {
-              return BlocProvider(
-                create: (_) =>
-                    ServiceDashboardCubit(dashboard, account)..start(),
-                child: const ServiceDashboardPage(),
-              );
-            }
-            return BlocProvider(
-              create: (_) => ServiceOverviewCubit(
-                customers,
-                sites,
-                teams,
-                masters,
-                account,
-                enquiries: enquiries,
-                jobAssignments: jobAssignments,
-                inspections: inspections,
-                materialRequests: materialRequests,
-                workExecutions: workExecutions,
-              )..load(),
-              child: const ServiceOverviewPage(),
-            );
-          },
-        ),
         if (enquiries != null && activity != null)
           destination(
             ErpModule(

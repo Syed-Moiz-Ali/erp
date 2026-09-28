@@ -1,17 +1,29 @@
-# Services dashboard (`/app/services`)
+# Services dashboard contribution (universal ERP Dashboard)
 
-The Services module Overview page, upgraded into an operational control center.
-It is a **read-only projection** over the existing Services workflow
-(Enquiry → Job Assignment → Inspection → Material Request → Work Execution). It
-introduces no new business workflow, no schema and no persisted counter tables.
+> **Ownership update.** Services no longer owns a separate Services
+> Dashboard/Overview page and there is no `/app/services` dashboard route.
+> Services contributes its operational read model to the one Universal ERP
+> Dashboard via
+> `lib/modules/services/overview/application/services_dashboard_contributor.dart`
+> (`ServicesDashboardContributor`). The universal page is owned by
+> `lib/platform/workspace/dashboard/`
+> (see [../architecture/universal_dashboard.md](../architecture/universal_dashboard.md)).
+> `/app/services` now redirects to the first permitted Services feature
+> (Enquiries by default).
+
+The contribution is a **read-only projection** over the existing Services
+workflow (Enquiry → Job Assignment → Inspection → Material Request → Work
+Execution). It introduces no new business workflow, no schema and no persisted
+counter tables.
 
 - Read model: `lib/modules/services/overview/domain/services_dashboard.dart`
   (`ServicesDashboardSnapshot` + supporting section models).
-- Repository contract: `ServicesDashboardRepository` (one method, `watch`).
+- Repository contract: `ServicesDashboardRepository` (`load` for the dashboard
+  contribution, `watch` for the legacy live cubit).
 - Local projection:
   `lib/modules/services/overview/data/local_services_dashboard_repository.dart`.
-- Cubit/page: `lib/modules/services/overview/presentation/bloc/service_dashboard_cubit.dart`,
-  `.../presentation/service_dashboard_page.dart`.
+- Contributor:
+  `lib/modules/services/overview/application/services_dashboard_contributor.dart`.
 - Localization: `.../presentation/service_dashboard_localization.dart` +
   `lib/modules/services/l10n/services_{en,ar}.arb`.
 

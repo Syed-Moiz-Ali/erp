@@ -1,5 +1,12 @@
 # Phase 3 — dashboard completion report
 
+> **Historical note.** Phase 3 introduced the first HR-owned `/app/dashboard`.
+> That ownership was later replaced by the single neutral Universal ERP
+> Dashboard (`lib/platform/workspace/dashboard/`), and HR now owns a dashboard
+> **contribution**, not the Dashboard page. See
+> [architecture/universal_dashboard.md](architecture/universal_dashboard.md).
+> The rest of this document is retained as a historical handoff.
+
 Frontend-only implementation on the existing Flutter 3.35.7 / Dart 3.9.2 project. Phase 0/1/2 architecture, authentication, shell, registry, permissions, localized fonts and design system were reused. No backend, business CRUD or attendance workflow was introduced.
 
 ## 1. Implemented

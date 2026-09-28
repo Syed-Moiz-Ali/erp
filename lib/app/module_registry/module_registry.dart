@@ -40,10 +40,11 @@ extension NavigationGroupLocalization on NavigationGroup {
 /// Destinations are grouped by the module that owns them (HR, Services,
 /// Settings, Account) so a user can always tell which module an item belongs
 /// to, independent of the finer-grained [NavigationGroup].
-enum NavigationSection { hr, services, settings, account }
+enum NavigationSection { dashboard, hr, services, settings, account }
 
 extension NavigationSectionLocalization on NavigationSection {
   String label(AppLocalizations l10n) => switch (this) {
+    NavigationSection.dashboard => l10n.shellDashboard,
     NavigationSection.hr => l10n.navSectionHr,
     NavigationSection.services => l10n.navSectionServices,
     NavigationSection.settings => l10n.navSectionSettings,
@@ -53,6 +54,7 @@ extension NavigationSectionLocalization on NavigationSection {
 
 /// Maps a destination's owning module id to its navigation section.
 NavigationSection navigationSectionOf(String moduleId) => switch (moduleId) {
+  AppModuleIds.dashboard => NavigationSection.dashboard,
   AppModuleIds.services => NavigationSection.services,
   AppModuleIds.settings => NavigationSection.settings,
   AppModuleIds.account => NavigationSection.account,

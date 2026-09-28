@@ -3344,6 +3344,132 @@ abstract class AppLocalizations {
   /// **'Sign in'**
   String get authDemoSignIn;
 
+  /// No description provided for @universalDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work and company activity at a glance'**
+  String get universalDashboardSubtitle;
+
+  /// No description provided for @universalDashboardMyDay.
+  ///
+  /// In en, this message translates to:
+  /// **'My day'**
+  String get universalDashboardMyDay;
+
+  /// No description provided for @universalDashboardNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get universalDashboardNeedsAttention;
+
+  /// No description provided for @universalDashboardMetrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Key metrics'**
+  String get universalDashboardMetrics;
+
+  /// No description provided for @universalDashboardSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s schedule'**
+  String get universalDashboardSchedule;
+
+  /// No description provided for @universalDashboardMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'My work'**
+  String get universalDashboardMyWork;
+
+  /// No description provided for @universalDashboardTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team and company'**
+  String get universalDashboardTeam;
+
+  /// No description provided for @universalDashboardRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get universalDashboardRecentActivity;
+
+  /// No description provided for @universalDashboardQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get universalDashboardQuickActions;
+
+  /// No description provided for @universalDashboardAllClear.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks require your attention right now.'**
+  String get universalDashboardAllClear;
+
+  /// No description provided for @universalDashboardNoSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing scheduled for today.'**
+  String get universalDashboardNoSchedule;
+
+  /// No description provided for @universalDashboardNoWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is assigned to you right now.'**
+  String get universalDashboardNoWork;
+
+  /// No description provided for @universalDashboardNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent activity.'**
+  String get universalDashboardNoActivity;
+
+  /// No description provided for @universalDashboardEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up'**
+  String get universalDashboardEmptyTitle;
+
+  /// No description provided for @universalDashboardError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your dashboard. Please try again.'**
+  String get universalDashboardError;
+
+  /// No description provided for @universalDashboardPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Some dashboard sections could not be loaded.'**
+  String get universalDashboardPartial;
+
+  /// No description provided for @universalDashboardRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get universalDashboardRefresh;
+
+  /// No description provided for @universalDashboardRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing dashboard'**
+  String get universalDashboardRefreshing;
+
+  /// No description provided for @universalDashboardViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get universalDashboardViewAll;
+
+  /// No description provided for @universalDashboardToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get universalDashboardToday;
+
+  /// No description provided for @universalDashboardOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get universalDashboardOpen;
+
   /// Common/Phase 0 UI: dashboard.
   ///
   /// In en, this message translates to:

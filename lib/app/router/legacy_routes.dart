@@ -1,3 +1,4 @@
+import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 
 /// Centralized legacy-route mapper.
@@ -12,6 +13,9 @@ import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 /// are intentionally absent — they remain platform-global.
 abstract final class LegacyRoutes {
   static const rules = <(String, String)>[
+    // Legacy module-dashboard URLs now resolve to the one universal dashboard.
+    ('/app/hr/dashboard', AppRoutes.dashboard),
+    ('/app/services/dashboard', AppRoutes.dashboard),
     // HR configuration.
     ('/app/settings/shifts', HrRoutes.shifts),
     ('/app/settings/work-locations', HrRoutes.workLocations),
@@ -20,7 +24,6 @@ abstract final class LegacyRoutes {
     ('/app/settings/leave-policies', HrRoutes.leavePolicies),
     ('/app/settings/holidays', HrRoutes.holidays),
     // HR module roots.
-    ('/app/dashboard', HrRoutes.root),
     ('/app/employees', HrRoutes.employees),
     ('/app/attendance', HrRoutes.attendance),
     ('/app/leave', HrRoutes.leave),

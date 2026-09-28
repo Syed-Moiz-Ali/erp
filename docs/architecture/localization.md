@@ -67,8 +67,9 @@ fails if the committed generated ARBs are out of sync with the sources.
 | --- | --- |
 | Generic UI vocabulary (Save, Cancel, Search, Status, ...) | `common` |
 | Auth, profile, notifications, sync, shell, workspace, settings landing | `platform` |
-| Dashboard, employees, attendance, corrections, leave, holidays, shifts, work locations, attendance policies, attendance reports | `hr` |
-| Service Enquiry, Scheduling, Inspection, Material Request, Work Execution | `services` (future) |
+| Universal dashboard section/header/empty strings (`universalDashboard*`) | `platform` |
+| HR employees, attendance, corrections, leave, holidays, shifts, work locations, attendance policies, attendance reports, HR dashboard-contribution labels | `hr` |
+| Services transactions, Services dashboard-contribution labels | `services` |
 
 Moving a key between modules does not require renaming it: the public key stays
 the same, only its source file changes.

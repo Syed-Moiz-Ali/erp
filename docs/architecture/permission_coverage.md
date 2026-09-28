@@ -238,15 +238,16 @@ Enforcement rules:
   navigation, a real route, a real read, a real action and a real mutation (see
   the per-phase tables above).
 
-## Services (Phase 8 — operational dashboard)
+## Services (Phase 8 — dashboard contribution)
 
-Phase 8 introduces **no new permission**. `ServicesDashboardRepository` (read-only
-projection) and the Overview page consume every Services view/scope/action
-permission directly:
+Services introduces **no new permission**. The `ServicesDashboardContributor`
+(read-only projection) contributes to the one Universal ERP Dashboard and
+consumes every Services view/scope/action permission directly:
 
 | Consumer | Permissions re-checked |
 | --- | --- |
-| Services dashboard destination (`/app/services`) | Reachable by any Services user: `anyPermissions` now includes the directory view permissions **and** every transaction view/create permission plus `serviceWorkExecutionPerform`, so an ASSIGNED field employee or create-only operator can open their Overview. |
+| Universal dashboard (`/app/dashboard`) | Always reachable; Services content appears only when the Services module is enabled and the user holds at least one Services view/create permission. There is no `/app/services` dashboard destination — `/app/services` redirects to the first permitted Services feature (or the dashboard). |
+| `ServicesDashboardContributor` visibility | `services.*.view`/`.create` (any) plus the Services module enabled. When false, no Services query runs at all. |
 | `ServicesDashboardRepository` | A metric/section is computed only when `services.enquiries.view`, `services.jobAssignments.view`, `services.inspections.view`, `services.materialRequests.view` or `services.workExecutions.view` (with a non-`none` record scope) is granted. Restricted domains are not queried. |
 | `ServicesDashboardRepository` recent activity | `business_activity_events` are restricted to entity ids inside each domain's scope clause; no all-company timeline is loaded then filtered. |
 | Dashboard quick actions | `services.enquiries.create`, `services.jobAssignments.create`, `services.inspections.create`, `services.materialRequests.create`, `services.workExecutions.create` — hidden, never disabled. |
@@ -254,11 +255,13 @@ permission directly:
 
 Enforcement rules:
 
-- **Scope, not role.** The dashboard derives its scope indicator and every query
-  from the same `AccessScopeResolver`-backed Services scope resolvers used by the
-  repositories; TEAM never becomes ALL.
+- **Scope, not role.** The contribution derives its scope indicator and every
+  query from the same `AccessScopeResolver`-backed Services scope resolvers used
+  by the repositories; TEAM never becomes ALL, and Services Team is never mixed
+  with HR department/team.
 - **Live refresh.** A grant/revoke or company switch re-runs the projection
-  through the current `AuthContext` without a re-login.
+  through the current `AuthContext` without a re-login; the dashboard bloc is
+  keyed by that context.
 - **No duplicate persistence.** Needs Attention is a derived read model; no
   dashboard/KPI/attention table exists (schema v18).
 

@@ -5,6 +5,7 @@
 /// (no `/app/hr/profile`, `/app/hr/notifications`).
 abstract final class PlatformRoutes {
   static const app = '/app';
+  static const dashboard = '/app/dashboard';
   static const profile = '/app/profile';
   static const changePassword = '/app/change-password';
   static const settings = '/app/settings';

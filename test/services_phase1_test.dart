@@ -321,7 +321,6 @@ void main() {
           permissions: {AppPermission.serviceCustomerView},
         ).user.permissions,
       );
-      expect(withGrant.destinations.map((d) => d.id), contains('services'));
       expect(
         withGrant.destinations.map((d) => d.id),
         contains('services-customers'),
@@ -333,7 +332,7 @@ void main() {
       );
       expect(
         noGrant.destinations.map((d) => d.id),
-        isNot(contains('services')),
+        isNot(contains('services-customers')),
       );
     });
 
@@ -362,12 +361,7 @@ void main() {
       expect(sections.keys, contains(NavigationSection.services));
       expect(
         sections[NavigationSection.services]!.map((d) => d.id),
-        containsAll([
-          'services',
-          'services-customers',
-          'services-sites',
-          'services-teams',
-        ]),
+        containsAll(['services-customers', 'services-sites', 'services-teams']),
       );
       expect(
         sections[NavigationSection.hr]!.every(

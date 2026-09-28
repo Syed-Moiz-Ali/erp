@@ -138,6 +138,8 @@ class AppActivityItem extends StatelessWidget {
               children: [
                 Text(
                   title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.bodySmall.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -145,20 +147,32 @@ class AppActivityItem extends StatelessWidget {
                 ),
                 if (description.isNotEmpty) ...[
                   const SizedBox(height: AppSpacing.xxs),
-                  Text(description, style: theme.caption),
+                  Text(
+                    description,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.caption,
+                  ),
                 ],
               ],
             ),
           ),
           if (timestamp.isNotEmpty) ...[
             const SizedBox(width: AppSpacing.md),
-            Padding(
-              padding: const EdgeInsets.only(top: AppSpacing.xxs),
-              child: Text(
-                timestamp,
-                style: theme.caption.copyWith(
-                  color: AppColors.textMuted,
-                  fontFeatures: const [FontFeature.tabularFigures()],
+            Flexible(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.xxs),
+                  child: Text(
+                    timestamp,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.caption.copyWith(
+                      color: AppColors.textMuted,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+                  ),
                 ),
               ),
             ),

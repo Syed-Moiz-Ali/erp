@@ -13,8 +13,6 @@ import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
 import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
-import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
-import 'package:modular_erp/modules/hr/dashboard/presentation/dashboard_page.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
@@ -99,7 +97,6 @@ class HrModules {
 
 HrModules buildHrModules({
   required ModuleRegistry Function() registry,
-  DashboardRepository? dashboardRepository,
   EmployeeRepository? employeeRepository,
   ShiftRepository? shiftRepository,
   WorkLocationRepository? workLocationRepository,
@@ -732,29 +729,6 @@ HrModules buildHrModules({
   ];
   return HrModules(
     modules: [
-      if (dashboardRepository != null)
-        AppModule(
-          id: AppModuleIds.dashboard,
-          destinations: [
-            destination(
-              ErpModule(
-                id: 'dashboard',
-                moduleId: AppModuleIds.dashboard,
-                name: (l) => l.shellDashboard,
-                icon: Icons.space_dashboard_outlined,
-                selectedIcon: Icons.space_dashboard,
-                route: AppRoutes.dashboard,
-                navigationGroup: NavigationGroup.general,
-                order: 0,
-                mobilePriority: 0,
-              ),
-              (_) => DashboardPage(
-                repository: dashboardRepository,
-                registry: registry(),
-              ),
-            ),
-          ],
-        ),
       AppModule(
         id: AppModuleIds.employees,
         destinations: [

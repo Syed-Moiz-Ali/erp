@@ -31,7 +31,15 @@ void main() {
 
   group('LegacyRoutes.rewrite', () {
     test('maps old HR roots to canonical module-first paths', () {
-      expect(LegacyRoutes.rewrite(Uri.parse('/app/dashboard')), '/app/hr');
+      expect(LegacyRoutes.rewrite(Uri.parse('/app/dashboard')), isNull);
+      expect(
+        LegacyRoutes.rewrite(Uri.parse('/app/hr/dashboard')),
+        '/app/dashboard',
+      );
+      expect(
+        LegacyRoutes.rewrite(Uri.parse('/app/services/dashboard')),
+        '/app/dashboard',
+      );
       expect(
         LegacyRoutes.rewrite(Uri.parse('/app/employees')),
         '/app/hr/employees',
@@ -99,7 +107,12 @@ void main() {
     String? redirect(Uri uri) => authRedirect(hr, uri, navigation: resolver);
 
     test('old HR routes redirect to canonical routes', () {
-      expect(redirect(Uri.parse('/app/dashboard')), '/app/hr');
+      expect(redirect(Uri.parse('/app/dashboard')), isNull);
+      expect(redirect(Uri.parse('/app/hr/dashboard')), AppRoutes.dashboard);
+      expect(
+        redirect(Uri.parse('/app/services/dashboard')),
+        AppRoutes.dashboard,
+      );
       expect(
         redirect(Uri.parse('/app/employees/EMP-123')),
         '/app/hr/employees/EMP-123',
@@ -184,7 +197,6 @@ void main() {
       "'/app/attendance",
       "'/app/leave",
       "'/app/reports",
-      "'/app/dashboard",
       "'/app/settings/shifts",
       "'/app/settings/work-locations",
       "'/app/settings/attendance-policies",

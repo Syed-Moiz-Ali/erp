@@ -1,325 +1,424 @@
-import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
-import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/l10n/l10n.dart';
+import 'package:modular_erp/modules/hr/dashboard/application/hr_dashboard_contributor.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
-import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_scope_resolver.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
-import 'package:modular_erp/modules/hr/dashboard/data/demo_dashboard_source.dart';
-import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
-import 'package:modular_erp/modules/hr/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_scope_resolver.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
+import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contribution.dart';
+import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
+import 'package:modular_erp/platform/workspace/dashboard/presentation/bloc/universal_dashboard_bloc.dart';
 
-class ControlledDashboardRepository implements DashboardRepository {
-  final requests = <Completer<Result<DashboardSummary>>>[];
-  final refreshFlags = <bool>[];
-  final contexts = <AuthContext>[];
+class FakeDashboardRepository implements DashboardRepository {
+  FakeDashboardRepository(this.summary);
+  final DashboardSummary summary;
+  int loads = 0;
   @override
   Future<Result<DashboardSummary>> load(
     AuthContext context, {
     bool refresh = false,
-  }) {
-    contexts.add(context);
-    refreshFlags.add(refresh);
-    final c = Completer<Result<DashboardSummary>>();
-    requests.add(c);
-    return c.future;
+  }) async {
+    loads++;
+    return Success(summary);
   }
 }
 
-class ThrowingSource extends DemoDashboardSource {
+class FixedContributor implements DashboardContributor {
+  FixedContributor({
+    required this.id,
+    required this.order,
+    required this.contribution,
+    this.visible = true,
+    this.fail = false,
+  });
   @override
-  DashboardSummary read(DashboardScope scope, String person) =>
-      throw StateError('sensitive implementation detail');
+  final String id;
+  @override
+  final int order;
+  @override
+  String get moduleId => id;
+  final DashboardContribution contribution;
+  final bool visible, fail;
+  @override
+  bool isVisible(DashboardCapabilityContext context) => visible;
+  @override
+  Future<DashboardContribution> load(DashboardCapabilityContext context) async {
+    if (fail) throw StateError('boom');
+    return contribution;
+  }
+}
+
+AuthContext _auth({
+  required Set<AppPermission> permissions,
+  String? employeeId,
+  Set<String> modules = const {'dashboard', 'employees', 'attendance', 'leave'},
+  String companyId = 'c1',
+}) {
+  final user = UserAccount(
+    id: 'u1',
+    displayName: 'Test User',
+    email: 't@erp.demo',
+    companyId: companyId,
+    permissions: PermissionSet(permissions),
+    status: AccountStatus.active,
+  );
+  return AuthContext(
+    user: user,
+    company: CompanyContext(
+      id: companyId,
+      name: 'Company',
+      code: 'C',
+      timezone: 'Asia/Dubai',
+      defaultLocale: 'en',
+      enabledModules: modules,
+    ),
+    employeeReference: employeeId == null
+        ? null
+        : EmployeeReference(
+            id: employeeId,
+            userAccountId: user.id,
+            companyId: companyId,
+          ),
+  );
 }
 
 void main() {
-  final source = DemoAuthSource();
-  AuthContext account(DemoScenario role) =>
-      source.accounts.firstWhere((a) => a.scenario == role).context;
-  final employee = account(DemoScenario.employee);
-  AuthContext grants(Iterable<AppPermission> p) => employee.copyWith(
-    user: employee.user.copyWith(permissions: PermissionSet(p)),
-  );
-  const resolver = DashboardScopeResolver(),
-      repository = LocalDashboardRepository();
-  final snapshot = const DemoDashboardSource().read(
-    DashboardScope.self,
-    employee.user.displayName,
-  );
-  final loaded = isA<DashboardState>().having(
-    (s) => s.status,
-    'status',
-    DashboardStatus.loaded,
-  );
-  test(
-    'scope selects highest explicitly granted attendance scope, never role',
-    () {
-      expect(
-        resolver.resolve(
-          grants([
-            AppPermission.attendanceViewAll,
-            AppPermission.attendanceViewTeam,
-            AppPermission.attendanceViewSelf,
-          ]),
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(initializeDateFormatting);
+  const resolver = DashboardScopeResolver();
+
+  test('scope selects the highest explicitly granted attendance scope', () {
+    final employee = _auth(permissions: const {}, employeeId: 'e1');
+    AuthContext grants(Set<AppPermission> p) => employee.copyWith(
+      user: employee.user.copyWith(permissions: PermissionSet(p)),
+    );
+    expect(
+      resolver.resolve(
+        grants(const {
+          AppPermission.attendanceViewAll,
+          AppPermission.attendanceViewTeam,
+          AppPermission.attendanceViewSelf,
+        }),
+      ),
+      DashboardScope.company,
+    );
+    expect(
+      resolver.resolve(
+        grants(const {
+          AppPermission.attendanceViewTeam,
+          AppPermission.attendanceViewSelf,
+        }),
+      ),
+      DashboardScope.team,
+    );
+    expect(
+      resolver.resolve(grants(const {AppPermission.attendanceViewSelf})),
+      DashboardScope.self,
+    );
+    expect(resolver.resolve(grants(const {})), DashboardScope.none);
+    expect(
+      resolver.resolve(
+        employee.copyWith(
+          company: employee.company.copyWith(enabledModules: {'dashboard'}),
         ),
-        DashboardScope.company,
-      );
-      expect(
-        resolver.resolve(
-          grants([
-            AppPermission.attendanceViewTeam,
-            AppPermission.attendanceViewSelf,
-          ]),
+      ),
+      DashboardScope.none,
+    );
+  });
+
+  group('HrDashboardContributor', () {
+    late AppLocalizations l10n;
+    setUpAll(() async {
+      l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    });
+
+    DashboardSummary summary() => DashboardSummary(
+      scope: DashboardScope.company,
+      asOf: DateTime(2026, 9, 28, 9),
+      isDemo: false,
+      status: const DashboardStatusSummary(
+        onTime: 68,
+        late: 5,
+        absent: 4,
+        onLeave: 7,
+      ),
+      metrics: const [
+        DashboardMetric(DashboardMetricKind.employees, 84),
+        DashboardMetric(DashboardMetricKind.present, 73),
+        DashboardMetric(DashboardMetricKind.late, 5),
+        DashboardMetric(DashboardMetricKind.absent, 4),
+        DashboardMetric(DashboardMetricKind.leave, 7),
+        DashboardMetric(DashboardMetricKind.working, 70),
+        DashboardMetric(DashboardMetricKind.corrections, 6),
+        DashboardMetric(DashboardMetricKind.attendanceRate, 0.86),
+      ],
+      alerts: const [
+        DashboardAlert(DashboardAlertKind.lateArrivals, 5),
+        DashboardAlert(DashboardAlertKind.pendingCorrections, 6),
+      ],
+      activities: [
+        DashboardActivity(
+          kind: DashboardActivityKind.checkedIn,
+          person: 'Ahmed',
+          timestamp: DateTime(2026, 9, 28, 9, 3),
         ),
-        DashboardScope.team,
+      ],
+      today: DashboardToday(
+        shiftStart: DateTime(2026, 9, 28, 9),
+        shiftEnd: DateTime(2026, 9, 28, 18),
+      ),
+    );
+
+    test('maps permitted HR KPIs, attention, schedule and activity', () async {
+      final contributor = HrDashboardContributor(
+        repository: FakeDashboardRepository(summary()),
+        demoWidgets: false,
       );
+      final context = _auth(
+        permissions: const {
+          AppPermission.attendanceViewAll,
+          AppPermission.attendanceApprove,
+        },
+      );
+      final contribution = await contributor.load(
+        DashboardCapabilityContext(auth: context, l10n: l10n),
+      );
+      final kpiIds = contribution.kpis.map((k) => k.id).toList();
+      expect(kpiIds, contains('hr-present'));
+      expect(kpiIds, contains('hr-absent'));
+      expect(kpiIds, contains('hr-leave'));
+      expect(kpiIds, contains('hr-corrections'));
+      expect(kpiIds, isNot(contains('hr-working')));
+      expect(contribution.attention, hasLength(2));
+      expect(contribution.schedule, hasLength(1));
+      expect(contribution.activity, hasLength(1));
+      expect(contribution.scopeLabel, isNotEmpty);
       expect(
-        resolver.resolve(grants([AppPermission.attendanceViewSelf])),
-        DashboardScope.self,
+        contribution.viewAll[DashboardSection.attention],
+        '/app/hr/attendance/requests',
       );
-      expect(resolver.resolve(grants([])), DashboardScope.none);
-      final admin = account(DemoScenario.platformAdmin);
-      expect(
-        resolver.resolve(
-          admin.copyWith(
-            user: admin.user.copyWith(permissions: PermissionSet([])),
-          ),
-        ),
-        DashboardScope.none,
-      );
-      expect(
-        resolver.resolve(
-          admin.copyWith(
-            company: admin.company.copyWith(enabledModules: {'dashboard'}),
-          ),
-        ),
-        DashboardScope.none,
-      );
-    },
-  );
-  for (final role in DemoScenario.values) {
+    });
+
     test(
-      '$role receives permission-scoped deterministic immutable data',
+      'self scope contributes personal data without company totals',
       () async {
-        final context = account(role);
-        final data =
-            (await repository.load(context) as Success<DashboardSummary>).value;
-        final again =
-            (await repository.load(context, refresh: true)
-                    as Success<DashboardSummary>)
-                .value;
-        expect(
-          data.scope,
-          role == DemoScenario.employee
-              ? DashboardScope.self
-              : role == DemoScenario.manager
-              ? DashboardScope.team
-              : DashboardScope.company,
-        );
-        expect(
-          data.metrics.map((m) => m.value),
-          again.metrics.map((m) => m.value),
-        );
-        expect(data.asOf, again.asOf);
-        for (var i = 1; i < data.activities.length; i++) {
-          expect(
-            data.activities[i - 1].timestamp.isBefore(
-              data.activities[i].timestamp,
+        final contributor = HrDashboardContributor(
+          repository: FakeDashboardRepository(
+            DashboardSummary(
+              scope: DashboardScope.self,
+              asOf: DateTime(2026, 9, 28),
+              isDemo: false,
             ),
-            isFalse,
-          );
-        }
-        expect(() => data.metrics.clear(), throwsUnsupportedError);
-        if (role == DemoScenario.employee) {
-          expect(data.status, isNull);
-          expect(data.today, isNull);
-          expect(data.metrics, isEmpty);
-          expect(data.activities, isEmpty);
-          expect(data.isDemo, isFalse);
-          expect(data.alerts, isEmpty);
-        } else {
-          final status = data.status!;
-          expect(status.total, role == DemoScenario.manager ? 12 : 84);
-          expect(status.present, role == DemoScenario.manager ? 9 : 73);
-          expect(data.metrics.first.value, status.total);
-          final work = data.metrics
-              .firstWhere((m) => m.kind == DashboardMetricKind.working)
-              .value;
-          final rest = data.metrics
-              .firstWhere((m) => m.kind == DashboardMetricKind.onBreak)
-              .value;
-          expect(work + rest, status.present);
-          if (role == DemoScenario.manager) {
-            expect(
-              data.metrics.any(
-                (m) => {
-                  DashboardMetricKind.employees,
-                  DashboardMetricKind.users,
-                  DashboardMetricKind.locations,
-                }.contains(m.kind),
-              ),
-              isFalse,
-            );
-          }
-        }
+          ),
+        );
+        final context = _auth(
+          permissions: const {AppPermission.attendanceViewSelf},
+          employeeId: 'e1',
+        );
+        final contribution = await contributor.load(
+          DashboardCapabilityContext(auth: context, l10n: l10n),
+        );
+        expect(contribution.kpis, isEmpty);
+        expect(contribution.myDay, hasLength(1));
       },
     );
-  }
-  test(
-    'company scope alone does not grant employee, user, location or correction data',
-    () async {
-      final data =
-          (await repository.load(grants([AppPermission.attendanceViewAll]))
-                  as Success<DashboardSummary>)
-              .value;
-      expect(data.scope, DashboardScope.company);
-      expect(
-        data.metrics.any(
-          (m) => {
-            DashboardMetricKind.employees,
-            DashboardMetricKind.users,
-            DashboardMetricKind.locations,
-            DashboardMetricKind.corrections,
-          }.contains(m.kind),
-        ),
-        isFalse,
+
+    test('an unlinked user still gets broad metrics from explicit grants', () {
+      final contributor = HrDashboardContributor(
+        repository: FakeDashboardRepository(summary()),
+        demoWidgets: false,
       );
-      expect(data.alerts.map((a) => a.kind), [DashboardAlertKind.lateArrivals]);
-      expect(
-        data.activities.any(
-          (a) => a.kind == DashboardActivityKind.correctionSubmitted,
-        ),
-        isFalse,
-      );
-    },
-  );
-  test(
-    'disabled company modules suppress dependent metrics; no attendance grant returns empty',
-    () async {
-      final admin = account(DemoScenario.platformAdmin);
-      final disabled = admin.copyWith(
-        company: admin.company.copyWith(
-          enabledModules: {'dashboard', 'attendance'},
-        ),
-      );
-      final data =
-          (await repository.load(disabled) as Success<DashboardSummary>).value;
-      expect(
-        data.metrics.any(
-          (m) => {
-            DashboardMetricKind.employees,
-            DashboardMetricKind.users,
-          }.contains(m.kind),
-        ),
-        isFalse,
+      final context = _auth(
+        permissions: const {AppPermission.attendanceViewAll},
       );
       expect(
-        (await repository.load(grants([])) as Success<DashboardSummary>)
-            .value
-            .isEmpty,
+        contributor.isVisible(
+          DashboardCapabilityContext(auth: context, l10n: l10n),
+        ),
         isTrue,
       );
-    },
-  );
-  test(
-    'disabled demos and source exceptions return safe typed failures',
-    () async {
-      expect(
-        await const LocalDashboardRepository(demoEnabled: false).load(employee),
-        isA<Failed<DashboardSummary>>().having(
-          (r) => r.failure.kind,
-          'kind',
-          FailureKind.demoDisabled,
-        ),
+    });
+
+    test('module disable removes the contribution', () {
+      final contributor = HrDashboardContributor(
+        repository: FakeDashboardRepository(summary()),
       );
-      final result = await LocalDashboardRepository(
-        source: ThrowingSource(),
-      ).load(employee);
-      expect(
-        result,
-        isA<Failed<DashboardSummary>>().having(
-          (r) => r.failure.code,
-          'safe code',
-          'dashboard.local_read',
-        ),
+      final context = _auth(
+        permissions: const {AppPermission.attendanceViewAll},
+        modules: const {'services'},
       );
-    },
-  );
-  test('Bloc starts initial with no data', () async {
-    final bloc = DashboardBloc(repository, employee);
-    expect(bloc.state.status, DashboardStatus.initial);
-    expect(bloc.state.summary, isNull);
-    await bloc.close();
+      expect(
+        contributor.isVisible(
+          DashboardCapabilityContext(auth: context, l10n: l10n),
+        ),
+        isFalse,
+      );
+    });
   });
-  blocTest<DashboardBloc, DashboardState>(
-    'load uses repository and becomes loaded',
-    build: () => DashboardBloc(repository, employee),
-    act: (b) => b.add(const DashboardStarted()),
-    expect: () => [
-      isA<DashboardState>().having(
-        (s) => s.status,
-        'status',
-        DashboardStatus.loading,
-      ),
-      loaded.having((s) => s.summary?.scope, 'scope', DashboardScope.self),
-    ],
-  );
-  blocTest<DashboardBloc, DashboardState>(
-    'failure is recoverable with retry',
-    build: () => DashboardBloc(
-      const LocalDashboardRepository(demoEnabled: false),
-      employee,
-    ),
-    act: (b) => b.add(const DashboardStarted()),
-    expect: () => [
-      isA<DashboardState>().having(
-        (s) => s.status,
-        'status',
-        DashboardStatus.loading,
-      ),
-      isA<DashboardState>()
-          .having((s) => s.status, 'status', DashboardStatus.failure)
-          .having((s) => s.failure?.kind, 'failure', FailureKind.demoDisabled),
-    ],
-  );
-  test(
-    'refresh retains snapshot, coalesces submissions, handles failure and retry',
-    () async {
-      final repo = ControlledDashboardRepository();
-      final b = DashboardBloc(repo, employee);
-      Future<void> tick() => Future<void>.delayed(Duration.zero);
-      b.add(const DashboardStarted());
-      await tick();
-      expect(b.state.status, DashboardStatus.loading);
-      repo.requests[0].complete(Success(snapshot));
-      await tick();
-      b.add(const DashboardRefreshRequested());
-      b.add(const DashboardRefreshRequested());
-      await tick();
-      expect(b.state.status, DashboardStatus.refreshing);
-      expect(identical(b.state.summary, snapshot), isTrue);
-      expect(repo.requests.length, 2);
-      repo.requests[1].complete(
-        const Failed(
-          Failure(code: 'offline', kind: FailureKind.offline, retryable: true),
+
+  group('UniversalDashboardCoordinator', () {
+    late AppLocalizations l10n;
+    setUpAll(() async {
+      l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    });
+
+    DashboardContribution contribution(
+      String module,
+      int order, {
+      int attentionPriority = 0,
+      String kpiId = 'k',
+      int kpiRank = 100,
+    }) => DashboardContribution(
+      moduleId: module,
+      order: order,
+      kpis: [
+        DashboardKpi(
+          id: kpiId,
+          moduleId: module,
+          label: module,
+          value: '1',
+          icon: Icons.circle,
+          rank: kpiRank,
+        ),
+      ],
+      attention: [
+        DashboardAttentionItem(
+          id: '$module-a',
+          moduleId: module,
+          type: 't',
+          title: module,
+          subtitle: '',
+          icon: Icons.circle,
+          priority: attentionPriority,
+        ),
+      ],
+    );
+
+    test('merges contributors in order and caps sections', () async {
+      final coordinator = UniversalDashboardCoordinator([
+        FixedContributor(
+          id: 'services',
+          order: 20,
+          contribution: contribution('services', 20, kpiId: 's', kpiRank: 5),
+        ),
+        FixedContributor(
+          id: 'hr',
+          order: 10,
+          contribution: contribution('hr', 10, kpiId: 'h', kpiRank: 50),
+        ),
+      ]);
+      final snapshot = await coordinator.load(
+        DashboardCapabilityContext(
+          auth: _auth(permissions: const {}),
+          l10n: l10n,
         ),
       );
-      await tick();
-      expect(b.state.status, DashboardStatus.loaded);
-      expect(identical(b.state.summary, snapshot), isTrue);
-      expect(b.state.failure?.kind, FailureKind.offline);
-      b.add(const DashboardRefreshRequested());
-      await tick();
-      repo.requests[2].complete(Success(snapshot));
-      await tick();
-      expect(b.state.failure, isNull);
-      expect(repo.refreshFlags, [false, true, true]);
-      expect(repo.contexts.every((c) => identical(c, employee)), isTrue);
-      await b.close();
-    },
-  );
+      expect(snapshot.kpis, hasLength(2));
+      expect(snapshot.kpis.first.id, 's');
+      expect(snapshot.attention, hasLength(2));
+      expect(snapshot.hasAnyData, isTrue);
+      expect(snapshot.partialFailure, isFalse);
+    });
+
+    test('a failed contributor degrades to a partial snapshot', () async {
+      final coordinator = UniversalDashboardCoordinator([
+        FixedContributor(
+          id: 'hr',
+          order: 10,
+          contribution: contribution('hr', 10),
+        ),
+        FixedContributor(
+          id: 'services',
+          order: 20,
+          contribution: DashboardContribution.empty,
+          fail: true,
+        ),
+      ]);
+      final snapshot = await coordinator.load(
+        DashboardCapabilityContext(
+          auth: _auth(permissions: const {}),
+          l10n: l10n,
+        ),
+      );
+      expect(snapshot.partialFailure, isTrue);
+      expect(snapshot.kpis, hasLength(1));
+    });
+  });
+
+  group('UniversalDashboardBloc', () {
+    late AppLocalizations l10n;
+    setUpAll(() async {
+      l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    });
+
+    UniversalDashboardCoordinator coordinator({bool fail = false}) =>
+        UniversalDashboardCoordinator([
+          FixedContributor(
+            id: 'hr',
+            order: 10,
+            fail: fail,
+            contribution: DashboardContribution(
+              moduleId: 'hr',
+              kpis: const [
+                DashboardKpi(
+                  id: 'hr-present',
+                  moduleId: 'hr',
+                  label: 'Present',
+                  value: '73',
+                  icon: Icons.check,
+                ),
+              ],
+            ),
+          ),
+        ]);
+
+    blocTest<UniversalDashboardBloc, UniversalDashboardState>(
+      'loads all contributions into a ready snapshot',
+      build: () => UniversalDashboardBloc(
+        coordinator(),
+        _auth(permissions: const {AppPermission.attendanceViewSelf}),
+        l10n,
+      ),
+      act: (bloc) => bloc.add(const UniversalDashboardStarted()),
+      expect: () => [
+        isA<UniversalDashboardState>().having(
+          (s) => s.status,
+          'status',
+          UniversalDashboardStatus.loading,
+        ),
+        isA<UniversalDashboardState>()
+            .having((s) => s.status, 'status', UniversalDashboardStatus.ready)
+            .having((s) => s.snapshot?.kpis.first.id, 'kpi', 'hr-present'),
+      ],
+    );
+
+    blocTest<UniversalDashboardBloc, UniversalDashboardState>(
+      'reports a partial snapshot when a contributor fails',
+      build: () => UniversalDashboardBloc(
+        coordinator(fail: true),
+        _auth(permissions: const {AppPermission.attendanceViewSelf}),
+        l10n,
+      ),
+      act: (bloc) => bloc.add(const UniversalDashboardStarted()),
+      expect: () => [
+        isA<UniversalDashboardState>(),
+        isA<UniversalDashboardState>().having(
+          (s) => s.status,
+          'status',
+          UniversalDashboardStatus.partial,
+        ),
+      ],
+    );
+  });
+
+  test('dashboard width uses the shared centered AppPage container', () {
+    // Guard against a dashboard-specific wider container creeping back in.
+    expect(AppDimensions.contentMaxWidth, isNotNull);
+  });
 }

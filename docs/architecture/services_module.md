@@ -53,12 +53,18 @@ Every Services record must follow the shared foundation
 
 ## Routes
 
-Only `/app/services` is reserved. The implemented transactions add
+`/app/services` is the module root and redirects to the first permitted
+Services feature (Enquiries by default); it is no longer a Dashboard/Overview
+route. The implemented transactions add
 `/app/services/enquiries`, `/app/services/job-assignments`,
 `/app/services/inspections`, `/app/services/material-requests`,
 `/app/services/work-executions`, the directory routes
 (`/app/services/customers`, `/app/services/sites`, `/app/services/teams`) and
 `/app/services/settings`.
+
+Services operational content is contributed to the one Universal ERP Dashboard
+(`/app/dashboard`) by `ServicesDashboardContributor` (see
+[universal_dashboard.md](universal_dashboard.md)).
 
 ## Unresolved client workflow questions
 

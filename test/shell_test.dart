@@ -191,7 +191,7 @@ void main() {
             )
             .destinations
             .map((d) => d.id),
-        ['attendance', 'profile'],
+        ['dashboard', 'attendance', 'profile'],
       );
       expect(
         resolver.routeAccess(
@@ -277,13 +277,13 @@ void main() {
             ),
           ),
         ),
-        AppRoutes.attendance,
+        AppRoutes.dashboard,
       );
       expect(
         DefaultLandingResolver(resolver).resolve(
           ctx.copyWith(company: ctx.company.copyWith(enabledModules: {})),
         ),
-        AppRoutes.profile,
+        AppRoutes.dashboard,
       );
       expect(
         DefaultLandingResolver(

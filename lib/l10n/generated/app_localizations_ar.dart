@@ -1712,6 +1712,70 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authDemoSignIn => 'تسجيل الدخول';
 
   @override
+  String get universalDashboardSubtitle => 'عملك ونشاط الشركة في لمحة واحدة';
+
+  @override
+  String get universalDashboardMyDay => 'يومي';
+
+  @override
+  String get universalDashboardNeedsAttention => 'يحتاج إلى انتباه';
+
+  @override
+  String get universalDashboardMetrics => 'مؤشرات رئيسية';
+
+  @override
+  String get universalDashboardSchedule => 'جدول اليوم';
+
+  @override
+  String get universalDashboardMyWork => 'عملي';
+
+  @override
+  String get universalDashboardTeam => 'الفريق والشركة';
+
+  @override
+  String get universalDashboardRecentActivity => 'النشاط الأخير';
+
+  @override
+  String get universalDashboardQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get universalDashboardAllClear => 'لا توجد مهام تتطلب انتباهك الآن.';
+
+  @override
+  String get universalDashboardNoSchedule => 'لا يوجد شيء مجدول اليوم.';
+
+  @override
+  String get universalDashboardNoWork => 'لا يوجد عمل مُسند إليك الآن.';
+
+  @override
+  String get universalDashboardNoActivity => 'لا يوجد نشاط حديث.';
+
+  @override
+  String get universalDashboardEmptyTitle => 'لا شيء معلّق لديك';
+
+  @override
+  String get universalDashboardError =>
+      'تعذّر تحميل لوحة التحكم. حاول مرة أخرى.';
+
+  @override
+  String get universalDashboardPartial => 'تعذّر تحميل بعض أقسام لوحة التحكم.';
+
+  @override
+  String get universalDashboardRefresh => 'تحديث';
+
+  @override
+  String get universalDashboardRefreshing => 'جارٍ تحديث لوحة التحكم';
+
+  @override
+  String get universalDashboardViewAll => 'عرض الكل';
+
+  @override
+  String get universalDashboardToday => 'اليوم';
+
+  @override
+  String get universalDashboardOpen => 'فتح';
+
+  @override
   String get dashboard => 'لوحة المعلومات';
 
   @override

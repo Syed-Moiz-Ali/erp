@@ -39,6 +39,12 @@ Windows; only the visual composition adapts by breakpoint.
   /app/more, /app/access-denied, /app/module-unavailable, /app/not-found
 ```
 
+`/app/dashboard` is the single canonical Universal ERP Dashboard, owned by the
+neutral platform workspace boundary (not by HR or Services). `/app` redirects to
+it; `/app/hr` and `/app/services` redirect to the first permitted feature of
+their module. See
+[architecture/universal_dashboard.md](architecture/universal_dashboard.md).
+
 Entity identity lives in the **path** (`/app/employees/:employeeId`), never in a
 query parameter. Filters/dates/pages may use query parameters as an optional
 enhancement; they are not required for correctness.

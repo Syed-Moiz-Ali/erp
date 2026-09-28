@@ -8,6 +8,10 @@ import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 /// so a restricted domain is never queried and no all-company data is loaded
 /// then hidden. There are deliberately no mutation methods here.
 abstract interface class ServicesDashboardRepository {
+  /// Reads the whole snapshot once. Used by the universal dashboard
+  /// contribution so it never opens a long-lived stream per frame.
+  Future<ServicesDashboardSnapshot> load(AuthContext context);
+
   /// A live snapshot that recomputes whenever any underlying Services record
   /// changes, without manual refresh. It is assembled from batched projections
   /// (no per-item Customer/Site/Employee queries).

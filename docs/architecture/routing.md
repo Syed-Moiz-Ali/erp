@@ -28,16 +28,26 @@ Phase 0.3 restructured URLs so they reflect the ERP module boundaries:
 | Owner | Source of truth | Examples |
 | --- | --- | --- |
 | HR module | `lib/modules/hr/module/hr_routes.dart` (`HrRoutes`) | `/app/hr`, `/app/hr/employees`, `/app/hr/attendance`, `/app/hr/leave`, `/app/hr/reports`, `/app/hr/settings/*` |
-| Services module | `lib/modules/services/module/services_routes.dart` (`ServicesRoutes`) | `/app/services` (root reserved) |
-| Platform | `lib/app/router/platform_routes.dart` (`PlatformRoutes`) | `/app/profile`, `/app/settings`, `/app/notifications`, `/app/change-password` |
+| Services module | `lib/modules/services/module/services_routes.dart` (`ServicesRoutes`) | `/app/services` (root redirects to first permitted feature), `/app/services/enquiries`, ... |
+| Platform | `lib/app/router/platform_routes.dart` (`PlatformRoutes`) | `/app/dashboard`, `/app/profile`, `/app/settings`, `/app/notifications`, `/app/change-password` |
 
 `AppRoutes` remains the stable public facade used by existing callers; its HR
 members delegate to `HrRoutes`, so the canonical value is defined once.
 
+## Canonical dashboard route
+
+```text
+/app/dashboard                     Universal ERP dashboard (platform-owned)
+```
+
+`/app` redirects to `/app/dashboard`. `/app/hr` and `/app/services` redirect to
+the first permitted feature of their module. See
+[universal_dashboard.md](universal_dashboard.md).
+
 ## Canonical HR routes
 
 ```text
-/app/hr                          HR landing (current HR dashboard/overview)
+/app/hr                          HR landing (redirects to first permitted HR feature)
 /app/hr/employees
 /app/hr/employees/new
 /app/hr/employees/:employeeId
@@ -97,7 +107,8 @@ for the `from` target and the browser URL is updated to the canonical path.
 
 | Old | New |
 | --- | --- |
-| `/app/dashboard` | `/app/hr` |
+| `/app/hr/dashboard` | `/app/dashboard` |
+| `/app/services/dashboard` | `/app/dashboard` |
 | `/app/employees` | `/app/hr/employees` |
 | `/app/employees/:id` | `/app/hr/employees/:id` |
 | `/app/employees/:id/edit` | `/app/hr/employees/:id/edit` |

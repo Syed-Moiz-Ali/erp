@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
-import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_module_registration.dart';
 import 'package:modular_erp/modules/hr/module/workforce_directory_adapter.dart';
@@ -10,40 +9,39 @@ import 'package:modular_erp/modules/services/domain/contracts/workforce_director
 import 'package:modular_erp/modules/services/module/services_module_registration.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'package:modular_erp/platform/module/platform_registration.dart';
+import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
 
 class _MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
   final registry = ModuleRegistry(const <ErpModule>[]);
 
-  group('Phase 0 module ownership', () {
-    test('HR owns the /app/dashboard destination', () {
-      final hr = buildHrModules(
+  group('Universal dashboard ownership', () {
+    test('platform owns the single canonical /app/dashboard destination', () {
+      final platform = buildPlatformModules(
         registry: () => registry,
-        dashboardRepository: const LocalDashboardRepository(),
+        authRepository: _MockAuthRepository(),
+        dashboardCoordinator: const UniversalDashboardCoordinator([]),
       );
-      final dashboard = hr.modules.firstWhere(
+      final dashboard = platform.firstWhere(
         (module) => module.id == AppModuleIds.dashboard,
       );
       final navigation = dashboard.destinations.single.navigation;
       expect(navigation.route, AppRoutes.dashboard);
-      expect(navigation.route, '/app/hr');
+      expect(navigation.route, '/app/dashboard');
       expect(navigation.navigationGroup, NavigationGroup.general);
     });
 
-    test('platform no longer registers the HR dashboard', () {
-      final platform = buildPlatformModules(
-        registry: () => registry,
-        authRepository: _MockAuthRepository(),
-      );
-      expect(platform.map((module) => module.id), isNot(contains('dashboard')));
+    test('HR no longer registers a dashboard destination', () {
+      final hr = buildHrModules(registry: () => registry);
       expect(
-        platform.any(
-          (module) => module.destinations.any(
-            (destination) =>
-                destination.navigation.route == AppRoutes.dashboard,
-          ),
-        ),
+        hr.modules.map((module) => module.id),
+        isNot(contains(AppModuleIds.dashboard)),
+      );
+      expect(
+        hr.modules
+            .expand((module) => module.destinations)
+            .any((destination) => destination.navigation.route == '/app/hr'),
         isFalse,
       );
     });
@@ -53,7 +51,7 @@ void main() {
     });
 
     test('route and module identifiers remain compatible', () {
-      expect(AppRoutes.dashboard, '/app/hr');
+      expect(AppRoutes.dashboard, '/app/dashboard');
       expect(AppRoutes.services, '/app/services');
       expect(AppRoutes.employees, '/app/hr/employees');
       expect(AppRoutes.attendance, '/app/hr/attendance');

@@ -22,6 +22,7 @@ class AttendanceDashboardPreview extends StatelessWidget {
     final bloc = context.read<AttendanceBloc?>();
     if (bloc == null) return const _Unavailable();
     return BlocBuilder<AttendanceBloc, AttendanceBlocState>(
+      bloc: bloc,
       builder: (context, s) => _TodayCard(state: s),
     );
   }

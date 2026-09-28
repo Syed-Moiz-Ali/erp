@@ -12,7 +12,7 @@ workspace/shell behaviour.
 
 **Business module** — domain-specific business functionality. Examples: HR
 (employees, attendance, leave, holidays, shifts, work locations, attendance
-policies, attendance reports, HR dashboard) and, later, Services, Finance,
+policies, attendance reports, HR dashboard contribution) and, later, Finance,
 Inventory, etc.
 
 A folder called `dashboard` or `reports` does **not** automatically belong to
@@ -58,40 +58,47 @@ lib/
       module/             # Services destination + DI composition (empty today)
 ```
 
-## Dashboard: current vs future ownership
+## Dashboard ownership
 
-**Current state.** The Dashboard is HR-owned: `lib/modules/hr/dashboard/`. It
-consumes only workforce concerns (employees, attendance summaries, leave
-summaries, HR persona/operational metrics) and its repository
-(`LocalDashboardRepository`) queries HR data. Its destination is still
-`/app/dashboard` and it is registered by the HR module so that a workforce
-screen is not given fake platform ownership merely because its route is
-`/app/dashboard`.
+There is **one** universal ERP Dashboard, owned by the neutral platform
+workspace boundary at `lib/platform/workspace/dashboard/` (see
+[universal_dashboard.md](universal_dashboard.md)). It is not owned by HR or
+Services. The page renders only module-contributed, permission/scope-filtered
+data; it never imports a module DAO, Drift table or bloc.
 
-**Future state.** If several ERP modules must contribute to one combined landing
-Dashboard, a thin platform composition layer may be introduced later, e.g.
-`lib/platform/dashboard/` with a shell plus `DashboardContributor`
-implementations in `lib/modules/hr/dashboard/` and
-`lib/modules/services/dashboard/`. That composition is intentionally **not**
-built yet; it will be introduced only when Services actually needs to
-contribute data.
+Business modules contribute content through the typed `DashboardContributor`
+contract:
 
-## Services: reserved ownership
+- HR: `lib/modules/hr/dashboard/application/hr_dashboard_contributor.dart`
+  (reuses the HR dashboard read repository plus HR-owned attendance/leave
+  widgets).
+- Services:
+  `lib/modules/services/overview/application/services_dashboard_contributor.dart`
+  (reuses the Phase 9 Services read projection).
+- Future Finance/Inventory modules register another contributor in
+  `lib/app/module_registry/registered_modules.dart` without editing a switch.
 
-`lib/modules/services/` exists as a foundation only (module registration, DI
-no-ops and the `WorkforceDirectory` contract). Business capabilities such as
-Service Enquiry, Scheduling, Inspection, Material Request, Work Execution, a
-Services dashboard and Services reports are reserved for later phases. Do not
-create empty placeholder folders; add `lib/modules/services/dashboard/` only
-when real Services dashboard functionality exists.
+The canonical route is `/app/dashboard`; `/app/hr` and `/app/services` redirect
+to the first permitted feature of their module.
+
+## Services: ownership
+
+`lib/modules/services/` owns the Service Enquiry, Job Assignment, Inspection,
+Material Request and Work Execution domains plus their settings. It contributes
+Services content to the universal dashboard via
+`ServicesDashboardContributor`; it no longer owns a separate Overview/Dashboard
+page.
 
 ## Import direction
 
 - `modules/hr/dashboard/` may import public domain/repository contracts from
   other HR sub-modules (`employees`, `attendance`, `leave`) because they are all
-  inside HR.
-- `platform/` must not import HR dashboard implementation. The application
-  composition root (`app/module_registry/`) may reference module destinations.
+  inside HR. It contributes to the universal dashboard through
+  `HrDashboardContributor`.
+- `platform/workspace/dashboard/` must not import HR or Services DAOs/Drift
+  internals; it depends only on the neutral contributor contract and the module
+  public read contracts. The application composition root
+  (`app/module_registry/`) wires the contributors.
 - `modules/services/` may depend on `platform/` contracts and its own
   `domain/contracts/` only; HR provides the `WorkforceDirectory` adapter.
 

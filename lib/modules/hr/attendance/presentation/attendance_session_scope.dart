@@ -36,6 +36,7 @@ class AttendanceSessionScope extends StatelessWidget {
         }
         return BlocProvider<AttendanceBloc>(
           key: ValueKey((a.user.id, a.company.id)),
+          lazy: false,
           create: (_) => create()..add(const AttendanceStarted()),
           child: child,
         );

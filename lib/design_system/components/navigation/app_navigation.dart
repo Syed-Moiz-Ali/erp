@@ -250,7 +250,8 @@ class AppSidebar extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     for (final group in groups.entries) ...[
-                      if (!collapsed)
+                      if (!collapsed &&
+                          group.key != NavigationSection.dashboard)
                         Padding(
                           padding: const EdgeInsetsDirectional.only(
                             start: AppSpacing.md,
