@@ -114,309 +114,332 @@ class _ServiceWorkExecutionFormPageState
           cubit.resetForm();
         }
 
-        return AppPage(
-          header: AppPageHeader(
-            title: widget.executionId == null
-                ? l.servicesWorkExecutionFormNew
-                : l.servicesWorkExecutionFormEdit,
-            actions: [
+        final notFound = state.failure == 'servicesWorkExecutionNotFound';
+        return AppFormPage(
+          title: widget.executionId == null
+              ? l.servicesWorkExecutionFormNew
+              : l.servicesWorkExecutionFormEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.workExecutions),
+            ),
+            if (widget.executionId == null)
               AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.workExecutions),
+                label: l.servicesWorkExecutionResetForm,
+                onPressed: state.saving ? null : reset,
               ),
-              if (widget.executionId == null)
-                AppTextButton(
-                  label: l.servicesWorkExecutionResetForm,
-                  onPressed: state.saving ? null : reset,
-                ),
-              AppPrimaryButton(
-                label: widget.executionId == null
-                    ? l.servicesWorkExecutionCreate
-                    : l.servicesWorkExecutionSaveChanges,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceWorkExecutionFailureMessage(state.failure, l) ??
-                      l.servicesWorkExecutionStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesWorkExecutionSectionContext,
-                child: Column(
+            AppPrimaryButton(
+              label: widget.executionId == null
+                  ? l.servicesWorkExecutionCreate
+                  : l.servicesWorkExecutionSaveChanges,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceWorkExecutionFailureMessage(state.failure, l) ??
+                    l.servicesWorkExecutionStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesWorkExecutionNotFound,
+                  onRetry: () => context.go(ServicesRoutes.workExecutions),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ServiceReferenceField<ServiceWorkEligibleInspectionRef>(
-                      label: l.servicesWorkExecutionSourceInspection,
-                      valueLabel: source?.inspectionNumber,
-                      valueSubtitle: source == null
-                          ? null
-                          : [
-                              source.customerName,
-                              source.enquiryNumber,
-                            ].where((s) => s.isNotEmpty).join(' · '),
-                      hint: l.servicesWorkExecutionSelectInspection,
-                      errorText:
-                          state.failure ==
-                              'servicesWorkExecutionInspectionRequired'
-                          ? l.servicesWorkExecutionInspectionRequired
-                          : null,
-                      enabled: !state.saving && widget.executionId == null,
-                      onPick: () => _pickInspection(context, cubit),
-                      onClear: source == null ? null : cubit.clearInspection,
+                    AppFormSection(
+                      title: l.servicesWorkExecutionSectionContext,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ServiceReferenceField<
+                            ServiceWorkEligibleInspectionRef
+                          >(
+                            label: l.servicesWorkExecutionSourceInspection,
+                            valueLabel: source?.inspectionNumber,
+                            valueSubtitle: source == null
+                                ? null
+                                : [
+                                    source.customerName,
+                                    source.enquiryNumber,
+                                  ].where((s) => s.isNotEmpty).join(' · '),
+                            hint: l.servicesWorkExecutionSelectInspection,
+                            errorText:
+                                state.failure ==
+                                    'servicesWorkExecutionInspectionRequired'
+                                ? l.servicesWorkExecutionInspectionRequired
+                                : null,
+                            enabled:
+                                !state.saving && widget.executionId == null,
+                            onPick: () => _pickInspection(context, cubit),
+                            onClear: source == null
+                                ? null
+                                : cubit.clearInspection,
+                          ),
+                          if (source != null) ...[
+                            const SizedBox(height: AppSpacing.lg),
+                            AppFormGrid(
+                              children: [
+                                AppGeneratedValueField(
+                                  label: l.servicesWorkExecutionNo,
+                                  value: state.savedId,
+                                  generatedFallback:
+                                      l.servicesJobAssignmentGenerated,
+                                  identifier: true,
+                                ),
+                                AppGeneratedValueField(
+                                  label: l.servicesWorkExecutionDate,
+                                  generatedFallback:
+                                      l.servicesJobAssignmentGenerated,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                     if (source != null) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      AppFormGrid(
-                        children: [
+                      const SizedBox(height: AppSpacing.xl),
+                      AppReadOnlyContextSection(
+                        title: l.servicesWorkExecutionSectionReferences,
+                        fields: [
                           AppDetailField(
-                            label: l.servicesWorkExecutionNo,
-                            value:
-                                state.savedId ??
-                                l.servicesJobAssignmentGenerated,
+                            label: l.servicesWorkExecutionInspection,
+                            value: source.inspectionNumber,
                             identifier: true,
                           ),
                           AppDetailField(
-                            label: l.servicesWorkExecutionDate,
-                            value: l.servicesJobAssignmentGenerated,
+                            label: l.servicesWorkExecutionJobAssignment,
+                            value: source.assignmentNumber,
+                            identifier: true,
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionEnquiry,
+                            value: source.enquiryNumber,
+                            identifier: true,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      AppReadOnlyContextSection(
+                        title: l.servicesWorkExecutionSectionCustomer,
+                        fields: [
+                          AppDetailField(
+                            label: l.servicesWorkExecutionCustomer,
+                            value: source.customerName,
+                          ),
+                          if (source.customerMobile != null)
+                            AppDetailField(
+                              label: l.servicesEnquiryCustomerMobile,
+                              value: source.customerMobile!,
+                              identifier: true,
+                            ),
+                          if (source.partySnapshot.tenantName != null)
+                            AppDetailField(
+                              label: l.servicesWorkExecutionTenant,
+                              value: source.partySnapshot.tenantName!,
+                            ),
+                          if (source.partySnapshot.buildingName != null)
+                            AppDetailField(
+                              label: l.servicesWorkExecutionBuilding,
+                              value: source.partySnapshot.buildingName!,
+                            ),
+                          if (source.partySnapshot.unitNumber != null)
+                            AppDetailField(
+                              label: l.servicesWorkExecutionUnit,
+                              value: source.partySnapshot.unitNumber!,
+                            ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionComplaint,
+                            value: source.complaintTypeName,
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionPriority,
+                            value: source.priorityName,
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionMaterialReceived,
+                            value: serviceMaterialReceivedLabel(
+                              source.materialReceived,
+                              l,
+                            ),
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionRootCause,
+                            value: source.rootCauseName ?? '',
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionChargeResponsibility,
+                            value: source.chargeResponsibilityName ?? '',
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionTechnician,
+                            value: source.technicianName ?? '',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      AppReadOnlyContextSection(
+                        title: l.servicesWorkExecutionSectionInspection,
+                        fields: [
+                          AppDetailField(
+                            label: l.servicesWorkExecutionChecklist,
+                            value: source.checklistItems
+                                .map((c) => c.workType)
+                                .join(', '),
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionInspectedPoints,
+                            value: source.inspectedPoints
+                                .map((p) => p.description)
+                                .join(', '),
+                          ),
+                          AppDetailField(
+                            label: l.servicesWorkExecutionMaterialRequirements,
+                            value: source.materialRequirements
+                                .map((m) => m.code)
+                                .join(', '),
+                          ),
+                          AppDetailField(
+                            label:
+                                l.servicesWorkExecutionLinkedMaterialRequests,
+                            value: source.linkedMaterialRequests
+                                .map(
+                                  (r) =>
+                                      '${r.requestNumber} (${serviceWorkMaterialRequestStatusLabel(r.status, l)}, ${l.servicesWorkExecutionMaterialRequestItems('${r.itemCount}')})',
+                                )
+                                .join(', '),
                           ),
                         ],
                       ),
                     ],
-                  ],
-                ),
-              ),
-              if (source != null) ...[
-                const SizedBox(height: AppSpacing.xl),
-                AppFormSection(
-                  title: l.servicesWorkExecutionSectionReferences,
-                  child: AppDetailsGrid(
-                    fields: [
-                      AppDetailField(
-                        label: l.servicesWorkExecutionInspection,
-                        value: source.inspectionNumber,
-                        identifier: true,
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesWorkExecutionSectionOrderReferences,
+                      child: AppFormGrid(
+                        children: [
+                          AppTextField(
+                            key: const ValueKey('we-job-order'),
+                            label: l.servicesWorkExecutionJobOrderReference,
+                            initialValue: d.jobOrderReference,
+                            enabled: !state.saving,
+                            onChanged: cubit.setJobOrderReference,
+                          ),
+                          AppTextField(
+                            key: const ValueKey('we-quotation'),
+                            label: l.servicesWorkExecutionQuotationReference,
+                            initialValue: d.quotationReference,
+                            enabled: !state.saving,
+                            onChanged: cubit.setQuotationReference,
+                          ),
+                        ],
                       ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionJobAssignment,
-                        value: source.assignmentNumber,
-                        identifier: true,
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionEnquiry,
-                        value: source.enquiryNumber,
-                        identifier: true,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                AppFormSection(
-                  title: l.servicesWorkExecutionSectionCustomer,
-                  child: AppDetailsGrid(
-                    fields: [
-                      AppDetailField(
-                        label: l.servicesWorkExecutionCustomer,
-                        value: source.customerName,
-                      ),
-                      if (source.customerMobile != null)
-                        AppDetailField(
-                          label: l.servicesEnquiryCustomerMobile,
-                          value: source.customerMobile!,
-                          identifier: true,
-                        ),
-                      if (source.partySnapshot.tenantName != null)
-                        AppDetailField(
-                          label: l.servicesWorkExecutionTenant,
-                          value: source.partySnapshot.tenantName!,
-                        ),
-                      if (source.partySnapshot.buildingName != null)
-                        AppDetailField(
-                          label: l.servicesWorkExecutionBuilding,
-                          value: source.partySnapshot.buildingName!,
-                        ),
-                      if (source.partySnapshot.unitNumber != null)
-                        AppDetailField(
-                          label: l.servicesWorkExecutionUnit,
-                          value: source.partySnapshot.unitNumber!,
-                        ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionComplaint,
-                        value: source.complaintTypeName,
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionPriority,
-                        value: source.priorityName,
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionMaterialReceived,
-                        value: serviceMaterialReceivedLabel(
-                          source.materialReceived,
-                          l,
-                        ),
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionRootCause,
-                        value: source.rootCauseName ?? '',
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionChargeResponsibility,
-                        value: source.chargeResponsibilityName ?? '',
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionTechnician,
-                        value: source.technicianName ?? '',
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                AppFormSection(
-                  title: l.servicesWorkExecutionSectionInspection,
-                  child: AppDetailsGrid(
-                    fields: [
-                      AppDetailField(
-                        label: l.servicesWorkExecutionChecklist,
-                        value: source.checklistItems
-                            .map((c) => c.workType)
-                            .join(', '),
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionInspectedPoints,
-                        value: source.inspectedPoints
-                            .map((p) => p.description)
-                            .join(', '),
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionMaterialRequirements,
-                        value: source.materialRequirements
-                            .map((m) => m.code)
-                            .join(', '),
-                      ),
-                      AppDetailField(
-                        label: l.servicesWorkExecutionLinkedMaterialRequests,
-                        value: source.linkedMaterialRequests
-                            .map(
-                              (r) =>
-                                  '${r.requestNumber} (${serviceWorkMaterialRequestStatusLabel(r.status, l)}, ${l.servicesWorkExecutionMaterialRequestItems('${r.itemCount}')})',
-                            )
-                            .join(', '),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesWorkExecutionSectionReferences,
-                child: AppFormGrid(
-                  children: [
-                    AppTextField(
-                      key: const ValueKey('we-job-order'),
-                      label: l.servicesWorkExecutionJobOrderReference,
-                      initialValue: d.jobOrderReference,
-                      enabled: !state.saving,
-                      onChanged: cubit.setJobOrderReference,
                     ),
-                    AppTextField(
-                      key: const ValueKey('we-quotation'),
-                      label: l.servicesWorkExecutionQuotationReference,
-                      initialValue: d.quotationReference,
-                      enabled: !state.saving,
-                      onChanged: cubit.setQuotationReference,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesWorkExecutionSectionWork,
-                child: FutureBuilder<List<AppSelectOption<String>>>(
-                  future: _teams,
-                  builder: (context, teamSnapshot) =>
-                      FutureBuilder<List<AppSelectOption<String>>>(
-                        future: _employees,
-                        builder: (context, employeeSnapshot) =>
-                            WorkExecutionLinesEditor(
-                              lines: d.workLines,
-                              enabled: editable && !state.saving,
-                              onAdd: cubit.addLine,
-                              onRemove: cubit.removeLine,
-                              onWorkChanged: cubit.updateWork,
-                              onDescriptionChanged: cubit.updateDescription,
-                              onTeamChanged: (id, value) => value.isEmpty
-                                  ? cubit.clearLineTeam(id)
-                                  : cubit.selectLineTeam(id, value),
-                              onEmployeeChanged: (id, value) => value.isEmpty
-                                  ? cubit.clearLineEmployee(id)
-                                  : cubit.selectLineEmployee(id, value),
-                              teamOptions: teamSnapshot.data ?? const [],
-                              employeeOptions:
-                                  employeeSnapshot.data ?? const [],
-                              workErrorFor: (id) =>
-                                  state.failure ==
-                                      'servicesWorkExecutionWorkRequired'
-                                  ? l.servicesWorkExecutionWorkRequired
-                                  : null,
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesWorkExecutionSectionWork,
+                      action: AppSecondaryButton(
+                        label: l.servicesWorkExecutionAddLine,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addLine,
+                      ),
+                      child: FutureBuilder<List<AppSelectOption<String>>>(
+                        future: _teams,
+                        builder: (context, teamSnapshot) =>
+                            FutureBuilder<List<AppSelectOption<String>>>(
+                              future: _employees,
+                              builder: (context, employeeSnapshot) =>
+                                  WorkExecutionLinesEditor(
+                                    lines: d.workLines,
+                                    enabled: editable && !state.saving,
+                                    onAdd: cubit.addLine,
+                                    onRemove: cubit.removeLine,
+                                    onWorkChanged: cubit.updateWork,
+                                    onDescriptionChanged:
+                                        cubit.updateDescription,
+                                    onTeamChanged: (id, value) => value.isEmpty
+                                        ? cubit.clearLineTeam(id)
+                                        : cubit.selectLineTeam(id, value),
+                                    onEmployeeChanged: (id, value) =>
+                                        value.isEmpty
+                                        ? cubit.clearLineEmployee(id)
+                                        : cubit.selectLineEmployee(id, value),
+                                    teamOptions: teamSnapshot.data ?? const [],
+                                    employeeOptions:
+                                        employeeSnapshot.data ?? const [],
+                                    workErrorFor: (id) =>
+                                        state.failure ==
+                                            'servicesWorkExecutionWorkRequired'
+                                        ? l.servicesWorkExecutionWorkRequired
+                                        : null,
+                                  ),
                             ),
                       ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesWorkExecutionSectionMaterials,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if ((source?.materialRequestLines ?? []).isNotEmpty)
-                      Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: AppTextButton(
-                          label: l.servicesWorkExecutionAddFromMaterialRequest,
-                          onPressed: () => _pickMaterialRequestLine(
-                            context,
-                            cubit,
-                            source!.materialRequestLines,
-                          ),
-                        ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesWorkExecutionSectionMaterials,
+                      action: AppSecondaryButton(
+                        label: l.servicesWorkExecutionAddMaterial,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addMaterial,
                       ),
-                    WorkExecutionMaterialsEditor(
-                      materials: d.materialsUsed,
-                      enabled: editable && !state.saving,
-                      onAdd: cubit.addMaterial,
-                      onRemove: cubit.removeMaterial,
-                      onCodeChanged: cubit.updateMaterialCode,
-                      onDescriptionChanged: cubit.updateMaterialDescription,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if ((source?.materialRequestLines ?? []).isNotEmpty)
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: AppTextButton(
+                                label: l
+                                    .servicesWorkExecutionAddFromMaterialRequest,
+                                onPressed: () => _pickMaterialRequestLine(
+                                  context,
+                                  cubit,
+                                  source!.materialRequestLines,
+                                ),
+                              ),
+                            ),
+                          WorkExecutionMaterialsEditor(
+                            materials: d.materialsUsed,
+                            enabled: editable && !state.saving,
+                            onAdd: cubit.addMaterial,
+                            onRemove: cubit.removeMaterial,
+                            onCodeChanged: cubit.updateMaterialCode,
+                            onDescriptionChanged:
+                                cubit.updateMaterialDescription,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesWorkExecutionSectionPhotos,
+                      action: AppSecondaryButton(
+                        label: l.servicesWorkExecutionAddPhoto,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addPhotoEntry,
+                      ),
+                      child: WorkExecutionPhotosEditor(
+                        entries: d.afterWorkPhotoEntries,
+                        enabled: editable && !state.saving,
+                        onAdd: cubit.addPhotoEntry,
+                        onRemove: cubit.removePhotoEntry,
+                        onDescriptionChanged: cubit.updatePhotoDescription,
+                        onAddPhotos: (id) => _pickPhotos(context, cubit, id),
+                        onRemoveAttachment: cubit.removePhotoAttachment,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesWorkExecutionSectionPhotos,
-                child: WorkExecutionPhotosEditor(
-                  entries: d.afterWorkPhotoEntries,
-                  enabled: editable && !state.saving,
-                  onAdd: cubit.addPhotoEntry,
-                  onRemove: cubit.removePhotoEntry,
-                  onDescriptionChanged: cubit.updatePhotoDescription,
-                  onAddPhotos: (id) => _pickPhotos(context, cubit, id),
-                  onRemoveAttachment: cubit.removePhotoAttachment,
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

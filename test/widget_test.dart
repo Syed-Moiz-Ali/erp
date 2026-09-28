@@ -281,7 +281,10 @@ void main() {
   ) async {
     final locale = await mountApp(tester, AppLanguage.english);
     final en = tester.element(find.byType(AppPage)).l10n;
-    final nameField = find.widgetWithText(TextFormField, en.fullName);
+    final nameField = find.descendant(
+      of: find.widgetWithText(AppTextField, en.fullName),
+      matching: find.byType(TextFormField),
+    );
     await tester.ensureVisible(nameField);
     await pumpTransitions(tester);
     await tester.enterText(nameField, 'Example User');
@@ -297,7 +300,10 @@ void main() {
     expect(
       tester
           .state<FormFieldState<String>>(
-            find.widgetWithText(TextFormField, ar.fullName),
+            find.descendant(
+              of: find.widgetWithText(AppTextField, ar.fullName),
+              matching: find.byType(TextFormField),
+            ),
           )
           .value,
       'Example User',

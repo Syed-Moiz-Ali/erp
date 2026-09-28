@@ -1,1999 +1,152 @@
-PHASE 8 — SERVICES BACKEND API REQUIREMENT EXTRACTION
-GENERATE COMPLETE BACKEND CONTRACT FROM THE IMPLEMENTED SERVICES MODULE
+TASK — REPLACE SEPARATE HR + SERVICES DASHBOARDS
+WITH ONE UNIVERSAL ERP DASHBOARD
 
-IMPORTANT:
+Work on the EXISTING ERP application.
 
-DO NOT IMPLEMENT BACKEND APIs.
+The application currently has module-oriented dashboard concepts such as:
 
-DO NOT MODIFY BUSINESS FUNCTIONALITY.
+HR Dashboard
+Services Dashboard
 
-DO NOT START SERVICE REPORTS.
+This architecture must now be changed.
 
-DO NOT CREATE JOB ORDER / QUOTATION / INVENTORY / BILLING FEATURES.
+FINAL PRODUCT REQUIREMENT:
 
-The task is to inspect the ACTUAL completed ERP codebase after Services Phase 7
-and generate a complete backend-facing API requirement document for the
-Services module.
+There must be ONE UNIVERSAL ERP DASHBOARD for the logged-in user/company.
 
-==================================================
-0. OUTPUT
-==================================================
+DO NOT maintain separate:
 
-Generate:
-
-docs/backend/services_backend_api_requirements.md
-
-The final document is for the BACKEND DEVELOPER.
-
-The final document MUST be:
-
-- stack-neutral
-- backend-oriented
-- explicit
-- implementation-ready
-- independent of frontend framework terminology.
-
-DO NOT mention:
-
-Flutter
-
-Dart
-
-BLoC
-
-Cubit
-
-Drift
-
-go_router
-
-widgets
-
-screens as implementation technology
-
-frontend repository class names unless necessary only in a separate internal
-traceability appendix.
-
-The backend developer should be able to build the Services API from this
-document without understanding the frontend technology.
-
-==================================================
-1. SOURCE OF TRUTH
-==================================================
-
-Do NOT generate a generic Services API from assumptions.
-
-Inspect the ACTUAL implemented application.
-
-Review at minimum:
-
-Services domain models
-
-database schema
-
-repositories
-
-application/use cases
-
-permission catalog
-
-scope resolvers
-
-routes/business workflows
-
-outbox contracts
-
-attachment ownership
-
-activity events
-
-notifications
-
-company context
-
-time handling
-
-Services workflow documentation
-
-client reference traceability
-
-permission coverage
-
-Phase 1 through Phase 7 documentation.
-
-The generated API requirements must reflect what is actually implemented.
-
-==================================================
-2. SERVICES SCOPE
-==================================================
-
-Cover the complete implemented Services module:
-
-1. Services Overview
-
-2. Customers
-
-3. Service Sites
-
-4. Service Teams
-
-5. Services Masters / Configuration
-
-6. Service Enquiries
-
-7. Enquiry Detail Lines
-
-8. Enquiry Photos
-
-9. Job Assignment & Scheduling
-
-10. Inspections
-
-11. Inspection Checklist
-
-12. Before Work Photos
-
-13. Inspected Points
-
-14. Inspection Material Requirements
-
-15. Material Requests
-
-16. Material Request Lines
-
-17. Work Executions
-
-18. Work Execution Lines
-
-19. Material Used
-
-20. After Work Photos
-
-21. Services workflow timeline / lineage
-
-22. Services notifications/deep links where backend participation is required
-
-23. Services dashboard/summary queries.
-
-==================================================
-3. EXCLUDED / UNRESOLVED DOMAINS
-==================================================
-
-DO NOT invent APIs for:
-
-Job Order CRUD
-
-Quotation CRUD
-
-Inventory
-
-Warehouse
-
-Stock
-
-Purchase
-
-Sales
-
-Invoice
-
-Payment
-
-Service Reports without defined requirements.
-
-If current Services records contain:
-
-jobOrderReference
-
-quotationReference
-
-document them only as compatibility/reference fields.
-
-Clearly mark:
-
-authoritative source = TBD / future integration.
-
-==================================================
-4. SHARED API CONVENTIONS
-==================================================
-
-Use the application's existing backend conventions.
-
-Document a consistent base such as:
-
-/api/v1
-
-All authenticated endpoints require:
-
-Authorization: Bearer <token>
-
-Company-scoped requests require:
-
-X-Company-Id: <company-uuid>
-
-Mutation requests should support:
-
-X-Request-Id
-
-and where applicable:
-
-Idempotency-Key.
-
-Localization-sensitive responses may use:
-
-Accept-Language: en
-Accept-Language: ar.
-
-Document exact conventions once globally.
-
-==================================================
-5. TENANT / COMPANY SECURITY
-==================================================
-
-Backend MUST NEVER trust company ownership supplied blindly by client body.
-
-Authenticated user
-
-+
-selected company
-
-+
-company membership/access
-
-must determine allowed tenant context.
-
-Every Services query and mutation must enforce:
-
-record.companyId == active authorized company.
-
-No cross-company IDs may be accepted even if technically valid UUIDs.
-
-==================================================
-6. SERVER-SIDE AUTHORIZATION
-==================================================
-
-Backend authorization MUST use the same effective access model as the
-application:
-
-Company module enabled
-
-AND
-
-permission granted
-
-AND
-
-required Employee link valid where applicable
-
-AND
-
-requested record lies inside permitted scope
-
-AND
-
-company matches.
-
-Never authorize using labels such as:
-
-Admin
-
-Technician
-
-Inspector
-
-Manager
-
-Service Manager.
-
-Runtime authorization is permission/scope-driven.
-
-==================================================
-7. SERVICES SCOPES
-==================================================
-
-Document semantics for:
-
-NONE
-
-ASSIGNED
-
-TEAM
-
-ALL.
-
-SELF should only be documented where actually used.
-
-For operational Services transactions, primarily document:
-
-ASSIGNED
-
-TEAM
-
-ALL.
-
-==================================================
-8. ASSIGNED SCOPE
-==================================================
-
-Precisely document actual implemented ASSIGNED semantics for:
-
-Job Assignments
-
-Inspections
-
-Material Requests
-
-Work Executions.
-
-Do not write vague:
-
-"user can see assigned records."
-
-State exactly what relationships qualify.
-
-Examples based on actual implementation may include:
-
-direct Employee assignment
-
-Inspection technician
-
-Work Execution employee
-
-Service Team membership
-
-source workflow relationship.
-
-Use actual implemented resolver behavior.
-
-==================================================
-9. TEAM SCOPE
-==================================================
-
-Document exact Service Team resolution.
-
-Department or designation must NOT imply Services TEAM access unless actual
-implementation says so.
-
-==================================================
-10. ALL SCOPE
-==================================================
-
-ALL means all permitted records in selected company.
-
-Never global cross-company ALL.
-
-==================================================
-11. STANDARD RESPONSE ENVELOPE
-==================================================
-
-Define common success response.
-
-Example conceptual:
-
-{
-  "success": true,
-  "data": {},
-  "meta": {},
-  "requestId": "..."
-}
-
-Define actual desired convention consistently.
-
-Also define list metadata:
-
-page
-
-pageSize
-
-total
-
-hasNext
-
-or cursor approach according to project backend convention.
-
-==================================================
-12. STANDARD ERROR ENVELOPE
-==================================================
-
-Define one backend-wide error shape.
-
-Example conceptual:
-
-{
-  "success": false,
-  "error": {
-    "code": "SERVICES_ENQUIRY_NOT_FOUND",
-    "message": "...",
-    "fieldErrors": [],
-    "details": {}
-  },
-  "requestId": "..."
-}
-
-Define:
-
-HTTP status
-
-machine code
-
-localized/display-safe message approach
-
-field validation errors
-
-requestId.
-
-==================================================
-13. CONCURRENCY
-==================================================
-
-Document optimistic concurrency where records can be edited.
-
-Use:
-
-version
-
-revision
-
-updatedAt precondition
-
-or project's established convention.
-
-Explicitly specify behavior for stale updates.
-
-Example:
-
-409 CONFLICT
-
-RECORD_VERSION_CONFLICT.
-
-==================================================
-14. IDEMPOTENCY
-==================================================
-
-Mutation endpoints that can be retried must support idempotency.
-
-Especially:
-
-Enquiry create
-
-Job Assignment create
-
-Inspection create
-
-Material Request create
-
-Work Execution create
-
-Start Work
-
-End Work
-
-Complete actions
-
-Cancel actions.
-
-Repeated request must not create duplicate:
-
-records
-
-sequence numbers
-
-children
-
-activity events
-
-state transitions.
-
-==================================================
-15. COMPANY TIME
-==================================================
-
-Document:
-
-company timezone
-
-business dates
-
-UTC timestamps.
-
-Rules:
-
-business date fields use company-local date semantics.
-
-event timestamps are persisted/returned as UTC ISO 8601 timestamps.
-
-Backend must not infer company business date from server timezone.
-
-==================================================
-16. IDENTIFIERS
-==================================================
-
-Use UUIDs as internal IDs.
-
-Human-readable business numbers are separate:
-
-Enquiry Number
-
-Job Assignment Number
-
-Inspection Number
-
-Material Request Number
-
-Work Execution Number.
-
-Backend owns final sequence integrity.
-
-==================================================
-17. SEQUENCE REQUIREMENTS
-==================================================
-
-Document company-scoped sequence requirements for:
-
-Enquiry
-
-Job Assignment
-
-Inspection
-
-Material Request
-
-Work Execution.
-
-Backend must allocate sequence atomically.
-
-No duplicate numbers.
-
-No client-authoritative number generation.
-
-==================================================
-18. AUDIT METADATA
-==================================================
-
-For mutable business records define:
-
-createdAt
-
-createdBy
-
-updatedAt
-
-updatedBy
-
-version
-
-where applicable.
-
-Backend derives audit actor from authenticated user.
-
-Client must not supply authoritative:
-
-createdByUserId
-
-updatedByUserId.
-
-==================================================
-19. ACTIVITY EVENTS
-==================================================
-
-Document backend requirements for structured business activity events.
-
-Do NOT store only English sentences.
-
-Use:
-
-eventType
-
-entityType
-
-entityId
-
-actor
-
-timestamp
-
-structured metadata.
-
-Examples:
-
-services.enquiry.created
-
-services.jobAssignment.created
-
-services.inspection.completed
-
-services.materialRequest.cancelled
-
-services.workExecution.workStarted.
-
-==================================================
-20. ATTACHMENT ARCHITECTURE
-==================================================
-
-Document generic attachment API requirements used by Services.
-
-Attachments exist for:
-
-Enquiry Detail Photos
-
-Inspection Before Work Photos
-
-Work Execution After Work Photos.
-
-Do NOT send binary data embedded inside transaction JSON.
-
-Use:
-
-upload initialization / direct upload
-
-attachment metadata
-
-owner linkage
-
-upload completion
-
-delete/remove
-
-download/view authorization.
-
-==================================================
-21. ATTACHMENT OWNERSHIP
-==================================================
-
-Document owner categories actually implemented, such as:
-
-SERVICE_ENQUIRY_DETAIL
-
-SERVICE_INSPECTION_CHECKLIST_ITEM
-
-SERVICE_WORK_EXECUTION_PHOTO_ENTRY.
-
-Use actual implementation identifiers.
-
-==================================================
-22. ATTACHMENT AUTHORIZATION
-==================================================
-
-Backend must authorize attachment access through the owning business record.
-
-Knowing attachment UUID alone must never grant access.
-
-==================================================
-23. SERVICES OVERVIEW API
-==================================================
-
-Document endpoint(s) for Services operational summary.
-
-Example conceptual:
-
-GET /api/v1/services/overview
-
-Return only metrics user is authorized to view.
-
-Possible actual metrics:
-
-open enquiries
-
-scheduled assignments
-
-pending inspections
-
-open material requests
-
-work in progress
-
-completed work today
-
-my upcoming work.
-
-Use actual Phase 7 implementation.
-
-==================================================
-24. OVERVIEW SCOPE
-==================================================
-
-Summary counts MUST respect:
-
-ASSIGNED
-
-TEAM
-
-ALL
-
-and permissions.
-
-Do not calculate company-wide count then hide rows only in UI.
-
-==================================================
-25. CUSTOMER API
-==================================================
-
-Document complete Customer endpoints required by implemented Services module.
-
-Likely:
-
-GET /services/customers
-
-POST /services/customers
-
-GET /services/customers/{customerId}
-
-PATCH /services/customers/{customerId}
-
-POST /services/customers/{customerId}/deactivate
-
-and any search/reference endpoints actually required.
-
-For every endpoint include:
-
-Purpose
-
-Method
-
-Path
-
-Permission
-
-Scope
-
-Headers
-
-Path params
-
-Query params
-
-Request body
-
-field definitions
-
-validation
-
-response
-
-errors
-
-audit
-
-idempotency where applicable.
-
-==================================================
-26. CUSTOMER SEARCH
-==================================================
-
-Document:
-
-search
-
-status filtering
-
-pagination
-
-sorting
-
-reference lookup.
-
-Do not expose unrestricted customer data through reference selectors.
-
-==================================================
-27. SERVICE SITE API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-edit
-
-deactivate
-
-customer-scoped sites
-
-reference search.
-
-Fields may include actual implemented:
-
-site code
-
-site name
-
-customer
-
-tenant name
-
-building
-
-unit
-
-contacts
-
-address
-
-coordinates
-
-status.
-
-Use actual model, not assumptions.
-
-==================================================
-28. SERVICE TEAM API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-edit
-
-activate/deactivate
-
-membership changes
-
-team lead if implemented
-
-Employee reference selection.
-
-==================================================
-29. TEAM MEMBERSHIP RULES
-==================================================
-
-Document:
-
-Employee same company
-
-active Employee requirements
-
-multiple Team membership support if implemented
-
-membership does NOT grant permission.
-
-==================================================
-30. WORKFORCE REFERENCES
-==================================================
-
-Services needs safe Employee reference endpoints.
-
-Backend must allow contextual Employee lookup without automatically granting
-full HR Employee-directory access.
-
-Document a restricted endpoint such as conceptual:
-
-GET /services/references/employees
-
-with permitted fields only.
-
-Do not expose HR-private fields.
-
-==================================================
-31. SERVICES CONFIGURATION APIs
-==================================================
-
-Cover every implemented Services master:
-
-Service Types
-
-Complaint Types
-
-Priorities
-
-Ticket Types
-
-Root Causes
-
-Charge Responsibilities
-
-Material Request Purposes
-
-and any additional actually implemented Services configuration.
-
-==================================================
-32. MASTER API PATTERN
-==================================================
-
-For each master document:
-
-list
-
-active reference list
-
-create
-
-update
-
-activate/deactivate.
-
-Historical inactive values must remain resolvable for existing transactions.
-
-==================================================
-33. SERVICE ENQUIRY API
-==================================================
-
-Document:
-
-GET /services/enquiries
-
-POST /services/enquiries
-
-GET /services/enquiries/{id}
-
-PATCH /services/enquiries/{id}
-
-POST /services/enquiries/{id}/cancel
-
-plus any reference/search endpoint.
-
-Use final implemented paths/conventions.
-
-==================================================
-34. ENQUIRY HEADER
-==================================================
-
-Document actual fields including:
-
-enquiryNumber
-
-business date
-
-customerId
-
-siteId
-
-serviceTypeId if implemented
-
-complaintTypeId
-
-priorityId
-
-ticketTypeId
-
-materialReceived
-
-status
-
-snapshot/context fields according to actual domain.
-
-==================================================
-35. MATERIAL RECEIVED — API RULE
-==================================================
-
-Material Received is owned by Service Enquiry.
-
-Backend contract must make this explicit.
-
-Downstream APIs MUST NOT expose independent mutable materialReceived fields.
-
-Downstream read DTOs may include:
-
-materialReceived
-
-as inherited/read-only context.
-
-==================================================
-36. ENQUIRY DETAIL LINES
-==================================================
-
-Enquiry aggregate includes:
-
-1..N detail/issue lines.
-
-Document fields:
-
-id
-
-description
-
-status
-
-sort order
-
-attachment references
-
-and actual implemented metadata.
-
-==================================================
-37. ENQUIRY VALIDATION
-==================================================
-
-Document actual validation:
-
-customer/site relationship
-
-active masters
-
-minimum detail count
-
-same company
-
-cancel rules
-
-edit restrictions after assignment
-
+HR Dashboard
+Services Dashboard
+Finance Dashboard
+Inventory Dashboard
 etc.
 
-Use implemented business logic.
+Future modules must CONTRIBUTE content into the same universal dashboard.
 
 ==================================================
-38. ENQUIRY STATUS
+1. PRODUCT DECISION
 ==================================================
 
-Document actual current lifecycle:
-
-OPEN
-
-ASSIGNED
-
-CANCELLED
-
-or final actual implementation.
-
-Do not add guessed values.
-
-==================================================
-39. ENQUIRY REFERENCE LOOKUP
-==================================================
-
-Job Assignment Create may need eligible Enquiry references without requiring
-full Enquiry ALL access.
-
-Document safe contextual endpoint.
-
-Example conceptual:
-
-GET /services/job-assignments/eligible-enquiries
-
-or reference equivalent.
-
-==================================================
-40. JOB ASSIGNMENT API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-update
-
-cancel
-
-eligible Enquiry lookup.
-
-==================================================
-41. JOB ASSIGNMENT CREATE BODY
-==================================================
-
-Document actual body.
+The ERP has ONE Dashboard.
 
 Conceptually:
 
-sourceEnquiryId
+ERP Dashboard
+   ├── Personal / My Day
+   ├── HR contributions
+   ├── Services contributions
+   ├── Future Finance contributions
+   ├── Future Inventory contributions
+   └── Shared activity / attention / notifications.
 
-scheduledVisitDate
+Dashboard content is dynamically composed based on:
 
-lines [
-  work
-  assignedEmployeeId
-  assignedTeamId
-  status
-  descriptionForWork
-]
+Company Module Enablement
+AND
+Permission Grants
+AND
+Permission Scope
+AND
+Employee Link
+AND
+Record Access
+AND
+Current Company.
 
-Do not require client to send Customer/Site duplicate fields.
+NO role-based dashboard variants.
 
 ==================================================
-42. JOB ASSIGNMENT SERVER DERIVATION
+2. REMOVE MODULE-SPECIFIC DASHBOARD CONCEPT
 ==================================================
 
-Backend derives/validates:
+Do NOT keep navigation such as:
 
-Customer
+Human Resources
+  Dashboard
 
-Site
+Services
+  Services / Dashboard
 
-Complaint
+Instead the main navigation should conceptually become:
 
-Priority
+Dashboard
 
-Material Received
+Human resources
+  Employees
+  Attendance
+  Leave
+  Reports
+  ...
 
-Enquiry lineage.
+Services
+  Enquiries
+  Job Assignments
+  Inspections
+  Material Requests
+  Work Execution
+  Customers
+  Sites
+  Teams
+  Settings
 
-Client cannot submit mismatched context.
+Settings
+  ...
 
-==================================================
-43. JOB ASSIGNMENT VALIDATION
-==================================================
-
-Document:
-
-Enquiry eligible/open
-
-same company
-
-one active Assignment per Enquiry if final V1 rule remains
-
-Employee validity
-
-Team validity
-
-at least one work line
-
-Employee/Team relationship rules
-
-Visit Date rules.
-
-==================================================
-44. JOB ASSIGNMENT SCOPING
-==================================================
-
-Document exact ASSIGNED / TEAM / ALL rules.
-
-==================================================
-45. JOB ASSIGNMENT CANCEL
-==================================================
-
-Document transactional behavior.
-
-If final implementation does:
-
-Assignment ACTIVE → CANCELLED
-
-and Enquiry ASSIGNED → OPEN
-
-describe exact conditions.
-
-==================================================
-46. INSPECTION API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-update
-
-complete
-
-cancel
-
-eligible Job Assignment refs.
-
-==================================================
-47. INSPECTION CREATE BODY
-==================================================
-
-Document actual model:
-
-sourceJobAssignmentId
-
-visitDate
-
-visitTime
-
-technicianEmployeeId
-
-rootCauseId
-
-chargeResponsibilityId
-
-checklistItems
-
-inspectedPoints
-
-materialRequirements.
-
-==================================================
-48. INSPECTION SERVER DERIVATION
-==================================================
-
-Backend derives:
-
-source Enquiry
-
-Customer/Site context
-
-Complaint/Priority
-
-Material Received
-
-Job Assignment work context.
-
-Never trust mismatched client-supplied lineage.
-
-==================================================
-49. INSPECTION CHECKLIST
-==================================================
-
-Document:
-
-sourceJobAssignmentLineId
-
-workType
-
-descriptionForWork
-
-status
-
-Before Work attachment ownership.
-
-==================================================
-50. INSPECTED POINTS
-==================================================
-
-Document 0..N observations.
-
-==================================================
-51. INSPECTION MATERIAL REQUIREMENTS
-==================================================
-
-Document:
-
-code
-
-description
-
-status.
-
-Current statuses must reflect actual implementation:
-
-WAITING
-
-REQUESTED
-
-only if Phase 5 implemented this transition.
-
-Do not invent inventory states.
-
-==================================================
-52. INSPECTION COMPLETE ENDPOINT
-==================================================
-
-Document explicit command.
-
-Example conceptual:
-
-POST /services/inspections/{id}/complete
-
-Include:
-
-permission
-
-scope
-
-valid source state
-
-required data
-
-attachment constraints
-
-state conflict errors
-
-idempotency
-
-activity.
-
-==================================================
-53. MATERIAL REQUEST API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-update
-
-cancel
-
-print data
-
-eligible Inspection lookup.
-
-==================================================
-54. MATERIAL REQUEST CREATE
-==================================================
-
-Document actual request structure:
-
-sourceInspectionId
-
-jobOrderReference optional
-
-purposeId
-
-acknowledgement optional
-
-receivedBy optional
-
-remarks
-
-lines [
-  sourceInspectionMaterialRequirementId optional
-  code
-  description
-  batchNumber
-  quantity
-  remark
-]
-
-==================================================
-55. MATERIAL REQUEST SERVER RULES
-==================================================
-
-Backend validates:
-
-Inspection eligible/completed
-
-same company
-
-source requirement belongs to Inspection
-
-source requirement WAITING
-
-no duplicate active Request linkage
-
-quantity > 0
-
-Purpose valid.
-
-==================================================
-56. REQUIREMENT STATE TRANSITION
-==================================================
-
-Document atomic:
-
-WAITING → REQUESTED
-
-when included in active Material Request.
-
-On valid cancellation:
-
-REQUESTED → WAITING
-
-where applicable.
-
-==================================================
-57. MULTIPLE REQUESTS PER INSPECTION
-==================================================
-
-Document actual implemented rule.
-
-Allow multiple Requests if Phase 5 did.
-
-But one source requirement cannot be in multiple active requests.
-
-==================================================
-58. MATERIAL REQUEST TOTAL
-==================================================
-
-Total quantity is derived from lines.
-
-Backend may return:
-
-totalQuantity.
-
-Do not trust client-authoritative total.
+There is only ONE Dashboard nav item.
 
 ==================================================
-59. MATERIAL REQUEST PRINT
+3. DASHBOARD OWNERSHIP
 ==================================================
-
-Document backend responsibilities according to actual architecture.
-
-If backend should return structured print data:
-
-define endpoint.
-
-If backend eventually generates PDF:
-
-document as future/optional unless required.
-
-At minimum backend authorization for printable record data must be defined.
-
-==================================================
-60. WORK EXECUTION API
-==================================================
-
-Cover:
-
-list
-
-create
-
-detail
-
-update
-
-cancel
-
-complete
-
-Start Work
-
-End Work
-
-Material Used changes
-
-After Work Photos.
-
-==================================================
-61. WORK EXECUTION CREATE
-==================================================
-
-Document source:
-
-sourceInspectionId.
-
-Backend derives:
-
-Job Assignment
-
-Enquiry
-
-Customer/Site workflow context.
-
-==================================================
-62. WORK EXECUTION HEADER
-==================================================
-
-Document:
-
-executionNumber
-
-executionDate
-
-sourceInspectionId
-
-sourceJobAssignmentId derived
-
-sourceEnquiryId derived
-
-jobOrderReference optional
-
-quotationReference optional
-
-status
-
-audit/version.
-
-==================================================
-63. JOB ORDER / QUOTATION REFERENCES
-==================================================
-
-Document these only as:
-
-compatibility/external reference fields.
-
-Do not define lookup APIs unless an authoritative provider exists.
-
-Explicitly mark:
-
-owner/source TBD.
-
-==================================================
-64. WORK EXECUTION LINES
-==================================================
-
-Document:
-
-id
-
-sourceJobAssignmentLineId optional
-
-lineNumber
-
-work
-
-description
-
-serviceTeamId optional
-
-employeeId optional
-
-startedAt
-
-endedAt
-
-derived execution state.
-
-==================================================
-65. WORK LINE STATE
-==================================================
-
-Document modern state:
-
-NOT_STARTED
-
-IN_PROGRESS
-
-FINISHED
-
-derived from timestamps unless actual implementation persists typed state.
-
-Do not reproduce unknown legacy status vocabulary.
-
-==================================================
-66. START WORK ENDPOINT
-==================================================
-
-Define explicit command endpoint.
-
-Conceptual:
-
-POST /services/work-executions/{executionId}/lines/{lineId}/start
-
-Permission:
-
-services.workExecutions.perform
-
-Server determines:
-
-actual start timestamp
-
-using authoritative clock.
-
-Do not trust arbitrary client start timestamp unless correction workflow exists.
-
-==================================================
-67. END WORK ENDPOINT
-==================================================
-
-Conceptual:
-
-POST /services/work-executions/{executionId}/lines/{lineId}/end
-
-Server determines end timestamp.
-
-Validate:
-
-line started
-
-not already ended
-
-end >= start.
-
-==================================================
-68. START/END IDEMPOTENCY
-==================================================
-
-Double-tap/retry must not create duplicate events or timestamps.
-
-Document conflict/idempotent response behavior.
-
-==================================================
-69. MATERIAL USED API
-==================================================
-
-Document actual confirmed Phase 6 fields:
-
-Code
-
-Description
-
-optional sourceMaterialRequestLineId.
-
-DO NOT include:
-
-Qty
-
-UOM
-
-Batch
-
-Cost
-
-unless actual Phase 6 implementation contains them from confirmed scope.
-
-==================================================
-70. MATERIAL USED RULE
-==================================================
-
-Recording Material Used does NOT mutate:
-
-stock
-
-inventory
-
-Material Request lifecycle.
-
-State this explicitly.
-
-==================================================
-71. AFTER WORK PHOTOS
-==================================================
-
-Document Work Execution photo evidence:
-
-photo-entry description
-
-attachment ownership
-
-multiple images.
-
-Photo mandatory-for-completion remains TBD unless actual Phase 7/confirmed
-business rule changed it.
-
-==================================================
-72. COMPLETE WORK EXECUTION
-==================================================
-
-Define explicit endpoint.
-
-Conceptual:
-
-POST /services/work-executions/{id}/complete
-
-Backend validates actual completion requirements.
-
-At minimum:
-
-valid status
-
-required lines finished
-
-time ranges valid
-
-required aggregate data valid.
-
-Do not make photos mandatory unless confirmed.
-
-==================================================
-73. WORK EXECUTION CANCEL
-==================================================
-
-Define historical cancel command.
-
-No hard delete.
-
-==================================================
-74. SERVICES WORKFLOW API
-==================================================
-
-Phase 7 may have created a workflow read model.
-
-Document endpoint if backend support is needed.
 
-Conceptual:
+The universal dashboard is NOT owned by:
 
-GET /services/workflows/by-enquiry/{enquiryId}
+HR
 
 or:
 
-GET /services/enquiries/{id}/workflow
+Services.
 
-Return authorized linked nodes only.
+Move dashboard ownership to a neutral application/platform/workspace boundary.
 
-==================================================
-75. WORKFLOW RESPONSE
-==================================================
+Use the most appropriate existing architecture.
 
-Possible structure:
+Preferred conceptual location:
 
-enquiry
+lib/platform/workspace/dashboard/
 
-jobAssignment
+or:
 
-inspection
+lib/app/dashboard/
 
-materialRequests[]
+depending on current codebase conventions.
 
-workExecution
+Do NOT put universal dashboard inside:
 
-derivedCurrentStage
+modules/hr/
 
-availableActions.
+or:
 
-Use actual Phase 7 model.
+modules/services/.
 
 ==================================================
-76. AVAILABLE ACTIONS
+4. IMPORTANT — MODULES STILL OWN THEIR DATA
 ==================================================
 
-If server should expose workflow action availability:
+Moving dashboard ownership does NOT mean moving HR/Services business logic into
+platform.
 
-document it carefully.
+HR still owns:
 
-Do not make UI the only source of valid transition logic.
+Attendance
 
-Backend mutations must enforce the same rules independently.
-
-==================================================
-77. OPTIONAL MATERIAL REQUEST BRANCH
-==================================================
-
-Backend workflow must support:
-
-Enquiry
-→ Assignment
-→ Inspection
-→ Work Execution
-
-when no Material Request is required.
-
-AND:
-
-Enquiry
-→ Assignment
-→ Inspection
-→ Material Request
-→ Work Execution.
-
-Do not require Material Request globally.
-
-==================================================
-78. SERVICES DASHBOARD ENDPOINT
-==================================================
-
-Document scope-aware operational dashboard response.
-
-Possible sections from Phase 7:
-
-counts
-
-upcoming assignments
-
-pending inspections
-
-active work
-
-recent activity.
-
-Use actual implementation only.
-
-==================================================
-79. MY WORK ENDPOINT
-==================================================
-
-If Phase 7 has My Work:
-
-document endpoint or query contract.
-
-It should derive Employee from authenticated UserAccount relationship.
-
-Do NOT trust arbitrary employeeId to access another person's ASSIGNED data.
-
-==================================================
-80. TEAM WORK
-==================================================
-
-If Team view exists:
-
-backend resolves Team scope from effective grant + Service Team relationships.
-
-==================================================
-81. SEARCH / FILTER STANDARD
-==================================================
-
-Define common query conventions.
-
-Example:
-
-q
-
-status
-
-customerId
-
-siteId
-
-employeeId
-
-teamId
-
-dateFrom
-
-dateTo
-
-sort
-
-page
-
-pageSize.
-
-Do not invent unsupported filters.
-
-List exact filters per endpoint.
-
-==================================================
-82. SORTING
-==================================================
-
-Document allowed server-side sort keys for every list.
-
-Reject arbitrary unsafe field names.
-
-==================================================
-83. PAGINATION
-==================================================
-
-Use one consistent pagination model.
-
-Document maximum page size.
-
-==================================================
-84. REFERENCE ENDPOINTS
-==================================================
-
-Define lightweight, permission-safe reference endpoints required for selectors:
-
-Customers
-
-Sites
+Leave
 
 Employees
 
-Service Teams
+HR Reports.
 
-eligible Enquiries
-
-eligible Job Assignments
-
-eligible Inspections
-
-Services masters.
-
-Reference responses must return only needed fields.
-
-==================================================
-85. REFERENCE ACCESS ≠ DIRECTORY ACCESS
-==================================================
-
-This is critical.
-
-Example:
-
-Inspection creator may select relevant Employee.
-
-That does NOT grant full HR Employee API access.
-
-Job Assignment creator may search Customer reference.
-
-That does NOT automatically grant Customer management access.
-
-==================================================
-86. NOTIFICATIONS
-==================================================
-
-Document Services notification events that genuinely require backend support.
-
-Likely:
-
-Job assignment created/assigned
-
-Inspection assigned where implemented
-
-Work Execution ready where implemented.
-
-Use actual Phase 7 policy.
-
-==================================================
-87. NOTIFICATION PAYLOAD
-==================================================
-
-Use IDs/deep-link metadata rather than storing frontend URLs as authoritative
-business data.
-
-Example:
-
-type
-
-companyId
-
-entityType
-
-entityId
-
-transactionNumber
-
-recipientUserId
-
-createdAt.
-
-==================================================
-88. NOTIFICATION SECURITY
-==================================================
-
-Receiving a notification does not guarantee future read access.
-
-Record endpoint rechecks permission/scope.
-
-==================================================
-89. SYNC CONTRACT
-==================================================
-
-The application uses local-first/outbox semantics.
-
-Document backend mutation expectations needed for safe synchronization:
-
-requestId
-
-idempotency
-
-server version
-
-updatedAt
-
-soft cancellation
-
-conflict response.
-
-==================================================
-90. CLIENT-GENERATED UUIDS
-==================================================
-
-Inspect actual application behavior.
-
-If client creates UUID before sync:
-
-document whether backend accepts the supplied UUID as idempotent entity
-identity.
-
-If backend owns UUID instead:
-
-document ID mapping strategy.
-
-Do not leave ambiguous.
-
-==================================================
-91. CREATE RESPONSE
-==================================================
-
-Every create response should return authoritative:
-
-id
-
-business number
-
-status
-
-audit metadata
-
-version
-
-server timestamps
-
-and complete normalized representation needed for local reconciliation.
-
-==================================================
-92. UPDATE RESPONSE
-==================================================
-
-Return updated authoritative record + version.
-
-==================================================
-93. CANCEL/COMMAND RESPONSE
-==================================================
-
-Return updated aggregate/state.
-
-Do not respond only:
-
-"success": true
-
-when clients need state reconciliation.
-
-==================================================
-94. DELETE POLICY
-==================================================
-
-Business transactions generally must NOT expose hard DELETE endpoints:
+Services still owns:
 
 Enquiries
 
@@ -2003,1232 +156,2136 @@ Inspections
 
 Material Requests
 
-Work Executions.
+Work Execution.
 
-Use explicit cancel endpoints.
-
-For configuration/master records use deactivate where implemented.
+The universal dashboard only COMPOSES module-provided read models/widgets.
 
 ==================================================
-95. ACTIVITY API
+5. MODULE CONTRIBUTION ARCHITECTURE
 ==================================================
 
-Document generic or Services-specific timeline endpoint if required.
+Create a clean dashboard contribution architecture.
+
+Conceptually:
+
+UniversalDashboard
+        │
+        ├── Core / Personal contribution
+        ├── HR contribution
+        ├── Services contribution
+        └── Future module contributions
+
+Do NOT make universal dashboard import every module's internal DAO/BLoC.
+
+Use module-owned public contracts.
+
+==================================================
+6. DASHBOARD CONTRIBUTOR CONTRACT
+==================================================
+
+Introduce an abstraction similar to:
+
+DashboardContributor
+
+or:
+
+DashboardSectionProvider
+
+or project-appropriate equivalent.
+
+Conceptually it may expose:
+
+id
+
+moduleId
+
+priority/order
+
+isVisible(capabilityContext)
+
+loadSnapshot(...)
+
+build/describe sections
+
+supported scope/context.
+
+Do NOT over-engineer plugin architecture.
+
+Keep it simple, typed and testable.
+
+==================================================
+7. MODULE PUBLIC DASHBOARD CONTRACT
+==================================================
+
+HR exposes a small dashboard read contract.
+
+Services exposes a small dashboard read contract.
 
 Example conceptual:
 
-GET /services/{entityType}/{id}/activity
+HrDashboardContributionRepository
 
-or shared:
+ServicesDashboardContributionRepository
 
-GET /activity?entityType=&entityId=.
+These contracts expose only dashboard-ready data.
 
-Apply record authorization.
+The universal dashboard must NOT know about:
 
-==================================================
-96. WORKFLOW ACTIVITY
-==================================================
+HR DAOs
 
-If Phase 7 combines activity across workflow:
+Services DAOs
 
-document how backend retrieves authorized merged activity.
+Drift implementation details.
 
 ==================================================
-97. AUDIT API
+8. ROUTING
 ==================================================
 
-Do not expose sensitive internal audit data beyond required fields.
+Create ONE canonical dashboard route.
+
+Preferred:
+
+/app
+
+or:
+
+/app/dashboard
+
+depending on current shell architecture.
+
+Choose ONE canonical route.
+
+Recommended:
+
+/app
+
+= Universal Dashboard.
+
+If current shell requires explicit route:
+
+/app/dashboard
+
+is acceptable.
+
+Avoid two canonical dashboard routes.
 
 ==================================================
-98. PERFORMANCE REQUIREMENTS
+9. LEGACY HR DASHBOARD ROUTE
 ==================================================
 
-Document expected backend behavior:
+If existing:
 
-pagination
+/app/hr
 
-indexed search fields
+currently acts as HR Dashboard,
 
-avoid N+1
+do NOT leave a second dashboard there.
 
-batch/join list projections
+Choose one of these clean behaviors:
 
-dashboard aggregate queries
+OPTION A — preferred:
 
-efficient scope filtering.
+/app/hr
+→ HR module landing / first permitted HR feature
 
-==================================================
-99. DATABASE INDEX GUIDANCE
-==================================================
+or:
 
-Backend document is stack-neutral, but include logical indexing needs:
+/app/hr
+→ redirect to /app if HR previously had only dashboard semantics.
 
-companyId + status
-
-companyId + business number
-
-source transaction IDs
-
-employee/team assignment relationships
-
-visit/execution date
-
-createdAt
-
-searchable normalized fields.
-
-Do not prescribe a specific DB engine unless backend team already selected one.
+Use whichever best fits current navigation.
 
 ==================================================
-100. ATOMIC TRANSACTIONS
+10. LEGACY DASHBOARD REDIRECTS
 ==================================================
 
-Explicitly identify operations requiring atomicity.
+Any old dashboard-only URLs should safely redirect to universal Dashboard.
+
+Examples if they exist:
+
+/app/dashboard
+/app/hr/dashboard
+/app/services/dashboard
+
+→ canonical Universal Dashboard.
+
+Preserve query params where relevant.
+
+==================================================
+11. TOP-LEVEL NAVIGATION
+==================================================
+
+Dashboard should be the first primary nav item.
+
+Example:
+
+Dashboard
+
+Human resources
+  Employees
+  Attendance
+  Leave
+  Reports
+
+Services
+  Enquiries
+  Job Assignments
+  Inspections
+  Material Requests
+  Work Execution
+  Customers
+  Sites
+  Teams
+  Services settings
+
+Settings
+  Settings.
+
+==================================================
+12. REMOVE SERVICES "OVERVIEW" AS DUPLICATE DASHBOARD
+==================================================
+
+If Services currently has:
+
+Overview
+
+that is effectively a Services Dashboard,
+
+remove it from normal navigation OR convert it into a Services operational list
+landing only if it still serves a unique purpose.
+
+Do NOT keep:
+
+Dashboard
++
+Services Overview
+
+with mostly duplicated KPI cards.
+
+The universal dashboard should surface Services overview content.
+
+==================================================
+13. REMOVE HR DASHBOARD NAV ITEM
+==================================================
+
+Likewise do NOT show:
+
+Dashboard
+
+inside the Human Resources section.
+
+HR contributes HR content to the universal dashboard.
+
+==================================================
+14. UNIVERSAL DASHBOARD PURPOSE
+==================================================
+
+The Dashboard should answer:
+
+What do I need to do today?
+
+What requires attention?
+
+What is assigned to me?
+
+What is pending?
+
+What is scheduled?
+
+What changed recently?
+
+What company-wide operational state am I allowed to see?
+
+It should NOT simply show one card for every database table.
+
+==================================================
+15. DASHBOARD CONTENT PRIORITY
+==================================================
+
+Organize content around USER WORK, not module boundaries.
+
+Recommended hierarchy:
+
+1. Welcome / contextual header
+
+2. My Day
+
+3. Needs Attention
+
+4. Key operational metrics
+
+5. Upcoming / Today's schedule
+
+6. My Work
+
+7. Team / Company overview
+
+8. Recent activity.
+
+HR and Services data may appear together naturally.
+
+==================================================
+16. UNIVERSAL HEADER
+==================================================
+
+Example:
+
+Good morning, Ahmed
+
+Here's what needs your attention today.
+
+Optional subtle context:
+
+Demo ERP Company
+Sunday, 28 September
+
+Do NOT overdo personalized greeting if current design language is more formal.
+
+A simple:
+
+Dashboard
+Your work and company activity at a glance
+
+is perfectly acceptable.
+
+==================================================
+17. MY DAY SECTION
+==================================================
+
+This is cross-module.
+
+For a linked Employee it may combine:
+
+HR:
+Attendance state
+Current shift
+Punch In/Out
+Break state
+Leave Today
+Upcoming leave
+
+Services:
+Today's scheduled assignments
+Pending Inspection
+Active Work Execution.
+
+Only include data the user has permission to access.
+
+==================================================
+18. ATTENDANCE WIDGET
+==================================================
+
+If user has:
+
+hr.attendance.self.view
+
+show compact Attendance card.
+
+Possible content:
+
+Today's status
+
+Shift
+
+Punch-in time
+
+Current break state.
+
+==================================================
+19. ATTENDANCE ACTIONS
+==================================================
+
+Actions are independently permission-controlled.
+
+Example:
+
+Punch In
+→ hr.attendance.self.punch
+
+Punch Out
+→ hr.attendance.self.punchOut
+
+Break
+→ hr.attendance.self.break.
+
+Do NOT treat Attendance View as permission to punch.
+
+==================================================
+20. LEAVE WIDGET
+==================================================
+
+If appropriate permission exists:
+
+show compact:
+
+Leave balance summary
+
+Upcoming approved leave
+
+Leave today
+
+Pending own request.
+
+Do NOT expose company-wide Leave records through a personal card.
+
+==================================================
+21. SERVICES — MY WORK
+==================================================
+
+For Employees with Services ASSIGNED visibility:
+
+show:
+
+Today's assignment
+
+Pending Inspection
+
+Active Work Execution
+
+next Visit.
+
+This should be one of the strongest operational dashboard sections.
+
+==================================================
+22. SERVICE OPERATIONAL ACTIONS
+==================================================
+
+Show only permitted actions.
 
 Examples:
 
-Create Job Assignment:
-sequence
-+ assignment
-+ lines
-+ Enquiry status
-+ activity.
+Open Assignment
 
-Create Inspection:
-sequence
-+ header
-+ child rows
-+ activity.
+Open Inspection
 
-Create Material Request:
-sequence
-+ lines
-+ requirement WAITING→REQUESTED
-+ activity.
+Start Work
 
-Cancel Material Request:
+Continue Work.
+
+Do NOT show:
+
+Edit Assignment
+Cancel Work
+etc.
+
+unless user has those explicit permissions.
+
+==================================================
+23. NEEDS ATTENTION — UNIVERSAL
+==================================================
+
+Create ONE cross-module:
+
+Needs attention
+
+section.
+
+Possible HR items:
+
+Attendance correction awaiting review
+
+Leave request awaiting approval
+
+Employee/config action requiring attention
+
+ONLY when corresponding permission exists.
+
+Possible Services items:
+
+Open Enquiry awaiting Assignment
+
+Today's Assignment awaiting Inspection
+
+Pending Inspection
+
+Inspection with waiting Material Requirements
+
+Open Material Request
+
+Work Execution in progress.
+
+==================================================
+24. ATTENTION ITEM MODEL
+==================================================
+
+Use a generic presentation model such as:
+
+DashboardAttentionItem
+
+with:
+
+id
+
+sourceModule
+
+type
+
+title
+
+subtitle
+
+priority
+
+timestamp/date
+
+route/deepLink metadata
+
+action label
+
+semantic icon.
+
+Module contributors map domain state into this model.
+
+Do NOT move domain rules into universal dashboard.
+
+==================================================
+25. HR APPROVALS
+==================================================
+
+Users with relevant permissions may see:
+
+Pending Leave Approvals
+
+Attendance Corrections
+
+other implemented HR approvals.
+
+A normal Employee without those grants must not even query those counts.
+
+==================================================
+26. SERVICES KPI CONTRIBUTION
+==================================================
+
+Services may contribute real metrics such as:
+
+Open Enquiries
+
+Scheduled Jobs
+
+Pending Inspections
+
+Open Material Requests
+
+Work In Progress
+
+Completed Today.
+
+But only cards supported by current permission/scope.
+
+==================================================
+27. HR KPI CONTRIBUTION
+==================================================
+
+HR may contribute metrics such as:
+
+Present Today
+
+Absent / Not Checked In
+
+Employees On Leave
+
+Pending Leave Requests
+
+Attendance Exceptions
+
+depending on implemented logic + permissions.
+
+Do not invent unsupported HR KPIs.
+
+==================================================
+28. DO NOT DISPLAY ALL KPIs TO EVERY USER
+==================================================
+
+Example:
+
+Employee with SELF HR and ASSIGNED Services access should NOT see:
+
+total workforce attendance
+
+company-wide Open Enquiries
+
+company-wide leave approvals.
+
+Their dashboard should instead focus on:
+
+their attendance
+
+their leave
+
+their service work.
+
+==================================================
+29. SAME DASHBOARD — DIFFERENT COMPOSITION
+==================================================
+
+This is critical.
+
+Do NOT create:
+
+EmployeeDashboard
+
+ManagerDashboard
+
+HrDashboard
+
+ServiceManagerDashboard
+
+TechnicianDashboard.
+
+There is ONE:
+
+UniversalDashboard.
+
+Sections appear based on capabilities.
+
+==================================================
+30. SCOPE LABEL
+==================================================
+
+Where useful show subtle context:
+
+My work
+
+Team
+
+Company
+
+at section level.
+
+Do not present a fake scope switcher that allows escalation.
+
+==================================================
+31. ASSIGNED SCOPE
+==================================================
+
+Services widgets query only ASSIGNED-visible records.
+
+==================================================
+32. TEAM SCOPE
+==================================================
+
+Services TEAM widgets show only Team-resolved records.
+
+HR TEAM widgets use actual HR team/manager relationships where applicable.
+
+Do NOT mix the two definitions.
+
+Services Team != HR Department/Team.
+
+==================================================
+33. ALL SCOPE
+==================================================
+
+Company-wide metrics only for ALL-scoped permission.
+
+==================================================
+34. DASHBOARD CARDS MUST NOT LEAK COUNTS
+==================================================
+
+Never:
+
+query 100 records
+
+show 100
+
+then hide list access.
+
+The KPI itself is sensitive data.
+
+Query with effective scope.
+
+==================================================
+35. TODAY'S SCHEDULE
+==================================================
+
+Create universal:
+
+Today's schedule.
+
+Potential sources:
+
+HR:
+Shift
+Leave
+Holiday where relevant.
+
+Services:
+Job Assignment Visit Date
+Inspection Visit Time.
+
+Combine chronologically where UX benefits.
+
+==================================================
+36. SCHEDULE ITEM TYPE
+==================================================
+
+Use generic presentation model:
+
+DashboardScheduleItem
+
+with:
+
+sourceModule
+
+time
+
+title
+
+subtitle
+
 status
-+ requirement reconciliation
-+ activity.
 
-Create Work Execution:
-sequence
-+ lines
-+ activity.
+route.
 
-Start Work:
-timestamp
-+ aggregate status
-+ activity.
+The underlying module owns conversion.
 
 ==================================================
-101. VALIDATION CATALOG
+37. HOLIDAY
 ==================================================
 
-Provide validation rules per domain.
+If today is company holiday:
 
-Do not merely write:
+show compact contextual banner.
 
-"validate input."
-
-Include concrete conditions.
+Do not occupy a giant card.
 
 ==================================================
-102. ERROR CATALOG
+38. LEAVE TODAY
 ==================================================
 
-Define machine-readable codes.
+Existing LeaveTodayBanner or equivalent should integrate naturally.
 
-Examples should be based on actual domain:
-
-SERVICES_ENQUIRY_NOT_FOUND
-
-SERVICES_ENQUIRY_NOT_ASSIGNABLE
-
-SERVICES_ASSIGNMENT_ALREADY_EXISTS
-
-SERVICES_INSPECTION_NOT_ELIGIBLE
-
-SERVICES_MATERIAL_REQUIREMENT_ALREADY_REQUESTED
-
-SERVICES_WORK_ALREADY_STARTED
-
-SERVICES_WORK_NOT_STARTED
-
-SERVICES_WORK_ALREADY_ENDED
-
-SERVICES_PERMISSION_DENIED
-
-COMPANY_SCOPE_MISMATCH
-
-VERSION_CONFLICT.
-
-Use clean consistent naming.
+Do not duplicate it in HR module and Dashboard simultaneously.
 
 ==================================================
-103. 400 VS 403 VS 404 VS 409
+39. QUICK ACTIONS
 ==================================================
 
-Document error semantics.
+Universal dashboard may show capability-driven quick actions.
 
-400:
-validation.
+Potential HR:
 
-401:
-authentication.
+Request Leave
 
-403:
-known but unauthorized operation.
+Punch In
 
-404:
-resource unavailable/not found according to security policy.
+Add Employee
 
-409:
-state/concurrency/idempotency conflict.
+Review Leave.
 
-422 only if backend convention uses it.
+Potential Services:
 
-==================================================
-104. FIELD TABLES
-==================================================
+New Enquiry
 
-For every request/response DTO provide a field table:
+Create Job Assignment
 
-Field
+Open Pending Inspections.
 
-Type
-
-Required
-
-Nullable
-
-Source
-
-Description
-
-Validation
-
-Example.
+ONLY if permission + context make action valid.
 
 ==================================================
-105. ENUM TABLES
+40. QUICK ACTION LIMIT
 ==================================================
 
-Provide enum/status tables ONLY for statuses actually implemented/confirmed.
+Do NOT create 15 buttons.
 
-For each:
+Prefer maximum roughly:
 
-value
+3–6 useful actions
 
-meaning
+based on current capability/context.
 
-allowed transitions.
-
-Do NOT invent client legacy statuses.
+Prioritize user relevance.
 
 ==================================================
-106. SERVICES PERMISSION MATRIX
+41. RECENT ACTIVITY
 ==================================================
 
-Add a complete backend permission matrix.
+Create ONE recent activity section that may merge:
 
-Rows:
+HR structured events
 
-endpoint/action
+Services BusinessActivityEvents
 
-permission key
+platform events where useful.
 
-scope support
-
-employee link requirement
-
-notes.
-
-Cover all Services permissions.
+Do NOT store dashboard-specific English event strings.
 
 ==================================================
-107. ENDPOINT MATRIX
+42. ACTIVITY AUTHORIZATION
 ==================================================
 
-Create a master endpoint table:
+Every event must come from a record the user may currently access.
 
-Domain
+Do not leak:
 
-Method
+Employee
 
-Path
+Leave
 
-Permission
+Services transaction
 
-Scope
-
-Idempotent?
-
-Purpose.
-
-This should provide a quick backend implementation checklist.
+information through activity.
 
 ==================================================
-108. WORKFLOW TRANSITION MATRIX
+43. ACTIVITY MODULE INDICATOR
 ==================================================
 
-Include all actual transitions.
+Use subtle icon/tag:
 
-Examples:
+HR
 
-Enquiry:
-OPEN → ASSIGNED
-OPEN → CANCELLED
+Services
 
-Assignment:
-ACTIVE → CANCELLED
+if helpful.
 
-Inspection:
-PENDING → COMPLETED
-PENDING → CANCELLED
-
-Inspection Material Requirement:
-WAITING → REQUESTED
-REQUESTED → WAITING on request cancellation
-
-Material Request:
-OPEN → CANCELLED
-
-Work Execution:
-PENDING → IN_PROGRESS
-IN_PROGRESS → COMPLETED
-eligible states → CANCELLED.
-
-Use actual implemented statuses if names differ.
+Do not visually split the dashboard into giant HR and Services halves.
 
 ==================================================
-109. SOURCE-OF-TRUTH MATRIX
+44. DESIGN PRINCIPLE — NOT MODULE PANELS
 ==================================================
 
-Include:
+BAD:
 
-Concept | Authoritative Owner | Downstream Read
+HR Dashboard
+---------------------------------
 
-Material Received
-→ Enquiry
+Services Dashboard
+---------------------------------
 
-Customer historical snapshot
-→ Enquiry
+inside one page.
 
-Visit Date
-→ Job Assignment
+That is just two dashboards stacked.
 
-Root Cause
-→ Inspection
+GOOD:
 
-Before Work Photos
-→ Inspection
+My Day
+Needs Attention
+KPIs
+Today's Schedule
+My Work
+Recent Activity
 
-Material Required
-→ Inspection
-
-Requested Qty
-→ Material Request
-
-Actual Start/End
-→ Work Execution
-
-Material Used
-→ Work Execution
-
-After Work Photos
-→ Work Execution
-
-Job Order
-→ TBD
-
-Quotation
-→ TBD.
+with data from modules naturally composed.
 
 ==================================================
-110. API DEPENDENCY MAP
+45. DASHBOARD LAYOUT
 ==================================================
 
-Document relationships:
+Preserve ONE GLOBAL CENTERED ERP CONTENT WIDTH.
 
-Customer
-→ Sites
+Same boundaries as:
 
-Enquiry
-→ Customer/Site
+Employees
 
-Assignment
-→ Enquiry
+Enquiries
+
+Add Employee
 
 Inspection
-→ Assignment
 
-Material Request
-→ Inspection
+Settings.
 
+No dashboard-specific wider container.
+
+==================================================
+46. DESKTOP COMPOSITION
+==================================================
+
+Conceptually:
+
+------------------------------------------------------------
+Dashboard
+Your work and company activity at a glance
+------------------------------------------------------------
+
+[ Personal / operational KPI cards ]
+
+------------------------------------------------------------
+Needs attention                       My day
+                                     Attendance
+                                     Leave
+------------------------------------------------------------
+
+Today's schedule                      My work
+------------------------------------------------------------
+
+Operational overview / relevant KPIs
+------------------------------------------------------------
+
+Recent activity
+------------------------------------------------------------
+
+This is conceptual.
+
+Do not mechanically reproduce it.
+
+==================================================
+47. LARGE DESKTOP
+==================================================
+
+At 1440–1920:
+
+do not stretch to browser edges.
+
+Global max width.
+
+Equal whitespace.
+
+Compact ERP density.
+
+==================================================
+48. MOBILE
+==================================================
+
+Order content by immediate usefulness:
+
+My Day
+
+Needs Attention
+
+My Work
+
+Today's Schedule
+
+KPIs
+
+Recent Activity.
+
+Do not merely shrink desktop two-column dashboard.
+
+==================================================
+49. MOBILE ATTENDANCE
+==================================================
+
+Punch actions must be touch-friendly.
+
+==================================================
+50. MOBILE SERVICES
+==================================================
+
+Assigned user should quickly access:
+
+Inspection
+
+Start Work
+
+Continue Work.
+
+==================================================
+51. DASHBOARD READ ARCHITECTURE
+==================================================
+
+Create a neutral universal dashboard read layer.
+
+Conceptually:
+
+UniversalDashboardSnapshot
+
+containing presentation-ready cross-module sections.
+
+BUT:
+
+do not make one giant repository that directly knows every domain table.
+
+==================================================
+52. AGGREGATION ARCHITECTURE
+==================================================
+
+Preferred conceptual flow:
+
+UniversalDashboardBloc
+        ↓
+UniversalDashboardCoordinator
+        ↓
+DashboardContributors
+        ├── HR contributor
+        ├── Services contributor
+        └── Platform contributor.
+
+Each contributor:
+
+checks relevant capability
+
+loads only allowed data
+
+returns typed dashboard contribution.
+
+==================================================
+53. NO CROSS-MODULE DAO IMPORTS
+==================================================
+
+Universal Dashboard must NOT directly query:
+
+EmployeeDao
+
+LeaveDao
+
+ServiceEnquiryDao
+
+InspectionDao
+
+etc.
+
+Use module public contracts.
+
+==================================================
+54. HR CONTRIBUTOR
+==================================================
+
+Move/refactor useful logic from existing HR Dashboard into:
+
+HR dashboard contribution.
+
+Do not throw away working HR metrics.
+
+==================================================
+55. SERVICES CONTRIBUTOR
+==================================================
+
+Move/refactor useful logic from current Services Dashboard/Overview into:
+
+Services dashboard contribution.
+
+Do not keep a second copy.
+
+==================================================
+56. PLATFORM CONTRIBUTOR
+==================================================
+
+Platform may contribute:
+
+notifications summary
+
+sync state
+
+personal/company context
+
+only when useful.
+
+Do not overload dashboard with infrastructure details.
+
+==================================================
+57. FUTURE MODULE SUPPORT
+==================================================
+
+Future:
+
+Finance
+
+Inventory
+
+Sales
+
+etc.
+
+should be able to register a dashboard contribution without editing a giant
+switch statement everywhere.
+
+But do NOT build those modules now.
+
+==================================================
+58. MODULE ENABLEMENT
+==================================================
+
+If HR disabled in future:
+
+no HR contribution.
+
+If Services disabled:
+
+no Services contribution.
+
+If both enabled:
+
+compose both.
+
+==================================================
+59. CURRENT PRODUCT
+==================================================
+
+Today HR + Services are enabled in current product.
+
+Dashboard should therefore naturally combine both.
+
+==================================================
+60. COMPANY SWITCH
+==================================================
+
+Switching company must rebuild:
+
+permissions
+
+Employee context
+
+HR contribution
+
+Services contribution
+
+dashboard counters
+
+attention
+
+schedule
+
+activity.
+
+No stale data.
+
+==================================================
+61. LIVE PERMISSION UPDATE
+==================================================
+
+Grant/revoke must update Dashboard live.
+
+Example:
+
+grant:
+services.inspections.view / TEAM
+
+Inspection KPI/attention may appear.
+
+revoke:
+
+disappears.
+
+No relogin.
+
+==================================================
+62. EMPLOYEE LINK CHANGE
+==================================================
+
+If user loses Employee linkage:
+
+SELF/ASSIGNED widgets requiring Employee context disappear/become unavailable.
+
+No stale personal records.
+
+==================================================
+63. NAVIGATION
+==================================================
+
+Change left navigation.
+
+TOP:
+
+Dashboard
+
+Then module groups.
+
+Remove duplicate module dashboard items.
+
+==================================================
+64. DASHBOARD SELECTED STATE
+==================================================
+
+When canonical dashboard route active:
+
+only top-level Dashboard nav item selected.
+
+Do not highlight HR or Services.
+
+==================================================
+65. MODULE ROUTES REMAIN
+==================================================
+
+Do NOT remove actual module feature routes:
+
+/app/hr/employees
+
+/app/hr/attendance
+
+/app/hr/leave
+
+/app/hr/reports
+
+/app/services/enquiries
+
+/app/services/job-assignments
+
+/app/services/inspections
+
+/app/services/material-requests
+
+/app/services/work-executions
+
+etc.
+
+Only remove dashboard duplication.
+
+==================================================
+66. HR MODULE LANDING
+==================================================
+
+If `/app/hr` is needed as module parent route:
+
+it should NOT render another HR Dashboard.
+
+Choose a safe behavior:
+
+redirect to first accessible HR destination
+
+OR
+
+a lightweight module navigation landing if truly necessary.
+
+Prefer redirect to first accessible feature.
+
+==================================================
+67. SERVICES MODULE LANDING
+==================================================
+
+Same.
+
+`/app/services`
+
+should NOT render a second Services Dashboard.
+
+Redirect to first permitted Services feature.
+
+Example order can be:
+
+Enquiries
+Job Assignments
+Inspections
+Material Requests
 Work Execution
-→ Inspection
+Customers
+...
 
-Material Request Line
-→ optional Inspection Material Requirement
-
-Material Used
-→ optional Material Request Line.
+based on effective permission.
 
 ==================================================
-111. SECURITY RULES
+68. EMPTY UNIVERSAL DASHBOARD
 ==================================================
 
-Backend MUST NOT trust client to provide:
+If user has very limited access:
 
-companyId ownership
+do not show an empty broken page.
 
-createdBy
+Example:
 
-updatedBy
+Dashboard
 
-derived Enquiry IDs
+No tasks require your attention right now.
 
-derived Job Assignment lineage
-
-Customer context from downstream request
-
-Material Received downstream
-
-scope decisions
-
-workflow transition validity.
-
-Server verifies/derives these.
+Then any permitted personal widgets.
 
 ==================================================
-112. MASS ASSIGNMENT PROTECTION
+69. USER WITH ONLY HR
 ==================================================
 
-Document server allow-list for mutable fields per operation.
+Universal Dashboard shows only relevant HR/personal content.
 
-Do not allow arbitrary DTO-to-entity patching.
-
-==================================================
-113. ATTACHMENT SECURITY
-==================================================
-
-Define:
-
-allowed mime types
-
-max file size if known
-
-image count if known
-
-authorization
-
-malware/content scanning integration as backend concern where appropriate.
-
-If limits are not defined in current app:
-
-mark them TBD instead of inventing numeric limits.
+No Services placeholder.
 
 ==================================================
-114. SEARCH SECURITY
+70. USER WITH ONLY SERVICES
 ==================================================
 
-Reference/search endpoints must apply permission/scope before search results.
+Shows Services/personal context.
 
-Search must never be used to enumerate inaccessible records.
-
-==================================================
-115. DATA RETENTION
-==================================================
-
-Do not invent retention periods.
-
-State:
-
-TBD / organization policy
-
-where relevant.
+No empty HR cards.
 
 ==================================================
-116. SOFT CANCELLATION
+71. USER WITH BOTH
 ==================================================
 
-Transaction cancellation is a business status, not database deletion.
+Content is naturally combined.
 
-Backend records remain auditable.
+Do NOT label page:
 
-==================================================
-117. CONFIGURATION DEACTIVATION
-==================================================
+HR + Services Dashboard.
 
-Masters use active/inactive behavior.
+Just:
 
-Inactive master:
-
-not selectable in new transactions
-
-still resolvable historically.
+Dashboard.
 
 ==================================================
-118. SERVICES MODULE ENABLEMENT
+72. USER WITH BROAD COMPANY ACCESS
 ==================================================
 
-All Services endpoints must reject access when Services module is disabled for
-selected company.
+Should see richer operational overview.
 
-Document error behavior.
+Example:
 
-==================================================
-119. EMPLOYEE LINK
-==================================================
+Present Today
+Employees on Leave
+Open Enquiries
+Pending Inspections
+Work In Progress.
 
-Backend must know authenticated UserAccount → Employee relationship where
-ASSIGNED/perform operations require it.
-
-Document expected identity context from platform/auth bootstrap.
-
-Do not create duplicate Services Employee identity.
+But still avoid metric overload.
 
 ==================================================
-120. WORK EXECUTION PERFORM SECURITY
+73. FIELD EMPLOYEE
 ==================================================
 
-This is especially important.
+A field Employee may see:
 
-A user with:
+Attendance
 
-services.workExecutions.perform
+Punch In/Out
 
-must still satisfy:
+My Leave
 
-record scope
+Today's Service Visit
 
-line relationship/policy
+My Inspection
 
-company
+Active Work
 
-valid execution state.
+Start/End Work.
 
-Permission alone does not permit performing every Work Execution.
-
-==================================================
-121. BUSINESS ACTION PERMISSIONS
-==================================================
-
-Explicitly distinguish:
-
-View
-
-Create
-
-Edit
-
-Perform
-
-Complete
-
-Cancel
-
-Print
-
-Manage configuration.
-
-Do not collapse to one generic Services write permission.
+This is a very strong use case for universal dashboard.
 
 ==================================================
-122. SERVICES SETTINGS PERMISSIONS
+74. COMPANY ADMIN-LIKE USER
 ==================================================
 
-Document all configuration permission endpoints separately from transaction
-permissions.
+No runtime role check.
+
+A user with broad permissions may naturally see:
+
+workforce overview
+
+leave approvals
+
+attendance exceptions
+
+Services operational metrics
+
+attention items.
 
 ==================================================
-123. PRINT / EXPORT
+75. CARD PRIORITIZATION
 ==================================================
 
-Material Request Print must enforce:
+Do not simply append modules in registration order.
 
-record View
+Use dashboard section priority/order.
 
-Print permission
-
-scope.
-
-If additional exports currently exist, document them.
+Personal and urgent actions should come before broad analytics.
 
 ==================================================
-124. NO SERVICE REPORT APIs
+76. KPI LIMIT
 ==================================================
 
-Do NOT create endpoints such as:
+Avoid 10–15 KPI cards.
 
-/services/reports/revenue
+Choose a compact set based on available capabilities.
 
-/services/reports/technician-performance
+If many domains available:
 
-/services/reports/sla
+prioritize highest-value metrics.
 
-unless actual report functionality exists.
-
-Client Service Reports requirements remain unavailable.
+Additional metrics can live in module lists/reports.
 
 ==================================================
-125. NO SLA ASSUMPTIONS
+77. DASHBOARD NOT REPORTS
 ==================================================
 
-Priority does not automatically imply SLA unless actual implementation contains
-confirmed SLA policy.
+Do not turn Dashboard into:
 
-Do not document guessed deadlines.
+HR Reports
++
+Service Reports.
 
-==================================================
-126. NO BILLING ASSUMPTIONS
-==================================================
+Dashboard = action-oriented summary.
 
-Charge Responsibility is NOT an Invoice.
-
-Do not create financial endpoints from it.
+Detailed analysis remains in Reports modules.
 
 ==================================================
-127. JOB ORDER TBD
+78. REMOVE DUPLICATED DASHBOARD CODE
 ==================================================
 
-Create a dedicated "Open Integration Questions" section.
+After migration:
 
-State:
+there must not be independent production implementations for:
 
-Job Order Number is preserved as compatibility/reference data in relevant
-transactions.
+HrDashboardPage
 
-Authoritative owner/source not yet confirmed.
+ServicesDashboardPage
 
-No Job Order API should be implemented from this document.
+if they only exist as old dashboard entry points.
+
+Refactor reusable components/read logic.
+
+Remove/deprecate dead routes/widgets after migration.
 
 ==================================================
-128. QUOTATION TBD
+79. DO NOT DELETE MODULE QUERY LOGIC BLINDLY
+==================================================
+
+Existing HR/Services dashboard repositories may contain useful logic.
+
+Refactor to contributor/read-contract architecture instead of rewriting
+everything unnecessarily.
+
+==================================================
+80. UNIVERSAL DASHBOARD PAGE
+==================================================
+
+Create one:
+
+UniversalDashboardPage
+
+or:
+
+DashboardPage
+
+inside neutral ownership.
+
+Avoid naming:
+
+HrServicesDashboardPage
+
+because future modules will join.
+
+==================================================
+81. UNIVERSAL DASHBOARD STATE
+==================================================
+
+State should support:
+
+loading
+
+ready
+
+partial ready if contributor architecture allows
+
+error
+
+refreshing.
+
+==================================================
+82. CONTRIBUTOR FAILURE
+==================================================
+
+If Services dashboard contribution fails:
+
+do not necessarily destroy Attendance/My Day if HR succeeded.
+
+Prefer graceful section-level error if architecture supports it without major
+complexity.
+
+==================================================
+83. LOADING
+==================================================
+
+Use dashboard skeletons.
+
+No giant centered spinner.
+
+==================================================
+84. REFRESH
+==================================================
+
+Pull/refresh or desktop refresh should use shared sync/read architecture.
+
+Do not create HR refresh + Services refresh buttons.
+
+==================================================
+85. PERFORMANCE
+==================================================
+
+Avoid:
+
+loading all Employees
+
+all Enquiries
+
+all Work Executions
+
+just to calculate dashboard counts.
+
+Use efficient summary/read projections.
+
+==================================================
+86. NO N+1
+==================================================
+
+Attention/My Work/Schedule must resolve labels efficiently.
+
+==================================================
+87. DASHBOARD DATA LIMITS
+==================================================
+
+Do not load 500 recent activities.
+
+Use reasonable recent limits.
+
+Example conceptual:
+
+5–10 attention items
+
+5–10 schedule items
+
+5–10 recent activities.
+
+Use existing pagination if expansion needed.
+
+==================================================
+88. "VIEW ALL"
+==================================================
+
+Sections can provide:
+
+View all
+
+that routes to corresponding module list.
+
+Only when user has access.
+
+==================================================
+89. CROSS-MODULE ACTION
+==================================================
+
+Do NOT create transactional workflows crossing modules unnecessarily.
+
+Example:
+
+Dashboard may link to Attendance or Inspection.
+
+Mutation remains owned by relevant module/use case.
+
+==================================================
+90. ATTENDANCE ACTIONS
+==================================================
+
+If Punch In/Out already works through HR use case:
+
+Dashboard calls the same public HR capability/use-case interface.
+
+Do not duplicate attendance logic.
+
+==================================================
+91. WORK EXECUTION ACTIONS
 ==================================================
 
 Same:
 
-Quotation Number compatibility/reference only.
+Start Work / End Work uses existing Services use case.
 
-No Quotation API from this spec.
-
-==================================================
-129. ACKNOWLEDGE TBD
-==================================================
-
-Material Request Acknowledge exists as metadata.
-
-Its full business semantics are not confirmed.
-
-Do not invent acknowledgement command/status APIs.
+Dashboard does not implement work state transitions.
 
 ==================================================
-130. RECEIVED BY TBD
+92. LOCALIZATION
 ==================================================
 
-Preserve current field semantics.
+Universal dashboard strings should live in appropriate neutral/platform l10n
+source.
 
-Do not assume Employee FK unless actual implementation/client confirmation
-establishes it.
+Module-specific labels/events remain module-owned where practical.
 
-==================================================
-131. AFTER PHOTO REQUIREMENT TBD
-==================================================
+Preserve:
 
-Photo functionality exists.
-
-Whether photo is mandatory to complete Work Execution remains TBD unless
-confirmed by implemented Phase 7 rules.
+English
+Arabic
+RTL.
 
 ==================================================
-132. MATERIAL USED QTY/UOM
+93. RTL
 ==================================================
 
-Do not add Qty/UOM to Work Execution Material Used APIs unless current
-implementation actually has them.
+Test entire composed Dashboard:
 
-Future Inventory integration may change this.
+cards
 
-==================================================
-133. OPENAPI READINESS
-==================================================
+schedule
 
-Structure the document so backend developer can directly translate it to:
+attention
 
-OpenAPI 3.x
+activity
 
-Swagger
+buttons
 
-Postman collections.
+icons
 
-Provide:
-
-paths
-
-DTO schemas
-
-enum definitions
-
-error schemas
-
-security schemes.
-
-But do NOT generate a full OpenAPI YAML unless separately requested.
+mixed HR + Services sections.
 
 ==================================================
-134. API SECTION FORMAT
+94. GLOBAL DESIGN SYSTEM
 ==================================================
 
-EVERY endpoint section MUST follow this structure:
+Use existing:
 
-### Endpoint Name
+global centered page container
 
-Purpose:
+spacing
 
-Method:
+cards
 
-Path:
+border radius
 
-Authentication:
+colors
 
-Company Context:
+chips
 
-Required Permission:
+buttons
 
-Supported Scope:
+typography.
 
-Required Employee Context:
-
-Headers:
-
-Path Parameters:
-
-Query Parameters:
-
-Request Body:
-
-Request Field Table:
-
-Server-Derived Fields:
-
-Business Validations:
-
-Authorization / Object Scope Rules:
-
-Transactional Side Effects:
-
-Activity Event:
-
-Notification Side Effects:
-
-Idempotency:
-
-Concurrency:
-
-Success Response:
-
-Response Field Table:
-
-Errors:
-
-Notes.
-
-Do not omit sections just because they are empty.
-
-Write:
-
-None / Not applicable
-
-where appropriate.
+Do not create a special dashboard visual system.
 
 ==================================================
-135. EXAMPLE REQUESTS
+95. VISUAL TARGET
 ==================================================
 
-Provide representative JSON examples.
+Dashboard should feel:
 
-Use safe synthetic IDs/data.
+modern
 
-==================================================
-136. EXAMPLE RESPONSES
-==================================================
+calm
 
-Provide representative success and error payloads.
+professional
 
-==================================================
-137. DO NOT EXPOSE INTERNAL IMPLEMENTATION TERMINOLOGY
-==================================================
+operational
 
-The backend requirement document must not say things like:
+compact
 
-"The BLoC expects..."
+premium.
 
-"The Flutter page..."
+Not:
 
-"Drift stores..."
+a wall of charts.
 
-"go_router route..."
+Not:
 
-Instead translate actual implementation requirements into backend concepts:
+empty huge cards.
 
-client application
+Not:
 
-API consumer
-
-local synchronization client
-
-transaction
-
-resource
-
-command.
+HR dashboard stacked above Services dashboard.
 
 ==================================================
-138. INTERNAL TRACEABILITY APPENDIX
+96. REMOVE SERVICES DASHBOARD ENHANCEMENT DUPLICATION
 ==================================================
 
-Optionally, if useful, add a FINAL appendix:
+If the recently implemented/enhanced Services Dashboard contains:
 
-"Implementation Traceability"
+Needs Attention
 
-This appendix may list:
+Today's Schedule
 
-Domain concept
-→ existing source files/classes
+My Work
 
-ONLY for internal engineering verification.
+Team Work
 
-But keep it clearly separate from the backend contract.
+Services KPIs
 
-Do not make backend developer read frontend implementation details to
-understand the API.
+Recent Activity
 
-==================================================
-139. DOCUMENT ORGANIZATION
-==================================================
+do NOT throw that away.
 
-Use this overall document structure:
+Move those pieces into the Services dashboard contribution.
 
-1. Purpose & Scope
-
-2. Explicit Exclusions
-
-3. API Standards
-
-4. Authentication
-
-5. Company / Tenant Context
-
-6. Authorization & Scopes
-
-7. Employee / Workforce Context
-
-8. Common Headers
-
-9. Response Envelope
-
-10. Error Model
-
-11. Pagination / Search / Sort
-
-12. Dates & Timezones
-
-13. IDs & Business Numbers
-
-14. Idempotency
-
-15. Concurrency
-
-16. Audit & Activity
-
-17. Attachments
-
-18. Services Overview
-
-19. Customers
-
-20. Sites
-
-21. Teams
-
-22. Services Configuration Masters
-
-23. Enquiries
-
-24. Job Assignments
-
-25. Inspections
-
-26. Material Requests
-
-27. Work Executions
-
-28. Workflow / Lineage
-
-29. Notifications
-
-30. Reference Lookup APIs
-
-31. Sync Requirements
-
-32. Endpoint Matrix
-
-33. Permission Matrix
-
-34. Workflow Transition Matrix
-
-35. Source-of-Truth Matrix
-
-36. Error Code Catalog
-
-37. DTO Catalog
-
-38. Security Requirements
-
-39. Performance / Indexing Requirements
-
-40. OpenAPI Implementation Notes
-
-41. Open Integration Questions / TBDs
-
-42. Completeness Checklist
-
-43. Optional Internal Traceability Appendix.
+The universal Dashboard then composes them with HR content.
 
 ==================================================
-140. COMPLETENESS CHECK
+97. EXISTING HR DASHBOARD
 ==================================================
 
-Before finalizing, compare the generated API contract against:
+Likewise preserve useful HR:
 
-all Services repository operations
+attendance summary
 
-all mutation use cases
+leave summary
 
-all permission keys
+employee/workforce metrics
 
-all routes/business actions
+approval counts
 
-all outbox actions
+charts
 
-all transaction models
+but only the parts that make sense on an action-oriented universal dashboard.
 
-all child entities
-
-all attachment categories
-
-all Phase 7 workflow actions.
-
-Nothing implemented in Services may be silently omitted.
+Detailed HR analytics stay in HR Reports.
 
 ==================================================
-141. SCREEN / WORKFLOW TO API MATRIX
+98. UNIVERSAL NEEDS ATTENTION
 ==================================================
 
-Add a backend-facing usage matrix.
+Merge HR + Services attention into one prioritized feed.
 
-Examples:
+Example:
 
-Services Overview
-→ overview endpoints
+Urgent
+Service enquiry ENQ-000042 awaiting assignment
 
-Enquiries List
-→ enquiry list
+Leave
+2 leave requests awaiting approval
 
-New Enquiry
-→ create + customer/site/master references
-
-Enquiry Detail
-→ detail + activity + attachments
-
-Job Assignment Create
-→ eligible enquiry refs + employee/team refs + create
+Attendance
+3 correction requests awaiting review
 
 Inspection
-→ eligible assignment refs + configuration refs + create/update/complete
+INS-000018 scheduled today.
 
-Material Request
-→ eligible Inspection + purposes + create/update/print
+Sort by:
 
-Work Execution
-→ eligible Inspection + create + Start/End + attachments.
+urgency
+business date/time
+then stable priority.
 
-Do not mention frontend framework.
-
-==================================================
-142. REPOSITORY/COMMAND COMPLETENESS
-==================================================
-
-Cross-check actual source implementation to ensure every operation has backend
-coverage.
-
-If an operation is local-only/demo and should NOT have backend endpoint:
-
-explicitly document why.
+Do not hardcode module precedence unnecessarily.
 
 ==================================================
-143. NO SILENT INVENTION
+99. ATTENTION SECURITY
 ==================================================
 
-If application code and client docs do not establish a business rule:
+Each module contributor returns only authorized items.
 
-mark:
-
-TBD
-
-instead of inventing backend behavior.
+Coordinator should never receive sensitive all-company data then filter in UI.
 
 ==================================================
-144. NO SILENT OMISSION
+100. UNIVERSAL SCHEDULE
 ==================================================
 
-Conversely, if a client-visible concept is already implemented:
+Combine:
 
-it must appear in the backend requirement.
+shift/personal HR schedule
 
-==================================================
-145. VALIDATE MATERIAL RECEIVED SPECIFICALLY
-==================================================
+approved leave/holiday context
 
-Ensure backend document says:
+service visits/inspection schedule
 
-Service Enquiry owns `materialReceived`.
+where relevant to the user.
 
-Job Assignment, Inspection, Material Request context and Work Execution context
-may read it through Enquiry lineage.
+Company-wide users do not necessarily need every Employee's shift on their
+dashboard.
 
-There must be no downstream independent mutable Material Received field.
+Respect semantics.
 
 ==================================================
-146. VALIDATE MATERIAL CONCEPTS
+101. UNIVERSAL RECENT ACTIVITY
 ==================================================
 
-Clearly distinguish:
+Merge structured events chronologically.
 
-Material Received
-→ Enquiry Yes/No context
-
-Material Required
-→ Inspection finding
-
-Material Request
-→ requested material lines + quantity
-
-Material Used
-→ Work Execution Code + Description.
-
-Do not merge these APIs/models.
+Module-specific renderer converts event metadata to localized text.
 
 ==================================================
-147. VALIDATE PHOTO CONCEPTS
+102. PROFILE / USER CONTEXT
 ==================================================
 
-Clearly distinguish:
+Use current linked Employee for personal widgets.
 
-Enquiry Photos
-
-Before Work Photos
-
-After Work Photos.
-
-Each has correct owner.
+Do not confuse authenticated UserAccount with Employee.
 
 ==================================================
-148. VALIDATE EMPLOYEE / TEAM CONCEPTS
+103. NOTIFICATIONS
 ==================================================
 
-No Technician entity.
+Do not duplicate Notification Center inside Dashboard.
 
-No Inspector entity.
+A small:
 
-No Worker entity.
+Unread notifications count / recent important item
 
-They are existing Employees referenced by Services transactions.
+may be shown if valuable.
 
-Service Team is separate from Department.
-
-==================================================
-149. VALIDATE PERMISSION MODEL
-==================================================
-
-No runtime authorization based on:
-
-role name
-
-designation
-
-team name
-
-department name.
-
-Explicit permissions + scopes only.
+Keep global bell as primary Notification Center.
 
 ==================================================
-150. FINAL QUALITY REVIEW
+104. SYNC
 ==================================================
 
-Before considering document complete:
+Do not make sync status a big KPI.
 
-- verify every endpoint method/path is consistent
-- verify all permissions are real
-- verify every scope is real
-- verify company isolation
-- verify state transitions
-- verify source lineage
-- verify attachment ownership
-- verify idempotency
-- verify audit behavior
-- verify no unresolved domain was invented
-- verify no frontend-framework terminology remains in the backend-facing body
-- verify request/response examples match DTO definitions.
+If sync issues require user attention:
+
+surface compact warning.
 
 ==================================================
-151. FINAL COMPLETION REPORT
+105. TEST — HR ONLY
 ==================================================
 
-After generating the document, report:
+Enable HR grants, no Services grants.
 
-1. output file path
+Dashboard:
 
-2. Services domains covered
+HR content only.
 
-3. total endpoint requirements documented
-
-4. configuration endpoints covered
-
-5. transaction endpoints covered
-
-6. command endpoints covered
-
-7. reference lookup endpoints covered
-
-8. attachment requirements covered
-
-9. permissions/scopes covered
-
-10. source-of-truth rules covered
-
-11. workflow transitions covered
-
-12. idempotency rules covered
-
-13. concurrency rules covered
-
-14. company isolation covered
-
-15. audit/activity covered
-
-16. notification requirements covered
-
-17. dashboard requirements covered
-
-18. print requirements covered
-
-19. TBDs preserved
-
-20. confirmation that no Job Order APIs were invented
-
-21. confirmation that no Quotation APIs were invented
-
-22. confirmation that no Inventory APIs were invented
-
-23. confirmation that no Service Reports APIs were invented
-
-24. confirmation that the final backend-facing document contains no Flutter/
-    frontend-framework implementation language.
+Services queries absent.
 
 ==================================================
-152. HARD STOP
+106. TEST — SERVICES ONLY
 ==================================================
 
-PHASE 8 IS COMPLETE ONLY WHEN:
+Services content only.
 
-✓ docs/backend/services_backend_api_requirements.md exists
+No HR data leakage.
 
-✓ it reflects the ACTUAL completed Services module
+==================================================
+107. TEST — EMPLOYEE BOTH MODULES
+==================================================
 
-✓ all Services domains are covered
+SELF HR + ASSIGNED Services.
 
-✓ every client-visible implemented transaction has backend requirements
+Dashboard should combine:
 
-✓ all CRUD/command operations are accounted for
+Attendance
 
-✓ permissions are specified endpoint-by-endpoint
+Leave
 
-✓ scopes are specified endpoint-by-endpoint
+Today's Service Work
 
-✓ tenant/company rules are explicit
+Inspection/Work Execution
 
-✓ restricted reference APIs are documented
+without exposing company totals.
 
-✓ Employee reference access does not expose HR-private data
+==================================================
+108. TEST — BROAD USER
+==================================================
 
-✓ human-readable sequence numbers are backend-authoritative
+Broad HR + broad Services grants.
 
-✓ business dates/timezones are defined
+Dashboard shows richer combined metrics and attention.
 
-✓ idempotency is defined
+==================================================
+109. TEST — NO EMPLOYEE LINK
+==================================================
 
-✓ concurrency is defined
+Platform/admin-style unlinked UserAccount.
 
-✓ activity/audit behavior is defined
+Personal Attendance/My Work hidden where Employee link is mandatory.
 
-✓ attachment APIs/security are defined
+Broad company data may still appear according to explicit grants.
 
-✓ Enquiry owns Material Received
+==================================================
+110. TEST — LIVE PERMISSION GRANT
+==================================================
 
-✓ downstream Material Received is read-only/inherited
+Grant Services permission.
 
-✓ Inspection owns Material Required
+Services contribution appears without relogin.
 
-✓ Material Request owns requested Qty
+==================================================
+111. TEST — LIVE REVOKE
+==================================================
 
-✓ Work Execution owns Material Used
+Revoke HR permission.
 
-✓ Enquiry / Before / After photos have distinct ownership
+HR-specific metric/section disappears.
 
-✓ Enquiry → Assignment lineage is defined
+==================================================
+112. TEST — MODULE DISABLE
+==================================================
 
-✓ Assignment → Inspection lineage is defined
+Disable Services.
 
-✓ Inspection → Material Request lineage is defined
+Services contribution disappears.
 
-✓ Inspection → Work Execution lineage is defined
+Dashboard remains functional with HR.
 
-✓ optional Material Request branch is supported
+==================================================
+113. TEST — COMPANY SWITCH
+==================================================
 
-✓ Job Order stays a compatibility reference only
+Everything recomputes.
 
-✓ Quotation stays a compatibility reference only
+No previous-company counts/items remain.
 
-✓ no Inventory API was invented
+==================================================
+114. TEST — SCOPE
+==================================================
 
-✓ no Service Reports API was invented
+Test:
 
-✓ all known TBDs remain explicitly documented
+SELF
+ASSIGNED
+TEAM
+ALL
 
-✓ endpoint matrix exists
+according to each module's actual semantics.
 
-✓ permission matrix exists
+No scope escalation.
 
-✓ transition matrix exists
+==================================================
+115. TEST — DIRECT MODULE ROUTES
+==================================================
 
-✓ source-of-truth matrix exists
+Removing module dashboards must NOT break:
 
-✓ DTO catalog exists
+Employees
 
-✓ error catalog exists
+Attendance
 
-✓ API document can be handed directly to backend engineer
+Leave
 
-✓ final backend-facing document does NOT depend on frontend framework knowledge
+Services transaction routes.
+
+==================================================
+116. TEST — LEGACY DASHBOARD ROUTES
+==================================================
+
+Old dashboard URLs redirect safely.
+
+No redirect loops.
+
+==================================================
+117. RESPONSIVE
+==================================================
+
+Validate:
+
+390
+768
+1024
+1280
+1440
+1600
+1920.
+
+==================================================
+118. DESKTOP
+==================================================
+
+Balanced 2-column composition where appropriate.
+
+Same global centered width.
+
+==================================================
+119. MOBILE
+==================================================
+
+Single operational feed.
+
+Personal immediate actions first.
+
+==================================================
+120. DOCUMENTATION
+==================================================
+
+Create/update:
+
+docs/architecture/universal_dashboard.md
+
+Document:
+
+ownership
+
+canonical route
+
+contributor architecture
+
+module contribution contract
+
+permission behavior
+
+scope behavior
+
+navigation behavior
+
+module landing redirects
+
+section ordering
+
+data/security responsibilities.
+
+==================================================
+121. UPDATE HR ARCHITECTURE DOCS
+==================================================
+
+Any documentation claiming:
+
+Dashboard belongs to HR
+
+must be updated.
+
+HR now owns:
+
+HR dashboard contribution
+
+not Dashboard page.
+
+==================================================
+122. UPDATE SERVICES DOCS
+==================================================
+
+Same:
+
+Services owns:
+
+Services dashboard contribution
+
+not separate Dashboard/Overview page.
+
+==================================================
+123. COMPLETION REPORT
+==================================================
+
+Report:
+
+1. previous HR dashboard ownership
+
+2. previous Services dashboard ownership
+
+3. final universal dashboard owner
+
+4. canonical Dashboard route
+
+5. old route redirects
+
+6. top-level navigation changes
+
+7. HR dashboard nav removal
+
+8. Services Overview/dashboard nav removal
+
+9. module contribution architecture
+
+10. HR contributor
+
+11. Services contributor
+
+12. personal/My Day section
+
+13. Attendance integration
+
+14. Leave integration
+
+15. Services My Work integration
+
+16. universal Needs Attention
+
+17. universal Schedule
+
+18. KPI composition
+
+19. universal Recent Activity
+
+20. quick actions
+
+21. permission-aware behavior
+
+22. scope-aware behavior
+
+23. Employee-link behavior
+
+24. Company switching
+
+25. live permission changes
+
+26. module enablement
+
+27. repository/query efficiency
+
+28. global centered-width compliance
+
+29. Desktop
+
+30. Mobile
+
+31. Arabic/RTL
+
+32. tests
+
+33. flutter analyze
+
+34. flutter test count/result
+
+35. Web release build.
+
+==================================================
+124. HARD STOP
+==================================================
+
+TASK IS COMPLETE ONLY WHEN:
+
+✓ there is exactly ONE user-facing ERP Dashboard
+
+✓ Dashboard is not owned by HR
+
+✓ Dashboard is not owned by Services
+
+✓ HR contributes content into Universal Dashboard
+
+✓ Services contributes content into Universal Dashboard
+
+✓ future modules can contribute without creating new dashboards
+
+✓ top-level Dashboard appears once in navigation
+
+✓ HR Dashboard nav item is removed
+
+✓ Services Dashboard/Overview duplicate is removed
+
+✓ existing HR business screens remain intact
+
+✓ existing Services business screens remain intact
+
+✓ one canonical Dashboard route exists
+
+✓ old dashboard routes safely redirect
+
+✓ user with HR only sees HR-relevant Dashboard
+
+✓ user with Services only sees Services-relevant Dashboard
+
+✓ user with both gets one combined experience
+
+✓ dashboard is organized by work/attention, NOT giant module sections
+
+✓ Attendance actions reuse HR logic
+
+✓ Services operational actions reuse Services logic
+
+✓ permissions control every section
+
+✓ scopes control every metric/list/item
+
+✓ Employee link controls personal operational content
+
+✓ no role-based dashboards exist
+
+✓ no sensitive counts leak
+
+✓ no cross-company data leaks
+
+✓ module disablement removes its contribution
+
+✓ company switch recomputes Dashboard
+
+✓ live permission change recomputes Dashboard
+
+✓ no HR DAO is imported by universal Dashboard
+
+✓ no Services DAO is imported by universal Dashboard
+
+✓ modules expose clean dashboard read contracts
+
+✓ universal Needs Attention works
+
+✓ universal Today's Schedule works
+
+✓ universal My Day works
+
+✓ universal Recent Activity works
+
+✓ no separate HR Dashboard remains
+
+✓ no separate Services Dashboard remains
+
+✓ one global centered ERP content width remains intact
+
+✓ Desktop works
+
+✓ Mobile works
+
+✓ English works
+
+✓ Arabic/RTL works
+
+✓ documentation is updated
+
+✓ flutter analyze passes
+
+✓ flutter test passes
+
+✓ Web release build succeeds
 
 THEN STOP.
 
-DO NOT IMPLEMENT BACKEND CODE.
-
-DO NOT START SERVICE REPORTS.
-
-DO NOT START A NEW BUSINESS MODULE.
+DO NOT CREATE MODULE-SPECIFIC DASHBOARDS AGAIN.

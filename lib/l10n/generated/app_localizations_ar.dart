@@ -5502,6 +5502,133 @@ class AppLocalizationsAr extends AppLocalizations {
   String get servicesMasterDuplicateName => 'يوجد سجل بهذا الاسم بالفعل.';
 
   @override
+  String get servicesMasterBasicInformation => 'المعلومات الأساسية';
+
+  @override
+  String get servicesMasterOrderingBehavior => 'الترتيب والسلوك';
+
+  @override
+  String get servicesMasterOrderingSubtitle =>
+      'يتحكم في ترتيب العرض وسلوك التحديد الافتراضي.';
+
+  @override
+  String get servicesMasterCodeHelper => 'يُستخدم كمرجع داخلي ثابت.';
+
+  @override
+  String get servicesMasterSortOrderHelper => 'تظهر القيم الأقل أولاً.';
+
+  @override
+  String get servicesMasterDefaultPriorityLabel => 'الأولوية الافتراضية';
+
+  @override
+  String get servicesMasterDefaultPriorityDescription =>
+      'تُستخدم هذه الأولوية تلقائياً عند عدم تحديد أولوية أخرى.';
+
+  @override
+  String get servicesMasterDefaultGenericDescription =>
+      'يُستخدم هذا السجل تلقائياً عند عدم تحديد سجل آخر.';
+
+  @override
+  String servicesMasterAddName(String name) {
+    return 'إضافة $name';
+  }
+
+  @override
+  String servicesMasterEditName(String name) {
+    return 'تعديل $name';
+  }
+
+  @override
+  String get servicesServiceTypeSingular => 'نوع خدمة';
+
+  @override
+  String get servicesComplaintTypeSingular => 'نوع شكوى';
+
+  @override
+  String get servicesPrioritySingular => 'أولوية';
+
+  @override
+  String get servicesTicketTypeSingular => 'نوع تذكرة';
+
+  @override
+  String get servicesRootCauseSingular => 'السبب الجذري';
+
+  @override
+  String get servicesChargeResponsibilitySingular => 'مسؤولية التكلفة';
+
+  @override
+  String get servicesMaterialRequestPurposeSingular => 'غرض طلب المواد';
+
+  @override
+  String get servicesServiceTypeSubtitle => 'تصنيف يُستخدم في طلبات الخدمة.';
+
+  @override
+  String get servicesComplaintTypeSubtitle => 'فئات الشكاوى ضمن نوع خدمة.';
+
+  @override
+  String get servicesPrioritySubtitle =>
+      'هيّئ كيفية ترتيب أولويات طلبات الخدمة.';
+
+  @override
+  String get servicesTicketTypeSubtitle =>
+      'فئات التذاكر المستخدمة لتوجيه أعمال الخدمة.';
+
+  @override
+  String get servicesRootCauseSubtitle =>
+      'أسباب التشخيص المسجلة أثناء الفحوصات.';
+
+  @override
+  String get servicesChargeResponsibilitySubtitle =>
+      'من المسؤول عن تغطية تكاليف الخدمة.';
+
+  @override
+  String get servicesMaterialRequestPurposeSubtitle =>
+      'أسباب طلب المواد لأعمال الخدمة.';
+
+  @override
+  String get servicesAuditInformation => 'معلومات التدقيق';
+
+  @override
+  String get servicesCreatedBy => 'أنشأه';
+
+  @override
+  String get servicesCreatedAt => 'تاريخ الإنشاء';
+
+  @override
+  String get servicesUpdatedBy => 'حدّثه';
+
+  @override
+  String get servicesUpdatedAt => 'تاريخ التحديث';
+
+  @override
+  String get servicesCustomerInformationSection => 'معلومات العميل';
+
+  @override
+  String get servicesCustomerAddressSection => 'العنوان وبيانات النشاط';
+
+  @override
+  String get servicesSiteInformationSection => 'معلومات الموقع';
+
+  @override
+  String get servicesSiteCustomerRelationship => 'علاقة العميل';
+
+  @override
+  String get servicesSiteTenantSection => 'المستأجر والمبنى والوحدة';
+
+  @override
+  String get servicesSiteCoordinates => 'الإحداثيات';
+
+  @override
+  String get servicesTeamInformationSection => 'معلومات الفريق';
+
+  @override
+  String get servicesTeamMembersSubtitle =>
+      'أضف الموظفين الذين يعملون معاً في مهام الخدمة.';
+
+  @override
+  String get servicesTeamMemberRemove => 'إزالة عضو';
+
+  @override
   String servicesCustomerCount(String filtered, String total) {
     return '$filtered من $total عميل';
   }
@@ -7609,6 +7736,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get servicesWorkExecutionJobOrderReference => 'مرجع أمر العمل';
 
   @override
+  String get servicesWorkExecutionSectionOrderReferences => 'مراجع أمر العمل';
+
+  @override
   String get servicesWorkExecutionQuotationReference => 'مرجع عرض السعر';
 
   @override
@@ -8078,4 +8208,188 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get servicesOverviewWorkflowTitle => 'سير العمل التشغيلي';
+
+  @override
+  String get servicesDashboardSubtitle =>
+      'نظرة تشغيلية شاملة على سير عمل خدماتك';
+
+  @override
+  String get servicesDashboardScopeAssigned => 'عرض: العمل المُسند';
+
+  @override
+  String get servicesDashboardScopeTeam => 'عرض: نطاق الفريق';
+
+  @override
+  String get servicesDashboardScopeAll => 'عرض: جميع خدمات الشركة';
+
+  @override
+  String get servicesDashboardScopeNone => 'عرض: بدون نطاق خدمات';
+
+  @override
+  String get servicesDashboardToday => 'اليوم';
+
+  @override
+  String get servicesDashboardKpiOpenEnquiries => 'الاستفسارات المفتوحة';
+
+  @override
+  String get servicesDashboardKpiOpenEnquiriesContext => 'بانتظار الإسناد';
+
+  @override
+  String get servicesDashboardKpiScheduledJobs => 'المهام المجدولة';
+
+  @override
+  String get servicesDashboardKpiScheduledJobsContext => 'زيارات ميدانية نشطة';
+
+  @override
+  String get servicesDashboardKpiPendingInspections => 'الفحوصات المعلّقة';
+
+  @override
+  String get servicesDashboardKpiPendingInspectionsContext => 'بانتظار الإكمال';
+
+  @override
+  String get servicesDashboardKpiOpenMaterialRequests =>
+      'طلبات المواد المفتوحة';
+
+  @override
+  String get servicesDashboardKpiOpenMaterialRequestsContext =>
+      'فرع اختياري من سير العمل';
+
+  @override
+  String get servicesDashboardKpiWorkInProgress => 'عمل قيد التنفيذ';
+
+  @override
+  String get servicesDashboardKpiWorkInProgressContext => 'نشط في الموقع';
+
+  @override
+  String get servicesDashboardKpiCompletedToday => 'المكتمل اليوم';
+
+  @override
+  String get servicesDashboardKpiCompletedTodayContext => 'اليوم بتوقيت الشركة';
+
+  @override
+  String get servicesDashboardNeedsAttention => 'يتطلب الانتباه';
+
+  @override
+  String get servicesDashboardTodaySchedule => 'جدول اليوم';
+
+  @override
+  String get servicesDashboardMyWork => 'عملي';
+
+  @override
+  String get servicesDashboardTeamWorkload => 'عبء عمل الفريق';
+
+  @override
+  String get servicesDashboardWorkflowOverview => 'نظرة عامة على سير العمل';
+
+  @override
+  String get servicesDashboardRecentActivity => 'النشاط الأخير';
+
+  @override
+  String get servicesDashboardQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get servicesDashboardAllCaughtUp => 'لا توجد مهام معلّقة.';
+
+  @override
+  String get servicesDashboardNoSchedule => 'لا توجد زيارات مجدولة اليوم.';
+
+  @override
+  String get servicesDashboardNoMyWork => 'لا يوجد عمل مُسند حالياً.';
+
+  @override
+  String get servicesDashboardNoActivity => 'لا يوجد نشاط خدمة حديث.';
+
+  @override
+  String get servicesDashboardNoTeamWorkload => 'لا يوجد عبء عمل نشط للفريق.';
+
+  @override
+  String get servicesDashboardEmptyTitle => 'لا يوجد نشاط خدمة بعد';
+
+  @override
+  String get servicesDashboardEmptyMessage =>
+      'أنشئ أول استفسار خدمة لبدء سير العمل.';
+
+  @override
+  String get servicesDashboardEmptyAssignedTitle =>
+      'لا يوجد عمل مُسند إليك حالياً.';
+
+  @override
+  String get servicesDashboardEmptyAssignedMessage =>
+      'ستظهر الإسنادات والفحوصات الجديدة هنا تلقائياً.';
+
+  @override
+  String get servicesDashboardError => 'تعذّر تحميل لوحة معلومات الخدمات.';
+
+  @override
+  String get servicesDashboardAttentionOpenEnquiry =>
+      'استفسار مفتوح بدون إسناد عمل نشط';
+
+  @override
+  String get servicesDashboardAttentionVisitNoInspection =>
+      'زيارة مجدولة اليوم بدون فحص';
+
+  @override
+  String get servicesDashboardAttentionInspectionToday => 'فحص مجدول اليوم';
+
+  @override
+  String get servicesDashboardAttentionWaitingMaterials =>
+      'الفحص لديه متطلبات مواد بانتظار';
+
+  @override
+  String get servicesDashboardAttentionOpenMaterialRequest => 'طلب مواد مفتوح';
+
+  @override
+  String get servicesDashboardAttentionActiveWork =>
+      'تنفيذ العمل لديه بند عمل نشط';
+
+  @override
+  String get servicesDashboardActionOpenInspection => 'فتح الفحص';
+
+  @override
+  String get servicesDashboardActionViewEnquiry => 'عرض الاستفسار';
+
+  @override
+  String get servicesDashboardActionCreateAssignment => 'إنشاء إسناد عمل';
+
+  @override
+  String get servicesDashboardActionOpenMaterialRequest => 'فتح طلب المواد';
+
+  @override
+  String get servicesDashboardActionOpenWork => 'فتح تنفيذ العمل';
+
+  @override
+  String get servicesDashboardActionViewAssignment => 'عرض الإسناد';
+
+  @override
+  String get servicesDashboardActionStartWork => 'بدء العمل';
+
+  @override
+  String get servicesDashboardActionContinueWork => 'متابعة العمل';
+
+  @override
+  String get servicesDashboardTeamActiveSuffix => 'نشط';
+
+  @override
+  String get servicesDashboardTeamTodaySuffix => 'اليوم';
+
+  @override
+  String get servicesDashboardTeamInProgressSuffix => 'قيد التنفيذ';
+
+  @override
+  String get servicesDashboardQuickCreateAssignment => 'إنشاء إسناد عمل';
+
+  @override
+  String get servicesDashboardQuickNewInspection => 'فحص جديد';
+
+  @override
+  String get servicesDashboardQuickNewMaterialRequest => 'طلب مواد جديد';
+
+  @override
+  String get servicesDashboardQuickNewWorkExecution => 'تنفيذ عمل جديد';
+
+  @override
+  String get servicesDashboardDueToday => 'اليوم';
+
+  @override
+  String get servicesDashboardWaitingMaterials => 'متطلبات مواد بانتظار';
 }

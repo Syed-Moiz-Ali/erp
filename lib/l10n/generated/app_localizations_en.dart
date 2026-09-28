@@ -5584,6 +5584,136 @@ class AppLocalizationsEn extends AppLocalizations {
       'A record with this name already exists.';
 
   @override
+  String get servicesMasterBasicInformation => 'Basic information';
+
+  @override
+  String get servicesMasterOrderingBehavior => 'Ordering & behavior';
+
+  @override
+  String get servicesMasterOrderingSubtitle =>
+      'Controls display order and default selection behavior.';
+
+  @override
+  String get servicesMasterCodeHelper => 'Used as a stable internal reference.';
+
+  @override
+  String get servicesMasterSortOrderHelper => 'Lower values appear first.';
+
+  @override
+  String get servicesMasterDefaultPriorityLabel => 'Default priority';
+
+  @override
+  String get servicesMasterDefaultPriorityDescription =>
+      'Use this priority automatically when no other priority is explicitly selected.';
+
+  @override
+  String get servicesMasterDefaultGenericDescription =>
+      'Use this record automatically when no other is explicitly selected.';
+
+  @override
+  String servicesMasterAddName(String name) {
+    return 'Add $name';
+  }
+
+  @override
+  String servicesMasterEditName(String name) {
+    return 'Edit $name';
+  }
+
+  @override
+  String get servicesServiceTypeSingular => 'service type';
+
+  @override
+  String get servicesComplaintTypeSingular => 'complaint type';
+
+  @override
+  String get servicesPrioritySingular => 'priority';
+
+  @override
+  String get servicesTicketTypeSingular => 'ticket type';
+
+  @override
+  String get servicesRootCauseSingular => 'root cause';
+
+  @override
+  String get servicesChargeResponsibilitySingular => 'charge responsibility';
+
+  @override
+  String get servicesMaterialRequestPurposeSingular =>
+      'material request purpose';
+
+  @override
+  String get servicesServiceTypeSubtitle =>
+      'Classification used across service enquiries.';
+
+  @override
+  String get servicesComplaintTypeSubtitle =>
+      'Complaint categories grouped under a service type.';
+
+  @override
+  String get servicesPrioritySubtitle =>
+      'Configure how service requests are prioritized.';
+
+  @override
+  String get servicesTicketTypeSubtitle =>
+      'Ticket categories used to route service work.';
+
+  @override
+  String get servicesRootCauseSubtitle =>
+      'Diagnosis causes recorded during inspections.';
+
+  @override
+  String get servicesChargeResponsibilitySubtitle =>
+      'Who is responsible for covering service costs.';
+
+  @override
+  String get servicesMaterialRequestPurposeSubtitle =>
+      'Reasons materials are requested for service work.';
+
+  @override
+  String get servicesAuditInformation => 'Audit information';
+
+  @override
+  String get servicesCreatedBy => 'Created by';
+
+  @override
+  String get servicesCreatedAt => 'Created';
+
+  @override
+  String get servicesUpdatedBy => 'Updated by';
+
+  @override
+  String get servicesUpdatedAt => 'Updated';
+
+  @override
+  String get servicesCustomerInformationSection => 'Customer information';
+
+  @override
+  String get servicesCustomerAddressSection => 'Address & business details';
+
+  @override
+  String get servicesSiteInformationSection => 'Site information';
+
+  @override
+  String get servicesSiteCustomerRelationship => 'Customer relationship';
+
+  @override
+  String get servicesSiteTenantSection => 'Tenant, building & unit';
+
+  @override
+  String get servicesSiteCoordinates => 'Coordinates';
+
+  @override
+  String get servicesTeamInformationSection => 'Team information';
+
+  @override
+  String get servicesTeamMembersSubtitle =>
+      'Add employees who work together on service jobs.';
+
+  @override
+  String get servicesTeamMemberRemove => 'Remove member';
+
+  @override
   String servicesCustomerCount(String filtered, String total) {
     return '$filtered of $total customers';
   }
@@ -7744,6 +7874,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get servicesWorkExecutionJobOrderReference => 'Job order reference';
 
   @override
+  String get servicesWorkExecutionSectionOrderReferences => 'Order references';
+
+  @override
   String get servicesWorkExecutionQuotationReference => 'Quotation reference';
 
   @override
@@ -8223,4 +8356,194 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get servicesOverviewWorkflowTitle => 'Operational workflow';
+
+  @override
+  String get servicesDashboardSubtitle =>
+      'Operational overview of your service workflow';
+
+  @override
+  String get servicesDashboardScopeAssigned => 'Viewing: Assigned work';
+
+  @override
+  String get servicesDashboardScopeTeam => 'Viewing: Team scope';
+
+  @override
+  String get servicesDashboardScopeAll => 'Viewing: All company services';
+
+  @override
+  String get servicesDashboardScopeNone => 'Viewing: No service scope';
+
+  @override
+  String get servicesDashboardToday => 'Today';
+
+  @override
+  String get servicesDashboardKpiOpenEnquiries => 'Open enquiries';
+
+  @override
+  String get servicesDashboardKpiOpenEnquiriesContext => 'Awaiting assignment';
+
+  @override
+  String get servicesDashboardKpiScheduledJobs => 'Scheduled jobs';
+
+  @override
+  String get servicesDashboardKpiScheduledJobsContext => 'Active field visits';
+
+  @override
+  String get servicesDashboardKpiPendingInspections => 'Pending inspections';
+
+  @override
+  String get servicesDashboardKpiPendingInspectionsContext =>
+      'Awaiting completion';
+
+  @override
+  String get servicesDashboardKpiOpenMaterialRequests =>
+      'Open material requests';
+
+  @override
+  String get servicesDashboardKpiOpenMaterialRequestsContext =>
+      'Optional workflow branch';
+
+  @override
+  String get servicesDashboardKpiWorkInProgress => 'Work in progress';
+
+  @override
+  String get servicesDashboardKpiWorkInProgressContext => 'Active on site';
+
+  @override
+  String get servicesDashboardKpiCompletedToday => 'Completed today';
+
+  @override
+  String get servicesDashboardKpiCompletedTodayContext => 'Company-local day';
+
+  @override
+  String get servicesDashboardNeedsAttention => 'Needs attention';
+
+  @override
+  String get servicesDashboardTodaySchedule => 'Today\'s schedule';
+
+  @override
+  String get servicesDashboardMyWork => 'My work';
+
+  @override
+  String get servicesDashboardTeamWorkload => 'Team workload';
+
+  @override
+  String get servicesDashboardWorkflowOverview => 'Workflow overview';
+
+  @override
+  String get servicesDashboardRecentActivity => 'Recent activity';
+
+  @override
+  String get servicesDashboardQuickActions => 'Quick actions';
+
+  @override
+  String get servicesDashboardAllCaughtUp => 'You\'re all caught up.';
+
+  @override
+  String get servicesDashboardNoSchedule => 'No visits scheduled today.';
+
+  @override
+  String get servicesDashboardNoMyWork => 'Nothing currently assigned.';
+
+  @override
+  String get servicesDashboardNoActivity => 'No recent service activity.';
+
+  @override
+  String get servicesDashboardNoTeamWorkload => 'No active team workload.';
+
+  @override
+  String get servicesDashboardEmptyTitle => 'No service activity yet';
+
+  @override
+  String get servicesDashboardEmptyMessage =>
+      'Create your first Service Enquiry to begin the workflow.';
+
+  @override
+  String get servicesDashboardEmptyAssignedTitle =>
+      'No work assigned to you right now.';
+
+  @override
+  String get servicesDashboardEmptyAssignedMessage =>
+      'New assignments and inspections will appear here automatically.';
+
+  @override
+  String get servicesDashboardError =>
+      'The services dashboard could not be loaded.';
+
+  @override
+  String get servicesDashboardAttentionOpenEnquiry =>
+      'Open enquiry with no active job assignment';
+
+  @override
+  String get servicesDashboardAttentionVisitNoInspection =>
+      'Visit scheduled today without an inspection';
+
+  @override
+  String get servicesDashboardAttentionInspectionToday =>
+      'Inspection scheduled for today';
+
+  @override
+  String get servicesDashboardAttentionWaitingMaterials =>
+      'Inspection has waiting material requirements';
+
+  @override
+  String get servicesDashboardAttentionOpenMaterialRequest =>
+      'Open material request';
+
+  @override
+  String get servicesDashboardAttentionActiveWork =>
+      'Work execution has an active work line';
+
+  @override
+  String get servicesDashboardActionOpenInspection => 'Open inspection';
+
+  @override
+  String get servicesDashboardActionViewEnquiry => 'View enquiry';
+
+  @override
+  String get servicesDashboardActionCreateAssignment => 'Create job assignment';
+
+  @override
+  String get servicesDashboardActionOpenMaterialRequest =>
+      'Open material request';
+
+  @override
+  String get servicesDashboardActionOpenWork => 'Open work execution';
+
+  @override
+  String get servicesDashboardActionViewAssignment => 'View assignment';
+
+  @override
+  String get servicesDashboardActionStartWork => 'Start work';
+
+  @override
+  String get servicesDashboardActionContinueWork => 'Continue work';
+
+  @override
+  String get servicesDashboardTeamActiveSuffix => 'active';
+
+  @override
+  String get servicesDashboardTeamTodaySuffix => 'today';
+
+  @override
+  String get servicesDashboardTeamInProgressSuffix => 'in progress';
+
+  @override
+  String get servicesDashboardQuickCreateAssignment => 'Create job assignment';
+
+  @override
+  String get servicesDashboardQuickNewInspection => 'New inspection';
+
+  @override
+  String get servicesDashboardQuickNewMaterialRequest => 'New material request';
+
+  @override
+  String get servicesDashboardQuickNewWorkExecution => 'New work execution';
+
+  @override
+  String get servicesDashboardDueToday => 'Today';
+
+  @override
+  String get servicesDashboardWaitingMaterials =>
+      'waiting material requirements';
 }

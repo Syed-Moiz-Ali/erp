@@ -61,193 +61,202 @@ class ServiceEnquiryFormPage extends StatelessWidget {
               : null;
         }
 
-        return AppPage(
-          header: AppPageHeader(
-            title: enquiryId == null
-                ? l.servicesEnquiryFormNew
-                : l.servicesEnquiryFormEdit,
-            actions: [
-              AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.enquiries),
-              ),
-              AppPrimaryButton(
-                label: enquiryId == null ? l.servicesEnquiryCreate : l.save,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceEnquiryFailureMessage(state.failure, l) ??
-                      l.servicesEnquiryStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesEnquirySectionCustomerLocation,
-                child: Column(
+        final notFound = state.failure == 'servicesEnquiryNotFound';
+        return AppFormPage(
+          title: enquiryId == null
+              ? l.servicesEnquiryFormNew
+              : l.servicesEnquiryFormEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.enquiries),
+            ),
+            AppPrimaryButton(
+              label: enquiryId == null ? l.servicesEnquiryCreate : l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceEnquiryFailureMessage(state.failure, l) ??
+                    l.servicesEnquiryStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesEnquiryNotFound,
+                  onRetry: () => context.go(ServicesRoutes.enquiries),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppFormGrid(
-                      children: [
-                        ServiceReferenceField<ServiceCustomerRef>(
-                          label: l.servicesEnquiryCustomerName,
-                          valueLabel: state.customerRef?.displayName,
-                          valueSubtitle: state.customerRef == null
-                              ? null
-                              : [
-                                  state.customerRef!.customerCode,
-                                  if ((state.customerRef!.mobile ?? '')
-                                      .isNotEmpty)
-                                    state.customerRef!.mobile!,
-                                ].join(' · '),
-                          hint: l.servicesEnquirySelectCustomer,
-                          errorText: fieldError('customer'),
-                          enabled: !state.saving,
-                          onPick: () =>
-                              _pickCustomer(context, cubit, canCreateCustomer),
-                          onClear: cubit.clearCustomer,
-                        ),
-                        ServiceReferenceField<ServiceEnquirySiteRef>(
-                          label: l.servicesEnquirySite,
-                          valueLabel: state.siteRef?.siteName,
-                          valueSubtitle: state.siteRef == null
-                              ? null
-                              : [
-                                  if ((state.siteRef!.buildingName ?? '')
-                                      .isNotEmpty)
-                                    state.siteRef!.buildingName!,
-                                  if ((state.siteRef!.unitNumber ?? '')
-                                      .isNotEmpty)
-                                    state.siteRef!.unitNumber!,
-                                ].join(' / '),
-                          hint: l.servicesEnquirySelectSite,
-                          errorText: fieldError('site'),
-                          enabled: !state.saving && d.customerId != null,
-                          onPick: () =>
-                              _pickSite(context, cubit, canCreateSite),
-                          onClear: cubit.clearSite,
-                        ),
-                      ],
+                    AppFormSection(
+                      title: l.servicesEnquirySectionCustomerLocation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AppFormGrid(
+                            children: [
+                              ServiceReferenceField<ServiceCustomerRef>(
+                                label: l.servicesEnquiryCustomerName,
+                                valueLabel: state.customerRef?.displayName,
+                                valueSubtitle: state.customerRef == null
+                                    ? null
+                                    : [
+                                        state.customerRef!.customerCode,
+                                        if ((state.customerRef!.mobile ?? '')
+                                            .isNotEmpty)
+                                          state.customerRef!.mobile!,
+                                      ].join(' · '),
+                                hint: l.servicesEnquirySelectCustomer,
+                                errorText: fieldError('customer'),
+                                enabled: !state.saving,
+                                onPick: () => _pickCustomer(
+                                  context,
+                                  cubit,
+                                  canCreateCustomer,
+                                ),
+                                onClear: cubit.clearCustomer,
+                              ),
+                              ServiceReferenceField<ServiceEnquirySiteRef>(
+                                label: l.servicesEnquirySite,
+                                valueLabel: state.siteRef?.siteName,
+                                valueSubtitle: state.siteRef == null
+                                    ? null
+                                    : [
+                                        if ((state.siteRef!.buildingName ?? '')
+                                            .isNotEmpty)
+                                          state.siteRef!.buildingName!,
+                                        if ((state.siteRef!.unitNumber ?? '')
+                                            .isNotEmpty)
+                                          state.siteRef!.unitNumber!,
+                                      ].join(' / '),
+                                hint: l.servicesEnquirySelectSite,
+                                errorText: fieldError('site'),
+                                enabled: !state.saving && d.customerId != null,
+                                onPick: () =>
+                                    _pickSite(context, cubit, canCreateSite),
+                                onClear: cubit.clearSite,
+                              ),
+                            ],
+                          ),
+                          if (state.siteRef != null) ...[
+                            const SizedBox(height: AppSpacing.lg),
+                            _SitePreview(ref: state.siteRef!),
+                          ],
+                        ],
+                      ),
                     ),
-                    if (state.siteRef != null) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _SitePreview(ref: state.siteRef!),
-                    ],
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesEnquirySectionService,
+                      child: AppFormGrid(
+                        children: [
+                          AppSelectField<String>(
+                            label: l.servicesEnquiryServiceType,
+                            value: d.serviceTypeId,
+                            enabled: !state.saving && !state.referencesLoading,
+                            errorText: fieldError('serviceType'),
+                            onChanged: (v) {
+                              if (v != null) cubit.selectServiceType(v);
+                            },
+                            options: [
+                              for (final s in state.serviceTypes)
+                                AppSelectOption(s.id, s.name),
+                            ],
+                          ),
+                          AppSelectField<String>(
+                            label: l.servicesEnquiryComplaintType,
+                            value: d.complaintTypeId,
+                            enabled:
+                                !state.saving &&
+                                !state.referencesLoading &&
+                                d.serviceTypeId != null,
+                            errorText: fieldError('complaintType'),
+                            hint: d.serviceTypeId == null
+                                ? l.servicesEnquiryServiceTypeRequired
+                                : null,
+                            onChanged: (v) {
+                              if (v != null) cubit.selectComplaintType(v);
+                            },
+                            options: [
+                              for (final c in state.complaintTypesForSelection)
+                                AppSelectOption(c.id, c.name),
+                            ],
+                          ),
+                          AppSelectField<String>(
+                            label: l.servicesEnquiryPriority,
+                            value: d.priorityId,
+                            enabled: !state.saving && !state.referencesLoading,
+                            errorText: fieldError('priority'),
+                            onChanged: (v) {
+                              if (v != null) cubit.selectPriority(v);
+                            },
+                            options: [
+                              for (final p in state.priorities)
+                                AppSelectOption(p.id, p.name),
+                            ],
+                          ),
+                          AppSelectField<String>(
+                            label: l.servicesEnquiryTicketType,
+                            value: d.ticketTypeId,
+                            enabled: !state.saving && !state.referencesLoading,
+                            errorText: fieldError('ticketType'),
+                            onChanged: (v) {
+                              if (v != null) cubit.selectTicketType(v);
+                            },
+                            options: [
+                              for (final t in state.ticketTypes)
+                                AppSelectOption(t.id, t.name),
+                            ],
+                          ),
+                          AppSelectField<MaterialReceived>(
+                            label: l.servicesEnquiryMaterialReceived,
+                            value: d.materialReceived,
+                            enabled: !state.saving,
+                            onChanged: (v) {
+                              if (v != null) cubit.selectMaterialReceived(v);
+                            },
+                            options: [
+                              AppSelectOption(
+                                MaterialReceived.no,
+                                l.servicesEnquiryMaterialReceivedNo,
+                              ),
+                              AppSelectOption(
+                                MaterialReceived.yes,
+                                l.servicesEnquiryMaterialReceivedYes,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesEnquiryDetailsSection,
+                      action: AppSecondaryButton(
+                        label: l.servicesEnquiryAddDetail,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addDetail,
+                      ),
+                      child: EnquiryDetailEditor(
+                        details: state.details,
+                        enabled: !state.saving,
+                        descriptionErrorFor: descriptionErrorFor,
+                        onAdd: cubit.addDetail,
+                        onRemove: cubit.removeDetail,
+                        onDescriptionChanged: cubit.updateDetailDescription,
+                        onStatusChanged: cubit.updateDetailStatus,
+                        onAddPhotos: (detailId) =>
+                            _pickPhotos(context, cubit, detailId),
+                        onRemoveAttachment: cubit.removeDetailAttachment,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesEnquirySectionService,
-                child: AppFormGrid(
-                  children: [
-                    AppSelectField<String>(
-                      label: l.servicesEnquiryServiceType,
-                      value: d.serviceTypeId,
-                      enabled: !state.saving && !state.referencesLoading,
-                      errorText: fieldError('serviceType'),
-                      onChanged: (v) {
-                        if (v != null) cubit.selectServiceType(v);
-                      },
-                      options: [
-                        for (final s in state.serviceTypes)
-                          AppSelectOption(s.id, s.name),
-                      ],
-                    ),
-                    AppSelectField<String>(
-                      label: l.servicesEnquiryComplaintType,
-                      value: d.complaintTypeId,
-                      enabled:
-                          !state.saving &&
-                          !state.referencesLoading &&
-                          d.serviceTypeId != null,
-                      errorText: fieldError('complaintType'),
-                      hint: d.serviceTypeId == null
-                          ? l.servicesEnquiryServiceTypeRequired
-                          : null,
-                      onChanged: (v) {
-                        if (v != null) cubit.selectComplaintType(v);
-                      },
-                      options: [
-                        for (final c in state.complaintTypesForSelection)
-                          AppSelectOption(c.id, c.name),
-                      ],
-                    ),
-                    AppSelectField<String>(
-                      label: l.servicesEnquiryPriority,
-                      value: d.priorityId,
-                      enabled: !state.saving && !state.referencesLoading,
-                      errorText: fieldError('priority'),
-                      onChanged: (v) {
-                        if (v != null) cubit.selectPriority(v);
-                      },
-                      options: [
-                        for (final p in state.priorities)
-                          AppSelectOption(p.id, p.name),
-                      ],
-                    ),
-                    AppSelectField<String>(
-                      label: l.servicesEnquiryTicketType,
-                      value: d.ticketTypeId,
-                      enabled: !state.saving && !state.referencesLoading,
-                      errorText: fieldError('ticketType'),
-                      onChanged: (v) {
-                        if (v != null) cubit.selectTicketType(v);
-                      },
-                      options: [
-                        for (final t in state.ticketTypes)
-                          AppSelectOption(t.id, t.name),
-                      ],
-                    ),
-                    AppSelectField<MaterialReceived>(
-                      label: l.servicesEnquiryMaterialReceived,
-                      value: d.materialReceived,
-                      enabled: !state.saving,
-                      onChanged: (v) {
-                        if (v != null) cubit.selectMaterialReceived(v);
-                      },
-                      options: [
-                        AppSelectOption(
-                          MaterialReceived.no,
-                          l.servicesEnquiryMaterialReceivedNo,
-                        ),
-                        AppSelectOption(
-                          MaterialReceived.yes,
-                          l.servicesEnquiryMaterialReceivedYes,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesEnquiryDetailsSection,
-                child: EnquiryDetailEditor(
-                  details: state.details,
-                  enabled: !state.saving,
-                  descriptionErrorFor: descriptionErrorFor,
-                  onAdd: cubit.addDetail,
-                  onRemove: cubit.removeDetail,
-                  onDescriptionChanged: cubit.updateDetailDescription,
-                  onStatusChanged: cubit.updateDetailStatus,
-                  onAddPhotos: (detailId) =>
-                      _pickPhotos(context, cubit, detailId),
-                  onRemoveAttachment: cubit.removeDetailAttachment,
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

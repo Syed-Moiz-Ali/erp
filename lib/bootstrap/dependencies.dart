@@ -56,6 +56,9 @@ void configureApplicationComposition(GetIt services) {
       serviceWorkflowRepository: services(),
       workforceDirectory: services(),
       activityRepository: services(),
+      database: services(),
+      clock: services(),
+      companyTimeService: services(),
     ),
   );
 }

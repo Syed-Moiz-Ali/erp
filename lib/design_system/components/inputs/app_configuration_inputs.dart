@@ -48,19 +48,38 @@ class AppNumberField extends StatelessWidget {
   final bool enabled, integerOnly;
   final ValueChanged<AppNumericInput> onChanged;
   @override
-  Widget build(BuildContext context) => TextFormField(
-    initialValue: initialValue?.toString(),
-    enabled: enabled,
-    textDirection: TextDirection.ltr,
-    keyboardType: TextInputType.numberWithOptions(
-      decimal: !integerOnly,
-      signed: true,
-    ),
-    onChanged: (v) => onChanged(AppNumericInput(v)),
-    decoration: InputDecoration(
-      labelText: label,
-      errorText: errorText,
-      suffixText: suffix == null ? null : ' $suffix',
+  Widget build(BuildContext context) => AppFieldLabelGroup(
+    label: label,
+    child: AppFieldShell(
+      enabled: enabled,
+      builder: (node, hovered, focused) => TextFormField(
+        focusNode: node,
+        initialValue: initialValue?.toString(),
+        enabled: enabled,
+        textDirection: TextDirection.ltr,
+        keyboardType: TextInputType.numberWithOptions(
+          decimal: !integerOnly,
+          signed: true,
+        ),
+        onChanged: (v) => onChanged(AppNumericInput(v)),
+        decoration: appCustomInputDecoration(
+          context,
+          errorText: errorText,
+          hovered: hovered,
+          focused: focused,
+          enabled: enabled,
+          suffixIcon: suffix == null
+              ? null
+              : Padding(
+                  padding: const EdgeInsetsDirectional.only(end: AppSpacing.md),
+                  child: Align(
+                    widthFactor: 1,
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Text(suffix!),
+                  ),
+                ),
+        ),
+      ),
     ),
   );
 }

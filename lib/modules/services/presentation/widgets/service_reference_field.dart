@@ -31,56 +31,68 @@ class ServiceReferenceField<T> extends StatelessWidget {
     this.errorText,
     this.enabled = true,
     this.hint,
+    this.required = false,
     this.pickIcon = Icons.search,
   });
   final String label;
   final String? valueLabel, valueSubtitle, errorText, hint;
   final VoidCallback onPick;
   final VoidCallback? onClear;
-  final bool enabled;
+  final bool enabled, required;
   final IconData pickIcon;
 
   @override
   Widget build(BuildContext context) {
     final typography = AppTypography.of(context);
     final hasValue = valueLabel != null && valueLabel!.isNotEmpty;
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppRadius.control),
-      onTap: enabled ? onPick : null,
-      child: InputDecorator(
-        isEmpty: !hasValue,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          errorText: errorText,
-          enabled: enabled,
-          suffixIcon: hasValue && onClear != null
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AppIconButton(
-                      icon: Icons.close,
-                      tooltip: context.l10n.clear,
-                      onPressed: enabled ? onClear : null,
-                    ),
-                    const Icon(Icons.expand_more, size: 20),
-                  ],
-                )
-              : Icon(pickIcon, size: 20),
+    return AppFieldLabelGroup(
+      label: label,
+      required: required,
+      child: AppFieldShell(
+        enabled: enabled,
+        builder: (node, hovered, focused) => InkWell(
+          focusNode: node,
+          borderRadius: BorderRadius.circular(AppRadius.control),
+          onTap: enabled ? onPick : null,
+          child: InputDecorator(
+            isEmpty: !hasValue,
+            decoration: appCustomInputDecoration(
+              context,
+              hint: hint,
+              errorText: errorText,
+              hovered: hovered,
+              focused: focused,
+              enabled: enabled,
+              suffixIcon: hasValue && onClear != null
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppIconButton(
+                          icon: Icons.close,
+                          tooltip: context.l10n.clear,
+                          onPressed: enabled ? onClear : null,
+                        ),
+                        const Icon(Icons.expand_more, size: 20),
+                      ],
+                    )
+                  : Icon(pickIcon, size: 20),
+            ),
+            child: hasValue
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(valueLabel!, style: typography.body),
+                      if (valueSubtitle != null &&
+                          valueSubtitle!.isNotEmpty) ...[
+                        SizedBox(height: AppSpacing.xxs),
+                        Text(valueSubtitle!, style: typography.caption),
+                      ],
+                    ],
+                  )
+                : null,
+          ),
         ),
-        child: hasValue
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(valueLabel!, style: typography.body),
-                  if (valueSubtitle != null && valueSubtitle!.isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.xxs),
-                    Text(valueSubtitle!, style: typography.caption),
-                  ],
-                ],
-              )
-            : null,
       ),
     );
   }

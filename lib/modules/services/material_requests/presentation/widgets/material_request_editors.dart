@@ -5,9 +5,9 @@ import 'package:modular_erp/modules/services/material_requests/domain/service_ma
 
 /// Card-based material line editor.
 ///
-/// Uses stacked cards (no horizontal spreadsheet) so it works identically on
-/// mobile and desktop. Quantity is entered as text and validated by the domain
-/// on save; the total is derived by the domain/read model, never here.
+/// The owning form renders the section header + "+ Add" action; this renders
+/// the line cards. Quantity is entered as text and validated by the domain on
+/// save; the total is derived by the domain/read model, never here.
 class MaterialRequestLinesEditor extends StatelessWidget {
   const MaterialRequestLinesEditor({
     super.key,
@@ -36,94 +36,70 @@ class MaterialRequestLinesEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    if (lines.isEmpty) {
+      return Text(
+        l.servicesMaterialRequestNoMaterials,
+        style: AppTypography.of(context).caption,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (lines.isEmpty)
-          Text(l.servicesMaterialRequestNoMaterials)
-        else
-          for (var i = 0; i < lines.length; i++) ...[
-            if (i > 0) const SizedBox(height: AppSpacing.lg),
-            AppCard(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        for (var i = 0; i < lines.length; i++) ...[
+          if (i > 0) const SizedBox(height: AppSpacing.lg),
+          AppRepeatableItemCard(
+            title: l.servicesMaterialRequestLineTitle('${i + 1}'),
+            removeTooltip: l.servicesMaterialRequestRemoveMaterial,
+            onRemove: enabled && lines.length > 1
+                ? () => onRemove(lines[i].id)
+                : null,
+            children: [
+              AppFormGrid(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l.servicesMaterialRequestLineTitle('${i + 1}'),
-                          style: AppTypography.of(context).label,
-                        ),
-                      ),
-                      AppIconButton(
-                        icon: Icons.delete_outline,
-                        tooltip: l.servicesMaterialRequestRemoveMaterial,
-                        onPressed: enabled && lines.length > 1
-                            ? () => onRemove(lines[i].id)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppFormGrid(
-                    children: [
-                      AppTextField(
-                        key: ValueKey('mr-code-${lines[i].id}'),
-                        label: l.servicesMaterialRequestCode,
-                        initialValue: lines[i].code,
-                        enabled: enabled,
-                        onChanged: (v) => onCodeChanged(lines[i].id, v),
-                      ),
-                      AppTextField(
-                        key: ValueKey('mr-desc-${lines[i].id}'),
-                        label: l.servicesMaterialRequestDescription,
-                        initialValue: lines[i].description,
-                        enabled: enabled,
-                        onChanged: (v) => onDescriptionChanged(lines[i].id, v),
-                      ),
-                      AppTextField(
-                        key: ValueKey('mr-batch-${lines[i].id}'),
-                        label: l.servicesMaterialRequestBatchNumber,
-                        initialValue: lines[i].batchNumber,
-                        enabled: enabled,
-                        onChanged: (v) => onBatchChanged(lines[i].id, v),
-                      ),
-                      AppTextField(
-                        key: ValueKey('mr-qty-${lines[i].id}'),
-                        label: l.servicesMaterialRequestQuantity,
-                        initialValue: lines[i].quantity,
-                        enabled: enabled,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        errorText: quantityErrorFor?.call(lines[i].id),
-                        onChanged: (v) => onQuantityChanged(lines[i].id, v),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
                   AppTextField(
-                    key: ValueKey('mr-remark-${lines[i].id}'),
-                    label: l.servicesMaterialRequestRemark,
-                    initialValue: lines[i].remark,
+                    key: ValueKey('mr-code-${lines[i].id}'),
+                    label: l.servicesMaterialRequestCode,
+                    initialValue: lines[i].code,
                     enabled: enabled,
-                    onChanged: (v) => onRemarkChanged(lines[i].id, v),
+                    onChanged: (v) => onCodeChanged(lines[i].id, v),
+                  ),
+                  AppTextField(
+                    key: ValueKey('mr-desc-${lines[i].id}'),
+                    label: l.servicesMaterialRequestDescription,
+                    initialValue: lines[i].description,
+                    enabled: enabled,
+                    onChanged: (v) => onDescriptionChanged(lines[i].id, v),
+                  ),
+                  AppTextField(
+                    key: ValueKey('mr-batch-${lines[i].id}'),
+                    label: l.servicesMaterialRequestBatchNumber,
+                    initialValue: lines[i].batchNumber,
+                    enabled: enabled,
+                    onChanged: (v) => onBatchChanged(lines[i].id, v),
+                  ),
+                  AppTextField(
+                    key: ValueKey('mr-qty-${lines[i].id}'),
+                    label: l.servicesMaterialRequestQuantity,
+                    initialValue: lines[i].quantity,
+                    enabled: enabled,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    errorText: quantityErrorFor?.call(lines[i].id),
+                    onChanged: (v) => onQuantityChanged(lines[i].id, v),
                   ),
                 ],
               ),
-            ),
-          ],
-        const SizedBox(height: AppSpacing.lg),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: AppSecondaryButton(
-            label: l.servicesMaterialRequestAddMaterial,
-            icon: Icons.add,
-            onPressed: enabled ? onAdd : null,
+              AppTextField(
+                key: ValueKey('mr-remark-${lines[i].id}'),
+                label: l.servicesMaterialRequestRemark,
+                initialValue: lines[i].remark,
+                enabled: enabled,
+                onChanged: (v) => onRemarkChanged(lines[i].id, v),
+              ),
+            ],
           ),
-        ),
+        ],
       ],
     );
   }

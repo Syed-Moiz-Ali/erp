@@ -38,6 +38,7 @@ export 'components/navigation/app_user_menu.dart';
 export 'components/dashboard/app_dashboard.dart';
 
 export 'components/layout/app_details_grid.dart';
+export 'components/layout/app_form.dart';
 export 'components/inputs/app_select_field.dart';
 export 'components/navigation/app_action_menu.dart';
 

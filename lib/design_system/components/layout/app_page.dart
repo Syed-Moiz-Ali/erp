@@ -75,10 +75,12 @@ class AppFormSection extends StatelessWidget {
     required this.title,
     required this.child,
     this.subtitle,
+    this.action,
     this.card = true,
   });
   final String title;
   final String? subtitle;
+  final Widget? action;
   final Widget child;
   final bool card;
 
@@ -87,7 +89,7 @@ class AppFormSection extends StatelessWidget {
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppSectionHeader(title: title, subtitle: subtitle),
+        AppSectionHeader(title: title, subtitle: subtitle, action: action),
         const SizedBox(height: AppSpacing.xl),
         child,
       ],

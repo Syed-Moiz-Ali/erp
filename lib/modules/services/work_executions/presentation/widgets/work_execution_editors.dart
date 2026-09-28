@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
-import 'package:modular_erp/modules/services/enquiries/presentation/widgets/enquiry_detail_editor.dart';
+import 'package:modular_erp/modules/services/presentation/widgets/service_attachment_strip.dart';
 import 'package:modular_erp/modules/services/services_localization.dart';
 import 'package:modular_erp/modules/services/work_executions/domain/service_work_execution.dart';
 
-/// Card-based work line editor.
-///
-/// Uses stacked cards (never a horizontal spreadsheet) so it works identically
-/// on mobile and desktop inside the one global content width. Start/End times
-/// are derived state captured by operational actions, never typed here.
+/// Card-based work line editor. The owning form renders the section header +
+/// "+ Add" action; this renders the line cards. Start/End times are derived
+/// state captured by operational actions, never typed here.
 class WorkExecutionLinesEditor extends StatelessWidget {
   const WorkExecutionLinesEditor({
     super.key,
@@ -42,123 +40,92 @@ class WorkExecutionLinesEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final times = AppTimeFormatter(Localizations.localeOf(context));
+    if (lines.isEmpty) {
+      return Text(
+        l.servicesWorkExecutionNoLines,
+        style: AppTypography.of(context).caption,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (lines.isEmpty)
-          Text(l.servicesWorkExecutionNoLines)
-        else
-          for (var i = 0; i < lines.length; i++) ...[
-            if (i > 0) const SizedBox(height: AppSpacing.lg),
-            AppCard(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l.servicesWorkExecutionLineTitle('${i + 1}'),
-                          style: AppTypography.of(context).label,
-                        ),
-                      ),
-                      AppStatusBadge(
-                        label: serviceWorkLineStateLabel(
-                          serviceWorkLineState(
-                            startedAtUtc: lines[i].startedAtUtc,
-                            endedAtUtc: lines[i].endedAtUtc,
-                          ),
-                          l,
-                        ),
-                        status: serviceWorkLineStateStatus(
-                          serviceWorkLineState(
-                            startedAtUtc: lines[i].startedAtUtc,
-                            endedAtUtc: lines[i].endedAtUtc,
-                          ),
-                        ),
-                        isPill: true,
-                      ),
-                      AppIconButton(
-                        icon: Icons.delete_outline,
-                        tooltip: l.servicesWorkExecutionRemoveLine,
-                        onPressed: enabled && lines[i].startedAtUtc == null
-                            ? () => onRemove(lines[i].id)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    key: ValueKey('we-work-${lines[i].id}'),
-                    label: l.servicesWorkExecutionWork,
-                    initialValue: lines[i].work,
-                    enabled: enabled,
-                    errorText: workErrorFor?.call(lines[i].id),
-                    onChanged: (v) => onWorkChanged(lines[i].id, v),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    key: ValueKey('we-desc-${lines[i].id}'),
-                    label: l.servicesWorkExecutionDescription,
-                    initialValue: lines[i].description,
-                    enabled: enabled,
-                    maxLines: 2,
-                    onChanged: (v) => onDescriptionChanged(lines[i].id, v),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppFormGrid(
-                    children: [
-                      AppSelectField<String>(
-                        label: l.servicesWorkExecutionTeam,
-                        value: lines[i].serviceTeamId ?? '',
-                        enabled: enabled,
-                        onChanged: (v) => onTeamChanged(lines[i].id, v ?? ''),
-                        options: teamOptions,
-                      ),
-                      AppSelectField<String>(
-                        label: l.servicesWorkExecutionEmployee,
-                        value: lines[i].employeeId ?? '',
-                        enabled: enabled,
-                        onChanged: (v) =>
-                            onEmployeeChanged(lines[i].id, v ?? ''),
-                        options: employeeOptions,
-                      ),
-                    ],
-                  ),
-                  if (lines[i].startedAtUtc != null ||
-                      lines[i].endedAtUtc != null) ...[
-                    const SizedBox(height: AppSpacing.md),
-                    AppDetailsGrid(
-                      fields: [
-                        AppDetailField(
-                          label: l.servicesWorkExecutionStartTime,
-                          value: lines[i].startedAtUtc == null
-                              ? ''
-                              : times.time(lines[i].startedAtUtc!),
-                        ),
-                        AppDetailField(
-                          label: l.servicesWorkExecutionEndTime,
-                          value: lines[i].endedAtUtc == null
-                              ? ''
-                              : times.time(lines[i].endedAtUtc!),
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
+        for (var i = 0; i < lines.length; i++) ...[
+          if (i > 0) const SizedBox(height: AppSpacing.lg),
+          AppRepeatableItemCard(
+            title: l.servicesWorkExecutionLineTitle('${i + 1}'),
+            statusLabel: serviceWorkLineStateLabel(
+              serviceWorkLineState(
+                startedAtUtc: lines[i].startedAtUtc,
+                endedAtUtc: lines[i].endedAtUtc,
+              ),
+              l,
+            ),
+            status: serviceWorkLineStateStatus(
+              serviceWorkLineState(
+                startedAtUtc: lines[i].startedAtUtc,
+                endedAtUtc: lines[i].endedAtUtc,
               ),
             ),
-          ],
-        const SizedBox(height: AppSpacing.lg),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: AppSecondaryButton(
-            label: l.servicesWorkExecutionAddLine,
-            icon: Icons.add,
-            onPressed: enabled ? onAdd : null,
+            removeTooltip: l.servicesWorkExecutionRemoveLine,
+            onRemove: enabled && lines[i].startedAtUtc == null
+                ? () => onRemove(lines[i].id)
+                : null,
+            children: [
+              AppTextField(
+                key: ValueKey('we-work-${lines[i].id}'),
+                label: l.servicesWorkExecutionWork,
+                initialValue: lines[i].work,
+                enabled: enabled,
+                errorText: workErrorFor?.call(lines[i].id),
+                onChanged: (v) => onWorkChanged(lines[i].id, v),
+              ),
+              AppTextField(
+                key: ValueKey('we-desc-${lines[i].id}'),
+                label: l.servicesWorkExecutionDescription,
+                initialValue: lines[i].description,
+                enabled: enabled,
+                maxLines: 2,
+                minLines: 2,
+                onChanged: (v) => onDescriptionChanged(lines[i].id, v),
+              ),
+              AppFormGrid(
+                children: [
+                  AppSelectField<String>(
+                    label: l.servicesWorkExecutionTeam,
+                    value: lines[i].serviceTeamId ?? '',
+                    enabled: enabled,
+                    onChanged: (v) => onTeamChanged(lines[i].id, v ?? ''),
+                    options: teamOptions,
+                  ),
+                  AppSelectField<String>(
+                    label: l.servicesWorkExecutionEmployee,
+                    value: lines[i].employeeId ?? '',
+                    enabled: enabled,
+                    onChanged: (v) => onEmployeeChanged(lines[i].id, v ?? ''),
+                    options: employeeOptions,
+                  ),
+                ],
+              ),
+              if (lines[i].startedAtUtc != null || lines[i].endedAtUtc != null)
+                AppDetailsGrid(
+                  fields: [
+                    AppDetailField(
+                      label: l.servicesWorkExecutionStartTime,
+                      value: lines[i].startedAtUtc == null
+                          ? ''
+                          : times.time(lines[i].startedAtUtc!),
+                    ),
+                    AppDetailField(
+                      label: l.servicesWorkExecutionEndTime,
+                      value: lines[i].endedAtUtc == null
+                          ? ''
+                          : times.time(lines[i].endedAtUtc!),
+                    ),
+                  ],
+                ),
+            ],
           ),
-        ),
+        ],
       ],
     );
   }
@@ -186,69 +153,43 @@ class WorkExecutionMaterialsEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    if (materials.isEmpty) {
+      return Text(
+        l.servicesWorkExecutionNoMaterials,
+        style: AppTypography.of(context).caption,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (materials.isEmpty)
-          Text(l.servicesWorkExecutionNoMaterials)
-        else
-          for (var i = 0; i < materials.length; i++) ...[
-            if (i > 0) const SizedBox(height: AppSpacing.lg),
-            AppCard(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        for (var i = 0; i < materials.length; i++) ...[
+          if (i > 0) const SizedBox(height: AppSpacing.lg),
+          AppRepeatableItemCard(
+            title: l.servicesWorkExecutionMaterialTitle('${i + 1}'),
+            removeTooltip: l.servicesWorkExecutionRemoveMaterial,
+            onRemove: enabled ? () => onRemove(materials[i].id) : null,
+            children: [
+              AppFormGrid(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l.servicesWorkExecutionMaterialTitle('${i + 1}'),
-                          style: AppTypography.of(context).label,
-                        ),
-                      ),
-                      AppIconButton(
-                        icon: Icons.delete_outline,
-                        tooltip: l.servicesWorkExecutionRemoveMaterial,
-                        onPressed: enabled
-                            ? () => onRemove(materials[i].id)
-                            : null,
-                      ),
-                    ],
+                  AppTextField(
+                    key: ValueKey('we-mat-code-${materials[i].id}'),
+                    label: l.servicesWorkExecutionCode,
+                    initialValue: materials[i].code,
+                    enabled: enabled,
+                    onChanged: (v) => onCodeChanged(materials[i].id, v),
                   ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppFormGrid(
-                    children: [
-                      AppTextField(
-                        key: ValueKey('we-mat-code-${materials[i].id}'),
-                        label: l.servicesWorkExecutionCode,
-                        initialValue: materials[i].code,
-                        enabled: enabled,
-                        onChanged: (v) => onCodeChanged(materials[i].id, v),
-                      ),
-                      AppTextField(
-                        key: ValueKey('we-mat-desc-${materials[i].id}'),
-                        label: l.servicesWorkExecutionDescription,
-                        initialValue: materials[i].description,
-                        enabled: enabled,
-                        onChanged: (v) =>
-                            onDescriptionChanged(materials[i].id, v),
-                      ),
-                    ],
+                  AppTextField(
+                    key: ValueKey('we-mat-desc-${materials[i].id}'),
+                    label: l.servicesWorkExecutionDescription,
+                    initialValue: materials[i].description,
+                    enabled: enabled,
+                    onChanged: (v) => onDescriptionChanged(materials[i].id, v),
                   ),
                 ],
               ),
-            ),
-          ],
-        const SizedBox(height: AppSpacing.lg),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: AppSecondaryButton(
-            label: l.servicesWorkExecutionAddMaterial,
-            icon: Icons.add,
-            onPressed: enabled ? onAdd : null,
+            ],
           ),
-        ),
+        ],
       ],
     );
   }
@@ -278,92 +219,40 @@ class WorkExecutionPhotosEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    if (entries.isEmpty) {
+      return Text(
+        l.servicesWorkExecutionNoPhotos,
+        style: AppTypography.of(context).caption,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (entries.isEmpty)
-          Text(l.servicesWorkExecutionNoPhotos)
-        else
-          for (var i = 0; i < entries.length; i++) ...[
-            if (i > 0) const SizedBox(height: AppSpacing.lg),
-            AppCard(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l.servicesWorkExecutionPhotoTitle('${i + 1}'),
-                          style: AppTypography.of(context).label,
-                        ),
-                      ),
-                      AppIconButton(
-                        icon: Icons.delete_outline,
-                        tooltip: l.servicesWorkExecutionRemovePhoto,
-                        onPressed: enabled
-                            ? () => onRemove(entries[i].id)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    key: ValueKey('we-photo-desc-${entries[i].id}'),
-                    label: l.servicesWorkExecutionPhotoDescription,
-                    initialValue: entries[i].description,
-                    enabled: enabled,
-                    onChanged: (v) => onDescriptionChanged(entries[i].id, v),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l.servicesWorkExecutionPhotos,
-                          style: AppTypography.of(
-                            context,
-                          ).caption.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      AppTextButton(
-                        label: l.servicesWorkExecutionAddPhotos,
-                        onPressed: enabled
-                            ? () => onAddPhotos(entries[i].id)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  if (entries[i].attachments.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Wrap(
-                      spacing: AppSpacing.sm,
-                      runSpacing: AppSpacing.sm,
-                      children: [
-                        for (final a in entries[i].attachments)
-                          AttachmentThumbnail(
-                            attachment: a,
-                            onRemove: enabled
-                                ? () => onRemoveAttachment(entries[i].id, a.id)
-                                : null,
-                          ),
-                      ],
-                    ),
-                  ],
-                ],
+        for (var i = 0; i < entries.length; i++) ...[
+          if (i > 0) const SizedBox(height: AppSpacing.lg),
+          AppRepeatableItemCard(
+            title: l.servicesWorkExecutionPhotoTitle('${i + 1}'),
+            removeTooltip: l.servicesWorkExecutionRemovePhoto,
+            onRemove: enabled ? () => onRemove(entries[i].id) : null,
+            children: [
+              AppTextField(
+                key: ValueKey('we-photo-desc-${entries[i].id}'),
+                label: l.servicesWorkExecutionPhotoDescription,
+                initialValue: entries[i].description,
+                enabled: enabled,
+                onChanged: (v) => onDescriptionChanged(entries[i].id, v),
               ),
-            ),
-          ],
-        const SizedBox(height: AppSpacing.lg),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: AppSecondaryButton(
-            label: l.servicesWorkExecutionAddPhoto,
-            icon: Icons.add,
-            onPressed: enabled ? onAdd : null,
+              ServiceAttachmentStrip(
+                label: l.servicesWorkExecutionPhotos,
+                addLabel: l.servicesWorkExecutionAddPhotos,
+                attachments: entries[i].attachments,
+                enabled: enabled,
+                onAdd: () => onAddPhotos(entries[i].id),
+                onRemove: (id) => onRemoveAttachment(entries[i].id, id),
+              ),
+            ],
           ),
-        ),
+        ],
       ],
     );
   }

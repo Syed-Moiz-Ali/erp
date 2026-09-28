@@ -138,12 +138,32 @@ class AppSectionHeader extends StatelessWidget {
 
     if (action == null) return textColumn;
 
+    // Compact widths stack the action under the title so a labelled action can
+    // never overflow the section header.
+    if (AppBreakpoints.of(context) == AppSize.compact) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          textColumn,
+          const SizedBox(height: AppSpacing.sm),
+          action!,
+        ],
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: textColumn),
-        action!,
+        const SizedBox(width: AppSpacing.sm),
+        Flexible(
+          child: Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: action!,
+          ),
+        ),
       ],
     );
   }

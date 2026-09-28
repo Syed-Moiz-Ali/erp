@@ -5,8 +5,10 @@ import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/location/location_service.dart';
+import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/access/presentation/company_modules_page.dart';
@@ -19,6 +21,7 @@ import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_pol
 import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
+import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/hr/module/hr_module_registration.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
@@ -81,6 +84,9 @@ ModuleRegistry createErpRegistry(
   ServiceWorkflowRepository? serviceWorkflowRepository,
   WorkforceDirectory? workforceDirectory,
   ActivityRepository? activityRepository,
+  AppDatabase? database,
+  AppClock? clock,
+  CompanyTimeService? companyTimeService,
 }) {
   final dashboard =
       dashboardRepository ??
@@ -244,6 +250,9 @@ ModuleRegistry createErpRegistry(
       workflow: serviceWorkflowRepository,
       workforce: workforceDirectory,
       activity: activityRepository,
+      database: database,
+      clock: clock,
+      time: companyTimeService,
     ),
   ]);
   return registry;

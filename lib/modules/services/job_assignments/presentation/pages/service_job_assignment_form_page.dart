@@ -47,127 +47,141 @@ class ServiceJobAssignmentFormPage extends StatelessWidget {
               : null;
         }
 
-        return AppPage(
-          header: AppPageHeader(
-            title: assignmentId == null
-                ? l.servicesJobAssignmentFormNew
-                : l.servicesJobAssignmentFormEdit,
-            actions: [
-              AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.assignments),
-              ),
-              AppPrimaryButton(
-                label: assignmentId == null
-                    ? l.servicesJobAssignmentCreate
-                    : l.save,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceJobAssignmentFailureMessage(state.failure, l) ??
-                      l.servicesJobAssignmentStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesJobAssignmentSectionJobContext,
-                child: Column(
+        final notFound = state.failure == 'servicesJobAssignmentNotFound';
+        return AppFormPage(
+          title: assignmentId == null
+              ? l.servicesJobAssignmentFormNew
+              : l.servicesJobAssignmentFormEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.assignments),
+            ),
+            AppPrimaryButton(
+              label: assignmentId == null
+                  ? l.servicesJobAssignmentCreate
+                  : l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceJobAssignmentFailureMessage(state.failure, l) ??
+                    l.servicesJobAssignmentStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesJobAssignmentNotFound,
+                  onRetry: () => context.go(ServicesRoutes.assignments),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppFormGrid(
-                      children: [
-                        AppDetailField(
-                          label: l.servicesJobAssignmentNo,
-                          value:
-                              state.assignmentNumber ??
-                              l.servicesJobAssignmentGenerated,
-                          identifier: true,
-                        ),
-                        AppDetailField(
-                          label: l.servicesJobAssignmentDate,
-                          value: state.assignmentDate == null
-                              ? l.servicesJobAssignmentGenerated
-                              : dates.date(state.assignmentDate!),
-                        ),
-                      ],
+                    AppFormSection(
+                      title: l.servicesJobAssignmentSectionJobContext,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AppFormGrid(
+                            children: [
+                              AppGeneratedValueField(
+                                label: l.servicesJobAssignmentNo,
+                                value: state.assignmentNumber,
+                                generatedFallback:
+                                    l.servicesJobAssignmentGenerated,
+                                identifier: true,
+                              ),
+                              AppGeneratedValueField(
+                                label: l.servicesJobAssignmentDate,
+                                value: state.assignmentDate == null
+                                    ? null
+                                    : dates.date(state.assignmentDate!),
+                                generatedFallback:
+                                    l.servicesJobAssignmentGenerated,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppSpacing.lg),
+                          ServiceReferenceField<ServiceAssignableEnquiryRef>(
+                            label: l.servicesJobAssignmentEnquiry,
+                            valueLabel: state.enquiryContext?.enquiryNumber,
+                            valueSubtitle: state.enquiryContext == null
+                                ? null
+                                : [
+                                    state.enquiryContext!.customerName,
+                                    state.enquiryContext!.priorityName,
+                                  ].where((s) => s.isNotEmpty).join(' · '),
+                            hint: l.servicesJobAssignmentSelectEnquiry,
+                            errorText:
+                                state.failure ==
+                                    'servicesJobAssignmentEnquiryRequired'
+                                ? l.servicesJobAssignmentEnquiryRequired
+                                : null,
+                            enabled: !state.saving,
+                            onPick: () => _pickEnquiry(context, cubit),
+                            onClear: state.enquiryContext == null
+                                ? null
+                                : cubit.clearEnquiry,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
-                    ServiceReferenceField<ServiceAssignableEnquiryRef>(
-                      label: l.servicesJobAssignmentEnquiry,
-                      valueLabel: state.enquiryContext?.enquiryNumber,
-                      valueSubtitle: state.enquiryContext == null
-                          ? null
-                          : [
-                              state.enquiryContext!.customerName,
-                              state.enquiryContext!.priorityName,
-                            ].where((s) => s.isNotEmpty).join(' · '),
-                      hint: l.servicesJobAssignmentSelectEnquiry,
-                      errorText:
-                          state.failure ==
-                              'servicesJobAssignmentEnquiryRequired'
-                          ? l.servicesJobAssignmentEnquiryRequired
-                          : null,
-                      enabled: !state.saving,
-                      onPick: () => _pickEnquiry(context, cubit),
-                      onClear: state.enquiryContext == null
-                          ? null
-                          : cubit.clearEnquiry,
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesJobAssignmentSectionSchedule,
+                      child: AppDateField(
+                        label: l.servicesJobAssignmentVisitDate,
+                        value: d.scheduledVisitDate,
+                        errorText:
+                            state.failure ==
+                                'servicesJobAssignmentVisitDateRequired'
+                            ? l.servicesJobAssignmentVisitDateRequired
+                            : null,
+                        onChanged: cubit.setVisitDate,
+                      ),
+                    ),
+                    if (state.enquiryContext != null) ...[
+                      const SizedBox(height: AppSpacing.xl),
+                      AssignmentEnquiryContextCard(
+                        context_: state.enquiryContext!,
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      SourceEnquiryIssues(
+                        details: state.enquiryContext!.details,
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesJobAssignmentSectionWork,
+                      action: AppSecondaryButton(
+                        label: l.servicesJobAssignmentAddLine,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addLine,
+                      ),
+                      child: AssignmentWorkEditor(
+                        lines: state.lines,
+                        enabled: !state.saving,
+                        employeeNames: state.employeeNames,
+                        teamNames: state.teamNames,
+                        workErrorFor: workErrorFor,
+                        onAdd: cubit.addLine,
+                        onRemove: cubit.removeLine,
+                        onWorkChanged: cubit.updateWork,
+                        onDescriptionChanged: cubit.updateDescription,
+                        onPickEmployee: (lineId, _) =>
+                            _pickEmployee(context, cubit, lineId),
+                        onClearEmployee: cubit.clearEmployee,
+                        onPickTeam: (lineId, _) =>
+                            _pickTeam(context, cubit, lineId),
+                        onClearTeam: cubit.clearTeam,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesJobAssignmentSectionSchedule,
-                child: AppDateField(
-                  label: l.servicesJobAssignmentVisitDate,
-                  value: d.scheduledVisitDate,
-                  errorText:
-                      state.failure == 'servicesJobAssignmentVisitDateRequired'
-                      ? l.servicesJobAssignmentVisitDateRequired
-                      : null,
-                  onChanged: cubit.setVisitDate,
-                ),
-              ),
-              if (state.enquiryContext != null) ...[
-                const SizedBox(height: AppSpacing.xl),
-                AssignmentEnquiryContextCard(context_: state.enquiryContext!),
-                const SizedBox(height: AppSpacing.xl),
-                SourceEnquiryIssues(details: state.enquiryContext!.details),
-              ],
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesJobAssignmentSectionWork,
-                child: AssignmentWorkEditor(
-                  lines: state.lines,
-                  enabled: !state.saving,
-                  employeeNames: state.employeeNames,
-                  teamNames: state.teamNames,
-                  workErrorFor: workErrorFor,
-                  onAdd: cubit.addLine,
-                  onRemove: cubit.removeLine,
-                  onWorkChanged: cubit.updateWork,
-                  onDescriptionChanged: cubit.updateDescription,
-                  onPickEmployee: (lineId, _) =>
-                      _pickEmployee(context, cubit, lineId),
-                  onClearEmployee: cubit.clearEmployee,
-                  onPickTeam: (lineId, _) => _pickTeam(context, cubit, lineId),
-                  onClearTeam: cubit.clearTeam,
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

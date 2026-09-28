@@ -27,131 +27,160 @@ class ServiceTeamFormPage extends StatelessWidget {
             serviceFieldForFailure(state.failure) == field
             ? serviceFailureMessage(state.failure, l)
             : null;
-        return AppPage(
-          header: AppPageHeader(
-            title: teamId == null ? l.servicesTeamAdd : l.servicesTeamEdit,
-            actions: [
-              AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.teams),
-              ),
-              AppPrimaryButton(
-                label: l.save,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceFailureMessage(state.failure, l) ??
-                      l.servicesTeamStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesTeamDetails,
-                child: AppFormGrid(
-                  children: [
-                    AppTextField(
-                      label: l.servicesTeamName,
-                      initialValue: d.name,
-                      enabled: !state.saving,
-                      errorText: fieldError('name'),
-                      onChanged: (v) => cubit.change(d.copyWith(name: v)),
-                    ),
-                    if (state.selected.isNotEmpty)
-                      AppSelectField<String>(
-                        label: l.servicesTeamLead,
-                        value: d.leadEmployeeId ?? '',
-                        enabled: !state.saving,
-                        onChanged: (v) => cubit.change(
-                          d.copyWith(
-                            leadEmployeeId: (v == null || v.isEmpty) ? null : v,
-                            clearLead: v == null || v.isEmpty,
-                          ),
-                        ),
-                        options: [
-                          AppSelectOption('', l.servicesTeamLeadOptional),
-                          for (final ref in state.selected)
-                            AppSelectOption(ref.id, ref.name),
-                        ],
-                      ),
-                    AppTextField(
-                      label: l.servicesTeamDescription,
-                      initialValue: d.description,
-                      enabled: !state.saving,
-                      maxLines: 2,
-                      onChanged: (v) =>
-                          cubit.change(d.copyWith(description: v)),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesTeamMembers,
-                child: Column(
+        final notFound = state.failure == 'servicesTeamNotFound';
+        return AppFormPage(
+          title: teamId == null ? l.servicesTeamAdd : l.servicesTeamEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.teams),
+            ),
+            AppPrimaryButton(
+              label: l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceFailureMessage(state.failure, l) ??
+                    l.servicesTeamStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesTeamNotFound,
+                  onRetry: () => context.go(ServicesRoutes.teams),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppSearchField(
-                      hint: l.servicesTeamMemberSearch,
-                      onChanged: cubit.search,
-                    ),
-                    if (state.searching) ...[
-                      const SizedBox(height: AppSpacing.sm),
-                      const LinearProgressIndicator(minHeight: 2),
-                    ],
-                    for (final ref in state.results)
-                      ListTile(
-                        leading: AppAvatar(name: ref.name),
-                        title: Text(ref.name),
-                        subtitle: Text(
-                          ref.employeeCode,
-                          textDirection: TextDirection.ltr,
-                        ),
-                        trailing: AppTextButton(
-                          label: l.servicesTeamMemberAdd,
-                          onPressed: () => cubit.addMember(ref),
-                        ),
+                    AppFormSection(
+                      title: l.servicesTeamInformationSection,
+                      child: AppFormGrid(
+                        children: [
+                          AppTextField(
+                            label: l.servicesTeamName,
+                            initialValue: d.name,
+                            enabled: !state.saving,
+                            required: true,
+                            errorText: fieldError('name'),
+                            onChanged: (v) => cubit.change(d.copyWith(name: v)),
+                          ),
+                          if (state.selected.isNotEmpty)
+                            AppSelectField<String>(
+                              label: l.servicesTeamLead,
+                              value: d.leadEmployeeId ?? '',
+                              enabled: !state.saving,
+                              onChanged: (v) => cubit.change(
+                                d.copyWith(
+                                  leadEmployeeId: (v == null || v.isEmpty)
+                                      ? null
+                                      : v,
+                                  clearLead: v == null || v.isEmpty,
+                                ),
+                              ),
+                              options: [
+                                AppSelectOption('', l.servicesTeamLeadOptional),
+                                for (final ref in state.selected)
+                                  AppSelectOption(ref.id, ref.name),
+                              ],
+                            ),
+                          AppTextField(
+                            label: l.servicesTeamDescription,
+                            initialValue: d.description,
+                            enabled: !state.saving,
+                            maxLines: 3,
+                            minLines: 2,
+                            onChanged: (v) =>
+                                cubit.change(d.copyWith(description: v)),
+                          ),
+                        ],
                       ),
-                    const Divider(),
-                    if (state.selected.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppSpacing.md,
-                        ),
-                        child: Text(l.servicesTeamNoMembers),
-                      )
-                    else
-                      for (final ref in state.selected)
-                        ListTile(
-                          leading: AppAvatar(name: ref.name),
-                          title: Text(ref.name),
-                          subtitle: Text(
-                            ref.employeeCode,
-                            textDirection: TextDirection.ltr,
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesTeamMembers,
+                      subtitle: l.servicesTeamMembersSubtitle,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AppFormGrid(
+                            spans: [AppFormSpan.half],
+                            children: [
+                              AppSearchField(
+                                hint: l.servicesTeamMemberSearch,
+                                onChanged: cubit.search,
+                              ),
+                            ],
                           ),
-                          trailing: AppIconButton(
-                            icon: Icons.delete_outline,
-                            tooltip: l.delete,
-                            onPressed: state.saving
-                                ? null
-                                : () => cubit.removeMember(ref.id),
-                          ),
-                        ),
+                          if (state.searching) ...[
+                            const SizedBox(height: AppSpacing.sm),
+                            const LinearProgressIndicator(minHeight: 2),
+                          ],
+                          for (final ref in state.results)
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: AppAvatar(name: ref.name),
+                              title: Text(ref.name),
+                              subtitle: Text(
+                                ref.employeeCode,
+                                textDirection: TextDirection.ltr,
+                              ),
+                              trailing: AppTextButton(
+                                label: l.servicesTeamMemberAdd,
+                                onPressed: () => cubit.addMember(ref),
+                              ),
+                            ),
+                          const Divider(),
+                          if (state.selected.isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.md,
+                              ),
+                              child: Text(l.servicesTeamNoMembers),
+                            )
+                          else
+                            AppCard(
+                              padding: EdgeInsets.zero,
+                              child: Column(
+                                children: [
+                                  for (
+                                    var i = 0;
+                                    i < state.selected.length;
+                                    i++
+                                  ) ...[
+                                    if (i > 0)
+                                      const Divider(height: 1, thickness: 1),
+                                    ListTile(
+                                      leading: AppAvatar(
+                                        name: state.selected[i].name,
+                                      ),
+                                      title: Text(state.selected[i].name),
+                                      subtitle: Text(
+                                        state.selected[i].employeeCode,
+                                        textDirection: TextDirection.ltr,
+                                      ),
+                                      trailing: AppIconButton(
+                                        icon: Icons.delete_outline,
+                                        tooltip: l.servicesTeamMemberRemove,
+                                        onPressed: state.saving
+                                            ? null
+                                            : () => cubit.removeMember(
+                                                state.selected[i].id,
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
         );
       },
     );

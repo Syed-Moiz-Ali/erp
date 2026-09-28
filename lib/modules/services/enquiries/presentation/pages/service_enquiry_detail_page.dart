@@ -8,7 +8,6 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/enquiries/domain/service_enquiry.dart';
 import 'package:modular_erp/modules/services/enquiries/presentation/bloc/service_enquiry_blocs.dart';
-import 'package:modular_erp/modules/services/enquiries/presentation/widgets/enquiry_detail_editor.dart';
 import 'package:modular_erp/modules/services/job_assignments/domain/service_job_assignment_repository.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/presentation/widgets/enquiry_job_assignment_section.dart';
@@ -19,6 +18,8 @@ import 'package:modular_erp/modules/services/work_executions/domain/service_work
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+
+import '../../../presentation/widgets/service_attachment_strip.dart';
 
 class ServiceEnquiryDetailPage extends StatelessWidget {
   const ServiceEnquiryDetailPage({

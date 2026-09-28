@@ -28,13 +28,16 @@ class AppTextField extends StatelessWidget {
     this.enabled = true,
     this.autocorrect = true,
     this.maxLines = 1,
-    this.labelAbove = false,
+    this.minLines,
+    this.required = false,
+    this.helperText,
+    this.labelAbove = true,
     this.labelTrailing,
     this.prefixIconSize = 20,
     this.contentPadding,
   });
   final String label;
-  final String? hint, errorText, initialValue;
+  final String? hint, errorText, initialValue, helperText;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
@@ -47,10 +50,12 @@ class AppTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
   final ValueChanged<String>? onFieldSubmitted;
-  final bool enabled, autocorrect;
-  final int? maxLines;
+  final bool enabled, autocorrect, required;
+  final int? maxLines, minLines;
 
   /// Renders a persistent label above the field instead of a floating label.
+  /// Defaults to `true`: Services/ERP forms standardize on external labels to
+  /// avoid the outlined floating-label/border collision at current density.
   final bool labelAbove;
   final Widget? labelTrailing;
   final double prefixIconSize;
@@ -82,10 +87,12 @@ class AppTextField extends StatelessWidget {
           readOnly: readOnly,
           onTap: onTap,
           maxLines: maxLines,
+          minLines: minLines,
           decoration: InputDecoration(
-            labelText: label,
+            labelText: required ? '$label *' : label,
             hintText: hint,
             errorText: errorText,
+            helperText: helperText,
             prefixIcon: prefixIcon == null
                 ? null
                 : Icon(prefixIcon, size: prefixIconSize),
@@ -97,6 +104,7 @@ class AppTextField extends StatelessWidget {
     }
     return AppFieldLabelGroup(
       label: label,
+      required: required,
       trailing: labelTrailing,
       child: AppFieldShell(
         focusNode: focusNode,
@@ -124,10 +132,12 @@ class AppTextField extends StatelessWidget {
             readOnly: readOnly,
             onTap: onTap,
             maxLines: maxLines,
+            minLines: minLines,
             decoration: appCustomInputDecoration(
               context,
               hint: hint ?? label,
               errorText: errorText,
+              helperText: helperText,
               hovered: hovered,
               focused: focused,
               enabled: enabled,
@@ -156,7 +166,7 @@ class AppPasswordField extends StatefulWidget {
     this.autofillHints,
     this.onFieldSubmitted,
     this.enabled = true,
-    this.labelAbove = false,
+    this.labelAbove = true,
     this.labelTrailing,
     this.prefixIconSize = 20,
     this.suffixIconSize = 20,
@@ -379,39 +389,55 @@ class AppDateField extends StatelessWidget {
     required this.onChanged,
     this.lastDate,
     this.errorText,
+    this.helperText,
     this.enabled = true,
+    this.required = false,
   });
   final DateTime? lastDate;
-  final bool enabled;
+  final bool enabled, required;
   final String label;
-  final String? errorText;
+  final String? errorText, helperText;
   final DateTime? value;
   final ValueChanged<DateTime> onChanged;
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: !enabled
-        ? null
-        : () async {
-            final date = await showDatePicker(
-              context: context,
-              cancelText: context.l10n.cancel,
-              confirmText: context.l10n.confirm,
-              initialDate: value ?? DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: lastDate ?? DateTime(2100),
-            );
-            if (date != null) onChanged(date);
-          },
-    child: InputDecorator(
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: errorText,
-        suffixIcon: Icon(Icons.calendar_today_outlined, size: 18),
-      ),
-      child: Text(
-        value == null
-            ? context.l10n.selectDate
-            : AppDateFormatter(Localizations.localeOf(context)).date(value!),
+  Widget build(BuildContext context) => AppFieldLabelGroup(
+    label: label,
+    required: required,
+    child: AppFieldShell(
+      enabled: enabled,
+      builder: (node, hovered, focused) => InkWell(
+        focusNode: node,
+        onTap: !enabled
+            ? null
+            : () async {
+                final date = await showDatePicker(
+                  context: context,
+                  cancelText: context.l10n.cancel,
+                  confirmText: context.l10n.confirm,
+                  initialDate: value ?? DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: lastDate ?? DateTime(2100),
+                );
+                if (date != null) onChanged(date);
+              },
+        child: InputDecorator(
+          decoration: appCustomInputDecoration(
+            context,
+            errorText: errorText,
+            helperText: helperText,
+            hovered: hovered,
+            focused: focused,
+            enabled: enabled,
+            suffixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
+          ),
+          child: Text(
+            value == null
+                ? context.l10n.selectDate
+                : AppDateFormatter(
+                    Localizations.localeOf(context),
+                  ).date(value!),
+          ),
+        ),
       ),
     ),
   );
@@ -425,38 +451,52 @@ class AppTimeField extends StatelessWidget {
     required this.onChanged,
     this.enabled = true,
     this.errorText,
+    this.helperText,
+    this.required = false,
   });
   final String label;
-  final bool enabled;
-  final String? errorText;
+  final bool enabled, required;
+  final String? errorText, helperText;
   final TimeOfDay? value;
   final ValueChanged<TimeOfDay> onChanged;
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: !enabled
-        ? null
-        : () async {
-            final time = await showTimePicker(
-              context: context,
-              cancelText: context.l10n.cancel,
-              confirmText: context.l10n.confirm,
-              initialTime: value ?? TimeOfDay.now(),
-            );
-            if (time != null) onChanged(time);
-          },
-    child: InputDecorator(
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: errorText,
-        suffixIcon: Icon(Icons.schedule, size: 18),
-      ),
-      child: Text(
-        value == null
-            ? context.l10n.selectTime
-            : AppTimeFormatter(Localizations.localeOf(context)).timeOfDay(
-                value!,
-                use24Hour: MediaQuery.alwaysUse24HourFormatOf(context),
-              ),
+  Widget build(BuildContext context) => AppFieldLabelGroup(
+    label: label,
+    required: required,
+    child: AppFieldShell(
+      enabled: enabled,
+      builder: (node, hovered, focused) => InkWell(
+        focusNode: node,
+        onTap: !enabled
+            ? null
+            : () async {
+                final time = await showTimePicker(
+                  context: context,
+                  cancelText: context.l10n.cancel,
+                  confirmText: context.l10n.confirm,
+                  initialTime: value ?? TimeOfDay.now(),
+                );
+                if (time != null) onChanged(time);
+              },
+        child: InputDecorator(
+          decoration: appCustomInputDecoration(
+            context,
+            errorText: errorText,
+            helperText: helperText,
+            hovered: hovered,
+            focused: focused,
+            enabled: enabled,
+            suffixIcon: const Icon(Icons.schedule, size: 18),
+          ),
+          child: Text(
+            value == null
+                ? context.l10n.selectTime
+                : AppTimeFormatter(Localizations.localeOf(context)).timeOfDay(
+                    value!,
+                    use24Hour: MediaQuery.alwaysUse24HourFormatOf(context),
+                  ),
+          ),
+        ),
       ),
     ),
   );
@@ -568,6 +608,7 @@ InputDecoration appCustomInputDecoration(
   bool focused = false,
   bool enabled = true,
   String? errorText,
+  String? helperText,
   IconData? prefixIcon,
   double prefixIconSize = 18,
   Widget? suffixIcon,
@@ -584,6 +625,11 @@ InputDecoration appCustomInputDecoration(
   return InputDecoration(
     hintText: hint,
     errorText: errorText,
+    helperText: helperText,
+    helperStyle: typography.caption.copyWith(
+      color: AppColors.textMuted,
+      fontSize: 11.5,
+    ),
     filled: true,
     fillColor: !enabled
         ? AppColors.surfaceSubtle
@@ -626,10 +672,12 @@ class AppFieldLabelGroup extends StatelessWidget {
     required this.label,
     required this.child,
     this.trailing,
+    this.required = false,
   });
   final String label;
   final Widget child;
   final Widget? trailing;
+  final bool required;
 
   @override
   Widget build(BuildContext context) {
@@ -647,8 +695,17 @@ class AppFieldLabelGroup extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Text(
-                  label,
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: label),
+                      if (required)
+                        TextSpan(
+                          text: ' *',
+                          style: const TextStyle(color: AppColors.danger),
+                        ),
+                    ],
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: typography.caption.copyWith(

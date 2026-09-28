@@ -47,259 +47,280 @@ class ServiceInspectionFormPage extends StatelessWidget {
               : null;
         }
 
-        return AppPage(
-          header: AppPageHeader(
-            title: inspectionId == null
-                ? l.servicesInspectionFormNew
-                : l.servicesInspectionFormEdit,
-            actions: [
-              AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.inspections),
-              ),
-              AppPrimaryButton(
-                label: inspectionId == null
-                    ? l.servicesInspectionCreate
-                    : l.save,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceInspectionFailureMessage(state.failure, l) ??
-                      l.servicesInspectionStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesInspectionSectionContext,
-                child: Column(
+        final notFound = state.failure == 'servicesInspectionNotFound';
+        return AppFormPage(
+          title: inspectionId == null
+              ? l.servicesInspectionFormNew
+              : l.servicesInspectionFormEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.inspections),
+            ),
+            AppPrimaryButton(
+              label: inspectionId == null ? l.servicesInspectionCreate : l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceInspectionFailureMessage(state.failure, l) ??
+                    l.servicesInspectionStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesInspectionNotFound,
+                  onRetry: () => context.go(ServicesRoutes.inspections),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ServiceReferenceField<ServiceAssignableJobAssignmentRef>(
-                      label: l.servicesInspectionJobAssignment,
-                      valueLabel: source?.assignmentNumber,
-                      valueSubtitle: source == null
-                          ? null
-                          : [
-                              source.customerName,
-                              source.enquiryNumber,
-                            ].where((s) => s.isNotEmpty).join(' · '),
-                      hint: l.servicesInspectionSelectAssignment,
-                      errorText:
-                          state.failure ==
-                              'servicesInspectionAssignmentRequired'
-                          ? l.servicesInspectionAssignmentRequired
-                          : null,
-                      enabled: !state.saving && inspectionId == null,
-                      onPick: () => _pickAssignment(context, cubit),
-                      onClear: source == null ? null : cubit.clearAssignment,
+                    AppFormSection(
+                      title: l.servicesInspectionSectionContext,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ServiceReferenceField<
+                            ServiceAssignableJobAssignmentRef
+                          >(
+                            label: l.servicesInspectionJobAssignment,
+                            valueLabel: source?.assignmentNumber,
+                            valueSubtitle: source == null
+                                ? null
+                                : [
+                                    source.customerName,
+                                    source.enquiryNumber,
+                                  ].where((s) => s.isNotEmpty).join(' · '),
+                            hint: l.servicesInspectionSelectAssignment,
+                            errorText:
+                                state.failure ==
+                                    'servicesInspectionAssignmentRequired'
+                                ? l.servicesInspectionAssignmentRequired
+                                : null,
+                            enabled: !state.saving && inspectionId == null,
+                            onPick: () => _pickAssignment(context, cubit),
+                            onClear: source == null
+                                ? null
+                                : cubit.clearAssignment,
+                          ),
+                          if (source != null) ...[
+                            const SizedBox(height: AppSpacing.lg),
+                            AppFormGrid(
+                              children: [
+                                AppGeneratedValueField(
+                                  label: l.servicesInspectionNo,
+                                  value: state.savedId,
+                                  generatedFallback:
+                                      l.servicesJobAssignmentGenerated,
+                                  identifier: true,
+                                ),
+                                AppGeneratedValueField(
+                                  label: l.servicesInspectionDate,
+                                  generatedFallback:
+                                      l.servicesJobAssignmentGenerated,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                     if (source != null) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      AppFormGrid(
-                        children: [
+                      const SizedBox(height: AppSpacing.xl),
+                      AppReadOnlyContextSection(
+                        title: l.servicesInspectionSectionCustomerService,
+                        fields: [
                           AppDetailField(
-                            label: l.servicesInspectionNo,
-                            value:
-                                state.savedId ??
-                                l.servicesJobAssignmentGenerated,
-                            identifier: true,
+                            label: l.servicesEnquiryCustomerName,
+                            value: source.customerName,
+                          ),
+                          if (source.customerMobile != null)
+                            AppDetailField(
+                              label: l.servicesEnquiryCustomerMobile,
+                              value: source.customerMobile!,
+                              identifier: true,
+                            ),
+                          if (source.partySnapshot.tenantName != null)
+                            AppDetailField(
+                              label: l.servicesEnquiryTenant,
+                              value: source.partySnapshot.tenantName!,
+                            ),
+                          if (source.partySnapshot.buildingName != null)
+                            AppDetailField(
+                              label: l.servicesEnquiryBuilding,
+                              value: source.partySnapshot.buildingName!,
+                            ),
+                          if (source.partySnapshot.unitNumber != null)
+                            AppDetailField(
+                              label: l.servicesEnquiryUnit,
+                              value: source.partySnapshot.unitNumber!,
+                            ),
+                          AppDetailField(
+                            label: l.servicesEnquiryComplaintType,
+                            value: source.complaintTypeName,
                           ),
                           AppDetailField(
-                            label: l.servicesInspectionDate,
-                            value: l.servicesJobAssignmentGenerated,
+                            label: l.servicesEnquiryPriority,
+                            value: source.priorityName,
+                          ),
+                          AppDetailField(
+                            label: l.servicesJobAssignmentMaterialReceived,
+                            value: serviceMaterialReceivedLabel(
+                              source.materialReceived,
+                              l,
+                            ),
                           ),
                         ],
                       ),
                     ],
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesInspectionSectionVisit,
+                      child: AppFormGrid(
+                        children: [
+                          AppDateField(
+                            label: l.servicesInspectionVisitDate,
+                            value: d.visitDate,
+                            errorText:
+                                state.failure ==
+                                    'servicesInspectionVisitDateRequired'
+                                ? l.servicesInspectionVisitDateRequired
+                                : null,
+                            onChanged: cubit.setVisitDate,
+                          ),
+                          AppTimeField(
+                            label: l.servicesInspectionVisitTime,
+                            value: d.visitMinutes == null
+                                ? null
+                                : TimeOfDay(
+                                    hour: d.visitMinutes! ~/ 60,
+                                    minute: d.visitMinutes! % 60,
+                                  ),
+                            errorText:
+                                state.failure ==
+                                    'servicesInspectionVisitTimeRequired'
+                                ? l.servicesInspectionVisitTimeRequired
+                                : null,
+                            onChanged: (t) =>
+                                cubit.setVisitMinutes(t.hour * 60 + t.minute),
+                          ),
+                          ServiceReferenceField<ServiceInspectionTechnicianRef>(
+                            label: l.servicesInspectionTechnician,
+                            valueLabel: source?.eligibleTechnicians
+                                .where((t) => t.id == d.technicianEmployeeId)
+                                .firstOrNull
+                                ?.name,
+                            hint: l.servicesInspectionTechnicianOptional,
+                            enabled: !state.saving && source != null,
+                            onPick: () => _pickTechnician(context, cubit),
+                            onClear: d.technicianEmployeeId == null
+                                ? null
+                                : cubit.clearTechnician,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesInspectionSectionAssessment,
+                      child: AppFormGrid(
+                        children: [
+                          AppSelectField<String>(
+                            label: l.servicesInspectionRootCause,
+                            value: d.rootCauseId,
+                            enabled: !state.saving,
+                            onChanged: (v) => v == null || v.isEmpty
+                                ? cubit.clearRootCause()
+                                : cubit.selectRootCause(v),
+                            options: [
+                              AppSelectOption(
+                                '',
+                                l.servicesInspectionTechnicianOptional,
+                              ),
+                              for (final m in state.rootCauses)
+                                AppSelectOption(m.id, m.name),
+                            ],
+                          ),
+                          AppSelectField<String>(
+                            label: l.servicesInspectionChargeResponsibility,
+                            value: d.chargeResponsibilityId,
+                            enabled: !state.saving,
+                            onChanged: (v) => v == null || v.isEmpty
+                                ? cubit.clearChargeResponsibility()
+                                : cubit.selectChargeResponsibility(v),
+                            options: [
+                              AppSelectOption(
+                                '',
+                                l.servicesInspectionTechnicianOptional,
+                              ),
+                              for (final m in state.chargeResponsibilities)
+                                AppSelectOption(m.id, m.name),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesInspectionSectionChecklist,
+                      action: AppSecondaryButton(
+                        label: l.servicesInspectionAddChecklist,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addChecklistItem,
+                      ),
+                      child: InspectionChecklistEditor(
+                        items: d.checklistItems,
+                        enabled: !state.saving,
+                        workTypeErrorFor: workTypeError,
+                        onAdd: cubit.addChecklistItem,
+                        onRemove: cubit.removeChecklistItem,
+                        onWorkTypeChanged: cubit.updateWorkType,
+                        onDescriptionChanged: cubit.updateDescriptionForWork,
+                        onAddPhotos: (id) => _pickPhotos(context, cubit, id),
+                        onRemoveAttachment: cubit.removeChecklistAttachment,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesInspectionSectionPoints,
+                      action: AppSecondaryButton(
+                        label: l.servicesInspectionAddPoint,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addPoint,
+                      ),
+                      child: InspectionPointsEditor(
+                        points: d.inspectedPoints,
+                        enabled: !state.saving,
+                        onAdd: cubit.addPoint,
+                        onRemove: cubit.removePoint,
+                        onChanged: cubit.updatePointDescription,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesInspectionSectionMaterials,
+                      action: AppSecondaryButton(
+                        label: l.servicesInspectionAddMaterial,
+                        icon: Icons.add,
+                        size: AppButtonSize.small,
+                        onPressed: state.saving ? null : cubit.addMaterial,
+                      ),
+                      child: InspectionMaterialsEditor(
+                        materials: d.materialRequirements,
+                        enabled: !state.saving,
+                        onAdd: cubit.addMaterial,
+                        onRemove: cubit.removeMaterial,
+                        onCodeChanged: cubit.updateMaterialCode,
+                        onDescriptionChanged: cubit.updateMaterialDescription,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              if (source != null) ...[
-                const SizedBox(height: AppSpacing.xl),
-                AppFormSection(
-                  title: l.servicesInspectionSectionCustomerService,
-                  child: AppDetailsGrid(
-                    fields: [
-                      AppDetailField(
-                        label: l.servicesEnquiryCustomerName,
-                        value: source.customerName,
-                      ),
-                      if (source.customerMobile != null)
-                        AppDetailField(
-                          label: l.servicesEnquiryCustomerMobile,
-                          value: source.customerMobile!,
-                          identifier: true,
-                        ),
-                      if (source.partySnapshot.tenantName != null)
-                        AppDetailField(
-                          label: l.servicesEnquiryTenant,
-                          value: source.partySnapshot.tenantName!,
-                        ),
-                      if (source.partySnapshot.buildingName != null)
-                        AppDetailField(
-                          label: l.servicesEnquiryBuilding,
-                          value: source.partySnapshot.buildingName!,
-                        ),
-                      if (source.partySnapshot.unitNumber != null)
-                        AppDetailField(
-                          label: l.servicesEnquiryUnit,
-                          value: source.partySnapshot.unitNumber!,
-                        ),
-                      AppDetailField(
-                        label: l.servicesEnquiryComplaintType,
-                        value: source.complaintTypeName,
-                      ),
-                      AppDetailField(
-                        label: l.servicesEnquiryPriority,
-                        value: source.priorityName,
-                      ),
-                      AppDetailField(
-                        label: l.servicesJobAssignmentMaterialReceived,
-                        value: serviceMaterialReceivedLabel(
-                          source.materialReceived,
-                          l,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesInspectionSectionVisit,
-                child: AppFormGrid(
-                  children: [
-                    AppDateField(
-                      label: l.servicesInspectionVisitDate,
-                      value: d.visitDate,
-                      errorText:
-                          state.failure == 'servicesInspectionVisitDateRequired'
-                          ? l.servicesInspectionVisitDateRequired
-                          : null,
-                      onChanged: cubit.setVisitDate,
-                    ),
-                    AppTimeField(
-                      label: l.servicesInspectionVisitTime,
-                      value: d.visitMinutes == null
-                          ? null
-                          : TimeOfDay(
-                              hour: d.visitMinutes! ~/ 60,
-                              minute: d.visitMinutes! % 60,
-                            ),
-                      errorText:
-                          state.failure == 'servicesInspectionVisitTimeRequired'
-                          ? l.servicesInspectionVisitTimeRequired
-                          : null,
-                      onChanged: (t) =>
-                          cubit.setVisitMinutes(t.hour * 60 + t.minute),
-                    ),
-                    ServiceReferenceField<ServiceInspectionTechnicianRef>(
-                      label: l.servicesInspectionTechnician,
-                      valueLabel: source?.eligibleTechnicians
-                          .where((t) => t.id == d.technicianEmployeeId)
-                          .firstOrNull
-                          ?.name,
-                      hint: l.servicesInspectionTechnicianOptional,
-                      enabled: !state.saving && source != null,
-                      onPick: () => _pickTechnician(context, cubit),
-                      onClear: d.technicianEmployeeId == null
-                          ? null
-                          : cubit.clearTechnician,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesInspectionSectionAssessment,
-                child: AppFormGrid(
-                  children: [
-                    AppSelectField<String>(
-                      label: l.servicesInspectionRootCause,
-                      value: d.rootCauseId,
-                      enabled: !state.saving,
-                      onChanged: (v) => v == null || v.isEmpty
-                          ? cubit.clearRootCause()
-                          : cubit.selectRootCause(v),
-                      options: [
-                        AppSelectOption(
-                          '',
-                          l.servicesInspectionTechnicianOptional,
-                        ),
-                        for (final m in state.rootCauses)
-                          AppSelectOption(m.id, m.name),
-                      ],
-                    ),
-                    AppSelectField<String>(
-                      label: l.servicesInspectionChargeResponsibility,
-                      value: d.chargeResponsibilityId,
-                      enabled: !state.saving,
-                      onChanged: (v) => v == null || v.isEmpty
-                          ? cubit.clearChargeResponsibility()
-                          : cubit.selectChargeResponsibility(v),
-                      options: [
-                        AppSelectOption(
-                          '',
-                          l.servicesInspectionTechnicianOptional,
-                        ),
-                        for (final m in state.chargeResponsibilities)
-                          AppSelectOption(m.id, m.name),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesInspectionSectionChecklist,
-                child: InspectionChecklistEditor(
-                  items: d.checklistItems,
-                  enabled: !state.saving,
-                  workTypeErrorFor: workTypeError,
-                  onAdd: cubit.addChecklistItem,
-                  onRemove: cubit.removeChecklistItem,
-                  onWorkTypeChanged: cubit.updateWorkType,
-                  onDescriptionChanged: cubit.updateDescriptionForWork,
-                  onAddPhotos: (id) => _pickPhotos(context, cubit, id),
-                  onRemoveAttachment: cubit.removeChecklistAttachment,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesInspectionSectionPoints,
-                child: InspectionPointsEditor(
-                  points: d.inspectedPoints,
-                  enabled: !state.saving,
-                  onAdd: cubit.addPoint,
-                  onRemove: cubit.removePoint,
-                  onChanged: cubit.updatePointDescription,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesInspectionSectionMaterials,
-                child: InspectionMaterialsEditor(
-                  materials: d.materialRequirements,
-                  enabled: !state.saving,
-                  onAdd: cubit.addMaterial,
-                  onRemove: cubit.removeMaterial,
-                  onCodeChanged: cubit.updateMaterialCode,
-                  onDescriptionChanged: cubit.updateMaterialDescription,
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

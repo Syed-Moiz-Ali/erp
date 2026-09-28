@@ -235,6 +235,9 @@ Future<Harness> mount(
         ),
         workforceDirectory: HrWorkforceDirectory(repo, employees),
         activityRepository: activity,
+        database: database,
+        clock: clock,
+        companyTimeService: const FixedOffsetCompanyTimeService(),
       );
     } else {
       registry = createErpRegistry(

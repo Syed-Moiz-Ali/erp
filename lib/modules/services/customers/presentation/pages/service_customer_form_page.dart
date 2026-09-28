@@ -44,112 +44,127 @@ class ServiceCustomerFormPage extends StatelessWidget {
             serviceFieldForFailure(state.failure) == field
             ? serviceFailureMessage(state.failure, l)
             : null;
-        return AppPage(
-          header: AppPageHeader(
-            title: customerId == null
-                ? l.servicesCustomerAdd
-                : l.servicesCustomerEdit,
-            actions: [
-              AppTextButton(
-                label: l.cancel,
-                onPressed: state.saving
-                    ? null
-                    : () => context.go(ServicesRoutes.customers),
-              ),
-              AppPrimaryButton(
-                label: l.save,
-                loading: state.saving,
-                onPressed: cubit.save,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (state.failure != null) ...[
-                AppAlert(
-                  message:
-                      serviceFailureMessage(state.failure, l) ??
-                      l.servicesCustomerStorageError,
-                  status: AppStatus.danger,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              AppFormSection(
-                title: l.servicesCustomerName,
-                child: AppFormGrid(
+        final notFound = state.failure == 'servicesCustomerNotFound';
+        return AppFormPage(
+          title: customerId == null
+              ? l.servicesCustomerAdd
+              : l.servicesCustomerEdit,
+          actions: [
+            AppTextButton(
+              label: l.cancel,
+              onPressed: state.saving
+                  ? null
+                  : () => context.go(ServicesRoutes.customers),
+            ),
+            AppPrimaryButton(
+              label: l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
+          ],
+          error: state.failure == null || notFound
+              ? null
+              : (serviceFailureMessage(state.failure, l) ??
+                    l.servicesCustomerStorageError),
+          loading: state.loading,
+          child: notFound
+              ? AppErrorState(
+                  message: l.servicesCustomerNotFound,
+                  onRetry: () => context.go(ServicesRoutes.customers),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppTextField(
-                      label: l.servicesCustomerName,
-                      initialValue: d.name,
-                      enabled: !state.saving,
-                      errorText: fieldError('name'),
-                      onChanged: (v) => change(d.copyWith(name: v)),
-                    ),
-                    AppSelectField<ServiceCustomerKind>(
-                      label: l.servicesCustomerKind,
-                      value: d.kind,
-                      onChanged: (v) => change(
-                        d.copyWith(kind: v ?? ServiceCustomerKind.individual),
+                    AppFormSection(
+                      title: l.servicesCustomerInformationSection,
+                      child: AppFormGrid(
+                        spans: [AppFormSpan.twoThirds, AppFormSpan.third],
+                        children: [
+                          AppTextField(
+                            label: l.servicesCustomerName,
+                            initialValue: d.name,
+                            enabled: !state.saving,
+                            required: true,
+                            errorText: fieldError('name'),
+                            onChanged: (v) => change(d.copyWith(name: v)),
+                          ),
+                          AppSelectField<ServiceCustomerKind>(
+                            label: l.servicesCustomerKind,
+                            value: d.kind,
+                            onChanged: (v) => change(
+                              d.copyWith(
+                                kind: v ?? ServiceCustomerKind.individual,
+                              ),
+                            ),
+                            options: [
+                              AppSelectOption(
+                                ServiceCustomerKind.individual,
+                                l.servicesCustomerKindIndividual,
+                              ),
+                              AppSelectOption(
+                                ServiceCustomerKind.organization,
+                                l.servicesCustomerKindOrganization,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      options: [
-                        AppSelectOption(
-                          ServiceCustomerKind.individual,
-                          l.servicesCustomerKindIndividual,
-                        ),
-                        AppSelectOption(
-                          ServiceCustomerKind.organization,
-                          l.servicesCustomerKindOrganization,
-                        ),
-                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesCustomerContactSection,
+                      child: AppFormGrid(
+                        spans: [
+                          AppFormSpan.third,
+                          AppFormSpan.third,
+                          AppFormSpan.third,
+                        ],
+                        children: [
+                          AppTextField(
+                            label: l.servicesCustomerMobile,
+                            initialValue: d.mobile,
+                            enabled: !state.saving,
+                            keyboardType: TextInputType.phone,
+                            autofillHints: const [
+                              AutofillHints.telephoneNumber,
+                            ],
+                            errorText: fieldError('mobile'),
+                            onChanged: (v) => change(d.copyWith(mobile: v)),
+                          ),
+                          AppTextField(
+                            label: l.servicesCustomerAlternateMobile,
+                            initialValue: d.alternateMobile,
+                            enabled: !state.saving,
+                            keyboardType: TextInputType.phone,
+                            onChanged: (v) =>
+                                change(d.copyWith(alternateMobile: v)),
+                          ),
+                          AppTextField(
+                            label: l.servicesCustomerEmail,
+                            initialValue: d.email,
+                            enabled: !state.saving,
+                            keyboardType: TextInputType.emailAddress,
+                            autofillHints: const [AutofillHints.email],
+                            errorText: fieldError('email'),
+                            onChanged: (v) => change(d.copyWith(email: v)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.servicesCustomerNotes,
+                      child: AppTextField(
+                        label: l.servicesCustomerNotes,
+                        initialValue: d.notes,
+                        enabled: !state.saving,
+                        maxLines: 4,
+                        minLines: 3,
+                        onChanged: (v) => change(d.copyWith(notes: v)),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesCustomerContactSection,
-                child: AppFormGrid(
-                  children: [
-                    AppTextField(
-                      label: l.servicesCustomerMobile,
-                      initialValue: d.mobile,
-                      enabled: !state.saving,
-                      keyboardType: TextInputType.phone,
-                      errorText: fieldError('mobile'),
-                      onChanged: (v) => change(d.copyWith(mobile: v)),
-                    ),
-                    AppTextField(
-                      label: l.servicesCustomerAlternateMobile,
-                      initialValue: d.alternateMobile,
-                      enabled: !state.saving,
-                      keyboardType: TextInputType.phone,
-                      onChanged: (v) => change(d.copyWith(alternateMobile: v)),
-                    ),
-                    AppTextField(
-                      label: l.servicesCustomerEmail,
-                      initialValue: d.email,
-                      enabled: !state.saving,
-                      keyboardType: TextInputType.emailAddress,
-                      errorText: fieldError('email'),
-                      onChanged: (v) => change(d.copyWith(email: v)),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppFormSection(
-                title: l.servicesCustomerNotes,
-                child: AppTextField(
-                  label: l.servicesCustomerNotes,
-                  initialValue: d.notes,
-                  enabled: !state.saving,
-                  maxLines: 3,
-                  onChanged: (v) => change(d.copyWith(notes: v)),
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

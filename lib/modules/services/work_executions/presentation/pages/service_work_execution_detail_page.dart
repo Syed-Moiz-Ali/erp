@@ -7,7 +7,6 @@ import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
-import 'package:modular_erp/modules/services/enquiries/presentation/widgets/enquiry_detail_editor.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/presentation/widgets/service_workflow_section.dart';
@@ -19,6 +18,8 @@ import 'package:modular_erp/modules/services/workflow/domain/service_workflow_re
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/shared/transactions/application/attachment_picker.dart';
 import 'package:modular_erp/shared/transactions/domain/attachment.dart';
+
+import '../../../presentation/widgets/service_attachment_strip.dart';
 
 class ServiceWorkExecutionDetailPage extends StatelessWidget {
   const ServiceWorkExecutionDetailPage({

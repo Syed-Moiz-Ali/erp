@@ -10682,6 +10682,234 @@ abstract class AppLocalizations {
   /// **'A record with this name already exists.'**
   String get servicesMasterDuplicateName;
 
+  /// No description provided for @servicesMasterBasicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic information'**
+  String get servicesMasterBasicInformation;
+
+  /// No description provided for @servicesMasterOrderingBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordering & behavior'**
+  String get servicesMasterOrderingBehavior;
+
+  /// No description provided for @servicesMasterOrderingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Controls display order and default selection behavior.'**
+  String get servicesMasterOrderingSubtitle;
+
+  /// No description provided for @servicesMasterCodeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Used as a stable internal reference.'**
+  String get servicesMasterCodeHelper;
+
+  /// No description provided for @servicesMasterSortOrderHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower values appear first.'**
+  String get servicesMasterSortOrderHelper;
+
+  /// No description provided for @servicesMasterDefaultPriorityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Default priority'**
+  String get servicesMasterDefaultPriorityLabel;
+
+  /// No description provided for @servicesMasterDefaultPriorityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this priority automatically when no other priority is explicitly selected.'**
+  String get servicesMasterDefaultPriorityDescription;
+
+  /// No description provided for @servicesMasterDefaultGenericDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this record automatically when no other is explicitly selected.'**
+  String get servicesMasterDefaultGenericDescription;
+
+  /// No description provided for @servicesMasterAddName.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name}'**
+  String servicesMasterAddName(String name);
+
+  /// No description provided for @servicesMasterEditName.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit {name}'**
+  String servicesMasterEditName(String name);
+
+  /// No description provided for @servicesServiceTypeSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'service type'**
+  String get servicesServiceTypeSingular;
+
+  /// No description provided for @servicesComplaintTypeSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'complaint type'**
+  String get servicesComplaintTypeSingular;
+
+  /// No description provided for @servicesPrioritySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'priority'**
+  String get servicesPrioritySingular;
+
+  /// No description provided for @servicesTicketTypeSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'ticket type'**
+  String get servicesTicketTypeSingular;
+
+  /// No description provided for @servicesRootCauseSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'root cause'**
+  String get servicesRootCauseSingular;
+
+  /// No description provided for @servicesChargeResponsibilitySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'charge responsibility'**
+  String get servicesChargeResponsibilitySingular;
+
+  /// No description provided for @servicesMaterialRequestPurposeSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'material request purpose'**
+  String get servicesMaterialRequestPurposeSingular;
+
+  /// No description provided for @servicesServiceTypeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Classification used across service enquiries.'**
+  String get servicesServiceTypeSubtitle;
+
+  /// No description provided for @servicesComplaintTypeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint categories grouped under a service type.'**
+  String get servicesComplaintTypeSubtitle;
+
+  /// No description provided for @servicesPrioritySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure how service requests are prioritized.'**
+  String get servicesPrioritySubtitle;
+
+  /// No description provided for @servicesTicketTypeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket categories used to route service work.'**
+  String get servicesTicketTypeSubtitle;
+
+  /// No description provided for @servicesRootCauseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis causes recorded during inspections.'**
+  String get servicesRootCauseSubtitle;
+
+  /// No description provided for @servicesChargeResponsibilitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is responsible for covering service costs.'**
+  String get servicesChargeResponsibilitySubtitle;
+
+  /// No description provided for @servicesMaterialRequestPurposeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reasons materials are requested for service work.'**
+  String get servicesMaterialRequestPurposeSubtitle;
+
+  /// No description provided for @servicesAuditInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Audit information'**
+  String get servicesAuditInformation;
+
+  /// No description provided for @servicesCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get servicesCreatedBy;
+
+  /// No description provided for @servicesCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get servicesCreatedAt;
+
+  /// No description provided for @servicesUpdatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated by'**
+  String get servicesUpdatedBy;
+
+  /// No description provided for @servicesUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated'**
+  String get servicesUpdatedAt;
+
+  /// No description provided for @servicesCustomerInformationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer information'**
+  String get servicesCustomerInformationSection;
+
+  /// No description provided for @servicesCustomerAddressSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Address & business details'**
+  String get servicesCustomerAddressSection;
+
+  /// No description provided for @servicesSiteInformationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Site information'**
+  String get servicesSiteInformationSection;
+
+  /// No description provided for @servicesSiteCustomerRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer relationship'**
+  String get servicesSiteCustomerRelationship;
+
+  /// No description provided for @servicesSiteTenantSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant, building & unit'**
+  String get servicesSiteTenantSection;
+
+  /// No description provided for @servicesSiteCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates'**
+  String get servicesSiteCoordinates;
+
+  /// No description provided for @servicesTeamInformationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Team information'**
+  String get servicesTeamInformationSection;
+
+  /// No description provided for @servicesTeamMembersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add employees who work together on service jobs.'**
+  String get servicesTeamMembersSubtitle;
+
+  /// No description provided for @servicesTeamMemberRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get servicesTeamMemberRemove;
+
   /// No description provided for @servicesCustomerCount.
   ///
   /// In en, this message translates to:
@@ -14648,6 +14876,12 @@ abstract class AppLocalizations {
   /// **'Job order reference'**
   String get servicesWorkExecutionJobOrderReference;
 
+  /// No description provided for @servicesWorkExecutionSectionOrderReferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Order references'**
+  String get servicesWorkExecutionSectionOrderReferences;
+
   /// No description provided for @servicesWorkExecutionQuotationReference.
   ///
   /// In en, this message translates to:
@@ -15529,6 +15763,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Operational workflow'**
   String get servicesOverviewWorkflowTitle;
+
+  /// No description provided for @servicesDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational overview of your service workflow'**
+  String get servicesDashboardSubtitle;
+
+  /// No description provided for @servicesDashboardScopeAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing: Assigned work'**
+  String get servicesDashboardScopeAssigned;
+
+  /// No description provided for @servicesDashboardScopeTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing: Team scope'**
+  String get servicesDashboardScopeTeam;
+
+  /// No description provided for @servicesDashboardScopeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing: All company services'**
+  String get servicesDashboardScopeAll;
+
+  /// No description provided for @servicesDashboardScopeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing: No service scope'**
+  String get servicesDashboardScopeNone;
+
+  /// No description provided for @servicesDashboardToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get servicesDashboardToday;
+
+  /// No description provided for @servicesDashboardKpiOpenEnquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Open enquiries'**
+  String get servicesDashboardKpiOpenEnquiries;
+
+  /// No description provided for @servicesDashboardKpiOpenEnquiriesContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting assignment'**
+  String get servicesDashboardKpiOpenEnquiriesContext;
+
+  /// No description provided for @servicesDashboardKpiScheduledJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled jobs'**
+  String get servicesDashboardKpiScheduledJobs;
+
+  /// No description provided for @servicesDashboardKpiScheduledJobsContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Active field visits'**
+  String get servicesDashboardKpiScheduledJobsContext;
+
+  /// No description provided for @servicesDashboardKpiPendingInspections.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending inspections'**
+  String get servicesDashboardKpiPendingInspections;
+
+  /// No description provided for @servicesDashboardKpiPendingInspectionsContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting completion'**
+  String get servicesDashboardKpiPendingInspectionsContext;
+
+  /// No description provided for @servicesDashboardKpiOpenMaterialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Open material requests'**
+  String get servicesDashboardKpiOpenMaterialRequests;
+
+  /// No description provided for @servicesDashboardKpiOpenMaterialRequestsContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional workflow branch'**
+  String get servicesDashboardKpiOpenMaterialRequestsContext;
+
+  /// No description provided for @servicesDashboardKpiWorkInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Work in progress'**
+  String get servicesDashboardKpiWorkInProgress;
+
+  /// No description provided for @servicesDashboardKpiWorkInProgressContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Active on site'**
+  String get servicesDashboardKpiWorkInProgressContext;
+
+  /// No description provided for @servicesDashboardKpiCompletedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed today'**
+  String get servicesDashboardKpiCompletedToday;
+
+  /// No description provided for @servicesDashboardKpiCompletedTodayContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Company-local day'**
+  String get servicesDashboardKpiCompletedTodayContext;
+
+  /// No description provided for @servicesDashboardNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get servicesDashboardNeedsAttention;
+
+  /// No description provided for @servicesDashboardTodaySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s schedule'**
+  String get servicesDashboardTodaySchedule;
+
+  /// No description provided for @servicesDashboardMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'My work'**
+  String get servicesDashboardMyWork;
+
+  /// No description provided for @servicesDashboardTeamWorkload.
+  ///
+  /// In en, this message translates to:
+  /// **'Team workload'**
+  String get servicesDashboardTeamWorkload;
+
+  /// No description provided for @servicesDashboardWorkflowOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow overview'**
+  String get servicesDashboardWorkflowOverview;
+
+  /// No description provided for @servicesDashboardRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get servicesDashboardRecentActivity;
+
+  /// No description provided for @servicesDashboardQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get servicesDashboardQuickActions;
+
+  /// No description provided for @servicesDashboardAllCaughtUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get servicesDashboardAllCaughtUp;
+
+  /// No description provided for @servicesDashboardNoSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'No visits scheduled today.'**
+  String get servicesDashboardNoSchedule;
+
+  /// No description provided for @servicesDashboardNoMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing currently assigned.'**
+  String get servicesDashboardNoMyWork;
+
+  /// No description provided for @servicesDashboardNoActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent service activity.'**
+  String get servicesDashboardNoActivity;
+
+  /// No description provided for @servicesDashboardNoTeamWorkload.
+  ///
+  /// In en, this message translates to:
+  /// **'No active team workload.'**
+  String get servicesDashboardNoTeamWorkload;
+
+  /// No description provided for @servicesDashboardEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No service activity yet'**
+  String get servicesDashboardEmptyTitle;
+
+  /// No description provided for @servicesDashboardEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first Service Enquiry to begin the workflow.'**
+  String get servicesDashboardEmptyMessage;
+
+  /// No description provided for @servicesDashboardEmptyAssignedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No work assigned to you right now.'**
+  String get servicesDashboardEmptyAssignedTitle;
+
+  /// No description provided for @servicesDashboardEmptyAssignedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'New assignments and inspections will appear here automatically.'**
+  String get servicesDashboardEmptyAssignedMessage;
+
+  /// No description provided for @servicesDashboardError.
+  ///
+  /// In en, this message translates to:
+  /// **'The services dashboard could not be loaded.'**
+  String get servicesDashboardError;
+
+  /// No description provided for @servicesDashboardAttentionOpenEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Open enquiry with no active job assignment'**
+  String get servicesDashboardAttentionOpenEnquiry;
+
+  /// No description provided for @servicesDashboardAttentionVisitNoInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit scheduled today without an inspection'**
+  String get servicesDashboardAttentionVisitNoInspection;
+
+  /// No description provided for @servicesDashboardAttentionInspectionToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection scheduled for today'**
+  String get servicesDashboardAttentionInspectionToday;
+
+  /// No description provided for @servicesDashboardAttentionWaitingMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection has waiting material requirements'**
+  String get servicesDashboardAttentionWaitingMaterials;
+
+  /// No description provided for @servicesDashboardAttentionOpenMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Open material request'**
+  String get servicesDashboardAttentionOpenMaterialRequest;
+
+  /// No description provided for @servicesDashboardAttentionActiveWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work execution has an active work line'**
+  String get servicesDashboardAttentionActiveWork;
+
+  /// No description provided for @servicesDashboardActionOpenInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Open inspection'**
+  String get servicesDashboardActionOpenInspection;
+
+  /// No description provided for @servicesDashboardActionViewEnquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'View enquiry'**
+  String get servicesDashboardActionViewEnquiry;
+
+  /// No description provided for @servicesDashboardActionCreateAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesDashboardActionCreateAssignment;
+
+  /// No description provided for @servicesDashboardActionOpenMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Open material request'**
+  String get servicesDashboardActionOpenMaterialRequest;
+
+  /// No description provided for @servicesDashboardActionOpenWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Open work execution'**
+  String get servicesDashboardActionOpenWork;
+
+  /// No description provided for @servicesDashboardActionViewAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'View assignment'**
+  String get servicesDashboardActionViewAssignment;
+
+  /// No description provided for @servicesDashboardActionStartWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Start work'**
+  String get servicesDashboardActionStartWork;
+
+  /// No description provided for @servicesDashboardActionContinueWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue work'**
+  String get servicesDashboardActionContinueWork;
+
+  /// No description provided for @servicesDashboardTeamActiveSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get servicesDashboardTeamActiveSuffix;
+
+  /// No description provided for @servicesDashboardTeamTodaySuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get servicesDashboardTeamTodaySuffix;
+
+  /// No description provided for @servicesDashboardTeamInProgressSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'in progress'**
+  String get servicesDashboardTeamInProgressSuffix;
+
+  /// No description provided for @servicesDashboardQuickCreateAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Create job assignment'**
+  String get servicesDashboardQuickCreateAssignment;
+
+  /// No description provided for @servicesDashboardQuickNewInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'New inspection'**
+  String get servicesDashboardQuickNewInspection;
+
+  /// No description provided for @servicesDashboardQuickNewMaterialRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New material request'**
+  String get servicesDashboardQuickNewMaterialRequest;
+
+  /// No description provided for @servicesDashboardQuickNewWorkExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'New work execution'**
+  String get servicesDashboardQuickNewWorkExecution;
+
+  /// No description provided for @servicesDashboardDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get servicesDashboardDueToday;
+
+  /// No description provided for @servicesDashboardWaitingMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'waiting material requirements'**
+  String get servicesDashboardWaitingMaterials;
 }
 
 class _AppLocalizationsDelegate
