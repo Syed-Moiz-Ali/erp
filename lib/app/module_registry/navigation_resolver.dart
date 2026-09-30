@@ -89,6 +89,20 @@ class NavigationResolver {
     return RouteAccess.allowed;
   }
 
+  /// Module availability independent of any specific permission, so a
+  /// path-specific guard can check the *action* permission it needs without
+  /// being short-circuited by the destination's list-level permission set.
+  RouteAccess _moduleAccess(ErpModule item, CompanyContext company) {
+    final module = registry.module(item.moduleId);
+    if (!item.enabled ||
+        module?.enabled == false ||
+        (module?.alwaysAvailable != true &&
+            !company.enabledModules.contains(item.moduleId))) {
+      return RouteAccess.moduleUnavailable;
+    }
+    return RouteAccess.allowed;
+  }
+
   RouteAccess routeAccess(String path, AuthContext context) {
     final owner = registry.ownerOf(path);
     final capabilities = const UserCapabilityResolver().forAuthContext(context);
@@ -182,13 +196,8 @@ class NavigationResolver {
       return RouteAccess.allowed;
     }
     if (owner?.id == 'services-job-assignments') {
-      final base = access(
-        owner!,
-        context.company,
-        context.user.permissions,
-        capabilities,
-      );
-      if (base != RouteAccess.allowed) return base;
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
       final p = PermissionChecker(context.user.permissions);
       if (path.endsWith('/new')) {
         return p.can(AppPermission.serviceJobAssignmentCreate)
@@ -200,28 +209,18 @@ class NavigationResolver {
             ? RouteAccess.allowed
             : RouteAccess.unauthorized;
       }
-      final segments = Uri.parse(path).pathSegments;
-      final isDetail =
-          segments.isNotEmpty && segments.last != 'job-assignments';
-      if (isDetail) {
-        return p.canAny([
-              AppPermission.serviceJobAssignmentViewAssigned,
-              AppPermission.serviceJobAssignmentViewTeam,
-              AppPermission.serviceJobAssignmentViewAll,
-            ])
-            ? RouteAccess.allowed
-            : RouteAccess.unauthorized;
-      }
-      return RouteAccess.allowed;
+      // List and detail are record reads: always require a real View grant.
+      return p.canAny([
+            AppPermission.serviceJobAssignmentViewAssigned,
+            AppPermission.serviceJobAssignmentViewTeam,
+            AppPermission.serviceJobAssignmentViewAll,
+          ])
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
     }
     if (owner?.id == 'services-inspections') {
-      final base = access(
-        owner!,
-        context.company,
-        context.user.permissions,
-        capabilities,
-      );
-      if (base != RouteAccess.allowed) return base;
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
       final p = PermissionChecker(context.user.permissions);
       if (path.endsWith('/new')) {
         return p.can(AppPermission.serviceInspectionCreate)
@@ -233,27 +232,17 @@ class NavigationResolver {
             ? RouteAccess.allowed
             : RouteAccess.unauthorized;
       }
-      final segments = Uri.parse(path).pathSegments;
-      final isDetail = segments.isNotEmpty && segments.last != 'inspections';
-      if (isDetail) {
-        return p.canAny([
-              AppPermission.serviceInspectionViewAssigned,
-              AppPermission.serviceInspectionViewTeam,
-              AppPermission.serviceInspectionViewAll,
-            ])
-            ? RouteAccess.allowed
-            : RouteAccess.unauthorized;
-      }
-      return RouteAccess.allowed;
+      return p.canAny([
+            AppPermission.serviceInspectionViewAssigned,
+            AppPermission.serviceInspectionViewTeam,
+            AppPermission.serviceInspectionViewAll,
+          ])
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
     }
     if (owner?.id == 'services-material-requests') {
-      final base = access(
-        owner!,
-        context.company,
-        context.user.permissions,
-        capabilities,
-      );
-      if (base != RouteAccess.allowed) return base;
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
       final p = PermissionChecker(context.user.permissions);
       if (path.endsWith('/new')) {
         return p.can(AppPermission.serviceMaterialRequestCreate)
@@ -270,28 +259,17 @@ class NavigationResolver {
             ? RouteAccess.allowed
             : RouteAccess.unauthorized;
       }
-      final segments = Uri.parse(path).pathSegments;
-      final isDetail =
-          segments.isNotEmpty && segments.last != 'material-requests';
-      if (isDetail) {
-        return p.canAny([
-              AppPermission.serviceMaterialRequestViewAssigned,
-              AppPermission.serviceMaterialRequestViewTeam,
-              AppPermission.serviceMaterialRequestViewAll,
-            ])
-            ? RouteAccess.allowed
-            : RouteAccess.unauthorized;
-      }
-      return RouteAccess.allowed;
+      return p.canAny([
+            AppPermission.serviceMaterialRequestViewAssigned,
+            AppPermission.serviceMaterialRequestViewTeam,
+            AppPermission.serviceMaterialRequestViewAll,
+          ])
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
     }
     if (owner?.id == 'services-work-executions') {
-      final base = access(
-        owner!,
-        context.company,
-        context.user.permissions,
-        capabilities,
-      );
-      if (base != RouteAccess.allowed) return base;
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
       final p = PermissionChecker(context.user.permissions);
       if (path.endsWith('/new')) {
         return p.can(AppPermission.serviceWorkExecutionCreate)
@@ -303,19 +281,63 @@ class NavigationResolver {
             ? RouteAccess.allowed
             : RouteAccess.unauthorized;
       }
-      final segments = Uri.parse(path).pathSegments;
-      final isDetail =
-          segments.isNotEmpty && segments.last != 'work-executions';
-      if (isDetail) {
-        return p.canAny([
-              AppPermission.serviceWorkExecutionViewAssigned,
-              AppPermission.serviceWorkExecutionViewTeam,
-              AppPermission.serviceWorkExecutionViewAll,
-            ])
+      return p.canAny([
+            AppPermission.serviceWorkExecutionViewAssigned,
+            AppPermission.serviceWorkExecutionViewTeam,
+            AppPermission.serviceWorkExecutionViewAll,
+          ])
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
+    }
+    if (owner?.id == 'services-customers') {
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceCustomerCreate)
             ? RouteAccess.allowed
             : RouteAccess.unauthorized;
       }
-      return RouteAccess.allowed;
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceCustomerEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return p.can(AppPermission.serviceCustomerView)
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
+    }
+    if (owner?.id == 'services-sites') {
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
+      final p = PermissionChecker(context.user.permissions);
+      if (path.endsWith('/new')) {
+        return p.can(AppPermission.serviceSiteCreate)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      if (path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceSiteEdit)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return p.can(AppPermission.serviceSiteView)
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
+    }
+    if (owner?.id == 'services-teams') {
+      final module = _moduleAccess(owner!, context.company);
+      if (module != RouteAccess.allowed) return module;
+      final p = PermissionChecker(context.user.permissions);
+      // Team create/edit/deactivate/membership/lead all require Manage.
+      if (path.endsWith('/new') || path.endsWith('/edit')) {
+        return p.can(AppPermission.serviceTeamManage)
+            ? RouteAccess.allowed
+            : RouteAccess.unauthorized;
+      }
+      return p.can(AppPermission.serviceTeamView)
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
     }
     const servicesMasterManage = <String, AppPermission>{
       'services-service-types': AppPermission.serviceTypeManage,

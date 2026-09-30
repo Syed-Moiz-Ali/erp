@@ -177,7 +177,10 @@ Actions the user cannot perform are hidden, never disabled.
   work / Team scope / All company services / No service scope"); it is not a
   selector.
 - Live grant/revoke and a company switch recompute the whole dashboard without a
-  re-login (`AuthBloc` context change → `ServiceDashboardCubit.updateContext`).
+  re-login (`AuthBloc` context change → the Universal Dashboard bloc is rebuilt
+  and re-runs the Services contributor projection). The legacy
+  `ServiceDashboardCubit` was removed once the Universal Dashboard became the only
+  user-facing dashboard.
 
 ## Responsive behavior
 

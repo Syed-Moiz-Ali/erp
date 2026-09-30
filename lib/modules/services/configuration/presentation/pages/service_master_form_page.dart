@@ -41,9 +41,19 @@ String serviceMasterSubtitle(AppLocalizations l, ServiceMasterKind kind) =>
 /// Charge Responsibilities, Material Request Purposes). Create and Edit reuse
 /// the same view, state model and validation.
 class ServiceMasterFormPage extends StatelessWidget {
-  const ServiceMasterFormPage({super.key, required this.kind, this.id});
+  const ServiceMasterFormPage({
+    super.key,
+    required this.kind,
+    this.id,
+    this.readOnly = false,
+  });
   final ServiceMasterKind kind;
   final String? id;
+
+  /// When true the page renders master detail only: fields are disabled and no
+  /// Save action is offered. Used by the `/:id` detail route so a View-only user
+  /// never receives an editable form.
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +91,9 @@ class ServiceMasterFormPage extends StatelessWidget {
         final d = state.draft;
         final cubit = context.read<ServiceMasterFormCubit>();
         final isPriority = kind == ServiceMasterKind.priority;
-        final title = id == null
+        final title = readOnly
+            ? serviceMasterSingular(l, kind)
+            : id == null
             ? l.servicesMasterAddName(serviceMasterSingular(l, kind))
             : l.servicesMasterEditName(serviceMasterSingular(l, kind));
 
@@ -104,14 +116,15 @@ class ServiceMasterFormPage extends StatelessWidget {
 
         final actions = [
           AppTextButton(
-            label: l.cancel,
+            label: readOnly ? l.close : l.cancel,
             onPressed: state.saving ? null : () => context.go(listRoute),
           ),
-          AppPrimaryButton(
-            label: l.save,
-            loading: state.saving,
-            onPressed: state.saving ? null : cubit.save,
-          ),
+          if (!readOnly)
+            AppPrimaryButton(
+              label: l.save,
+              loading: state.saving,
+              onPressed: state.saving ? null : cubit.save,
+            ),
         ];
 
         if (notFound) {
@@ -151,7 +164,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                       label: l.servicesMasterCode,
                       helperText: l.servicesMasterCodeHelper,
                       initialValue: d.code,
-                      enabled: !state.saving,
+                      enabled: !state.saving && !readOnly,
                       required: true,
                       errorText: codeError,
                       onChanged: (v) => cubit.change(d.copyWith(code: v)),
@@ -159,7 +172,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                     AppTextField(
                       label: l.servicesMasterName,
                       initialValue: d.name,
-                      enabled: !state.saving,
+                      enabled: !state.saving && !readOnly,
                       required: true,
                       errorText: nameError,
                       onChanged: (v) => cubit.change(d.copyWith(name: v)),
@@ -184,7 +197,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                     AppTextField(
                       label: l.servicesMasterDescription,
                       initialValue: d.description,
-                      enabled: !state.saving,
+                      enabled: !state.saving && !readOnly,
                       maxLines: 4,
                       minLines: 3,
                       onChanged: (v) =>
@@ -206,7 +219,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                       label: l.servicesMasterSortOrder,
                       helperText: l.servicesMasterSortOrderHelper,
                       initialValue: d.sortOrder,
-                      enabled: !state.saving,
+                      enabled: !state.saving && !readOnly,
                       keyboardType: TextInputType.number,
                       onChanged: (v) => cubit.change(d.copyWith(sortOrder: v)),
                     ),
@@ -214,7 +227,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                       AppTextField(
                         label: l.servicesMasterRank,
                         initialValue: d.rank,
-                        enabled: !state.saving,
+                        enabled: !state.saving && !readOnly,
                         keyboardType: TextInputType.number,
                         onChanged: (v) => cubit.change(d.copyWith(rank: v)),
                       ),
@@ -227,7 +240,7 @@ class ServiceMasterFormPage extends StatelessWidget {
                   label: l.servicesMasterDefaultPriorityLabel,
                   description: l.servicesMasterDefaultPriorityDescription,
                   value: d.isDefault,
-                  enabled: !state.saving,
+                  enabled: !state.saving && !readOnly,
                   onChanged: (v) => cubit.change(d.copyWith(isDefault: v)),
                 ),
               ],

@@ -1,664 +1,479 @@
-TASK — REPLACE SEPARATE HR + SERVICES DASHBOARDS
-WITH ONE UNIVERSAL ERP DASHBOARD
+PHASE 7.5 — SERVICES + UNIVERSAL DASHBOARD SECURITY,
+AUTHORIZATION, DATA INTEGRITY & RELEASE HARDENING
 
-Work on the EXISTING ERP application.
+Work on the EXISTING ERP codebase.
 
-The application currently has module-oriented dashboard concepts such as:
+This phase is NOT a new business feature.
 
-HR Dashboard
-Services Dashboard
+DO NOT add new Services workflows.
 
-This architecture must now be changed.
+DO NOT redesign UI unnecessarily.
 
-FINAL PRODUCT REQUIREMENT:
+DO NOT change confirmed client business behavior.
 
-There must be ONE UNIVERSAL ERP DASHBOARD for the logged-in user/company.
-
-DO NOT maintain separate:
-
-HR Dashboard
-Services Dashboard
-Finance Dashboard
-Inventory Dashboard
-etc.
-
-Future modules must CONTRIBUTE content into the same universal dashboard.
+The purpose of this phase is to fix the concrete security, permission,
+dashboard-query, routing, pagination, data-integrity and cleanup issues found
+during the latest source audit after Services Phase 6/7 and Universal Dashboard
+integration.
 
 ==================================================
-1. PRODUCT DECISION
+0. IMPORTANT
 ==================================================
 
-The ERP has ONE Dashboard.
+DO NOT blindly rewrite the architecture.
 
-Conceptually:
+Inspect the CURRENT implementation first.
 
-ERP Dashboard
-   ├── Personal / My Day
-   ├── HR contributions
-   ├── Services contributions
-   ├── Future Finance contributions
-   ├── Future Inventory contributions
-   └── Shared activity / attention / notifications.
+Preserve working:
 
-Dashboard content is dynamically composed based on:
+- Services workflow
+- Universal Dashboard
+- permission catalog
+- scope model
+- global centered page width
+- AppFormPage/form architecture
+- Drift schema/data
+- outbox/idempotency
+- CompanyTimeService/AppClock
+- WorkforceDirectory
+- module contribution architecture.
 
-Company Module Enablement
+Only change what is required to correct the issues below.
+
+==================================================
+1. CRITICAL — ACTION PERMISSIONS MUST NOT ESCALATE VIEW SCOPE
+==================================================
+
+The current security implementation has a serious authorization problem.
+
+Audit:
+
+core/security/app_permission.dart
+
+and the effective permission/scope resolution path.
+
+Current behavior found during audit:
+
+action permissions such as:
+
+Inspection Edit
+Inspection Complete
+
+Material Request Edit
+Material Request Print
+
+Work Execution Perform
+
+and similar Services action permissions
+
+are mapped/dependent on:
+
+*ViewAll
+
+permissions.
+
+This can produce dangerous behavior such as:
+
+User has:
+
+services.workExecutions.view = ASSIGNED
+
+plus:
+
+services.workExecutions.perform = granted
+
+and the dependency system effectively provides:
+
+services.workExecutions.viewAll
+
+causing the scope resolver to treat the user as ALL.
+
+THIS MUST BE FIXED.
+
+==================================================
+2. ACTION PERMISSION PRINCIPLE
+==================================================
+
+Action permissions must NEVER upgrade record visibility scope.
+
+Example:
+
+View Work Executions:
+ASSIGNED
+
+Perform Work:
+YES
+
+must mean:
+
+user may perform work ONLY on Work Executions visible within ASSIGNED scope.
+
+It must NOT mean:
+
+user may view ALL Work Executions.
+
+Same rule applies to:
+
+Edit
+
+Complete
+
+Cancel
+
+Print
+
+Review
+
+Adjust
+
+Manage transaction actions
+
+where object access depends on a separately scoped View permission.
+
+==================================================
+3. CORRECT AUTHORIZATION MODEL
+==================================================
+
+The authorization model must remain:
+
+Module enabled
 AND
-Permission Grants
+Action permission granted
 AND
-Permission Scope
+View permission available
 AND
-Employee Link
+record lies inside granted View scope
 AND
-Record Access
+company matches
 AND
-Current Company.
+required Employee link exists where relevant.
 
-NO role-based dashboard variants.
+Action permission is orthogonal to scope.
 
-==================================================
-2. REMOVE MODULE-SPECIFIC DASHBOARD CONCEPT
-==================================================
+Example:
 
-Do NOT keep navigation such as:
+services.inspections.view = TEAM
 
-Human Resources
-  Dashboard
+services.inspections.complete = granted
 
-Services
-  Services / Dashboard
+Result:
 
-Instead the main navigation should conceptually become:
+Complete action may operate only on Inspections inside TEAM scope.
 
-Dashboard
-
-Human resources
-  Employees
-  Attendance
-  Leave
-  Reports
-  ...
-
-Services
-  Enquiries
-  Job Assignments
-  Inspections
-  Material Requests
-  Work Execution
-  Customers
-  Sites
-  Teams
-  Settings
-
-Settings
-  ...
-
-There is only ONE Dashboard nav item.
+NOT ALL.
 
 ==================================================
-3. DASHBOARD OWNERSHIP
+4. PERMISSION DEPENDENCIES
 ==================================================
 
-The universal dashboard is NOT owned by:
+Audit:
 
-HR
+permissionViewDependencies
 
-or:
+AppPermission dependency mapping
 
-Services.
+effective PermissionSet calculation
 
-Move dashboard ownership to a neutral application/platform/workspace boundary.
+or equivalent implementation.
 
-Use the most appropriate existing architecture.
+Dependencies may establish:
 
-Preferred conceptual location:
+Manage implies View capability exists
 
-lib/platform/workspace/dashboard/
+BUT MUST NOT assign:
 
-or:
+ALL scope.
 
-lib/app/dashboard/
+If an action implies View:
 
-depending on current codebase conventions.
+the implied View scope must not exceed the actual configured View grant.
 
-Do NOT put universal dashboard inside:
+Prefer:
 
-modules/hr/
+action is usable only when a real View grant exists.
 
-or:
+If the system requires implicit View for action grants:
 
-modules/services/.
+derive the least privilege compatible scope,
+never ALL.
+
+Document the final approach.
 
 ==================================================
-4. IMPORTANT — MODULES STILL OWN THEIR DATA
+5. SERVICES PERMISSIONS TO AUDIT
 ==================================================
 
-Moving dashboard ownership does NOT mean moving HR/Services business logic into
-platform.
+Audit ALL:
 
-HR still owns:
+Customers
 
-Attendance
+Sites
 
-Leave
-
-Employees
-
-HR Reports.
-
-Services still owns:
+Teams
 
 Enquiries
 
-Assignments
+Job Assignments
 
 Inspections
 
 Material Requests
 
-Work Execution.
+Work Executions
 
-The universal dashboard only COMPOSES module-provided read models/widgets.
+Services masters.
 
-==================================================
-5. MODULE CONTRIBUTION ARCHITECTURE
-==================================================
+Especially:
 
-Create a clean dashboard contribution architecture.
+services.jobAssignments.edit
 
-Conceptually:
+services.jobAssignments.cancel
 
-UniversalDashboard
-        │
-        ├── Core / Personal contribution
-        ├── HR contribution
-        ├── Services contribution
-        └── Future module contributions
+services.inspections.edit
 
-Do NOT make universal dashboard import every module's internal DAO/BLoC.
+services.inspections.complete
 
-Use module-owned public contracts.
+services.inspections.cancel
 
-==================================================
-6. DASHBOARD CONTRIBUTOR CONTRACT
-==================================================
+services.materialRequests.edit
 
-Introduce an abstraction similar to:
+services.materialRequests.cancel
 
-DashboardContributor
+services.materialRequests.print
 
-or:
+services.workExecutions.edit
 
-DashboardSectionProvider
+services.workExecutions.perform
 
-or project-appropriate equivalent.
+services.workExecutions.complete
 
-Conceptually it may expose:
+services.workExecutions.cancel.
 
-id
+Verify none escalates:
 
-moduleId
-
-priority/order
-
-isVisible(capabilityContext)
-
-loadSnapshot(...)
-
-build/describe sections
-
-supported scope/context.
-
-Do NOT over-engineer plugin architecture.
-
-Keep it simple, typed and testable.
+ASSIGNED → ALL
+TEAM → ALL.
 
 ==================================================
-7. MODULE PUBLIC DASHBOARD CONTRACT
+6. HR PERMISSION REGRESSION AUDIT
 ==================================================
 
-HR exposes a small dashboard read contract.
-
-Services exposes a small dashboard read contract.
-
-Example conceptual:
-
-HrDashboardContributionRepository
-
-ServicesDashboardContributionRepository
-
-These contracts expose only dashboard-ready data.
-
-The universal dashboard must NOT know about:
-
-HR DAOs
-
-Services DAOs
-
-Drift implementation details.
-
-==================================================
-8. ROUTING
-==================================================
-
-Create ONE canonical dashboard route.
-
-Preferred:
-
-/app
-
-or:
-
-/app/dashboard
-
-depending on current shell architecture.
-
-Choose ONE canonical route.
-
-Recommended:
-
-/app
-
-= Universal Dashboard.
-
-If current shell requires explicit route:
-
-/app/dashboard
-
-is acceptable.
-
-Avoid two canonical dashboard routes.
-
-==================================================
-9. LEGACY HR DASHBOARD ROUTE
-==================================================
-
-If existing:
-
-/app/hr
-
-currently acts as HR Dashboard,
-
-do NOT leave a second dashboard there.
-
-Choose one of these clean behaviors:
-
-OPTION A — preferred:
-
-/app/hr
-→ HR module landing / first permitted HR feature
-
-or:
-
-/app/hr
-→ redirect to /app if HR previously had only dashboard semantics.
-
-Use whichever best fits current navigation.
-
-==================================================
-10. LEGACY DASHBOARD REDIRECTS
-==================================================
-
-Any old dashboard-only URLs should safely redirect to universal Dashboard.
-
-Examples if they exist:
-
-/app/dashboard
-/app/hr/dashboard
-/app/services/dashboard
-
-→ canonical Universal Dashboard.
-
-Preserve query params where relevant.
-
-==================================================
-11. TOP-LEVEL NAVIGATION
-==================================================
-
-Dashboard should be the first primary nav item.
-
-Example:
-
-Dashboard
-
-Human resources
-  Employees
-  Attendance
-  Leave
-  Reports
-
-Services
-  Enquiries
-  Job Assignments
-  Inspections
-  Material Requests
-  Work Execution
-  Customers
-  Sites
-  Teams
-  Services settings
-
-Settings
-  Settings.
-
-==================================================
-12. REMOVE SERVICES "OVERVIEW" AS DUPLICATE DASHBOARD
-==================================================
-
-If Services currently has:
-
-Overview
-
-that is effectively a Services Dashboard,
-
-remove it from normal navigation OR convert it into a Services operational list
-landing only if it still serves a unique purpose.
-
-Do NOT keep:
-
-Dashboard
-+
-Services Overview
-
-with mostly duplicated KPI cards.
-
-The universal dashboard should surface Services overview content.
-
-==================================================
-13. REMOVE HR DASHBOARD NAV ITEM
-==================================================
-
-Likewise do NOT show:
-
-Dashboard
-
-inside the Human Resources section.
-
-HR contributes HR content to the universal dashboard.
-
-==================================================
-14. UNIVERSAL DASHBOARD PURPOSE
-==================================================
-
-The Dashboard should answer:
-
-What do I need to do today?
-
-What requires attention?
-
-What is assigned to me?
-
-What is pending?
-
-What is scheduled?
-
-What changed recently?
-
-What company-wide operational state am I allowed to see?
-
-It should NOT simply show one card for every database table.
-
-==================================================
-15. DASHBOARD CONTENT PRIORITY
-==================================================
-
-Organize content around USER WORK, not module boundaries.
-
-Recommended hierarchy:
-
-1. Welcome / contextual header
-
-2. My Day
-
-3. Needs Attention
-
-4. Key operational metrics
-
-5. Upcoming / Today's schedule
-
-6. My Work
-
-7. Team / Company overview
-
-8. Recent activity.
-
-HR and Services data may appear together naturally.
-
-==================================================
-16. UNIVERSAL HEADER
-==================================================
-
-Example:
-
-Good morning, Ahmed
-
-Here's what needs your attention today.
-
-Optional subtle context:
-
-Demo ERP Company
-Sunday, 28 September
-
-Do NOT overdo personalized greeting if current design language is more formal.
-
-A simple:
-
-Dashboard
-Your work and company activity at a glance
-
-is perfectly acceptable.
-
-==================================================
-17. MY DAY SECTION
-==================================================
-
-This is cross-module.
-
-For a linked Employee it may combine:
-
-HR:
-Attendance state
-Current shift
-Punch In/Out
-Break state
-Leave Today
-Upcoming leave
-
-Services:
-Today's scheduled assignments
-Pending Inspection
-Active Work Execution.
-
-Only include data the user has permission to access.
-
-==================================================
-18. ATTENDANCE WIDGET
-==================================================
-
-If user has:
-
-hr.attendance.self.view
-
-show compact Attendance card.
-
-Possible content:
-
-Today's status
-
-Shift
-
-Punch-in time
-
-Current break state.
-
-==================================================
-19. ATTENDANCE ACTIONS
-==================================================
-
-Actions are independently permission-controlled.
-
-Example:
-
-Punch In
-→ hr.attendance.self.punch
-
-Punch Out
-→ hr.attendance.self.punchOut
-
-Break
-→ hr.attendance.self.break.
-
-Do NOT treat Attendance View as permission to punch.
-
-==================================================
-20. LEAVE WIDGET
-==================================================
-
-If appropriate permission exists:
-
-show compact:
-
-Leave balance summary
-
-Upcoming approved leave
-
-Leave today
-
-Pending own request.
-
-Do NOT expose company-wide Leave records through a personal card.
-
-==================================================
-21. SERVICES — MY WORK
-==================================================
-
-For Employees with Services ASSIGNED visibility:
-
-show:
-
-Today's assignment
-
-Pending Inspection
-
-Active Work Execution
-
-next Visit.
-
-This should be one of the strongest operational dashboard sections.
-
-==================================================
-22. SERVICE OPERATIONAL ACTIONS
-==================================================
-
-Show only permitted actions.
+Because the dependency mechanism is shared, verify HR as well.
 
 Examples:
 
-Open Assignment
+Leave Review
 
-Open Inspection
+Leave Balance Adjust
 
-Start Work
+Attendance Correction Apply
 
-Continue Work.
+Employee Edit
 
-Do NOT show:
+configuration Manage.
 
-Edit Assignment
-Cancel Work
-etc.
+Action grants must not accidentally upgrade:
 
-unless user has those explicit permissions.
+SELF / TEAM
 
-==================================================
-23. NEEDS ATTENTION — UNIVERSAL
-==================================================
+to:
 
-Create ONE cross-module:
+ALL.
 
-Needs attention
-
-section.
-
-Possible HR items:
-
-Attendance correction awaiting review
-
-Leave request awaiting approval
-
-Employee/config action requiring attention
-
-ONLY when corresponding permission exists.
-
-Possible Services items:
-
-Open Enquiry awaiting Assignment
-
-Today's Assignment awaiting Inspection
-
-Pending Inspection
-
-Inspection with waiting Material Requirements
-
-Open Material Request
-
-Work Execution in progress.
+Do not alter correct existing HR behavior.
 
 ==================================================
-24. ATTENTION ITEM MODEL
+7. SECURITY TEST MATRIX
 ==================================================
 
-Use a generic presentation model such as:
+Add explicit tests.
 
-DashboardAttentionItem
+CASE A:
 
-with:
+View Work Execution = ASSIGNED
+Perform = granted
 
-id
+Expected:
 
-sourceModule
+assigned records visible
+assigned Start/End works
 
-type
+unrelated records:
+NOT visible
+NOT performable.
 
-title
+CASE B:
 
-subtitle
+View Inspection = TEAM
+Complete = granted
 
-priority
+Expected:
 
-timestamp/date
+team Inspection completable
+unrelated company Inspection denied.
 
-route/deepLink metadata
+CASE C:
 
-action label
+View Material Request = ASSIGNED
+Print = granted
 
-semantic icon.
+Expected:
 
-Module contributors map domain state into this model.
+assigned Request printable
+unrelated Request cannot be read or printed.
 
-Do NOT move domain rules into universal dashboard.
+CASE D:
+
+View = ALL
+action granted
+
+Expected:
+
+company-wide valid action.
 
 ==================================================
-25. HR APPROVALS
+8. CRITICAL — CUSTOMER MUTATION PERMISSIONS
 ==================================================
 
-Users with relevant permissions may see:
+Audit:
 
-Pending Leave Approvals
+LocalServiceCustomerRepository
 
-Attendance Corrections
+especially current internal permission helper such as:
 
-other implemented HR approvals.
+_access(manage: true)
 
-A normal Employee without those grants must not even query those counts.
+Audit found that mutation authorization may be using:
+
+serviceCustomerCreate
+
+for multiple mutation types.
+
+That is incorrect.
+
+Create / Edit / Deactivate must use their appropriate permissions.
 
 ==================================================
-26. SERVICES KPI CONTRIBUTION
+9. CUSTOMER PERMISSION RULES
 ==================================================
 
-Services may contribute real metrics such as:
+Enforce:
 
-Open Enquiries
+CREATE CUSTOMER
+→ services customer CREATE permission
+
+EDIT CUSTOMER
+→ services customer EDIT/MANAGE permission according to actual catalog
+
+DEACTIVATE CUSTOMER
+→ appropriate deactivate/manage permission
+
+READ
+→ customer View with correct scope where applicable.
+
+Do NOT allow:
+
+Create-only permission
+
+to modify/deactivate an existing Customer.
+
+==================================================
+10. SITE PERMISSION RULES
+==================================================
+
+Audit:
+
+LocalServiceSiteRepository.
+
+Same issue was found.
+
+Ensure:
+
+Create Site
+
+Edit Site
+
+Deactivate Site
+
+each enforce the correct configured permission.
+
+Do not reuse Create permission as generic mutation permission.
+
+==================================================
+11. TEAM PERMISSION RULES
+==================================================
+
+Audit Service Team repository as well.
+
+Confirm:
+
+Create Team
+
+Edit Team
+
+Deactivate Team
+
+membership changes
+
+lead changes
+
+all use the correct permissions.
+
+==================================================
+12. REPOSITORY SECURITY
+==================================================
+
+Repository/use-case boundary must enforce authorization.
+
+Do NOT rely only on hidden buttons.
+
+Direct calls must still fail safely.
+
+==================================================
+13. CRITICAL — SERVICES DASHBOARD SQL BIND VARIABLES
+==================================================
+
+Audit:
+
+local_services_dashboard_repository.dart
+
+or current equivalent.
+
+The audit found queries where SQL contains a hardcoded status such as:
+
+status = 'active'
+
+but Variables still include an extra:
+
+Variable('active')
+
+without a matching `?` placeholder.
+
+The query fails and `_count()` catches the exception and returns:
+
+0.
+
+This creates SILENTLY WRONG DASHBOARD KPIs.
+
+==================================================
+14. FIX DASHBOARD QUERIES
+==================================================
+
+Audit every dashboard query for:
+
+SQL placeholder count
+
+Variable count
+
+scope variables
+
+status variables
+
+date variables
+
+company variables.
+
+Specifically verify metrics such as:
 
 Scheduled Jobs
 
@@ -668,1624 +483,1549 @@ Open Material Requests
 
 Work In Progress
 
-Completed Today.
+Completed Today
 
-But only cards supported by current permission/scope.
+and every other Services KPI.
 
-==================================================
-27. HR KPI CONTRIBUTION
-==================================================
-
-HR may contribute metrics such as:
-
-Present Today
-
-Absent / Not Checked In
-
-Employees On Leave
-
-Pending Leave Requests
-
-Attendance Exceptions
-
-depending on implemented logic + permissions.
-
-Do not invent unsupported HR KPIs.
+Placeholder count must exactly match bound variables.
 
 ==================================================
-28. DO NOT DISPLAY ALL KPIs TO EVERY USER
+15. DO NOT HIDE QUERY BUGS WITH ZERO
 ==================================================
+
+Do NOT make `_count()` silently convert every SQL exception into:
+
+0.
+
+A genuine empty count is different from a query failure.
+
+Change behavior appropriately.
+
+Possible:
+
+log/report query failure
+return typed failure
+surface dashboard section error
+
+according to current architecture.
+
+At minimum during debug/test:
+
+query construction errors must fail loudly.
+
+Do not mask programmer errors.
+
+==================================================
+16. DASHBOARD KPI TESTS
+==================================================
+
+Seed known deterministic data.
+
+Verify expected counts exactly.
 
 Example:
 
-Employee with SELF HR and ASSIGNED Services access should NOT see:
+2 active Assignments
+1 pending Inspection
+3 open Material Requests
+1 in-progress Work Execution
+1 completed today
 
-total workforce attendance
+Dashboard must return:
 
-company-wide Open Enquiries
+2 / 1 / 3 / 1 / 1
 
-company-wide leave approvals.
+not zero.
 
-Their dashboard should instead focus on:
+Also test:
 
-their attendance
+ASSIGNED
 
-their leave
+TEAM
 
-their service work.
-
-==================================================
-29. SAME DASHBOARD — DIFFERENT COMPOSITION
-==================================================
-
-This is critical.
-
-Do NOT create:
-
-EmployeeDashboard
-
-ManagerDashboard
-
-HrDashboard
-
-ServiceManagerDashboard
-
-TechnicianDashboard.
-
-There is ONE:
-
-UniversalDashboard.
-
-Sections appear based on capabilities.
+ALL.
 
 ==================================================
-30. SCOPE LABEL
+17. HIGH — CUSTOMER / SITE / TEAM ROUTE GUARDS
 ==================================================
 
-Where useful show subtle context:
+Audit:
 
-My work
+NavigationResolver.routeAccess()
 
-Team
+or current route authorization implementation.
 
-Company
-
-at section level.
-
-Do not present a fake scope switcher that allows escalation.
-
-==================================================
-31. ASSIGNED SCOPE
-==================================================
-
-Services widgets query only ASSIGNED-visible records.
-
-==================================================
-32. TEAM SCOPE
-==================================================
-
-Services TEAM widgets show only Team-resolved records.
-
-HR TEAM widgets use actual HR team/manager relationships where applicable.
-
-Do NOT mix the two definitions.
-
-Services Team != HR Department/Team.
-
-==================================================
-33. ALL SCOPE
-==================================================
-
-Company-wide metrics only for ALL-scoped permission.
-
-==================================================
-34. DASHBOARD CARDS MUST NOT LEAK COUNTS
-==================================================
-
-Never:
-
-query 100 records
-
-show 100
-
-then hide list access.
-
-The KPI itself is sensitive data.
-
-Query with effective scope.
-
-==================================================
-35. TODAY'S SCHEDULE
-==================================================
-
-Create universal:
-
-Today's schedule.
-
-Potential sources:
-
-HR:
-Shift
-Leave
-Holiday where relevant.
-
-Services:
-Job Assignment Visit Date
-Inspection Visit Time.
-
-Combine chronologically where UX benefits.
-
-==================================================
-36. SCHEDULE ITEM TYPE
-==================================================
-
-Use generic presentation model:
-
-DashboardScheduleItem
-
-with:
-
-sourceModule
-
-time
-
-title
-
-subtitle
-
-status
-
-route.
-
-The underlying module owns conversion.
-
-==================================================
-37. HOLIDAY
-==================================================
-
-If today is company holiday:
-
-show compact contextual banner.
-
-Do not occupy a giant card.
-
-==================================================
-38. LEAVE TODAY
-==================================================
-
-Existing LeaveTodayBanner or equivalent should integrate naturally.
-
-Do not duplicate it in HR module and Dashboard simultaneously.
-
-==================================================
-39. QUICK ACTIONS
-==================================================
-
-Universal dashboard may show capability-driven quick actions.
-
-Potential HR:
-
-Request Leave
-
-Punch In
-
-Add Employee
-
-Review Leave.
-
-Potential Services:
-
-New Enquiry
-
-Create Job Assignment
-
-Open Pending Inspections.
-
-ONLY if permission + context make action valid.
-
-==================================================
-40. QUICK ACTION LIMIT
-==================================================
-
-Do NOT create 15 buttons.
-
-Prefer maximum roughly:
-
-3–6 useful actions
-
-based on current capability/context.
-
-Prioritize user relevance.
-
-==================================================
-41. RECENT ACTIVITY
-==================================================
-
-Create ONE recent activity section that may merge:
-
-HR structured events
-
-Services BusinessActivityEvents
-
-platform events where useful.
-
-Do NOT store dashboard-specific English event strings.
-
-==================================================
-42. ACTIVITY AUTHORIZATION
-==================================================
-
-Every event must come from a record the user may currently access.
-
-Do not leak:
-
-Employee
-
-Leave
-
-Services transaction
-
-information through activity.
-
-==================================================
-43. ACTIVITY MODULE INDICATOR
-==================================================
-
-Use subtle icon/tag:
-
-HR
-
-Services
-
-if helpful.
-
-Do not visually split the dashboard into giant HR and Services halves.
-
-==================================================
-44. DESIGN PRINCIPLE — NOT MODULE PANELS
-==================================================
-
-BAD:
-
-HR Dashboard
----------------------------------
-
-Services Dashboard
----------------------------------
-
-inside one page.
-
-That is just two dashboards stacked.
-
-GOOD:
-
-My Day
-Needs Attention
-KPIs
-Today's Schedule
-My Work
-Recent Activity
-
-with data from modules naturally composed.
-
-==================================================
-45. DASHBOARD LAYOUT
-==================================================
-
-Preserve ONE GLOBAL CENTERED ERP CONTENT WIDTH.
-
-Same boundaries as:
-
-Employees
+The audit found specific route guards for:
 
 Enquiries
 
-Add Employee
+Job Assignments
 
-Inspection
+Inspections
 
-Settings.
+Material Requests
 
-No dashboard-specific wider container.
+Work Executions
 
-==================================================
-46. DESKTOP COMPOSITION
-==================================================
+Services masters
 
-Conceptually:
+but Customer/Site/Team mutation routes may not be protected with equal
+specificity.
 
-------------------------------------------------------------
-Dashboard
-Your work and company activity at a glance
-------------------------------------------------------------
-
-[ Personal / operational KPI cards ]
-
-------------------------------------------------------------
-Needs attention                       My day
-                                     Attendance
-                                     Leave
-------------------------------------------------------------
-
-Today's schedule                      My work
-------------------------------------------------------------
-
-Operational overview / relevant KPIs
-------------------------------------------------------------
-
-Recent activity
-------------------------------------------------------------
-
-This is conceptual.
-
-Do not mechanically reproduce it.
+Fix this.
 
 ==================================================
-47. LARGE DESKTOP
+18. CUSTOMER ROUTES
 ==================================================
 
-At 1440–1920:
+For routes such as:
 
-do not stretch to browser edges.
+/app/services/customers
 
-Global max width.
+/app/services/customers/new
 
-Equal whitespace.
+/app/services/customers/:id
 
-Compact ERP density.
+/app/services/customers/:id/edit
 
-==================================================
-48. MOBILE
-==================================================
+enforce proper permissions.
 
-Order content by immediate usefulness:
+List/detail:
+View
 
-My Day
+New:
+Create
 
-Needs Attention
+Edit:
+Edit/Manage.
 
-My Work
-
-Today's Schedule
-
-KPIs
-
-Recent Activity.
-
-Do not merely shrink desktop two-column dashboard.
+Direct URLs must not expose unauthorized forms.
 
 ==================================================
-49. MOBILE ATTENDANCE
+19. SITE ROUTES
 ==================================================
 
-Punch actions must be touch-friendly.
+Same:
+
+View
+Create
+Edit/Manage
+
+route-level enforcement.
 
 ==================================================
-50. MOBILE SERVICES
-==================================================
-
-Assigned user should quickly access:
-
-Inspection
-
-Start Work
-
-Continue Work.
-
-==================================================
-51. DASHBOARD READ ARCHITECTURE
-==================================================
-
-Create a neutral universal dashboard read layer.
-
-Conceptually:
-
-UniversalDashboardSnapshot
-
-containing presentation-ready cross-module sections.
-
-BUT:
-
-do not make one giant repository that directly knows every domain table.
-
-==================================================
-52. AGGREGATION ARCHITECTURE
-==================================================
-
-Preferred conceptual flow:
-
-UniversalDashboardBloc
-        ↓
-UniversalDashboardCoordinator
-        ↓
-DashboardContributors
-        ├── HR contributor
-        ├── Services contributor
-        └── Platform contributor.
-
-Each contributor:
-
-checks relevant capability
-
-loads only allowed data
-
-returns typed dashboard contribution.
-
-==================================================
-53. NO CROSS-MODULE DAO IMPORTS
-==================================================
-
-Universal Dashboard must NOT directly query:
-
-EmployeeDao
-
-LeaveDao
-
-ServiceEnquiryDao
-
-InspectionDao
-
-etc.
-
-Use module public contracts.
-
-==================================================
-54. HR CONTRIBUTOR
-==================================================
-
-Move/refactor useful logic from existing HR Dashboard into:
-
-HR dashboard contribution.
-
-Do not throw away working HR metrics.
-
-==================================================
-55. SERVICES CONTRIBUTOR
-==================================================
-
-Move/refactor useful logic from current Services Dashboard/Overview into:
-
-Services dashboard contribution.
-
-Do not keep a second copy.
-
-==================================================
-56. PLATFORM CONTRIBUTOR
-==================================================
-
-Platform may contribute:
-
-notifications summary
-
-sync state
-
-personal/company context
-
-only when useful.
-
-Do not overload dashboard with infrastructure details.
-
-==================================================
-57. FUTURE MODULE SUPPORT
-==================================================
-
-Future:
-
-Finance
-
-Inventory
-
-Sales
-
-etc.
-
-should be able to register a dashboard contribution without editing a giant
-switch statement everywhere.
-
-But do NOT build those modules now.
-
-==================================================
-58. MODULE ENABLEMENT
-==================================================
-
-If HR disabled in future:
-
-no HR contribution.
-
-If Services disabled:
-
-no Services contribution.
-
-If both enabled:
-
-compose both.
-
-==================================================
-59. CURRENT PRODUCT
-==================================================
-
-Today HR + Services are enabled in current product.
-
-Dashboard should therefore naturally combine both.
-
-==================================================
-60. COMPANY SWITCH
-==================================================
-
-Switching company must rebuild:
-
-permissions
-
-Employee context
-
-HR contribution
-
-Services contribution
-
-dashboard counters
-
-attention
-
-schedule
-
-activity.
-
-No stale data.
-
-==================================================
-61. LIVE PERMISSION UPDATE
-==================================================
-
-Grant/revoke must update Dashboard live.
-
-Example:
-
-grant:
-services.inspections.view / TEAM
-
-Inspection KPI/attention may appear.
-
-revoke:
-
-disappears.
-
-No relogin.
-
-==================================================
-62. EMPLOYEE LINK CHANGE
-==================================================
-
-If user loses Employee linkage:
-
-SELF/ASSIGNED widgets requiring Employee context disappear/become unavailable.
-
-No stale personal records.
-
-==================================================
-63. NAVIGATION
-==================================================
-
-Change left navigation.
-
-TOP:
-
-Dashboard
-
-Then module groups.
-
-Remove duplicate module dashboard items.
-
-==================================================
-64. DASHBOARD SELECTED STATE
-==================================================
-
-When canonical dashboard route active:
-
-only top-level Dashboard nav item selected.
-
-Do not highlight HR or Services.
-
-==================================================
-65. MODULE ROUTES REMAIN
-==================================================
-
-Do NOT remove actual module feature routes:
-
-/app/hr/employees
-
-/app/hr/attendance
-
-/app/hr/leave
-
-/app/hr/reports
-
-/app/services/enquiries
-
-/app/services/job-assignments
-
-/app/services/inspections
-
-/app/services/material-requests
-
-/app/services/work-executions
-
-etc.
-
-Only remove dashboard duplication.
-
-==================================================
-66. HR MODULE LANDING
-==================================================
-
-If `/app/hr` is needed as module parent route:
-
-it should NOT render another HR Dashboard.
-
-Choose a safe behavior:
-
-redirect to first accessible HR destination
-
-OR
-
-a lightweight module navigation landing if truly necessary.
-
-Prefer redirect to first accessible feature.
-
-==================================================
-67. SERVICES MODULE LANDING
+20. TEAM ROUTES
 ==================================================
 
 Same.
 
-`/app/services`
+Team edit/membership editing requires appropriate management permission.
 
-should NOT render a second Services Dashboard.
-
-Redirect to first permitted Services feature.
-
-Example order can be:
-
-Enquiries
-Job Assignments
-Inspections
-Material Requests
-Work Execution
-Customers
-...
-
-based on effective permission.
-
-==================================================
-68. EMPTY UNIVERSAL DASHBOARD
-==================================================
-
-If user has very limited access:
-
-do not show an empty broken page.
-
-Example:
-
-Dashboard
-
-No tasks require your attention right now.
-
-Then any permitted personal widgets.
-
-==================================================
-69. USER WITH ONLY HR
-==================================================
-
-Universal Dashboard shows only relevant HR/personal content.
-
-No Services placeholder.
-
-==================================================
-70. USER WITH ONLY SERVICES
-==================================================
-
-Shows Services/personal context.
-
-No empty HR cards.
-
-==================================================
-71. USER WITH BOTH
-==================================================
-
-Content is naturally combined.
-
-Do NOT label page:
-
-HR + Services Dashboard.
-
-Just:
-
-Dashboard.
-
-==================================================
-72. USER WITH BROAD COMPANY ACCESS
-==================================================
-
-Should see richer operational overview.
-
-Example:
-
-Present Today
-Employees on Leave
-Open Enquiries
-Pending Inspections
-Work In Progress.
-
-But still avoid metric overload.
-
-==================================================
-73. FIELD EMPLOYEE
-==================================================
-
-A field Employee may see:
-
-Attendance
-
-Punch In/Out
-
-My Leave
-
-Today's Service Visit
-
-My Inspection
-
-Active Work
-
-Start/End Work.
-
-This is a very strong use case for universal dashboard.
-
-==================================================
-74. COMPANY ADMIN-LIKE USER
-==================================================
-
-No runtime role check.
-
-A user with broad permissions may naturally see:
-
-workforce overview
-
-leave approvals
-
-attendance exceptions
-
-Services operational metrics
-
-attention items.
-
-==================================================
-75. CARD PRIORITIZATION
-==================================================
-
-Do not simply append modules in registration order.
-
-Use dashboard section priority/order.
-
-Personal and urgent actions should come before broad analytics.
-
-==================================================
-76. KPI LIMIT
-==================================================
-
-Avoid 10–15 KPI cards.
-
-Choose a compact set based on available capabilities.
-
-If many domains available:
-
-prioritize highest-value metrics.
-
-Additional metrics can live in module lists/reports.
-
-==================================================
-77. DASHBOARD NOT REPORTS
-==================================================
-
-Do not turn Dashboard into:
-
-HR Reports
-+
-Service Reports.
-
-Dashboard = action-oriented summary.
-
-Detailed analysis remains in Reports modules.
-
-==================================================
-78. REMOVE DUPLICATED DASHBOARD CODE
-==================================================
-
-After migration:
-
-there must not be independent production implementations for:
-
-HrDashboardPage
-
-ServicesDashboardPage
-
-if they only exist as old dashboard entry points.
-
-Refactor reusable components/read logic.
-
-Remove/deprecate dead routes/widgets after migration.
-
-==================================================
-79. DO NOT DELETE MODULE QUERY LOGIC BLINDLY
-==================================================
-
-Existing HR/Services dashboard repositories may contain useful logic.
-
-Refactor to contributor/read-contract architecture instead of rewriting
-everything unnecessarily.
-
-==================================================
-80. UNIVERSAL DASHBOARD PAGE
-==================================================
-
-Create one:
-
-UniversalDashboardPage
-
-or:
-
-DashboardPage
-
-inside neutral ownership.
-
-Avoid naming:
-
-HrServicesDashboardPage
-
-because future modules will join.
-
-==================================================
-81. UNIVERSAL DASHBOARD STATE
-==================================================
-
-State should support:
-
-loading
-
-ready
-
-partial ready if contributor architecture allows
-
-error
-
-refreshing.
-
-==================================================
-82. CONTRIBUTOR FAILURE
-==================================================
-
-If Services dashboard contribution fails:
-
-do not necessarily destroy Attendance/My Day if HR succeeded.
-
-Prefer graceful section-level error if architecture supports it without major
-complexity.
-
-==================================================
-83. LOADING
-==================================================
-
-Use dashboard skeletons.
-
-No giant centered spinner.
-
-==================================================
-84. REFRESH
-==================================================
-
-Pull/refresh or desktop refresh should use shared sync/read architecture.
-
-Do not create HR refresh + Services refresh buttons.
-
-==================================================
-85. PERFORMANCE
-==================================================
-
-Avoid:
-
-loading all Employees
-
-all Enquiries
-
-all Work Executions
-
-just to calculate dashboard counts.
-
-Use efficient summary/read projections.
-
-==================================================
-86. NO N+1
-==================================================
-
-Attention/My Work/Schedule must resolve labels efficiently.
-
-==================================================
-87. DASHBOARD DATA LIMITS
-==================================================
-
-Do not load 500 recent activities.
-
-Use reasonable recent limits.
-
-Example conceptual:
-
-5–10 attention items
-
-5–10 schedule items
-
-5–10 recent activities.
-
-Use existing pagination if expansion needed.
-
-==================================================
-88. "VIEW ALL"
-==================================================
-
-Sections can provide:
-
-View all
-
-that routes to corresponding module list.
-
-Only when user has access.
-
-==================================================
-89. CROSS-MODULE ACTION
-==================================================
-
-Do NOT create transactional workflows crossing modules unnecessarily.
-
-Example:
-
-Dashboard may link to Attendance or Inspection.
-
-Mutation remains owned by relevant module/use case.
-
-==================================================
-90. ATTENDANCE ACTIONS
-==================================================
-
-If Punch In/Out already works through HR use case:
-
-Dashboard calls the same public HR capability/use-case interface.
-
-Do not duplicate attendance logic.
-
-==================================================
-91. WORK EXECUTION ACTIONS
-==================================================
-
-Same:
-
-Start Work / End Work uses existing Services use case.
-
-Dashboard does not implement work state transitions.
-
-==================================================
-92. LOCALIZATION
-==================================================
-
-Universal dashboard strings should live in appropriate neutral/platform l10n
-source.
-
-Module-specific labels/events remain module-owned where practical.
-
-Preserve:
-
-English
-Arabic
-RTL.
-
 ==================================================
-93. RTL
+21. ROUTE SECURITY IS ADDITIONAL
 ==================================================
 
-Test entire composed Dashboard:
+Route guard + UI gate + repository/use-case enforcement must all agree.
 
-cards
+Do not rely on just one layer.
 
-schedule
-
-attention
-
-activity
-
-buttons
-
-icons
-
-mixed HR + Services sections.
-
-==================================================
-94. GLOBAL DESIGN SYSTEM
-==================================================
-
-Use existing:
-
-global centered page container
-
-spacing
-
-cards
-
-border radius
-
-colors
-
-chips
-
-buttons
-
-typography.
-
-Do not create a special dashboard visual system.
-
-==================================================
-95. VISUAL TARGET
-==================================================
-
-Dashboard should feel:
-
-modern
-
-calm
-
-professional
-
-operational
-
-compact
-
-premium.
-
-Not:
-
-a wall of charts.
-
-Not:
-
-empty huge cards.
-
-Not:
-
-HR dashboard stacked above Services dashboard.
-
 ==================================================
-96. REMOVE SERVICES DASHBOARD ENHANCEMENT DUPLICATION
+22. HIGH — MASTER DETAIL ROUTE SHOWS EDIT FORM
 ==================================================
-
-If the recently implemented/enhanced Services Dashboard contains:
-
-Needs Attention
-
-Today's Schedule
-
-My Work
-
-Team Work
 
-Services KPIs
+Audit Services master routes.
 
-Recent Activity
+Current pattern may contain:
 
-do NOT throw that away.
+/settings/<master>/:id
 
-Move those pieces into the Services dashboard contribution.
+which loads:
 
-The universal Dashboard then composes them with HR content.
+ServiceMasterFormPage
 
-==================================================
-97. EXISTING HR DASHBOARD
-==================================================
+and renders editable fields + Save.
 
-Likewise preserve useful HR:
+But route guard may only require Manage for:
 
-attendance summary
+/new
 
-leave summary
+/edit
 
-employee/workforce metrics
+while plain:
 
-approval counts
+/:id
 
-charts
+may only require View.
 
-but only the parts that make sense on an action-oriented universal dashboard.
+This creates confusing/insecure UI.
 
-Detailed HR analytics stay in HR Reports.
+Fix it consistently.
 
 ==================================================
-98. UNIVERSAL NEEDS ATTENTION
+23. MASTER ROUTE DESIGN
 ==================================================
-
-Merge HR + Services attention into one prioritized feed.
-
-Example:
 
-Urgent
-Service enquiry ENQ-000042 awaiting assignment
+Choose ONE clean architecture.
 
-Leave
-2 leave requests awaiting approval
+OPTION A — preferred if current app needs detail:
 
-Attendance
-3 correction requests awaiting review
+/settings/priorities/:id
+→ read-only Detail
 
-Inspection
-INS-000018 scheduled today.
+/settings/priorities/:id/edit
+→ editable form, requires Manage.
 
-Sort by:
+OR:
 
-urgency
-business date/time
-then stable priority.
+OPTION B — simpler configuration workflow:
 
-Do not hardcode module precedence unnecessarily.
+/settings/priorities/:id
+→ Edit route
+→ requires Manage
 
-==================================================
-99. ATTENTION SECURITY
-==================================================
+and View-only users stay on list/reference view.
 
-Each module contributor returns only authorized items.
+Use the approach that best matches current project architecture.
 
-Coordinator should never receive sensitive all-company data then filter in UI.
+Do NOT allow a View-only user to receive an editable Save form.
 
 ==================================================
-100. UNIVERSAL SCHEDULE
+24. APPLY TO ALL SERVICES MASTERS
 ==================================================
-
-Combine:
-
-shift/personal HR schedule
 
-approved leave/holiday context
+Audit:
 
-service visits/inspection schedule
+Service Types
 
-where relevant to the user.
+Complaint Types
 
-Company-wide users do not necessarily need every Employee's shift on their
-dashboard.
+Priorities
 
-Respect semantics.
+Ticket Types
 
-==================================================
-101. UNIVERSAL RECENT ACTIVITY
-==================================================
-
-Merge structured events chronologically.
-
-Module-specific renderer converts event metadata to localized text.
+Root Causes
 
-==================================================
-102. PROFILE / USER CONTEXT
-==================================================
+Charge Responsibilities
 
-Use current linked Employee for personal widgets.
+Material Request Purposes
 
-Do not confuse authenticated UserAccount with Employee.
+and any other currently implemented master.
 
 ==================================================
-103. NOTIFICATIONS
+25. HIGH — UNIVERSAL DASHBOARD HR CONTRIBUTION DEMO GATE
 ==================================================
-
-Do not duplicate Notification Center inside Dashboard.
-
-A small:
 
-Unread notifications count / recent important item
+Audit:
 
-may be shown if valuable.
+LocalDashboardRepository.load()
 
-Keep global bell as primary Notification Center.
+or current HR dashboard contribution repository.
 
-==================================================
-104. SYNC
-==================================================
+The audit found behavior similar to:
 
-Do not make sync status a big KPI.
+if (!demoAuthEnabled) {
+  return dashboard.demo_disabled;
+}
 
-If sync issues require user attention:
+before real workforce/dashboard data is loaded.
 
-surface compact warning.
-
-==================================================
-105. TEST — HR ONLY
-==================================================
+This means:
 
-Enable HR grants, no Services grants.
+production / non-demo mode
 
-Dashboard:
+can lose HR Universal Dashboard contribution
 
-HR content only.
+while Services dashboard contribution still works.
 
-Services queries absent.
+This must be corrected.
 
 ==================================================
-106. TEST — SERVICES ONLY
+26. UNIVERSAL DASHBOARD MUST WORK OUTSIDE DEMO AUTH
 ==================================================
-
-Services content only.
 
-No HR data leakage.
+DemoAuth may affect:
 
-==================================================
-107. TEST — EMPLOYEE BOTH MODULES
-==================================================
+authentication seed/demo login behavior.
 
-SELF HR + ASSIGNED Services.
+It must NOT disable real Dashboard domain queries.
 
-Dashboard should combine:
+Production Universal Dashboard must be able to show permitted:
 
 Attendance
 
 Leave
 
-Today's Service Work
+HR attention
 
-Inspection/Work Execution
+workforce metrics
 
-without exposing company totals.
+Services data.
 
-==================================================
-108. TEST — BROAD USER
-==================================================
-
-Broad HR + broad Services grants.
-
-Dashboard shows richer combined metrics and attention.
+Remove inappropriate demo-only gating from domain/dashboard read logic.
 
 ==================================================
-109. TEST — NO EMPLOYEE LINK
+27. PRESERVE DEMO BEHAVIOR
 ==================================================
 
-Platform/admin-style unlinked UserAccount.
+If DemoAuth needs seeded/fake identity handling:
 
-Personal Attendance/My Work hidden where Employee link is mandatory.
+keep that at authentication/bootstrap/demo-data boundary.
 
-Broad company data may still appear according to explicit grants.
-
-==================================================
-110. TEST — LIVE PERMISSION GRANT
-==================================================
-
-Grant Services permission.
-
-Services contribution appears without relogin.
+Do not gate the Dashboard feature itself.
 
 ==================================================
-111. TEST — LIVE REVOKE
-==================================================
-
-Revoke HR permission.
-
-HR-specific metric/section disappears.
-
-==================================================
-112. TEST — MODULE DISABLE
-==================================================
-
-Disable Services.
-
-Services contribution disappears.
-
-Dashboard remains functional with HR.
-
-==================================================
-113. TEST — COMPANY SWITCH
-==================================================
-
-Everything recomputes.
-
-No previous-company counts/items remain.
-
-==================================================
-114. TEST — SCOPE
+28. UNIVERSAL DASHBOARD TEST
 ==================================================
 
 Test:
 
-SELF
-ASSIGNED
-TEAM
-ALL
+DEMO_AUTH=true
 
-according to each module's actual semantics.
+and equivalent non-demo runtime.
 
-No scope escalation.
+Dashboard should load valid permitted data in both modes.
 
-==================================================
-115. TEST — DIRECT MODULE ROUTES
-==================================================
+No:
 
-Removing module dashboards must NOT break:
+dashboard.demo_disabled
 
-Employees
-
-Attendance
-
-Leave
-
-Services transaction routes.
+for a valid authenticated production session merely because DemoAuth is off.
 
 ==================================================
-116. TEST — LEGACY DASHBOARD ROUTES
+29. HIGH — PAGINATION TOTALS
 ==================================================
 
-Old dashboard URLs redirect safely.
+Audit pagination in:
 
-No redirect loops.
+Customers
 
-==================================================
-117. RESPONSIVE
-==================================================
+Sites
 
-Validate:
+Teams
 
-390
-768
-1024
-1280
-1440
-1600
-1920.
+Services Masters.
 
-==================================================
-118. DESKTOP
-==================================================
+Audit found page construction patterns similar to:
 
-Balanced 2-column composition where appropriate.
+Page(
+  items,
+  items.length,
+  items.length,
+)
 
-Same global centered width.
+which reports only the current page size.
+
+That is incorrect when the dataset exceeds one page.
 
 ==================================================
-119. MOBILE
+30. CORRECT PAGE METADATA
 ==================================================
 
-Single operational feed.
+Every paginated list should return accurate:
 
-Personal immediate actions first.
+items
+
+total
+
+filteredTotal
+
+page/pageSize where model supports it.
+
+Example:
+
+73 matching Customers
+
+page size 20
+
+page 2
+
+must report:
+
+items = 20
+
+filteredTotal = 73
+
+not:
+
+20.
 
 ==================================================
-120. DOCUMENTATION
+31. PAGINATION QUERY
 ==================================================
 
-Create/update:
+Use efficient count query.
 
-docs/architecture/universal_dashboard.md
+Do not load all records just to count.
+
+Correctly apply:
+
+company
+
+permissions/scope
+
+search
+
+filters
+
+active/status
+
+to filtered count.
+
+==================================================
+32. AUDIT TRANSACTION PAGINATION TOO
+==================================================
+
+Transaction lists may already be correct.
+
+Verify:
+
+Enquiries
+
+Assignments
+
+Inspections
+
+Material Requests
+
+Work Executions
+
+but do not rewrite correct code unnecessarily.
+
+==================================================
+33. MEDIUM — SERVICES SETTINGS NAV VISIBILITY
+==================================================
+
+Audit Services Settings navigation visibility.
+
+The audit found Settings visibility considers:
+
+Service Type
+
+Complaint Type
+
+Priority
+
+Ticket Type
+
+Material Request Purpose
+
+but may omit:
+
+Root Cause
+
+Charge Responsibility.
+
+Fix it.
+
+==================================================
+34. SETTINGS NAV RULE
+==================================================
+
+Services Settings nav should appear if the user has ANY usable Services
+configuration View/Manage permission.
+
+Include all actual implemented masters:
+
+Service Types
+
+Complaint Types
+
+Priorities
+
+Ticket Types
+
+Root Causes
+
+Charge Responsibilities
+
+Material Request Purposes
+
+and future Services masters via catalog contribution where practical.
+
+==================================================
+35. NO HARDCODED INCOMPLETE LIST
+==================================================
+
+Prefer deriving Settings visibility from permission catalog/module
+contribution instead of maintaining a manually forgotten OR-list.
+
+If current architecture makes a small explicit list cleaner, keep it but cover
+all permissions and add regression tests.
+
+==================================================
+36. TEST SETTINGS VISIBILITY
+==================================================
+
+User has ONLY:
+
+services.rootCauses.view
+
+Expected:
+
+Services Settings visible
+Root Causes accessible.
+
+User has ONLY:
+
+services.chargeResponsibilities.view
+
+Expected same.
+
+==================================================
+37. MEDIUM — LEAVE WIDGET PERMISSION ON UNIVERSAL DASHBOARD
+==================================================
+
+Audit:
+
+HrDashboardContributor
+
+LeaveTodayBanner
+
+LocalLeaveRepository.dayOverride()
+
+or equivalent.
+
+Audit found Leave Today may be displayed for any linked Employee simply because
+Leave module is enabled.
+
+This violates the rule:
+
+No permission
+→ do not query/show.
+
+==================================================
+38. LEAVE DASHBOARD PERMISSION
+==================================================
+
+Only load/show personal Leave information when user has appropriate permission,
+for example:
+
+hr.leave.self.view
+
+or actual current equivalent.
+
+Do not expose:
+
+Leave Today
+
+Balance
+
+Upcoming Leave
+
+to a linked Employee who lacks Leave View permission.
+
+==================================================
+39. REPOSITORY DEFENSE
+==================================================
+
+Where appropriate, personal leave read operations should also enforce access at
+use-case/repository boundary.
+
+Do not depend only on Dashboard contributor hiding the widget.
+
+==================================================
+40. TEST LEAVE DASHBOARD
+==================================================
+
+Employee linked + Leave module enabled + NO Leave View permission:
+
+Leave contribution absent.
+
+Grant Leave View SELF:
+
+personal Leave contribution appears.
+
+==================================================
+41. MEDIUM — SERVICE TEAM MEMBER DATA VALIDATION
+==================================================
+
+Audit:
+
+ServiceTeamRepository.saveTeam()
+
+membership writes
+
+team lead writes.
+
+Audit found member IDs may be persisted without sufficient repository-level
+workforce validation.
+
+UI selection alone is not sufficient.
+
+==================================================
+42. TEAM MEMBER VALIDATION
+==================================================
+
+Before saving Team membership validate every Employee reference:
+
+exists
+
+belongs to same company
+
+is eligible/active according to current creation/edit policy.
+
+Team lead:
+
+exists
+
+same company
+
+active
+
+and if business rule requires:
+must be included in Team membership.
+
+Use actual established ServiceTeam rules.
+
+==================================================
+43. DO NOT DIRECTLY IMPORT HR DAO
+==================================================
+
+Validate through:
+
+WorkforceDirectory
+
+or the approved cross-module workforce contract.
+
+Services must remain decoupled from HR internals.
+
+==================================================
+44. HISTORICAL EMPLOYEE RULE
+==================================================
+
+Inactive Employees may remain visible in historical Team/transaction records.
+
+But do not allow inactive Employee to be newly added to active Service Team
+unless current business rules explicitly permit it.
+
+==================================================
+45. CROSS-COMPANY PROTECTION
+==================================================
+
+Attempt to save an Employee ID belonging to another company:
+
+must reject.
+
+Do not rely on UI selector having filtered it.
+
+==================================================
+46. MEDIUM — COMPANY TIME CONSISTENCY
+==================================================
+
+Audit raw:
+
+DateTime.now()
+
+within business/dashboard paths.
+
+Known audit findings include:
+
+Universal Dashboard header
+
+Attachment creation
+
+Inspection fallback when Assignment Visit Date missing.
+
+Fix according to architecture.
+
+==================================================
+47. UNIVERSAL DASHBOARD DATE
+==================================================
+
+Dashboard "Today" / date header should use:
+
+AppClock
+
++
+CompanyTimeService
+
+not browser/device local DateTime.now().
+
+The company timezone is authoritative for business date.
+
+==================================================
+48. ATTACHMENT TIMESTAMPS
+==================================================
+
+Attachment metadata timestamps should use:
+
+AppClock
+
+or existing centralized clock abstraction
+
+for deterministic/testing consistency.
+
+If these timestamps are UTC technical timestamps:
+
+use the shared clock, store UTC.
+
+==================================================
+49. INSPECTION VISIT DATE FALLBACK
+==================================================
+
+Do NOT use:
+
+DateTime.now()
+
+as a silent replacement when required source:
+
+JobAssignment.scheduledVisitDate
+
+is missing.
+
+That invents business data.
+
+Prefer:
+
+null / missing source validation
+
+or explicit user input
+
+according to the approved Inspection workflow.
+
+If selected Assignment should always have Visit Date:
+
+reject invalid source Assignment clearly.
+
+==================================================
+50. CLOCK AUDIT
+==================================================
+
+Search Services + Universal Dashboard for raw:
+
+DateTime.now()
+
+DateTime.now().toUtc()
+
+and classify each usage.
+
+Allowed only when genuinely infrastructure-level and not already covered by
+AppClock.
+
+Business logic must use centralized time architecture.
+
+==================================================
+51. CLEANUP — OLD SERVICES DASHBOARD CUBIT
+==================================================
+
+Audit:
+
+modules/services/overview/presentation/bloc/service_dashboard_cubit.dart
+
+or current equivalent.
+
+Latest architecture uses:
+
+Universal Dashboard
+
++
+Services dashboard contributor.
+
+If old Service Dashboard Cubit/page is genuinely unused:
+
+remove dead production code.
+
+==================================================
+52. DO NOT REMOVE USEFUL QUERY LOGIC
+==================================================
+
+Before deleting:
+
+confirm no imports/references
+
+confirm no tests depend on intended public contract
+
+move reusable logic if necessary.
+
+Do not blindly delete by filename.
+
+==================================================
+53. LEGACY SERVICES OVERVIEW
+==================================================
+
+Audit any remaining:
+
+ServicesOverviewPage
+
+ServiceDashboardPage
+
+old Services Dashboard routes
+
+old dashboard BLoCs/Cubits.
+
+Universal Dashboard is the only user-facing dashboard.
+
+Remove/deprecate dead duplicates.
+
+==================================================
+54. UNIVERSAL DASHBOARD MUST REMAIN NEUTRAL
+==================================================
+
+Do not move Services dashboard logic directly into platform SQL/DAO code.
+
+Services contributor/read contract remains module-owned.
+
+HR contributor/read contract remains HR-owned.
+
+==================================================
+55. SECURITY AUDIT — ALL SERVICES MUTATIONS
+==================================================
+
+While fixing the known issues, audit every Services mutation once.
+
+For each operation answer:
+
+What permission is required?
+
+What scope is required?
+
+What object check is required?
+
+Does repository enforce it?
+
+Does route enforce it?
+
+Does UI gate it?
+
+Audit at minimum:
+
+Customer:
+create/edit/deactivate
+
+Site:
+create/edit/deactivate
+
+Team:
+create/edit/deactivate/membership
+
+Enquiry:
+create/edit/cancel
+
+Assignment:
+create/edit/cancel
+
+Inspection:
+create/edit/complete/cancel
+
+Material Request:
+create/edit/cancel/print
+
+Work Execution:
+create/edit/perform/complete/cancel
+
+Services Masters:
+view/manage.
+
+==================================================
+56. DO NOT CONFLATE MANAGE AND ALL
+==================================================
+
+A Manage/Perform/Edit permission does NOT imply ALL data.
+
+This principle must be documented and tested.
+
+==================================================
+57. SECURITY HELPER
+==================================================
+
+If many repositories contain repeated logic:
+
+create/reuse one consistent authorization helper.
+
+Conceptually:
+
+authorizeRecordAction(
+  permission: ...,
+  viewPermission: ...,
+  recordScopeContext: ...,
+)
+
+Do not create five inconsistent local implementations.
+
+==================================================
+58. OBJECT SCOPE FIRST-CLASS
+==================================================
+
+Record mutation must always evaluate object scope using the same resolver as
+record read.
+
+Example:
+
+TEAM Edit
+
+may edit only TEAM-visible record.
+
+ASSIGNED Perform
+
+may perform only ASSIGNED-visible Work Execution.
+
+==================================================
+59. PERMISSION COVERAGE DOC
+==================================================
+
+Update:
+
+docs/architecture/permission_coverage.md
+
+if present in full project.
+
+Ensure every Services action maps correctly.
+
+Especially confirm no row implies:
+
+Perform → ViewAll.
+
+==================================================
+60. ACCESS CONTROL DOC
+==================================================
 
 Document:
 
-ownership
+Action permission NEVER upgrades View scope.
 
-canonical route
-
-contributor architecture
-
-module contribution contract
-
-permission behavior
-
-scope behavior
-
-navigation behavior
-
-module landing redirects
-
-section ordering
-
-data/security responsibilities.
+This is now a hard architecture invariant.
 
 ==================================================
-121. UPDATE HR ARCHITECTURE DOCS
+61. DASHBOARD ERROR VISIBILITY
 ==================================================
 
-Any documentation claiming:
+Dashboard projection failures should not silently appear as valid zero values.
 
-Dashboard belongs to HR
+Introduce appropriate:
 
-must be updated.
+logging
 
-HR now owns:
+typed section error
 
-HR dashboard contribution
+test failure
 
-not Dashboard page.
+debug assertion
 
-==================================================
-122. UPDATE SERVICES DOCS
-==================================================
+or current project's error strategy.
 
-Same:
+User-facing production UX may still gracefully show:
 
-Services owns:
+Unable to load
 
-Services dashboard contribution
-
-not separate Dashboard/Overview page.
+but must not lie with a count of zero.
 
 ==================================================
-123. COMPLETION REPORT
+62. LOGGING
 ==================================================
 
-Report:
+Do not print sensitive data.
 
-1. previous HR dashboard ownership
+Log:
 
-2. previous Services dashboard ownership
+query/error type
 
-3. final universal dashboard owner
+projection identifier
 
-4. canonical Dashboard route
-
-5. old route redirects
-
-6. top-level navigation changes
-
-7. HR dashboard nav removal
-
-8. Services Overview/dashboard nav removal
-
-9. module contribution architecture
-
-10. HR contributor
-
-11. Services contributor
-
-12. personal/My Day section
-
-13. Attendance integration
-
-14. Leave integration
-
-15. Services My Work integration
-
-16. universal Needs Attention
-
-17. universal Schedule
-
-18. KPI composition
-
-19. universal Recent Activity
-
-20. quick actions
-
-21. permission-aware behavior
-
-22. scope-aware behavior
-
-23. Employee-link behavior
-
-24. Company switching
-
-25. live permission changes
-
-26. module enablement
-
-27. repository/query efficiency
-
-28. global centered-width compliance
-
-29. Desktop
-
-30. Mobile
-
-31. Arabic/RTL
-
-32. tests
-
-33. flutter analyze
-
-34. flutter test count/result
-
-35. Web release build.
+request/correlation context where available.
 
 ==================================================
-124. HARD STOP
+63. DATA MODEL CHANGES
 ==================================================
 
-TASK IS COMPLETE ONLY WHEN:
+This phase should NOT require a business schema migration.
 
-✓ there is exactly ONE user-facing ERP Dashboard
+Avoid schema changes unless absolutely necessary to correct a proven data
+integrity issue.
 
-✓ Dashboard is not owned by HR
+Most fixes should be:
 
-✓ Dashboard is not owned by Services
+authorization
 
-✓ HR contributes content into Universal Dashboard
+query
 
-✓ Services contributes content into Universal Dashboard
+routing
 
-✓ future modules can contribute without creating new dashboards
+repository validation
 
-✓ top-level Dashboard appears once in navigation
+navigation
 
-✓ HR Dashboard nav item is removed
+time architecture
 
-✓ Services Dashboard/Overview duplicate is removed
+cleanup.
 
-✓ existing HR business screens remain intact
+==================================================
+64. NO BUSINESS SCOPE CHANGES
+==================================================
 
-✓ existing Services business screens remain intact
+Do NOT change:
 
-✓ one canonical Dashboard route exists
+Material Received ownership
 
-✓ old dashboard routes safely redirect
+Enquiry workflow
 
-✓ user with HR only sees HR-relevant Dashboard
+Assignment workflow
 
-✓ user with Services only sees Services-relevant Dashboard
+Inspection lifecycle
 
-✓ user with both gets one combined experience
+Material Request lifecycle
 
-✓ dashboard is organized by work/attention, NOT giant module sections
+Work Execution lifecycle
 
-✓ Attendance actions reuse HR logic
+Job Order TBD
 
-✓ Services operational actions reuse Services logic
+Quotation TBD
 
-✓ permissions control every section
+Material Used Qty/UOM TBD
 
-✓ scopes control every metric/list/item
+After Photo mandatory TBD.
 
-✓ Employee link controls personal operational content
+==================================================
+65. NO UI REDESIGN
+==================================================
 
-✓ no role-based dashboards exist
+Do not redesign the forms/dashboard during this hardening pass.
 
-✓ no sensitive counts leak
+Only UI changes necessary for:
 
-✓ no cross-company data leaks
+correct permissions
 
-✓ module disablement removes its contribution
+route behavior
 
-✓ company switch recomputes Dashboard
+error display
 
-✓ live permission change recomputes Dashboard
+nav visibility
 
-✓ no HR DAO is imported by universal Dashboard
+are allowed.
 
-✓ no Services DAO is imported by universal Dashboard
+==================================================
+66. TEST — CREATE DOES NOT MEAN EDIT
+==================================================
 
-✓ modules expose clean dashboard read contracts
+Customer:
 
-✓ universal Needs Attention works
+Create-only user
 
-✓ universal Today's Schedule works
+can create.
 
-✓ universal My Day works
+Cannot edit existing.
 
-✓ universal Recent Activity works
+Cannot deactivate existing.
 
-✓ no separate HR Dashboard remains
+Same test for:
 
-✓ no separate Services Dashboard remains
+Site
 
-✓ one global centered ERP content width remains intact
+Team
 
-✓ Desktop works
+where applicable.
 
-✓ Mobile works
+==================================================
+67. TEST — EDIT DOES NOT REQUIRE CREATE
+==================================================
 
-✓ English works
+If catalog supports independent Edit permission:
 
-✓ Arabic/RTL works
+Edit-only + View user can edit existing record
 
-✓ documentation is updated
+without requiring Create.
+
+Same for appropriate domains.
+
+==================================================
+68. TEST — ROUTE GUARDS
+==================================================
+
+Directly navigate:
+
+/customers/new
+/customers/:id/edit
+/sites/new
+/sites/:id/edit
+/teams/new
+/teams/:id/edit
+
+with insufficient permissions.
+
+Expected:
+
+denied/safe route.
+
+==================================================
+69. TEST — MASTER VIEW USER
+==================================================
+
+Master View-only user:
+
+can view permitted list/details/reference values
+
+cannot receive editable Save form.
+
+==================================================
+70. TEST — MASTER MANAGE USER
+==================================================
+
+Manage user:
+
+create/edit/deactivate according to actual business rules.
+
+==================================================
+71. TEST — DASHBOARD QUERY FAILURE
+==================================================
+
+Force malformed/failed query in test.
+
+Expected:
+
+typed/error behavior
+
+NOT:
+
+successful count = 0.
+
+==================================================
+72. TEST — PAGINATION
+==================================================
+
+Seed:
+
+53 Customers
+
+page size:
+20.
+
+Expected pages:
+
+20
+20
+13
+
+total:
+53 on every page.
+
+Repeat representative test for:
+
+Sites
+
+Teams
+
+Masters.
+
+==================================================
+73. TEST — SETTINGS PERMISSION
+==================================================
+
+Root Cause-only View user sees Services Settings.
+
+Charge Responsibility-only View user sees Services Settings.
+
+No settings permission:
+
+Settings hidden.
+
+==================================================
+74. TEST — SERVICE TEAM INVALID MEMBER
+==================================================
+
+Cross-company Employee ID:
+
+reject.
+
+Unknown Employee ID:
+
+reject.
+
+Inactive Employee for new membership:
+
+reject according to current policy.
+
+==================================================
+75. TEST — COMPANY TIME
+==================================================
+
+Mock AppClock/company timezone.
+
+Verify:
+
+Dashboard today
+
+Completed Today
+
+Inspection visit handling
+
+use deterministic company time.
+
+==================================================
+76. TEST — UNIVERSAL DASHBOARD PRODUCTION MODE
+==================================================
+
+With DemoAuth disabled and valid authenticated context:
+
+HR contribution loads.
+
+Services contribution loads.
+
+No demo-disabled domain error.
+
+==================================================
+77. REGRESSION — UNIVERSAL DASHBOARD
+==================================================
+
+After fixes confirm:
+
+one Dashboard
+
+HR contributor
+
+Services contributor
+
+scope-aware data
+
+global centered width
+
+company switch
+
+live permission update
+
+all still work.
+
+==================================================
+78. REGRESSION — SERVICES WORKFLOW
+==================================================
+
+Run complete:
+
+Enquiry
+
+→ Assignment
+
+→ Inspection
+
+→ Material Request where applicable
+
+→ Work Execution
+
+to ensure hardening did not break workflow.
+
+==================================================
+79. REGRESSION — MATERIAL RECEIVED
+==================================================
+
+Verify:
+
+Enquiry remains authoritative owner.
+
+No downstream editability introduced.
+
+==================================================
+80. REGRESSION — WORK EXECUTION PERFORM
+==================================================
+
+This is a RELEASE-BLOCKING test.
+
+User:
+
+Employee A
+
+View:
+ASSIGNED
+
+Perform:
+YES.
+
+Records:
+
+WE-A assigned to Employee A
+
+WE-B assigned to Employee B.
+
+Expected:
+
+Employee A:
+
+can view WE-A
+can Start/End WE-A
+
+cannot view WE-B
+cannot Start/End WE-B
+cannot access WE-B through direct URL
+cannot access WE-B through direct use case.
+
+==================================================
+81. REGRESSION — INSPECTION COMPLETE TEAM
+==================================================
+
+TEAM user + Complete permission:
+
+can complete TEAM Inspection
+
+cannot complete unrelated Team Inspection.
+
+==================================================
+82. REGRESSION — MATERIAL REQUEST PRINT
+==================================================
+
+ASSIGNED View + Print:
+
+can print assigned Request
+
+cannot print unrelated Request.
+
+==================================================
+83. REGRESSION — COMPANY ISOLATION
+==================================================
+
+Run cross-company access tests for:
+
+Customer
+
+Site
+
+Team
+
+Enquiry
+
+Assignment
+
+Inspection
+
+Material Request
+
+Work Execution
+
+Dashboard.
+
+==================================================
+84. FULL PROJECT QUALITY GATE
+==================================================
+
+Because the previously audited ZIP contained only `lib/`, now run these checks
+against the FULL PROJECT.
+
+Run:
+
+dart format .
+
+localization generation/merge if needed
+
+build_runner if generated models changed
+
+flutter analyze
+
+flutter test
+
+flutter build web --release --dart-define=DEMO_AUTH=true
+
+AND where supported:
+
+flutter build web --release
+
+without DemoAuth define / production-equivalent configuration.
+
+==================================================
+85. DO NOT CLAIM GREEN WITHOUT RUNNING
+==================================================
+
+Report actual command results.
+
+Do not write:
+
+"should pass."
+
+Give:
+
+PASS / FAIL
+
+and actual failure summary.
+
+==================================================
+86. COMPLETION REPORT
+==================================================
+
+Return a detailed report:
+
+1. permission scope-escalation root cause
+
+2. final action-vs-view-scope architecture
+
+3. permissions/dependencies changed
+
+4. Work Execution ASSIGNED+Perform test result
+
+5. Inspection TEAM+Complete test result
+
+6. Material Request ASSIGNED+Print test result
+
+7. Customer mutation permission fix
+
+8. Site mutation permission fix
+
+9. Team mutation permission audit
+
+10. Customer/Site/Team route guard fix
+
+11. Services master route/form authorization fix
+
+12. Services Dashboard SQL bind bug root cause
+
+13. KPI queries fixed
+
+14. dashboard error handling instead of silent zero
+
+15. KPI deterministic test results
+
+16. HR Universal Dashboard DemoAuth gate fix
+
+17. production dashboard result
+
+18. pagination totals fix
+
+19. Customer pagination result
+
+20. Site pagination result
+
+21. Team pagination result
+
+22. Master pagination result
+
+23. Services Settings Root Cause visibility
+
+24. Services Settings Charge Responsibility visibility
+
+25. Leave Dashboard permission gating
+
+26. Service Team Employee validation
+
+27. cross-company Team member rejection
+
+28. CompanyTime/AppClock cleanup
+
+29. Inspection missing Visit Date behavior
+
+30. dead Services Dashboard code cleanup
+
+31. Services mutation security audit
+
+32. route-security audit
+
+33. company-isolation audit
+
+34. universal dashboard regression
+
+35. Services end-to-end regression
+
+36. tests added/updated
+
+37. flutter analyze result
+
+38. flutter test total/pass/fail
+
+39. demo Web release build result
+
+40. production-equivalent Web build result
+
+41. any genuine remaining issues.
+
+==================================================
+87. RELEASE-BLOCKING CONDITIONS
+==================================================
+
+DO NOT consider this hardening phase complete if ANY of these remain:
+
+- action permission upgrades ASSIGNED/TEAM to ALL
+
+- Create permission can Edit/Deactivate unintentionally
+
+- Customer/Site/Team mutation route can bypass required permission
+
+- View-only Services master user sees usable editable Save form
+
+- dashboard SQL exceptions silently produce fake zero counts
+
+- Universal Dashboard HR contribution only works in DemoAuth
+
+- pagination totals equal only current page length
+
+- Root Cause/Charge Responsibility-only user loses Services Settings nav
+
+- Leave data appears without Leave View permission
+
+- Service Team can persist cross-company/invalid Employee membership
+
+- business date relies on raw device time where company time is required.
+
+==================================================
+88. HARD STOP
+==================================================
+
+THIS PHASE IS COMPLETE ONLY WHEN:
+
+✓ Action permissions do NOT alter View scope
+
+✓ ASSIGNED remains ASSIGNED after Perform/Edit/Complete grants
+
+✓ TEAM remains TEAM after action grants
+
+✓ ALL only exists when explicitly granted
+
+✓ Customer Create/Edit/Deactivate are independently authorized correctly
+
+✓ Site Create/Edit/Deactivate are independently authorized correctly
+
+✓ Team mutations are correctly authorized
+
+✓ Customer mutation routes are guarded
+
+✓ Site mutation routes are guarded
+
+✓ Team mutation routes are guarded
+
+✓ repository/use-case authorization remains enforced
+
+✓ Services master View-only users never get a mutable Save experience
+
+✓ Services Dashboard queries have correct SQL binding
+
+✓ KPI query errors cannot masquerade as zero
+
+✓ real KPI deterministic tests pass
+
+✓ Universal Dashboard HR contribution works outside DemoAuth
+
+✓ pagination totals are accurate
+
+✓ Root Cause permission can expose Services Settings appropriately
+
+✓ Charge Responsibility permission can expose Services Settings appropriately
+
+✓ Leave dashboard widgets require Leave permission
+
+✓ Team Employee IDs are validated through WorkforceDirectory
+
+✓ cross-company Team membership is impossible
+
+✓ CompanyTime/AppClock is used consistently for business time
+
+✓ missing Assignment Visit Date does not silently become "now"
+
+✓ dead old Services Dashboard code is removed where truly unused
+
+✓ Universal Dashboard remains the only Dashboard
+
+✓ complete Services workflow still works
+
+✓ company isolation passes
+
+✓ live permission updates still work
+
+✓ Material Received ownership remains unchanged
+
+✓ Job Order/Quotation TBDs remain uninvented
+
+✓ no unnecessary DB migration was introduced
 
 ✓ flutter analyze passes
 
 ✓ flutter test passes
 
-✓ Web release build succeeds
+✓ demo Web build succeeds
+
+✓ production-equivalent Web build succeeds
 
 THEN STOP.
 
-DO NOT CREATE MODULE-SPECIFIC DASHBOARDS AGAIN.
+DO NOT START PHASE 8 UNTIL THIS HARDENING PHASE IS GREEN.

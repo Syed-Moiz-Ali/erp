@@ -84,9 +84,12 @@ class HrDashboardContributor implements DashboardContributor {
           context.moduleEnabled('attendance') &&
           context.can(AppPermission.attendanceViewSelf))
         const AppCard(child: AttendanceDashboardPreview()),
+      // Personal leave is shown only with the leave self-view grant; the
+      // repository also enforces this at its boundary.
       if (demoWidgets &&
           context.employeeId != null &&
           context.moduleEnabled('leave') &&
+          context.can(AppPermission.leaveViewSelf) &&
           leaveRepository != null)
         LeaveTodayBanner(repository: leaveRepository!),
     ];

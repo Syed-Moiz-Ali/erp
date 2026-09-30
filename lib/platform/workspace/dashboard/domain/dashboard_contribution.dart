@@ -260,6 +260,7 @@ class UniversalDashboardSnapshot {
   UniversalDashboardSnapshot({
     required this.contributions,
     required this.generatedAt,
+    this.today,
     this.partialFailure = false,
     this.maxKpis = 6,
     this.maxAttention = 8,
@@ -271,6 +272,11 @@ class UniversalDashboardSnapshot {
 
   final List<DashboardContribution> contributions;
   final DateTime generatedAt;
+
+  /// Company-local business date (UTC midnight) resolved through AppClock +
+  /// CompanyTimeService. Null when the composition root could not resolve a
+  /// company timezone; the header then falls back to [generatedAt].
+  final DateTime? today;
   final bool partialFailure;
   final int maxKpis, maxAttention, maxSchedule, maxWork, maxActivity;
   final int maxQuickActions;

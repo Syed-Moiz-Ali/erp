@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
@@ -26,9 +27,11 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
     super.key,
     required this.executionId,
     this.workflow,
+    this.clock = const SystemAppClock(),
   });
   final String executionId;
   final ServiceWorkflowRepository? workflow;
+  final AppClock clock;
 
   @override
   Widget build(BuildContext context) {
@@ -532,7 +535,7 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
       );
       if (code != null) continue;
       count++;
-      final now = DateTime.now();
+      final now = clock.now();
       refs.add(
         AttachmentRef(
           id: const Uuid().v4(),

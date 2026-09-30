@@ -1,4 +1,5 @@
 import 'package:modular_erp/core/utils/app_clock.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contribution.dart';
 
 /// A module-owned dashboard read contract.
@@ -33,10 +34,19 @@ abstract interface class DashboardContributor {
 /// records a partial failure and keeps every other contribution, so a broken
 /// Services read never blanks HR My Day.
 class UniversalDashboardCoordinator {
-  const UniversalDashboardCoordinator(this.contributors, {this.clock});
+  const UniversalDashboardCoordinator(
+    this.contributors, {
+    this.clock,
+    this.businessToday,
+  });
 
   final List<DashboardContributor> contributors;
   final AppClock? clock;
+
+  /// Resolves the company-local business date for the active session using the
+  /// application clock + company timezone. Injected by the composition root so
+  /// the platform dashboard stays free of any HR/time-zone dependency.
+  final DateTime? Function(AuthContext auth)? businessToday;
 
   Future<UniversalDashboardSnapshot> load(
     DashboardCapabilityContext context,
@@ -65,6 +75,7 @@ class UniversalDashboardCoordinator {
     return UniversalDashboardSnapshot(
       contributions: results,
       generatedAt: (clock ?? const SystemAppClock()).now(),
+      today: businessToday?.call(context.auth),
       partialFailure: partialFailure,
     );
   }

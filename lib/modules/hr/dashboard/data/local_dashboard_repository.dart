@@ -19,6 +19,11 @@ class LocalDashboardRepository implements DashboardRepository {
     this.corrections,
   });
   final DemoDashboardSource source;
+
+  /// Retained for composition compatibility only. DemoAuth now affects
+  /// authentication/bootstrap/demo data seeding; it must **never** disable the
+  /// real Dashboard domain read. The Dashboard queries permitted real data in
+  /// both demo and production.
   final bool demoEnabled;
   final DashboardScopeResolver scopeResolver;
   final WorkforceAttendanceReadRepository? workforce;
@@ -28,14 +33,6 @@ class LocalDashboardRepository implements DashboardRepository {
     AuthContext context, {
     bool refresh = false,
   }) async {
-    if (!demoEnabled) {
-      return const Failed(
-        Failure(
-          code: 'dashboard.demo_disabled',
-          kind: FailureKind.demoDisabled,
-        ),
-      );
-    }
     try {
       final scope = scopeResolver.resolve(context);
       var raw = source.read(scope, context.user.displayName);

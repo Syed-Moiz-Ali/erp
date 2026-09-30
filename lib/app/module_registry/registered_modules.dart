@@ -6,7 +6,9 @@ import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
@@ -104,14 +106,18 @@ ModuleRegistry createErpRegistry(
           workforce: workforceDirectory,
         )
       : null;
-  final coordinator = UniversalDashboardCoordinator([
-    HrDashboardContributor(
-      repository: dashboard,
-      leaveRepository: leaveRepository,
-    ),
-    if (servicesDashboard != null)
-      ServicesDashboardContributor(repository: servicesDashboard),
-  ]);
+  final coordinator = UniversalDashboardCoordinator(
+    [
+      HrDashboardContributor(
+        repository: dashboard,
+        leaveRepository: leaveRepository,
+      ),
+      if (servicesDashboard != null)
+        ServicesDashboardContributor(repository: servicesDashboard),
+    ],
+    clock: clock,
+    businessToday: _businessToday(clock, companyTimeService),
+  );
   late final ModuleRegistry registry;
 
   final platformModules = buildPlatformModules(
@@ -277,4 +283,25 @@ ModuleRegistry createErpRegistry(
     ),
   ]);
   return registry;
+}
+
+/// Company-local business date resolver for the universal dashboard header.
+///
+/// Uses the shared [AppClock] plus the company timezone via the HR-owned
+/// [CompanyTimeService] contract, so the header never falls back to the device
+/// local clock. Returns null when time services are unavailable.
+DateTime? Function(AuthContext auth)? _businessToday(
+  AppClock? clock,
+  CompanyTimeService? time,
+) {
+  if (clock == null || time == null) return null;
+  return (auth) {
+    final instant = clock.now().toUtc();
+    final wall = time.localWallTime(instant, auth.company.timezone);
+    if (wall is Success<DateTime>) {
+      final value = wall.value;
+      return DateTime.utc(value.year, value.month, value.day);
+    }
+    return null;
+  };
 }

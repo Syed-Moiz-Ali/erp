@@ -167,14 +167,26 @@ void main() {
       resolver.routeAccess(ServicesRoutes.workExecutionsNew, weView),
       RouteAccess.unauthorized,
     );
+    // Perform alone grants no View scope, so the record detail is denied.
     final wePerform = withPerms({AppPermission.serviceWorkExecutionPerform});
     expect(
       resolver.routeAccess(ServicesRoutes.workExecution('abc'), wePerform),
-      RouteAccess.allowed,
+      RouteAccess.unauthorized,
     );
     expect(
       resolver.routeAccess(ServicesRoutes.workExecutionEdit('abc'), wePerform),
       RouteAccess.unauthorized,
+    );
+    // A real View grant (any scope) plus Perform can open the detail.
+    expect(
+      resolver.routeAccess(
+        ServicesRoutes.workExecution('abc'),
+        withPerms({
+          AppPermission.serviceWorkExecutionViewAssigned,
+          AppPermission.serviceWorkExecutionPerform,
+        }),
+      ),
+      RouteAccess.allowed,
     );
 
     // Configuration masters: view reads, manage mutates.

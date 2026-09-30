@@ -646,6 +646,18 @@ class LocalServiceWorkExecutionRepository
         .getSingleOrNull();
   }
 
+  /// Company-scoped read used only by the create path to return the record the
+  /// caller just inserted (or an idempotent replay of it). Creating a record
+  /// does not require—and must never widen—any View scope; the record is the
+  /// caller's own new artifact.
+  Future<QueryRow?> _rawRowForCreate(AuthContext context, String id) => db
+      .customSelect(
+        'SELECT $_listColumns FROM $_table w $_listJoins '
+        'WHERE w.id=? AND w.company_id=?',
+        variables: [Variable(id), Variable(context.company.id)],
+      )
+      .getSingleOrNull();
+
   Future<ServiceWorkExecutionView> _view(
     AuthContext context,
     QueryRow row,
@@ -1503,7 +1515,7 @@ class LocalServiceWorkExecutionRepository
             effectiveRequest,
           );
           if (existingId != null) {
-            final row = await _rawRow(context, existingId);
+            final row = await _rawRowForCreate(context, existingId);
             if (row != null) return _aggregate(context, row);
           }
           final source = await _sourceContext(
@@ -1583,7 +1595,7 @@ class LocalServiceWorkExecutionRepository
           await _persistChildren(context, id, draft, now);
           final created = await _aggregate(
             context,
-            (await _rawRow(context, id))!,
+            (await _rawRowForCreate(context, id))!,
           );
           await _activity(context, created, 'services.workExecution.created');
           await _enqueue(

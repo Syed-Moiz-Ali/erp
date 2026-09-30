@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/customers/domain/service_customer.dart';
@@ -17,8 +18,13 @@ import 'package:modular_erp/shared/transactions/application/attachment_picker.da
 import 'package:modular_erp/shared/transactions/domain/attachment.dart';
 
 class ServiceEnquiryFormPage extends StatelessWidget {
-  const ServiceEnquiryFormPage({super.key, this.enquiryId});
+  const ServiceEnquiryFormPage({
+    super.key,
+    this.enquiryId,
+    this.clock = const SystemAppClock(),
+  });
   final String? enquiryId;
+  final AppClock clock;
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +304,7 @@ class ServiceEnquiryFormPage extends StatelessWidget {
         continue;
       }
       count++;
-      final now = DateTime.now();
+      final now = clock.now();
       refs.add(
         AttachmentRef(
           id: const Uuid().v4(),

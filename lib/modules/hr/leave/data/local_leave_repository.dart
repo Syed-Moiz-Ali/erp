@@ -2442,6 +2442,12 @@ ORDER BY e.first_name''',
     String employeeId,
     DateTime date,
   ) async {
+    // Personal leave overlay requires the self leave-view grant. Enforced here
+    // (not only by hiding the dashboard widget) so a direct call cannot expose
+    // leave data without permission.
+    if (!_can(context, AppPermission.leaveViewSelf)) {
+      return const Success(null);
+    }
     try {
       final day = leaveDate(date);
       final workLocationId = await _employeeWorkLocation(

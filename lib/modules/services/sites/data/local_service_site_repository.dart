@@ -29,18 +29,36 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
 
   static const _table = 'service_sites';
 
-  Failure? _access(AuthContext context, {bool manage = false}) {
-    final permission = manage
-        ? AppPermission.serviceSiteCreate
-        : AppPermission.serviceSiteView;
-    if (context.user.status != AccountStatus.active ||
-        context.user.companyId != context.company.id ||
-        !context.company.enabledModules.contains('services') ||
-        !context.user.permissions.contains(permission)) {
-      return const Failure(code: 'servicesSiteDenied');
-    }
-    return null;
-  }
+  Failure? _denied() => const Failure(code: 'servicesSiteDenied');
+
+  bool _enabled(AuthContext context) =>
+      context.user.status == AccountStatus.active &&
+      context.user.companyId == context.company.id &&
+      context.company.enabledModules.contains('services');
+
+  bool _can(AuthContext context, AppPermission permission) =>
+      context.user.permissions.contains(permission);
+
+  /// Read access requires the site View permission.
+  Failure? _viewAccess(AuthContext context) =>
+      _enabled(context) && _can(context, AppPermission.serviceSiteView)
+      ? null
+      : _denied();
+
+  /// A mutation requires its own explicit permission: create, edit and
+  /// deactivate are independently authorized. Create-only must never be able to
+  /// edit or deactivate an existing site.
+  Failure? _mutationAccess(AuthContext context, AppPermission permission) =>
+      _enabled(context) && _can(context, permission) ? null : _denied();
+
+  /// Reference lookups are shared by view and by create/edit flows.
+  Failure? _formAccess(AuthContext context) =>
+      _enabled(context) &&
+          (_can(context, AppPermission.serviceSiteView) ||
+              _can(context, AppPermission.serviceSiteCreate) ||
+              _can(context, AppPermission.serviceSiteEdit))
+      ? null
+      : _denied();
 
   ServiceSite _record(QueryRow row) => ServiceSite(
     id: row.read<String>('id'),
@@ -135,9 +153,29 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
         readsFrom: {db.serviceSites, db.serviceCustomers},
       )
       .watch()
-      .map<Result<ServiceSitePage>>((rows) {
+      .asyncMap<Result<ServiceSitePage>>((rows) async {
         final items = rows.map(_listItem).toList();
-        return Success(ServiceSitePage(items, items.length, items.length));
+        final filteredRow = await db
+            .customSelect(
+              'SELECT COUNT(*) AS c FROM $_table s '
+              'JOIN service_customers c ON c.id=s.customer_id AND c.company_id=s.company_id '
+              'WHERE ${where.sql}',
+              variables: where.variables,
+            )
+            .getSingle();
+        final totalRow = await db
+            .customSelect(
+              'SELECT COUNT(*) AS c FROM $_table s WHERE s.company_id=?',
+              variables: [Variable(context.company.id)],
+            )
+            .getSingle();
+        return Success(
+          ServiceSitePage(
+            items,
+            totalRow.read<int>('c'),
+            filteredRow.read<int>('c'),
+          ),
+        );
       })
       .transform(
         StreamTransformer<
@@ -162,7 +200,7 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
     int page = 0,
     int pageSize = 10,
   }) {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Stream.value(Failed(failure));
     return _listStream(
       context,
@@ -177,7 +215,7 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
     AuthContext context,
     String customerId,
   ) {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Stream.value(Failed(failure));
     return db
         .customSelect(
@@ -206,7 +244,7 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
 
   @override
   Stream<Result<ServiceSite?>> watchSite(AuthContext context, String id) {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Stream.value(Failed(failure));
     return db
         .customSelect(
@@ -245,7 +283,7 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
 
   @override
   Future<Result<ServiceSite?>> getSite(AuthContext context, String id) async {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Failed(failure);
     try {
       return Success(await _raw(context, id));
@@ -260,7 +298,12 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
     ServiceSiteDraft draft, {
     String? id,
   }) async {
-    final failure = _access(context, manage: true);
+    final failure = _mutationAccess(
+      context,
+      id == null
+          ? AppPermission.serviceSiteCreate
+          : AppPermission.serviceSiteEdit,
+    );
     if (failure != null) return Failed(failure);
     final siteName = draft.siteName.trim();
     final address = draft.addressLine1.trim();
@@ -379,7 +422,10 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
     String id,
     bool active,
   ) async {
-    final failure = _access(context, manage: true);
+    final failure = _mutationAccess(
+      context,
+      AppPermission.serviceSiteDeactivate,
+    );
     if (failure != null) return Failed(failure);
     try {
       await db.transaction(() async {
@@ -425,7 +471,7 @@ class LocalServiceSiteRepository implements ServiceSiteRepository {
     String? customerId,
     int limit = 50,
   }) async {
-    final failure = _access(context);
+    final failure = _formAccess(context);
     if (failure != null) return Failed(failure);
     try {
       final escaped = query.trim().toLowerCase();

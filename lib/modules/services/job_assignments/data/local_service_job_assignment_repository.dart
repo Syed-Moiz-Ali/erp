@@ -505,6 +505,16 @@ class LocalServiceJobAssignmentRepository
         .getSingleOrNull();
   }
 
+  /// Company-scoped read used only by the create path (idempotent replay).
+  /// Creation must never require or widen a View scope.
+  Future<QueryRow?> _rawRowForCreate(AuthContext context, String id) => db
+      .customSelect(
+        'SELECT $_listColumns FROM $_table a $_listJoins '
+        'WHERE a.id=? AND a.company_id=?',
+        variables: [Variable(id), Variable(context.company.id)],
+      )
+      .getSingleOrNull();
+
   Future<ServiceJobAssignmentView> _view(
     AuthContext context,
     QueryRow row,
@@ -929,7 +939,7 @@ class LocalServiceJobAssignmentRepository
             effectiveRequest,
           );
           if (existingId != null) {
-            final row = await _rawRow(context, existingId);
+            final row = await _rawRowForCreate(context, existingId);
             if (row != null) {
               return _record(
                 row,

@@ -61,6 +61,20 @@ String _editRoute(ServiceMasterKind kind, String id) => switch (kind) {
     ServicesRoutes.materialRequestPurposeEdit(id),
 };
 
+/// Read-only detail route for users who may view but not manage.
+String _detailRoute(ServiceMasterKind kind, String id) => switch (kind) {
+  ServiceMasterKind.serviceType => ServicesRoutes.serviceType(id),
+  ServiceMasterKind.complaintType => ServicesRoutes.complaintType(id),
+  ServiceMasterKind.priority => ServicesRoutes.priority(id),
+  ServiceMasterKind.ticketType => ServicesRoutes.ticketType(id),
+  ServiceMasterKind.rootCause => ServicesRoutes.rootCause(id),
+  ServiceMasterKind.chargeResponsibility => ServicesRoutes.chargeResponsibility(
+    id,
+  ),
+  ServiceMasterKind.materialRequestPurpose =>
+    ServicesRoutes.materialRequestPurpose(id),
+};
+
 class ServiceMasterListPage extends StatelessWidget {
   const ServiceMasterListPage({super.key, required this.kind});
   final ServiceMasterKind kind;
@@ -132,7 +146,11 @@ class ServiceMasterListPage extends StatelessWidget {
                           statusLabel: item.status == ConfigurationStatus.active
                               ? l.active
                               : l.inactive,
-                          onTap: () => context.go(_editRoute(kind, item.id)),
+                          onTap: () => context.go(
+                            canManage
+                                ? _editRoute(kind, item.id)
+                                : _detailRoute(kind, item.id),
+                          ),
                         ),
                       ),
                   ],
@@ -164,9 +182,14 @@ class ServiceMasterListPage extends StatelessWidget {
                           ),
                           DataCell(
                             AppTextButton(
-                              label: l.servicesEditMaster,
-                              onPressed: () =>
-                                  context.go(_editRoute(kind, item.id)),
+                              label: canManage
+                                  ? l.servicesEditMaster
+                                  : l.servicesViewMaster,
+                              onPressed: () => context.go(
+                                canManage
+                                    ? _editRoute(kind, item.id)
+                                    : _detailRoute(kind, item.id),
+                              ),
                             ),
                           ),
                         ],

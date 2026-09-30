@@ -378,6 +378,17 @@ class LocalServiceMaterialRequestRepository
         .getSingleOrNull();
   }
 
+  /// Company-scoped read used only by the create path to return the record the
+  /// caller just inserted (or an idempotent replay of it). Creation must never
+  /// require or widen a View scope.
+  Future<QueryRow?> _rawRowForCreate(AuthContext context, String id) => db
+      .customSelect(
+        'SELECT $_listColumns FROM $_table r $_listJoins '
+        'WHERE r.id=? AND r.company_id=?',
+        variables: [Variable(id), Variable(context.company.id)],
+      )
+      .getSingleOrNull();
+
   Future<ServiceMaterialRequestView> _view(
     AuthContext context,
     QueryRow row,
@@ -990,7 +1001,7 @@ class LocalServiceMaterialRequestRepository
             effectiveRequest,
           );
           if (existingId != null) {
-            final row = await _rawRow(context, existingId);
+            final row = await _rawRowForCreate(context, existingId);
             if (row != null) {
               return _record(
                 row,
@@ -1071,7 +1082,7 @@ class LocalServiceMaterialRequestRepository
             now,
           );
           final created = _record(
-            (await _rawRow(context, id))!,
+            (await _rawRowForCreate(context, id))!,
             lines: await _loadLines(context.company.id, id),
           );
           await _activity(context, created, 'services.materialRequest.created');

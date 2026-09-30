@@ -89,6 +89,20 @@ Navigation and route guards are centralized: HR destinations declare
 The `services` feature flag must be enabled for the company. Team membership never
 grants permission, and a Services permission never creates team membership.
 
+Notes:
+
+- Customer/Site mutations are independently authorized: `create`, `edit` and
+  `deactivate` each require their own grant. A create-only operator can create but
+  cannot edit or deactivate an existing record; an edit-only operator can edit
+  without holding `create`. The repository enforces this in addition to the route
+  guard and the UI.
+- The customer/site/team route guards match the repository: list/detail → View,
+  `/new` → Create, `/:id/edit` → Edit (Manage for teams).
+- **Services master routes are read-only on `/:id`.** Plain
+  `/app/services/settings/<master>/:id` renders a read-only detail (no Save
+  action) and requires only View; the editable form lives on `/:id/edit` and
+  requires Manage. A View-only user can never receive an editable Save form.
+
 ## Services (Phase 2 — Service Enquiry)
 
 | Permission | Scope | Nav | Route | Read | Action | Mutation |
@@ -124,8 +138,13 @@ Notes:
 
 Notes:
 
-- `create`/`edit`/`cancel` imply `serviceJobAssignmentViewAll` through
-  `permissionViewDependencies` (coordinators who assign operate company-wide).
+- `create`/`edit`/`cancel` imply **no** view scope. Record visibility comes only
+  from the explicitly granted `services.jobAssignments.view` (`assigned`/`team`/
+  `all`). A record-targeted action (`edit`/`cancel`) is usable only when a real
+  View grant exists and the record lies inside that actual scope, so
+  `ASSIGNED`/`TEAM` can never become `ALL` because a user also holds an action.
+  `create` uses the company-scoped restricted reference lookups, so a create-only
+  operator can still create without a View grant.
 - Record scope is resolved by `ServiceJobAssignmentScopeResolver` via the shared
   `AccessScopeResolver` (`all > team > assigned`): ASSIGNED = the linked employee
   is directly on a line or belongs to an assigned Service Team; TEAM = the linked
@@ -152,10 +171,12 @@ Notes:
 
 Notes:
 
-- Create/Edit/Complete/Cancel imply `serviceInspectionViewAll` via
-  `permissionViewDependencies`. Record scope via `ServiceInspectionScopeResolver`
-  (ASSIGNED = technician or directly assigned on the source assignment or in an
-  assigned Service Team; TEAM never ALL; ALL = company).
+- Create/Edit/Complete/Cancel imply **no** view scope. Record visibility comes
+  only from the explicit `services.inspections.view` grant; a record-targeted
+  action can operate only on a record inside the actual scope (ASSIGNED =
+  technician or directly assigned on the source assignment or in an assigned
+  Service Team; TEAM never ALL; ALL = company). `create` uses the company-scoped
+  restricted lookups and needs no View grant.
 - Restricted Assignment/Employee/Team lookups are authorized by Inspection
   Create/Edit, never by broad Job Assignment/HR/Team directory access.
 - Before-work photo access inherits the owning Inspection (no attachment-id bypass).
@@ -175,11 +196,12 @@ Notes:
 
 Notes:
 
-- Create/Edit/Cancel/Print imply `serviceMaterialRequestViewAll` via
-  `permissionViewDependencies`. Record scope via
-  `ServiceMaterialRequestScopeResolver` (ASSIGNED = Inspection technician or
+- Create/Edit/Cancel/Print imply **no** view scope. Record visibility comes only
+  from the explicit `services.materialRequests.view` grant; an action can operate
+  only on a record inside the actual scope (ASSIGNED = Inspection technician or
   directly assigned on the source assignment or in an assigned Service Team; TEAM
-  never ALL; ALL = company).
+  never ALL; ALL = company). `create` uses the company-scoped restricted lookups
+  and needs no View grant.
 - Restricted eligible-Inspection lookups are authorized by Material Request Create,
   never by broad Inspection access.
 - Direct print invocation enforces View + Print + object scope.
@@ -198,11 +220,13 @@ Notes:
 
 Notes:
 
-- Create/Edit/Perform/Complete/Cancel imply `serviceWorkExecutionViewAll` via
-  `permissionViewDependencies`. Record scope via
-  `ServiceWorkExecutionScopeResolver` (ASSIGNED = directly on a work line, on the
-  source Job Assignment line, the source Inspection technician, or in an assigned
-  Service Team; TEAM never ALL; ALL = company).
+- Create/Edit/Perform/Complete/Cancel imply **no** view scope. Record visibility
+  comes only from the explicit `services.workExecutions.view` grant; an action can
+  operate only on a record inside the actual scope (ASSIGNED = directly on a work
+  line, on the source Job Assignment line, the source Inspection technician, or in
+  an assigned Service Team; TEAM never ALL; ALL = company). `create` uses the
+  company-scoped restricted lookups and needs no View grant, so a create-only
+  operator can create without ever seeing the company list.
 - **Edit and Perform are separate**: structural edits require `edit`; Start/End,
   Material Used and After Work Photos require `perform`. Both are enforced in the
   UI and in use-case/repository authorization.
@@ -267,8 +291,14 @@ Enforcement rules:
 
 ## Notes
 
-- `*Manage` implies `*View` through `permissionViewDependencies` (single
-  normalization point), so a manage-only grant never hides its screen.
+- **Hard invariant: an action permission NEVER upgrades View scope.** Only
+  scope-less `*Manage` configuration permissions imply their `*View` through
+  `permissionViewDependencies` (single normalization point). Scoped transaction
+  actions (`services.jobAssignments.*`, `services.inspections.*`,
+  `services.materialRequests.*`, `services.workExecutions.*`) imply no view at
+  all. No row in this matrix maps Perform/Edit/Complete/Cancel/Print to a
+  `*ViewAll` grant; `ASSIGNED` stays `ASSIGNED`, `TEAM` stays `TEAM`, and `ALL`
+  exists only when explicitly granted.
 - Scope is encoded in the granted `PermissionScope` and resolved by the module
   scope resolvers, so `TEAM` never behaves like `ALL`.
 - Access management is itself permission-gated and self-escalation protected.

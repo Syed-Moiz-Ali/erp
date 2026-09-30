@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/domain/contracts/workforce_directory.dart';
@@ -24,10 +25,12 @@ class ServiceWorkExecutionFormPage extends StatefulWidget {
     this.executionId,
     this.teamRepository,
     this.workforce,
+    this.clock = const SystemAppClock(),
   });
   final String? executionId;
   final ServiceTeamRepository? teamRepository;
   final WorkforceDirectory? workforce;
+  final AppClock clock;
 
   @override
   State<ServiceWorkExecutionFormPage> createState() =>
@@ -540,7 +543,7 @@ class _ServiceWorkExecutionFormPageState
       );
       if (code != null) continue;
       count++;
-      final now = DateTime.now();
+      final now = widget.clock.now();
       refs.add(
         AttachmentRef(
           id: const Uuid().v4(),

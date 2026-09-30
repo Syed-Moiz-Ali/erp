@@ -19,6 +19,20 @@ import 'package:modular_erp/modules/services/work_executions/domain/service_work
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 
+/// Raised when a dashboard projection query fails (bad SQL, missing table,
+/// binding mismatch). It is intentionally **not** swallowed into a zero count:
+/// a genuine failure must surface as a dashboard section error/`partialFailure`
+/// rather than silently reporting an incorrect KPI of `0`.
+class ServicesDashboardQueryException implements Exception {
+  const ServicesDashboardQueryException(this.projection);
+
+  /// Non-sensitive projection identifier (e.g. `scheduledAssignments`).
+  final String projection;
+
+  @override
+  String toString() => 'ServicesDashboardQueryException($projection)';
+}
+
 /// Read-only, permission/scope-aware Services dashboard projection.
 ///
 /// The dashboard is assembled from a fixed set of batched, scope-filtered SQL
@@ -145,8 +159,9 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
     if (canEnquiries) {
       openEnquiries = await _count(
+        'openEnquiries',
         'SELECT COUNT(*) AS c FROM service_enquiries e '
-        "WHERE e.company_id=? AND e.status='open'",
+            "WHERE e.company_id=? AND e.status='open'",
         [Variable(company)],
       );
       stages.add(
@@ -162,8 +177,9 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
     if (canAssignments) {
       scheduledAssignments = await _count(
+        'scheduledAssignments',
         'SELECT COUNT(*) AS c FROM service_job_assignments a '
-        "WHERE ${_assignmentScope(context, 'a').sql} AND a.status='active'",
+            "WHERE ${_assignmentScope(context, 'a').sql} AND a.status=?",
         [
           ..._assignmentScope(context, 'a').vars,
           Variable(ServiceJobAssignmentStatus.active.wire),
@@ -189,8 +205,9 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
     if (canInspections) {
       pendingInspections = await _count(
+        'pendingInspections',
         'SELECT COUNT(*) AS c FROM service_inspections i '
-        "WHERE ${_inspectionScope(context, 'i').sql} AND i.status='pending'",
+            "WHERE ${_inspectionScope(context, 'i').sql} AND i.status=?",
         [
           ..._inspectionScope(context, 'i').vars,
           Variable(ServiceInspectionStatus.pending.wire),
@@ -220,8 +237,9 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
     if (canMaterial) {
       openMaterial = await _count(
+        'openMaterialRequests',
         'SELECT COUNT(*) AS c FROM service_material_requests r '
-        "WHERE ${_materialScope(context, 'r').sql} AND r.status='open'",
+            "WHERE ${_materialScope(context, 'r').sql} AND r.status=?",
         [..._materialScope(context, 'r').vars, Variable('open')],
       );
       stages.add(
@@ -236,13 +254,15 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
     if (canExecutions) {
       final scope = _executionScope(context, 'w');
       inProgress = await _count(
+        'workInProgress',
         'SELECT COUNT(*) AS c FROM service_work_executions w '
-        "WHERE ${scope.sql} AND w.status='inProgress'",
+            "WHERE ${scope.sql} AND w.status=?",
         [...scope.vars, Variable('inProgress')],
       );
       completedToday = await _count(
+        'completedToday',
         'SELECT COUNT(*) AS c FROM service_work_executions w '
-        "WHERE ${scope.sql} AND w.status='completed' AND w.execution_date=?",
+            "WHERE ${scope.sql} AND w.status=? AND w.execution_date=?",
         [...scope.vars, Variable('completed'), Variable(today)],
       );
       stages.add(
@@ -1236,12 +1256,19 @@ class LocalServicesDashboardRepository implements ServicesDashboardRepository {
 
   // ---------------------------------------------------------------- helpers
 
-  Future<int> _count(String sql, List<Variable> vars) async {
+  /// Executes a `SELECT COUNT(*) AS c` projection.
+  ///
+  /// A genuine empty result is a successful query returning `0`. A failed query
+  /// (bad SQL, a binding mismatch, a missing table) is a programmer/IO error and
+  /// must NOT masquerade as a valid zero: it is rethrown as a typed
+  /// [ServicesDashboardQueryException] so the dashboard degrades to a section
+  /// error instead of lying with a count of zero.
+  Future<int> _count(String projection, String sql, List<Variable> vars) async {
     try {
       final row = await _db.customSelect(sql, variables: vars).getSingle();
       return row.read<int>('c');
     } catch (_) {
-      return 0;
+      throw ServicesDashboardQueryException(projection);
     }
   }
 

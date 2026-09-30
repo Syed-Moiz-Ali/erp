@@ -124,9 +124,27 @@ class LocalServiceMasterRepository implements ServiceMasterRepository {
           readsFrom: {_tableFor(kind)},
         )
         .watch()
-        .map<Result<ServiceMasterPage>>((rows) {
+        .asyncMap<Result<ServiceMasterPage>>((rows) async {
           final items = [for (final row in rows) _record(kind, row)];
-          return Success(ServiceMasterPage(items, items.length, items.length));
+          final filteredRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM ${kind.table} WHERE ${parts.join(' AND ')}',
+                variables: variables,
+              )
+              .getSingle();
+          final totalRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM ${kind.table} WHERE company_id=?',
+                variables: [Variable(context.company.id)],
+              )
+              .getSingle();
+          return Success(
+            ServiceMasterPage(
+              items,
+              totalRow.read<int>('c'),
+              filteredRow.read<int>('c'),
+            ),
+          );
         })
         .transform(
           StreamTransformer<

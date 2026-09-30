@@ -197,11 +197,18 @@ List<AppModule> buildServicesModules({
               builder: (context, state) {
                 final account = context.read<AuthBloc>().state.context!;
                 final masterId = state.pathParameters['id']!;
+                // Read-only detail: a View-only user must never receive an
+                // editable Save form. Editing lives on the `/edit` child route
+                // which the route guard restricts to Manage.
                 return BlocProvider(
                   create: (_) =>
                       ServiceMasterFormCubit(masters, kind, account, masterId)
                         ..init(),
-                  child: ServiceMasterFormPage(kind: kind, id: masterId),
+                  child: ServiceMasterFormPage(
+                    kind: kind,
+                    id: masterId,
+                    readOnly: true,
+                  ),
                 );
               },
               routes: [
@@ -334,7 +341,6 @@ List<AppModule> buildServicesModules({
                 AppPermission.serviceJobAssignmentViewAssigned,
                 AppPermission.serviceJobAssignmentViewTeam,
                 AppPermission.serviceJobAssignmentViewAll,
-                AppPermission.serviceJobAssignmentCreate,
               },
             ),
             (context) {
@@ -430,7 +436,6 @@ List<AppModule> buildServicesModules({
                 AppPermission.serviceInspectionViewAssigned,
                 AppPermission.serviceInspectionViewTeam,
                 AppPermission.serviceInspectionViewAll,
-                AppPermission.serviceInspectionCreate,
               },
             ),
             (context) {
@@ -523,7 +528,6 @@ List<AppModule> buildServicesModules({
                 AppPermission.serviceMaterialRequestViewAssigned,
                 AppPermission.serviceMaterialRequestViewTeam,
                 AppPermission.serviceMaterialRequestViewAll,
-                AppPermission.serviceMaterialRequestCreate,
               },
             ),
             (context) {
@@ -635,7 +639,6 @@ List<AppModule> buildServicesModules({
                 AppPermission.serviceWorkExecutionViewAssigned,
                 AppPermission.serviceWorkExecutionViewTeam,
                 AppPermission.serviceWorkExecutionViewAll,
-                AppPermission.serviceWorkExecutionCreate,
               },
             ),
             (context) {
@@ -942,11 +945,17 @@ List<AppModule> buildServicesModules({
             route: ServicesRoutes.settings,
             navigationGroup: NavigationGroup.services,
             order: 9,
+            // Derived from every implemented Services master's View grant so a
+            // user with only one master View (including Root Cause or Charge
+            // Responsibility) still sees Services Settings. The Settings page
+            // itself renders only the master rows the user may view.
             anyPermissions: {
               AppPermission.serviceTypeView,
               AppPermission.complaintTypeView,
               AppPermission.servicePriorityView,
               AppPermission.serviceTicketTypeView,
+              AppPermission.serviceRootCauseView,
+              AppPermission.serviceChargeResponsibilityView,
               AppPermission.serviceMaterialRequestPurposeView,
             },
           ),

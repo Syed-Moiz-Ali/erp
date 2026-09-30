@@ -5587,6 +5587,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get servicesEditMaster => 'Edit';
 
   @override
+  String get servicesViewMaster => 'View';
+
+  @override
   String get servicesMasterCode => 'Code';
 
   @override

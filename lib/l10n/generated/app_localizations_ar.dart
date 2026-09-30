@@ -5503,6 +5503,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get servicesEditMaster => 'تعديل';
 
   @override
+  String get servicesViewMaster => 'عرض';
+
+  @override
   String get servicesMasterCode => 'الرمز';
 
   @override

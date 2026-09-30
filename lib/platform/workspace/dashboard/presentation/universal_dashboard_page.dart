@@ -213,7 +213,9 @@ class _ContextRow extends StatelessWidget {
       AppStatusBadge(
         label: [
           l.universalDashboardToday,
-          AppDateFormatter(locale).date(DateTime.now()),
+          // Company-local business date from AppClock + CompanyTimeService,
+          // never the device's raw local clock.
+          AppDateFormatter(locale).date(snapshot.today ?? snapshot.generatedAt),
         ].join(' · '),
         status: AppStatus.neutral,
         icon: Icons.calendar_today_outlined,

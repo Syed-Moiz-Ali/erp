@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/services/inspections/domain/service_inspection.dart';
@@ -15,8 +16,13 @@ import 'package:modular_erp/shared/transactions/domain/attachment.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 class ServiceInspectionFormPage extends StatelessWidget {
-  const ServiceInspectionFormPage({super.key, this.inspectionId});
+  const ServiceInspectionFormPage({
+    super.key,
+    this.inspectionId,
+    this.clock = const SystemAppClock(),
+  });
   final String? inspectionId;
+  final AppClock clock;
 
   @override
   Widget build(BuildContext context) {
@@ -416,7 +422,7 @@ class ServiceInspectionFormPage extends StatelessWidget {
       );
       if (code != null) continue;
       count++;
-      final now = DateTime.now();
+      final now = clock.now();
       refs.add(
         AttachmentRef(
           id: const Uuid().v4(),

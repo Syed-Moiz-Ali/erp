@@ -1785,6 +1785,7 @@
   "servicesTicketTypesTitle": "أنواع التذاكر",
   "servicesAddMaster": "إضافة",
   "servicesEditMaster": "تعديل",
+  "servicesViewMaster": "عرض",
   "servicesMasterCode": "الرمز",
   "servicesMasterName": "الاسم",
   "servicesMasterDescription": "الوصف",

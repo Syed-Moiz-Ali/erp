@@ -516,6 +516,16 @@ class LocalServiceInspectionRepository implements ServiceInspectionRepository {
         .getSingleOrNull();
   }
 
+  /// Company-scoped read used only by the create path (idempotent replay).
+  /// Creation must never require or widen a View scope.
+  Future<QueryRow?> _rawRowForCreate(AuthContext context, String id) => db
+      .customSelect(
+        'SELECT $_listColumns FROM $_table i $_listJoins '
+        'WHERE i.id=? AND i.company_id=?',
+        variables: [Variable(id), Variable(context.company.id)],
+      )
+      .getSingleOrNull();
+
   Future<ServiceInspectionView> _view(AuthContext context, QueryRow row) async {
     final id = row.read<String>('id');
     final children = await _loadChildren(context.company.id, id);
@@ -791,6 +801,11 @@ class LocalServiceInspectionRepository implements ServiceInspectionRepository {
     if (enquiry == null) return null;
     final lines = await _assignmentLines(companyId, assignmentId);
     final technicians = await _eligibleTechnicians(companyId, lines);
+    // A Job Assignment always carries a scheduled visit date. If it is missing
+    // the source is invalid and must be rejected explicitly rather than
+    // silently substituted with the current time (which would invent data).
+    final scheduledVisitDate = await _assignmentVisit(companyId, assignmentId);
+    if (scheduledVisitDate == null) return null;
     final snapshot = _snapshot(enquiry.readNullable<String>('party_snapshot'));
     final priorityId = enquiry.readNullable<String>('priority_id');
     final rankRow = priorityId == null
@@ -824,9 +839,9 @@ class LocalServiceInspectionRepository implements ServiceInspectionRepository {
       ),
       partySnapshot: snapshot,
       scheduledVisitDate: DateTime.utc(
-        (await _assignmentVisit(companyId, assignmentId)).year,
-        (await _assignmentVisit(companyId, assignmentId)).month,
-        (await _assignmentVisit(companyId, assignmentId)).day,
+        scheduledVisitDate.year,
+        scheduledVisitDate.month,
+        scheduledVisitDate.day,
       ),
       workLines: lines,
       eligibleTechnicians: technicians,
@@ -843,15 +858,14 @@ class LocalServiceInspectionRepository implements ServiceInspectionRepository {
     return row?.read<String>('assignment_number') ?? '';
   }
 
-  Future<DateTime> _assignmentVisit(String companyId, String id) async {
+  Future<DateTime?> _assignmentVisit(String companyId, String id) async {
     final row = await db
         .customSelect(
           'SELECT scheduled_visit_date FROM service_job_assignments WHERE company_id=? AND id=?',
           variables: [Variable(companyId), Variable(id)],
         )
         .getSingleOrNull();
-    return row?.read<DateTime>('scheduled_visit_date').toUtc() ??
-        DateTime.now();
+    return row?.read<DateTime>('scheduled_visit_date').toUtc();
   }
 
   @override
@@ -1168,7 +1182,7 @@ class LocalServiceInspectionRepository implements ServiceInspectionRepository {
             effectiveRequest,
           );
           if (existingId != null) {
-            final row = await _rawRow(context, existingId);
+            final row = await _rawRowForCreate(context, existingId);
             if (row != null) {
               final children = await _loadChildren(
                 context.company.id,

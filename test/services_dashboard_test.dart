@@ -9,7 +9,6 @@ import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
 import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
 import 'package:modular_erp/modules/services/overview/data/local_services_dashboard_repository.dart';
 import 'package:modular_erp/modules/services/overview/domain/services_dashboard.dart';
-import 'package:modular_erp/modules/services/overview/presentation/bloc/service_dashboard_cubit.dart';
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
@@ -368,21 +367,13 @@ void main() {
   test('a live grant change recomputes the dashboard', () async {
     await seedWorkflow();
     final restricted = _ctx(permissions: {AppPermission.serviceEnquiryView});
-    final cubit = ServiceDashboardCubit(repository, restricted)..start();
-    addTearDown(cubit.close);
-    await _waitUntil(() => cubit.state.snapshot != null);
-    expect(cubit.state.snapshot!.canViewAssignments, isFalse);
+    final restrictedSnapshot = await repository.load(restricted);
+    expect(restrictedSnapshot.canViewAssignments, isFalse);
 
-    cubit.updateContext(_ctx(permissions: _allServices));
-    await _waitUntil(() => cubit.state.snapshot?.canViewAssignments == true);
-    expect(cubit.state.snapshot!.canViewWorkExecutions, isTrue);
+    // The universal dashboard re-loads with the refreshed AuthContext, so the
+    // same projection must reflect the new grants without a repository rebuild.
+    final granted = await repository.load(_ctx(permissions: _allServices));
+    expect(granted.canViewAssignments, isTrue);
+    expect(granted.canViewWorkExecutions, isTrue);
   });
-}
-
-Future<void> _waitUntil(bool Function() predicate) async {
-  for (var i = 0; i < 200; i++) {
-    if (predicate()) return;
-    await Future<void>.delayed(const Duration(milliseconds: 5));
-  }
-  fail('condition not reached in time');
 }

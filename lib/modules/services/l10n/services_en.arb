@@ -187,6 +187,7 @@
   "servicesTicketTypesTitle": "Ticket types",
   "servicesAddMaster": "Add",
   "servicesEditMaster": "Edit",
+  "servicesViewMaster": "View",
   "servicesMasterCode": "Code",
   "servicesMasterName": "Name",
   "servicesMasterDescription": "Description",

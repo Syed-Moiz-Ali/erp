@@ -83,6 +83,33 @@ permissions with the linked-employee state. ALL visibility never implies a SELF
 action: an unlinked user with `hr.leave.records.view`/ALL does **not** gain
 "request my leave".
 
+## Action vs View scope (hard invariant)
+
+**An action permission NEVER upgrades View scope.** Action identity (create,
+edit, complete, cancel, print, perform) is orthogonal to record visibility.
+Record visibility comes exclusively from the explicitly granted
+`*ViewAssigned` / `*ViewTeam` / `*ViewAll` permission, resolved by the module
+scope resolver.
+
+Consequences that are enforced and tested:
+
+- `services.workExecutions.view = ASSIGNED` plus
+  `services.workExecutions.perform = granted` means the user may perform work only
+  on Work Executions visible inside the **ASSIGNED** scope. It must never mean the
+  user can view or act on all company Work Executions.
+- `ASSIGNED` stays `ASSIGNED` and `TEAM` stays `TEAM` after any number of action
+  grants; `ALL` exists only when a `*ViewAll` grant is explicitly present.
+- The dependency mechanism (`permissionViewDependencies`) may only make a
+  scope-less `*Manage` configuration grant imply its `*View`. Scoped transaction
+  actions are deliberately absent from that map.
+- Every record mutation evaluates object scope with the **same** resolver as
+  record read (`_rawRow` applies the scope clause), so an action targeting a
+  record outside the actual View scope is not found/denied.
+- Action-only grants never widen visibility. Where a flow needs to operate without
+  a View grant (notably `create`), it uses company-scoped restricted reference
+  lookups and returns only the record the caller just created — it never reads the
+  company list.
+
 ## Company modules vs user permissions
 
 Module entitlement (does the company have HR/Services/Inventory/Finance?) is

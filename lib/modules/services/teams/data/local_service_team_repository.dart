@@ -123,7 +123,25 @@ class LocalServiceTeamRepository implements ServiceTeamRepository {
                 updatedAt: row.read<DateTime>('updated_at').toUtc(),
               ),
           ];
-          return Success(ServiceTeamPage(items, items.length, items.length));
+          final filteredRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM service_teams t WHERE ${parts.join(' AND ')}',
+                variables: variables,
+              )
+              .getSingle();
+          final totalRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM service_teams t WHERE t.company_id=?',
+                variables: [Variable(context.company.id)],
+              )
+              .getSingle();
+          return Success(
+            ServiceTeamPage(
+              items,
+              totalRow.read<int>('c'),
+              filteredRow.read<int>('c'),
+            ),
+          );
         })
         .transform(
           StreamTransformer<
@@ -206,6 +224,15 @@ class LocalServiceTeamRepository implements ServiceTeamRepository {
     final lead = draft.leadEmployeeId;
     if (lead != null && lead.isNotEmpty) members.add(lead);
     try {
+      // Repository-level workforce validation: UI selection is not sufficient.
+      // Every member and the lead must resolve through the company-scoped
+      // WorkforceDirectory contract (never an HR DAO). Unknown/cross-company
+      // ids and newly-added inactive employees are rejected. Inactive employees
+      // already on the team stay valid for historical membership.
+      final previousMembers = id == null
+          ? const <String>{}
+          : await _memberIds(context.company.id, id);
+      await _validateMembers(context, members, previousMembers);
       return Success(
         await db.transaction(() async {
           final now = clock.now();
@@ -441,6 +468,36 @@ class LocalServiceTeamRepository implements ServiceTeamRepository {
       ]);
     } catch (_) {
       return const Failed(Failure(code: 'servicesStorage'));
+    }
+  }
+
+  Future<Set<String>> _memberIds(String companyId, String teamId) async {
+    final rows = await db
+        .customSelect(
+          'SELECT employee_id FROM service_team_members WHERE company_id=? AND team_id=?',
+          variables: [Variable(companyId), Variable(teamId)],
+        )
+        .get();
+    return {for (final row in rows) row.read<String>('employee_id')};
+  }
+
+  Future<void> _validateMembers(
+    AuthContext context,
+    Set<String> memberIds,
+    Set<String> previousMembers,
+  ) async {
+    for (final employeeId in memberIds) {
+      if (employeeId.trim().isEmpty) continue;
+      final ref = await directory.getEmployeeReference(
+        employeeId,
+        includeInactive: true,
+      );
+      if (ref == null) {
+        throw const _TeamException('servicesTeamMemberUnknown');
+      }
+      if (!ref.isActive && !previousMembers.contains(employeeId)) {
+        throw const _TeamException('servicesTeamMemberInactive');
+      }
     }
   }
 

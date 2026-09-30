@@ -10682,6 +10682,12 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get servicesEditMaster;
 
+  /// No description provided for @servicesViewMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get servicesViewMaster;
+
   /// No description provided for @servicesMasterCode.
   ///
   /// In en, this message translates to:

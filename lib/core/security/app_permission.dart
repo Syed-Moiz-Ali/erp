@@ -117,6 +117,18 @@ enum AppPermission {
 /// Manage authority implies the matching view authority so a manage-only grant
 /// can never hide the screen it administers. Centralized here so no widget,
 /// route or template needs to special-case view/manage pairs.
+///
+/// HARD INVARIANT: **an action permission NEVER upgrades the View scope.**
+///
+/// Only `*Manage`-style structural configuration permissions (whose View grant
+/// is scope-less, `PermissionScope.none`) may imply their View. Scoped
+/// transaction actions (create/edit/complete/cancel/print/perform) deliberately
+/// imply **no** View permission at all: record visibility is resolved solely
+/// from the explicitly granted `*ViewAssigned`/`*ViewTeam`/`*ViewAll`
+/// permission. A record-targeted action is therefore usable only when a real
+/// View grant exists *and* the record lies inside that actual scope, so
+/// `ASSIGNED` can never silently become `ALL` because a user also holds
+/// `perform`/`edit`/`complete`/`print`.
 const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.shiftManage: AppPermission.shiftView,
   AppPermission.workLocationManage: AppPermission.workLocationView,
@@ -129,53 +141,24 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.complaintTypeManage: AppPermission.complaintTypeView,
   AppPermission.servicePriorityManage: AppPermission.servicePriorityView,
   AppPermission.serviceTicketTypeManage: AppPermission.serviceTicketTypeView,
-  // Edit/Cancel need record visibility to target an Enquiry; normalize centrally.
-  // Create deliberately does NOT imply View (create-only stays usable through the
-  // restricted reference lookups + Overview New Enquiry action).
-  AppPermission.serviceEnquiryEdit: AppPermission.serviceEnquiryView,
-  AppPermission.serviceEnquiryCancel: AppPermission.serviceEnquiryView,
-  // Create/Edit/Cancel need enough visibility to use the resulting transaction.
-  // Coordinators who assign work operate company-wide, so the action permissions
-  // normalize to the ALL view scope.
-  AppPermission.serviceJobAssignmentCreate:
-      AppPermission.serviceJobAssignmentViewAll,
-  AppPermission.serviceJobAssignmentEdit:
-      AppPermission.serviceJobAssignmentViewAll,
-  AppPermission.serviceJobAssignmentCancel:
-      AppPermission.serviceJobAssignmentViewAll,
   AppPermission.serviceRootCauseManage: AppPermission.serviceRootCauseView,
   AppPermission.serviceChargeResponsibilityManage:
       AppPermission.serviceChargeResponsibilityView,
-  // Create/Edit/Complete/Cancel need enough visibility to use the transaction.
-  AppPermission.serviceInspectionCreate: AppPermission.serviceInspectionViewAll,
-  AppPermission.serviceInspectionEdit: AppPermission.serviceInspectionViewAll,
-  AppPermission.serviceInspectionComplete:
-      AppPermission.serviceInspectionViewAll,
-  AppPermission.serviceInspectionCancel: AppPermission.serviceInspectionViewAll,
   AppPermission.serviceMaterialRequestPurposeManage:
       AppPermission.serviceMaterialRequestPurposeView,
-  // Create/Edit/Cancel/Print need enough visibility to use the transaction.
-  AppPermission.serviceMaterialRequestCreate:
-      AppPermission.serviceMaterialRequestViewAll,
-  AppPermission.serviceMaterialRequestEdit:
-      AppPermission.serviceMaterialRequestViewAll,
-  AppPermission.serviceMaterialRequestCancel:
-      AppPermission.serviceMaterialRequestViewAll,
-  AppPermission.serviceMaterialRequestPrint:
-      AppPermission.serviceMaterialRequestViewAll,
-  // Create/Edit/Perform/Complete/Cancel need enough visibility to use the
-  // transaction. Operational field work normalizes to the ALL view scope so a
-  // performer can always open the record they act on.
-  AppPermission.serviceWorkExecutionCreate:
-      AppPermission.serviceWorkExecutionViewAll,
-  AppPermission.serviceWorkExecutionEdit:
-      AppPermission.serviceWorkExecutionViewAll,
-  AppPermission.serviceWorkExecutionPerform:
-      AppPermission.serviceWorkExecutionViewAll,
-  AppPermission.serviceWorkExecutionComplete:
-      AppPermission.serviceWorkExecutionViewAll,
-  AppPermission.serviceWorkExecutionCancel:
-      AppPermission.serviceWorkExecutionViewAll,
+  // Enquiry actions need record visibility to target an Enquiry; the Enquiry
+  // view grant is scope-less (company-wide), so this cannot widen a scope.
+  // Create deliberately does NOT imply View (create-only stays usable through
+  // the restricted reference lookups + Overview New Enquiry action).
+  AppPermission.serviceEnquiryEdit: AppPermission.serviceEnquiryView,
+  AppPermission.serviceEnquiryCancel: AppPermission.serviceEnquiryView,
+  // The four scoped Services transaction actions below intentionally have NO
+  // dependency. Their record visibility comes exclusively from the real View
+  // grant resolved by the module scope resolvers:
+  //   serviceJobAssignments.{create,edit,cancel}
+  //   serviceInspections.{create,edit,complete,cancel}
+  //   serviceMaterialRequests.{create,edit,cancel,print}
+  //   serviceWorkExecutions.{create,edit,perform,complete,cancel}
 };
 
 /// Expands a raw grant set so that every `*Manage` grant carries its `*View`

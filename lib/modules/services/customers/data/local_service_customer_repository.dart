@@ -27,18 +27,37 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
   final ActivityRepository activity;
   final Uuid _uuid;
 
-  Failure? _access(AuthContext context, {bool manage = false}) {
-    final permission = manage
-        ? AppPermission.serviceCustomerCreate
-        : AppPermission.serviceCustomerView;
-    if (context.user.status != AccountStatus.active ||
-        context.user.companyId != context.company.id ||
-        !context.company.enabledModules.contains('services') ||
-        !context.user.permissions.contains(permission)) {
-      return const Failure(code: 'servicesCustomerDenied');
-    }
-    return null;
-  }
+  Failure? _denied() => const Failure(code: 'servicesCustomerDenied');
+
+  bool _enabled(AuthContext context) =>
+      context.user.status == AccountStatus.active &&
+      context.user.companyId == context.company.id &&
+      context.company.enabledModules.contains('services');
+
+  bool _can(AuthContext context, AppPermission permission) =>
+      context.user.permissions.contains(permission);
+
+  /// Read access requires the customer View permission.
+  Failure? _viewAccess(AuthContext context) =>
+      _enabled(context) && _can(context, AppPermission.serviceCustomerView)
+      ? null
+      : _denied();
+
+  /// A mutation requires its own explicit permission: create, edit and
+  /// deactivate are independently authorized. Create-only must never be able to
+  /// edit or deactivate an existing customer.
+  Failure? _mutationAccess(AuthContext context, AppPermission permission) =>
+      _enabled(context) && _can(context, permission) ? null : _denied();
+
+  /// Form helpers (duplicate check / reference lookup) are shared by view and
+  /// by create/edit flows, so they accept any of those grants.
+  Failure? _formAccess(AuthContext context) =>
+      _enabled(context) &&
+          (_can(context, AppPermission.serviceCustomerView) ||
+              _can(context, AppPermission.serviceCustomerCreate) ||
+              _can(context, AppPermission.serviceCustomerEdit))
+      ? null
+      : _denied();
 
   static const _table = 'service_customers';
 
@@ -104,7 +123,7 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     int page = 0,
     int pageSize = 10,
   }) {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Stream.value(Failed(failure));
     final where = _clause(context, query, status);
     return db
@@ -119,10 +138,27 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
           readsFrom: {db.serviceCustomers, db.serviceSites},
         )
         .watch()
-        .map<Result<ServiceCustomerPage>>((rows) {
+        .asyncMap<Result<ServiceCustomerPage>>((rows) async {
           final items = rows.map(_listItem).toList();
+          // Accurate metadata via an efficient COUNT, never the page length.
+          final filteredRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM $_table c WHERE ${where.sql}',
+                variables: where.variables,
+              )
+              .getSingle();
+          final totalRow = await db
+              .customSelect(
+                'SELECT COUNT(*) AS c FROM $_table c WHERE c.company_id=?',
+                variables: [Variable(context.company.id)],
+              )
+              .getSingle();
           return Success(
-            ServiceCustomerPage(items, items.length, items.length),
+            ServiceCustomerPage(
+              items,
+              totalRow.read<int>('c'),
+              filteredRow.read<int>('c'),
+            ),
           );
         })
         .transform(
@@ -145,7 +181,7 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     AuthContext context,
     String id,
   ) {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Stream.value(Failed(failure));
     return db
         .customSelect(
@@ -187,7 +223,7 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     AuthContext context,
     String id,
   ) async {
-    final failure = _access(context);
+    final failure = _viewAccess(context);
     if (failure != null) return Failed(failure);
     try {
       return Success(await _raw(context, id));
@@ -202,7 +238,12 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     ServiceCustomerDraft draft, {
     String? id,
   }) async {
-    final failure = _access(context, manage: true);
+    final failure = _mutationAccess(
+      context,
+      id == null
+          ? AppPermission.serviceCustomerCreate
+          : AppPermission.serviceCustomerEdit,
+    );
     if (failure != null) return Failed(failure);
     final name = draft.name.trim();
     final mobile = draft.mobile.trim();
@@ -306,7 +347,10 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     String id,
     bool active,
   ) async {
-    final failure = _access(context, manage: true);
+    final failure = _mutationAccess(
+      context,
+      AppPermission.serviceCustomerDeactivate,
+    );
     if (failure != null) return Failed(failure);
     try {
       await db.transaction(() async {
@@ -370,7 +414,7 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     String query = '',
     int limit = 50,
   }) async {
-    final failure = _access(context);
+    final failure = _formAccess(context);
     if (failure != null) return Failed(failure);
     try {
       final rows = await db
@@ -405,7 +449,7 @@ class LocalServiceCustomerRepository implements ServiceCustomerRepository {
     String? email,
     String? excludingId,
   }) async {
-    final failure = _access(context);
+    final failure = _formAccess(context);
     if (failure != null) return Failed(failure);
     try {
       final result = await _duplicate(
