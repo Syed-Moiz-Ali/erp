@@ -513,11 +513,8 @@ void main() {
         await tester.sendKeyEvent(LogicalKeyboardKey.escape);
         await ui_test.pump(tester);
         expect(find.byType(PopupMenuItem<AppUserMenuAction>), findsNothing);
-        await tester.tap(find.byTooltip(context.l10n.shellSearchTitle));
-        await ui_test.pump(tester);
-        expect(find.text(context.l10n.shellSearchMessage), findsOneWidget);
-        await tester.sendKeyEvent(LogicalKeyboardKey.escape);
-        await ui_test.pump(tester);
+        // UI-2 §28: the shell ships no decorative/fake global search.
+        expect(find.byTooltip(context.l10n.shellSearchTitle), findsNothing);
         await tester.tap(find.byTooltip(context.l10n.shellNotifications));
         await ui_test.pump(tester);
         expect(find.text(context.l10n.shellNoNotifications), findsOneWidget);

@@ -11,6 +11,18 @@ extension PreviewLocationLocalization on PreviewLocation {
   };
 }
 
+enum PreviewThemeMode { light, dark }
+
+enum PreviewTextScale { system, moderate, large }
+
+extension PreviewTextScaleFactor on PreviewTextScale {
+  double get factor => switch (this) {
+    PreviewTextScale.system => 1,
+    PreviewTextScale.moderate => 1.15,
+    PreviewTextScale.large => 1.3,
+  };
+}
+
 enum PreviewRecordStatus { active, draft }
 
 extension PreviewStatusLocalization on PreviewRecordStatus {
@@ -26,6 +38,8 @@ class PreviewState {
     this.location = PreviewLocation.office,
     this.date,
     this.timeMinutes,
+    this.themeMode = PreviewThemeMode.light,
+    this.textScale = PreviewTextScale.system,
     this.days = const {
       WorkingDay.monday,
       WorkingDay.tuesday,
@@ -37,17 +51,23 @@ class PreviewState {
   final PreviewLocation location;
   final DateTime? date;
   final int? timeMinutes;
+  final PreviewThemeMode themeMode;
+  final PreviewTextScale textScale;
   PreviewState copyWith({
     bool? activeOnly,
     PreviewLocation? location,
     DateTime? date,
     int? timeMinutes,
+    PreviewThemeMode? themeMode,
+    PreviewTextScale? textScale,
     Set<WorkingDay>? days,
   }) => PreviewState(
     activeOnly: activeOnly ?? this.activeOnly,
     location: location ?? this.location,
     date: date ?? this.date,
     timeMinutes: timeMinutes ?? this.timeMinutes,
+    themeMode: themeMode ?? this.themeMode,
+    textScale: textScale ?? this.textScale,
     days: days ?? this.days,
   );
 }
@@ -60,4 +80,6 @@ class PreviewCubit extends Cubit<PreviewState> {
   void location(PreviewLocation value) => emit(state.copyWith(location: value));
   void date(DateTime value) => emit(state.copyWith(date: value));
   void time(int value) => emit(state.copyWith(timeMinutes: value));
+  void theme(PreviewThemeMode value) => emit(state.copyWith(themeMode: value));
+  void scale(PreviewTextScale value) => emit(state.copyWith(textScale: value));
 }

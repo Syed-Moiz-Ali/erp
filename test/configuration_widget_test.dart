@@ -548,24 +548,24 @@ void main() {
         bloc = c.read<AttendancePolicyFormBloc>();
     await h.tapVisible(
       t,
-      find.widgetWithText(AppSwitchField, c.l10n.cfgRequireLocation),
+      find.widgetWithText(AppBooleanSettingRow, c.l10n.cfgRequireLocation),
     );
     await h.pump(t);
     expect(bloc.state.draft.requireLocation, false);
     expect(bloc.state.draft.maximumAcceptedAccuracyMeters, null);
     expect(bloc.state.draft.requireLocationOnBreak, false);
     expect(
-      find.widgetWithText(AppSwitchField, c.l10n.cfgLocationIn),
+      find.widgetWithText(AppBooleanSettingRow, c.l10n.cfgLocationIn),
       findsNothing,
     );
     await h.tapVisible(
       t,
-      find.widgetWithText(AppSwitchField, c.l10n.cfgTrackBreaks),
+      find.widgetWithText(AppBooleanSettingRow, c.l10n.cfgTrackBreaks),
     );
     await h.pump(t);
     expect(bloc.state.draft.allowMultipleBreaks, false);
     expect(
-      find.widgetWithText(AppSwitchField, c.l10n.cfgMultipleBreaks),
+      find.widgetWithText(AppBooleanSettingRow, c.l10n.cfgMultipleBreaks),
       findsNothing,
     );
     await h.tapVisible(t, find.widgetWithText(AppPrimaryButton, c.l10n.save));
@@ -907,7 +907,7 @@ void main() {
       final c = t.element(find.byType(ShiftFormPage));
       await h.tapVisible(
         t,
-        find.widgetWithText(AppSwitchField, c.l10n.cfgActive),
+        find.widgetWithText(AppBooleanSettingRow, c.l10n.cfgActive),
       );
       await h.pump(t);
       await h.tapVisible(t, find.widgetWithText(AppPrimaryButton, c.l10n.save));

@@ -80,8 +80,8 @@ class HolidayManagementPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.xl),
-              if (s.loading)
-                const AppLoadingState()
+              if (s.loading && s.holidays.isEmpty)
+                const AppCollectionSkeleton()
               else if (s.failure != null)
                 AppErrorState(
                   message: configurationFailure(s.failure!, l),
@@ -117,83 +117,77 @@ class HolidayManagementPage extends StatelessWidget {
     HolidayManagementCubit cubit,
   ) {
     final l = context.l10n;
-    return AppCard(
-      padding: EdgeInsets.zero,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        child: AppDataTable(
-          columns: [
-            DataColumn(label: Text(l.holiday)),
-            DataColumn(label: Text(l.holidayDate)),
-            DataColumn(label: Text(l.holidayTypeField)),
-            DataColumn(label: Text(l.applyTo)),
-            DataColumn(label: Text(l.holidayOptional)),
-            DataColumn(label: Text(l.leaveStatusField)),
-            DataColumn(label: Text(l.cfgActions)),
-          ],
-          rows: [
-            for (final holiday in holidays)
-              DataRow(
-                onSelectChanged: (_) =>
-                    context.push(AppRoutes.holidaysDetails(holiday.id)),
-                cells: [
-                  DataCell(
-                    Text(
-                      holiday.name,
-                      style: AppTypography.of(
-                        context,
-                      ).body.copyWith(fontWeight: FontWeight.w600),
-                    ),
+    return AppCollectionSurface(
+      child: AppDataTable(
+        columns: [
+          DataColumn(label: Text(l.holiday)),
+          DataColumn(label: Text(l.holidayDate)),
+          DataColumn(label: Text(l.holidayTypeField)),
+          DataColumn(label: Text(l.applyTo)),
+          DataColumn(label: Text(l.holidayOptional)),
+          DataColumn(label: Text(l.leaveStatusField)),
+          DataColumn(label: Text(l.cfgActions)),
+        ],
+        rows: [
+          for (final holiday in holidays)
+            DataRow(
+              onSelectChanged: (_) =>
+                  context.push(AppRoutes.holidaysDetails(holiday.id)),
+              cells: [
+                DataCell(
+                  Text(
+                    holiday.name,
+                    style: AppTypography.of(
+                      context,
+                    ).body.copyWith(fontWeight: FontWeight.w600),
                   ),
-                  DataCell(Text(_dateLabel(context, holiday))),
-                  DataCell(Text(holidayTypeLabel(holiday.type, l))),
-                  DataCell(Text(_scopeLabel(holiday, l))),
-                  DataCell(
-                    Text(holiday.isOptional ? l.cfgActive : l.cfgInactive),
+                ),
+                DataCell(Text(_dateLabel(context, holiday))),
+                DataCell(Text(holidayTypeLabel(holiday.type, l))),
+                DataCell(Text(_scopeLabel(holiday, l))),
+                DataCell(
+                  Text(holiday.isOptional ? l.cfgActive : l.cfgInactive),
+                ),
+                DataCell(
+                  AppStatusBadge(
+                    label: configurationStatusLabel(holiday.status, l),
+                    status: holiday.status == ConfigurationStatus.active
+                        ? AppStatus.success
+                        : AppStatus.neutral,
                   ),
-                  DataCell(
-                    AppStatusBadge(
-                      label: configurationStatusLabel(holiday.status, l),
-                      status: holiday.status == ConfigurationStatus.active
-                          ? AppStatus.success
-                          : AppStatus.neutral,
-                    ),
-                  ),
-                  DataCell(
-                    AppActionMenu(
-                      tooltip: l.cfgActions,
-                      actions: [
+                ),
+                DataCell(
+                  AppActionMenu(
+                    tooltip: l.cfgActions,
+                    actions: [
+                      AppMenuAction(
+                        label: (l) => l.cfgView,
+                        onPressed: () =>
+                            context.push(AppRoutes.holidaysDetails(holiday.id)),
+                      ),
+                      if (canManage)
                         AppMenuAction(
-                          label: (l) => l.cfgView,
-                          onPressed: () => context.push(
-                            AppRoutes.holidaysDetails(holiday.id),
+                          label: (l) => l.cfgEdit,
+                          onPressed: () =>
+                              context.push(AppRoutes.holidaysEdit(holiday.id)),
+                        ),
+                      if (canManage)
+                        AppMenuAction(
+                          label: (l) =>
+                              holiday.status == ConfigurationStatus.active
+                              ? l.cfgDeactivate
+                              : l.cfgActivate,
+                          onPressed: () => cubit.setStatus(
+                            holiday.id,
+                            holiday.status != ConfigurationStatus.active,
                           ),
                         ),
-                        if (canManage)
-                          AppMenuAction(
-                            label: (l) => l.cfgEdit,
-                            onPressed: () => context.push(
-                              AppRoutes.holidaysEdit(holiday.id),
-                            ),
-                          ),
-                        if (canManage)
-                          AppMenuAction(
-                            label: (l) =>
-                                holiday.status == ConfigurationStatus.active
-                                ? l.cfgDeactivate
-                                : l.cfgActivate,
-                            onPressed: () => cubit.setStatus(
-                              holiday.id,
-                              holiday.status != ConfigurationStatus.active,
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
-          ],
-        ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
@@ -211,66 +205,38 @@ class HolidayManagementPage extends StatelessWidget {
         for (final holiday in holidays)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: AppCard(
-              variant: AppCardVariant.interactive,
+            child: AppMobileRecordCard(
+              title: holiday.name,
+              subtitle: _dateLabel(context, holiday),
+              tertiary: _scopeLabel(holiday, l),
+              status: holiday.isOptional ? AppStatus.info : AppStatus.brand,
+              statusLabel: holidayTypeLabel(holiday.type, l),
               onTap: () => context.push(AppRoutes.holidaysDetails(holiday.id)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          holiday.name,
-                          style: AppTypography.of(context).cardTitle,
-                        ),
-                      ),
-                      AppStatusBadge(
-                        label: holidayTypeLabel(holiday.type, l),
-                        status: holiday.isOptional
-                            ? AppStatus.info
-                            : AppStatus.brand,
-                      ),
-                    ],
+              trailing: AppActionMenu(
+                tooltip: l.cfgActions,
+                enabled: canManage,
+                actions: [
+                  AppMenuAction(
+                    label: (l) => l.cfgView,
+                    onPressed: () =>
+                        context.push(AppRoutes.holidaysDetails(holiday.id)),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    _dateLabel(context, holiday),
-                    style: AppTypography.of(
-                      context,
-                    ).bodySmall.copyWith(color: AppColors.textSecondary),
-                  ),
-                  Text(
-                    _scopeLabel(holiday, l),
-                    style: AppTypography.of(
-                      context,
-                    ).caption.copyWith(color: AppColors.textMuted),
-                  ),
-                  if (canManage) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Wrap(
-                      spacing: AppSpacing.sm,
-                      alignment: WrapAlignment.end,
-                      children: [
-                        AppSecondaryButton(
-                          label: l.cfgEdit,
-                          size: AppButtonSize.small,
-                          onPressed: () =>
-                              context.push(AppRoutes.holidaysEdit(holiday.id)),
-                        ),
-                        AppSecondaryButton(
-                          label: holiday.status == ConfigurationStatus.active
-                              ? l.cfgDeactivate
-                              : l.cfgActivate,
-                          size: AppButtonSize.small,
-                          onPressed: () => cubit.setStatus(
-                            holiday.id,
-                            holiday.status != ConfigurationStatus.active,
-                          ),
-                        ),
-                      ],
+                  if (canManage)
+                    AppMenuAction(
+                      label: (l) => l.cfgEdit,
+                      onPressed: () =>
+                          context.push(AppRoutes.holidaysEdit(holiday.id)),
                     ),
-                  ],
+                  if (canManage)
+                    AppMenuAction(
+                      label: (l) => holiday.status == ConfigurationStatus.active
+                          ? l.cfgDeactivate
+                          : l.cfgActivate,
+                      onPressed: () => cubit.setStatus(
+                        holiday.id,
+                        holiday.status != ConfigurationStatus.active,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -475,193 +441,161 @@ class _HolidayFormPageState extends State<HolidayFormPage> {
                       message: configurationFailure(_failure!, l),
                     ),
                   ),
-                AppCard(
-                  padding: const EdgeInsets.all(28),
+                AppFormSection(
+                  title: l.holidayBasicInfo,
+                  child: AppFormGrid(
+                    children: [
+                      AppTextField(
+                        label: l.holiday,
+                        initialValue: _draft.name,
+                        enabled: !_saving,
+                        onChanged: (v) =>
+                            setState(() => _draft = _draft.copyWith(name: v)),
+                      ),
+                      AppSelectField<HolidayType>(
+                        label: l.holidayTypeField,
+                        value: _draft.type,
+                        enabled: !_saving,
+                        options: [
+                          for (final type in HolidayType.values)
+                            AppSelectOption(type, holidayTypeLabel(type, l)),
+                        ],
+                        onChanged: (v) {
+                          if (v != null) {
+                            setState(() => _draft = _draft.copyWith(type: v));
+                          }
+                        },
+                      ),
+                      AppDateField(
+                        label: l.holidayDate,
+                        value: _draft.date,
+                        enabled: !_saving,
+                        onChanged: (v) =>
+                            setState(() => _draft = _draft.copyWith(date: v)),
+                      ),
+                      if (_multiDay)
+                        AppDateField(
+                          label: l.holidayEndDate,
+                          value: _draft.endDate,
+                          enabled: !_saving,
+                          onChanged: (v) => setState(
+                            () => _draft = _draft.copyWith(endDate: v),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppBooleanSettingRow(
+                  label: l.holidayMultiDay,
+                  value: _multiDay,
+                  onChanged: _saving
+                      ? null
+                      : (v) => setState(
+                          () => _draft = _draft.copyWith(
+                            endDate: v ? (_draft.date) : null,
+                          ),
+                        ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                AppFormSection(
+                  title: l.holidayApplicability,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      AppFormSection(
-                        title: l.holidayBasicInfo,
-                        child: AppFormGrid(
-                          children: [
-                            AppTextField(
-                              label: l.holiday,
-                              initialValue: _draft.name,
-                              enabled: !_saving,
-                              onChanged: (v) => setState(
-                                () => _draft = _draft.copyWith(name: v),
-                              ),
-                            ),
-                            AppSelectField<HolidayType>(
-                              label: l.holidayTypeField,
-                              value: _draft.type,
-                              enabled: !_saving,
-                              options: [
-                                for (final type in HolidayType.values)
-                                  AppSelectOption(
-                                    type,
-                                    holidayTypeLabel(type, l),
-                                  ),
-                              ],
-                              onChanged: (v) {
-                                if (v != null) {
-                                  setState(
-                                    () => _draft = _draft.copyWith(type: v),
-                                  );
-                                }
-                              },
-                            ),
-                            AppDateField(
-                              label: l.holidayDate,
-                              value: _draft.date,
-                              enabled: !_saving,
-                              onChanged: (v) => setState(
-                                () => _draft = _draft.copyWith(date: v),
-                              ),
-                            ),
-                            if (_multiDay)
-                              AppDateField(
-                                label: l.holidayEndDate,
-                                value: _draft.endDate,
-                                enabled: !_saving,
-                                onChanged: (v) => setState(
-                                  () => _draft = _draft.copyWith(endDate: v),
-                                ),
-                              ),
-                          ],
+                      AppSelectField<HolidayScope>(
+                        label: l.applyTo,
+                        value: _draft.scope,
+                        enabled: !_saving,
+                        options: [
+                          for (final scope in HolidayScope.values)
+                            AppSelectOption(scope, holidayScopeLabel(scope, l)),
+                        ],
+                        onChanged: (v) {
+                          if (v != null) {
+                            setState(() => _draft = _draft.copyWith(scope: v));
+                          }
+                        },
+                      ),
+                      if (_draft.scope ==
+                          HolidayScope.specificWorkLocations) ...[
+                        const SizedBox(height: AppSpacing.md),
+                        AppTextField(
+                          label: l.holidaySearchLocations,
+                          controller: _locationSearch,
+                          prefixIcon: Icons.search_rounded,
+                          onChanged: (_) => setState(() {}),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      AppSwitchField(
-                        label: l.holidayMultiDay,
-                        value: _multiDay,
-                        onChanged: _saving
-                            ? null
-                            : (v) => setState(
-                                () => _draft = _draft.copyWith(
-                                  endDate: v ? (_draft.date) : null,
-                                ),
-                              ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppFormSection(
-                        title: l.holidayApplicability,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AppSelectField<HolidayScope>(
-                              label: l.applyTo,
-                              value: _draft.scope,
-                              enabled: !_saving,
-                              options: [
-                                for (final scope in HolidayScope.values)
-                                  AppSelectOption(
-                                    scope,
-                                    holidayScopeLabel(scope, l),
-                                  ),
-                              ],
-                              onChanged: (v) {
-                                if (v != null) {
-                                  setState(
-                                    () => _draft = _draft.copyWith(scope: v),
-                                  );
-                                }
-                              },
-                            ),
-                            if (_draft.scope ==
-                                HolidayScope.specificWorkLocations) ...[
-                              const SizedBox(height: AppSpacing.md),
-                              AppTextField(
-                                label: l.holidaySearchLocations,
-                                controller: _locationSearch,
-                                prefixIcon: Icons.search_rounded,
-                                onChanged: (_) => setState(() {}),
-                              ),
-                              const SizedBox(height: AppSpacing.sm),
-                              _LocationPicker(
-                                repository: widget.workLocations,
-                                search: _locationSearch.text,
-                                selected: _draft.workLocationIds,
-                                enabled: !_saving,
-                                onToggle: (id, selected) => setState(() {
-                                  final next = {..._draft.workLocationIds};
-                                  if (selected) {
-                                    next.add(id);
-                                  } else {
-                                    next.remove(id);
-                                  }
-                                  _draft = _draft.copyWith(
-                                    workLocationIds: next,
-                                  );
-                                }),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppFormSection(
-                        title: l.holidayOptionality,
-                        child: AppSwitchField(
-                          label: l.holidayOptional,
-                          value: _draft.isOptional,
-                          onChanged: _saving
-                              ? null
-                              : (v) => setState(
-                                  () => _draft = _draft.copyWith(isOptional: v),
-                                ),
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppFormSection(
-                        title: l.cfgDescription,
-                        child: AppTextField(
-                          label: l.cfgDescription,
-                          initialValue: _draft.description,
-                          maxLines: 3,
+                        const SizedBox(height: AppSpacing.sm),
+                        _LocationPicker(
+                          repository: widget.workLocations,
+                          search: _locationSearch.text,
+                          selected: _draft.workLocationIds,
                           enabled: !_saving,
-                          onChanged: (v) => setState(
-                            () => _draft = _draft.copyWith(description: v),
-                          ),
+                          onToggle: (id, selected) => setState(() {
+                            final next = {..._draft.workLocationIds};
+                            if (selected) {
+                              next.add(id);
+                            } else {
+                              next.remove(id);
+                            }
+                            _draft = _draft.copyWith(workLocationIds: next);
+                          }),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppFormSection(
-                        title: l.cfgStatus,
-                        child: AppSwitchField(
-                          label: l.cfgActive,
-                          value: _draft.status == ConfigurationStatus.active,
-                          onChanged: _saving
-                              ? null
-                              : (v) => setState(
-                                  () => _draft = _draft.copyWith(
-                                    status: v
-                                        ? ConfigurationStatus.active
-                                        : ConfigurationStatus.inactive,
-                                  ),
-                                ),
-                        ),
-                      ),
+                      ],
                     ],
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    AppSecondaryButton(
-                      label: l.cancel,
-                      onPressed: _saving
-                          ? null
-                          : () => context.go(AppRoutes.holidays),
+                AppFormSection(
+                  title: l.holidayOptionality,
+                  child: AppBooleanSettingRow(
+                    label: l.holidayOptional,
+                    value: _draft.isOptional,
+                    onChanged: _saving
+                        ? null
+                        : (v) => setState(
+                            () => _draft = _draft.copyWith(isOptional: v),
+                          ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                AppFormSection(
+                  title: l.cfgDescription,
+                  child: AppTextField(
+                    label: l.cfgDescription,
+                    initialValue: _draft.description,
+                    maxLines: 3,
+                    enabled: !_saving,
+                    onChanged: (v) => setState(
+                      () => _draft = _draft.copyWith(description: v),
                     ),
-                    const SizedBox(width: AppSpacing.md),
-                    AppPrimaryButton(
-                      label: l.save,
-                      loading: _saving,
-                      onPressed: _saving ? null : _save,
-                    ),
-                  ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                AppFormSection(
+                  title: l.cfgStatus,
+                  child: AppBooleanSettingRow(
+                    label: l.cfgActive,
+                    value: _draft.status == ConfigurationStatus.active,
+                    onChanged: _saving
+                        ? null
+                        : (v) => setState(
+                            () => _draft = _draft.copyWith(
+                              status: v
+                                  ? ConfigurationStatus.active
+                                  : ConfigurationStatus.inactive,
+                            ),
+                          ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                AppFormActions(
+                  cancelLabel: l.cancel,
+                  onCancel: () => context.go(AppRoutes.holidays),
+                  saveLabel: l.save,
+                  saving: _saving,
+                  onSave: _save,
                 ),
               ],
             ),

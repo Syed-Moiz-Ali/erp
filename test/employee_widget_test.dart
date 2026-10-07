@@ -147,11 +147,13 @@ void main() {
           );
           await settleDb(t);
           expect(c.read<EmployeeListBloc>().state.data!.filtered, 4);
-          await h.tapVisible(t, find.widgetWithText(AppTextButton, l.empClear));
-          await settleDb(t);
           await h.tapVisible(t, filters);
-          await t.sendKeyEvent(LogicalKeyboardKey.escape);
-          await h.pump(t);
+          await h.tapVisible(t, find.widgetWithText(AppTextButton, l.empReset));
+          await h.tapVisible(
+            t,
+            find.widgetWithText(AppPrimaryButton, l.empApply),
+          );
+          await settleDb(t);
           final search = find
               .descendant(
                 of: find.byType(AppSearchField),
@@ -325,7 +327,7 @@ void main() {
       }
       await h.tapVisible(t, find.byType(AppDateField));
       await h.tapVisible(t, find.text(l.confirm));
-      await h.tapVisible(t, find.byType(AppSwitchField));
+      await h.tapVisible(t, find.byType(AppBooleanSettingRow).first);
       await h.pump(t);
       await h.tapVisible(
         t,

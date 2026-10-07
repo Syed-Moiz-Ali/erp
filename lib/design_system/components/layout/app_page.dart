@@ -39,11 +39,7 @@ class AppPage extends StatelessWidget {
           maxWidth: AppDimensions.contentMaxWidth,
         ),
         child: Padding(
-          padding: EdgeInsets.all(
-            AppBreakpoints.of(context) == AppSize.compact
-                ? AppSpacing.lg
-                : AppSpacing.section,
-          ),
+          padding: EdgeInsets.all(_pagePadding(AppBreakpoints.of(context))),
           child: Builder(
             builder: (context) {
               final body = Column(
@@ -68,6 +64,15 @@ class AppPage extends StatelessWidget {
     ),
   );
 }
+
+/// One responsive outer page padding, owned by the shell. Feature screens must
+/// never recreate these values (UI-2 §37).
+double _pagePadding(AppSize size) => switch (size) {
+  AppSize.compact => AppSpacing.lg, // 16 — mobile
+  AppSize.medium => AppSpacing.xl, // 20 — tablet
+  AppSize.expanded => AppSpacing.xxl, // 24 — desktop
+  AppSize.large => AppSpacing.section, // 32 — large desktop
+};
 
 class AppFormSection extends StatelessWidget {
   const AppFormSection({

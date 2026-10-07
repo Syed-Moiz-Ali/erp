@@ -129,7 +129,6 @@ class AppShell extends StatelessWidget {
               onNavigate: navigate,
               topBar: AppTopBar(
                 title: title,
-                onSearch: () => AppCommandPalette.show(context),
                 onNotifications: () => NotificationPanel.show(context),
                 notificationsButton: NotificationBell(
                   cubit: _maybeRead<NotificationBadgeCubit>(context),

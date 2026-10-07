@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
@@ -159,9 +161,13 @@ class _ServiceReferencePicker<T> extends StatefulWidget {
 
 class _ServiceReferencePickerState<T>
     extends State<_ServiceReferencePicker<T>> {
+  static const _debounce = Duration(milliseconds: 250);
   List<T> _results = const [];
   bool _loading = true;
+  bool _error = false;
   int _token = 0;
+  String _query = '';
+  Timer? _timer;
 
   @override
   void initState() {
@@ -169,15 +175,40 @@ class _ServiceReferencePickerState<T>
     _run('');
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _schedule(String query) {
+    _query = query;
+    _timer?.cancel();
+    _timer = Timer(_debounce, () => _run(query));
+  }
+
   Future<void> _run(String query) async {
+    _query = query;
     final token = ++_token;
-    setState(() => _loading = true);
-    final results = await widget.search(query);
-    if (!mounted || token != _token) return;
     setState(() {
-      _results = results;
-      _loading = false;
+      _loading = true;
+      _error = false;
     });
+    try {
+      final results = await widget.search(query);
+      if (!mounted || token != _token) return;
+      setState(() {
+        _results = results;
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted || token != _token) return;
+      setState(() {
+        _results = const [];
+        _loading = false;
+        _error = true;
+      });
+    }
   }
 
   @override
@@ -187,7 +218,7 @@ class _ServiceReferencePickerState<T>
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AppSearchField(hint: widget.searchHint, onChanged: _run),
+        AppSearchField(hint: widget.searchHint, onChanged: _schedule),
         const SizedBox(height: AppSpacing.md),
         if (widget.createLabel != null) ...[
           ListTile(
@@ -202,6 +233,27 @@ class _ServiceReferencePickerState<T>
           height: 280,
           child: _loading
               ? const Center(child: CircularProgressIndicator())
+              : _error
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l.somethingWentWrong,
+                          textAlign: TextAlign.center,
+                          style: AppTypography.of(context).body,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        AppTextButton(
+                          label: l.retry,
+                          onPressed: () => _run(_query),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               : _results.isEmpty
               ? Center(
                   child: Padding(

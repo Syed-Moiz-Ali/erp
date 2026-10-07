@@ -44,6 +44,8 @@ class DashboardAttentionItem {
     required this.subtitle,
     required this.icon,
     required this.priority,
+    this.categoryLabel = '',
+    this.priorityLabel = '',
     this.date,
     this.route,
     this.actionText = '',
@@ -51,6 +53,12 @@ class DashboardAttentionItem {
   });
 
   final String id, moduleId, type, title, subtitle;
+
+  /// Already-localized short category (e.g. "Inspection", "Leave").
+  final String categoryLabel;
+
+  /// Already-localized real configured priority label (never a fake SLA).
+  final String priorityLabel;
   final IconData icon;
 
   /// Higher is more urgent. Sorting is urgency, then business date, then [id].
@@ -97,12 +105,22 @@ class DashboardWorkItem {
     required this.subtitle,
     required this.statusLabel,
     required this.icon,
+    this.type = '',
+    this.priority = 0,
     this.route,
     this.actionText = '',
     this.tone = DashboardTone.neutral,
   });
 
   final String id, moduleId, title, subtitle, statusLabel, actionText;
+
+  /// Module-neutral work kind (e.g. "execution", "inspection", "assignment").
+  /// The dashboard uses it only to prioritise the immediate next task; it never
+  /// interprets module business rules.
+  final String type;
+
+  /// Higher is presented first. Sorting is priority, then contributor order.
+  final int priority;
   final IconData icon;
   final String? route;
   final DashboardTone tone;
@@ -158,12 +176,20 @@ class DashboardActivityItem {
     required this.description,
     required this.icon,
     required this.occurredAt,
+    this.moduleLabel = '',
+    this.route,
     this.tone = DashboardTone.neutral,
   });
 
   final String id, moduleId, title, description;
+
+  /// Already-localized owning-module tag (e.g. "HR", "Services").
+  final String moduleLabel;
   final IconData icon;
   final DateTime occurredAt;
+
+  /// Optional destination to the underlying record, authorized at read time.
+  final String? route;
   final DashboardTone tone;
 }
 
@@ -262,6 +288,7 @@ class UniversalDashboardSnapshot {
     required this.generatedAt,
     this.today,
     this.partialFailure = false,
+    this.failedModuleIds = const {},
     this.maxKpis = 6,
     this.maxAttention = 8,
     this.maxSchedule = 8,
@@ -278,6 +305,10 @@ class UniversalDashboardSnapshot {
   /// company timezone; the header then falls back to [generatedAt].
   final DateTime? today;
   final bool partialFailure;
+
+  /// Owning module ids whose contributor failed to load. Used to show a
+  /// section-unavailable/Retry affordance instead of ever displaying a fake 0.
+  final Set<String> failedModuleIds;
   final int maxKpis, maxAttention, maxSchedule, maxWork, maxActivity;
   final int maxQuickActions;
 
@@ -317,7 +348,19 @@ class UniversalDashboardSnapshot {
 
   List<DashboardWorkItem> get myWork {
     final all = [for (final c in _ordered) ...c.myWork];
+    all.sort((a, b) {
+      final priority = b.priority.compareTo(a.priority);
+      return priority != 0 ? priority : a.id.compareTo(b.id);
+    });
     return all.take(maxWork).toList(growable: false);
+  }
+
+  /// The single most immediate assigned task, highlighted inside My Day.
+  /// Contributors rank work by presenting active executions first via
+  /// [DashboardWorkItem.priority]; the dashboard owns only the presentation.
+  DashboardWorkItem? get highlightedWork {
+    final items = myWork;
+    return items.isEmpty ? null : items.first;
   }
 
   List<DashboardTeamRow> get team => [for (final c in _ordered) ...c.team];

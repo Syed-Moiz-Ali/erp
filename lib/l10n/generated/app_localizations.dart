@@ -812,6 +812,132 @@ abstract class AppLocalizations {
   /// **'Period'**
   String get periodLabel;
 
+  /// No description provided for @resultsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} results'**
+  String resultsCount(String count);
+
+  /// No description provided for @resultsCountFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'{filtered} of {total} results'**
+  String resultsCountFiltered(String filtered, String total);
+
+  /// No description provided for @sortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get sortLabel;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearAll;
+
+  /// No description provided for @removeFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove filter: {label}'**
+  String removeFilter(String label);
+
+  /// No description provided for @pageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {pages}'**
+  String pageOf(String page, String pages);
+
+  /// No description provided for @notProvided.
+  ///
+  /// In en, this message translates to:
+  /// **'Not provided'**
+  String get notProvided;
+
+  /// No description provided for @recordInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Record information'**
+  String get recordInformation;
+
+  /// No description provided for @moreActionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get moreActionsLabel;
+
+  /// No description provided for @noActivityYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet'**
+  String get noActivityYet;
+
+  /// No description provided for @noEvidenceYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No evidence attached'**
+  String get noEvidenceYet;
+
+  /// No description provided for @noAttachmentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No description'**
+  String get noAttachmentDescription;
+
+  /// No description provided for @openAttachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open attachment'**
+  String get openAttachmentLabel;
+
+  /// No description provided for @relatedRecordsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Related records'**
+  String get relatedRecordsLabel;
+
+  /// No description provided for @workflowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow'**
+  String get workflowLabel;
+
+  /// No description provided for @evidenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Evidence'**
+  String get evidenceLabel;
+
+  /// No description provided for @viewRelatedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View related'**
+  String get viewRelatedLabel;
+
+  /// No description provided for @attachmentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get attachmentsLabel;
+
+  /// No description provided for @currentRecordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get currentRecordLabel;
+
+  /// No description provided for @detailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get detailsLabel;
+
+  /// No description provided for @noItemsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No items'**
+  String get noItemsLabel;
+
   /// Common/Phase 0 UI: settings.
   ///
   /// In en, this message translates to:
@@ -3074,6 +3200,60 @@ abstract class AppLocalizations {
   /// **'No access changes yet.'**
   String get accessNoHistory;
 
+  /// No description provided for @accessCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get accessCompany;
+
+  /// No description provided for @accessIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Included'**
+  String get accessIncluded;
+
+  /// No description provided for @accessPermissionSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search permissions'**
+  String get accessPermissionSearch;
+
+  /// No description provided for @accessNoPermissionMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No permissions match your search.'**
+  String get accessNoPermissionMatch;
+
+  /// No description provided for @accessActionScopeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility follows the View permission scope.'**
+  String get accessActionScopeNote;
+
+  /// No description provided for @accessUnsavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved changes'**
+  String get accessUnsavedTitle;
+
+  /// No description provided for @accessUnsavedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved access changes for this user. Leave without saving?'**
+  String get accessUnsavedMessage;
+
+  /// No description provided for @accessStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get accessStay;
+
+  /// No description provided for @accessLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get accessLeave;
+
   /// No description provided for @accessSearchUsers.
   ///
   /// In en, this message translates to:
@@ -3103,6 +3283,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Module availability is managed at platform level in this demo.'**
   String get accessModulesReadOnly;
+
+  /// No description provided for @accessModuleScopeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabling a module for the company makes it available, but each user still needs permission to access it.'**
+  String get accessModuleScopeNote;
+
+  /// No description provided for @accessModuleHrDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees, attendance, leave and workforce operations.'**
+  String get accessModuleHrDesc;
+
+  /// No description provided for @accessModuleServicesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Service enquiry, assignments, inspections, materials and work execution.'**
+  String get accessModuleServicesDesc;
 
   /// No description provided for @accessStatusActive.
   ///
@@ -3469,6 +3667,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open'**
   String get universalDashboardOpen;
+
+  /// No description provided for @universalDashboardFirstTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet'**
+  String get universalDashboardFirstTimeTitle;
+
+  /// No description provided for @universalDashboardFirstTimeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Once your company records attendance or service work, a live operational summary will appear here.'**
+  String get universalDashboardFirstTimeMessage;
+
+  /// No description provided for @universalDashboardGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get universalDashboardGetStarted;
+
+  /// No description provided for @universalDashboardNextServiceWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Next service work'**
+  String get universalDashboardNextServiceWork;
+
+  /// No description provided for @designSystemThemeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme mode'**
+  String get designSystemThemeMode;
+
+  /// No description provided for @designSystemLightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get designSystemLightMode;
+
+  /// No description provided for @designSystemDarkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get designSystemDarkMode;
+
+  /// No description provided for @designSystemDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get designSystemDirection;
+
+  /// No description provided for @designSystemTextScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Text scale'**
+  String get designSystemTextScale;
+
+  /// No description provided for @designSystemScaleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get designSystemScaleDefault;
+
+  /// No description provided for @designSystemScaleModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get designSystemScaleModerate;
+
+  /// No description provided for @designSystemScaleLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get designSystemScaleLarge;
+
+  /// No description provided for @designSystemFoundations.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundations'**
+  String get designSystemFoundations;
+
+  /// No description provided for @designSystemSpacingScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Spacing scale'**
+  String get designSystemSpacingScale;
+
+  /// No description provided for @designSystemRadiusScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Radius scale'**
+  String get designSystemRadiusScale;
+
+  /// No description provided for @designSystemBorderScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Border scale'**
+  String get designSystemBorderScale;
+
+  /// No description provided for @designSystemElevation.
+  ///
+  /// In en, this message translates to:
+  /// **'Elevation'**
+  String get designSystemElevation;
+
+  /// No description provided for @designSystemSurfaceHierarchy.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface hierarchy'**
+  String get designSystemSurfaceHierarchy;
+
+  /// No description provided for @designSystemTextColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Text colors'**
+  String get designSystemTextColors;
+
+  /// No description provided for @designSystemSelectionControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Checkboxes, radios & switches'**
+  String get designSystemSelectionControls;
+
+  /// No description provided for @designSystemControlStates.
+  ///
+  /// In en, this message translates to:
+  /// **'Control states'**
+  String get designSystemControlStates;
+
+  /// No description provided for @designSystemChips.
+  ///
+  /// In en, this message translates to:
+  /// **'Chips & status'**
+  String get designSystemChips;
+
+  /// No description provided for @designSystemTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tooltips'**
+  String get designSystemTooltip;
+
+  /// No description provided for @designSystemMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Menus'**
+  String get designSystemMenu;
+
+  /// No description provided for @designSystemSkeletons.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading skeletons'**
+  String get designSystemSkeletons;
+
+  /// No description provided for @designSystemErrorStates.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty, error & permission states'**
+  String get designSystemErrorStates;
+
+  /// No description provided for @designSystemReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only context'**
+  String get designSystemReadOnly;
+
+  /// No description provided for @designSystemMenuAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu action'**
+  String get designSystemMenuAction;
+
+  /// No description provided for @designSystemMenuDanger.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete record'**
+  String get designSystemMenuDanger;
+
+  /// No description provided for @designSystemTooltipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon-only control'**
+  String get designSystemTooltipHint;
+
+  /// No description provided for @designSystemKeyboardFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Press Tab to focus'**
+  String get designSystemKeyboardFocus;
+
+  /// No description provided for @typographyLabelSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Label small'**
+  String get typographyLabelSmall;
+
+  /// No description provided for @typographyTableHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Table header'**
+  String get typographyTableHeader;
+
+  /// No description provided for @typographyTableCell.
+  ///
+  /// In en, this message translates to:
+  /// **'Table cell'**
+  String get typographyTableCell;
+
+  /// No description provided for @typographyStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get typographyStatus;
+
+  /// No description provided for @typographyInputValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Input value'**
+  String get typographyInputValue;
+
+  /// No description provided for @typographyFormLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Form label'**
+  String get typographyFormLabel;
+
+  /// No description provided for @colorTextTertiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Text tertiary'**
+  String get colorTextTertiary;
+
+  /// No description provided for @colorSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get colorSuccess;
+
+  /// No description provided for @colorWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get colorWarning;
 
   /// Common/Phase 0 UI: dashboard.
   ///
@@ -4237,6 +4675,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Filters'**
   String get empFilters;
+
+  /// No description provided for @empSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search employees'**
+  String get empSearch;
 
   /// No description provided for @empClear.
   ///
@@ -9560,6 +10004,78 @@ abstract class AppLocalizations {
   /// **'Create and edit attendance policies.'**
   String get hrPermPoliciesManageDesc;
 
+  /// No description provided for @workforceFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance filters'**
+  String get workforceFilters;
+
+  /// No description provided for @workforceEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees in scope'**
+  String get workforceEmptyTitle;
+
+  /// No description provided for @workforceEmptyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No active employees are available for this date and scope.'**
+  String get workforceEmptyNote;
+
+  /// No description provided for @workforceNoResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching employees'**
+  String get workforceNoResultsTitle;
+
+  /// No description provided for @workforceNoResultsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another search or clear your filters.'**
+  String get workforceNoResultsNote;
+
+  /// No description provided for @correctionEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No correction requests'**
+  String get correctionEmptyTitle;
+
+  /// No description provided for @correctionEmptyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction requests will appear here once submitted.'**
+  String get correctionEmptyNote;
+
+  /// No description provided for @correctionNoResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching requests'**
+  String get correctionNoResultsTitle;
+
+  /// No description provided for @correctionNoResultsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another status or clear your filters.'**
+  String get correctionNoResultsNote;
+
+  /// No description provided for @correctionChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Current → requested'**
+  String get correctionChange;
+
+  /// No description provided for @correctionReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get correctionReview;
+
+  /// No description provided for @correctionView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get correctionView;
+
   /// No description provided for @servicesPermModuleServices.
   ///
   /// In en, this message translates to:
@@ -10645,6 +11161,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Configure the master data used by service operations.'**
   String get servicesSettingsSubtitle;
+
+  /// No description provided for @servicesGroupGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get servicesGroupGeneral;
+
+  /// No description provided for @servicesGroupInspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspection'**
+  String get servicesGroupInspection;
+
+  /// No description provided for @servicesGroupMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get servicesGroupMaterials;
 
   /// No description provided for @servicesServiceTypesTitle.
   ///

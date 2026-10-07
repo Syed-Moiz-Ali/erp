@@ -248,14 +248,14 @@ class LeavePolicyFormPage extends StatelessWidget {
                 title: l.leavePolicy,
                 child: AppFormGrid(
                   children: [
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leaveAllowsHalfDay,
                       value: d.allowHalfDay,
                       onChanged: s.saving
                           ? null
                           : (v) => change((d) => d.copyWith(allowHalfDay: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leavePolicyAllowPast,
                       value: d.allowPastRequest,
                       onChanged: s.saving
@@ -263,7 +263,7 @@ class LeavePolicyFormPage extends StatelessWidget {
                           : (v) =>
                                 change((d) => d.copyWith(allowPastRequest: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leavePolicyNegative,
                       value: d.allowNegativeBalance,
                       onChanged: s.saving
@@ -272,7 +272,7 @@ class LeavePolicyFormPage extends StatelessWidget {
                               (d) => d.copyWith(allowNegativeBalance: v),
                             ),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leavePolicyCarryForward,
                       value: d.carryForwardEnabled,
                       onChanged: s.saving
@@ -290,7 +290,7 @@ class LeavePolicyFormPage extends StatelessWidget {
                 child: AppFormGrid(
                   children: [
                     for (final type in EmploymentType.values)
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: employmentTypeLabel(type, l),
                         value: d.applicableEmploymentTypes.contains(type),
                         onChanged: s.saving
@@ -303,7 +303,7 @@ class LeavePolicyFormPage extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.cfgStatus,
-                child: AppSwitchField(
+                child: AppBooleanSettingRow(
                   label: l.cfgActive,
                   value: d.status == ConfigurationStatus.active,
                   onChanged: s.saving

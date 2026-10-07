@@ -279,7 +279,7 @@ class WorkLocationFormPage extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.cfgStatus,
-                child: AppSwitchField(
+                child: AppBooleanSettingRow(
                   label: l.cfgActive,
                   value: d.status == ConfigurationStatus.active,
                   onChanged: s.saving

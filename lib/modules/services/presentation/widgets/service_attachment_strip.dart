@@ -13,55 +13,74 @@ class AttachmentThumbnail extends StatelessWidget {
     super.key,
     required this.attachment,
     this.onRemove,
+    this.onRetry,
   });
   final AttachmentRef attachment;
   final VoidCallback? onRemove;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final isImage = attachment.mimeType.startsWith('image/');
-    return Container(
-      width: 132,
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceSubtle,
-        borderRadius: BorderRadius.circular(AppRadius.control),
-        border: Border.all(color: AppColors.borderSubtle),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Icon(
-                isImage ? Icons.image_outlined : Icons.description_outlined,
-                size: 18,
-                color: AppColors.textSecondary,
-              ),
-              const Spacer(),
-              if (onRemove != null)
-                AppIconButton(
-                  icon: Icons.close,
-                  tooltip: l.delete,
-                  onPressed: onRemove,
+    final canRetry =
+        onRetry != null &&
+        (attachment.uploadStatus == AttachmentUploadStatus.failed ||
+            attachment.uploadStatus == AttachmentUploadStatus.localOnly);
+    final attachmentLabel =
+        '${attachment.displayName}. '
+        '${attachmentUploadStatusLabel(attachment.uploadStatus, l)}';
+    return Semantics(
+      label: attachmentLabel,
+      container: true,
+      child: Container(
+        width: 132,
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceSubtle,
+          borderRadius: BorderRadius.circular(AppRadius.control),
+          border: Border.all(color: AppColors.borderSubtle),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  isImage ? Icons.image_outlined : Icons.description_outlined,
+                  size: 18,
+                  color: AppColors.textSecondary,
                 ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xxs),
-          Text(
-            attachment.displayName,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTypography.of(context).caption,
-          ),
-          const SizedBox(height: AppSpacing.xxs),
-          AppStatusBadge(
-            label: attachmentUploadStatusLabel(attachment.uploadStatus, l),
-            status: attachmentUploadStatus(attachment.uploadStatus),
-          ),
-        ],
+                const Spacer(),
+                if (canRetry)
+                  AppIconButton(
+                    icon: Icons.refresh,
+                    tooltip: l.retry,
+                    onPressed: onRetry,
+                  ),
+                if (onRemove != null)
+                  AppIconButton(
+                    icon: Icons.close,
+                    tooltip: l.delete,
+                    onPressed: onRemove,
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              attachment.displayName,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTypography.of(context).caption,
+            ),
+            const SizedBox(height: AppSpacing.xxs),
+            AppStatusBadge(
+              label: attachmentUploadStatusLabel(attachment.uploadStatus, l),
+              status: attachmentUploadStatus(attachment.uploadStatus),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -78,12 +97,14 @@ class ServiceAttachmentStrip extends StatelessWidget {
     this.enabled = true,
     this.onAdd,
     this.onRemove,
+    this.onRetry,
   });
   final String label, addLabel;
   final List<AttachmentRef> attachments;
   final bool enabled;
   final VoidCallback? onAdd;
   final ValueChanged<String>? onRemove;
+  final ValueChanged<String>? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +135,9 @@ class ServiceAttachmentStrip extends StatelessWidget {
                   attachment: attachment,
                   onRemove: enabled && onRemove != null
                       ? () => onRemove!(attachment.id)
+                      : null,
+                  onRetry: enabled && onRetry != null
+                      ? () => onRetry!(attachment.id)
                       : null,
                 ),
             ],

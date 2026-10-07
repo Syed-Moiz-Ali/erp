@@ -35,15 +35,7 @@ class LeaveRequestFormPage extends StatelessWidget {
       void change(LeaveRequestDraft Function(LeaveRequestDraft) update) =>
           bloc.add(LeaveRequestDraftChanged(update));
       return AppPage(
-        header: AppPageHeader(
-          title: l.leaveRequestTitle,
-          actions: [
-            AppSecondaryButton(
-              label: l.cancel,
-              onPressed: s.submitting ? null : () => c.go(AppRoutes.leave),
-            ),
-          ],
-        ),
+        header: AppPageHeader(title: l.leaveRequestTitle),
         child: s.loadingTypes
             ? const AppLoadingState()
             : s.types.isEmpty
@@ -51,170 +43,154 @@ class LeaveRequestFormPage extends StatelessWidget {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AppCard(
-                    padding: const EdgeInsets.all(28),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                  AppFormSection(
+                    title: l.leaveRequestSection,
+                    child: AppFormGrid(
+                      spans: const [
+                        AppFormSpan.half,
+                        AppFormSpan.half,
+                        AppFormSpan.half,
+                        AppFormSpan.half,
+                        AppFormSpan.half,
+                        AppFormSpan.half,
+                      ],
                       children: [
-                        AppFormSection(
-                          title: l.leaveRequestTitle,
-                          child: AppFormGrid(
-                            children: [
-                              AppSelectField<String>(
-                                label: l.leaveType,
-                                value: d.leaveTypeId.isEmpty
-                                    ? null
-                                    : d.leaveTypeId,
-                                enabled: !s.submitting,
-                                options: [
-                                  for (final type in s.types)
-                                    AppSelectOption(type.id, type.name),
-                                ],
-                                onChanged: (v) {
-                                  if (v != null) {
-                                    change((d) => d.copyWith(leaveTypeId: v));
-                                  }
-                                },
-                              ),
-                              AppDateField(
-                                label: l.leaveStartDate,
-                                value: d.startDate,
-                                enabled: !s.submitting,
-                                onChanged: (v) {
-                                  change(
-                                    (d) => d.copyWith(
-                                      startDate: v,
-                                      endDate: d.endDate.isBefore(v)
-                                          ? v
-                                          : d.endDate,
-                                    ),
-                                  );
-                                },
-                              ),
-                              AppDateField(
-                                label: l.leaveEndDate,
-                                value: d.endDate,
-                                enabled: !s.submitting,
-                                onChanged: (v) =>
-                                    change((d) => d.copyWith(endDate: v)),
-                              ),
-                              if (selected == null || selected.allowsHalfDay)
-                                AppSelectField<LeaveDayPortion>(
-                                  label: l.leaveStartPortion,
-                                  value: d.startPortion,
-                                  enabled: !s.submitting,
-                                  options: [
-                                    AppSelectOption(
-                                      LeaveDayPortion.fullDay,
-                                      l.leaveDayFull,
-                                    ),
-                                    AppSelectOption(
-                                      LeaveDayPortion.firstHalf,
-                                      l.leaveDayFirstHalf,
-                                    ),
-                                    AppSelectOption(
-                                      LeaveDayPortion.secondHalf,
-                                      l.leaveDaySecondHalf,
-                                    ),
-                                  ],
-                                  onChanged: (v) {
-                                    if (v != null) {
-                                      change(
-                                        (d) => d.copyWith(startPortion: v),
-                                      );
-                                    }
-                                  },
-                                ),
-                              if (selected == null || selected.allowsHalfDay)
-                                AppSelectField<LeaveDayPortion>(
-                                  label: l.leaveEndPortion,
-                                  value: d.endPortion,
-                                  enabled: !s.submitting,
-                                  options: [
-                                    AppSelectOption(
-                                      LeaveDayPortion.fullDay,
-                                      l.leaveDayFull,
-                                    ),
-                                    AppSelectOption(
-                                      LeaveDayPortion.firstHalf,
-                                      l.leaveDayFirstHalf,
-                                    ),
-                                    AppSelectOption(
-                                      LeaveDayPortion.secondHalf,
-                                      l.leaveDaySecondHalf,
-                                    ),
-                                  ],
-                                  onChanged: (v) {
-                                    if (v != null) {
-                                      change((d) => d.copyWith(endPortion: v));
-                                    }
-                                  },
-                                ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
-                        AppTextField(
-                          label: l.leaveReasonLabel,
-                          initialValue: d.reason,
+                        AppSelectField<String>(
+                          label: l.leaveType,
+                          value: d.leaveTypeId.isEmpty ? null : d.leaveTypeId,
                           enabled: !s.submitting,
-                          maxLines: 3,
-                          onChanged: (v) =>
-                              change((d) => d.copyWith(reason: v)),
+                          options: [
+                            for (final type in s.types)
+                              AppSelectOption(type.id, type.name),
+                          ],
+                          onChanged: (v) {
+                            if (v != null) {
+                              change((d) => d.copyWith(leaveTypeId: v));
+                            }
+                          },
                         ),
+                        AppDateField(
+                          label: l.leaveStartDate,
+                          value: d.startDate,
+                          enabled: !s.submitting,
+                          onChanged: (v) {
+                            change(
+                              (d) => d.copyWith(
+                                startDate: v,
+                                endDate: d.endDate.isBefore(v) ? v : d.endDate,
+                              ),
+                            );
+                          },
+                        ),
+                        AppDateField(
+                          label: l.leaveEndDate,
+                          value: d.endDate,
+                          enabled: !s.submitting,
+                          onChanged: (v) =>
+                              change((d) => d.copyWith(endDate: v)),
+                        ),
+                        if (selected == null || selected.allowsHalfDay)
+                          AppSelectField<LeaveDayPortion>(
+                            label: l.leaveStartPortion,
+                            value: d.startPortion,
+                            enabled: !s.submitting,
+                            options: [
+                              AppSelectOption(
+                                LeaveDayPortion.fullDay,
+                                l.leaveDayFull,
+                              ),
+                              AppSelectOption(
+                                LeaveDayPortion.firstHalf,
+                                l.leaveDayFirstHalf,
+                              ),
+                              AppSelectOption(
+                                LeaveDayPortion.secondHalf,
+                                l.leaveDaySecondHalf,
+                              ),
+                            ],
+                            onChanged: (v) {
+                              if (v != null) {
+                                change((d) => d.copyWith(startPortion: v));
+                              }
+                            },
+                          ),
+                        if (selected == null || selected.allowsHalfDay)
+                          AppSelectField<LeaveDayPortion>(
+                            label: l.leaveEndPortion,
+                            value: d.endPortion,
+                            enabled: !s.submitting,
+                            options: [
+                              AppSelectOption(
+                                LeaveDayPortion.fullDay,
+                                l.leaveDayFull,
+                              ),
+                              AppSelectOption(
+                                LeaveDayPortion.firstHalf,
+                                l.leaveDayFirstHalf,
+                              ),
+                              AppSelectOption(
+                                LeaveDayPortion.secondHalf,
+                                l.leaveDaySecondHalf,
+                              ),
+                            ],
+                            onChanged: (v) {
+                              if (v != null) {
+                                change((d) => d.copyWith(endPortion: v));
+                              }
+                            },
+                          ),
                       ],
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  if (s.preview != null)
-                    AppCard(
-                      child: AppFormSection(
-                        title: l.leavePreviewTitle,
-                        child: AppDetailsGrid(
-                          fields: [
-                            AppDetailField(
-                              label: l.leaveRequestedDays,
-                              value: '${s.preview!.requestedDays} ${l.days}',
-                            ),
-                            AppDetailField(
-                              label: l.leaveAvailableDays,
-                              value: '${s.preview!.available} ${l.days}',
-                            ),
-                            AppDetailField(
-                              label: l.leaveAfterApproval,
-                              value: '${s.preview!.afterApproval} ${l.days}',
-                            ),
-                            AppDetailField(
-                              label: l.leaveExcludedWeekends,
-                              value: '${s.preview!.excludedWeekends}',
-                            ),
-                            AppDetailField(
-                              label: l.leaveExcludedHolidays,
-                              value: '${s.preview!.excludedHolidays}',
-                            ),
-                          ],
-                        ),
+                  AppFormSection(
+                    title: l.leaveReasonLabel,
+                    child: AppTextField(
+                      label: l.leaveReasonLabel,
+                      initialValue: d.reason,
+                      enabled: !s.submitting,
+                      maxLines: 3,
+                      minLines: 2,
+                      onChanged: (v) => change((d) => d.copyWith(reason: v)),
+                    ),
+                  ),
+                  if (s.preview != null) ...[
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFormSection(
+                      title: l.leavePreviewTitle,
+                      child: AppDetailsGrid(
+                        fields: [
+                          AppDetailField(
+                            label: l.leaveRequestedDays,
+                            value: '${s.preview!.requestedDays} ${l.days}',
+                          ),
+                          AppDetailField(
+                            label: l.leaveAvailableDays,
+                            value: '${s.preview!.available} ${l.days}',
+                          ),
+                          AppDetailField(
+                            label: l.leaveAfterApproval,
+                            value: '${s.preview!.afterApproval} ${l.days}',
+                          ),
+                          AppDetailField(
+                            label: l.leaveExcludedWeekends,
+                            value: '${s.preview!.excludedWeekends}',
+                          ),
+                          AppDetailField(
+                            label: l.leaveExcludedHolidays,
+                            value: '${s.preview!.excludedHolidays}',
+                          ),
+                        ],
                       ),
                     ),
+                  ],
                   const SizedBox(height: AppSpacing.xl),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      AppSecondaryButton(
-                        label: l.cancel,
-                        onPressed: s.submitting
-                            ? null
-                            : () => c.go(AppRoutes.leave),
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      AppPrimaryButton(
-                        label: l.leaveSubmitRequest,
-                        loading: s.submitting,
-                        onPressed: s.submitting
-                            ? null
-                            : () => bloc.add(const LeaveRequestSubmitted()),
-                      ),
-                    ],
+                  AppFormActions(
+                    cancelLabel: l.cancel,
+                    onCancel: () => c.go(AppRoutes.leave),
+                    saveLabel: l.leaveSubmitRequest,
+                    saving: s.submitting,
+                    onSave: () => bloc.add(const LeaveRequestSubmitted()),
                   ),
                 ],
               ),

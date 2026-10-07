@@ -33,7 +33,7 @@ class WorkforceAttendanceDetailsPage extends StatelessWidget {
           final l = context.l10n;
           if (!snapshot.hasData) {
             return AppPage(
-              header: AppPageHeader(title: l.historyDetails),
+              header: AppDetailHeader(title: l.historyDetails),
               child: const AppLoadingState(),
             );
           }
@@ -41,7 +41,7 @@ class WorkforceAttendanceDetailsPage extends StatelessWidget {
           if (result is! Success<AttendanceDayDetails?> ||
               result.value == null) {
             return AppPage(
-              header: AppPageHeader(title: l.historyDetails),
+              header: AppDetailHeader(title: l.historyDetails),
               child: AppEmptyState(
                 title: l.historyNotFound,
                 message: l.historyNotFoundNote,

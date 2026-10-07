@@ -88,42 +88,56 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Wrap(
-                        spacing: AppSpacing.md,
-                        runSpacing: AppSpacing.md,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 320,
-                            child: AppSearchField(
-                              controller: _search,
-                              hint: l.accessSearchUsers,
-                              onChanged: (_) => setState(() {}),
-                              onClear: () => setState(() => _search.clear()),
-                            ),
-                          ),
-                          ChoiceChip(
-                            label: Text(l.accessFilterAll),
-                            selected: !_activeOnly,
-                            onSelected: (_) =>
-                                setState(() => _activeOnly = false),
-                          ),
-                          ChoiceChip(
-                            label: Text(l.accessStatusActive),
-                            selected: _activeOnly,
-                            onSelected: (_) =>
-                                setState(() => _activeOnly = true),
+                      AppCollectionToolbar(
+                        search: AppSearchField(
+                          controller: _search,
+                          label: l.accessSearchUsers,
+                          hint: l.accessSearchUsers,
+                          onChanged: (_) => setState(() {}),
+                          onClear: () => setState(() => _search.clear()),
+                        ),
+                        secondary: [
+                          AppFilterBar(
+                            children: [
+                              AppFilterChip(
+                                label: l.accessFilterAll,
+                                selected: !_activeOnly,
+                                onSelected: (_) =>
+                                    setState(() => _activeOnly = false),
+                              ),
+                              AppFilterChip(
+                                label: l.accessStatusActive,
+                                selected: _activeOnly,
+                                onSelected: (_) =>
+                                    setState(() => _activeOnly = true),
+                              ),
+                            ],
                           ),
                         ],
+                        resultCount: AppResultCount(
+                          filtered: filtered.length,
+                          total: users.length,
+                          label: l.accessUsersSummary(
+                            filtered.length,
+                            withAccess,
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(l.accessUsersSummary(filtered.length, withAccess)),
                       const SizedBox(height: AppSpacing.lg),
                       if (filtered.isEmpty)
-                        AppEmptyState(
-                          title: l.noRecords,
-                          message: l.accessNoBusinessAccess,
-                        )
+                        (query.isEmpty && !_activeOnly)
+                            ? AppCollectionEmptyState.noData(
+                                title: l.noRecords,
+                                message: l.accessNoBusinessAccess,
+                              )
+                            : AppCollectionEmptyState.noResults(
+                                title: l.noRecords,
+                                message: l.accessNoBusinessAccess,
+                                onClearFilters: () => setState(() {
+                                  _activeOnly = false;
+                                  _search.clear();
+                                }),
+                              )
                       else if (AppBreakpoints.of(context) == AppSize.compact)
                         Column(
                           children: [
@@ -135,76 +149,83 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                           ],
                         )
                       else
-                        AppDataTable(
-                          columns: [
-                            DataColumn(label: Text(l.accessEmployee)),
-                            DataColumn(label: Text(l.empCode)),
-                            DataColumn(label: Text(l.accessLogin)),
-                            DataColumn(label: Text(l.accessCompanyModules)),
-                            DataColumn(label: Text(l.status)),
-                            DataColumn(label: Text(l.actions)),
-                          ],
-                          rows: [
-                            for (final user in filtered)
-                              DataRow(
-                                cells: [
-                                  DataCell(_UserIdentity(user: user)),
-                                  DataCell(
-                                    user.employeeId == null
-                                        ? AppStatusBadge(
-                                            label: l.accessNotLinked,
-                                            status: AppStatus.warning,
-                                            isPill: true,
-                                          )
-                                        : user.employeeCode != null
-                                        ? Text(user.employeeCode!)
-                                        : AppStatusBadge(
-                                            label: l.accessLinkedEmployee,
-                                            status: AppStatus.success,
-                                            isPill: true,
+                        AppCollectionSurface(
+                          child: AppDataTable(
+                            columns: [
+                              DataColumn(label: Text(l.accessEmployee)),
+                              DataColumn(label: Text(l.empCode)),
+                              DataColumn(label: Text(l.accessLogin)),
+                              DataColumn(label: Text(l.accessCompanyModules)),
+                              DataColumn(label: Text(l.status)),
+                              DataColumn(label: Text(l.actions)),
+                            ],
+                            rows: [
+                              for (final user in filtered)
+                                DataRow(
+                                  cells: [
+                                    DataCell(_UserIdentity(user: user)),
+                                    DataCell(
+                                      user.employeeId == null
+                                          ? AppStatusBadge(
+                                              label: l.accessNotLinked,
+                                              status: AppStatus.warning,
+                                              isPill: true,
+                                            )
+                                          : user.employeeCode != null
+                                          ? Text(user.employeeCode!)
+                                          : AppStatusBadge(
+                                              label: l.accessLinkedEmployee,
+                                              status: AppStatus.success,
+                                              isPill: true,
+                                            ),
+                                    ),
+                                    DataCell(
+                                      AppStatusBadge(
+                                        label: user.hasLogin
+                                            ? user.email
+                                            : l.accessNoLogin,
+                                        status: user.hasLogin
+                                            ? AppStatus.info
+                                            : AppStatus.neutral,
+                                        isPill: true,
+                                      ),
+                                    ),
+                                    DataCell(
+                                      _ModuleChips(
+                                        modules: _businessModules(
+                                          grants,
+                                          user.userId,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      AppStatusBadge(
+                                        label: user.isEmployeeActive
+                                            ? l.accessStatusActive
+                                            : l.accessStatusInactive,
+                                        status: user.isEmployeeActive
+                                            ? AppStatus.success
+                                            : AppStatus.neutral,
+                                        isPill: true,
+                                      ),
+                                    ),
+                                    DataCell(
+                                      AppActionMenu(
+                                        tooltip: l.actions,
+                                        actions: [
+                                          AppMenuAction(
+                                            label: (l) => l.accessManage,
+                                            onPressed: () => context.go(
+                                              AppRoutes.accessUser(user.userId),
+                                            ),
                                           ),
-                                  ),
-                                  DataCell(
-                                    AppStatusBadge(
-                                      label: user.hasLogin
-                                          ? user.email
-                                          : l.accessNoLogin,
-                                      status: user.hasLogin
-                                          ? AppStatus.info
-                                          : AppStatus.neutral,
-                                      isPill: true,
-                                    ),
-                                  ),
-                                  DataCell(
-                                    _ModuleChips(
-                                      modules: _businessModules(
-                                        grants,
-                                        user.userId,
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                  DataCell(
-                                    AppStatusBadge(
-                                      label: user.isEmployeeActive
-                                          ? l.accessStatusActive
-                                          : l.accessStatusInactive,
-                                      status: user.isEmployeeActive
-                                          ? AppStatus.success
-                                          : AppStatus.neutral,
-                                      isPill: true,
-                                    ),
-                                  ),
-                                  DataCell(
-                                    AppSecondaryButton(
-                                      label: l.accessManage,
-                                      onPressed: () => context.go(
-                                        AppRoutes.accessUser(user.userId),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                          ],
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                     ],
                   ),
@@ -272,9 +293,14 @@ class _UserCard extends StatelessWidget {
         statusLabel: user.isEmployeeActive
             ? l.accessStatusActive
             : l.accessStatusInactive,
-        trailing: AppSecondaryButton(
-          label: l.accessManage,
-          onPressed: () => context.go(AppRoutes.accessUser(user.userId)),
+        trailing: AppActionMenu(
+          tooltip: l.actions,
+          actions: [
+            AppMenuAction(
+              label: (l) => l.accessManage,
+              onPressed: () => context.go(AppRoutes.accessUser(user.userId)),
+            ),
+          ],
         ),
         metrics: [
           (label: l.accessCompanyModules, value: modulesText),

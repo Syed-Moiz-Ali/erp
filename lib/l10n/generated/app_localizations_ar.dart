@@ -382,6 +382,77 @@ class AppLocalizationsAr extends AppLocalizations {
   String get periodLabel => 'الفترة';
 
   @override
+  String resultsCount(String count) {
+    return '$count نتيجة';
+  }
+
+  @override
+  String resultsCountFiltered(String filtered, String total) {
+    return '$filtered من $total نتيجة';
+  }
+
+  @override
+  String get sortLabel => 'الترتيب';
+
+  @override
+  String get clearAll => 'مسح الكل';
+
+  @override
+  String removeFilter(String label) {
+    return 'إزالة الفلتر: $label';
+  }
+
+  @override
+  String pageOf(String page, String pages) {
+    return 'صفحة $page من $pages';
+  }
+
+  @override
+  String get notProvided => 'غير متوفر';
+
+  @override
+  String get recordInformation => 'معلومات السجل';
+
+  @override
+  String get moreActionsLabel => 'إجراءات أخرى';
+
+  @override
+  String get noActivityYet => 'لا يوجد نشاط بعد';
+
+  @override
+  String get noEvidenceYet => 'لا توجد أدلة مرفقة';
+
+  @override
+  String get noAttachmentDescription => 'لا يوجد وصف';
+
+  @override
+  String get openAttachmentLabel => 'فتح المرفق';
+
+  @override
+  String get relatedRecordsLabel => 'السجلات المرتبطة';
+
+  @override
+  String get workflowLabel => 'سير العمل';
+
+  @override
+  String get evidenceLabel => 'الأدلة';
+
+  @override
+  String get viewRelatedLabel => 'عرض المرتبط';
+
+  @override
+  String get attachmentsLabel => 'المرفقات';
+
+  @override
+  String get currentRecordLabel => 'الحالي';
+
+  @override
+  String get detailsLabel => 'التفاصيل';
+
+  @override
+  String get noItemsLabel => 'لا توجد عناصر';
+
+  @override
   String get settings => 'الإعدادات';
 
   @override
@@ -1568,6 +1639,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accessNoHistory => 'لا توجد تغييرات وصول بعد.';
 
   @override
+  String get accessCompany => 'الشركة';
+
+  @override
+  String get accessIncluded => 'مضمّن';
+
+  @override
+  String get accessPermissionSearch => 'البحث في الأذونات';
+
+  @override
+  String get accessNoPermissionMatch => 'لا توجد أذونات مطابقة لبحثك.';
+
+  @override
+  String get accessActionScopeNote => 'تتبع الرؤية نطاق إذن العرض.';
+
+  @override
+  String get accessUnsavedTitle => 'تغييرات غير محفوظة';
+
+  @override
+  String get accessUnsavedMessage =>
+      'لديك تغييرات وصول غير محفوظة لهذا المستخدم. هل تريد المغادرة دون حفظ؟';
+
+  @override
+  String get accessStay => 'البقاء';
+
+  @override
+  String get accessLeave => 'المغادرة';
+
+  @override
   String get accessSearchUsers => 'البحث عن مستخدمين';
 
   @override
@@ -1582,6 +1681,18 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get accessModulesReadOnly =>
       'تتم إدارة توفر الوحدات على مستوى المنصة في هذا العرض.';
+
+  @override
+  String get accessModuleScopeNote =>
+      'تفعيل وحدة للشركة يجعلها متاحة، لكن كل مستخدم لا يزال بحاجة إلى إذن للوصول إليها.';
+
+  @override
+  String get accessModuleHrDesc =>
+      'الموظفون والحضور والإجازات وعمليات القوى العاملة.';
+
+  @override
+  String get accessModuleServicesDesc =>
+      'الاستفسار عن الخدمة والمهام والفحوصات والمواد وتنفيذ العمل.';
 
   @override
   String get accessStatusActive => 'نشط';
@@ -1774,6 +1885,128 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get universalDashboardOpen => 'فتح';
+
+  @override
+  String get universalDashboardFirstTimeTitle => 'لا يوجد نشاط بعد';
+
+  @override
+  String get universalDashboardFirstTimeMessage =>
+      'بمجرد أن تسجّل شركتك الحضور أو أعمال الخدمة، سيظهر هنا ملخص تشغيلي مباشر.';
+
+  @override
+  String get universalDashboardGetStarted => 'ابدأ الآن';
+
+  @override
+  String get universalDashboardNextServiceWork => 'أعمال الخدمة التالية';
+
+  @override
+  String get designSystemThemeMode => 'وضع المظهر';
+
+  @override
+  String get designSystemLightMode => 'فاتح';
+
+  @override
+  String get designSystemDarkMode => 'داكن';
+
+  @override
+  String get designSystemDirection => 'الاتجاه';
+
+  @override
+  String get designSystemTextScale => 'مقياس النص';
+
+  @override
+  String get designSystemScaleDefault => 'افتراضي';
+
+  @override
+  String get designSystemScaleModerate => 'متوسط';
+
+  @override
+  String get designSystemScaleLarge => 'كبير';
+
+  @override
+  String get designSystemFoundations => 'الأساسيات';
+
+  @override
+  String get designSystemSpacingScale => 'مقياس التباعد';
+
+  @override
+  String get designSystemRadiusScale => 'مقياس الاستدارة';
+
+  @override
+  String get designSystemBorderScale => 'مقياس الحدود';
+
+  @override
+  String get designSystemElevation => 'الارتفاع';
+
+  @override
+  String get designSystemSurfaceHierarchy => 'تدرّج الأسطح';
+
+  @override
+  String get designSystemTextColors => 'ألوان النص';
+
+  @override
+  String get designSystemSelectionControls =>
+      'مربعات الاختيار والأزرار والتبديلات';
+
+  @override
+  String get designSystemControlStates => 'حالات العناصر';
+
+  @override
+  String get designSystemChips => 'الشرائح والحالة';
+
+  @override
+  String get designSystemTooltip => 'التلميحات';
+
+  @override
+  String get designSystemMenu => 'القوائم';
+
+  @override
+  String get designSystemSkeletons => 'هياكل التحميل';
+
+  @override
+  String get designSystemErrorStates => 'حالات الفراغ والخطأ والصلاحيات';
+
+  @override
+  String get designSystemReadOnly => 'سياق للقراءة فقط';
+
+  @override
+  String get designSystemMenuAction => 'إجراء القائمة';
+
+  @override
+  String get designSystemMenuDanger => 'حذف السجل';
+
+  @override
+  String get designSystemTooltipHint => 'عنصر أيقونة فقط';
+
+  @override
+  String get designSystemKeyboardFocus => 'اضغط Tab للتركيز';
+
+  @override
+  String get typographyLabelSmall => 'تسمية صغيرة';
+
+  @override
+  String get typographyTableHeader => 'رأس الجدول';
+
+  @override
+  String get typographyTableCell => 'خلية الجدول';
+
+  @override
+  String get typographyStatus => 'الحالة';
+
+  @override
+  String get typographyInputValue => 'قيمة الإدخال';
+
+  @override
+  String get typographyFormLabel => 'تسمية النموذج';
+
+  @override
+  String get colorTextTertiary => 'نص ثالثي';
+
+  @override
+  String get colorSuccess => 'نجاح';
+
+  @override
+  String get colorWarning => 'تحذير';
 
   @override
   String get dashboard => 'لوحة المعلومات';
@@ -2183,6 +2416,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get empFilters => 'عوامل التصفية';
+
+  @override
+  String get empSearch => 'بحث عن الموظفين';
 
   @override
   String get empClear => 'مسح التصفية';
@@ -4936,6 +5172,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hrPermPoliciesManageDesc => 'إنشاء وتعديل سياسات الحضور.';
 
   @override
+  String get workforceFilters => 'فلاتر الحضور';
+
+  @override
+  String get workforceEmptyTitle => 'لا يوجد موظفون في النطاق';
+
+  @override
+  String get workforceEmptyNote =>
+      'لا يتوفر موظفون نشطون لهذا التاريخ والنطاق.';
+
+  @override
+  String get workforceNoResultsTitle => 'لا يوجد موظفون مطابقون';
+
+  @override
+  String get workforceNoResultsNote => 'جرّب بحثًا آخر أو امسح الفلاتر.';
+
+  @override
+  String get correctionEmptyTitle => 'لا توجد طلبات تصحيح';
+
+  @override
+  String get correctionEmptyNote => 'ستظهر طلبات التصحيح هنا بعد تقديمها.';
+
+  @override
+  String get correctionNoResultsTitle => 'لا توجد طلبات مطابقة';
+
+  @override
+  String get correctionNoResultsNote => 'جرّب حالة أخرى أو امسح الفلاتر.';
+
+  @override
+  String get correctionChange => 'الحالي ← المطلوب';
+
+  @override
+  String get correctionReview => 'مراجعة';
+
+  @override
+  String get correctionView => 'عرض';
+
+  @override
   String get servicesPermModuleServices => 'الخدمات';
 
   @override
@@ -5483,6 +5756,15 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get servicesSettingsSubtitle =>
       'هيّئ البيانات الأساسية المستخدمة في عمليات الخدمة.';
+
+  @override
+  String get servicesGroupGeneral => 'عام';
+
+  @override
+  String get servicesGroupInspection => 'الفحص';
+
+  @override
+  String get servicesGroupMaterials => 'المواد';
 
   @override
   String get servicesServiceTypesTitle => 'أنواع الخدمة';

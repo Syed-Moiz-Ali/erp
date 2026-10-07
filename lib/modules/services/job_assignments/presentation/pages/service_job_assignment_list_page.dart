@@ -81,7 +81,7 @@ class ServiceJobAssignmentListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesJobAssignmentStorageError,
@@ -89,16 +89,18 @@ class ServiceJobAssignmentListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty
-                ? l.servicesJobAssignmentEmpty
-                : l.servicesJobAssignmentNoResults,
-            message: empty
-                ? l.servicesJobAssignmentEmptyMessage
-                : l.servicesJobAssignmentNoResults,
-            actionLabel: empty && canCreate ? l.servicesJobAssignmentAdd : null,
-            onAction: () => context.go(ServicesRoutes.assignmentsNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesJobAssignmentEmpty,
+                  message: l.servicesJobAssignmentEmptyMessage,
+                  actionLabel: canCreate ? l.servicesJobAssignmentAdd : null,
+                  onAction: () => context.go(ServicesRoutes.assignmentsNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesJobAssignmentNoResults,
+                  message: l.servicesJobAssignmentNoResults,
+                  onClearFilters: cubit.clearFilters,
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -143,81 +145,87 @@ class ServiceJobAssignmentListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesJobAssignmentColumnAssignment)),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnEnquiry)),
-              DataColumn(
-                label: Text(l.servicesJobAssignmentColumnCustomerSite),
-              ),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnVisitDate)),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnAssignedTo)),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnPriority)),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnStatus)),
-              DataColumn(label: Text(l.servicesJobAssignmentColumnCreated)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(
+                  label: Text(l.servicesJobAssignmentColumnAssignment),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.assignment(item.id)),
-                  cells: [
-                    DataCell(
-                      Text(
-                        item.assignmentNumber,
-                        textDirection: TextDirection.ltr,
-                        style: AppTypography.of(context).label,
-                      ),
-                    ),
-                    DataCell(
-                      Text(
-                        item.enquiryNumber,
-                        textDirection: TextDirection.ltr,
-                      ),
-                    ),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.customerName),
-                          if (item.siteSummary.isNotEmpty)
+                DataColumn(
+                  label: Text(l.servicesJobAssignmentColumnCustomerSite),
+                ),
+                DataColumn(label: Text(l.servicesJobAssignmentColumnVisitDate)),
+                DataColumn(
+                  label: Text(l.servicesJobAssignmentColumnAssignedTo),
+                ),
+                DataColumn(label: Text(l.servicesJobAssignmentColumnStatus)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
+                ),
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.assignment(item.id)),
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              item.siteSummary,
+                              item.assignmentNumber,
+                              textDirection: TextDirection.ltr,
+                              style: AppTypography.of(context).label,
+                            ),
+                            Text(
+                              item.enquiryNumber,
+                              textDirection: TextDirection.ltr,
                               style: AppTypography.of(context).caption,
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(dates.date(item.scheduledVisitDate))),
-                    DataCell(Text(item.assignedSummary)),
-                    DataCell(
-                      AppStatusBadge(
-                        label: item.priorityName,
-                        status: servicePriorityStatus(item.priorityRank),
-                        isPill: true,
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.customerName),
+                            if (item.siteSummary.isNotEmpty)
+                              Text(
+                                item.siteSummary,
+                                style: AppTypography.of(context).caption,
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceJobAssignmentStatusLabel(item.status, l),
-                        status: serviceJobAssignmentStatus(item.status),
-                        isPill: true,
+                      DataCell(Text(dates.date(item.scheduledVisitDate))),
+                      DataCell(Text(item.assignedSummary)),
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceJobAssignmentStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          status: serviceJobAssignmentStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(Text(dates.date(item.createdAt))),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -239,22 +247,24 @@ class ServiceJobAssignmentListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesJobAssignmentSearch,
               onChanged: cubit.search,
             ),
-            actions: [
-              AppSecondaryButton(
-                label: state.filter.activeCount == 0
-                    ? l.servicesJobAssignmentFilterTitle
-                    : '${l.servicesJobAssignmentFilterTitle} (${numbers.integer(state.filter.activeCount)})',
-                icon: Icons.tune,
-                onPressed: () => _openFilters(context, state),
-              ),
-              if (state.filter.activeCount > 0)
-                AppTextButton(label: l.clear, onPressed: cubit.clearFilters),
-            ],
+            filterButton: AppFilterButton(
+              label: l.servicesJobAssignmentFilterTitle,
+              activeCount: state.filter.activeCount,
+              onPressed: () => _openFilters(context, state),
+            ),
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
+            activeFilters: AppActiveFilters(
+              filters: _activeFilterChips(context, state, cubit, l),
+              onClearAll: cubit.clearFilters,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -272,6 +282,49 @@ class ServiceJobAssignmentListPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<AppActiveFilter> _activeFilterChips(
+    BuildContext context,
+    ServiceJobAssignmentListState state,
+    ServiceJobAssignmentListCubit cubit,
+    AppLocalizations l,
+  ) {
+    final f = state.filter;
+    final dates = AppDateFormatter(Localizations.localeOf(context));
+    final chips = <AppActiveFilter>[];
+    void add(String label, ServiceJobAssignmentFilter next) => chips.add(
+      AppActiveFilter(label: label, onRemove: () => cubit.applyFilter(next)),
+    );
+    if (f.status != null) {
+      add(
+        '${l.servicesJobAssignmentFilterStatus}: ${serviceJobAssignmentStatusLabel(f.status!, l)}',
+        f.copyWith(clearStatus: true),
+      );
+    }
+    if (f.priorityId != null) {
+      String name = '';
+      for (final p in state.priorities) {
+        if (p.id == f.priorityId) name = p.name;
+      }
+      add(
+        '${l.servicesJobAssignmentFilterPriority}: $name',
+        f.copyWith(clearPriority: true),
+      );
+    }
+    if (f.visitFrom != null) {
+      add(
+        '${l.servicesJobAssignmentFilterVisitFrom}: ${dates.date(f.visitFrom!)}',
+        f.copyWith(clearVisitFrom: true),
+      );
+    }
+    if (f.visitTo != null) {
+      add(
+        '${l.servicesJobAssignmentFilterVisitTo}: ${dates.date(f.visitTo!)}',
+        f.copyWith(clearVisitTo: true),
+      );
+    }
+    return chips;
   }
 
   Future<void> _openFilters(

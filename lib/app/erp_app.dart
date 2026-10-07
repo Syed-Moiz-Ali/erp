@@ -22,6 +22,7 @@ import 'package:modular_erp/core/localization/locale_cubit.dart';
 import 'package:modular_erp/core/errors/failure_localization.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/design_system/theme/app_theme.dart';
+import 'package:modular_erp/design_system/theme/app_text_scaling.dart';
 import 'package:modular_erp/design_system/components/feedback/app_feedback.dart';
 import 'router/app_router.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
@@ -185,15 +186,18 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
                 message: (l10n) => state.failure!.localizedMessage(l10n),
               );
             },
-            child: widget.syncStatusCubit == null
-                ? content
-                : AppSyncStatusBanner(
-                    cubit: widget.syncStatusCubit,
-                    child: content,
-                  ),
+            child: AppTextScalePolicy(
+              child: widget.syncStatusCubit == null
+                  ? content
+                  : AppSyncStatusBanner(
+                      cubit: widget.syncStatusCubit,
+                      child: content,
+                    ),
+            ),
           );
         },
         theme: AppTheme.light(locale: state.locale),
+        darkTheme: AppTheme.dark(locale: state.locale),
         themeMode: ThemeMode.light,
         routerConfig: router,
       ),

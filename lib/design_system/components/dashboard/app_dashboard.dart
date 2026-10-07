@@ -459,12 +459,738 @@ class AppStatusSummary extends StatelessWidget {
   );
 }
 
+/// Compact, neutral dashboard metric card.
+///
+/// One semantic icon carries the only accent; the card surface stays neutral so
+/// a KPI row never turns into a multi-colour wall of statistics. When [onTap]
+/// is provided the card gets the shared interactive hover/focus treatment;
+/// static metrics stay flat with no misleading hover.
+class AppDashboardMetricCard extends StatelessWidget {
+  const AppDashboardMetricCard({
+    super.key,
+    required this.label,
+    required this.value,
+    this.detail = '',
+    this.icon = Icons.insights_outlined,
+    this.status = AppStatus.neutral,
+    this.onTap,
+  });
+  final String label, value, detail;
+  final IconData icon;
+  final AppStatus status;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accent = isDark ? status.darkColor : status.color;
+    final semantic = [label, value, if (detail.isNotEmpty) detail].join(', ');
+    return Semantics(
+      label: semantic,
+      button: onTap != null,
+      child: ExcludeSemantics(
+        child: AppCard(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          onTap: onTap,
+          variant: onTap != null
+              ? AppCardVariant.interactive
+              : AppCardVariant.surface,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _DashboardIcon(
+                    icon: icon,
+                    color: status == AppStatus.neutral ? null : accent,
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      label,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.of(context).caption.copyWith(
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.textSecondary,
+                        fontWeight: AppTypography.weightSemibold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.of(context).metricValue,
+              ),
+              if (detail.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  detail,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.of(context).metricSupporting,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Shared square icon affordance used by the compact dashboard rows.
+class _DashboardIcon extends StatelessWidget {
+  const _DashboardIcon({required this.icon, this.color, this.size = 32});
+  final IconData icon;
+  final Color? color;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accent =
+        color ?? (isDark ? AppColors.darkNeutral : AppColors.neutral);
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: isDark ? 0.20 : 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.radiusMd),
+      ),
+      child: Icon(icon, size: size / 2, color: accent),
+    );
+  }
+}
+
+/// A generic dashboard section heading shared by plain and carded sections.
+class AppDashboardHeading extends StatelessWidget {
+  const AppDashboardHeading({super.key, required this.title, this.action});
+  final String title;
+  final Widget? action;
+  @override
+  Widget build(BuildContext context) =>
+      AppSectionHeader(title: title, upperCase: true, action: action);
+}
+
+/// Compact cross-module "needs attention" row.
+///
+/// Semantic icon + short category + strong title + secondary context, then a
+/// real priority chip (never a fabricated SLA) and a single primary action.
+class AppDashboardAttentionRow extends StatelessWidget {
+  const AppDashboardAttentionRow({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.category = '',
+    this.meta = '',
+    this.priorityLabel = '',
+    this.status = AppStatus.warning,
+    this.actionLabel,
+    this.onAction,
+    this.onTap,
+  });
+  final IconData icon;
+  final String title, category, subtitle, meta, priorityLabel;
+  final AppStatus status;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final metaRow = Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.xs,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        if (priorityLabel.isNotEmpty)
+          AppStatusBadge(label: priorityLabel, status: status, isPill: true),
+        if (meta.isNotEmpty)
+          Text(
+            meta,
+            style: theme.caption.copyWith(
+              color: AppColors.textMuted,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+      ],
+    );
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppRadius.control),
+      hoverColor: isDark ? AppColors.darkSurfaceHover : AppColors.surfaceHover,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.md,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final compact = constraints.maxWidth < 360;
+            final details = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (category.isNotEmpty)
+                  Text(
+                    category.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.overline,
+                  ),
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.bodySmall.copyWith(
+                    fontWeight: AppTypography.weightSemibold,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.textPrimary,
+                  ),
+                ),
+                if (subtitle.isNotEmpty)
+                  Text(
+                    subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.caption,
+                  ),
+                if (priorityLabel.isNotEmpty || meta.isNotEmpty) ...[
+                  const SizedBox(height: AppSpacing.xs),
+                  metaRow,
+                ],
+                if (compact && actionLabel != null && onAction != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  AppSecondaryButton(
+                    label: actionLabel!,
+                    onPressed: onAction,
+                    size: AppButtonSize.small,
+                  ),
+                ],
+              ],
+            );
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _DashboardIcon(icon: icon, color: status.color),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(child: details),
+                if (!compact && actionLabel != null && onAction != null) ...[
+                  const SizedBox(width: AppSpacing.md),
+                  AppSecondaryButton(
+                    label: actionLabel!,
+                    onPressed: onAction,
+                    size: AppButtonSize.small,
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// A single timeline entry for [AppDashboardTimeline].
+class AppDashboardTimelineEntry {
+  const AppDashboardTimelineEntry({
+    required this.timeLabel,
+    required this.title,
+    required this.subtitle,
+    this.statusLabel = '',
+    this.status = AppStatus.brand,
+    this.icon,
+    this.onTap,
+  });
+  final String timeLabel, title, subtitle, statusLabel;
+  final AppStatus status;
+  final IconData? icon;
+  final VoidCallback? onTap;
+}
+
+/// Subtle vertical schedule timeline: a compact time gutter, a small marker and
+/// a title/context column. No oversized dots or rails.
+class AppDashboardTimeline extends StatelessWidget {
+  const AppDashboardTimeline({
+    super.key,
+    required this.entries,
+    this.emptyMessage = '',
+  });
+  final List<AppDashboardTimelineEntry> entries;
+  final String emptyMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    if (entries.isEmpty) {
+      return AppDashboardEmptySection(
+        message: emptyMessage,
+        icon: Icons.event_busy_outlined,
+      );
+    }
+    final theme = AppTypography.of(context);
+    final gutter =
+        68.0 *
+        MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 1.4).toDouble();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var i = 0; i < entries.length; i++) ...[
+          if (i > 0) const Divider(height: 1),
+          _TimelineRow(entry: entries[i], gutter: gutter, theme: theme),
+        ],
+      ],
+    );
+  }
+}
+
+class _TimelineRow extends StatelessWidget {
+  const _TimelineRow({
+    required this.entry,
+    required this.gutter,
+    required this.theme,
+  });
+  final AppDashboardTimelineEntry entry;
+  final double gutter;
+  final AppTypography theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return InkWell(
+      onTap: entry.onTap,
+      hoverColor: isDark ? AppColors.darkSurfaceHover : AppColors.surfaceHover,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: gutter,
+              child: Text(
+                entry.timeLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.bodySmall.copyWith(
+                  fontWeight: AppTypography.weightSemibold,
+                  color: isDark
+                      ? AppColors.darkTextPrimary
+                      : AppColors.textPrimary,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.xs),
+              child: Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: entry.status.color,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (entry.icon != null) ...[
+                        Icon(entry.icon, size: 15, color: AppColors.textMuted),
+                        const SizedBox(width: AppSpacing.xs),
+                      ],
+                      Expanded(
+                        child: Text(
+                          entry.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.bodySmall.copyWith(
+                            fontWeight: AppTypography.weightSemibold,
+                            color: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (entry.subtitle.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      entry.subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.caption,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (entry.statusLabel.isNotEmpty) ...[
+              const SizedBox(width: AppSpacing.sm),
+              AppStatusBadge(
+                label: entry.statusLabel,
+                status: entry.status,
+                isPill: true,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A compact "assigned to me" work row: reference + party/summary + state +
+/// single primary action.
+class AppDashboardWorkRow extends StatelessWidget {
+  const AppDashboardWorkRow({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.statusLabel = '',
+    this.icon = Icons.assignment_outlined,
+    this.status = AppStatus.neutral,
+    this.actionLabel,
+    this.onAction,
+  });
+  final String title, subtitle, statusLabel;
+  final String? actionLabel;
+  final IconData icon;
+  final AppStatus status;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compact = constraints.maxWidth < 340;
+          final info = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.bodySmall.copyWith(
+                        fontWeight: AppTypography.weightSemibold,
+                        color: isDark
+                            ? AppColors.darkTextPrimary
+                            : AppColors.textPrimary,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ),
+                  if (statusLabel.isNotEmpty) ...[
+                    const SizedBox(width: AppSpacing.sm),
+                    AppStatusBadge(
+                      label: statusLabel,
+                      status: status == AppStatus.neutral
+                          ? AppStatus.brand
+                          : status,
+                      isPill: true,
+                    ),
+                  ],
+                ],
+              ),
+              if (subtitle.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.caption,
+                ),
+              ],
+            ],
+          );
+          final action = actionLabel != null && onAction != null
+              ? AppSecondaryButton(
+                  label: actionLabel!,
+                  icon: icon,
+                  size: AppButtonSize.small,
+                  onPressed: onAction,
+                )
+              : null;
+          if (compact) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                info,
+                if (action != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  action,
+                ],
+              ],
+            );
+          }
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: info),
+              if (action != null) ...[
+                const SizedBox(width: AppSpacing.md),
+                action,
+              ],
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Compact recent-activity row with a subtle owning-module tag.
+class AppDashboardActivityRow extends StatelessWidget {
+  const AppDashboardActivityRow({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.description = '',
+    this.moduleLabel = '',
+    this.timestamp = '',
+    this.status = AppStatus.neutral,
+    this.onTap,
+  });
+  final IconData icon;
+  final String title, description, moduleLabel, timestamp;
+  final AppStatus status;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return InkWell(
+      onTap: onTap,
+      hoverColor: isDark ? AppColors.darkSurfaceHover : AppColors.surfaceHover,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.sm + 2,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _DashboardIcon(icon: icon, color: status.color, size: 28),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (moduleLabel.isNotEmpty)
+                    Text(
+                      moduleLabel.toUpperCase(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.overline,
+                    ),
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.bodySmall.copyWith(
+                      fontWeight: AppTypography.weightSemibold,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.textPrimary,
+                    ),
+                  ),
+                  if (description.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      description,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.caption,
+                    ),
+                  ],
+                  if (timestamp.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      timestamp,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.caption.copyWith(
+                        color: AppColors.textMuted,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact section empty state (not a giant illustration).
+class AppDashboardEmptySection extends StatelessWidget {
+  const AppDashboardEmptySection({
+    super.key,
+    required this.message,
+    this.icon = Icons.inbox_outlined,
+    this.actionLabel,
+    this.onAction,
+  });
+  final String message;
+  final IconData icon;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: isDark ? AppColors.darkTextTertiary : AppColors.textMuted,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(
+              message,
+              style: AppTypography.of(context).caption.copyWith(
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.textSecondary,
+              ),
+            ),
+          ),
+          if (actionLabel != null && onAction != null) ...[
+            const SizedBox(width: AppSpacing.sm),
+            AppTextButton(
+              label: actionLabel!,
+              size: AppButtonSize.small,
+              onPressed: onAction,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// One stage of the compact Services workflow strip.
+class AppDashboardStage {
+  const AppDashboardStage({required this.label, required this.value});
+  final String label;
+  final String value;
+}
+
+/// Subtle horizontal workflow stage strip. Material Request stays an optional
+/// separate stage and is never implied as a mandatory funnel step.
+class AppDashboardStageStrip extends StatelessWidget {
+  const AppDashboardStageStrip({super.key, required this.stages});
+  final List<AppDashboardStage> stages;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        for (var i = 0; i < stages.length; i++) ...[
+          if (i > 0)
+            Icon(
+              Icons.arrow_forward,
+              size: 14,
+              color: isDark ? AppColors.darkTextTertiary : AppColors.textMuted,
+            ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
+            ),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? AppColors.darkSurfaceMuted
+                  : AppColors.surfaceSubtle,
+              borderRadius: BorderRadius.circular(AppRadius.control),
+              border: Border.all(
+                color: isDark
+                    ? AppColors.darkBorderSubtle
+                    : AppColors.borderSubtle,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  stages[i].value,
+                  style: theme.body.copyWith(
+                    fontWeight: AppTypography.weightBold,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Text(
+                  stages[i].label,
+                  style: theme.caption.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// Geometry-aware dashboard loading skeleton that resembles the composed
+/// sections (My Day, KPI grid, attention/schedule, activity) rather than one
+/// giant spinner.
 class AppDashboardSkeleton extends StatelessWidget {
   const AppDashboardSkeleton({super.key});
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
+      const AppDashboardTwoColumn(
+        primary: AppCard(child: AppSkeleton(height: 120)),
+        secondary: AppCard(child: AppSkeleton(height: 120)),
+      ),
+      const SizedBox(height: AppSpacing.xxl),
       AppDashboardGrid(
         children: List.generate(
           4,
@@ -475,6 +1201,8 @@ class AppDashboardSkeleton extends StatelessWidget {
                 AppSkeleton(width: 100),
                 SizedBox(height: AppSpacing.xl),
                 AppSkeleton(width: 64, height: 32),
+                SizedBox(height: AppSpacing.sm),
+                AppSkeleton(width: 120),
               ],
             ),
           ),
@@ -482,11 +1210,9 @@ class AppDashboardSkeleton extends StatelessWidget {
       ),
       const SizedBox(height: AppSpacing.xxl),
       const AppDashboardTwoColumn(
-        primary: AppCard(child: AppSkeleton(height: 140)),
-        secondary: AppCard(child: AppSkeleton(height: 140)),
+        primary: AppCard(child: AppSkeleton(height: 160)),
+        secondary: AppCard(child: AppSkeleton(height: 160)),
       ),
-      const SizedBox(height: AppSpacing.xxl),
-      const AppCard(child: AppSkeleton(height: 76)),
       const SizedBox(height: AppSpacing.xxl),
       const AppCard(child: AppSkeleton(height: 148)),
     ],

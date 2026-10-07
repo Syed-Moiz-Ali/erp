@@ -378,7 +378,7 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AppSwitchField(
+                  AppBooleanSettingRow(
                     label: l.empLogin,
                     value: d.loginEnabled,
                     onChanged: state.saving

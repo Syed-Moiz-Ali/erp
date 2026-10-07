@@ -123,43 +123,33 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
             ),
         ],
       ),
-      filters: Column(
-        children: [
-          AppCard(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            // radius: 14.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppTextField(
-                  label: l.search,
-                  hint: l.searchRecords,
-                  initialValue: state.query,
-                  onChanged: onSearch,
-                  prefixIcon: Icons.search_rounded,
+      filters: AppCollectionToolbar(
+        search: AppSearchField(
+          label: l.search,
+          hint: l.searchRecords,
+          onChanged: onSearch,
+        ),
+        secondary: [
+          AppFilterBar(
+            children: [
+              for (final status in <ConfigurationStatus?>[
+                null,
+                ...ConfigurationStatus.values,
+              ])
+                AppFilterChip(
+                  label: status == null
+                      ? l.cfgAll
+                      : configurationStatusLabel(status, l),
+                  selected: state.status == status,
+                  onSelected: (_) => onStatus(status),
                 ),
-                const SizedBox(height: AppSpacing.md),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.sm,
-                  children: [
-                    for (final status in <ConfigurationStatus?>[
-                      null,
-                      ...ConfigurationStatus.values,
-                    ])
-                      AppFilterChip(
-                        label: status == null
-                            ? l.cfgAll
-                            : configurationStatusLabel(status, l),
-                        selected: state.status == status,
-                        onSelected: (_) => onStatus(status),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+            ],
           ),
         ],
+        resultCount: AppResultCount(
+          filtered: data?.filtered ?? 0,
+          total: data?.total,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -169,19 +159,27 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
               message: configurationFailure(state.failure!, l),
               onRetry: onRetry,
             ),
-          if (state.loading)
-            const AppConfigurationSkeleton()
+          if (state.loading && data == null)
+            const AppCollectionSkeleton()
           else if (data != null && data.filtered == 0)
-            AppEmptyState(
-              title: data.total == 0 ? l.cfgEmpty : l.cfgNoResults,
-              message: data.total == 0
-                  ? l.cfgEmptyMessage
-                  : l.cfgNoResultsMessage,
-            )
+            data.total == 0
+                ? AppCollectionEmptyState.noData(
+                    title: l.cfgEmpty,
+                    message: l.cfgEmptyMessage,
+                    actionLabel: manage ? l.cfgNew : null,
+                    onAction: manage ? onCreate : null,
+                  )
+                : AppCollectionEmptyState.noResults(
+                    title: l.cfgNoResults,
+                    message: l.cfgNoResultsMessage,
+                    onClearFilters: () {
+                      onSearch('');
+                      onStatus(null);
+                    },
+                  )
           else if (data != null)
             LayoutBuilder(
               builder: (c, constraints) {
-                // Mobile compact cards
                 if (AppBreakpoints.classify(constraints.maxWidth) ==
                     AppSize.compact) {
                   return Column(
@@ -189,166 +187,85 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                       for (final item in data.items)
                         Padding(
                           padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                          child: AppCard(
-                            // radius: 14.0,
-                            padding: const EdgeInsets.all(AppSpacing.lg),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        item.record.name,
-                                        style: AppTypography.of(c).cardTitle
-                                            .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textPrimary,
-                                            ),
-                                      ),
-                                    ),
-                                    actions(item),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  summary(c, item.record),
-                                  style: AppTypography.of(c).bodySmall.copyWith(
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                                if (mobileDetails != null) ...[
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    mobileDetails!(c, item.record),
-                                    style: AppTypography.of(c).caption.copyWith(
-                                      color: AppColors.textMuted,
-                                    ),
-                                  ),
-                                ],
-                                const SizedBox(height: AppSpacing.md),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    configurationBadge(c, item.record.status),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.surfaceSubtle,
-                                        borderRadius: BorderRadius.circular(
-                                          AppRadius.radiusXs,
-                                        ),
-                                        border: Border.all(
-                                          color: AppColors.borderSubtle,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        [
-                                          l.cfgAssigned,
-                                          configurationNumber(
-                                            c,
-                                            item.assignedEmployees,
-                                          ),
-                                        ].join(': '),
-                                        style: AppTypography.of(c).caption
-                                            .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textSecondary,
-                                              fontFeatures: const [
-                                                FontFeature.tabularFigures(),
-                                              ],
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                          child: AppMobileRecordCard(
+                            title: item.record.name,
+                            subtitle: summary(c, item.record),
+                            tertiary: mobileDetails?.call(c, item.record),
+                            status:
+                                item.record.status == ConfigurationStatus.active
+                                ? AppStatus.success
+                                : AppStatus.neutral,
+                            statusLabel: configurationStatusLabel(
+                              item.record.status,
+                              c.l10n,
                             ),
+                            trailing: actions(item),
+                            onTap: () => c.push(detailRoute(item.record.id)),
                           ),
                         ),
                     ],
                   );
                 }
-
-                // Desktop Elegant Data Table wrapped inside a Curved Card
-                return AppCard(
-                  padding: EdgeInsets.zero,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppRadius.card),
-                    child: AppDataTable(
-                      columns: [
-                        DataColumn(label: Text(l.cfgName)),
-                        DataColumn(
-                          label: Text(summaryLabel ?? l.cfgDescription),
+                return AppCollectionSurface(
+                  child: AppDataTable(
+                    columns: [
+                      DataColumn(label: Text(l.cfgName)),
+                      DataColumn(label: Text(summaryLabel ?? l.cfgDescription)),
+                      ...extraColumns,
+                      DataColumn(label: Text(l.cfgStatus)),
+                      DataColumn(label: Text(l.cfgAssigned)),
+                      DataColumn(label: Text(l.cfgActions)),
+                    ],
+                    rows: [
+                      for (final item in data.items)
+                        DataRow(
+                          onSelectChanged: (_) =>
+                              c.push(detailRoute(item.record.id)),
+                          cells: [
+                            DataCell(
+                              Text(
+                                item.record.name,
+                                style: AppTypography.of(c).body.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              SizedBox(
+                                width: summaryWidth,
+                                child: Text(
+                                  summary(c, item.record),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTypography.of(c).bodySmall.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ...?(extraCells?.call(c, item.record)),
+                            DataCell(configurationBadge(c, item.record.status)),
+                            DataCell(
+                              Text(
+                                configurationNumber(c, item.assignedEmployees),
+                                style: const TextStyle(
+                                  fontFeatures: [FontFeature.tabularFigures()],
+                                ),
+                              ),
+                            ),
+                            DataCell(actions(item)),
+                          ],
                         ),
-                        ...extraColumns,
-                        DataColumn(label: Text(l.cfgStatus)),
-                        DataColumn(label: Text(l.cfgAssigned)),
-                        DataColumn(label: Text(l.cfgActions)),
-                      ],
-                      rows: [
-                        for (final item in data.items)
-                          DataRow(
-                            onSelectChanged: (_) =>
-                                c.push(detailRoute(item.record.id)),
-                            cells: [
-                              DataCell(
-                                Text(
-                                  item.record.name,
-                                  style: AppTypography.of(c).body.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                SizedBox(
-                                  width: summaryWidth,
-                                  child: Text(
-                                    summary(c, item.record),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppTypography.of(c).bodySmall
-                                        .copyWith(
-                                          color: AppColors.textSecondary,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                              ...?(extraCells?.call(c, item.record)),
-                              DataCell(
-                                configurationBadge(c, item.record.status),
-                              ),
-                              DataCell(
-                                Text(
-                                  configurationNumber(
-                                    c,
-                                    item.assignedEmployees,
-                                  ),
-                                  style: const TextStyle(
-                                    fontFeatures: [
-                                      FontFeature.tabularFigures(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              DataCell(actions(item)),
-                            ],
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
                 );
               },
             ),
           if (data != null)
             Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: AppTablePagination(
+              padding: const EdgeInsets.only(top: AppSpacing.lg),
+              child: AppPagination(
                 page: state.page,
                 pageSize: 10,
                 total: data.filtered,
@@ -394,16 +311,18 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
       );
     }
     return AppPage(
-      header: AppPageHeader(
+      header: AppDetailHeader(
         title: item.record.name,
-        subtitle: title,
-        actions: [
-          if (manage)
-            AppSecondaryButton(
-              label: l.cfgEdit,
-              icon: Icons.edit_outlined,
-              onPressed: state.busy ? null : onEdit,
-            ),
+        description: title,
+        status: configurationBadge(c, item.record.status),
+        primaryAction: manage
+            ? AppPrimaryButton(
+                label: l.cfgEdit,
+                icon: Icons.edit_outlined,
+                onPressed: state.busy ? null : onEdit,
+              )
+            : null,
+        secondaryActions: [
           if (manage)
             AppSecondaryButton(
               label: item.record.status == ConfigurationStatus.active
@@ -438,7 +357,6 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
             spacing: AppSpacing.lg,
             runSpacing: AppSpacing.md,
             children: [
-              configurationBadge(c, item.record.status),
               Text(
                 [
                   l.cfgAssigned,
@@ -496,26 +414,14 @@ class ConfigurationFormLayout extends StatelessWidget {
                   ),
                 ),
               if (ready) ...[
-                AppCard(
-                  // radius: 18.0,
-                  padding: const EdgeInsets.all(28.0),
-                  child: content,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    AppSecondaryButton(
-                      label: c.l10n.cancel,
-                      onPressed: saving ? null : onCancel,
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    AppPrimaryButton(
-                      label: c.l10n.save,
-                      loading: saving,
-                      onPressed: saving ? null : onSave,
-                    ),
-                  ],
+                content,
+                const SizedBox(height: AppSpacing.xxl),
+                AppFormActions(
+                  cancelLabel: c.l10n.cancel,
+                  onCancel: onCancel,
+                  saveLabel: c.l10n.save,
+                  saving: saving,
+                  onSave: onSave,
                 ),
               ],
             ],

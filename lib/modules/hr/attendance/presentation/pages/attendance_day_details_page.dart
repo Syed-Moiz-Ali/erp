@@ -29,9 +29,8 @@ class AttendanceDayDetailsPage extends StatelessWidget {
     builder: (context, state) {
       final l = context.l10n, bloc = context.read<AttendanceDayDetailsBloc>();
       return AppPage(
-        header: AppPageHeader(
+        header: AppDetailHeader(
           title: l.historyDetails,
-          compactActionsInline: true,
           breadcrumbs: AppBreakpoints.of(context) == AppSize.compact
               ? null
               : AppBreadcrumbs(
@@ -48,7 +47,7 @@ class AttendanceDayDetailsPage extends StatelessWidget {
                   ],
                   onNavigate: (route) => context.go(route),
                 ),
-          actions: [
+          secondaryActions: [
             AppTextButton(
               label: l.historyNav,
               icon: Icons.arrow_back,

@@ -32,6 +32,16 @@ extension AppStatusColor on AppStatus {
     AppStatus.neutral => AppColors.borderDefault,
     AppStatus.brand => AppColors.brandBorder.withValues(alpha: .35),
   };
+
+  /// Deliberate dark-mode status foreground (not an inversion of the light one).
+  Color get darkColor => switch (this) {
+    AppStatus.success => AppColors.darkSuccess,
+    AppStatus.warning => AppColors.darkWarning,
+    AppStatus.danger => AppColors.darkDanger,
+    AppStatus.info => AppColors.darkInfo,
+    AppStatus.neutral => AppColors.darkNeutral,
+    AppStatus.brand => AppColors.darkBrand,
+  };
 }
 
 class AppStatusBadge extends StatelessWidget {
@@ -51,46 +61,57 @@ class AppStatusBadge extends StatelessWidget {
   final bool isPill;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
-    decoration: BoxDecoration(
-      color: status.subtleColor,
-      border: Border.all(color: status.borderColor, width: 1),
-      borderRadius: BorderRadius.circular(
-        isPill ? AppRadius.radiusFull : AppRadius.badge,
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final foreground = isDark ? status.darkColor : status.color;
+    final background = isDark
+        ? foreground.withValues(alpha: 0.16)
+        : status.subtleColor;
+    final border = isDark
+        ? foreground.withValues(alpha: 0.36)
+        : status.borderColor;
+    return Container(
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 8,
+        vertical: 3,
       ),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (showDot) ...[
-          Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: status.color,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 6),
-        ] else if (icon != null) ...[
-          Icon(icon, size: 12, color: status.color),
-          const SizedBox(width: 4),
-        ],
-        Flexible(
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTypography.of(context).caption.copyWith(
-              color: status.color,
-              fontWeight: FontWeight.w600,
-              height: 1.2,
-            ),
-          ),
+      decoration: BoxDecoration(
+        color: background,
+        border: Border.all(color: border, width: 1),
+        borderRadius: BorderRadius.circular(
+          isPill ? AppRadius.radiusFull : AppRadius.badge,
         ),
-      ],
-    ),
-  );
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (showDot) ...[
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                color: foreground,
+                shape: BoxShape.circle,
+              ),
+            ),
+            const SizedBox(width: 6),
+          ] else if (icon != null) ...[
+            Icon(icon, size: 12, color: foreground),
+            const SizedBox(width: 4),
+          ],
+          Flexible(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTypography.of(
+                context,
+              ).status.copyWith(color: foreground),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

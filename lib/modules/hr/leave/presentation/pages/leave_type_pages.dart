@@ -170,7 +170,7 @@ class LeaveTypeFormPage extends StatelessWidget {
                 title: l.cfgGeneralRules,
                 child: AppFormGrid(
                   children: [
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leaveRequiresApproval,
                       value: d.requiresApproval,
                       onChanged: s.saving
@@ -178,21 +178,21 @@ class LeaveTypeFormPage extends StatelessWidget {
                           : (v) =>
                                 change((d) => d.copyWith(requiresApproval: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leaveAllowsHalfDay,
                       value: d.allowsHalfDay,
                       onChanged: s.saving
                           ? null
                           : (v) => change((d) => d.copyWith(allowsHalfDay: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leaveRequiresReason,
                       value: d.requiresReason,
                       onChanged: s.saving
                           ? null
                           : (v) => change((d) => d.copyWith(requiresReason: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.leaveRequiresAttachment,
                       value: d.requiresAttachment,
                       onChanged: s.saving
@@ -207,7 +207,7 @@ class LeaveTypeFormPage extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.cfgStatus,
-                child: AppSwitchField(
+                child: AppBooleanSettingRow(
                   label: l.cfgActive,
                   value: d.status == ConfigurationStatus.active,
                   onChanged: s.saving

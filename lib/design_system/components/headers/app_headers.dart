@@ -10,6 +10,7 @@ class AppPageHeader extends StatelessWidget {
     this.subtitle,
     this.actions = const [],
     this.breadcrumbs,
+    this.status,
     this.overflowActions = const [],
     this.compactActionsInline = false,
   });
@@ -17,11 +18,15 @@ class AppPageHeader extends StatelessWidget {
   final String? subtitle;
   final List<Widget> actions;
   final Widget? breadcrumbs;
+
+  /// Optional status/context indicator rendered beside the title.
+  final Widget? status;
   final List<AppPageOverflowAction> overflowActions;
   final bool compactActionsInline;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
+      final typography = AppTypography.of(context);
       final heading = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,10 +34,26 @@ class AppPageHeader extends StatelessWidget {
             breadcrumbs!,
             const SizedBox(height: AppSpacing.xs),
           ],
-          Text(title, style: AppTypography.of(context).pageTitle),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  title,
+                  style: typography.pageTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (status != null) ...[
+                const SizedBox(width: AppSpacing.md),
+                status!,
+              ],
+            ],
+          ),
           if (subtitle != null) ...[
-            const SizedBox(height: AppSpacing.xs + 2),
-            Text(subtitle!, style: AppTypography.of(context).caption),
+            const SizedBox(height: AppSpacing.xs),
+            Text(subtitle!, style: typography.caption),
           ],
         ],
       );

@@ -53,13 +53,8 @@ class EmployeeDetailsPage extends StatelessWidget {
           refs = state.references,
           a = state.account?.user;
       final navigation = NavigationResolver(registry);
-      return AppPage(
-        header: AppPageHeader(
-          title: e.displayName,
-          subtitle: [
-            e.employeeCode,
-            referenceLabel(refs?.designations, e.designationId, l),
-          ].join(' · '),
+      return AppDetailPage(
+        header: AppDetailHeader(
           breadcrumbs: AppBreadcrumbs(
             items: [
               AppBreadcrumbItem(
@@ -78,15 +73,36 @@ class EmployeeDetailsPage extends StatelessWidget {
             ],
             onNavigate: (route) => context.go(route),
           ),
-          actions: [
-            if (can(AppPermission.employeeUpdate))
-              AppSecondaryButton(
-                label: l.empEdit,
-                icon: Icons.edit_outlined,
-                onPressed: () => context.push(AppRoutes.employeeEdit(e.id)),
-              ),
+          title: e.displayName,
+          businessId: e.employeeCode,
+          description: referenceLabel(refs?.designations, e.designationId, l),
+          leading: AppAvatar(name: e.displayName, radius: 24),
+          status: employeeBadge(e, l),
+          metadata: [
+            AppMetadataItem(
+              icon: Icons.account_tree_outlined,
+              label: l.empDepartment,
+              value: referenceLabel(refs?.departments, e.departmentId, l),
+            ),
+            AppMetadataItem(
+              icon: Icons.event_outlined,
+              label: l.empJoined,
+              value: AppDateFormatter(
+                Localizations.localeOf(context),
+              ).date(e.joiningDate),
+            ),
+          ],
+          primaryAction: can(AppPermission.employeeUpdate)
+              ? AppPrimaryButton(
+                  label: l.empEdit,
+                  icon: Icons.edit_outlined,
+                  onPressed: () => context.push(AppRoutes.employeeEdit(e.id)),
+                )
+              : null,
+          overflowActions: [
             if (can(AppPermission.employeeDeactivate))
-              AppSecondaryButton(
+              AppDetailAction(
+                destructive: e.status == EmploymentStatus.active,
                 label: e.status == EmploymentStatus.active
                     ? l.empDeactivate
                     : l.empActivate,
@@ -97,6 +113,7 @@ class EmployeeDetailsPage extends StatelessWidget {
                               context,
                               title: (l) => l.empStatusConfirm,
                               message: (l) => l.empStatusMessage,
+                              destructive: e.status == EmploymentStatus.active,
                               confirmLabel: (l) =>
                                   e.status == EmploymentStatus.active
                                   ? l.empDeactivate
@@ -113,278 +130,242 @@ class EmployeeDetailsPage extends StatelessWidget {
               ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (state.failure != null) ...[
-              AppAlert(
-                message: employeeFailure(state.failure!, l),
-                status: AppStatus.warning,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-            Row(
-              children: [
-                AppAvatar(name: e.displayName, radius: 24),
-                const SizedBox(width: AppSpacing.lg),
-                employeeBadge(e, l),
-                const SizedBox(width: AppSpacing.sm),
-                if (e.syncStatus != EmployeeSyncStatus.synced)
-                  Expanded(
-                    child: Text(
-                      l.empPending,
-                      style: AppTypography.of(context).caption,
-                    ),
-                  ),
-              ],
+        children: [
+          if (state.failure != null)
+            AppAlert(
+              message: employeeFailure(state.failure!, l),
+              status: AppStatus.warning,
             ),
-            const SizedBox(height: AppSpacing.xxl),
-            if (state.failure != null) ...[
-              AppAlert(
-                message: employeeFailure(state.failure!, l),
-                status: AppStatus.warning,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-            AppDashboardTwoColumn(
-              primary: AppFormSection(
-                title: l.empPersonal,
-                child: AppDetailsGrid(
-                  fields: [
-                    AppDetailField(label: l.fullName, value: e.displayName),
-                    AppDetailField(
-                      label: l.email,
-                      value: e.email,
-                      identifier: true,
-                    ),
-                    AppDetailField(
-                      label: l.phone,
-                      value: e.phone,
-                      identifier: true,
-                    ),
-                    AppDetailField(
-                      label: l.empCode,
-                      value: e.employeeCode,
-                      identifier: true,
-                    ),
-                  ],
-                ),
-              ),
-              secondary: AppFormSection(
-                title: l.empEmployment,
-                child: AppDetailsGrid(
-                  fields: [
-                    AppDetailField(
-                      label: l.empDepartment,
-                      value: referenceLabel(
-                        refs?.departments,
-                        e.departmentId,
-                        l,
-                      ),
-                    ),
-                    AppDetailField(
-                      label: l.empDesignation,
-                      value: referenceLabel(
-                        refs?.designations,
-                        e.designationId,
-                        l,
-                      ),
-                    ),
-                    AppDetailField(
-                      label: l.empManager,
-                      value: referenceLabel(
-                        refs?.managerLabels,
-                        e.managerId,
-                        l,
-                      ),
-                    ),
-                    AppDetailField(
-                      label: l.empJoined,
-                      value: AppDateFormatter(
-                        Localizations.localeOf(context),
-                      ).date(e.joiningDate),
-                    ),
-                    AppDetailField(
-                      label: l.empType,
-                      value: employmentTypeLabel(e.employmentType, l),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            AppFormSection(
-              title: l.empAttendanceConfig,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppDetailsGrid(
-                    fields: [
-                      AppDetailField(
-                        label: l.dashboardShift,
-                        value:
-                            refs?.shifts
-                                .where((r) => r.id == e.shiftId)
-                                .firstOrNull
-                                ?.name ??
-                            l.empUnassigned,
-                      ),
-                      AppDetailField(
-                        label: l.dashboardLocation,
-                        value:
-                            refs?.workLocations
-                                .where((r) => r.id == e.workLocationId)
-                                .firstOrNull
-                                ?.name ??
-                            l.empUnassigned,
-                      ),
-                      AppDetailField(
-                        label: l.empPolicy,
-                        value:
-                            refs?.attendancePolicies
-                                .where((r) => r.id == e.attendancePolicyId)
-                                .firstOrNull
-                                ?.name ??
-                            l.empUnassigned,
-                      ),
-                    ],
+          if (e.syncStatus != EmployeeSyncStatus.synced)
+            Text(l.empPending, style: AppTypography.of(context).caption),
+          AppDashboardTwoColumn(
+            primary: AppFormSection(
+              title: l.empPersonal,
+              child: AppDetailsGrid(
+                fields: [
+                  AppDetailField(label: l.fullName, value: e.displayName),
+                  AppDetailField(
+                    label: l.email,
+                    value: e.email,
+                    identifier: true,
                   ),
-                  if (refs?.shifts.where((r) => r.id == e.shiftId).firstOrNull
-                      case final shift?)
-                    AppDetailField(
-                      label: l.cfgSchedule,
-                      value: shiftSummary(context, shift),
-                    ),
-                  if (refs?.workLocations
-                          .where((r) => r.id == e.workLocationId)
-                          .firstOrNull
-                      case final location?)
-                    AppDetailField(
-                      label: l.cfgRadius,
-                      value: [
-                        configurationNumber(
-                          context,
-                          location.allowedRadiusMeters,
-                        ),
-                        l.cfgMeters,
-                      ].join(' '),
-                    ),
-                  if (refs?.attendancePolicies
-                          .where((r) => r.id == e.attendancePolicyId)
-                          .firstOrNull
-                      case final policy?)
-                    AppDetailField(
-                      label: l.cfgLocationRules,
-                      value: policyLocationSummary(policy, l),
-                    ),
-                  Wrap(
-                    spacing: AppSpacing.md,
-                    runSpacing: AppSpacing.md,
-                    children: [
-                      if (e.shiftId != null &&
-                          navigation.routeAccess(
-                                AppRoutes.shiftsDetails(e.shiftId!),
-                                bloc.context,
-                              ) ==
-                              RouteAccess.allowed)
-                        AppTextButton(
-                          label: l.cfgShifts,
-                          onPressed: () =>
-                              context.go(AppRoutes.shiftsDetails(e.shiftId!)),
-                        ),
-                      if (e.workLocationId != null &&
-                          navigation.routeAccess(
-                                AppRoutes.workLocationsDetails(
-                                  e.workLocationId!,
-                                ),
-                                bloc.context,
-                              ) ==
-                              RouteAccess.allowed)
-                        AppTextButton(
-                          label: l.cfgLocations,
-                          onPressed: () => context.go(
-                            AppRoutes.workLocationsDetails(e.workLocationId!),
-                          ),
-                        ),
-                      if (e.attendancePolicyId != null &&
-                          navigation.routeAccess(
-                                AppRoutes.attendancePoliciesDetails(
-                                  e.attendancePolicyId!,
-                                ),
-                                bloc.context,
-                              ) ==
-                              RouteAccess.allowed)
-                        AppTextButton(
-                          label: l.cfgPolicies,
-                          onPressed: () => context.go(
-                            AppRoutes.attendancePoliciesDetails(
-                              e.attendancePolicyId!,
-                            ),
-                          ),
-                        ),
-                    ],
+                  AppDetailField(
+                    label: l.phone,
+                    value: e.phone,
+                    identifier: true,
+                  ),
+                  AppDetailField(
+                    label: l.empCode,
+                    value: e.employeeCode,
+                    identifier: true,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xxl),
-            AppFormSection(
-              title: l.empAccountAccess,
+            secondary: AppFormSection(
+              title: l.empEmployment,
               child: AppDetailsGrid(
                 fields: [
                   AppDetailField(
-                    label: l.empLogin,
-                    value: e.loginEnabled ? l.empActive : l.empInactive,
+                    label: l.empDepartment,
+                    value: referenceLabel(refs?.departments, e.departmentId, l),
                   ),
                   AppDetailField(
-                    label: l.empAccountAccess,
-                    value: a?.displayName ?? l.empNoLogin,
+                    label: l.empDesignation,
+                    value: referenceLabel(
+                      refs?.designations,
+                      e.designationId,
+                      l,
+                    ),
                   ),
-                  if (a != null) ...[
-                    AppDetailField(
-                      label: l.email,
-                      value: a.email,
-                      identifier: true,
-                    ),
-                    AppDetailField(
-                      label: l.phone,
-                      value: a.phone ?? l.empUnassigned,
-                      identifier: true,
-                    ),
-                    AppDetailField(
-                      label: l.authAccountStatus,
-                      value: a.status.label(l),
-                    ),
-                  ],
-                  if (state.account?.credentialPending == true)
-                    AppDetailField(
-                      label: l.empAccountAccess,
-                      value: l.empCredentialPending,
-                    ),
-                  AppDetailField(label: l.empPreview, value: l.empLoginNotice),
+                  AppDetailField(
+                    label: l.empManager,
+                    value: referenceLabel(refs?.managerLabels, e.managerId, l),
+                  ),
+                  AppDetailField(
+                    label: l.empJoined,
+                    value: AppDateFormatter(
+                      Localizations.localeOf(context),
+                    ).date(e.joiningDate),
+                  ),
+                  AppDetailField(
+                    label: l.empType,
+                    value: employmentTypeLabel(e.employmentType, l),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xxl),
-            if (navigation.routeAccess(AppRoutes.attendance, bloc.context) ==
-                RouteAccess.allowed)
-              AppRelatedAction(
-                label: l.shellAttendance,
-                icon: Icons.schedule,
-                onPressed: () => context.go(AppRoutes.attendance),
-              ),
-            if (navigation.routeAccess(
-                  AppRoutes.leaveEmployee(bloc.id),
-                  bloc.context,
-                ) ==
-                RouteAccess.allowed)
-              AppRelatedAction(
-                label: l.leaveViewEmployeeLeave,
-                icon: Icons.event_available,
-                onPressed: () => context.go(AppRoutes.leaveEmployee(bloc.id)),
-              ),
-          ],
-        ),
+          ),
+          const SizedBox(height: AppSpacing.xxl),
+          AppFormSection(
+            title: l.empAttendanceConfig,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppDetailsGrid(
+                  fields: [
+                    AppDetailField(
+                      label: l.dashboardShift,
+                      value:
+                          refs?.shifts
+                              .where((r) => r.id == e.shiftId)
+                              .firstOrNull
+                              ?.name ??
+                          l.empUnassigned,
+                    ),
+                    AppDetailField(
+                      label: l.dashboardLocation,
+                      value:
+                          refs?.workLocations
+                              .where((r) => r.id == e.workLocationId)
+                              .firstOrNull
+                              ?.name ??
+                          l.empUnassigned,
+                    ),
+                    AppDetailField(
+                      label: l.empPolicy,
+                      value:
+                          refs?.attendancePolicies
+                              .where((r) => r.id == e.attendancePolicyId)
+                              .firstOrNull
+                              ?.name ??
+                          l.empUnassigned,
+                    ),
+                  ],
+                ),
+                if (refs?.shifts.where((r) => r.id == e.shiftId).firstOrNull
+                    case final shift?)
+                  AppDetailField(
+                    label: l.cfgSchedule,
+                    value: shiftSummary(context, shift),
+                  ),
+                if (refs?.workLocations
+                        .where((r) => r.id == e.workLocationId)
+                        .firstOrNull
+                    case final location?)
+                  AppDetailField(
+                    label: l.cfgRadius,
+                    value: [
+                      configurationNumber(
+                        context,
+                        location.allowedRadiusMeters,
+                      ),
+                      l.cfgMeters,
+                    ].join(' '),
+                  ),
+                if (refs?.attendancePolicies
+                        .where((r) => r.id == e.attendancePolicyId)
+                        .firstOrNull
+                    case final policy?)
+                  AppDetailField(
+                    label: l.cfgLocationRules,
+                    value: policyLocationSummary(policy, l),
+                  ),
+                Wrap(
+                  spacing: AppSpacing.md,
+                  runSpacing: AppSpacing.md,
+                  children: [
+                    if (e.shiftId != null &&
+                        navigation.routeAccess(
+                              AppRoutes.shiftsDetails(e.shiftId!),
+                              bloc.context,
+                            ) ==
+                            RouteAccess.allowed)
+                      AppTextButton(
+                        label: l.cfgShifts,
+                        onPressed: () =>
+                            context.go(AppRoutes.shiftsDetails(e.shiftId!)),
+                      ),
+                    if (e.workLocationId != null &&
+                        navigation.routeAccess(
+                              AppRoutes.workLocationsDetails(e.workLocationId!),
+                              bloc.context,
+                            ) ==
+                            RouteAccess.allowed)
+                      AppTextButton(
+                        label: l.cfgLocations,
+                        onPressed: () => context.go(
+                          AppRoutes.workLocationsDetails(e.workLocationId!),
+                        ),
+                      ),
+                    if (e.attendancePolicyId != null &&
+                        navigation.routeAccess(
+                              AppRoutes.attendancePoliciesDetails(
+                                e.attendancePolicyId!,
+                              ),
+                              bloc.context,
+                            ) ==
+                            RouteAccess.allowed)
+                      AppTextButton(
+                        label: l.cfgPolicies,
+                        onPressed: () => context.go(
+                          AppRoutes.attendancePoliciesDetails(
+                            e.attendancePolicyId!,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xxl),
+          AppFormSection(
+            title: l.empAccountAccess,
+            child: AppDetailsGrid(
+              fields: [
+                AppDetailField(
+                  label: l.empLogin,
+                  value: e.loginEnabled ? l.empActive : l.empInactive,
+                ),
+                AppDetailField(
+                  label: l.empAccountAccess,
+                  value: a?.displayName ?? l.empNoLogin,
+                ),
+                if (a != null) ...[
+                  AppDetailField(
+                    label: l.email,
+                    value: a.email,
+                    identifier: true,
+                  ),
+                  AppDetailField(
+                    label: l.phone,
+                    value: a.phone ?? l.empUnassigned,
+                    identifier: true,
+                  ),
+                  AppDetailField(
+                    label: l.authAccountStatus,
+                    value: a.status.label(l),
+                  ),
+                ],
+                if (state.account?.credentialPending == true)
+                  AppDetailField(
+                    label: l.empAccountAccess,
+                    value: l.empCredentialPending,
+                  ),
+                AppDetailField(label: l.empPreview, value: l.empLoginNotice),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xxl),
+          if (navigation.routeAccess(AppRoutes.attendance, bloc.context) ==
+              RouteAccess.allowed)
+            AppRelatedAction(
+              label: l.shellAttendance,
+              icon: Icons.schedule,
+              onPressed: () => context.go(AppRoutes.attendance),
+            ),
+          if (navigation.routeAccess(
+                AppRoutes.leaveEmployee(bloc.id),
+                bloc.context,
+              ) ==
+              RouteAccess.allowed)
+            AppRelatedAction(
+              label: l.leaveViewEmployeeLeave,
+              icon: Icons.event_available,
+              onPressed: () => context.go(AppRoutes.leaveEmployee(bloc.id)),
+            ),
+        ],
       );
     },
   );

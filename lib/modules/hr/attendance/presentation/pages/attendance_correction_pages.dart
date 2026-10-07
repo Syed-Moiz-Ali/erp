@@ -7,6 +7,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction.dart';
@@ -80,12 +81,72 @@ class _CorrectionListState extends State<_CorrectionList> {
     super.dispose();
   }
 
+  String _statusChipLabel(
+    BuildContext context,
+    AttendanceCorrectionStatus status,
+  ) => '${context.l10n.status}: ${correctionStatusLabel(context, status)}';
+
+  AppStatus _statusOf(AttendanceCorrectionStatus status) => switch (status) {
+    AttendanceCorrectionStatus.approved => AppStatus.success,
+    AttendanceCorrectionStatus.rejected => AppStatus.danger,
+    AttendanceCorrectionStatus.cancelled => AppStatus.neutral,
+    AttendanceCorrectionStatus.pending => AppStatus.warning,
+  };
+
+  Future<void> _openStatusFilter(BuildContext context) async {
+    final l = context.l10n;
+    var draft = filter;
+    final result = await AppBottomSheet.show<AttendanceCorrectionStatus?>(
+      context,
+      builder: (sheet) => StatefulBuilder(
+        builder: (sheet, set) => Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppSectionHeader(title: l.status),
+              const SizedBox(height: AppSpacing.lg),
+              AppFilterBar(
+                children: [
+                  AppFilterChip(
+                    label: l.historyAllStatuses,
+                    selected: draft == null,
+                    onSelected: (_) => set(() => draft = null),
+                  ),
+                  for (final status in AttendanceCorrectionStatus.values)
+                    AppFilterChip(
+                      label: correctionStatusLabel(sheet, status),
+                      selected: draft == status,
+                      onSelected: (_) => set(() => draft = status),
+                    ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              AppPrimaryButton(
+                label: l.historyApply,
+                onPressed: () => Navigator.pop(sheet, draft),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (mounted) {
+      setState(() {
+        search.clear();
+        filter = result;
+      });
+    }
+  }
+
   @override
   Widget build(
     BuildContext context,
   ) => BlocBuilder<AttendanceCorrectionBloc, AttendanceCorrectionState>(
     builder: (context, state) {
       final l = context.l10n;
+      final locale = Localizations.localeOf(context);
       final query = search.text.trim().toLowerCase();
       final items = state.items.where((r) {
         if (filter != null && r.status != filter) return false;
@@ -97,96 +158,197 @@ class _CorrectionListState extends State<_CorrectionList> {
               r.requestType,
             ).toLowerCase().contains(query);
       }).toList();
+      final compact = AppBreakpoints.of(context) == AppSize.compact;
+      final dates = AppDateFormatter(locale);
+      final time = AppTimeFormatter(locale);
+
+      String changeSummary(AttendanceCorrectionRequest request) {
+        if (request.changes.isEmpty) return '—';
+        final change = request.changes.first;
+        final original = change.originalTimestamp == null
+            ? l.historyNotRecorded
+            : time.time(change.originalTimestamp!);
+        final summary = l.timeRange(
+          original,
+          time.time(change.requestedTimestamp),
+        );
+        return request.changes.length > 1
+            ? '$summary (+${request.changes.length - 1})'
+            : summary;
+      }
+
+      void open(AttendanceCorrectionRequest request) => context.push(
+        widget.review
+            ? AppRoutes.attendanceReviewDetails(request.id)
+            : AppRoutes.attendanceCorrectionDetails(request.id),
+      );
+
+      Widget actionMenu(AttendanceCorrectionRequest request) => AppActionMenu(
+        tooltip: l.actions,
+        actions: [
+          AppMenuAction(
+            label: (l) => widget.review ? l.correctionReview : l.correctionView,
+            onPressed: () => open(request),
+          ),
+        ],
+      );
+
+      Widget body;
+      if (state.loading && state.items.isEmpty) {
+        body = const AppCollectionSkeleton();
+      } else if (state.failure != null && state.items.isEmpty) {
+        body = AppErrorState(
+          message: l.somethingWentWrong,
+          onRetry: () => context.read<AttendanceCorrectionBloc>().add(
+            widget.review
+                ? const CorrectionQueueStarted()
+                : const CorrectionMyStarted(),
+          ),
+        );
+      } else if (state.items.isEmpty) {
+        body = AppCollectionEmptyState.noData(
+          title: l.correctionEmptyTitle,
+          message: l.correctionEmptyNote,
+          icon: Icons.fact_check_outlined,
+        );
+      } else if (items.isEmpty) {
+        body = AppCollectionEmptyState.noResults(
+          title: l.correctionNoResultsTitle,
+          message: l.correctionNoResultsNote,
+          icon: Icons.fact_check_outlined,
+          onClearFilters: () => setState(() {
+            search.clear();
+            filter = null;
+          }),
+        );
+      } else if (compact) {
+        body = Column(
+          children: [
+            for (final request in items)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                child: AppMobileRecordCard(
+                  title: widget.review
+                      ? (request.employeeName ?? l.historyNotRecorded)
+                      : correctionTypeLabel(context, request.requestType),
+                  subtitle: widget.review
+                      ? (request.employeeCode ?? changeSummary(request))
+                      : dates.date(request.requestedAt),
+                  tertiary: widget.review
+                      ? '${correctionTypeLabel(context, request.requestType)} · ${changeSummary(request)}'
+                      : changeSummary(request),
+                  status: _statusOf(request.status),
+                  statusLabel: correctionStatusLabel(context, request.status),
+                  onTap: () => open(request),
+                  trailing: actionMenu(request),
+                ),
+              ),
+          ],
+        );
+      } else {
+        body = AppCollectionSurface(
+          child: AppDataTable(
+            columns: [
+              if (widget.review) DataColumn(label: Text(l.reportEmployee)),
+              DataColumn(label: Text(l.date)),
+              DataColumn(label: Text(l.correctionType)),
+              DataColumn(label: Text(l.correctionChange)),
+              DataColumn(label: Text(l.status)),
+              DataColumn(
+                label: Semantics(
+                  label: l.actions,
+                  child: const Icon(Icons.more_horiz),
+                ),
+              ),
+            ],
+            rows: [
+              for (final request in items)
+                DataRow(
+                  onSelectChanged: (_) => open(request),
+                  cells: [
+                    if (widget.review)
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(request.employeeName ?? l.historyNotRecorded),
+                            if (request.employeeCode != null)
+                              Text(
+                                request.employeeCode!,
+                                textDirection: TextDirection.ltr,
+                                style: AppTypography.of(context).caption,
+                              ),
+                          ],
+                        ),
+                      ),
+                    DataCell(Text(dates.date(request.requestedAt))),
+                    DataCell(
+                      Text(correctionTypeLabel(context, request.requestType)),
+                    ),
+                    DataCell(Text(changeSummary(request))),
+                    DataCell(
+                      AppStatusBadge(
+                        label: correctionStatusLabel(context, request.status),
+                        status: _statusOf(request.status),
+                      ),
+                    ),
+                    DataCell(actionMenu(request)),
+                  ],
+                ),
+            ],
+          ),
+        );
+      }
+
       return AppPage(
         header: AppPageHeader(
           title: widget.review
               ? l.correctionReviewQueue
               : l.correctionMyRequests,
         ),
+        filters: AppCollectionToolbar(
+          search: widget.review
+              ? AppSearchField(
+                  controller: search,
+                  hint: l.workforceSearch,
+                  onChanged: (_) => setState(() {}),
+                )
+              : null,
+          filterButton: AppFilterButton(
+            activeCount: filter == null ? 0 : 1,
+            onPressed: () => _openStatusFilter(context),
+          ),
+          resultCount: state.loading && state.items.isEmpty
+              ? null
+              : AppResultCount(
+                  filtered: items.length,
+                  total: state.items.length,
+                ),
+          activeFilters: filter == null
+              ? null
+              : AppActiveFilters(
+                  filters: [
+                    AppActiveFilter(
+                      label: _statusChipLabel(context, filter!),
+                      onRemove: () => setState(() => filter = null),
+                    ),
+                  ],
+                ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (widget.review) ...[
-              AppTextField(
-                label: l.workforceSearch,
-                controller: search,
-                prefixIcon: Icons.search,
-                onChanged: (_) => setState(() {}),
+            if (state.loading && state.items.isNotEmpty)
+              const LinearProgressIndicator(minHeight: 2),
+            if (state.failure != null && state.items.isNotEmpty) ...[
+              AppAlert(
+                message: l.somethingWentWrong,
+                status: AppStatus.warning,
               ),
               const SizedBox(height: AppSpacing.md),
             ],
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
-              children: [
-                AppFilterChip(
-                  label: l.historyAllStatuses,
-                  selected: filter == null,
-                  onSelected: (_) => setState(() => filter = null),
-                ),
-                for (final status in AttendanceCorrectionStatus.values)
-                  AppFilterChip(
-                    label: correctionStatusLabel(context, status),
-                    selected: filter == status,
-                    onSelected: (_) => setState(() => filter = status),
-                  ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            if (state.failure != null)
-              AppNotice(title: l.historyRetry, status: AppStatus.danger),
-            if (state.loading) const AppLoadingState(),
-            if (!state.loading && items.isEmpty)
-              AppEmptyState(
-                title: l.correctionNoRequests,
-                message: l.correctionNoRequests,
-              ),
-            for (final request in items)
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                child: AppCard(
-                  variant: AppCardVariant.interactive,
-                  onTap: () => context.push(
-                    widget.review
-                        ? AppRoutes.attendanceReviewDetails(request.id)
-                        : AppRoutes.attendanceCorrectionDetails(request.id),
-                  ),
-                  child: Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    spacing: AppSpacing.lg,
-                    runSpacing: AppSpacing.sm,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            correctionTypeLabel(context, request.requestType),
-                            style: AppTypography.of(context).cardTitle,
-                          ),
-                          if (widget.review && request.employeeName != null)
-                            Text(correctionEmployeeLabel(request)),
-                          Text(
-                            AppDateFormatter(
-                              Localizations.localeOf(context),
-                            ).date(request.requestedAt),
-                          ),
-                        ],
-                      ),
-                      AppStatusBadge(
-                        label: correctionStatusLabel(context, request.status),
-                        status:
-                            request.status ==
-                                AttendanceCorrectionStatus.approved
-                            ? AppStatus.success
-                            : request.status ==
-                                  AttendanceCorrectionStatus.rejected
-                            ? AppStatus.danger
-                            : AppStatus.neutral,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            body,
           ],
         ),
       );
@@ -506,13 +668,13 @@ class AttendanceCorrectionDetailsPage extends StatelessWidget {
       final l = context.l10n, request = state.detail;
       if (state.loading) {
         return AppPage(
-          header: AppPageHeader(title: l.correctionReviewQueue),
+          header: AppDetailHeader(title: l.correctionReviewQueue),
           child: const AppLoadingState(),
         );
       }
       if (request == null) {
         return AppPage(
-          header: AppPageHeader(title: l.correctionReviewQueue),
+          header: AppDetailHeader(title: l.correctionReviewQueue),
           child: AppEmptyState(
             title: l.historyNotFound,
             message: l.historyNotFoundNote,
@@ -551,16 +713,15 @@ class AttendanceCorrectionDetailsPage extends StatelessWidget {
 
       final actor = context.read<AuthBloc>().state.context;
       return AppPage(
-        header: AppPageHeader(
+        header: AppDetailHeader(
           title: review ? l.correctionReviewQueue : l.correctionMyRequests,
+          status: AppDetailStatus(
+            label: correctionStatusLabel(context, request.status),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppStatusBadge(
-              label: correctionStatusLabel(context, request.status),
-            ),
-            const SizedBox(height: AppSpacing.xl),
             AppDetailsSection(
               title: correctionTypeLabel(context, request.requestType),
               details: {

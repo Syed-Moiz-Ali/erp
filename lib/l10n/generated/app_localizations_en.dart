@@ -385,6 +385,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get periodLabel => 'Period';
 
   @override
+  String resultsCount(String count) {
+    return '$count results';
+  }
+
+  @override
+  String resultsCountFiltered(String filtered, String total) {
+    return '$filtered of $total results';
+  }
+
+  @override
+  String get sortLabel => 'Sort';
+
+  @override
+  String get clearAll => 'Clear all';
+
+  @override
+  String removeFilter(String label) {
+    return 'Remove filter: $label';
+  }
+
+  @override
+  String pageOf(String page, String pages) {
+    return 'Page $page of $pages';
+  }
+
+  @override
+  String get notProvided => 'Not provided';
+
+  @override
+  String get recordInformation => 'Record information';
+
+  @override
+  String get moreActionsLabel => 'More actions';
+
+  @override
+  String get noActivityYet => 'No activity yet';
+
+  @override
+  String get noEvidenceYet => 'No evidence attached';
+
+  @override
+  String get noAttachmentDescription => 'No description';
+
+  @override
+  String get openAttachmentLabel => 'Open attachment';
+
+  @override
+  String get relatedRecordsLabel => 'Related records';
+
+  @override
+  String get workflowLabel => 'Workflow';
+
+  @override
+  String get evidenceLabel => 'Evidence';
+
+  @override
+  String get viewRelatedLabel => 'View related';
+
+  @override
+  String get attachmentsLabel => 'Attachments';
+
+  @override
+  String get currentRecordLabel => 'Current';
+
+  @override
+  String get detailsLabel => 'Details';
+
+  @override
+  String get noItemsLabel => 'No items';
+
+  @override
   String get settings => 'Settings';
 
   @override
@@ -1593,6 +1664,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessNoHistory => 'No access changes yet.';
 
   @override
+  String get accessCompany => 'Company';
+
+  @override
+  String get accessIncluded => 'Included';
+
+  @override
+  String get accessPermissionSearch => 'Search permissions';
+
+  @override
+  String get accessNoPermissionMatch => 'No permissions match your search.';
+
+  @override
+  String get accessActionScopeNote =>
+      'Visibility follows the View permission scope.';
+
+  @override
+  String get accessUnsavedTitle => 'Unsaved changes';
+
+  @override
+  String get accessUnsavedMessage =>
+      'You have unsaved access changes for this user. Leave without saving?';
+
+  @override
+  String get accessStay => 'Stay';
+
+  @override
+  String get accessLeave => 'Leave';
+
+  @override
   String get accessSearchUsers => 'Search users';
 
   @override
@@ -1607,6 +1707,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accessModulesReadOnly =>
       'Module availability is managed at platform level in this demo.';
+
+  @override
+  String get accessModuleScopeNote =>
+      'Enabling a module for the company makes it available, but each user still needs permission to access it.';
+
+  @override
+  String get accessModuleHrDesc =>
+      'Employees, attendance, leave and workforce operations.';
+
+  @override
+  String get accessModuleServicesDesc =>
+      'Service enquiry, assignments, inspections, materials and work execution.';
 
   @override
   String get accessStatusActive => 'Active';
@@ -1803,6 +1915,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get universalDashboardOpen => 'Open';
+
+  @override
+  String get universalDashboardFirstTimeTitle => 'No activity yet';
+
+  @override
+  String get universalDashboardFirstTimeMessage =>
+      'Once your company records attendance or service work, a live operational summary will appear here.';
+
+  @override
+  String get universalDashboardGetStarted => 'Get started';
+
+  @override
+  String get universalDashboardNextServiceWork => 'Next service work';
+
+  @override
+  String get designSystemThemeMode => 'Theme mode';
+
+  @override
+  String get designSystemLightMode => 'Light';
+
+  @override
+  String get designSystemDarkMode => 'Dark';
+
+  @override
+  String get designSystemDirection => 'Direction';
+
+  @override
+  String get designSystemTextScale => 'Text scale';
+
+  @override
+  String get designSystemScaleDefault => 'Default';
+
+  @override
+  String get designSystemScaleModerate => 'Moderate';
+
+  @override
+  String get designSystemScaleLarge => 'Large';
+
+  @override
+  String get designSystemFoundations => 'Foundations';
+
+  @override
+  String get designSystemSpacingScale => 'Spacing scale';
+
+  @override
+  String get designSystemRadiusScale => 'Radius scale';
+
+  @override
+  String get designSystemBorderScale => 'Border scale';
+
+  @override
+  String get designSystemElevation => 'Elevation';
+
+  @override
+  String get designSystemSurfaceHierarchy => 'Surface hierarchy';
+
+  @override
+  String get designSystemTextColors => 'Text colors';
+
+  @override
+  String get designSystemSelectionControls => 'Checkboxes, radios & switches';
+
+  @override
+  String get designSystemControlStates => 'Control states';
+
+  @override
+  String get designSystemChips => 'Chips & status';
+
+  @override
+  String get designSystemTooltip => 'Tooltips';
+
+  @override
+  String get designSystemMenu => 'Menus';
+
+  @override
+  String get designSystemSkeletons => 'Loading skeletons';
+
+  @override
+  String get designSystemErrorStates => 'Empty, error & permission states';
+
+  @override
+  String get designSystemReadOnly => 'Read-only context';
+
+  @override
+  String get designSystemMenuAction => 'Menu action';
+
+  @override
+  String get designSystemMenuDanger => 'Delete record';
+
+  @override
+  String get designSystemTooltipHint => 'Icon-only control';
+
+  @override
+  String get designSystemKeyboardFocus => 'Press Tab to focus';
+
+  @override
+  String get typographyLabelSmall => 'Label small';
+
+  @override
+  String get typographyTableHeader => 'Table header';
+
+  @override
+  String get typographyTableCell => 'Table cell';
+
+  @override
+  String get typographyStatus => 'Status';
+
+  @override
+  String get typographyInputValue => 'Input value';
+
+  @override
+  String get typographyFormLabel => 'Form label';
+
+  @override
+  String get colorTextTertiary => 'Text tertiary';
+
+  @override
+  String get colorSuccess => 'Success';
+
+  @override
+  String get colorWarning => 'Warning';
 
   @override
   String get dashboard => 'Dashboard';
@@ -2214,6 +2447,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get empFilters => 'Filters';
+
+  @override
+  String get empSearch => 'Search employees';
 
   @override
   String get empClear => 'Clear filters';
@@ -5008,6 +5244,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hrPermPoliciesManageDesc => 'Create and edit attendance policies.';
 
   @override
+  String get workforceFilters => 'Attendance filters';
+
+  @override
+  String get workforceEmptyTitle => 'No employees in scope';
+
+  @override
+  String get workforceEmptyNote =>
+      'No active employees are available for this date and scope.';
+
+  @override
+  String get workforceNoResultsTitle => 'No matching employees';
+
+  @override
+  String get workforceNoResultsNote =>
+      'Try another search or clear your filters.';
+
+  @override
+  String get correctionEmptyTitle => 'No correction requests';
+
+  @override
+  String get correctionEmptyNote =>
+      'Correction requests will appear here once submitted.';
+
+  @override
+  String get correctionNoResultsTitle => 'No matching requests';
+
+  @override
+  String get correctionNoResultsNote =>
+      'Try another status or clear your filters.';
+
+  @override
+  String get correctionChange => 'Current → requested';
+
+  @override
+  String get correctionReview => 'Review';
+
+  @override
+  String get correctionView => 'View';
+
+  @override
   String get servicesPermModuleServices => 'Services';
 
   @override
@@ -5567,6 +5843,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get servicesSettingsSubtitle =>
       'Configure the master data used by service operations.';
+
+  @override
+  String get servicesGroupGeneral => 'General';
+
+  @override
+  String get servicesGroupInspection => 'Inspection';
+
+  @override
+  String get servicesGroupMaterials => 'Materials';
 
   @override
   String get servicesServiceTypesTitle => 'Service types';

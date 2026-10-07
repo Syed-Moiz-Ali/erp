@@ -35,7 +35,6 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
         final l = context.l10n;
         final cubit = context.read<ServiceWorkExecutionListCubit>();
         final numbers = AppNumberFormatter(Localizations.localeOf(context));
-        final dates = AppDateFormatter(Localizations.localeOf(context));
         final items =
             state.page?.items ?? const <ServiceWorkExecutionListItem>[];
         final page = state.page;
@@ -87,7 +86,7 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesWorkExecutionStorageError,
@@ -95,16 +94,18 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty
-                ? l.servicesWorkExecutionEmpty
-                : l.servicesWorkExecutionNoResults,
-            message: empty
-                ? l.servicesWorkExecutionEmptyMessage
-                : l.servicesWorkExecutionNoResults,
-            actionLabel: empty && canCreate ? l.servicesWorkExecutionAdd : null,
-            onAction: () => context.go(ServicesRoutes.workExecutionsNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesWorkExecutionEmpty,
+                  message: l.servicesWorkExecutionEmptyMessage,
+                  actionLabel: canCreate ? l.servicesWorkExecutionAdd : null,
+                  onAction: () => context.go(ServicesRoutes.workExecutionsNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesWorkExecutionNoResults,
+                  message: l.servicesWorkExecutionNoResults,
+                  onClearFilters: cubit.clearFilters,
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -146,84 +147,114 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesWorkExecutionColumnExecution)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnInspection)),
-              DataColumn(
-                label: Text(l.servicesWorkExecutionColumnCustomerSite),
-              ),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnAssignedTo)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnState)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnStarted)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnCompleted)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnStatus)),
-              DataColumn(label: Text(l.servicesWorkExecutionColumnCreated)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesWorkExecutionColumnExecution)),
+                DataColumn(
+                  label: Text(l.servicesWorkExecutionColumnCustomerSite),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.workExecution(item.id)),
-                  cells: [
-                    DataCell(
-                      Text(
-                        item.executionNumber,
-                        textDirection: TextDirection.ltr,
-                        style: AppTypography.of(context).label,
-                      ),
-                    ),
-                    DataCell(Text(item.inspectionNumber)),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.customerName),
-                          if (item.siteSummary.isNotEmpty)
+                DataColumn(
+                  label: Text(l.servicesWorkExecutionColumnAssignedTo),
+                ),
+                DataColumn(label: Text(l.servicesWorkExecutionColumnState)),
+                DataColumn(label: Text(l.servicesWorkExecutionColumnStarted)),
+                DataColumn(label: Text(l.servicesWorkExecutionColumnStatus)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
+                ),
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.workExecution(item.id)),
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (item.startedAtUtc != null &&
+                                    !item.status.isCompleted)
+                                  Container(
+                                    width: 6,
+                                    height: 6,
+                                    margin: const EdgeInsetsDirectional.only(
+                                      end: AppSpacing.sm,
+                                    ),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.success,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                Text(
+                                  item.executionNumber,
+                                  textDirection: TextDirection.ltr,
+                                  style: AppTypography.of(context).label,
+                                ),
+                              ],
+                            ),
                             Text(
-                              item.siteSummary,
+                              item.inspectionNumber,
+                              textDirection: TextDirection.ltr,
                               style: AppTypography.of(context).caption,
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(item.assignedSummary)),
-                    DataCell(Text(stateLabel(item, l))),
-                    DataCell(
-                      Text(
-                        item.startedAtUtc == null
-                            ? ''
-                            : time.time(item.startedAtUtc!),
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.customerName),
+                            if (item.siteSummary.isNotEmpty)
+                              Text(
+                                item.siteSummary,
+                                style: AppTypography.of(context).caption,
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      Text(
-                        item.endedAtUtc == null
-                            ? ''
-                            : time.time(item.endedAtUtc!),
+                      DataCell(Text(item.assignedSummary)),
+                      DataCell(Text(stateLabel(item, l))),
+                      DataCell(
+                        Text(
+                          [
+                            if (item.startedAtUtc != null)
+                              time.time(item.startedAtUtc!),
+                            if (item.endedAtUtc != null)
+                              time.time(item.endedAtUtc!),
+                          ].join(' → '),
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceWorkExecutionStatusLabel(item.status, l),
-                        status: serviceWorkExecutionStatus(item.status),
-                        isPill: true,
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceWorkExecutionStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          status: serviceWorkExecutionStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(Text(dates.date(item.createdAt))),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -245,22 +276,24 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesWorkExecutionSearch,
               onChanged: cubit.search,
             ),
-            actions: [
-              AppSecondaryButton(
-                label: state.filter.activeCount == 0
-                    ? l.servicesWorkExecutionFilterTitle
-                    : '${l.servicesWorkExecutionFilterTitle} (${numbers.integer(state.filter.activeCount)})',
-                icon: Icons.tune,
-                onPressed: () => _openFilters(context, state),
-              ),
-              if (state.filter.activeCount > 0)
-                AppTextButton(label: l.clear, onPressed: cubit.clearFilters),
-            ],
+            filterButton: AppFilterButton(
+              label: l.servicesWorkExecutionFilterTitle,
+              activeCount: state.filter.activeCount,
+              onPressed: () => _openFilters(context, state),
+            ),
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
+            activeFilters: AppActiveFilters(
+              filters: _activeFilterChips(context, state, cubit, l),
+              onClearAll: cubit.clearFilters,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -278,6 +311,39 @@ class ServiceWorkExecutionListPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<AppActiveFilter> _activeFilterChips(
+    BuildContext context,
+    ServiceWorkExecutionListState state,
+    ServiceWorkExecutionListCubit cubit,
+    AppLocalizations l,
+  ) {
+    final f = state.filter;
+    final dates = AppDateFormatter(Localizations.localeOf(context));
+    final chips = <AppActiveFilter>[];
+    void add(String label, ServiceWorkExecutionFilter next) => chips.add(
+      AppActiveFilter(label: label, onRemove: () => cubit.applyFilter(next)),
+    );
+    if (f.status != null) {
+      add(
+        '${l.servicesWorkExecutionFilterStatus}: ${serviceWorkExecutionStatusLabel(f.status!, l)}',
+        f.copyWith(clearStatus: true),
+      );
+    }
+    if (f.dateFrom != null) {
+      add(
+        '${l.servicesWorkExecutionFilterFrom}: ${dates.date(f.dateFrom!)}',
+        f.copyWith(clearDateFrom: true),
+      );
+    }
+    if (f.dateTo != null) {
+      add(
+        '${l.servicesWorkExecutionFilterTo}: ${dates.date(f.dateTo!)}',
+        f.copyWith(clearDateTo: true),
+      );
+    }
+    return chips;
   }
 
   Future<void> _openFilters(

@@ -150,6 +150,7 @@
   "empIntern": "Intern",
   "empTemporary": "Temporary",
   "empFilters": "Filters",
+  "empSearch": "Search employees",
   "empClear": "Clear filters",
   "empApply": "Apply",
   "empReset": "Reset",
@@ -1041,6 +1042,18 @@
   "hrPermPoliciesView": "View attendance policies",
   "hrPermPoliciesViewDesc": "See attendance policy configuration.",
   "hrPermPoliciesManage": "Manage attendance policies",
-  "hrPermPoliciesManageDesc": "Create and edit attendance policies."
+  "hrPermPoliciesManageDesc": "Create and edit attendance policies.",
+  "workforceFilters": "Attendance filters",
+  "workforceEmptyTitle": "No employees in scope",
+  "workforceEmptyNote": "No active employees are available for this date and scope.",
+  "workforceNoResultsTitle": "No matching employees",
+  "workforceNoResultsNote": "Try another search or clear your filters.",
+  "correctionEmptyTitle": "No correction requests",
+  "correctionEmptyNote": "Correction requests will appear here once submitted.",
+  "correctionNoResultsTitle": "No matching requests",
+  "correctionNoResultsNote": "Try another status or clear your filters.",
+  "correctionChange": "Current → requested",
+  "correctionReview": "Review",
+  "correctionView": "View"
 }
 

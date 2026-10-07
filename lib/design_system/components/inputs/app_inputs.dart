@@ -4,6 +4,7 @@ import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/design_system/theme/app_colors.dart';
 import 'package:modular_erp/design_system/theme/app_radius.dart';
 import 'package:modular_erp/design_system/theme/app_motion.dart';
+import 'package:modular_erp/design_system/theme/app_spacing.dart';
 import 'package:modular_erp/design_system/theme/app_typography.dart';
 
 class AppTextField extends StatelessWidget {
@@ -615,51 +616,55 @@ InputDecoration appCustomInputDecoration(
   EdgeInsetsGeometry? contentPadding,
 }) {
   final typography = AppTypography.of(context);
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  final accent = isDark ? AppColors.darkBrand : AppColors.brandPrimary;
+  final danger = isDark ? AppColors.darkDanger : AppColors.danger;
+  final restBorder = isDark ? AppColors.darkBorder : AppColors.inputBorder;
+  final hoverBorder = isDark
+      ? AppColors.darkBorderStrong
+      : AppColors.inputBorderHover;
   OutlineInputBorder border(Color color, double width) => OutlineInputBorder(
     borderRadius: BorderRadius.circular(AppRadius.field),
     borderSide: BorderSide(color: color, width: width),
   );
-  final borderColor = hovered
-      ? AppColors.inputBorderHover
-      : AppColors.inputBorder;
+  final borderColor = hovered ? hoverBorder : restBorder;
+  final fill = !enabled
+      ? (isDark ? AppColors.darkSurfaceDisabled : AppColors.surfaceSubtle)
+      : focused
+      ? (isDark ? AppColors.darkSurfaceRaised : AppColors.surface)
+      : hovered
+      ? (isDark ? AppColors.darkSurfaceHover : AppColors.inputHover)
+      : (isDark ? AppColors.darkSurfaceRaised : AppColors.inputBackground);
+  final iconColor = isDark
+      ? AppColors.darkTextTertiary
+      : AppColors.textTertiary;
   return InputDecoration(
     hintText: hint,
     errorText: errorText,
     helperText: helperText,
     helperStyle: typography.caption.copyWith(
-      color: AppColors.textMuted,
-      fontSize: 11.5,
+      color: isDark ? AppColors.darkTextTertiary : AppColors.textTertiary,
     ),
     filled: true,
-    fillColor: !enabled
-        ? AppColors.surfaceSubtle
-        : focused
-        ? AppColors.surface
-        : hovered
-        ? AppColors.inputHover
-        : AppColors.inputBackground,
+    fillColor: fill,
     hintStyle: typography.body.copyWith(
-      color: AppColors.textDisabled,
-      fontSize: 14,
+      color: isDark ? AppColors.darkTextDisabled : AppColors.textDisabled,
     ),
-    errorStyle: typography.caption.copyWith(
-      color: AppColors.danger,
-      fontSize: 11.5,
-    ),
+    errorStyle: typography.caption.copyWith(color: danger),
     prefixIcon: prefixIcon == null
         ? null
-        : Icon(prefixIcon, size: prefixIconSize, color: AppColors.textDisabled),
+        : Icon(prefixIcon, size: prefixIconSize, color: iconColor),
     prefixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-    suffixIconColor: AppColors.textMuted,
+    suffixIconColor: iconColor,
     suffixIcon: suffixIcon,
     contentPadding:
         contentPadding ??
         const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     border: border(borderColor, 1),
     enabledBorder: border(borderColor, 1),
-    focusedBorder: border(AppColors.brandPrimary, 1.5),
-    errorBorder: border(AppColors.danger, 1),
-    focusedErrorBorder: border(AppColors.danger, 1.5),
+    focusedBorder: border(accent, 1.5),
+    errorBorder: border(danger, 1),
+    focusedErrorBorder: border(danger, 1.5),
   );
 }
 
@@ -708,12 +713,7 @@ class AppFieldLabelGroup extends StatelessWidget {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: typography.caption.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12.5,
-                    letterSpacing: 0.1,
-                  ),
+                  style: typography.formLabel,
                 ),
               ),
               if (trailing != null) trailing!,
@@ -726,21 +726,70 @@ class AppFieldLabelGroup extends StatelessWidget {
   }
 }
 
+/// Standard switch row: external label, optional supporting text, and a single
+/// switch using the shared ON/OFF track+thumb styling from [AppTheme].
 class AppSwitchField extends StatelessWidget {
   const AppSwitchField({
     super.key,
     required this.label,
     required this.value,
     required this.onChanged,
+    this.description,
+    this.enabled = true,
   });
   final String label;
+  final String? description;
   final bool value;
   final ValueChanged<bool>? onChanged;
+  final bool enabled;
   @override
-  Widget build(BuildContext context) => SwitchListTile.adaptive(
-    title: Text(label),
-    value: value,
-    onChanged: onChanged,
-    contentPadding: EdgeInsets.zero,
-  );
+  Widget build(BuildContext context) {
+    final typography = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cb = onChanged;
+    final canToggle = enabled && cb != null;
+    return Semantics(
+      toggled: value,
+      enabled: enabled,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: canToggle ? () => cb(!value) : null,
+              borderRadius: BorderRadius.circular(AppRadius.radiusSm),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      label,
+                      style: typography.body.copyWith(
+                        color: enabled
+                            ? null
+                            : (isDark
+                                  ? AppColors.darkTextDisabled
+                                  : AppColors.textDisabled),
+                      ),
+                    ),
+                    if (description != null) ...[
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(description!, style: typography.caption),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.lg),
+          Switch.adaptive(
+            value: value,
+            onChanged: canToggle ? (v) => cb(v) : null,
+          ),
+        ],
+      ),
+    );
+  }
 }

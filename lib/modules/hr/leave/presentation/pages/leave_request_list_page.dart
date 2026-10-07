@@ -55,6 +55,7 @@ class _LeaveRequestListPageState extends State<LeaveRequestListPage> {
           final rows = _status == null
               ? s.rows
               : s.rows.where((r) => r.request.status == _status).toList();
+          final loaded = !s.loading || s.rows.isNotEmpty;
           return AppPage(
             header: AppPageHeader(
               title: widget.title,
@@ -67,16 +68,9 @@ class _LeaveRequestListPageState extends State<LeaveRequestListPage> {
                   ),
               ],
             ),
-            child: s.loading
-                ? const AppLoadingState()
-                : s.failure != null
-                ? AppErrorState(
-                    message: configurationFailure(s.failure!, l),
-                    onRetry: () => bloc.add(const LeaveRequestListStarted()),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+            filters: loaded && s.failure == null
+                ? AppCollectionToolbar(
+                    secondary: [
                       SizedBox(
                         width: 220,
                         child: AppSelectField<String>(
@@ -97,13 +91,27 @@ class _LeaveRequestListPageState extends State<LeaveRequestListPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
-                      LeaveRequestTable(
-                        rows: rows,
-                        showEmployee: bloc.scope != LeaveRequestScope.self,
-                        emptyTitle: widget.emptyMessage,
-                      ),
                     ],
+                    resultCount: AppResultCount(
+                      filtered: rows.length,
+                      total: s.rows.length,
+                    ),
+                  )
+                : null,
+            child: s.loading && s.rows.isEmpty
+                ? const AppCollectionSkeleton()
+                : s.failure != null
+                ? AppErrorState(
+                    message: configurationFailure(s.failure!, l),
+                    onRetry: () => bloc.add(const LeaveRequestListStarted()),
+                  )
+                : LeaveRequestTable(
+                    rows: rows,
+                    showEmployee: bloc.scope != LeaveRequestScope.self,
+                    emptyTitle: widget.emptyMessage,
+                    onClearFilters: _status == null
+                        ? null
+                        : () => setState(() => _status = null),
                   ),
           );
         },

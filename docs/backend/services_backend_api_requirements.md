@@ -30,7 +30,9 @@ queries.
 
 Covered domains:
 
-1. Services Overview (operational dashboard + My Work).
+1. Universal Dashboard — Services contribution (operational projection + My
+   Work). There is one ERP dashboard; Services contributes a scope-safe
+   read-only projection to it (§18).
 2. Customers.
 3. Service Sites.
 4. Service Teams (+ membership, + team lead).
@@ -216,22 +218,62 @@ TEAM access. TEAM never silently expands to ALL.
 ALL returns all permitted records in the selected company only, subject to
 filters.
 
-### 6.7 Permission view dependencies
+### 6.7 Permission view dependencies — the hard invariant
 
-Action permissions imply the matching view scope (single normalization rule):
+> **HARD INVARIANT: an action permission NEVER upgrades the View scope.**
+> Record visibility is resolved *solely* from the explicitly granted view
+> permission's scope. Holding `establish`/`edit`/`perform`/`complete`/`cancel`/
+> `print` must never widen `ASSIGNED` to `TEAM` or `TEAM` to `ALL`.
 
-| Action permission (group) | Implied view |
-| --- | --- |
-| `services.enquiries.edit`, `services.enquiries.cancel` | `services.enquiries.view` (scope `all`) |
-| `services.jobAssignments.create/edit/cancel` | `serviceJobAssignmentViewAll` |
-| `services.inspections.create/edit/complete/cancel` | `serviceInspectionViewAll` |
-| `services.materialRequests.create/edit/cancel/print` | `serviceMaterialRequestViewAll` |
-| `services.workExecutions.create/edit/perform/complete/cancel` | `serviceWorkExecutionViewAll` |
-| any `*.manage` (teams, masters) | matching `*.view` |
+The single normalization rule is intentionally narrow. Only **scope-less**
+structural configuration permissions imply their matching view; scoped
+transaction actions imply **no** view at all.
 
-`services.enquiries.create` deliberately does **not** imply View: a create-only
-operator can create enquiries and use restricted reference lookups, but cannot
-list company enquiries.
+| Permission | Implied view | Rationale |
+| --- | --- | --- |
+| any `*.manage` on a **scope-less** master/team (`services.teams.manage`, `services.serviceTypes.manage`, `services.complaintTypes.manage`, `services.priorities.manage`, `services.ticketTypes.manage`, `services.rootCauses.manage`, `services.chargeResponsibilities.manage`, `services.materialRequestPurposes.manage`) | matching `*.view` | Manage authority must never hide the screen it administers; the view grant is scope-less, so no scope can be widened. |
+| `services.enquiries.edit`, `services.enquiries.cancel` | `services.enquiries.view` | The Enquiry view grant is scope-less (company-wide), so this implication cannot widen a record scope. It only lets a record-targeted action resolve its target record. |
+| `services.enquiries.create` | **none** | A create-only operator creates enquiries and uses restricted reference lookups, but does not list company enquiries. |
+| `services.jobAssignments.create`, `.edit`, `.cancel` | **none** | Record visibility comes only from the explicitly granted `services.jobAssignments.view` (`assigned`/`team`/`all`). |
+| `services.inspections.create`, `.edit`, `.complete`, `.cancel` | **none** | Record visibility comes only from `services.inspections.view` (`assigned`/`team`/`all`). |
+| `services.materialRequests.create`, `.edit`, `.cancel`, `.print` | **none** | Record visibility comes only from `services.materialRequests.view` (`assigned`/`team`/`all`). |
+| `services.workExecutions.create`, `.edit`, `.perform`, `.complete`, `.cancel` | **none** | Record visibility comes only from `services.workExecutions.view` (`assigned`/`team`/`all`). |
+
+Consequences for the backend contract:
+
+- A record-targeted action (`edit`/`cancel`/`complete`/`perform`/`print`) is
+  usable **only** when the caller also holds a real `services.<domain>.view`
+  grant **and** the target record lies inside that grant's actual scope.
+- `create` never needs a view grant: it uses the company-scoped restricted
+  reference lookups (§30) and the create permission alone.
+- The server MUST evaluate the view scope independently of the action
+  permission. An action permission is an extra, not a substitute.
+
+This invariant is platform-wide, not Services-specific. The same
+normalization point applies to every module (for example an HR `leave` action
+never upgrades a `leave.self.view` grant to team/all). HR, Attendance and Leave
+endpoints remain out of Services scope (§1); they are noted only to make clear
+that the Services rule below is the general platform rule.
+
+### 6.7.1 Action × View matrix (proof of non-escalation)
+
+The matrix below proves that a scoped action can never manufacture a broader
+view. "Perform" results are identical for `Work Execution`; the same pattern
+holds for `edit`/`cancel`/`complete` on every scoped transaction.
+
+| Granted view (`services.<domain>.view` scope) | Granted action | Effective visibility of the acted-on record | Allowed? |
+| --- | --- | --- | --- |
+| `ASSIGNED` | `services.workExecutions.perform` | ASSIGNED only — **never** ALL | yes, if the record is inside ASSIGNED |
+| `ASSIGNED` | `services.workExecutions.perform` on a company-wide record | none (record outside ASSIGNED) | no → `SCOPE_DENIED`/`404` |
+| `TEAM` | `services.workExecutions.complete` | TEAM only — **never** ALL | yes, if the record is inside TEAM |
+| `ASSIGNED` | `services.materialRequests.print` | ASSIGNED only — **never** ALL | yes, if the record is inside ASSIGNED |
+| **none** (action only) | `services.workExecutions.perform` | no record visibility at all | no → `PERMISSION_DENIED`/`404` |
+| `ASSIGNED` | any action | The union of view and action is still `ASSIGNED` | yes |
+
+The same rule applies to `services.jobAssignments.*` and
+`services.inspections.*`: `View ASSIGNED + Perform/Complete/Print ≠ ALL`,
+`View TEAM + Complete ≠ ALL`, and an action permission without a view grant
+grants nothing.
 
 ### 6.8 Module disablement
 
@@ -907,65 +949,140 @@ Response Field Table: None / Not applicable.
 Errors: `401`, `403`, `404`.
 Notes: Never a hard delete of audit evidence; deletion is a business status.
 
-## 18. Services Overview
+## 18. Universal Dashboard — Services Contribution
 
-The overview is a permission- and scope-aware operational summary. Counts MUST
-respect ASSIGNED/TEAM/ALL and permissions: the server must not compute a
-company-wide count and rely on the client to hide rows. A metric is included only
-when the caller holds the corresponding view permission/scope; otherwise it is
-omitted (not zeroed in a way that leaks existence).
+Services no longer owns a standalone dashboard page or route. There is exactly
+**one** dashboard for the ERP. Services contributes a **read-only projection**
+over the existing workflow (Enquiry → Job Assignment → Inspection → Material
+Request → Work Execution) into that single dashboard. The projection introduces
+no new business workflow, no schema and no persisted KPI/counter table.
 
-### 18.1 Overview metric sources (implemented)
+### 18.1 Ownership, visibility and scope safety
 
-| Metric | Source | Gate |
-| --- | --- | --- |
-| `customers` (directory total) | Customer list total | `services.customers.view` |
-| `activeSites` | Site list total (status `active`) | `services.sites.view` |
-| `teams` | Team list total | `services.teams.view` |
-| `serviceTypes` | Service Type master total | `services.serviceTypes.view` |
-| `priorities` | Priority master total | `services.priorities.view` |
-| Enquiry summary (`open`, `today`, `highUrgentOpen`, `total`) | Enquiry summary | `services.enquiries.view` |
-| Recent enquiries (limit 5) | Enquiry list (recent) | `services.enquiries.view` |
-| Assignment summary (`active`, `today`, `upcoming`, `total`) + upcoming assignments (limit 5) | Assignment summary/list | any assignment view scope |
-| Inspection summary (`pending`, `today`, `completed`, `total`) + recent (limit 5) | Inspection summary/list | any inspection view scope |
-| Material request summary (`open`, `today`, `lines`, `total`) + recent (limit 5) | Material request summary/list | any material request view scope |
-| Work execution summary (`pending`, `inProgress`, `completedToday`, `total`) + recent (limit 5) | Work execution summary/list | any work execution view scope |
-| My Work (ASSIGNED projection) | see 18.3 | view scope + linked Employee |
-
-### 18.2 Summary definitions (exact)
-
-| Summary | Fields and exact derivation |
+| Aspect | Requirement |
 | --- | --- |
-| Enquiry | `openCount` = status open; `todayCount` = open created since company-local start of day; `highUrgentOpenCount` = open with priority `rank >= 2`; `totalCount` = all in scope. |
-| Job Assignment | `activeCount` = status active; `todayCount` = active with `scheduledVisitDate == today`; `upcomingCount` = active with `scheduledVisitDate > today`; `totalCount`. |
-| Inspection | `pendingCount` = pending; `completedCount` = completed; `todayCount` = `visitDate == today`; `totalCount`. |
-| Material Request | `openCount` = open; `todayCount` = `requestDate == today`; `lineCount` = total lines in scope; `totalCount`. |
-| Work Execution | `pendingCount` = pending; `inProgressCount` = inProgress; `completedTodayCount` = completed with `executionDate == today`; `totalCount`. |
+| One dashboard | The Services contribution is one section of the single ERP dashboard. No separate Services summary screen or `/services` landing dashboard exists. |
+| Contribution visibility | The Services content is produced only when the company `services` module is enabled **and** the caller holds at least one Services view/create permission. When this is false, **no Services query runs at all**. |
+| Scope resolved before aggregation | Every KPI/section binds to the same scope resolver as its domain (`AccessScopeResolver`, §6.4–§6.6). `ASSIGNED`/`TEAM` counts are computed inside the caller's actual scope; `TEAM` never behaves like `ALL`. |
+| Protected counts | The server MUST NOT compute a company-wide count and rely on the client to hide rows. A metric/domain whose view permission (or non-`none` record scope) is absent is **not queried** and its card is **not rendered**. |
+| No roles | Visibility and scope derive from permissions + scopes + the linked Employee only; never from a role, designation, department or team name. |
+| Company | The whole projection is scoped to the active authorized company; `today` is company-local (§12). |
+| No persisted counters | Needs-Attention and all counts are derived on every read; no dashboard/KPI/attention table exists. |
 
-`today` means the company-local business date (§12).
+### 18.2 Dashboard contribution metric sources (implemented)
+
+| KPI | Source | Condition | Gate |
+| --- | --- | --- | --- |
+| Open Enquiries | `service_enquiries` | `status = open` | `services.enquiries.view` (company) |
+| Scheduled Jobs | `service_job_assignments` | `status = active` | Job Assignment view scope (ASSIGNED/TEAM/ALL) |
+| Pending Inspections | `service_inspections` | `status = pending` | Inspection view scope |
+| Open Material Requests | `service_material_requests` | `status = open` | Material Request view scope |
+| Work In Progress | `service_work_executions` | `status = inProgress` | Work Execution view scope |
+| Completed Today | `service_work_executions` | `status = completed` and `execution_date == company-local today` | Work Execution view scope |
+
+`today` means the company-local business date (§12), derived once per read via
+the company time/clock context — never the server or device timezone.
+
+### 18.3 Needs Attention rules (derived, capped at 6)
+
+| Rule / kind | Query |
+| --- | --- |
+| `openEnquiryUnassigned` | `service_enquiries` where `status = open` with no `active` job assignment |
+| `visitTodayWithoutInspection` | active assignments with `scheduled_visit_date == today` and no non-cancelled inspection |
+| `pendingInspectionToday` | `service_inspections` with `status = pending` and `visit_date == today` |
+| `inspectionWaitingMaterials` | non-cancelled inspections with a `service_inspection_material_requirements` row `status = waiting`, `removed_at IS NULL` |
+| `openMaterialRequest` | `service_material_requests` where `status = open` (optional branch — never implied mandatory) |
+| `activeWorkLine` | `service_work_executions` where `status = inProgress` |
+
+Each row is created only from a domain the caller may view, so a restricted
+record cannot leak. Rows carry the transaction reference, customer/site, kind,
+relevant date/time and the actual configured Priority name/rank (no SLA timers).
+
+### 18.4 Today's schedule
+
+Sources: `JobAssignment.scheduledVisitDate` (date only) and
+`Inspection.visitDate` + `visitMinutes` (date + time), sorted by time (timed
+inspections first, then date-only assignments). Built entirely on the
+company-local today. No calendar component.
+
+### 18.5 My Work
+
+Real records for the linked Employee: active Job Assignments, pending
+Inspections (technician or directly assigned on the source assignment), and
+in-progress Work Executions. The offered next action is permission-driven
+(`services.workExecutions.perform` → Start/Continue work;
+`services.inspections.view`+record scope → Open inspection;
+`services.jobAssignments.view`+record scope → View assignment).
+
+### 18.6 Team workload
+
+Produced only for `TEAM`/`ALL` scope with Job Assignment visibility, using the
+actual Service Team relationships (never an HR department). For `TEAM` scope the
+teams are limited to the linked employee's active Service Teams. Each row carries
+real counts (active assignments, today's visits, work in progress) and two bars;
+**no fake capacity percentage** is produced.
+
+### 18.7 Workflow overview
+
+A stage distribution from the real, scope-filtered counts:
+Enquiry → Job Assignment → Inspection → Material Request → Work Execution.
+Material Request is flagged **optional** and is never drawn as a mandatory
+funnel step. Only stages the caller can view are listed.
+
+### 18.8 Recent activity
+
+Structured activity events of module `services`, restricted to entity ids inside
+each domain's scope clause (the scope clause is applied **inside** the query; no
+all-company timeline is loaded then filtered). Event keys are localized at render
+time; no English sentence is stored. Empty state is explicit.
+
+### 18.9 Quick actions
+
+Context-aware and capability-only: New enquiry (`services.enquiries.create`),
+New job assignment (`services.jobAssignments.create`), New inspection
+(`services.inspections.create`), New material request
+(`services.materialRequests.create`), New work execution
+(`services.workExecutions.create`). An action the caller cannot perform is
+**hidden, never disabled**.
+
+### 18.10 Error & partial-failure semantics — never a fake zero
+
+- A genuine empty result is a successful query returning `0`.
+- A failed projection (bad query, binding mismatch, missing table) MUST NOT be
+  reported as a valid `0`. It is surfaced as a typed dashboard query error
+  (`SERVICES_DASHBOARD_QUERY_FAILED`, §36.9) so the dashboard degrades to an
+  explicit **section error / partial failure** with Retry.
+- Each optional section is loaded independently: one failing projection cannot
+  blank the whole dashboard, and it never masquerades as "no data".
 
 ---
 
-### Services Overview
+### Get Services Dashboard Contribution
 
-Purpose: Return the operational dashboard for the caller.
+Purpose: Return the permission/scope-filtered Services read model for the single
+dashboard. Suitable as the backend aggregation the dashboard contributor calls.
 Method: `GET`
-Path: `/api/v1/services/overview`
+Path: `/api/v1/services/dashboard-contribution`
 Authentication: Bearer (§4).
 Company Context: Required (§5).
-Required Permission: None specific; each section is gated by its own view
+Required Permission: None specific; the contribution is present only when the
+`services` module is enabled **and** the caller holds at least one Services
+view/create permission. Each KPI/section is independently gated by its own view
 permission/scope and omitted when absent.
-Supported Scope: ASSIGNED / TEAM / ALL per section.
-Required Employee Context: Only for the My Work section (linked Employee).
+Supported Scope: ASSIGNED / TEAM / ALL per domain; ASSIGNED/TEAM require a valid
+linked Employee.
+Required Employee Context: Required for My Work / Team workload / ASSIGNED/TEAM.
 Headers: Standard (§8).
 Path Parameters: None / Not applicable.
 Query Parameters: `include` (optional, comma list to restrict sections).
 Request Body: None / Not applicable.
 Request Field Table: None / Not applicable.
-Server-Derived Fields: all counts and `today` boundaries (company-local).
+Server-Derived Fields: `scope` indicator, all counts, `today` boundary
+(company-local).
 Business Validations: None / Not applicable.
-Authorization / Object Scope Rules: each metric uses the same scope resolver as
-its domain; sections with no permission/scope are omitted.
+Authorization / Object Scope Rules: each metric/section uses the same scope
+resolver as its domain, applied **before** aggregation; sections with no
+permission/scope are omitted (never zeroed to imply data).
 Transactional Side Effects: None / Not applicable.
 Activity Event: None / Not applicable.
 Notification Side Effects: None / Not applicable.
@@ -977,19 +1094,22 @@ Success Response:
 {
   "success": true,
   "data": {
-    "customers": 42,
-    "activeSites": 88,
-    "teams": 6,
-    "serviceTypes": 5,
-    "priorities": 4,
-    "enquiries": { "openCount": 7, "todayCount": 2, "highUrgentOpenCount": 3, "totalCount": 120, "recent": [] },
-    "jobAssignments": { "activeCount": 9, "todayCount": 2, "upcomingCount": 5, "totalCount": 60, "upcoming": [] },
-    "inspections": { "pendingCount": 4, "todayCount": 1, "completedCount": 22, "totalCount": 30, "recent": [] },
-    "materialRequests": { "openCount": 3, "todayCount": 1, "lineCount": 14, "totalCount": 25, "recent": [] },
-    "workExecutions": { "pendingCount": 2, "inProgressCount": 3, "completedTodayCount": 1, "totalCount": 18, "recent": [] },
-    "myWork": null
+    "scope": "all",
+    "canViewEnquiries": true, "canViewAssignments": true,
+    "canViewInspections": true, "canViewMaterialRequests": true,
+    "canViewWorkExecutions": true, "canCreateEnquiry": true,
+    "openEnquiriesCount": 7, "scheduledAssignmentsCount": 9,
+    "pendingInspectionsCount": 4, "openMaterialRequestsCount": 3,
+    "workInProgressCount": 3, "completedTodayCount": 1,
+    "today": "2026-09-30",
+    "attentionItems": [],
+    "todaySchedule": [],
+    "myWork": [],
+    "teamWorkload": [],
+    "workflowStages": [],
+    "recentActivity": []
   },
-  "meta": { "requestId": "uuid", "serverTimeUtc": "2026-09-28T06:00:00Z" }
+  "meta": { "requestId": "uuid", "serverTimeUtc": "2026-09-30T06:00:00Z" }
 }
 ```
 
@@ -997,29 +1117,40 @@ Response Field Table:
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `customers` | integer? | directory total (omitted without permission) |
-| `activeSites` | integer? | active site total |
-| `teams` | integer? | team total |
-| `serviceTypes` | integer? | service type master total |
-| `priorities` | integer? | priority master total |
-| `enquiries.*` | object? | enquiry summary + recent list |
-| `jobAssignments.*` | object? | assignment summary + upcoming list |
-| `inspections.*` | object? | inspection summary + recent list |
-| `materialRequests.*` | object? | material request summary + recent list |
-| `workExecutions.*` | object? | work execution summary + recent list |
-| `myWork` | object? | My Work projection (see 18.3) |
+| `scope` | enum | `assigned`/`team`/`all`/`none` — informational indicator, never a selector |
+| `canViewEnquiries` | boolean | enquiry metrics included |
+| `canViewAssignments` | boolean | assignment metrics included |
+| `canViewInspections` | boolean | inspection metrics included |
+| `canViewMaterialRequests` | boolean | material request metrics included |
+| `canViewWorkExecutions` | boolean | work execution metrics (Work In Progress + Completed Today) included |
+| `canCreateEnquiry` | boolean | New-enquiry quick action available |
+| `openEnquiriesCount` | integer | open enquiries in scope |
+| `scheduledAssignmentsCount` | integer | active assignments in scope |
+| `pendingInspectionsCount` | integer | pending inspections in scope |
+| `openMaterialRequestsCount` | integer | open material requests in scope |
+| `workInProgressCount` | integer | in-progress executions in scope |
+| `completedTodayCount` | integer | executions completed on company-local today |
+| `today` | date | company-local business date used for filtering |
+| `attentionItems[]` | array | derived Needs Attention rows (see 18.3) |
+| `todaySchedule[]` | array | today's schedule rows (see 18.4) |
+| `myWork[]` | array | My Work rows (see 18.5) |
+| `teamWorkload[]` | array | team workload rows (see 18.6) |
+| `workflowStages[]` | array | workflow stage counts (see 18.7) |
+| `recentActivity[]` | array | recent activity rows (see 18.8) |
 
-Errors: `401`, `403` (module disabled), `500`.
-Notes: Recent lists default to 5. Upcoming assignments default to 5, ordered by
-`scheduledVisitDate` ascending.
+Errors: `401`, `403` (module disabled / no Services permission), `500`. A single
+failed projection is returned as a `partialFailure` section error, not as a zero.
+Notes: The contribution contains no Customers/Sites/Teams master counts in the
+current implementation (those belonged to the retired standalone overview).
 
 ---
 
-### My Work
+### Get My Work
 
-Purpose: Return the caller’s own operational queue (ASSIGNED projection).
+Purpose: Return the caller’s own operational queue (ASSIGNED projection) as a
+standalone read (it is also embedded in the dashboard contribution).
 Method: `GET`
-Path: `/api/v1/services/overview/my-work`
+Path: `/api/v1/services/dashboard-contribution/my-work`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: Any of the assignment/inspection/work-execution view
@@ -1053,13 +1184,13 @@ Success Response:
     "executions": [], "executionCount": 1,
     "isEmpty": false
   },
-  "meta": { "requestId": "uuid", "serverTimeUtc": "2026-09-28T06:00:00Z" }
+  "meta": { "requestId": "uuid", "serverTimeUtc": "2026-09-30T06:00:00Z" }
 }
 ```
 
 Implemented selection: active assignments assigned to the employee; pending
-inspections where the employee is the technician; work executions in progress
-with the employee on a line.
+inspections where the employee is the technician or directly assigned on the
+source assignment; work executions in progress with the employee on a line.
 
 Response Field Table:
 
@@ -1067,7 +1198,7 @@ Response Field Table:
 | --- | --- | --- |
 | `assignments` | array | active assignments for the employee |
 | `assignmentCount` | integer | filtered count |
-| `inspections` | array | pending inspections for the technician |
+| `inspections` | array | pending inspections for the employee |
 | `inspectionCount` | integer | filtered count |
 | `executions` | array | in-progress executions for the employee |
 | `executionCount` | integer | filtered count |
@@ -1656,6 +1787,18 @@ Codes are company-scoped sequences (`TEAM-…`). A team has at most one lead
 (`leadEmployeeId`); the lead is also a member. Membership is many-to-many and
 never grants permission.
 
+Every member id and the `leadEmployeeId` are validated through the shared
+**workforce contract** (§7): the referenced Employee must exist in the same
+company, must be selectable (active) for a new membership, and the lead must be
+an active member of the team. Services never reads HR-private employee data and
+never treats Department membership as a Services Team.
+
+### 21.1 Record detail vs manage
+
+Team list/detail/members require `services.teams.view`; create/update
+(membership)/activate/deactivate require `services.teams.manage` (§6.7). A
+View-only caller must not receive a mutable response.
+
 ### Team entity (read model)
 
 | Field | Type | Notes |
@@ -1981,12 +2124,22 @@ All masters share: `id`, `companyId`, `code` (unique per company, uppercased),
 `name`, `description`, `status` (`active`/`inactive`), `sortOrder`, audit.
 Complaint Type adds `serviceTypeId`; Priority adds `rank` and `isDefault`.
 
-Manage implies view for every master.
+Manage implies view for every master (single normalization rule; the master view
+grant is scope-less, so this cannot widen a record scope, §6.7).
 
-### 22.2 Referential integrity
+### 22.2 Read detail vs manage, and referential integrity
 
+- **Read-only detail.** Reading one master value (`GET
+  …/{masterType}/{id}`) requires only the master's `*.view` permission and
+  returns the value read-only. A View-only caller must never receive a mutable
+  response. The **editable** representation is a separate authorization context:
+  update/activate/deactivate require the master's `*.manage` permission.
 - Inactive masters are **not** selectable for new transactions but remain
-  resolvable historically (existing transactions still display the old value).
+  resolvable historically (existing transactions still display the old value);
+  the Settings destinations list all seven masters (Service Types, Complaint
+  Types, Priorities, Ticket Types, **Root Causes**, **Charge
+  Responsibilities**, Material Request Purposes) with the same read/manage
+  split.
 - A master `code` and `name` must be unique per company (case-insensitive).
 - Deletion is never hard delete; use deactivate.
 
@@ -2987,7 +3140,7 @@ Path: `/api/v1/services/job-assignments/{assignmentId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.jobAssignments.edit`.
-Supported Scope: Company (edit implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the edit permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `assignmentId` (uuid).
@@ -3022,7 +3175,7 @@ Path: `/api/v1/services/job-assignments/{assignmentId}/cancel`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.jobAssignments.cancel`.
-Supported Scope: Company (cancel implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the cancel permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `assignmentId` (uuid).
@@ -3357,7 +3510,7 @@ Path: `/api/v1/services/inspections`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.inspections.create`.
-Supported Scope: Company (create implies View All).
+Supported Scope: Company (create authority; no record scope required — a create actor uses the company-scoped restricted reference lookups and needs no View grant, §6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: None / Not applicable.
@@ -3467,7 +3620,7 @@ Path: `/api/v1/services/inspections/{inspectionId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.inspections.edit`.
-Supported Scope: Company (edit implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the edit permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `inspectionId` (uuid).
@@ -3503,7 +3656,7 @@ Path: `/api/v1/services/inspections/{inspectionId}/complete`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.inspections.complete`.
-Supported Scope: Company (complete implies View All).
+Supported Scope: The target record must lie inside the caller's `services.inspections.view` grant scope (ASSIGNED/TEAM/ALL); the complete permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `inspectionId` (uuid).
@@ -3540,7 +3693,7 @@ Path: `/api/v1/services/inspections/{inspectionId}/cancel`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.inspections.cancel`.
-Supported Scope: Company (cancel implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the cancel permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `inspectionId` (uuid).
@@ -3933,7 +4086,7 @@ Path: `/api/v1/services/material-requests`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.materialRequests.create`.
-Supported Scope: Company (create implies View All).
+Supported Scope: Company (create authority; no record scope required — a create actor uses the company-scoped restricted reference lookups and needs no View grant, §6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: None / Not applicable.
@@ -4041,7 +4194,7 @@ Path: `/api/v1/services/material-requests/{requestId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.materialRequests.edit`.
-Supported Scope: Company (edit implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the edit permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `requestId` (uuid).
@@ -4077,7 +4230,7 @@ Path: `/api/v1/services/material-requests/{requestId}/cancel`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.materialRequests.cancel`.
-Supported Scope: Company (cancel implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the cancel permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `requestId` (uuid).
@@ -4464,7 +4617,7 @@ Path: `/api/v1/services/work-executions`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.create`.
-Supported Scope: Company (create implies View All).
+Supported Scope: Company (create authority; no record scope required — a create actor uses the company-scoped restricted reference lookups and needs no View grant, §6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: None / Not applicable.
@@ -4578,7 +4731,7 @@ Path: `/api/v1/services/work-executions/{executionId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.edit`.
-Supported Scope: Company (edit implies View All).
+Supported Scope: The target record must lie inside the caller's `services.<domain>.view` grant scope (ASSIGNED/TEAM/ALL); the edit permission never widens it (§6.7).
 Required Employee Context: None / Not applicable.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid).
@@ -4614,7 +4767,7 @@ Path: `/api/v1/services/work-executions/{executionId}/lines/{lineId}/start`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid), `lineId` (uuid).
@@ -4654,7 +4807,7 @@ Path: `/api/v1/services/work-executions/{executionId}/lines/{lineId}/end`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid), `lineId` (uuid).
@@ -4687,7 +4840,7 @@ Path: `/api/v1/services/work-executions/{executionId}/materials-used`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid).
@@ -4732,7 +4885,7 @@ Path: `/api/v1/services/work-executions/{executionId}/materials-used/{materialUs
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` recommended.
 Path Parameters: `executionId` (uuid), `materialUsedId` (uuid).
@@ -4763,7 +4916,7 @@ Path: `/api/v1/services/work-executions/{executionId}/photos`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid).
@@ -4808,7 +4961,7 @@ Path: `/api/v1/services/work-executions/{executionId}/photos/{photoEntryId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` recommended.
 Path Parameters: `executionId` (uuid), `photoEntryId` (uuid).
@@ -4844,7 +4997,7 @@ Path: `/api/v1/services/work-executions/{executionId}/photos/{photoEntryId}`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.perform`.
-Supported Scope: Company (perform implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the perform permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` recommended.
 Path Parameters: `executionId` (uuid), `photoEntryId` (uuid).
@@ -4875,7 +5028,7 @@ Path: `/api/v1/services/work-executions/{executionId}/complete`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.complete`.
-Supported Scope: Company (complete implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the complete permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid).
@@ -4910,7 +5063,7 @@ Path: `/api/v1/services/work-executions/{executionId}/cancel`
 Authentication: Bearer.
 Company Context: Required.
 Required Permission: `services.workExecutions.cancel`.
-Supported Scope: Company (cancel implies View All) plus record scope.
+Supported Scope: The target execution must lie inside the caller's `services.workExecutions.view` grant scope (ASSIGNED/TEAM/ALL); the cancel permission never widens it (§6.7). ASSIGNED also requires a valid linked Employee.
 Required Employee Context: Required for ASSIGNED/TEAM scope.
 Headers: Standard. `Idempotency-Key` required.
 Path Parameters: `executionId` (uuid).
@@ -5373,8 +5526,8 @@ permission).
 
 | # | Domain | Method | Path | Permission | Scope | Idempotent? | Purpose |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Overview | GET | `/overview` | per-section view | ASSIGNED/TEAM/ALL | n/a | operational dashboard |
-| 2 | Overview | GET | `/overview/my-work` | view* | ASSIGNED | n/a | own queue |
+| 1 | Dashboard | GET | `/dashboard-contribution` | per-section view | ASSIGNED/TEAM/ALL | n/a | scope-safe dashboard contribution (may return a section error, never a fake 0) |
+| 2 | Dashboard | GET | `/dashboard-contribution/my-work` | view* | ASSIGNED | n/a | own queue (also embedded in #1) |
 | 3 | Customer | GET | `/customers` | `services.customers.view` | ALL | n/a | list |
 | 4 | Customer | POST | `/customers` | `services.customers.create` | ALL | yes | create |
 | 5 | Customer | GET | `/customers/{id}` | `services.customers.view` | ALL | n/a | detail |
@@ -5530,6 +5683,17 @@ endpoint/scope requires a valid Employee reference.
 **No `SELF` scope** exists for Services transactions. `TEAM` is Service-Team
 membership only. `ALL` is company only. `*Manage` implies `*View`.
 
+**HARD INVARIANT (§6.7):** an action permission's `none` scope means it carries
+no record visibility. Only the explicitly granted scoped `*.view` permission
+(`assigned`/`team`/`all`) grants visibility, and the action never widens it.
+Therefore, in the table above, `edit`/`cancel`/`complete`/`perform`/`print` rows
+with scope `none` are usable **only** when the caller also holds the matching
+`*.view` grant whose scope contains the record; `View ASSIGNED + Perform ≠ ALL`,
+`View TEAM + Complete ≠ ALL`, and an action without a view grant grants nothing.
+`services.enquiries.edit`/`.cancel` are the sole scoped-transaction exception
+because the Enquiry view grant is itself scope-less (company), so the implication
+cannot widen a record scope.
+
 ---
 
 ## 34. Workflow Transition Matrix
@@ -5611,8 +5775,8 @@ Workflow read model ──▶ all five transactions (authorization re-checked pe
 
 | Client workflow step | Backend APIs used |
 | --- | --- |
-| Services Overview | `GET /overview` (+ optional per-domain summaries) |
-| My Work | `GET /overview/my-work` |
+| Universal Dashboard (Services contribution) | `GET /dashboard-contribution` (+ optional per-domain summaries) |
+| My Work | `GET /dashboard-contribution/my-work` (also embedded) |
 | Customers list / detail / form | `GET/POST/PATCH /customers`, `/customers/{id}/activate|deactivate`, `/references/customers` |
 | Sites list / detail / form | `GET/POST/PATCH /sites`, `/sites/{id}/activate|deactivate`, `/references/sites` |
 | Teams list / detail / form | `GET/POST/PATCH /teams`, `/teams/{id}/members`, `/teams/{id}/activate|deactivate`, `/references/teams`, `/references/employees` |
@@ -5646,7 +5810,8 @@ Workflow read model ──▶ all five transactions (authorization re-checked pe
 | --- | --- | --- |
 | `UNAUTHENTICATED` | 401 | missing/invalid token |
 | `FORBIDDEN` | 403 | authenticated but unauthorized |
-| `SERVICES_PERMISSION_DENIED` | 403 | Services permission/scope denied |
+| `SERVICES_PERMISSION_DENIED` | 403 | Services permission denied (no action/view grant) |
+| `SCOPE_DENIED` | 403/404 | permission held but the record is outside the granted record scope (ASSIGNED/TEAM/ALL) |
 | `SERVICES_MODULE_DISABLED` | 403 | company `services` module disabled |
 | `COMPANY_SCOPE_MISMATCH` | 403/404 | record not in the authorized company |
 | `VALIDATION_ERROR` | 400 | generic field validation |
@@ -5775,6 +5940,7 @@ Workflow read model ──▶ all five transactions (authorization re-checked pe
 | `SERVICES_MATERIAL_REQUEST_DESCRIPTION_REQUIRED` | 400 | description required |
 | `SERVICES_MATERIAL_REQUEST_QUANTITY_REQUIRED` | 400 | quantity must be > 0 |
 | `SERVICES_MATERIAL_REQUEST_REQUIREMENT_LINKED` | 409 | requirement already requested or linked to another active request |
+| `SERVICES_MATERIAL_REQUIREMENT_ALREADY_REQUESTED` | 409 | canonical name for the same conflict (`MATERIAL_REQUIREMENT_ALREADY_REQUESTED`) |
 | `SERVICES_MATERIAL_REQUEST_PURPOSE_INVALID` | 400 | purpose invalid/inactive |
 | `SERVICES_MATERIAL_REQUEST_SEQUENCE_FAILED` | 500 | sequence allocation failed |
 | `SERVICES_MATERIAL_REQUEST_PRINT_FAILED` | 500 | print data/PDF generation failed |
@@ -5791,7 +5957,7 @@ Workflow read model ──▶ all five transactions (authorization re-checked pe
 | `SERVICES_WORK_EXECUTION_DENIED` | 403 | permission denied |
 | `SERVICES_WORK_EXECUTION_INSPECTION_REQUIRED` | 400 | source inspection required |
 | `SERVICES_WORK_EXECUTION_INSPECTION_NOT_ELIGIBLE` | 400 | inspection missing/not completed |
-| `SERVICES_WORK_EXECUTION_ALREADY_ACTIVE` | 409 | non-cancelled execution exists |
+| `SERVICES_WORK_EXECUTION_ALREADY_ACTIVE` | 409 | non-cancelled execution exists (canonical: `WORK_EXECUTION_ALREADY_EXISTS`) |
 | `SERVICES_WORK_EXECUTION_LINES_REQUIRED` | 400 | at least one line |
 | `SERVICES_WORK_EXECUTION_WORK_REQUIRED` | 400 | work required |
 | `SERVICES_WORK_EXECUTION_CODE_REQUIRED` | 400 | material code required |
@@ -5816,6 +5982,12 @@ Workflow read model ──▶ all five transactions (authorization re-checked pe
 | `ATTACHMENT_TOO_LARGE` | 400 | > 15 MiB |
 | `ATTACHMENT_LIMIT_REACHED` | 409 | > 20 per owner |
 | `SERVICES_STORAGE` | 500 | local/storage failure |
+
+### 36.9 Dashboard / projection
+
+| Code | HTTP | Meaning |
+| --- | --- | --- |
+| `SERVICES_DASHBOARD_QUERY_FAILED` | 500 | a dashboard projection failed; surfaced as an explicit section error / partial failure — **never** reported as a valid `0` count. |
 
 ---
 
@@ -5876,6 +6048,13 @@ UTC ISO-8601; enums are stable lower-camel wire values.
 | `AttachmentRef` | id, companyId, ownerType, ownerId, category, fileName, displayName, mimeType, sizeBytes, uploadStatus, remoteUrl, checksum, createdAt, updatedAt |
 | `ActivityEvent` | id, companyId, moduleKey, entityType, entityId, eventType, occurredAt, actorUserId, actorEmployeeId, metadata |
 | `Notification` | type, companyId, entityType, entityId, transactionNumber, recipientUserId, route{kind,id}, priority, dedupeKey, createdAt |
+| `ServicesDashboardContribution` | scope, canViewEnquiries, canViewAssignments, canViewInspections, canViewMaterialRequests, canViewWorkExecutions, canCreateEnquiry, openEnquiriesCount, scheduledAssignmentsCount, pendingInspectionsCount, openMaterialRequestsCount, workInProgressCount, completedTodayCount, today, attentionItems[], todaySchedule[], myWork[], teamWorkload[], workflowStages[], recentActivity[] |
+| `ServicesAttentionItem` | kind, entityId, reference, customerName, siteSummary, dueAt, waitingMaterialCount, priorityName, priorityRank |
+| `ServicesScheduleItem` | kind, entityId, reference, customerName, siteSummary, assignedSummary, visitDate, minutes, statusKey, priorityName, priorityRank |
+| `ServicesMyWorkItem` | kind, entityId, reference, customerName, siteSummary, summary, statusKey, date, action |
+| `ServicesTeamWorkloadRow` | teamId, teamName, activeAssignments, todayVisits, inProgress |
+| `ServicesWorkflowStageCount` | stage, count |
+| `ServicesRecentActivityItem` | entityType, entityId, eventType, reference, occurredAt |
 | `WorkflowChain` | enquiryId, enquiryNumber, status, focus, nodes[] |
 | `WorkflowNode` | stage, present, id, reference, statusKey, cancelled, waitingMaterialCount, recordCount, allLinesComplete |
 | `ErrorEnvelope` | success=false, error{code,message,fieldErrors[],details}, meta |
@@ -6056,7 +6235,8 @@ These are preserved as **TBD**; do not invent behavior.
 | Material Request watch/get/create/update/cancel/eligible refs/context/summary/recent/print/inspection-integration | §26 |
 | Work Execution watch/get/create/update/start/end/add-remove material/add-update-remove photo/complete/cancel/eligible refs/context/summary/recent/integrations | §27 |
 | Workflow chain/load/summary/activity | §28 |
-| Overview load (metrics, recents, My Work) | §18 |
+| Dashboard contribution load (KPIs, attention, schedule, My Work, team workload, workflow stages, recent activity) | §18 |
+| Dashboard section failure is a typed error, never a fake `0` | §18.10, §36.9 |
 | Attachments (owner metadata, upload lifecycle) | §17 |
 | Activity append/read | §16, §28 |
 | Notifications (assignment/inspection) | §29 |
@@ -6065,6 +6245,8 @@ These are preserved as **TBD**; do not invent behavior.
 | Company time | §12 |
 | Permission catalog (all keys) | §33 |
 | Scope resolvers (ASSIGNED/TEAM/ALL per transaction) | §6.4–§6.6 |
+| Action permission never widens View scope (hard invariant) | §6.7, §6.7.1, §33 |
+| Create vs edit vs deactivate are independent grants; read-only master detail | §22.2, §21.1, §6.7 |
 
 ### 42.2 Local-only / demo elements explicitly excluded
 
@@ -6098,6 +6280,10 @@ These are preserved as **TBD**; do not invent behavior.
 - [x] Job Order / Quotation are compatibility references only.
 - [x] All known TBDs preserved (§41).
 - [x] Endpoint, permission, transition, source-of-truth and DTO/error catalogs present.
+- [x] Hard invariant proven: action permissions never upgrade View scope (§6.7.1).
+- [x] One dashboard; Services contribution is scope-safe; counts protected; section failure is explicit, never a fake zero (§18).
+- [x] Create/edit/deactivate are independent grants; master/detail read-only for View-only callers (§22.2, §21.1).
+- [x] Material Request print = View-within-scope AND Print, never widening scope (§26).
 
 ---
 
@@ -6110,12 +6296,12 @@ These are preserved as **TBD**; do not invent behavior.
 | Domain concept | Implemented source (internal) |
 | --- | --- |
 | Services schema | `lib/modules/services/data/services_tables.dart`; `lib/core/database/app_database.dart` (schema v18, indexes) |
-| Permission catalog | `lib/modules/services/access/services_permission_catalog.dart`; `lib/core/security/app_permission.dart` |
-| Scope resolvers | `.../job_assignments/domain/service_job_assignment_scope.dart`, `.../inspections/domain/service_inspection_scope.dart`, `.../material_requests/domain/service_material_request_scope.dart`, `.../work_executions/domain/service_work_execution_scope.dart` |
+| Permission catalog | `lib/modules/services/access/services_permission_catalog.dart`; `lib/core/security/app_permission.dart` (hard invariant `permissionViewDependencies`) |
+| Scope resolvers | `lib/core/security/access_scope_resolver.dart`; `.../job_assignments/domain/service_job_assignment_scope.dart`, `.../inspections/domain/service_inspection_scope.dart`, `.../material_requests/domain/service_material_request_scope.dart`, `.../work_executions/domain/service_work_execution_scope.dart` |
 | Directory repositories | `customers/data/local_service_customer_repository.dart`, `sites/data/local_service_site_repository.dart`, `teams/data/local_service_team_repository.dart`, `configuration/data/local_service_master_repository.dart` |
 | Transaction repositories | `enquiries/data/local_service_enquiry_repository.dart`, `job_assignments/data/local_service_job_assignment_repository.dart`, `inspections/data/local_service_inspection_repository.dart`, `material_requests/data/local_service_material_request_repository.dart`, `work_executions/data/local_service_work_execution_repository.dart` |
 | Workflow read model | `workflow/domain/service_workflow.dart`, `service_workflow_action.dart`, `service_workflow_validator.dart`; `workflow/data/local_service_workflow_repository.dart` |
-| Overview / My Work | `overview/presentation/bloc/service_overview_cubit.dart` |
+| Dashboard contribution / My Work | `overview/domain/services_dashboard.dart`, `services_dashboard_repository.dart`; `overview/data/local_services_dashboard_repository.dart` (`ServicesDashboardQueryException`); `overview/application/services_dashboard_contributor.dart`; platform: `lib/platform/workspace/dashboard/**` |
 | Routes / module wiring | `module/services_routes.dart`, `services_module_registration.dart`, `services_dependencies.dart` |
 | Workforce contract | `domain/contracts/workforce_directory.dart` |
 | Attachments | `lib/shared/transactions/domain/attachment.dart`, `attachment_repository.dart` |
@@ -6132,12 +6318,13 @@ These are preserved as **TBD**; do not invent behavior.
 ### 43.1 Final completion report
 
 1. Output file: `docs/backend/services_backend_api_requirements.md`.
-2. Domains covered: Overview; Customers; Sites; Teams; Configuration masters;
-   Enquiries (+ detail lines + photos); Job Assignments; Inspections (+ checklist
-   + before-work photos + inspected points + material requirements); Material
-   Requests (+ lines + print); Work Executions (+ lines + material used +
-   after-work photos); Workflow/lineage; Notifications; dashboard/summary
-   queries; Attachments.
+2. Domains covered: Universal Dashboard Services contribution (KPIs, Needs
+   Attention, today's schedule, My Work, team workload, workflow stages, recent
+   activity); Customers; Sites; Teams; Configuration masters (7); Enquiries (+
+   detail lines + photos); Job Assignments; Inspections (+ checklist + before-work
+   photos + inspected points + material requirements); Material Requests (+ lines
+   + print); Work Executions (+ lines + material used + after-work photos);
+   Workflow/lineage; Notifications; Attachments.
 3. Total endpoint requirements: **98**.
 4. Configuration/directory endpoints: 30 (customers 7, sites 7, teams 8,
    workforce 1, masters 7).
@@ -6157,15 +6344,44 @@ These are preserved as **TBD**; do not invent behavior.
 14. Company isolation: §5, §38.
 15. Audit/activity: §16.
 16. Notification requirements: §29.
-17. Dashboard requirements: §18.
-18. Print requirements: §26 (Material Request Print Data).
+17. Dashboard requirements: §18 (single dashboard; scope-safe contribution;
+    protected counts; typed section failure, never a fake `0`).
+18. Print requirements: §26 (Material Request Print Data; View-within-scope AND
+    Print, never widening scope).
 19. TBDs preserved: §41 (20 items).
-20. No Job Order APIs invented.
-21. No Quotation APIs invented.
-22. No Inventory APIs invented.
-23. No Service Reports APIs invented.
-24. Backend-facing body contains no client-framework implementation language
+20. Hard invariant documented and proven: action permissions never upgrade View
+    scope (§6.7, §6.7.1).
+21. Create vs edit vs deactivate are independent grants; master/detail is
+    read-only for View-only callers (§21.1, §22.2).
+22. No Job Order APIs invented.
+23. No Quotation APIs invented.
+24. No Inventory APIs invented.
+25. No Service Reports APIs invented.
+26. Backend-facing body contains no client-framework implementation language
     (framework-specific names appear only in this appendix).
+
+### 43.2 Phase 7.5 hardening delta (what this revision changed)
+
+This revision regenerates the document against the post-Phase-7.5 codebase. The
+substantive changes from the prior pass are:
+
+1. **Authorization invariant corrected.** The old "action implies matching View"
+   rule was replaced by the hard invariant: only scope-less `*Manage`
+   configuration permissions (and the scope-less Enquiry `edit`/`cancel`) imply
+   View; scoped transaction actions imply **no** view and never widen
+   ASSIGNED/TEAM to ALL (§6.7, §6.7.1). Every transaction endpoint's `Supported
+   Scope` label was corrected accordingly.
+2. **Dashboard reframed.** The retired standalone Services overview was replaced
+   by the single Universal Dashboard Services contribution, with scope-safe
+   aggregation, protected counts, hidden-not-disabled quick actions and the
+   typed `ServicesDashboardQueryException` → section error (never a fake `0`)
+   semantics (§18, §36.9).
+3. **Read-only detail vs manage.** Master/team detail is read-only under View;
+   the editable representation requires Manage (§21.1, §22.2).
+4. **Pagination totals** remain company/scope totals + filtered totals, never the
+   current-page count (§9.2, §11.1).
+5. **Company-time dashboard.** `today` is derived once per read from the company
+   timezone (§12, §18.2).
 
 
 

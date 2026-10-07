@@ -102,26 +102,51 @@ class ServiceMaterialRequestDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: request.requestNumber,
-            subtitle: view.customerName,
-            actions: [
-              if (canEdit && request.isOpen)
-                AppSecondaryButton(
-                  label: l.servicesMaterialRequestEdit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () => context.go(
-                    ServicesRoutes.materialRequestEdit(request.id),
-                  ),
+            description: view.customerName,
+            leading: AppRecordGlyph(
+              icon: Icons.inventory_2_outlined,
+              status: serviceMaterialRequestStatus(request.status),
+            ),
+            status: AppDetailStatus(
+              label: serviceMaterialRequestStatusLabel(request.status, l),
+              status: serviceMaterialRequestStatus(request.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.event_outlined,
+                label: l.servicesMaterialRequestDate,
+                value: dates.date(request.requestDate),
+              ),
+              if ((view.purposeName ?? '').isNotEmpty)
+                AppMetadataItem(
+                  icon: Icons.request_quote_outlined,
+                  label: l.servicesMaterialRequestPurpose,
+                  value: view.purposeName,
                 ),
+            ],
+            primaryAction: canEdit && request.isOpen
+                ? AppPrimaryButton(
+                    label: l.servicesMaterialRequestEdit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () => context.go(
+                      ServicesRoutes.materialRequestEdit(request.id),
+                    ),
+                  )
+                : null,
+            secondaryActions: [
               if (canPrint)
                 AppSecondaryButton(
                   label: l.servicesMaterialRequestPrint,
                   icon: Icons.print_outlined,
                   onPressed: print,
                 ),
+            ],
+            overflowActions: [
               if (canCancel && request.isOpen)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: true,
                   label: l.servicesMaterialRequestCancel,
                   onPressed: cancel,
                 ),
@@ -130,37 +155,6 @@ class ServiceMaterialRequestDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.sm,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: serviceMaterialRequestStatusLabel(
-                        request.status,
-                        l,
-                      ),
-                      status: serviceMaterialRequestStatus(request.status),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: dates.date(request.requestDate),
-                      icon: Icons.event_outlined,
-                      status: AppStatus.neutral,
-                      isPill: true,
-                    ),
-                    if ((view.purposeName ?? '').isNotEmpty)
-                      AppStatusBadge(
-                        label: view.purposeName!,
-                        icon: Icons.request_quote_outlined,
-                        status: AppStatus.neutral,
-                        isPill: true,
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               if (workflow != null) ...[
                 ServiceWorkflowSection(
                   repository: workflow!,
@@ -267,7 +261,12 @@ class ServiceMaterialRequestDetailPage extends StatelessWidget {
                                 DataCell(Text(request.lines[i].code)),
                                 DataCell(Text(request.lines[i].description)),
                                 DataCell(
-                                  Text(request.lines[i].batchNumber ?? ''),
+                                  Text(
+                                    AppDetailValue.of(
+                                      context,
+                                      request.lines[i].batchNumber,
+                                    ),
+                                  ),
                                 ),
                                 DataCell(
                                   Text(
@@ -276,7 +275,14 @@ class ServiceMaterialRequestDetailPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                DataCell(Text(request.lines[i].remark ?? '')),
+                                DataCell(
+                                  Text(
+                                    AppDetailValue.of(
+                                      context,
+                                      request.lines[i].remark,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                         ],
@@ -306,15 +312,18 @@ class ServiceMaterialRequestDetailPage extends StatelessWidget {
                   fields: [
                     AppDetailField(
                       label: l.servicesMaterialRequestAcknowledge,
-                      value: request.acknowledgement ?? '',
+                      value: AppDetailValue.of(
+                        context,
+                        request.acknowledgement,
+                      ),
                     ),
                     AppDetailField(
                       label: l.servicesMaterialRequestReceivedBy,
-                      value: request.receivedBy ?? '',
+                      value: AppDetailValue.of(context, request.receivedBy),
                     ),
                     AppDetailField(
                       label: l.servicesMaterialRequestRemarks,
-                      value: request.remarks ?? '',
+                      value: AppDetailValue.of(context, request.remarks),
                     ),
                   ],
                 ),

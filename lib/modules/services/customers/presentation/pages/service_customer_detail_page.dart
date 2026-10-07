@@ -86,19 +86,40 @@ class ServiceCustomerDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: customer.name,
-            subtitle: customer.customerCode,
-            actions: [
-              if (canEdit)
-                AppSecondaryButton(
-                  label: l.edit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () =>
-                      context.go(ServicesRoutes.customerEdit(customer.id)),
-                ),
+            businessId: customer.customerCode,
+            leading: AppAvatar(name: customer.name, radius: 28),
+            status: AppDetailStatus(
+              label: serviceStatusLabel(customer.status, l),
+              status: serviceStatus(customer.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.badge_outlined,
+                label: l.servicesCustomerKind,
+                value: customer.kind == ServiceCustomerKind.organization
+                    ? l.servicesCustomerKindOrganization
+                    : l.servicesCustomerKindIndividual,
+              ),
+              AppMetadataItem(
+                icon: Icons.update,
+                label: l.servicesCustomerLastUpdated,
+                value: dates.date(customer.updatedAt),
+              ),
+            ],
+            primaryAction: canEdit
+                ? AppPrimaryButton(
+                    label: l.edit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () =>
+                        context.go(ServicesRoutes.customerEdit(customer.id)),
+                  )
+                : null,
+            overflowActions: [
               if (canDeactivate)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: customer.status == ConfigurationStatus.active,
                   label: customer.status == ConfigurationStatus.active
                       ? l.servicesCustomerDeactivate
                       : l.servicesCustomerActivate,
@@ -109,48 +130,6 @@ class ServiceCustomerDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Row(
-                  children: [
-                    AppAvatar(name: customer.name, radius: 28),
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            customer.name,
-                            style: AppTypography.of(context).sectionTitle,
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          Wrap(
-                            spacing: AppSpacing.sm,
-                            runSpacing: AppSpacing.xs,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              AppStatusBadge(
-                                label: serviceStatusLabel(customer.status, l),
-                                status: serviceStatus(customer.status),
-                                isPill: true,
-                              ),
-                              AppStatusBadge(
-                                label:
-                                    customer.kind ==
-                                        ServiceCustomerKind.organization
-                                    ? l.servicesCustomerKindOrganization
-                                    : l.servicesCustomerKindIndividual,
-                                status: AppStatus.info,
-                                isPill: true,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.servicesCustomerContactSection,
                 child: AppDetailsGrid(

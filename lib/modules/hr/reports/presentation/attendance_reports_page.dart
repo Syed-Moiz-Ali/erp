@@ -34,258 +34,250 @@ class AttendanceReportsPage extends StatelessWidget {
       };
 
   @override
-  Widget build(
-    BuildContext context,
-  ) => BlocBuilder<AttendanceReportBloc, AttendanceReportState>(
-    builder: (context, state) {
-      final l = context.l10n;
-      final compact = AppBreakpoints.of(context) == AppSize.compact;
-      final bloc = context.read<AttendanceReportBloc>();
-      final filter = state.filter;
-      final data = state.data;
-      final locale = Localizations.localeOf(context);
-      final date = AppDateFormatter(locale);
-      final duration = AppTimeFormatter(locale);
-      final granularity = filter == null
-          ? ReportGranularity.day
-          : resolveReportGranularity(filter.from, filter.to);
-      final trendPoints = data == null
-          ? const <AttendanceTrendPoint>[]
-          : aggregateTrend(data.trend, granularity);
-      void change(AttendanceReportFilter next) =>
-          bloc.add(AttendanceReportFilterChanged(next));
-      return AppPage(
-        header: AppPageHeader(
-          title: l.reportTitle,
-          subtitle: filter == null
-              ? null
-              : '${date.date(filter.from)} – ${date.date(filter.to)}',
-          compactActionsInline: true,
-          actions: [
-            AppIconButton(
-              icon: Icons.refresh,
-              tooltip: l.dashboardRefresh,
-              onPressed: () =>
-                  bloc.add(const AttendanceReportRefreshRequested()),
+  Widget build(BuildContext context) =>
+      BlocBuilder<AttendanceReportBloc, AttendanceReportState>(
+        builder: (context, state) {
+          final l = context.l10n;
+          final compact = AppBreakpoints.of(context) == AppSize.compact;
+          final bloc = context.read<AttendanceReportBloc>();
+          final filter = state.filter;
+          final data = state.data;
+          final locale = Localizations.localeOf(context);
+          final date = AppDateFormatter(locale);
+          final duration = AppTimeFormatter(locale);
+          final granularity = filter == null
+              ? ReportGranularity.day
+              : resolveReportGranularity(filter.from, filter.to);
+          final trendPoints = data == null
+              ? const <AttendanceTrendPoint>[]
+              : aggregateTrend(data.trend, granularity);
+          void change(AttendanceReportFilter next) =>
+              bloc.add(AttendanceReportFilterChanged(next));
+          return AppPage(
+            header: AppPageHeader(
+              title: l.reportTitle,
+              subtitle: filter == null
+                  ? null
+                  : '${date.date(filter.from)} – ${date.date(filter.to)}',
+              compactActionsInline: true,
+              actions: [
+                AppIconButton(
+                  icon: Icons.refresh,
+                  tooltip: l.dashboardRefresh,
+                  onPressed: () =>
+                      bloc.add(const AttendanceReportRefreshRequested()),
+                ),
+                if (data != null) _exportButton(context, state, compact),
+              ],
             ),
-            if (data != null) _exportButton(context, state, compact),
-          ],
-        ),
-        child: filter == null
-            ? (state.failure != null
-                  ? AppErrorState(
-                      message: l.reportRefreshFailed,
-                      onRetry: () => bloc.add(const AttendanceReportStarted()),
-                    )
-                  : const AppLoadingState())
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppStatusBadge(
-                    label: filter.scope == AttendanceScope.team
-                        ? l.reportScopeTeam
-                        : l.reportScopeCompany,
-                    status: AppStatus.info,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  AppDateRangePresetSelector<AttendanceReportPeriod>(
-                    options: [
-                      for (final p in AttendanceReportPeriod.values)
-                        (p, _periodLabel(l, p)),
-                    ],
-                    selected: filter.period,
-                    onChanged: (p) {
-                      if (p == AttendanceReportPeriod.custom) {
-                        change(filter.copyWith(period: p));
-                      } else {
-                        final preset = AttendanceReportFilter.preset(
-                          p,
-                          state.today!,
-                          filter.scope,
-                        );
-                        change(
-                          preset.copyWith(
-                            employeeIds: filter.employeeIds,
-                            departmentIds: filter.departmentIds,
-                            shiftIds: filter.shiftIds,
-                            locationIds: filter.locationIds,
-                            statuses: filter.statuses,
-                            hasIssues: filter.hasIssues,
-                            hasCorrections: filter.hasCorrections,
-                            group: filter.group,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  if (filter.period == AttendanceReportPeriod.custom) ...[
-                    const SizedBox(height: AppSpacing.md),
-                    Wrap(
-                      spacing: AppSpacing.md,
-                      runSpacing: AppSpacing.md,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: AppDateField(
-                            label: l.reportFrom,
-                            value: filter.from,
-                            lastDate: state.today,
-                            onChanged: (v) => change(filter.copyWith(from: v)),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 230,
-                          child: AppDateField(
-                            label: l.reportTo,
-                            value: filter.to,
-                            lastDate: state.today,
-                            onChanged: (v) => change(filter.copyWith(to: v)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                  const SizedBox(height: AppSpacing.xl),
-                  AppDateRangePresetSelector<AttendanceReportType>(
-                    options: [
-                      for (final type in AttendanceReportType.values)
-                        (type, _typeLabel(l, type)),
-                    ],
-                    selected: state.type,
-                    onChanged: (type) =>
-                        bloc.add(AttendanceReportTypeChanged(type)),
-                  ),
-                  const SizedBox(height: AppSpacing.xl),
-                  if (compact)
-                    AppSecondaryButton(
-                      label: l.reportFilter,
-                      icon: Icons.tune,
-                      onPressed: () => _mobileFilters(context, state),
-                    )
-                  else
-                    AppToolbar(filters: _filters(context, state)),
-                  const SizedBox(height: AppSpacing.xl),
-                  if (state.refreshing) ...[
-                    const LinearProgressIndicator(minHeight: 2),
-                    const SizedBox(height: AppSpacing.md),
-                  ],
-                  if (state.failure != null) ...[
-                    AppNotice(
-                      title: l.reportRefreshFailed,
-                      status: AppStatus.warning,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                  ],
-                  if (state.exported) ...[
-                    AppNotice(
-                      title: l.reportExported,
-                      status: AppStatus.success,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                  ],
-                  if (state.exportFailure != null) ...[
-                    AppNotice(
-                      title: l.reportExportFailed,
-                      status: AppStatus.danger,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                  ],
-                  if (data == null)
-                    const AppSkeleton(height: 150)
-                  else if (data.summary.recordedDays == 0)
-                    AppEmptyState(
-                      title: l.reportNoData,
-                      message: l.reportNoData,
-                      actionLabel: l.reportClearFilters,
-                      onAction: () => change(
-                        AttendanceReportFilter(
-                          period: filter.period,
-                          from: filter.from,
-                          to: filter.to,
-                          scope: filter.scope,
-                        ),
-                      ),
-                    )
-                  else ...[
-                    _metricGrid(context, data, state.type),
-                    const SizedBox(height: AppSpacing.xl),
-                    if (filter.to == state.today) ...[
-                      AppNotice(
-                        title: l.reportInProgress,
+            child: filter == null
+                ? (state.failure != null
+                      ? AppErrorState(
+                          message: l.reportRefreshFailed,
+                          onRetry: () =>
+                              bloc.add(const AttendanceReportStarted()),
+                        )
+                      : const AppLoadingState())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AppStatusBadge(
+                        label: filter.scope == AttendanceScope.team
+                            ? l.reportScopeTeam
+                            : l.reportScopeCompany,
                         status: AppStatus.info,
                       ),
+                      const SizedBox(height: AppSpacing.lg),
+                      AppDateRangePresetSelector<AttendanceReportPeriod>(
+                        options: [
+                          for (final p in AttendanceReportPeriod.values)
+                            (p, _periodLabel(l, p)),
+                        ],
+                        selected: filter.period,
+                        onChanged: (p) {
+                          if (p == AttendanceReportPeriod.custom) {
+                            change(filter.copyWith(period: p));
+                          } else {
+                            final preset = AttendanceReportFilter.preset(
+                              p,
+                              state.today!,
+                              filter.scope,
+                            );
+                            change(
+                              preset.copyWith(
+                                employeeIds: filter.employeeIds,
+                                departmentIds: filter.departmentIds,
+                                shiftIds: filter.shiftIds,
+                                locationIds: filter.locationIds,
+                                statuses: filter.statuses,
+                                hasIssues: filter.hasIssues,
+                                hasCorrections: filter.hasCorrections,
+                                group: filter.group,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      if (filter.period == AttendanceReportPeriod.custom) ...[
+                        const SizedBox(height: AppSpacing.md),
+                        Wrap(
+                          spacing: AppSpacing.md,
+                          runSpacing: AppSpacing.md,
+                          children: [
+                            SizedBox(
+                              width: 230,
+                              child: AppDateField(
+                                label: l.reportFrom,
+                                value: filter.from,
+                                lastDate: state.today,
+                                onChanged: (v) =>
+                                    change(filter.copyWith(from: v)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 230,
+                              child: AppDateField(
+                                label: l.reportTo,
+                                value: filter.to,
+                                lastDate: state.today,
+                                onChanged: (v) =>
+                                    change(filter.copyWith(to: v)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                       const SizedBox(height: AppSpacing.xl),
-                    ],
-                    _analytics(
-                      context,
-                      data,
-                      trendPoints,
-                      state.type,
-                      granularity,
-                    ),
-                    if (_hasAttention(data)) ...[
+                      AppDateRangePresetSelector<AttendanceReportType>(
+                        options: [
+                          for (final type in AttendanceReportType.values)
+                            (type, _typeLabel(l, type)),
+                        ],
+                        selected: state.type,
+                        onChanged: (type) =>
+                            bloc.add(AttendanceReportTypeChanged(type)),
+                      ),
                       const SizedBox(height: AppSpacing.xl),
-                      _attention(context, data, filter, change),
-                    ],
-                    const SizedBox(height: AppSpacing.xl),
-                    AppSectionHeader(title: l.reportDetailedRecords),
-                    const SizedBox(height: AppSpacing.md),
-                    if (compact) ...[
-                      for (final row in data.rows)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                          child: AppCard(
-                            variant: AppCardVariant.interactive,
-                            onTap: () => _openRow(context, filter.scope, row),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  row.employeeName,
-                                  style: AppTypography.of(context).cardTitle,
-                                ),
-                                Text(
-                                  row.date == null
-                                      ? row.employeeCode
-                                      : date.date(row.date!),
-                                ),
-                                const SizedBox(height: AppSpacing.sm),
-                                Text(
-                                  _labeled(
-                                    l.reportWorked,
-                                    duration.duration(row.work, l),
-                                  ),
-                                ),
-                                Text(
-                                  _labeled(
-                                    l.reportBreak,
-                                    duration.duration(row.breaks, l),
-                                  ),
-                                ),
-                                if (row.issueDays > 0)
-                                  AppStatusBadge(
-                                    label: l.reportIssuesCount,
-                                    status: AppStatus.warning,
-                                  ),
-                              ],
+                      if (compact)
+                        AppSecondaryButton(
+                          label: l.reportFilter,
+                          icon: Icons.tune,
+                          onPressed: () => _mobileFilters(context, state),
+                        )
+                      else
+                        AppToolbar(filters: _filters(context, state)),
+                      const SizedBox(height: AppSpacing.xl),
+                      if (state.refreshing) ...[
+                        const LinearProgressIndicator(minHeight: 2),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                      if (state.failure != null) ...[
+                        AppNotice(
+                          title: l.reportRefreshFailed,
+                          status: AppStatus.warning,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                      if (state.exported) ...[
+                        AppNotice(
+                          title: l.reportExported,
+                          status: AppStatus.success,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                      if (state.exportFailure != null) ...[
+                        AppNotice(
+                          title: l.reportExportFailed,
+                          status: AppStatus.danger,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                      if (data == null)
+                        const AppCollectionSkeleton(rows: 4, columns: 4)
+                      else if (data.summary.recordedDays == 0)
+                        AppCollectionEmptyState.noResults(
+                          title: l.reportNoData,
+                          message: l.reportNoData,
+                          icon: Icons.insights_outlined,
+                          onClearFilters: () => change(
+                            AttendanceReportFilter(
+                              period: filter.period,
+                              from: filter.from,
+                              to: filter.to,
+                              scope: filter.scope,
                             ),
                           ),
+                        )
+                      else ...[
+                        _metricGrid(context, data, state.type),
+                        const SizedBox(height: AppSpacing.xl),
+                        if (filter.to == state.today) ...[
+                          AppNotice(
+                            title: l.reportInProgress,
+                            status: AppStatus.info,
+                          ),
+                          const SizedBox(height: AppSpacing.xl),
+                        ],
+                        _analytics(
+                          context,
+                          data,
+                          trendPoints,
+                          state.type,
+                          granularity,
                         ),
-                    ] else
-                      _table(context, data),
-                    AppTablePagination(
-                      page: state.page,
-                      pageSize: state.pageSize,
-                      total: data.totalRows,
-                      onPageChanged: (page) =>
-                          bloc.add(AttendanceReportPageChanged(page)),
-                    ),
-                  ],
-                ],
-              ),
+                        if (_hasAttention(data)) ...[
+                          const SizedBox(height: AppSpacing.xl),
+                          _attention(context, data, filter, change),
+                        ],
+                        const SizedBox(height: AppSpacing.xl),
+                        AppSectionHeader(title: l.reportDetailedRecords),
+                        const SizedBox(height: AppSpacing.md),
+                        if (compact) ...[
+                          for (final row in data.rows)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: AppSpacing.sm,
+                              ),
+                              child: AppMobileRecordCard(
+                                title: row.employeeName,
+                                subtitle: row.date == null
+                                    ? row.employeeCode
+                                    : date.date(row.date!),
+                                status: row.issueDays > 0
+                                    ? AppStatus.warning
+                                    : null,
+                                statusLabel: row.issueDays > 0
+                                    ? l.reportIssuesCount
+                                    : null,
+                                onTap: () =>
+                                    _openRow(context, filter.scope, row),
+                                metrics: [
+                                  (
+                                    label: l.reportWorked,
+                                    value: duration.duration(row.work, l),
+                                  ),
+                                  (
+                                    label: l.reportBreak,
+                                    value: duration.duration(row.breaks, l),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ] else
+                          AppCollectionSurface(child: _table(context, data)),
+                        AppPagination(
+                          page: state.page,
+                          pageSize: state.pageSize,
+                          total: data.totalRows,
+                          onPageChanged: (page) =>
+                              bloc.add(AttendanceReportPageChanged(page)),
+                        ),
+                      ],
+                    ],
+                  ),
+          );
+        },
       );
-    },
-  );
 
   Widget _metric(String label, String value) => SizedBox(
     width: 185,
@@ -295,8 +287,6 @@ class AttendanceReportsPage extends StatelessWidget {
       variant: AppMetricVariant.secondary,
     ),
   );
-
-  String _labeled(String label, String value) => '$label: $value';
 
   String _granularityLabel(AppLocalizations l, ReportGranularity granularity) =>
       switch (granularity) {

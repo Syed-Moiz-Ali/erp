@@ -206,6 +206,7 @@
   "empIntern": "متدرّب",
   "empTemporary": "مؤقت",
   "empFilters": "عوامل التصفية",
+  "empSearch": "بحث عن الموظفين",
   "empClear": "مسح التصفية",
   "empApply": "تطبيق",
   "empReset": "إعادة تعيين",
@@ -1028,6 +1029,18 @@
   "hrPermPoliciesView": "عرض سياسات الحضور",
   "hrPermPoliciesViewDesc": "الاطلاع على إعدادات سياسات الحضور.",
   "hrPermPoliciesManage": "إدارة سياسات الحضور",
-  "hrPermPoliciesManageDesc": "إنشاء وتعديل سياسات الحضور."
+  "hrPermPoliciesManageDesc": "إنشاء وتعديل سياسات الحضور.",
+  "workforceFilters": "فلاتر الحضور",
+  "workforceEmptyTitle": "لا يوجد موظفون في النطاق",
+  "workforceEmptyNote": "لا يتوفر موظفون نشطون لهذا التاريخ والنطاق.",
+  "workforceNoResultsTitle": "لا يوجد موظفون مطابقون",
+  "workforceNoResultsNote": "جرّب بحثًا آخر أو امسح الفلاتر.",
+  "correctionEmptyTitle": "لا توجد طلبات تصحيح",
+  "correctionEmptyNote": "ستظهر طلبات التصحيح هنا بعد تقديمها.",
+  "correctionNoResultsTitle": "لا توجد طلبات مطابقة",
+  "correctionNoResultsNote": "جرّب حالة أخرى أو امسح الفلاتر.",
+  "correctionChange": "الحالي ← المطلوب",
+  "correctionReview": "مراجعة",
+  "correctionView": "عرض"
 }
 

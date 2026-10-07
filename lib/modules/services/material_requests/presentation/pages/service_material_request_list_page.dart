@@ -28,6 +28,7 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
     final canCreate = can(AppPermission.serviceMaterialRequestCreate);
     final canEdit = can(AppPermission.serviceMaterialRequestEdit);
     final canCancel = can(AppPermission.serviceMaterialRequestCancel);
+    final canPrint = can(AppPermission.serviceMaterialRequestPrint);
     return BlocBuilder<
       ServiceMaterialRequestListCubit,
       ServiceMaterialRequestListState
@@ -77,11 +78,17 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
               label: (l) => l.servicesMaterialRequestCancel,
               onPressed: () => cancel(item),
             ),
+          if (canPrint)
+            AppMenuAction(
+              label: (l) => l.servicesMaterialRequestPrint,
+              onPressed: () =>
+                  context.go(ServicesRoutes.materialRequestPrint(item.id)),
+            ),
         ];
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesMaterialRequestStorageError,
@@ -89,18 +96,19 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty
-                ? l.servicesMaterialRequestEmpty
-                : l.servicesMaterialRequestNoResults,
-            message: empty
-                ? l.servicesMaterialRequestEmptyMessage
-                : l.servicesMaterialRequestNoResults,
-            actionLabel: empty && canCreate
-                ? l.servicesMaterialRequestAdd
-                : null,
-            onAction: () => context.go(ServicesRoutes.materialRequestsNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesMaterialRequestEmpty,
+                  message: l.servicesMaterialRequestEmptyMessage,
+                  actionLabel: canCreate ? l.servicesMaterialRequestAdd : null,
+                  onAction: () =>
+                      context.go(ServicesRoutes.materialRequestsNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesMaterialRequestNoResults,
+                  message: l.servicesMaterialRequestNoResults,
+                  onClearFilters: cubit.clearFilters,
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -131,7 +139,7 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
                         value: formatMaterialQuantity(item.totalQuantity),
                       ),
                     ],
-                    trailing: canEdit || canCancel
+                    trailing: canEdit || canCancel || canPrint
                         ? AppActionMenu(
                             tooltip: l.actions,
                             actions: actions(item),
@@ -142,84 +150,94 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesMaterialRequestColumnRequest)),
-              DataColumn(label: Text(l.servicesMaterialRequestColumnDate)),
-              DataColumn(
-                label: Text(l.servicesMaterialRequestColumnInspection),
-              ),
-              DataColumn(
-                label: Text(l.servicesMaterialRequestColumnCustomerSite),
-              ),
-              DataColumn(label: Text(l.servicesMaterialRequestColumnPurpose)),
-              DataColumn(label: Text(l.servicesMaterialRequestColumnItems)),
-              DataColumn(label: Text(l.servicesMaterialRequestColumnTotalQty)),
-              DataColumn(label: Text(l.servicesMaterialRequestColumnStatus)),
-              DataColumn(
-                label: Text(l.servicesMaterialRequestColumnPreparedBy),
-              ),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesMaterialRequestColumnRequest)),
+                DataColumn(
+                  label: Text(l.servicesMaterialRequestColumnCustomerSite),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.materialRequest(item.id)),
-                  cells: [
-                    DataCell(
-                      Text(
-                        item.requestNumber,
-                        textDirection: TextDirection.ltr,
-                        style: AppTypography.of(context).label,
-                      ),
-                    ),
-                    DataCell(Text(dates.date(item.requestDate))),
-                    DataCell(Text(item.inspectionNumber)),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.customerName),
-                          if (item.siteSummary.isNotEmpty)
+                DataColumn(label: Text(l.servicesMaterialRequestColumnPurpose)),
+                DataColumn(
+                  label: Text(l.servicesMaterialRequestColumnTotalQty),
+                ),
+                DataColumn(label: Text(l.servicesMaterialRequestColumnStatus)),
+                DataColumn(label: Text(l.servicesMaterialRequestColumnDate)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
+                ),
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.materialRequest(item.id)),
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              item.siteSummary,
+                              item.requestNumber,
+                              textDirection: TextDirection.ltr,
+                              style: AppTypography.of(context).label,
+                            ),
+                            Text(
+                              item.inspectionNumber,
+                              textDirection: TextDirection.ltr,
                               style: AppTypography.of(context).caption,
                             ),
-                        ],
-                      ),
-                    ),
-                    DataCell(Text(item.purposeName ?? '')),
-                    DataCell(Text(numbers.integer(item.itemCount))),
-                    DataCell(Text(formatMaterialQuantity(item.totalQuantity))),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceMaterialRequestStatusLabel(
-                          item.status,
-                          l,
+                          ],
                         ),
-                        status: serviceMaterialRequestStatus(item.status),
-                        isPill: true,
                       ),
-                    ),
-                    DataCell(
-                      Text(
-                        item.preparedByUserId,
-                        textDirection: TextDirection.ltr,
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.customerName),
+                            if (item.siteSummary.isNotEmpty)
+                              Text(
+                                item.siteSummary,
+                                style: AppTypography.of(context).caption,
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(Text(item.purposeName ?? '')),
+                      DataCell(
+                        Text(
+                          formatMaterialQuantity(item.totalQuantity),
+                          style: AppTypography.of(context).tableCell.copyWith(
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceMaterialRequestStatusLabel(
+                            item.status,
+                            l,
+                          ),
+                          status: serviceMaterialRequestStatus(item.status),
+                          isPill: true,
+                        ),
+                      ),
+                      DataCell(Text(dates.date(item.requestDate))),
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -242,22 +260,24 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesMaterialRequestSearch,
               onChanged: cubit.search,
             ),
-            actions: [
-              AppSecondaryButton(
-                label: state.filter.activeCount == 0
-                    ? l.servicesMaterialRequestFilterTitle
-                    : '${l.servicesMaterialRequestFilterTitle} (${numbers.integer(state.filter.activeCount)})',
-                icon: Icons.tune,
-                onPressed: () => _openFilters(context, state),
-              ),
-              if (state.filter.activeCount > 0)
-                AppTextButton(label: l.clear, onPressed: cubit.clearFilters),
-            ],
+            filterButton: AppFilterButton(
+              label: l.servicesMaterialRequestFilterTitle,
+              activeCount: state.filter.activeCount,
+              onPressed: () => _openFilters(context, state),
+            ),
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
+            activeFilters: AppActiveFilters(
+              filters: _activeFilterChips(context, state, cubit, l),
+              onClearAll: cubit.clearFilters,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -275,6 +295,49 @@ class ServiceMaterialRequestListPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<AppActiveFilter> _activeFilterChips(
+    BuildContext context,
+    ServiceMaterialRequestListState state,
+    ServiceMaterialRequestListCubit cubit,
+    AppLocalizations l,
+  ) {
+    final f = state.filter;
+    final dates = AppDateFormatter(Localizations.localeOf(context));
+    final chips = <AppActiveFilter>[];
+    void add(String label, ServiceMaterialRequestFilter next) => chips.add(
+      AppActiveFilter(label: label, onRemove: () => cubit.applyFilter(next)),
+    );
+    if (f.status != null) {
+      add(
+        '${l.servicesMaterialRequestFilterStatus}: ${serviceMaterialRequestStatusLabel(f.status!, l)}',
+        f.copyWith(clearStatus: true),
+      );
+    }
+    if (f.purposeId != null) {
+      String name = '';
+      for (final p in state.purposes) {
+        if (p.id == f.purposeId) name = p.name;
+      }
+      add(
+        '${l.servicesMaterialRequestFilterPurpose}: $name',
+        f.copyWith(clearPurpose: true),
+      );
+    }
+    if (f.dateFrom != null) {
+      add(
+        '${l.servicesMaterialRequestFilterFrom}: ${dates.date(f.dateFrom!)}',
+        f.copyWith(clearDateFrom: true),
+      );
+    }
+    if (f.dateTo != null) {
+      add(
+        '${l.servicesMaterialRequestFilterTo}: ${dates.date(f.dateTo!)}',
+        f.copyWith(clearDateTo: true),
+      );
+    }
+    return chips;
   }
 
   Future<void> _openFilters(

@@ -87,7 +87,7 @@ class ServiceSiteListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesSiteStorageError,
@@ -95,14 +95,18 @@ class ServiceSiteListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty ? l.servicesSiteEmpty : l.servicesSiteNoResults,
-            message: empty
-                ? l.servicesSiteEmptyMessage
-                : l.servicesSiteNoResults,
-            actionLabel: empty && canCreate ? l.servicesSiteAdd : null,
-            onAction: () => context.go(ServicesRoutes.sitesNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesSiteEmpty,
+                  message: l.servicesSiteEmptyMessage,
+                  actionLabel: canCreate ? l.servicesSiteAdd : null,
+                  onAction: () => context.go(ServicesRoutes.sitesNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesSiteNoResults,
+                  message: l.servicesSiteNoResults,
+                  onClearFilters: () => cubit.setStatus(null),
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -140,65 +144,74 @@ class ServiceSiteListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesSiteName)),
-              DataColumn(label: Text(l.servicesSiteCustomer)),
-              DataColumn(label: Text(l.servicesSiteBuildingUnit)),
-              DataColumn(label: Text(l.servicesSiteCity)),
-              DataColumn(label: Text(l.status)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesSiteName)),
+                DataColumn(label: Text(l.servicesSiteCustomer)),
+                DataColumn(label: Text(l.servicesSiteBuildingUnit)),
+                DataColumn(label: Text(l.servicesSiteCity)),
+                DataColumn(label: Text(l.status)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.site(item.id)),
-                  cells: [
-                    DataCell(
-                      Row(
-                        children: [
-                          AppAvatar(name: item.siteName, radius: 16),
-                          const SizedBox(width: AppSpacing.md),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.siteName,
-                                style: AppTypography.of(context).label,
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.site(item.id)),
+                    cells: [
+                      DataCell(
+                        Row(
+                          children: [
+                            AppAvatar(name: item.siteName, radius: 16),
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.siteName,
+                                    style: AppTypography.of(context).label,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    item.siteCode,
+                                    textDirection: TextDirection.ltr,
+                                    style: AppTypography.of(context).caption,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                item.siteCode,
-                                textDirection: TextDirection.ltr,
-                                style: AppTypography.of(context).caption,
-                              ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(item.customerName)),
-                    DataCell(Text(buildingUnit(item))),
-                    DataCell(Text(item.city)),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceStatusLabel(item.status, l),
-                        status: serviceStatus(item.status),
-                        isPill: true,
+                      DataCell(Text(item.customerName)),
+                      DataCell(Text(buildingUnit(item))),
+                      DataCell(Text(item.city)),
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceStatusLabel(item.status, l),
+                          status: serviceStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -220,12 +233,12 @@ class ServiceSiteListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesSiteSearch,
               onChanged: cubit.search,
             ),
-            filters: [
+            secondary: [
               AppFilterBar(
                 children: [
                   AppFilterChip(
@@ -248,6 +261,10 @@ class ServiceSiteListPage extends StatelessWidget {
                 ],
               ),
             ],
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

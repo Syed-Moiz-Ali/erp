@@ -84,18 +84,45 @@ class ServiceSiteDetailPage extends StatelessWidget {
         ].whereType<String>().where((s) => s.isNotEmpty).join(', ');
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: site.siteName,
-            subtitle: site.siteCode,
-            actions: [
-              if (canEdit)
-                AppSecondaryButton(
-                  label: l.edit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () => context.go(ServicesRoutes.siteEdit(site.id)),
+            businessId: site.siteCode,
+            leading: AppRecordGlyph(icon: Icons.location_on_outlined),
+            status: AppDetailStatus(
+              label: serviceStatusLabel(site.status, l),
+              status: serviceStatus(site.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.business_outlined,
+                label: l.servicesSiteCustomer,
+                value: state.customer?.name ?? site.customerId,
+              ),
+              if ([
+                site.city,
+                site.area,
+              ].whereType<String>().any((s) => s.isNotEmpty))
+                AppMetadataItem(
+                  icon: Icons.place_outlined,
+                  label: l.servicesSiteLocation,
+                  value: [
+                    site.city,
+                    site.area,
+                  ].whereType<String>().where((s) => s.isNotEmpty).join(' · '),
                 ),
+            ],
+            primaryAction: canEdit
+                ? AppPrimaryButton(
+                    label: l.edit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () =>
+                        context.go(ServicesRoutes.siteEdit(site.id)),
+                  )
+                : null,
+            overflowActions: [
               if (canDeactivate)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: site.status == ConfigurationStatus.active,
                   label: site.status == ConfigurationStatus.active
                       ? l.servicesSiteDeactivate
                       : l.servicesSiteActivate,
@@ -106,32 +133,6 @@ class ServiceSiteDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Row(
-                  children: [
-                    AppAvatar(name: site.siteName, radius: 28),
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            site.siteName,
-                            style: AppTypography.of(context).sectionTitle,
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          AppStatusBadge(
-                            label: serviceStatusLabel(site.status, l),
-                            status: serviceStatus(site.status),
-                            isPill: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               AppSettingsSection(
                 title: l.servicesSiteCustomer,
                 children: [

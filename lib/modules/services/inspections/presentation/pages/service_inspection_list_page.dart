@@ -83,7 +83,7 @@ class ServiceInspectionListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesInspectionStorageError,
@@ -91,16 +91,18 @@ class ServiceInspectionListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty
-                ? l.servicesInspectionEmpty
-                : l.servicesInspectionNoResults,
-            message: empty
-                ? l.servicesInspectionEmptyMessage
-                : l.servicesInspectionNoResults,
-            actionLabel: empty && canCreate ? l.servicesInspectionAdd : null,
-            onAction: () => context.go(ServicesRoutes.inspectionsNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesInspectionEmpty,
+                  message: l.servicesInspectionEmptyMessage,
+                  actionLabel: canCreate ? l.servicesInspectionAdd : null,
+                  onAction: () => context.go(ServicesRoutes.inspectionsNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesInspectionNoResults,
+                  message: l.servicesInspectionNoResults,
+                  onClearFilters: cubit.clearFilters,
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -139,66 +141,66 @@ class ServiceInspectionListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesInspectionColumnInspection)),
-              DataColumn(label: Text(l.servicesInspectionColumnAssignment)),
-              DataColumn(label: Text(l.servicesInspectionColumnCustomerSite)),
-              DataColumn(label: Text(l.servicesInspectionColumnVisit)),
-              DataColumn(label: Text(l.servicesInspectionColumnTechnician)),
-              DataColumn(label: Text(l.servicesInspectionColumnRootCause)),
-              DataColumn(label: Text(l.servicesInspectionColumnStatus)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesInspectionColumnInspection)),
+                DataColumn(label: Text(l.servicesInspectionColumnAssignment)),
+                DataColumn(label: Text(l.servicesInspectionColumnVisit)),
+                DataColumn(label: Text(l.servicesInspectionColumnTechnician)),
+                DataColumn(label: Text(l.servicesInspectionColumnStatus)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.inspection(item.id)),
-                  cells: [
-                    DataCell(
-                      Text(
-                        item.inspectionNumber,
-                        textDirection: TextDirection.ltr,
-                        style: AppTypography.of(context).label,
-                      ),
-                    ),
-                    DataCell(Text(item.assignmentNumber)),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.customerName),
-                          if (item.siteSummary.isNotEmpty)
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.inspection(item.id)),
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              item.siteSummary,
+                              item.inspectionNumber,
+                              textDirection: TextDirection.ltr,
+                              style: AppTypography.of(context).label,
+                            ),
+                            Text(
+                              item.siteSummary.isEmpty
+                                  ? item.customerName
+                                  : '${item.customerName} · ${item.siteSummary}',
                               style: AppTypography.of(context).caption,
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(visitLabel(item))),
-                    DataCell(Text(item.technicianName ?? '')),
-                    DataCell(Text(item.rootCauseName ?? '')),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceInspectionStatusLabel(item.status, l),
-                        status: serviceInspectionStatus(item.status),
-                        isPill: true,
+                      DataCell(Text(item.assignmentNumber)),
+                      DataCell(Text(visitLabel(item))),
+                      DataCell(Text(item.technicianName ?? '')),
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceInspectionStatusLabel(item.status, l),
+                          status: serviceInspectionStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -220,22 +222,24 @@ class ServiceInspectionListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesInspectionSearch,
               onChanged: cubit.search,
             ),
-            actions: [
-              AppSecondaryButton(
-                label: state.filter.activeCount == 0
-                    ? l.servicesInspectionFilterTitle
-                    : '${l.servicesInspectionFilterTitle} (${numbers.integer(state.filter.activeCount)})',
-                icon: Icons.tune,
-                onPressed: () => _openFilters(context, state),
-              ),
-              if (state.filter.activeCount > 0)
-                AppTextButton(label: l.clear, onPressed: cubit.clearFilters),
-            ],
+            filterButton: AppFilterButton(
+              label: l.servicesInspectionFilterTitle,
+              activeCount: state.filter.activeCount,
+              onPressed: () => _openFilters(context, state),
+            ),
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
+            activeFilters: AppActiveFilters(
+              filters: _activeFilterChips(context, state, cubit, l, dates),
+              onClearAll: cubit.clearFilters,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -259,6 +263,58 @@ class ServiceInspectionListPage extends StatelessWidget {
     DateTime(2000, 1, 1, minutes ~/ 60, minutes % 60),
     use24Hour: true,
   );
+
+  List<AppActiveFilter> _activeFilterChips(
+    BuildContext context,
+    ServiceInspectionListState state,
+    ServiceInspectionListCubit cubit,
+    AppLocalizations l,
+    AppDateFormatter dates,
+  ) {
+    final f = state.filter;
+    String nameOf(List<ServiceMasterRecord> list, String? id) {
+      for (final m in list) {
+        if (m.id == id) return m.name;
+      }
+      return '';
+    }
+
+    final chips = <AppActiveFilter>[];
+    void add(String label, ServiceInspectionFilter next) => chips.add(
+      AppActiveFilter(label: label, onRemove: () => cubit.applyFilter(next)),
+    );
+    if (f.status != null) {
+      add(
+        '${l.servicesInspectionFilterStatus}: ${serviceInspectionStatusLabel(f.status!, l)}',
+        f.copyWith(clearStatus: true),
+      );
+    }
+    if (f.priorityId != null) {
+      add(
+        '${l.servicesInspectionFilterPriority}: ${nameOf(state.priorities, f.priorityId)}',
+        f.copyWith(clearPriority: true),
+      );
+    }
+    if (f.rootCauseId != null) {
+      add(
+        '${l.servicesInspectionFilterRootCause}: ${nameOf(state.rootCauses, f.rootCauseId)}',
+        f.copyWith(clearRootCause: true),
+      );
+    }
+    if (f.visitFrom != null) {
+      add(
+        '${l.servicesInspectionFilterVisitFrom}: ${dates.date(f.visitFrom!)}',
+        f.copyWith(clearVisitFrom: true),
+      );
+    }
+    if (f.visitTo != null) {
+      add(
+        '${l.servicesInspectionFilterVisitTo}: ${dates.date(f.visitTo!)}',
+        f.copyWith(clearVisitTo: true),
+      );
+    }
+    return chips;
+  }
 
   Future<void> _openFilters(
     BuildContext context,

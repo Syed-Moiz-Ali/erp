@@ -216,105 +216,106 @@ class LeaveRequestTable extends StatelessWidget {
     this.showEmployee = true,
     this.canReview = false,
     this.emptyTitle,
+    this.onClearFilters,
   });
   final List<LeaveRequestRow> rows;
   final bool showEmployee, canReview;
   final String? emptyTitle;
+  final VoidCallback? onClearFilters;
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     if (rows.isEmpty) {
-      return AppEmptyState(
-        title: emptyTitle ?? l.leaveRequestsEmpty,
-        message: emptyTitle ?? l.leaveRequestsEmpty,
-      );
+      final label = emptyTitle ?? l.leaveRequestsEmpty;
+      return onClearFilters != null
+          ? AppCollectionEmptyState.noResults(
+              title: label,
+              message: label,
+              onClearFilters: onClearFilters,
+            )
+          : AppCollectionEmptyState.noData(title: label, message: label);
     }
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact =
             AppBreakpoints.classify(constraints.maxWidth) == AppSize.compact;
         if (compact) return _cards(context);
-        return AppCard(
-          padding: EdgeInsets.zero,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.card),
-            child: AppDataTable(
-              columns: [
-                if (showEmployee) DataColumn(label: Text(l.leaveEmployee)),
-                DataColumn(label: Text(l.leaveType)),
-                DataColumn(label: Text(l.leaveFrom)),
-                DataColumn(label: Text(l.leaveTo)),
-                DataColumn(label: Text(l.days)),
-                DataColumn(label: Text(l.leaveStatusField)),
-                DataColumn(label: Text(l.leaveSubmittedOn)),
-                DataColumn(label: Text(l.cfgActions)),
-              ],
-              rows: [
-                for (final row in rows)
-                  DataRow(
-                    onSelectChanged: (_) => context.push(
-                      AppRoutes.leaveRequestDetails(row.request.id),
-                    ),
-                    cells: [
-                      if (showEmployee)
-                        DataCell(
-                          Text(
-                            row.employeeName,
-                            style: AppTypography.of(
-                              context,
-                            ).body.copyWith(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      DataCell(Text(row.request.typeSnapshot.name)),
-                      DataCell(
-                        Text(configurationDate(context, row.request.startDate)),
-                      ),
-                      DataCell(
-                        Text(configurationDate(context, row.request.endDate)),
-                      ),
+        return AppCollectionSurface(
+          child: AppDataTable(
+            columns: [
+              if (showEmployee) DataColumn(label: Text(l.leaveEmployee)),
+              DataColumn(label: Text(l.leaveType)),
+              DataColumn(label: Text(l.leaveDateRange)),
+              DataColumn(label: Text(l.days)),
+              DataColumn(label: Text(l.leaveStatusField)),
+              DataColumn(label: Text(l.leaveSubmittedOn)),
+              DataColumn(label: Text(l.cfgActions)),
+            ],
+            rows: [
+              for (final row in rows)
+                DataRow(
+                  onSelectChanged: (_) => context.push(
+                    AppRoutes.leaveRequestDetails(row.request.id),
+                  ),
+                  cells: [
+                    if (showEmployee)
                       DataCell(
                         Text(
-                          configurationNumber(
+                          row.employeeName,
+                          style: AppTypography.of(
                             context,
-                            row.request.requestedDays,
+                          ).body.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    DataCell(Text(row.request.typeSnapshot.name)),
+                    DataCell(
+                      Text(
+                        leaveDateRange(
+                          context,
+                          row.request.startDate,
+                          row.request.endDate,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        configurationNumber(context, row.request.requestedDays),
+                      ),
+                    ),
+                    DataCell(LeaveStatusBadge(status: row.request.status)),
+                    DataCell(
+                      Text(
+                        row.request.submittedAt == null
+                            ? '—'
+                            : configurationDate(
+                                context,
+                                row.request.submittedAt!,
+                              ),
+                      ),
+                    ),
+                    DataCell(
+                      AppActionMenu(
+                        tooltip: l.cfgActions,
+                        actions: [
+                          AppMenuAction(
+                            label: (l) => l.leaveViewDetails,
+                            onPressed: () => context.push(
+                              AppRoutes.leaveRequestDetails(row.request.id),
+                            ),
                           ),
-                        ),
-                      ),
-                      DataCell(LeaveStatusBadge(status: row.request.status)),
-                      DataCell(
-                        Text(
-                          row.request.submittedAt == null
-                              ? '—'
-                              : configurationDate(
-                                  context,
-                                  row.request.submittedAt!,
-                                ),
-                        ),
-                      ),
-                      DataCell(
-                        AppActionMenu(
-                          tooltip: l.cfgActions,
-                          actions: [
+                          if (canReview && row.request.isPending)
                             AppMenuAction(
-                              label: (l) => l.leaveViewDetails,
+                              label: (l) => l.leaveReviewRequest,
                               onPressed: () => context.push(
                                 AppRoutes.leaveRequestDetails(row.request.id),
                               ),
                             ),
-                            if (canReview && row.request.isPending)
-                              AppMenuAction(
-                                label: (l) => l.leaveReviewRequest,
-                                onPressed: () => context.push(
-                                  AppRoutes.leaveRequestDetails(row.request.id),
-                                ),
-                              ),
-                          ],
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-              ],
-            ),
+                    ),
+                  ],
+                ),
+            ],
           ),
         );
       },
@@ -329,63 +330,49 @@ class LeaveRequestTable extends StatelessWidget {
         for (final row in rows)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: AppCard(
-              variant: AppCardVariant.interactive,
+            child: AppMobileRecordCard(
+              title: showEmployee
+                  ? row.employeeName
+                  : row.request.typeSnapshot.name,
+              subtitle: showEmployee ? row.request.typeSnapshot.name : null,
+              leading: showEmployee ? AppAvatar(name: row.employeeName) : null,
+              status: leaveStatusAppStatus(row.request.status),
+              statusLabel: leaveRequestStatusLabel(row.request.status, l),
               onTap: () =>
                   context.push(AppRoutes.leaveRequestDetails(row.request.id)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      if (showEmployee) ...[
-                        AppAvatar(name: row.employeeName),
-                        const SizedBox(width: AppSpacing.md),
-                      ],
-                      Expanded(
-                        child: Text(
-                          showEmployee
-                              ? row.employeeName
-                              : row.request.typeSnapshot.name,
-                          style: AppTypography.of(context).cardTitle,
-                        ),
-                      ),
-                      LeaveStatusBadge(status: row.request.status),
-                    ],
+              metrics: [
+                (
+                  label: l.leaveDateRange,
+                  value: leaveDateRange(
+                    context,
+                    row.request.startDate,
+                    row.request.endDate,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    showEmployee
-                        ? row.request.typeSnapshot.name
-                        : '${row.request.requestedDays} ${l.days}',
-                    style: AppTypography.of(
-                      context,
-                    ).bodySmall.copyWith(color: AppColors.textSecondary),
+                ),
+                (
+                  label: l.days,
+                  value: configurationNumber(
+                    context,
+                    row.request.requestedDays,
                   ),
-                  Text(
-                    leavePeriodDays(
-                      context,
-                      row.request.startDate,
-                      row.request.endDate,
-                      row.request.requestedDays,
+                ),
+              ],
+              trailing: AppActionMenu(
+                tooltip: l.cfgActions,
+                actions: [
+                  AppMenuAction(
+                    label: (l) => l.leaveViewDetails,
+                    onPressed: () => context.push(
+                      AppRoutes.leaveRequestDetails(row.request.id),
                     ),
-                    style: AppTypography.of(
-                      context,
-                    ).caption.copyWith(color: AppColors.textMuted),
                   ),
-                  if (canReview && row.request.isPending) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: AppSecondaryButton(
-                        label: l.leaveReviewRequest,
-                        size: AppButtonSize.small,
-                        onPressed: () => context.push(
-                          AppRoutes.leaveRequestDetails(row.request.id),
-                        ),
+                  if (canReview && row.request.isPending)
+                    AppMenuAction(
+                      label: (l) => l.leaveReviewRequest,
+                      onPressed: () => context.push(
+                        AppRoutes.leaveRequestDetails(row.request.id),
                       ),
                     ),
-                  ],
                 ],
               ),
             ),

@@ -27,18 +27,42 @@ class AppDetailField extends StatelessWidget {
   );
 }
 
+/// Responsive read-only information grid (UI-6 detail language).
+///
+/// Mobile 1 column, tablet 2, desktop up to 4 depending on available width.
+/// Never a hardcoded column count and never a disabled input.
 class AppDetailsGrid extends StatelessWidget {
   const AppDetailsGrid({super.key, required this.fields, this.compact = false});
   final List<AppDetailField> fields;
+
+  /// Tighter cap (3 columns) for dense contexts such as confirmation sheets.
   final bool compact;
   @override
-  Widget build(BuildContext context) => AppResponsiveGrid(
-    minItemWidth: compact
-        ? AppDimensions.compactDetailField
-        : AppDimensions.detailField,
-    maxColumns: 2,
-    children: fields,
-  );
+  Widget build(BuildContext context) {
+    if (fields.isEmpty) return const SizedBox.shrink();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = AppBreakpoints.classify(constraints.maxWidth);
+        final desired = switch (size) {
+          AppSize.compact => 1,
+          AppSize.medium => 2,
+          AppSize.expanded => constraints.maxWidth >= 1100 ? 3 : 2,
+          AppSize.large => 4,
+        };
+        final cap = compact ? 3 : 4;
+        final columns = desired > cap ? cap : desired;
+        final width =
+            (constraints.maxWidth - AppSpacing.lg * (columns - 1)) / columns;
+        return Wrap(
+          spacing: AppSpacing.lg,
+          runSpacing: AppSpacing.lg,
+          children: [
+            for (final field in fields) SizedBox(width: width, child: field),
+          ],
+        );
+      },
+    );
+  }
 }
 
 /// A 12-column responsive form grid.

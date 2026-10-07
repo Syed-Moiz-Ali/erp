@@ -128,10 +128,46 @@ class ServiceInspectionDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: i.inspectionNumber,
-            subtitle: view.customerName,
-            actions: [
+            description: view.customerName,
+            leading: AppRecordGlyph(
+              icon: Icons.fact_check_outlined,
+              status: serviceInspectionStatus(i.status),
+            ),
+            status: AppDetailStatus(
+              label: serviceInspectionStatusLabel(i.status, l),
+              status: serviceInspectionStatus(i.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.event_outlined,
+                label: l.servicesInspectionVisitDate,
+                value: [
+                  dates.date(i.visitDate),
+                  if (timeLabel() != null) timeLabel()!,
+                ].join(' · '),
+              ),
+              if (view.technicianName != null)
+                AppMetadataItem(
+                  icon: Icons.person_outline,
+                  label: l.servicesInspectionTechnician,
+                  value: view.technicianName,
+                ),
+              if (view.priorityName.isNotEmpty)
+                AppMetadataItem(
+                  icon: Icons.flag_outlined,
+                  label: l.servicesEnquiryPriority,
+                  value: view.priorityName,
+                ),
+            ],
+            primaryAction: canComplete && i.isPending
+                ? AppPrimaryButton(
+                    label: l.servicesInspectionComplete,
+                    onPressed: complete,
+                  )
+                : null,
+            secondaryActions: [
               if (canEdit && i.isPending)
                 AppSecondaryButton(
                   label: l.servicesInspectionEdit,
@@ -139,13 +175,11 @@ class ServiceInspectionDetailPage extends StatelessWidget {
                   onPressed: () =>
                       context.go(ServicesRoutes.inspectionEdit(i.id)),
                 ),
-              if (canComplete && i.isPending)
-                AppPrimaryButton(
-                  label: l.servicesInspectionComplete,
-                  onPressed: complete,
-                ),
+            ],
+            overflowActions: [
               if (canCancel && i.isPending)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: true,
                   label: l.servicesInspectionCancel,
                   onPressed: cancel,
                 ),
@@ -154,43 +188,6 @@ class ServiceInspectionDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.sm,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: serviceInspectionStatusLabel(i.status, l),
-                      status: serviceInspectionStatus(i.status),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: [
-                        dates.date(i.visitDate),
-                        if (timeLabel() != null) timeLabel()!,
-                      ].join(' · '),
-                      icon: Icons.event_outlined,
-                      status: AppStatus.neutral,
-                      isPill: true,
-                    ),
-                    if (view.technicianName != null)
-                      AppStatusBadge(
-                        label: view.technicianName!,
-                        icon: Icons.person_outline,
-                        status: AppStatus.neutral,
-                        isPill: true,
-                      ),
-                    if (view.priorityName.isNotEmpty)
-                      AppStatusBadge(
-                        label: view.priorityName,
-                        status: servicePriorityStatus(view.priorityRank),
-                        isPill: true,
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               if (workflow != null) ...[
                 ServiceWorkflowSection(
                   repository: workflow!,
@@ -257,17 +254,30 @@ class ServiceInspectionDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              AppFormSection(
+              AppInfoSection(
                 title: l.servicesInspectionDetailAssessment,
-                child: AppDetailsGrid(
-                  fields: [
-                    AppDetailField(
-                      label: l.servicesInspectionRootCause,
-                      value: view.rootCauseName ?? '',
+                surface: AppInfoSectionSurface.bordered,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      l.servicesInspectionRootCause,
+                      style: AppTypography.of(context).metadata,
                     ),
-                    AppDetailField(
-                      label: l.servicesInspectionChargeResponsibility,
-                      value: view.chargeResponsibilityName ?? '',
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      AppDetailValue.of(context, view.rootCauseName),
+                      style: AppTypography.of(context).cardTitle,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Text(
+                      l.servicesInspectionChargeResponsibility,
+                      style: AppTypography.of(context).metadata,
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      AppDetailValue.of(context, view.chargeResponsibilityName),
+                      style: AppTypography.of(context).body,
                     ),
                   ],
                 ),

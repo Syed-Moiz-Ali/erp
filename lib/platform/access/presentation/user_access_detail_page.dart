@@ -75,29 +75,33 @@ class _UserAccessBody extends StatelessWidget {
       builder: (context, state) {
         final user = state.user;
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: user?.displayName ?? l.usersAccessTitle,
-            subtitle: user == null
+            description: user == null
                 ? l.usersAccessSubtitle
                 : [
                     if (user.employeeCode != null) user.employeeCode!,
                     if (user.designationName != null) user.designationName!,
                     if (user.departmentName != null) user.departmentName!,
                   ].join(' · '),
-            actions: [
-              if (cubit.canManage) ...[
+            leading: user == null
+                ? null
+                : AppAvatar(name: user.displayName, radius: 24),
+            primaryAction: cubit.canManage
+                ? AppPrimaryButton(
+                    label: l.accessSaveChanges,
+                    loading: state.saving,
+                    onPressed: state.dirty && !state.saving
+                        ? () => _confirmSave(context, cubit)
+                        : null,
+                  )
+                : null,
+            secondaryActions: [
+              if (cubit.canManage)
                 AppSecondaryButton(
                   label: l.accessResetChanges,
                   onPressed: state.dirty && !state.saving ? cubit.reset : null,
                 ),
-                AppPrimaryButton(
-                  label: l.accessSaveChanges,
-                  loading: state.saving,
-                  onPressed: state.dirty && !state.saving
-                      ? () => _confirmSave(context, cubit)
-                      : null,
-                ),
-              ],
             ],
           ),
           child: Column(

@@ -141,6 +141,9 @@ class HrDashboardContributor implements DashboardContributor {
             DashboardAlertKind.pendingCorrections =>
               l.dashboardCorrectionsAlertDetail,
           },
+          categoryLabel: alert.kind == DashboardAlertKind.lateArrivals
+              ? l.shellAttendance
+              : l.dashboardCorrections,
           icon: alert.kind == DashboardAlertKind.lateArrivals
               ? Icons.schedule
               : Icons.rule_outlined,
@@ -188,7 +191,8 @@ class HrDashboardContributor implements DashboardContributor {
             id: 'hr-activity-${item.kind.name}-${item.timestamp.microsecondsSinceEpoch}',
             moduleId: moduleId,
             title: DashboardPresentation.activity(l, item),
-            description: l.navSectionHr,
+            description: '',
+            moduleLabel: l.navSectionHr,
             icon: switch (item.kind) {
               DashboardActivityKind.checkedIn => Icons.login,
               DashboardActivityKind.breakStarted => Icons.coffee_outlined,

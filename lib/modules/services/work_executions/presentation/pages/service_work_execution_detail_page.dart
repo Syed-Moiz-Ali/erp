@@ -113,10 +113,44 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: execution.executionNumber,
-            subtitle: view.customerName,
-            actions: [
+            description: view.customerName,
+            leading: AppRecordGlyph(
+              icon: Icons.handyman_outlined,
+              status: serviceWorkExecutionStatus(execution.status),
+            ),
+            status: AppDetailStatus(
+              label: serviceWorkExecutionStatusLabel(execution.status, l),
+              status: serviceWorkExecutionStatus(execution.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.event_outlined,
+                label: l.servicesWorkExecutionDate,
+                value: dates.date(execution.executionDate),
+              ),
+              if (view.priorityName.isNotEmpty)
+                AppMetadataItem(
+                  icon: Icons.flag_outlined,
+                  label: l.servicesWorkExecutionPriority,
+                  value: view.priorityName,
+                ),
+              if ((view.technicianName ?? '').isNotEmpty)
+                AppMetadataItem(
+                  icon: Icons.person_outline,
+                  label: l.servicesWorkExecutionTechnician,
+                  value: view.technicianName,
+                ),
+            ],
+            primaryAction: canComplete && open
+                ? AppPrimaryButton(
+                    label: l.servicesWorkExecutionComplete,
+                    icon: Icons.task_alt_outlined,
+                    onPressed: execution.allLinesComplete ? complete : null,
+                  )
+                : null,
+            secondaryActions: [
               if (canEdit && open)
                 AppSecondaryButton(
                   label: l.servicesWorkExecutionEdit,
@@ -125,14 +159,11 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
                     ServicesRoutes.workExecutionEdit(execution.id),
                   ),
                 ),
-              if (canComplete && open)
-                AppPrimaryButton(
-                  label: l.servicesWorkExecutionComplete,
-                  icon: Icons.task_alt_outlined,
-                  onPressed: execution.allLinesComplete ? complete : null,
-                ),
+            ],
+            overflowActions: [
               if (canCancel && !execution.isCompleted && !execution.isCancelled)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: true,
                   label: l.servicesWorkExecutionCancel,
                   onPressed: cancel,
                 ),
@@ -141,30 +172,6 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.sm,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: serviceWorkExecutionStatusLabel(
-                        execution.status,
-                        l,
-                      ),
-                      status: serviceWorkExecutionStatus(execution.status),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: dates.date(execution.executionDate),
-                      icon: Icons.event_outlined,
-                      status: AppStatus.neutral,
-                      isPill: true,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               if (workflow != null) ...[
                 ServiceWorkflowSection(
                   repository: workflow!,
@@ -254,15 +261,18 @@ class ServiceWorkExecutionDetailPage extends StatelessWidget {
                     ),
                     AppDetailField(
                       label: l.servicesWorkExecutionRootCause,
-                      value: view.rootCauseName ?? '',
+                      value: AppDetailValue.of(context, view.rootCauseName),
                     ),
                     AppDetailField(
                       label: l.servicesWorkExecutionChargeResponsibility,
-                      value: view.chargeResponsibilityName ?? '',
+                      value: AppDetailValue.of(
+                        context,
+                        view.chargeResponsibilityName,
+                      ),
                     ),
                     AppDetailField(
                       label: l.servicesWorkExecutionTechnician,
-                      value: view.technicianName ?? '',
+                      value: AppDetailValue.of(context, view.technicianName),
                     ),
                   ],
                 ),
@@ -585,8 +595,9 @@ class _WorkLineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final state = line.state;
-    return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+    final active = line.isStarted && !line.isFinished;
+    return AppDetailPanel(
+      accent: active ? AppStatus.info : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -619,15 +630,19 @@ class _WorkLineCard extends StatelessWidget {
                 ),
               AppDetailField(
                 label: l.servicesWorkExecutionStartTime,
-                value: line.startedAtUtc == null
-                    ? ''
-                    : times.time(line.startedAtUtc!),
+                value: AppDetailValue.of(
+                  context,
+                  line.startedAtUtc == null
+                      ? null
+                      : times.time(line.startedAtUtc!),
+                ),
               ),
               AppDetailField(
                 label: l.servicesWorkExecutionEndTime,
-                value: line.endedAtUtc == null
-                    ? ''
-                    : times.time(line.endedAtUtc!),
+                value: AppDetailValue.of(
+                  context,
+                  line.endedAtUtc == null ? null : times.time(line.endedAtUtc!),
+                ),
               ),
             ],
           ),

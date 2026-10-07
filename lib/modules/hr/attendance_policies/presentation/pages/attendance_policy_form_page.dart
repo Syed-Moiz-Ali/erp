@@ -92,6 +92,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                 child: Column(
                   children: [
                     AppFormGrid(
+                      spans: [AppFormSpan.half, AppFormSpan.full],
                       children: [
                         AppTextField(
                           label: l.cfgName,
@@ -104,13 +105,16 @@ class AttendancePolicyFormPage extends StatelessWidget {
                           label: l.cfgDescription,
                           initialValue: d.description,
                           enabled: !s.saving,
+                          maxLines: 3,
+                          minLines: 2,
                           errorText: error('description'),
                           onChanged: (v) =>
                               change((d) => d.copyWith(description: v)),
                         ),
                       ],
                     ),
-                    AppSwitchField(
+                    const SizedBox(height: AppSpacing.md),
+                    AppBooleanSettingRow(
                       label: l.cfgRemote,
                       value: d.allowRemoteAttendance,
                       onChanged: s.saving
@@ -119,7 +123,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                               (d) => d.copyWith(allowRemoteAttendance: v),
                             ),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgCorrections,
                       value: d.allowEmployeeCorrectionRequest,
                       onChanged: s.saving
@@ -138,18 +142,17 @@ class AttendancePolicyFormPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgRequireLocation,
                       value: d.requireLocation,
+                      errorText: error('requireLocation'),
                       onChanged: s.saving
                           ? null
                           : (v) =>
                                 change((d) => d.copyWith(requireLocation: v)),
                     ),
-                    if (error('requireLocation') != null)
-                      Text(error('requireLocation')!),
                     if (d.requireLocation) ...[
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgOutside,
                         value: d.allowOutsideLocation,
                         onChanged: s.saving
@@ -158,7 +161,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                                 (d) => d.copyWith(allowOutsideLocation: v),
                               ),
                       ),
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgLocationIn,
                         value: d.requireLocationOnPunchIn,
                         onChanged: s.saving
@@ -167,7 +170,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                                 (d) => d.copyWith(requireLocationOnPunchIn: v),
                               ),
                       ),
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgLocationOut,
                         value: d.requireLocationOnPunchOut,
                         onChanged: s.saving
@@ -176,7 +179,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                                 (d) => d.copyWith(requireLocationOnPunchOut: v),
                               ),
                       ),
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgRequireAccuracy,
                         value: d.requireLocationAccuracy,
                         onChanged: s.saving
@@ -208,7 +211,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                 title: l.cfgBreakRules,
                 child: Column(
                   children: [
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgTrackBreaks,
                       value: d.trackBreaks,
                       onChanged: s.saving
@@ -216,7 +219,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                           : (v) => change((d) => d.copyWith(trackBreaks: v)),
                     ),
                     if (d.trackBreaks) ...[
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgMultipleBreaks,
                         value: d.allowMultipleBreaks,
                         onChanged: s.saving
@@ -225,7 +228,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                                 (d) => d.copyWith(allowMultipleBreaks: v),
                               ),
                       ),
-                      AppSwitchField(
+                      AppBooleanSettingRow(
                         label: l.cfgOutDuringBreak,
                         value: d.allowPunchOutDuringBreak,
                         onChanged: s.saving
@@ -235,7 +238,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                               ),
                       ),
                       if (d.requireLocation)
-                        AppSwitchField(
+                        AppBooleanSettingRow(
                           label: l.cfgLocationBreak,
                           value: d.requireLocationOnBreak,
                           onChanged: s.saving
@@ -253,7 +256,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                 title: l.cfgTimingRules,
                 child: Column(
                   children: [
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgEarlyIn,
                       value: d.allowEarlyPunchIn,
                       onChanged: s.saving
@@ -275,7 +278,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgLateIn,
                       value: d.allowLatePunchIn,
                       onChanged: s.saving
@@ -283,7 +286,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
                           : (v) =>
                                 change((d) => d.copyWith(allowLatePunchIn: v)),
                     ),
-                    AppSwitchField(
+                    AppBooleanSettingRow(
                       label: l.cfgEarlyOut,
                       value: d.allowEarlyPunchOut,
                       onChanged: s.saving
@@ -314,7 +317,7 @@ class AttendancePolicyFormPage extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.cfgStatus,
-                child: AppSwitchField(
+                child: AppBooleanSettingRow(
                   label: l.cfgActive,
                   value: d.status == ConfigurationStatus.active,
                   onChanged: s.saving

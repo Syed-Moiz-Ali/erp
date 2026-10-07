@@ -57,7 +57,7 @@ class UniversalDashboardCoordinator {
         return order != 0 ? order : a.id.compareTo(b.id);
       });
     final results = <DashboardContribution>[];
-    var partialFailure = false;
+    final failedModules = <String>{};
     for (final contributor in ordered) {
       bool visible;
       try {
@@ -69,14 +69,15 @@ class UniversalDashboardCoordinator {
       try {
         results.add(await contributor.load(context));
       } catch (_) {
-        partialFailure = true;
+        failedModules.add(contributor.moduleId);
       }
     }
     return UniversalDashboardSnapshot(
       contributions: results,
       generatedAt: (clock ?? const SystemAppClock()).now(),
       today: businessToday?.call(context.auth),
-      partialFailure: partialFailure,
+      partialFailure: failedModules.isNotEmpty,
+      failedModuleIds: failedModules,
     );
   }
 }

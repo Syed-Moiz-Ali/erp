@@ -12,6 +12,10 @@ abstract final class AppElevation {
   // Semantic shadow levels
   static const List<BoxShadow> none = [];
 
+  /// The three sanctioned levels: [none], [subtle], [overlayShadow].
+  /// Heavy shadows are only for dialogs, menus and floating overlays.
+  static const List<BoxShadow> overlayShadow = dialog;
+
   static const List<BoxShadow> xs = [
     BoxShadow(color: Color(0x0614111E), blurRadius: 4, offset: Offset(0, 1)),
   ];

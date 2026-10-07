@@ -4,6 +4,9 @@ import 'package:modular_erp/design_system/design_system.dart';
 
 enum AppUserMenuAction { profile, password, language, logout }
 
+/// Shell component vocabulary alias for the account/profile control.
+typedef AppProfileMenu = AppUserMenu;
+
 class AppUserMenu extends StatelessWidget {
   const AppUserMenu({
     super.key,

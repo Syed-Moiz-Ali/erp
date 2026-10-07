@@ -23,17 +23,25 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surface = isDark ? AppColors.darkSurface : AppColors.surface;
+    final surfaceSubtle = isDark
+        ? AppColors.darkSurfaceMuted
+        : AppColors.surfaceSubtle;
+    final borderDefault = isDark
+        ? AppColors.darkBorder
+        : AppColors.borderDefault;
+    final borderSubtle = isDark
+        ? AppColors.darkBorderSubtle
+        : AppColors.borderSubtle;
+    final borderStrong = isDark
+        ? AppColors.darkBorderStrong
+        : AppColors.borderStrong;
     final (bg, border) = switch (variant) {
-      AppCardVariant.surface => (AppColors.surface, AppColors.borderDefault),
-      AppCardVariant.interactive => (
-        AppColors.surface,
-        AppColors.borderDefault,
-      ),
-      AppCardVariant.subtle => (
-        AppColors.surfaceSubtle,
-        AppColors.borderSubtle,
-      ),
-      AppCardVariant.bordered => (AppColors.surface, AppColors.borderStrong),
+      AppCardVariant.surface => (surface, borderDefault),
+      AppCardVariant.interactive => (surface, borderDefault),
+      AppCardVariant.subtle => (surfaceSubtle, borderSubtle),
+      AppCardVariant.bordered => (surface, borderStrong),
     };
 
     final content = SizedBox(
@@ -51,8 +59,11 @@ class AppCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
-          hoverColor: AppColors.surfaceHover,
-          splashColor: AppColors.brandPrimary.withValues(alpha: .08),
+          hoverColor: isDark
+              ? AppColors.darkSurfaceHover
+              : AppColors.surfaceHover,
+          splashColor: (isDark ? AppColors.darkBrand : AppColors.brandPrimary)
+              .withValues(alpha: .08),
           child: content,
         ),
       );

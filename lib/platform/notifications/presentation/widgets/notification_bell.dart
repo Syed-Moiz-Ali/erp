@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modular_erp/design_system/design_system.dart';
-import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/notifications/presentation/bloc/notification_badge_cubit.dart';
 
 /// Bell with a bounded unread badge. Renders quietly when no cubit is wired
@@ -50,20 +49,6 @@ class _NotificationBellState extends State<NotificationBell> {
   }
 
   @override
-  Widget build(BuildContext context) => Stack(
-    alignment: AlignmentDirectional.center,
-    children: [
-      AppIconButton(
-        icon: Icons.notifications_none_outlined,
-        tooltip: context.l10n.shellNotifications,
-        onPressed: widget.onPressed,
-      ),
-      if (_count > 0)
-        PositionedDirectional(
-          top: 4,
-          end: 4,
-          child: IgnorePointer(child: AppCountBadge(count: _count)),
-        ),
-    ],
-  );
+  Widget build(BuildContext context) =>
+      AppNotificationButton(onPressed: widget.onPressed, unreadCount: _count);
 }

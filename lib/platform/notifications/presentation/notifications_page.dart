@@ -41,10 +41,10 @@ class NotificationsPage extends StatelessWidget {
                   ),
               ],
             ),
-            child: state.loading
-                ? const AppSkeleton(height: 200)
+            child: state.loading && state.items.isEmpty
+                ? const AppCollectionSkeleton(mobile: true, rows: 4)
                 : state.items.isEmpty
-                ? AppEmptyState(
+                ? AppCollectionEmptyState.noData(
                     title: l.notificationsNoItems,
                     message: l.notificationsNoItemsMessage,
                     icon: Icons.notifications_none_outlined,

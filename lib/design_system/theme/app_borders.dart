@@ -50,6 +50,9 @@ abstract final class AppBorders {
     width: widthMedium,
   );
 
+  /// Divider line shared by tables, lists, menus and sections.
+  static const BorderSide divider = subtle;
+
   /// Error state border for validation failures.
   static const BorderSide error = BorderSide(
     color: AppColors.borderError,

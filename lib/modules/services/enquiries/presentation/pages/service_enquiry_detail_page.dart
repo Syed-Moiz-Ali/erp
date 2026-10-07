@@ -111,18 +111,41 @@ class ServiceEnquiryDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: e.enquiryNumber,
-            subtitle: snapshot.customerName,
-            actions: [
-              if (canEdit && e.isOpen)
-                AppSecondaryButton(
-                  label: l.servicesEnquiryEdit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () => context.go(ServicesRoutes.enquiryEdit(e.id)),
-                ),
+            description: snapshot.customerName,
+            leading: AppRecordGlyph(
+              icon: Icons.report_problem_outlined,
+              status: serviceEnquiryStatus(e.status),
+            ),
+            status: AppDetailStatus(
+              label: serviceEnquiryStatusLabel(e.status, l),
+              status: serviceEnquiryStatus(e.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.flag_outlined,
+                label: l.servicesEnquiryPriority,
+                value: detail.priorityName,
+              ),
+              AppMetadataItem(
+                icon: Icons.event_outlined,
+                label: l.servicesEnquiryCreatedAt,
+                value: dates.date(e.createdAt),
+              ),
+            ],
+            primaryAction: canEdit && e.isOpen
+                ? AppPrimaryButton(
+                    label: l.servicesEnquiryEdit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () =>
+                        context.go(ServicesRoutes.enquiryEdit(e.id)),
+                  )
+                : null,
+            overflowActions: [
               if (canCancel && e.isOpen)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: true,
                   label: l.servicesEnquiryCancel,
                   onPressed: cancel,
                 ),
@@ -131,29 +154,28 @@ class ServiceEnquiryDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.sm,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: serviceEnquiryStatusLabel(e.status, l),
-                      status: serviceEnquiryStatus(e.status),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: detail.priorityName,
-                      status: servicePriorityStatus(detail.priorityRank),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: e.enquiryNumber,
-                      status: AppStatus.neutral,
-                      isPill: true,
-                    ),
-                  ],
-                ),
+              AppContextBanner(
+                title: l.servicesEnquiryDetailCustomerSection,
+                icon: Icons.person_outline,
+                items: [
+                  AppInfoItem(
+                    label: l.servicesEnquiryCustomerName,
+                    value: snapshot.customerName,
+                  ),
+                  AppInfoItem(
+                    label: l.servicesEnquiryCustomerMobile,
+                    value: snapshot.customerMobile,
+                    identifier: true,
+                  ),
+                  AppInfoItem(
+                    label: l.servicesEnquirySite,
+                    value: snapshot.siteName,
+                  ),
+                  AppInfoItem(
+                    label: l.servicesEnquiryUnit,
+                    value: snapshot.unitNumber,
+                  ),
+                ],
               ),
               const SizedBox(height: AppSpacing.xxl),
               if (workflow != null) ...[

@@ -78,7 +78,7 @@ class ServiceTeamListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesTeamStorageError,
@@ -86,14 +86,18 @@ class ServiceTeamListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty ? l.servicesTeamEmpty : l.servicesTeamNoResults,
-            message: empty
-                ? l.servicesTeamEmptyMessage
-                : l.servicesTeamNoResults,
-            actionLabel: empty && canManage ? l.servicesTeamAdd : null,
-            onAction: () => context.go(ServicesRoutes.teamsNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesTeamEmpty,
+                  message: l.servicesTeamEmptyMessage,
+                  actionLabel: canManage ? l.servicesTeamAdd : null,
+                  onAction: () => context.go(ServicesRoutes.teamsNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesTeamNoResults,
+                  message: l.servicesTeamNoResults,
+                  onClearFilters: () => cubit.setStatus(null),
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -127,63 +131,79 @@ class ServiceTeamListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesTeamName)),
-              DataColumn(label: Text(l.servicesTeamLead)),
-              DataColumn(label: Text(l.servicesTeamMembers)),
-              DataColumn(label: Text(l.status)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesTeamName)),
+                DataColumn(label: Text(l.servicesTeamLead)),
+                DataColumn(label: Text(l.servicesTeamMembers)),
+                DataColumn(label: Text(l.status)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.team(item.id)),
-                  cells: [
-                    DataCell(
-                      Row(
-                        children: [
-                          AppAvatar(name: item.name, radius: 16),
-                          const SizedBox(width: AppSpacing.md),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.name,
-                                style: AppTypography.of(context).label,
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.team(item.id)),
+                    cells: [
+                      DataCell(
+                        Row(
+                          children: [
+                            AppAvatar(name: item.name, radius: 16),
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: AppTypography.of(context).label,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    item.teamCode,
+                                    textDirection: TextDirection.ltr,
+                                    style: AppTypography.of(context).caption,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                item.teamCode,
-                                textDirection: TextDirection.ltr,
-                                style: AppTypography.of(context).caption,
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      DataCell(Text(item.leadName ?? l.servicesTeamLeadNone)),
+                      DataCell(
+                        Text(
+                          numbers.integer(item.memberCount),
+                          style: AppTypography.of(context).tableCell.copyWith(
+                            fontFeatures: const [FontFeature.tabularFigures()],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(item.leadName ?? l.servicesTeamLeadNone)),
-                    DataCell(Text(numbers.integer(item.memberCount))),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceStatusLabel(item.status, l),
-                        status: serviceStatus(item.status),
-                        isPill: true,
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceStatusLabel(item.status, l),
+                          status: serviceStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -205,12 +225,12 @@ class ServiceTeamListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesTeamSearch,
               onChanged: cubit.search,
             ),
-            filters: [
+            secondary: [
               AppFilterBar(
                 children: [
                   AppFilterChip(
@@ -233,6 +253,10 @@ class ServiceTeamListPage extends StatelessWidget {
                 ],
               ),
             ],
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

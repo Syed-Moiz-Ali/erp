@@ -1,209 +1,656 @@
-PHASE 7.5 — SERVICES + UNIVERSAL DASHBOARD SECURITY,
-AUTHORIZATION, DATA INTEGRITY & RELEASE HARDENING
+UI/UX ENHANCEMENT — PHASE UI-7
+SPECIALIZED WORKSPACES, REPORTS, CALENDARS,
+SETTINGS / ACCESS UX & HR + SERVICES MODULE POLISH
 
-Work on the EXISTING ERP codebase.
+UI-1 THROUGH UI-6 ARE COMPLETE AND GREEN.
 
-This phase is NOT a new business feature.
+CURRENT VERIFIED BASELINE:
 
-DO NOT add new Services workflows.
+flutter analyze
+→ PASS
 
-DO NOT redesign UI unnecessarily.
+flutter test
+→ 1184 passed / 0 failed
 
-DO NOT change confirmed client business behavior.
+flutter build web --release
+--dart-define=DEMO_AUTH=true
+--no-wasm-dry-run
+→ PASS
 
-The purpose of this phase is to fix the concrete security, permission,
-dashboard-query, routing, pagination, data-integrity and cleanup issues found
-during the latest source audit after Services Phase 6/7 and Universal Dashboard
-integration.
+Database schema:
+18
 
-==================================================
-0. IMPORTANT
-==================================================
-
-DO NOT blindly rewrite the architecture.
-
-Inspect the CURRENT implementation first.
-
-Preserve working:
-
-- Services workflow
-- Universal Dashboard
-- permission catalog
-- scope model
-- global centered page width
-- AppFormPage/form architecture
-- Drift schema/data
-- outbox/idempotency
-- CompanyTimeService/AppClock
-- WorkforceDirectory
-- module contribution architecture.
-
-Only change what is required to correct the issues below.
+NO BUSINESS / PERMISSION / SCOPE / ROUTE / REPOSITORY / SCHEMA CHANGES
+were introduced by UI-6.
 
 ==================================================
-1. CRITICAL — ACTION PERMISSIONS MUST NOT ESCALATE VIEW SCOPE
+1. PHASE OBJECTIVE
 ==================================================
 
-The current security implementation has a serious authorization problem.
+UI-1 through UI-6 standardized:
 
-Audit:
+- design system
+- shell
+- navigation
+- universal Dashboard
+- collection screens
+- forms
+- Detail screens
+- operational workspaces.
 
-core/security/app_permission.dart
+UI-7 now targets specialized screens that do not fit those generic patterns.
 
-and the effective permission/scope resolution path.
+This phase covers:
 
-Current behavior found during audit:
+HR REPORTS
 
-action permissions such as:
+REPORT VISUALIZATION
 
-Inspection Edit
-Inspection Complete
+LEAVE CALENDAR
 
-Material Request Edit
-Material Request Print
+HOLIDAY / CALENDAR UX
 
-Work Execution Perform
+USERS & ACCESS
 
-and similar Services action permissions
+PERMISSION MATRIX
 
-are mapped/dependent on:
+COMPANY MODULES
 
-*ViewAll
+MODULE SETTINGS HUBS
 
-permissions.
+SPECIALIZED HR ADMIN WORKSPACES
 
-This can produce dangerous behavior such as:
+SPECIALIZED SERVICES SETTINGS UX
 
-User has:
+NOTIFICATIONS / PROFILE SUPPORTING UX where still visually inconsistent
 
-services.workExecutions.view = ASSIGNED
+MODULE-WIDE POLISH
 
-plus:
+CROSS-SCREEN VISUAL CONSISTENCY.
 
-services.workExecutions.perform = granted
-
-and the dependency system effectively provides:
-
-services.workExecutions.viewAll
-
-causing the scope resolver to treat the user as ALL.
-
-THIS MUST BE FIXED.
+Do NOT create new business functionality.
 
 ==================================================
-2. ACTION PERMISSION PRINCIPLE
+2. START WITH SPECIALIZED-SCREEN AUDIT
 ==================================================
 
-Action permissions must NEVER upgrade record visibility scope.
+Audit every production screen that was intentionally not fully covered by UI-3,
+UI-4, UI-5 or UI-6.
+
+At minimum inspect:
+
+HR
+
+- HR Reports home
+- Attendance Reports
+- Leave Reports
+- report filter surfaces
+- report summary/KPI surfaces
+- report charts
+- report drill-downs
+- report export actions if already implemented
+- Leave Calendar
+- Holiday Calendar / annual holiday management
+- employee leave profile/workspace if specialized
+- workforce/day attendance views if any specialized layout remains
+- attendance-policy or configuration hubs
+- leave configuration/settings hubs
+
+PLATFORM / ADMIN
+
+- Users & Access landing
+- user access detail
+- permission matrix/editor
+- permission scope selectors
+- access history
+- Company Modules
+- module enablement
+- Profile supporting settings
+- Notifications if specialized UX remains
+- app/settings landing/hubs
+
+SERVICES
+
+- Services Settings landing
+- configuration master grouping
+- Team administration surfaces if specialized
+- any workflow overview/specialized screen not fully migrated
+- any residual Services page with old styling.
+
+Create an explicit audit inventory.
+
+==================================================
+3. DO NOT REOPEN GREEN SCREENS UNNECESSARILY
+==================================================
+
+Do not redesign already-migrated:
+
+collections
+
+forms
+
+details
+
+Dashboard
+
+shell
+
+unless a specialized-workspace integration issue is discovered.
+
+UI-7 is not permission to churn finished UI.
+
+==================================================
+4. PRODUCT DIRECTION
+==================================================
+
+Specialized screens must feel like the same ERP.
+
+Reports must not look like a separate BI product.
+
+Access control must not look like a developer permissions debugger.
+
+Calendars must not look like a generic Flutter calendar demo.
+
+Settings must not look like random cards linking to pages.
+
+Target:
+
+modern
+
+enterprise
+
+clear
+
+dense where necessary
+
+easy to understand
+
+visually calm
+
+high confidence.
+
+==================================================
+5. SHARED SPECIALIZED-WORKSPACE FOUNDATION
+==================================================
+
+Create/refine reusable components only where justified.
+
+Conceptually:
+
+AppWorkspaceHeader
+
+AppWorkspaceSection
+
+AppSummaryStrip
+
+AppReportToolbar
+
+AppReportMetric
+
+AppChartPanel
+
+AppLegend
+
+AppCalendar
+
+AppCalendarHeader
+
+AppCalendarDayCell
+
+AppCalendarAgenda
+
+AppSettingsHub
+
+AppSettingsGroup
+
+AppSettingsItem
+
+AppPermissionMatrix
+
+AppPermissionGroup
+
+AppScopeSelector
+
+AppAccessSummary
+
+AppModuleToggleRow
+
+or equivalent.
+
+Reuse UI-1 primitives wherever possible.
+
+Do not create a second design system.
+
+==================================================
+6. GLOBAL LAYOUT
+==================================================
+
+All specialized screens still use:
+
+AppPage
+
+1200px max
+
+centered within main workspace.
+
+No:
+
+reportMaxWidth
+
+calendarMaxWidth
+
+accessEditorMaxWidth.
+
+==================================================
+7. PAGE HEADER
+==================================================
+
+Use AppPageHeader consistently.
+
+Examples:
+
+Reports
+
+Attendance report
+
+Leave calendar
+
+Users & access
+
+Company modules
+
+Services settings.
+
+No duplicate title card below page header.
+
+==================================================
+8. SETTINGS HUB PHILOSOPHY
+==================================================
+
+A settings landing page should help users locate configuration quickly.
+
+It should NOT be:
+
+7 giant cards
+
+or:
+
+a raw list of routes
+
+or:
+
+a dashboard full of KPIs.
+
+Use compact grouped settings navigation.
+
+==================================================
+9. SETTINGS GROUPS
+==================================================
+
+Conceptual examples:
+
+Human Resources
+
+Attendance
+- Shifts
+- Work locations
+- Attendance policies
+
+Leave
+- Leave types
+- Leave policies
+- Holidays
+
+
+Services
+
+General
+- Service types
+- Complaint types
+- Priorities
+- Ticket types
+
+Inspection
+- Root causes
+- Charge responsibilities
+
+Materials
+- Material request purposes.
+
+Use actual implemented modules only.
+
+==================================================
+10. SETTINGS ITEM
+==================================================
+
+Each item may include:
+
+icon
+
+title
+
+short description
+
+optional count/status only if meaningful
+
+chevron.
+
+Do not create large marketing-style cards.
+
+==================================================
+11. SETTINGS PERMISSIONS
+==================================================
+
+Only show configuration groups/items that current user can access.
+
+Existing rules remain authoritative.
 
 Example:
 
-View Work Executions:
-ASSIGNED
+Root Cause View only
 
-Perform Work:
-YES
-
-must mean:
-
-user may perform work ONLY on Work Executions visible within ASSIGNED scope.
-
-It must NOT mean:
-
-user may view ALL Work Executions.
-
-Same rule applies to:
-
-Edit
-
-Complete
-
-Cancel
-
-Print
-
-Review
-
-Adjust
-
-Manage transaction actions
-
-where object access depends on a separately scoped View permission.
+must still expose the Services Settings hub and Root Causes item.
 
 ==================================================
-3. CORRECT AUTHORIZATION MODEL
+12. VIEW VS MANAGE
 ==================================================
 
-The authorization model must remain:
+Settings hub navigation may show an item with View permission.
 
-Module enabled
-AND
-Action permission granted
-AND
-View permission available
-AND
-record lies inside granted View scope
-AND
-company matches
-AND
-required Employee link exists where relevant.
+Create/Edit actions remain Manage-gated.
 
-Action permission is orthogonal to scope.
+Do not conflate page discovery and mutation access.
+
+==================================================
+13. SERVICES SETTINGS
+==================================================
+
+Polish Services Settings around actual masters:
+
+Service Types
+
+Complaint Types
+
+Priorities
+
+Ticket Types
+
+Root Causes
+
+Charge Responsibilities
+
+Material Request Purposes.
+
+Use meaningful grouping.
+
+Do not add:
+
+Inventory
+
+Job Order
+
+Quotation
+
+Service Reports settings.
+
+==================================================
+14. HR SETTINGS
+==================================================
+
+Polish HR settings hubs for actual configuration.
+
+Attendance:
+
+Shifts
+
+Work Locations
+
+Attendance Policies.
+
+Leave:
+
+Leave Types
+
+Leave Policies
+
+Holidays.
+
+Do not flatten all configuration into main sidebar again.
+
+==================================================
+15. USERS & ACCESS — PRIMARY ACCEPTANCE WORKSPACE
+==================================================
+
+Users & Access is a specialized administration workspace.
+
+It must become understandable to a normal company administrator.
+
+It should answer:
+
+Who has access?
+
+Is this person linked to an Employee?
+
+Which modules/features can they access?
+
+At what scope?
+
+What can they manage?
+
+What changed recently?
+
+==================================================
+16. ACCESS MODEL MUST REMAIN PERMISSION-DRIVEN
+==================================================
+
+Do NOT introduce roles as runtime authorization.
+
+No UI wording should imply:
+
+Choose role:
+HR
+Manager
+Technician
+Inspector.
+
+Authorization remains:
+
+module enabled
++
+permission
++
+scope
++
+Employee context
++
+record scope
++
+company.
+
+==================================================
+17. OPTIONAL PRESETS
+==================================================
+
+If existing access presets/templates exist only for convenience/demo seeding:
+
+do not make runtime authorization appear role-based.
+
+A preset may be visually described as:
+
+Permission preset
+
+not:
+
+Role.
+
+Only if current application already exposes such presets.
+
+Do not invent new preset functionality.
+
+==================================================
+18. ACCESS LANDING
+==================================================
+
+Users & Access landing should use the UI-4 collection language.
+
+Each user row should prioritize:
+
+Name
+
+email
+
+Employee link
+
+access/module summary
+
+status
+
+actions.
+
+Do not display raw permission-key dumps.
+
+==================================================
+19. USER ACCESS DETAIL HEADER
+==================================================
+
+Show:
+
+User identity
+
+email
+
+linked Employee if any
+
+company
+
+status.
+
+Then access editor beneath.
+
+==================================================
+20. EMPLOYEE LINK
+==================================================
+
+Make distinction clear:
+
+User Account
+
+vs
+
+Employee.
 
 Example:
 
-services.inspections.view = TEAM
+Employee link
 
-services.inspections.complete = granted
+Ahmed Khan
+EMP-0042
 
-Result:
+or:
 
-Complete action may operate only on Inspections inside TEAM scope.
+No Employee linked.
 
-NOT ALL.
-
-==================================================
-4. PERMISSION DEPENDENCIES
-==================================================
-
-Audit:
-
-permissionViewDependencies
-
-AppPermission dependency mapping
-
-effective PermissionSet calculation
-
-or equivalent implementation.
-
-Dependencies may establish:
-
-Manage implies View capability exists
-
-BUT MUST NOT assign:
-
-ALL scope.
-
-If an action implies View:
-
-the implied View scope must not exceed the actual configured View grant.
-
-Prefer:
-
-action is usable only when a real View grant exists.
-
-If the system requires implicit View for action grants:
-
-derive the least privilege compatible scope,
-never ALL.
-
-Document the final approach.
+Do not imply unlinked platform/admin users are invalid.
 
 ==================================================
-5. SERVICES PERMISSIONS TO AUDIT
+21. ACCESS SUMMARY
 ==================================================
 
-Audit ALL:
+Before the permission matrix, provide compact summary.
+
+Example:
+
+Enabled access
+
+Human Resources
+12 permissions
+
+Services
+8 permissions
+
+Broadest data scope
+Team
+
+Only if these summaries can be derived correctly.
+
+Do not create misleading aggregate scope where permissions differ.
+
+If "broadest scope" is ambiguous, omit it.
+
+==================================================
+22. PERMISSION MATRIX VISUAL GOAL
+==================================================
+
+The current permission editor should not feel like a developer enum inspector.
+
+It should feel like a business access-management interface.
+
+Group by:
+
+Module
+
+Submodule
+
+Feature / action.
+
+==================================================
+23. PERMISSION LABELS
+==================================================
+
+Use localized business labels.
+
+GOOD:
+
+View employees
+
+Add employee
+
+Edit employee
+
+Review leave requests
+
+Perform work
+
+Print material request.
+
+BAD:
+
+serviceWorkExecutionPerform
+
+services.workExecutions.perform
+
+unless shown only in optional technical metadata/debug context.
+
+==================================================
+24. PERMISSION DESCRIPTION
+==================================================
+
+Where useful, show concise description.
+
+Example:
+
+Perform work
+Allows starting and ending assigned work execution items.
+
+Do not display long technical authorization rules beside every checkbox.
+
+==================================================
+25. MODULE GROUPING
+==================================================
+
+Access editor should clearly separate:
+
+Human Resources
+
+Services
+
+Company / Platform.
+
+==================================================
+26. SUBMODULE GROUPING
+==================================================
+
+Within Services:
 
 Customers
 
@@ -219,669 +666,1257 @@ Inspections
 
 Material Requests
 
-Work Executions
+Work Execution
 
-Services masters.
+Configuration.
 
-Especially:
+Within HR:
 
-services.jobAssignments.edit
-
-services.jobAssignments.cancel
-
-services.inspections.edit
-
-services.inspections.complete
-
-services.inspections.cancel
-
-services.materialRequests.edit
-
-services.materialRequests.cancel
-
-services.materialRequests.print
-
-services.workExecutions.edit
-
-services.workExecutions.perform
-
-services.workExecutions.complete
-
-services.workExecutions.cancel.
-
-Verify none escalates:
-
-ASSIGNED → ALL
-TEAM → ALL.
-
-==================================================
-6. HR PERMISSION REGRESSION AUDIT
-==================================================
-
-Because the dependency mechanism is shared, verify HR as well.
-
-Examples:
-
-Leave Review
-
-Leave Balance Adjust
-
-Attendance Correction Apply
-
-Employee Edit
-
-configuration Manage.
-
-Action grants must not accidentally upgrade:
-
-SELF / TEAM
-
-to:
-
-ALL.
-
-Do not alter correct existing HR behavior.
-
-==================================================
-7. SECURITY TEST MATRIX
-==================================================
-
-Add explicit tests.
-
-CASE A:
-
-View Work Execution = ASSIGNED
-Perform = granted
-
-Expected:
-
-assigned records visible
-assigned Start/End works
-
-unrelated records:
-NOT visible
-NOT performable.
-
-CASE B:
-
-View Inspection = TEAM
-Complete = granted
-
-Expected:
-
-team Inspection completable
-unrelated company Inspection denied.
-
-CASE C:
-
-View Material Request = ASSIGNED
-Print = granted
-
-Expected:
-
-assigned Request printable
-unrelated Request cannot be read or printed.
-
-CASE D:
-
-View = ALL
-action granted
-
-Expected:
-
-company-wide valid action.
-
-==================================================
-8. CRITICAL — CUSTOMER MUTATION PERMISSIONS
-==================================================
-
-Audit:
-
-LocalServiceCustomerRepository
-
-especially current internal permission helper such as:
-
-_access(manage: true)
-
-Audit found that mutation authorization may be using:
-
-serviceCustomerCreate
-
-for multiple mutation types.
-
-That is incorrect.
-
-Create / Edit / Deactivate must use their appropriate permissions.
-
-==================================================
-9. CUSTOMER PERMISSION RULES
-==================================================
-
-Enforce:
-
-CREATE CUSTOMER
-→ services customer CREATE permission
-
-EDIT CUSTOMER
-→ services customer EDIT/MANAGE permission according to actual catalog
-
-DEACTIVATE CUSTOMER
-→ appropriate deactivate/manage permission
-
-READ
-→ customer View with correct scope where applicable.
-
-Do NOT allow:
-
-Create-only permission
-
-to modify/deactivate an existing Customer.
-
-==================================================
-10. SITE PERMISSION RULES
-==================================================
-
-Audit:
-
-LocalServiceSiteRepository.
-
-Same issue was found.
-
-Ensure:
-
-Create Site
-
-Edit Site
-
-Deactivate Site
-
-each enforce the correct configured permission.
-
-Do not reuse Create permission as generic mutation permission.
-
-==================================================
-11. TEAM PERMISSION RULES
-==================================================
-
-Audit Service Team repository as well.
-
-Confirm:
-
-Create Team
-
-Edit Team
-
-Deactivate Team
-
-membership changes
-
-lead changes
-
-all use the correct permissions.
-
-==================================================
-12. REPOSITORY SECURITY
-==================================================
-
-Repository/use-case boundary must enforce authorization.
-
-Do NOT rely only on hidden buttons.
-
-Direct calls must still fail safely.
-
-==================================================
-13. CRITICAL — SERVICES DASHBOARD SQL BIND VARIABLES
-==================================================
-
-Audit:
-
-local_services_dashboard_repository.dart
-
-or current equivalent.
-
-The audit found queries where SQL contains a hardcoded status such as:
-
-status = 'active'
-
-but Variables still include an extra:
-
-Variable('active')
-
-without a matching `?` placeholder.
-
-The query fails and `_count()` catches the exception and returns:
-
-0.
-
-This creates SILENTLY WRONG DASHBOARD KPIs.
-
-==================================================
-14. FIX DASHBOARD QUERIES
-==================================================
-
-Audit every dashboard query for:
-
-SQL placeholder count
-
-Variable count
-
-scope variables
-
-status variables
-
-date variables
-
-company variables.
-
-Specifically verify metrics such as:
-
-Scheduled Jobs
-
-Pending Inspections
-
-Open Material Requests
-
-Work In Progress
-
-Completed Today
-
-and every other Services KPI.
-
-Placeholder count must exactly match bound variables.
-
-==================================================
-15. DO NOT HIDE QUERY BUGS WITH ZERO
-==================================================
-
-Do NOT make `_count()` silently convert every SQL exception into:
-
-0.
-
-A genuine empty count is different from a query failure.
-
-Change behavior appropriately.
-
-Possible:
-
-log/report query failure
-return typed failure
-surface dashboard section error
-
-according to current architecture.
-
-At minimum during debug/test:
-
-query construction errors must fail loudly.
-
-Do not mask programmer errors.
-
-==================================================
-16. DASHBOARD KPI TESTS
-==================================================
-
-Seed known deterministic data.
-
-Verify expected counts exactly.
-
-Example:
-
-2 active Assignments
-1 pending Inspection
-3 open Material Requests
-1 in-progress Work Execution
-1 completed today
-
-Dashboard must return:
-
-2 / 1 / 3 / 1 / 1
-
-not zero.
-
-Also test:
-
-ASSIGNED
-
-TEAM
-
-ALL.
-
-==================================================
-17. HIGH — CUSTOMER / SITE / TEAM ROUTE GUARDS
-==================================================
-
-Audit:
-
-NavigationResolver.routeAccess()
-
-or current route authorization implementation.
-
-The audit found specific route guards for:
-
-Enquiries
-
-Job Assignments
-
-Inspections
-
-Material Requests
-
-Work Executions
-
-Services masters
-
-but Customer/Site/Team mutation routes may not be protected with equal
-specificity.
-
-Fix this.
-
-==================================================
-18. CUSTOMER ROUTES
-==================================================
-
-For routes such as:
-
-/app/services/customers
-
-/app/services/customers/new
-
-/app/services/customers/:id
-
-/app/services/customers/:id/edit
-
-enforce proper permissions.
-
-List/detail:
-View
-
-New:
-Create
-
-Edit:
-Edit/Manage.
-
-Direct URLs must not expose unauthorized forms.
-
-==================================================
-19. SITE ROUTES
-==================================================
-
-Same:
-
-View
-Create
-Edit/Manage
-
-route-level enforcement.
-
-==================================================
-20. TEAM ROUTES
-==================================================
-
-Same.
-
-Team edit/membership editing requires appropriate management permission.
-
-==================================================
-21. ROUTE SECURITY IS ADDITIONAL
-==================================================
-
-Route guard + UI gate + repository/use-case enforcement must all agree.
-
-Do not rely on just one layer.
-
-==================================================
-22. HIGH — MASTER DETAIL ROUTE SHOWS EDIT FORM
-==================================================
-
-Audit Services master routes.
-
-Current pattern may contain:
-
-/settings/<master>/:id
-
-which loads:
-
-ServiceMasterFormPage
-
-and renders editable fields + Save.
-
-But route guard may only require Manage for:
-
-/new
-
-/edit
-
-while plain:
-
-/:id
-
-may only require View.
-
-This creates confusing/insecure UI.
-
-Fix it consistently.
-
-==================================================
-23. MASTER ROUTE DESIGN
-==================================================
-
-Choose ONE clean architecture.
-
-OPTION A — preferred if current app needs detail:
-
-/settings/priorities/:id
-→ read-only Detail
-
-/settings/priorities/:id/edit
-→ editable form, requires Manage.
-
-OR:
-
-OPTION B — simpler configuration workflow:
-
-/settings/priorities/:id
-→ Edit route
-→ requires Manage
-
-and View-only users stay on list/reference view.
-
-Use the approach that best matches current project architecture.
-
-Do NOT allow a View-only user to receive an editable Save form.
-
-==================================================
-24. APPLY TO ALL SERVICES MASTERS
-==================================================
-
-Audit:
-
-Service Types
-
-Complaint Types
-
-Priorities
-
-Ticket Types
-
-Root Causes
-
-Charge Responsibilities
-
-Material Request Purposes
-
-and any other currently implemented master.
-
-==================================================
-25. HIGH — UNIVERSAL DASHBOARD HR CONTRIBUTION DEMO GATE
-==================================================
-
-Audit:
-
-LocalDashboardRepository.load()
-
-or current HR dashboard contribution repository.
-
-The audit found behavior similar to:
-
-if (!demoAuthEnabled) {
-  return dashboard.demo_disabled;
-}
-
-before real workforce/dashboard data is loaded.
-
-This means:
-
-production / non-demo mode
-
-can lose HR Universal Dashboard contribution
-
-while Services dashboard contribution still works.
-
-This must be corrected.
-
-==================================================
-26. UNIVERSAL DASHBOARD MUST WORK OUTSIDE DEMO AUTH
-==================================================
-
-DemoAuth may affect:
-
-authentication seed/demo login behavior.
-
-It must NOT disable real Dashboard domain queries.
-
-Production Universal Dashboard must be able to show permitted:
+Employees
 
 Attendance
 
 Leave
 
-HR attention
+Reports
 
-workforce metrics
+Configuration.
 
-Services data.
-
-Remove inappropriate demo-only gating from domain/dashboard read logic.
+Use actual catalog structure.
 
 ==================================================
-27. PRESERVE DEMO BEHAVIOR
+27. MATRIX DENSITY
 ==================================================
 
-If DemoAuth needs seeded/fake identity handling:
+Desktop may use a compact matrix/list.
 
-keep that at authentication/bootstrap/demo-data boundary.
-
-Do not gate the Dashboard feature itself.
+Do not render every permission as a giant card.
 
 ==================================================
-28. UNIVERSAL DASHBOARD TEST
+28. PERMISSION ROW
 ==================================================
 
-Test:
+Conceptual:
 
-DEMO_AUTH=true
+View inspections          [ Enabled ]   Scope [ Team ▼ ]
 
-and equivalent non-demo runtime.
+Complete inspection       [ Enabled ]
 
-Dashboard should load valid permitted data in both modes.
+Cancel inspection         [ Disabled ]
 
-No:
-
-dashboard.demo_disabled
-
-for a valid authenticated production session merely because DemoAuth is off.
+Keep relationships obvious.
 
 ==================================================
-29. HIGH — PAGINATION TOTALS
+29. SCOPE SELECTOR
 ==================================================
 
-Audit pagination in:
+Scoped View permissions use:
 
-Customers
+SELF
 
-Sites
+ASSIGNED
 
-Teams
+TEAM
 
-Services Masters.
+ALL
 
-Audit found page construction patterns similar to:
+only where that permission supports them.
 
-Page(
-  items,
-  items.length,
-  items.length,
-)
-
-which reports only the current page size.
-
-That is incorrect when the dataset exceeds one page.
+Do not show meaningless scopes for configuration permissions.
 
 ==================================================
-30. CORRECT PAGE METADATA
+30. SCOPE NAMES
 ==================================================
 
-Every paginated list should return accurate:
+Use business-friendly localized names.
 
-items
+Potential:
 
-total
+Self
 
-filteredTotal
+Assigned
 
-page/pageSize where model supports it.
+Team
+
+All company records.
+
+Do not expose enum formatting such as:
+
+PermissionScope.assigned.
+
+==================================================
+31. ACTION PERMISSIONS
+==================================================
+
+Action permissions must NOT have fake independent scope selectors if architecture
+defines scope via View permission.
 
 Example:
 
-73 matching Customers
+Perform Work
+[enabled]
 
-page size 20
+View Work Execution
+Scope: Assigned.
 
-page 2
+Do NOT show:
 
-must report:
-
-items = 20
-
-filteredTotal = 73
-
-not:
-
-20.
+Perform Work Scope: All.
 
 ==================================================
-31. PAGINATION QUERY
+32. HARD SECURITY INVARIANT
 ==================================================
 
-Use efficient count query.
+UI must visually reinforce:
 
-Do not load all records just to count.
+Action permission does NOT widen record visibility.
 
-Correctly apply:
+Example:
 
-company
+View Work Execution
+Assigned
 
-permissions/scope
+Perform Work
+Enabled
 
-search
+means:
+
+Perform assigned work only.
+
+Do not display anything suggesting Perform = company-wide.
+
+==================================================
+33. MANAGE → VIEW
+==================================================
+
+For scope-less configuration masters where Manage safely implies View:
+
+UI may communicate dependency.
+
+Example:
+
+Manage priorities
+
+includes View priorities.
+
+Do not make user manually reason about hidden dependency.
+
+==================================================
+34. DEPENDENCY DISPLAY
+==================================================
+
+If Manage auto-enables View:
+
+show View as:
+
+included
+
+or automatically selected/locked
+
+rather than appearing independently inconsistent.
+
+Only if this matches actual normalized behavior.
+
+==================================================
+35. DIRTY ACCESS EDITOR
+==================================================
+
+Clearly indicate unsaved permission changes.
+
+Use standard dirty-navigation guard.
+
+==================================================
+36. SAVE ACCESS
+==================================================
+
+Use clear:
+
+Cancel changes
+
+Save access.
+
+Disable duplicate save.
+
+Show loading.
+
+==================================================
+37. SELF-ESCALATION PROTECTION
+==================================================
+
+Existing self-escalation rules remain.
+
+If action denied:
+
+show clear business-friendly explanation.
+
+Do not expose internal exception text.
+
+==================================================
+38. LAST-ADMIN PROTECTION
+==================================================
+
+Preserve existing protection.
+
+If current user attempts operation that would violate it:
+
+show appropriate disabled/rejection explanation.
+
+Do not change business logic.
+
+==================================================
+39. EMPLOYEE-LINK REQUIREMENT
+==================================================
+
+Permissions requiring Employee link should communicate this clearly.
+
+Example:
+
+Perform work
+Requires this user to be linked to an Employee.
+
+Do not let user save impossible grants if current business rule already rejects them.
+
+==================================================
+40. PERMISSION SEARCH
+==================================================
+
+If permission list is large, add presentation-level search only if useful.
+
+Search may match:
+
+permission name
+
+description
+
+module/submodule.
+
+Do not change permission storage/query architecture.
+
+==================================================
+41. EXPAND/COLLAPSE
+==================================================
+
+Large module groups may collapse.
+
+Keep unsaved changes visible in collapsed headers via indicator if useful.
+
+==================================================
+42. ACCESS HISTORY
+==================================================
+
+Use compact activity/timeline view.
+
+Show:
+
+what changed
+
+who changed it
+
+when
+
+scope change where relevant.
+
+Do not display giant serialized permission payloads.
+
+==================================================
+43. SCOPE CHANGE HISTORY
+==================================================
+
+Example:
+
+Work Execution view
+Assigned → Team
+
+rather than raw JSON.
+
+==================================================
+44. COMPANY MODULES — SPECIALIZED WORKSPACE
+==================================================
+
+Company Modules is not a permission editor.
+
+It controls which ERP modules are enabled for the company.
+
+Visually distinguish this concept.
+
+==================================================
+45. MODULE CARD/ROW
+==================================================
+
+Keep compact.
+
+Example:
+
+Human Resources
+
+Employees, attendance, leave and workforce operations.
+
+Enabled                                   [toggle]
+
+Services
+
+Service enquiry through work execution.
+
+Enabled                                   [toggle]
+
+Only actual modules.
+
+==================================================
+46. MODULE TOGGLE
+==================================================
+
+Use UI-1 switch.
+
+Do not use a giant colored module card when enabled.
+
+==================================================
+47. MODULE DEPENDENCY
+==================================================
+
+Do not invent module dependencies.
+
+If no dependency system exists:
+
+do not display one.
+
+==================================================
+48. MODULE DISABLE WARNING
+==================================================
+
+If disabling a module already has confirmation/business behavior:
+
+polish its confirmation UX.
+
+If no confirmation exists:
+
+do not invent new business policy unless current operation is destructive enough
+and existing architecture already expects confirmation.
+
+==================================================
+49. PLATFORM MODULES
+==================================================
+
+Platform/Super Admin module management remains distinct from company module enablement.
+
+Do not merge them visually if different permission/ownership models exist.
+
+==================================================
+50. REPORTS — CORE GOAL
+==================================================
+
+HR Reports must become useful analytical workspaces.
+
+Do not make reports look like:
+
+a collection table with a chart added above it.
+
+Each report should clearly communicate:
+
+scope
+
+period
 
 filters
 
-active/status
+summary
 
-to filtered count.
+visual insight
+
+detailed records.
 
 ==================================================
-32. AUDIT TRANSACTION PAGINATION TOO
+51. REPORT TYPES
 ==================================================
 
-Transaction lists may already be correct.
+Audit actual implemented reports.
 
-Verify:
+Do not invent new reports.
+
+Potential existing categories may include:
+
+Attendance summary
+
+Attendance detailed records
+
+Leave summary
+
+Leave usage/balance
+
+other implemented HR reports.
+
+Use codebase truth.
+
+==================================================
+52. REPORT HEADER
+==================================================
+
+Use AppPageHeader.
+
+Example:
+
+Attendance report
+
+Attendance trends and records for the selected period.
+
+Actions may include actual existing:
+
+Export
+
+Print
+
+etc.
+
+Do not invent exports.
+
+==================================================
+53. REPORT TOOLBAR
+==================================================
+
+Use a specialized AppReportToolbar.
+
+Typical:
+
+Date range
+
+Employee / Team / Department where supported
+
+Status/type filter
+
+Apply/Refresh depending existing behavior
+
+Export if supported.
+
+Do not reuse a cramped list toolbar if report filters need more structure.
+
+==================================================
+54. REPORT FILTER DENSITY
+==================================================
+
+Desktop:
+
+single compact filter bar where practical.
+
+Mobile:
+
+filter sheet.
+
+Do not show five giant dropdowns vertically before any report content.
+
+==================================================
+55. DATE RANGE
+==================================================
+
+Use standardized date-range UX.
+
+Common shortcuts only if current report logic supports them:
+
+Today
+
+This week
+
+This month
+
+Custom.
+
+Do not invent server-side period behavior.
+
+==================================================
+56. REPORT SCOPE
+==================================================
+
+Report data must continue to respect:
+
+SELF / TEAM / ALL
+
+and relevant report permissions.
+
+Do not show filter options that allow scope escalation.
+
+==================================================
+57. REPORT SUMMARY
+==================================================
+
+Use compact summary cards/strip.
+
+Examples only where current metrics exist:
+
+Present days
+
+Absent days
+
+Late arrivals
+
+Leave days
+
+Total worked duration.
+
+Do not invent KPIs.
+
+==================================================
+58. REPORT METRIC DESIGN
+==================================================
+
+Use UI-3 compact metric language.
+
+Do not reintroduce giant dashboard KPI cards.
+
+==================================================
+59. CHART POLICY
+==================================================
+
+Charts are allowed in reports where they answer an actual analytical question.
+
+Unlike Dashboard, reports may reasonably contain multiple charts.
+
+But every chart must have:
+
+defined metric
+
+defined period
+
+real underlying data
+
+clear legend
+
+textual equivalent where needed.
+
+==================================================
+60. REPORT CHART TYPES
+==================================================
+
+Select chart type based on data.
+
+Time-series:
+line/bar.
+
+Category comparison:
+bar.
+
+Composition:
+only use donut/pie if category count is small and composition truly matters.
+
+Do not use chart type for decoration.
+
+==================================================
+61. NO 3D CHARTS
+==================================================
+
+No:
+
+3D pie
+
+3D bars
+
+glow
+
+gradient-heavy marketing charts.
+
+==================================================
+62. CHART COLORS
+==================================================
+
+Use semantic/design-system palette.
+
+Do not assign random saturated colors to every series.
+
+==================================================
+63. CHART AXES
+==================================================
+
+Readable.
+
+Localized.
+
+Company-local business dates.
+
+No tiny 8px labels.
+
+==================================================
+64. CHART TOOLTIP
+==================================================
+
+Use concise tooltip.
+
+Keyboard/accessibility fallback where chart library allows.
+
+==================================================
+65. CHART EMPTY STATE
+==================================================
+
+No data for selected period.
+
+Do not render a blank axis.
+
+==================================================
+66. REPORT DETAIL TABLE
+==================================================
+
+Use UI-4 collection/table primitives.
+
+Report-specific detailed records must share existing table language.
+
+==================================================
+67. REPORT DRILL-DOWN
+==================================================
+
+This was deferred from UI-6.
+
+Where report rows/charts already support a detail/drill-down:
+
+use UI-6 information/detail patterns.
+
+Do not invent new drill-down routes.
+
+==================================================
+68. REPORT EXPORT
+==================================================
+
+If export already exists:
+
+place secondary action in header/report toolbar.
+
+Show loading/progress.
+
+Do not create fake CSV/PDF export buttons.
+
+==================================================
+69. REPORT PRINT
+==================================================
+
+Same.
+
+Only if actual implementation exists.
+
+==================================================
+70. REPORT LOADING
+==================================================
+
+Use:
+
+summary skeleton
+
+chart skeleton
+
+table skeleton.
+
+Do not use one spinner.
+
+==================================================
+71. REPORT ERROR
+==================================================
+
+Preserve selected filters.
+
+Show Retry.
+
+Do not clear filters/data context unnecessarily.
+
+==================================================
+72. REPORT NO RESULTS
+==================================================
+
+Show:
+
+No records for the selected filters.
+
+Allow adjust/reset filters.
+
+Do not treat as first-time empty state.
+
+==================================================
+73. REPORT MOBILE
+==================================================
+
+Mobile reports require a different composition.
+
+Order:
+
+Report title
+
+filter summary/button
+
+summary metrics
+
+charts one-by-one
+
+detailed records as cards/compact list where appropriate.
+
+Do not squeeze desktop charts side-by-side.
+
+==================================================
+74. REPORT RTL
+==================================================
+
+Arabic:
+
+axes
+
+legends
+
+filter controls
+
+tables
+
+date ranges
+
+tooltips
+
+must remain readable.
+
+==================================================
+75. LEAVE CALENDAR — PRIMARY ACCEPTANCE SCREEN
+==================================================
+
+Leave Calendar was intentionally excluded from UI-4/UI-6 month-grid redesign.
+
+UI-7 now owns it.
+
+It must become a proper ERP scheduling/calendar workspace.
+
+==================================================
+76. CALENDAR GOAL
+==================================================
+
+The calendar should help users understand:
+
+who is on leave
+
+approved/pending context where permitted
+
+holidays
+
+their own leave
+
+team/company leave according to scope.
+
+Do not expose inaccessible Employee data.
+
+==================================================
+77. CALENDAR HEADER
+==================================================
+
+Use clear:
+
+Month / Year
+
+Previous
+
+Today
+
+Next
+
+view controls only if actual multiple views exist.
+
+Do not invent Week/Agenda view unless currently implemented.
+
+==================================================
+78. MONTH GRID
+==================================================
+
+Create polished month grid.
+
+Day cells must show:
+
+day number
+
+today state
+
+outside-month state
+
+holiday indication
+
+leave/event indicators.
+
+==================================================
+79. TODAY
+==================================================
+
+Today should be visually clear but restrained.
+
+No giant brand circle.
+
+==================================================
+80. SELECTED DAY
+==================================================
+
+Selected day distinct from Today.
+
+Both states can coexist.
+
+==================================================
+81. HOLIDAY IN CALENDAR
+==================================================
+
+Use actual holiday data.
+
+Show holiday name via:
+
+small label
+
+indicator
+
+tooltip/agenda.
+
+Do not flood entire cell bright red.
+
+==================================================
+82. LEAVE EVENT DISPLAY
+==================================================
+
+Use compact event chips/indicators.
+
+Do not fit long employee names into tiny cells.
+
+Potential:
+
+Ahmed · Annual
++2 more.
+
+Then selected-day agenda shows full details.
+
+==================================================
+83. EVENT COUNT
+==================================================
+
+When events exceed visible cell capacity:
+
+use:
+
++3 more
+
+or equivalent.
+
+==================================================
+84. SELECTED-DAY AGENDA
+==================================================
+
+Below/alongside calendar show selected day details.
+
+Each item:
+
+Employee
+
+Leave type
+
+status
+
+duration/context
+
+open detail action if permitted.
+
+==================================================
+85. CALENDAR DESKTOP
+==================================================
+
+Potential layout:
+
+calendar ~8 columns width
+
+selected-day agenda ~4 columns
+
+inside 1200px.
+
+Or stacked if current design works better.
+
+Do not create a page wider than 1200.
+
+==================================================
+86. CALENDAR TABLET
+==================================================
+
+Month grid full width.
+
+Agenda below if side panel becomes cramped.
+
+==================================================
+87. CALENDAR MOBILE
+==================================================
+
+Month grid must remain usable.
+
+Use compact event indicators inside day cells.
+
+Selected-day agenda below.
+
+Avoid horizontal page scrolling.
+
+==================================================
+88. CALENDAR TOUCH
+==================================================
+
+Day targets should remain usable.
+
+==================================================
+89. CALENDAR SCOPE
+==================================================
+
+SELF:
+
+personal leave only + permitted holiday context.
+
+TEAM:
+
+team-scoped leave.
+
+ALL:
+
+company-authorized leave.
+
+Do not query ALL and hide names in UI.
+
+==================================================
+90. CALENDAR STATUS
+==================================================
+
+If pending requests are included according to current business logic:
+
+visually distinguish them from approved leave.
+
+Do not change which statuses calendar includes.
+
+==================================================
+91. HOLIDAY MANAGEMENT WORKSPACE
+==================================================
+
+Annual holiday management should feel like a scheduling/configuration workspace.
+
+Existing capabilities may include:
+
+year selection
+
+government/festival/regional/company/special/optional holidays
+
+copy prior year/import where implemented.
+
+Polish actual features only.
+
+==================================================
+92. HOLIDAY YEAR NAVIGATION
+==================================================
+
+Create clear:
+
+year
+
+previous/next
+
+current year.
+
+Do not mix with Leave Calendar month navigation.
+
+==================================================
+93. HOLIDAY SUMMARY
+==================================================
+
+If useful and data exists:
+
+Total holidays
+
+Optional holidays
+
+Company holidays
+
+etc.
+
+Keep compact.
+
+Do not invent counts/metrics not represented in model.
+
+==================================================
+94. COPY PRIOR YEAR
+==================================================
+
+If existing feature exists:
+
+make it secondary action.
+
+Use confirmation/review UX according to current behavior.
+
+Do not alter copy semantics.
+
+==================================================
+95. HOLIDAY TYPE LEGEND
+==================================================
+
+If types use semantic differentiation:
+
+show compact legend.
+
+Do not use seven loud colors.
+
+==================================================
+96. CALENDAR ACCESSIBILITY
+==================================================
+
+Calendar must be keyboard navigable where practical.
+
+Each day has semantic date.
+
+Events have readable labels.
+
+Current/selected states announced.
+
+==================================================
+97. ATTENDANCE SPECIALIZED WORKSPACES
+==================================================
+
+Audit any Attendance screens that remain visually specialized after UI-4/UI-6.
+
+Examples:
+
+team daily attendance board
+
+workforce status view
+
+monthly attendance overview
+
+if they actually exist.
+
+==================================================
+98. ATTENDANCE STATUS BOARD
+==================================================
+
+If such a screen exists:
+
+focus on operational readability.
+
+Employee
+
+current attendance state
+
+shift
+
+check-in
+
+location
+
+exception.
+
+Do not invent live monitoring functionality.
+
+==================================================
+99. LEAVE EMPLOYEE PROFILE
+==================================================
+
+If existing per-Employee Leave workspace exists:
+
+polish:
+
+balances
+
+upcoming leave
+
+history
+
+calendar context
+
+adjustment action.
+
+Do not duplicate Employee Detail unnecessarily.
+
+==================================================
+100. MODULE SETTINGS LANDINGS
+==================================================
+
+If HR/Services currently use separate settings landing pages:
+
+make them visually consistent.
+
+Same:
+
+settings groups
+
+item density
+
+description treatment
+
+permission hiding.
+
+==================================================
+101. NOTIFICATIONS
+==================================================
+
+UI-4 already standardized notification collection.
+
+Audit only supporting specialized states:
+
+mark all read if existing
+
+filter by unread/type if existing
+
+notification settings if existing.
+
+Do not reopen the list unnecessarily.
+
+==================================================
+102. PROFILE
+==================================================
+
+UI-6 polished Profile read-only sections.
+
+Audit supporting profile actions only.
+
+Do not make Profile duplicate Employee HR record.
+
+==================================================
+103. CHANGE PASSWORD
+==================================================
+
+This was excluded from UI-5.
+
+Now polish the auth action flow if it exists.
+
+Use standard form primitives:
+
+Current password
+
+New password
+
+Confirm password.
+
+Do not change password policy.
+
+==================================================
+104. PASSWORD UX
+==================================================
+
+Use:
+
+show/hide control
+
+clear validation
+
+requirements only if actual backend/domain rule exists.
+
+No invented password-strength rules.
+
+==================================================
+105. REMINDER SETTINGS
+==================================================
+
+If existing reminder/settings surfaces exist:
+
+use settings-row patterns.
+
+Do not add new notification preferences.
+
+==================================================
+106. SYNC SETTINGS / STATUS
+==================================================
+
+If current application exposes sync settings/status:
+
+polish it as infrastructure status.
+
+Do not make sync implementation details dominate normal users.
+
+==================================================
+107. SYNC STATUS
+==================================================
+
+Potential existing information:
+
+Last sync
+
+Pending items
+
+Failed items
+
+Retry.
+
+Use actual state only.
+
+==================================================
+108. FAILED SYNC
+==================================================
+
+If retry exists:
+
+clear action.
+
+Do not expose raw stack traces/database errors.
+
+==================================================
+109. MODULE POLISH PASS — HR
+==================================================
+
+After specialized screens are migrated, audit every HR route visually.
+
+Look for surviving inconsistencies in:
+
+typography
+
+spacing
+
+headers
+
+status chips
+
+buttons
+
+surface usage
+
+section gaps
+
+empty/error states
+
+mobile behavior.
+
+==================================================
+110. HR ROUTE AUDIT
+==================================================
+
+At minimum check:
+
+Dashboard contribution
+
+Employees
+
+Employee Detail/Create/Edit
+
+Attendance Today
+
+Attendance lists/details
+
+Corrections
+
+Shifts
+
+Work Locations
+
+Attendance Policies
+
+Leave lists/details/request
+
+Leave balances
+
+Leave calendar
+
+Leave Types
+
+Leave Policies
+
+Holidays
+
+Reports
+
+settings hubs.
+
+==================================================
+111. MODULE POLISH PASS — SERVICES
+==================================================
+
+Audit every Services route visually.
+
+==================================================
+112. SERVICES ROUTE AUDIT
+==================================================
+
+At minimum:
 
 Enquiries
 
-Assignments
+Job Assignments
 
 Inspections
 
@@ -889,1143 +1924,1742 @@ Material Requests
 
 Work Executions
 
-but do not rewrite correct code unnecessarily.
-
-==================================================
-33. MEDIUM — SERVICES SETTINGS NAV VISIBILITY
-==================================================
-
-Audit Services Settings navigation visibility.
-
-The audit found Settings visibility considers:
-
-Service Type
-
-Complaint Type
-
-Priority
-
-Ticket Type
-
-Material Request Purpose
-
-but may omit:
-
-Root Cause
-
-Charge Responsibility.
-
-Fix it.
-
-==================================================
-34. SETTINGS NAV RULE
-==================================================
-
-Services Settings nav should appear if the user has ANY usable Services
-configuration View/Manage permission.
-
-Include all actual implemented masters:
-
-Service Types
-
-Complaint Types
-
-Priorities
-
-Ticket Types
-
-Root Causes
-
-Charge Responsibilities
-
-Material Request Purposes
-
-and future Services masters via catalog contribution where practical.
-
-==================================================
-35. NO HARDCODED INCOMPLETE LIST
-==================================================
-
-Prefer deriving Settings visibility from permission catalog/module
-contribution instead of maintaining a manually forgotten OR-list.
-
-If current architecture makes a small explicit list cleaner, keep it but cover
-all permissions and add regression tests.
-
-==================================================
-36. TEST SETTINGS VISIBILITY
-==================================================
-
-User has ONLY:
-
-services.rootCauses.view
-
-Expected:
-
-Services Settings visible
-Root Causes accessible.
-
-User has ONLY:
-
-services.chargeResponsibilities.view
-
-Expected same.
-
-==================================================
-37. MEDIUM — LEAVE WIDGET PERMISSION ON UNIVERSAL DASHBOARD
-==================================================
-
-Audit:
-
-HrDashboardContributor
-
-LeaveTodayBanner
-
-LocalLeaveRepository.dayOverride()
-
-or equivalent.
-
-Audit found Leave Today may be displayed for any linked Employee simply because
-Leave module is enabled.
-
-This violates the rule:
-
-No permission
-→ do not query/show.
-
-==================================================
-38. LEAVE DASHBOARD PERMISSION
-==================================================
-
-Only load/show personal Leave information when user has appropriate permission,
-for example:
-
-hr.leave.self.view
-
-or actual current equivalent.
-
-Do not expose:
-
-Leave Today
-
-Balance
-
-Upcoming Leave
-
-to a linked Employee who lacks Leave View permission.
-
-==================================================
-39. REPOSITORY DEFENSE
-==================================================
-
-Where appropriate, personal leave read operations should also enforce access at
-use-case/repository boundary.
-
-Do not depend only on Dashboard contributor hiding the widget.
-
-==================================================
-40. TEST LEAVE DASHBOARD
-==================================================
-
-Employee linked + Leave module enabled + NO Leave View permission:
-
-Leave contribution absent.
-
-Grant Leave View SELF:
-
-personal Leave contribution appears.
-
-==================================================
-41. MEDIUM — SERVICE TEAM MEMBER DATA VALIDATION
-==================================================
-
-Audit:
-
-ServiceTeamRepository.saveTeam()
-
-membership writes
-
-team lead writes.
-
-Audit found member IDs may be persisted without sufficient repository-level
-workforce validation.
-
-UI selection alone is not sufficient.
-
-==================================================
-42. TEAM MEMBER VALIDATION
-==================================================
-
-Before saving Team membership validate every Employee reference:
-
-exists
-
-belongs to same company
-
-is eligible/active according to current creation/edit policy.
-
-Team lead:
-
-exists
-
-same company
-
-active
-
-and if business rule requires:
-must be included in Team membership.
-
-Use actual established ServiceTeam rules.
-
-==================================================
-43. DO NOT DIRECTLY IMPORT HR DAO
-==================================================
-
-Validate through:
-
-WorkforceDirectory
-
-or the approved cross-module workforce contract.
-
-Services must remain decoupled from HR internals.
-
-==================================================
-44. HISTORICAL EMPLOYEE RULE
-==================================================
-
-Inactive Employees may remain visible in historical Team/transaction records.
-
-But do not allow inactive Employee to be newly added to active Service Team
-unless current business rules explicitly permit it.
-
-==================================================
-45. CROSS-COMPANY PROTECTION
-==================================================
-
-Attempt to save an Employee ID belonging to another company:
-
-must reject.
-
-Do not rely on UI selector having filtered it.
-
-==================================================
-46. MEDIUM — COMPANY TIME CONSISTENCY
-==================================================
-
-Audit raw:
-
-DateTime.now()
-
-within business/dashboard paths.
-
-Known audit findings include:
-
-Universal Dashboard header
-
-Attachment creation
-
-Inspection fallback when Assignment Visit Date missing.
-
-Fix according to architecture.
-
-==================================================
-47. UNIVERSAL DASHBOARD DATE
-==================================================
-
-Dashboard "Today" / date header should use:
-
-AppClock
-
-+
-CompanyTimeService
-
-not browser/device local DateTime.now().
-
-The company timezone is authoritative for business date.
-
-==================================================
-48. ATTACHMENT TIMESTAMPS
-==================================================
-
-Attachment metadata timestamps should use:
-
-AppClock
-
-or existing centralized clock abstraction
-
-for deterministic/testing consistency.
-
-If these timestamps are UTC technical timestamps:
-
-use the shared clock, store UTC.
-
-==================================================
-49. INSPECTION VISIT DATE FALLBACK
-==================================================
-
-Do NOT use:
-
-DateTime.now()
-
-as a silent replacement when required source:
-
-JobAssignment.scheduledVisitDate
-
-is missing.
-
-That invents business data.
-
-Prefer:
-
-null / missing source validation
-
-or explicit user input
-
-according to the approved Inspection workflow.
-
-If selected Assignment should always have Visit Date:
-
-reject invalid source Assignment clearly.
-
-==================================================
-50. CLOCK AUDIT
-==================================================
-
-Search Services + Universal Dashboard for raw:
-
-DateTime.now()
-
-DateTime.now().toUtc()
-
-and classify each usage.
-
-Allowed only when genuinely infrastructure-level and not already covered by
-AppClock.
-
-Business logic must use centralized time architecture.
-
-==================================================
-51. CLEANUP — OLD SERVICES DASHBOARD CUBIT
-==================================================
-
-Audit:
-
-modules/services/overview/presentation/bloc/service_dashboard_cubit.dart
-
-or current equivalent.
-
-Latest architecture uses:
-
-Universal Dashboard
-
-+
-Services dashboard contributor.
-
-If old Service Dashboard Cubit/page is genuinely unused:
-
-remove dead production code.
-
-==================================================
-52. DO NOT REMOVE USEFUL QUERY LOGIC
-==================================================
-
-Before deleting:
-
-confirm no imports/references
-
-confirm no tests depend on intended public contract
-
-move reusable logic if necessary.
-
-Do not blindly delete by filename.
-
-==================================================
-53. LEGACY SERVICES OVERVIEW
-==================================================
-
-Audit any remaining:
-
-ServicesOverviewPage
-
-ServiceDashboardPage
-
-old Services Dashboard routes
-
-old dashboard BLoCs/Cubits.
-
-Universal Dashboard is the only user-facing dashboard.
-
-Remove/deprecate dead duplicates.
-
-==================================================
-54. UNIVERSAL DASHBOARD MUST REMAIN NEUTRAL
-==================================================
-
-Do not move Services dashboard logic directly into platform SQL/DAO code.
-
-Services contributor/read contract remains module-owned.
-
-HR contributor/read contract remains HR-owned.
-
-==================================================
-55. SECURITY AUDIT — ALL SERVICES MUTATIONS
-==================================================
-
-While fixing the known issues, audit every Services mutation once.
-
-For each operation answer:
-
-What permission is required?
-
-What scope is required?
-
-What object check is required?
-
-Does repository enforce it?
-
-Does route enforce it?
-
-Does UI gate it?
-
-Audit at minimum:
-
-Customer:
-create/edit/deactivate
-
-Site:
-create/edit/deactivate
-
-Team:
-create/edit/deactivate/membership
-
-Enquiry:
-create/edit/cancel
-
-Assignment:
-create/edit/cancel
-
-Inspection:
-create/edit/complete/cancel
-
-Material Request:
-create/edit/cancel/print
-
-Work Execution:
-create/edit/perform/complete/cancel
-
-Services Masters:
-view/manage.
-
-==================================================
-56. DO NOT CONFLATE MANAGE AND ALL
-==================================================
-
-A Manage/Perform/Edit permission does NOT imply ALL data.
-
-This principle must be documented and tested.
-
-==================================================
-57. SECURITY HELPER
-==================================================
-
-If many repositories contain repeated logic:
-
-create/reuse one consistent authorization helper.
-
-Conceptually:
-
-authorizeRecordAction(
-  permission: ...,
-  viewPermission: ...,
-  recordScopeContext: ...,
-)
-
-Do not create five inconsistent local implementations.
-
-==================================================
-58. OBJECT SCOPE FIRST-CLASS
-==================================================
-
-Record mutation must always evaluate object scope using the same resolver as
-record read.
-
-Example:
-
-TEAM Edit
-
-may edit only TEAM-visible record.
-
-ASSIGNED Perform
-
-may perform only ASSIGNED-visible Work Execution.
-
-==================================================
-59. PERMISSION COVERAGE DOC
-==================================================
-
-Update:
-
-docs/architecture/permission_coverage.md
-
-if present in full project.
-
-Ensure every Services action maps correctly.
-
-Especially confirm no row implies:
-
-Perform → ViewAll.
-
-==================================================
-60. ACCESS CONTROL DOC
-==================================================
-
-Document:
-
-Action permission NEVER upgrades View scope.
-
-This is now a hard architecture invariant.
-
-==================================================
-61. DASHBOARD ERROR VISIBILITY
-==================================================
-
-Dashboard projection failures should not silently appear as valid zero values.
-
-Introduce appropriate:
-
-logging
-
-typed section error
-
-test failure
-
-debug assertion
-
-or current project's error strategy.
-
-User-facing production UX may still gracefully show:
-
-Unable to load
-
-but must not lie with a count of zero.
-
-==================================================
-62. LOGGING
-==================================================
-
-Do not print sensitive data.
-
-Log:
-
-query/error type
-
-projection identifier
-
-request/correlation context where available.
-
-==================================================
-63. DATA MODEL CHANGES
-==================================================
-
-This phase should NOT require a business schema migration.
-
-Avoid schema changes unless absolutely necessary to correct a proven data
-integrity issue.
-
-Most fixes should be:
-
-authorization
-
-query
-
-routing
-
-repository validation
-
-navigation
-
-time architecture
-
-cleanup.
-
-==================================================
-64. NO BUSINESS SCOPE CHANGES
-==================================================
-
-Do NOT change:
-
-Material Received ownership
-
-Enquiry workflow
-
-Assignment workflow
-
-Inspection lifecycle
-
-Material Request lifecycle
-
-Work Execution lifecycle
-
-Job Order TBD
-
-Quotation TBD
-
-Material Used Qty/UOM TBD
-
-After Photo mandatory TBD.
-
-==================================================
-65. NO UI REDESIGN
-==================================================
-
-Do not redesign the forms/dashboard during this hardening pass.
-
-Only UI changes necessary for:
-
-correct permissions
-
-route behavior
-
-error display
-
-nav visibility
-
-are allowed.
-
-==================================================
-66. TEST — CREATE DOES NOT MEAN EDIT
-==================================================
-
-Customer:
-
-Create-only user
-
-can create.
-
-Cannot edit existing.
-
-Cannot deactivate existing.
-
-Same test for:
-
-Site
-
-Team
-
-where applicable.
-
-==================================================
-67. TEST — EDIT DOES NOT REQUIRE CREATE
-==================================================
-
-If catalog supports independent Edit permission:
-
-Edit-only + View user can edit existing record
-
-without requiring Create.
-
-Same for appropriate domains.
-
-==================================================
-68. TEST — ROUTE GUARDS
-==================================================
-
-Directly navigate:
-
-/customers/new
-/customers/:id/edit
-/sites/new
-/sites/:id/edit
-/teams/new
-/teams/:id/edit
-
-with insufficient permissions.
-
-Expected:
-
-denied/safe route.
-
-==================================================
-69. TEST — MASTER VIEW USER
-==================================================
-
-Master View-only user:
-
-can view permitted list/details/reference values
-
-cannot receive editable Save form.
-
-==================================================
-70. TEST — MASTER MANAGE USER
-==================================================
-
-Manage user:
-
-create/edit/deactivate according to actual business rules.
-
-==================================================
-71. TEST — DASHBOARD QUERY FAILURE
-==================================================
-
-Force malformed/failed query in test.
-
-Expected:
-
-typed/error behavior
-
-NOT:
-
-successful count = 0.
-
-==================================================
-72. TEST — PAGINATION
-==================================================
-
-Seed:
-
-53 Customers
-
-page size:
-20.
-
-Expected pages:
-
-20
-20
-13
-
-total:
-53 on every page.
-
-Repeat representative test for:
+Customers
 
 Sites
 
 Teams
 
-Masters.
+all Services masters
+
+Services Settings.
 
 ==================================================
-73. TEST — SETTINGS PERMISSION
+113. DO NOT REWRITE WORKING COMPONENTS
 ==================================================
 
-Root Cause-only View user sees Services Settings.
+When audit finds inconsistency:
 
-Charge Responsibility-only View user sees Services Settings.
+prefer replacing old local styling with existing UI-1→UI-6 components.
 
-No settings permission:
-
-Settings hidden.
+Do not invent a new component for each problem.
 
 ==================================================
-74. TEST — SERVICE TEAM INVALID MEMBER
+114. DEAD VISUAL CODE
 ==================================================
 
-Cross-company Employee ID:
+Identify obsolete presentation components no longer used after UI migration.
 
-reject.
+Examples:
 
-Unknown Employee ID:
+old card wrappers
 
-reject.
+legacy header widgets
 
-Inactive Employee for new membership:
+old custom input wrappers
 
-reject according to current policy.
+old table decorations
 
-==================================================
-75. TEST — COMPANY TIME
-==================================================
+old Services overview components
 
-Mock AppClock/company timezone.
+old detail field components.
 
-Verify:
-
-Dashboard today
-
-Completed Today
-
-Inspection visit handling
-
-use deterministic company time.
+Remove only when confirmed unused.
 
 ==================================================
-76. TEST — UNIVERSAL DASHBOARD PRODUCTION MODE
+115. NO DEAD BUSINESS CODE CLEANUP
 ==================================================
 
-With DemoAuth disabled and valid authenticated context:
+UI-7 may clean dead PRESENTATION code.
 
-HR contribution loads.
-
-Services contribution loads.
-
-No demo-disabled domain error.
+Do not perform unrelated domain/repository refactors.
 
 ==================================================
-77. REGRESSION — UNIVERSAL DASHBOARD
+116. RAW STYLE AUDIT
 ==================================================
 
-After fixes confirm:
+Run a product-wide search again for:
 
-one Dashboard
+fontSize:
 
-HR contributor
+FontWeight.
 
-Services contributor
+Color(
 
-scope-aware data
+Colors.
 
-global centered width
+BorderRadius.
 
-company switch
+EdgeInsets.
 
-live permission update
+BoxShadow.
 
-all still work.
+InputDecoration(
 
-==================================================
-78. REGRESSION — SERVICES WORKFLOW
-==================================================
+Card(
 
-Run complete:
+within production presentation code.
 
-Enquiry
+Do NOT blindly remove all raw values.
 
-→ Assignment
+Classify:
 
-→ Inspection
+valid design-system implementation
 
-→ Material Request where applicable
+legitimate one-off optical detail
 
-→ Work Execution
+migration debt.
 
-to ensure hardening did not break workflow.
+Reduce remaining feature-level raw styling substantially.
 
 ==================================================
-79. REGRESSION — MATERIAL RECEIVED
+117. TYPOGRAPHY AUDIT
 ==================================================
 
-Verify:
+No page should visually introduce an undocumented new text hierarchy.
 
-Enquiry remains authoritative owner.
+Ensure:
 
-No downstream editability introduced.
+page title
 
-==================================================
-80. REGRESSION — WORK EXECUTION PERFORM
-==================================================
+section title
 
-This is a RELEASE-BLOCKING test.
+body
 
-User:
+label
 
-Employee A
+table header
 
-View:
-ASSIGNED
+metadata
 
-Perform:
-YES.
+status
 
-Records:
-
-WE-A assigned to Employee A
-
-WE-B assigned to Employee B.
-
-Expected:
-
-Employee A:
-
-can view WE-A
-can Start/End WE-A
-
-cannot view WE-B
-cannot Start/End WE-B
-cannot access WE-B through direct URL
-cannot access WE-B through direct use case.
+all come from UI-1 system.
 
 ==================================================
-81. REGRESSION — INSPECTION COMPLETE TEAM
+118. FONT WEIGHT AUDIT
 ==================================================
 
-TEAM user + Complete permission:
+Verify feature code is not introducing random:
 
-can complete TEAM Inspection
+w300
 
-cannot complete unrelated Team Inspection.
+w800
+
+w900.
+
+Use established:
+
+400
+
+500
+
+600
+
+700 sparingly.
 
 ==================================================
-82. REGRESSION — MATERIAL REQUEST PRINT
+119. COLOR AUDIT
 ==================================================
 
-ASSIGNED View + Print:
+No modules should have drifted into their own color systems.
 
-can print assigned Request
+HR and Services use same ERP palette.
 
-cannot print unrelated Request.
+Semantic status colors remain consistent.
 
 ==================================================
-83. REGRESSION — COMPANY ISOLATION
+120. RADIUS AUDIT
 ==================================================
 
-Run cross-company access tests for:
+Remove residual random:
 
-Customer
+12 here
 
-Site
+18 there
 
-Team
+24 elsewhere
 
-Enquiry
+when centralized AppRadius applies.
 
-Assignment
+==================================================
+121. SPACING AUDIT
+==================================================
 
-Inspection
+Replace repeated random spacing with AppSpacing.
 
-Material Request
+Do not chase every 1px optical adjustment.
+
+==================================================
+122. ICON AUDIT
+==================================================
+
+Check:
+
+consistent size
+
+visual weight
+
+meaning
+
+tooltip.
+
+No random icon family/style drift.
+
+==================================================
+123. STATUS AUDIT
+==================================================
+
+Same status concept must use consistent semantic treatment.
+
+Examples:
+
+Active
+
+Pending
+
+Completed
+
+Cancelled
+
+Error
+
+across modules.
+
+Domain meaning remains module-specific.
+
+==================================================
+124. BUTTON AUDIT
+==================================================
+
+No screen should use a custom button style when:
+
+Primary
+
+Secondary
+
+Tertiary
+
+Destructive
+
+Icon
+
+from design system fits.
+
+==================================================
+125. EMPTY-STATE AUDIT
+==================================================
+
+Check specialized screens for old:
+
+"No data"
+
+plain text.
+
+Use intentional empty states.
+
+==================================================
+126. ERROR-STATE AUDIT
+==================================================
+
+No screen should silently display zero/empty after query failure.
+
+==================================================
+127. LOADING AUDIT
+==================================================
+
+No major specialized workspace should use a giant centered spinner if skeleton/state component exists.
+
+==================================================
+128. TOOLTIP AUDIT
+==================================================
+
+Icon-only actions:
+
+tooltip.
+
+Especially:
+
+calendar navigation
+
+chart actions
+
+permission editor icons
+
+settings controls.
+
+==================================================
+129. RESPONSIVE POLISH
+==================================================
+
+Perform module-wide viewport QA.
+
+390
+
+600
+
+768
+
+1000
+
+1280
+
+1440
+
+1920.
+
+==================================================
+130. 1920PX REVIEW
+==================================================
+
+At 1920:
+
+all screens remain centered within 1200px.
+
+No specialized workspace stretches to edges.
+
+Reports/charts must not stretch absurdly.
+
+==================================================
+131. 1280PX REVIEW
+==================================================
+
+Normal laptop layout must remain efficient.
+
+No unnecessary multi-row headers.
+
+==================================================
+132. TABLET REVIEW
+==================================================
+
+Specialized workspaces must adapt intentionally.
+
+Access matrix may become grouped rows.
+
+Reports stack charts.
+
+Calendar agenda relocates.
+
+==================================================
+133. MOBILE REVIEW
+==================================================
+
+Critical specialized mobile cases:
+
+Leave Calendar
+
+Attendance Report
+
+Users & Access detail/editor
+
+Company Modules
+
+Services Settings.
+
+No desktop matrix squeezed into 390px.
+
+==================================================
+134. MOBILE PERMISSION EDITOR
+==================================================
+
+Do NOT display a wide matrix requiring page horizontal scroll.
+
+Use:
+
+permission group cards/rows
+
+action
+
+scope selector beneath/alongside
+
+according to available width.
+
+==================================================
+135. MOBILE REPORTS
+==================================================
+
+Charts full width.
+
+Filters via sheet.
+
+Detailed rows via mobile cards if needed.
+
+==================================================
+136. MOBILE CALENDAR
+==================================================
+
+Day cells remain touch-friendly and readable.
+
+Events use indicators + selected-day agenda.
+
+==================================================
+137. RTL POLISH
+==================================================
+
+Audit every specialized workspace in Arabic.
+
+Especially:
+
+permission matrix
+
+scope selectors
+
+calendar
+
+chart legends/axes
+
+report filters
+
+settings hubs.
+
+==================================================
+138. MIXED-DIRECTION ACCESS DATA
+==================================================
+
+Permission keys should not normally be shown.
+
+User emails
+
+Employee codes
+
+transaction IDs
+
+remain readable inside Arabic layout.
+
+==================================================
+139. CHART RTL
+==================================================
+
+Do not blindly mirror chronological chart axes if library semantics become incorrect.
+
+Date progression should remain understandable.
+
+Labels/legend alignment should follow locale.
+
+==================================================
+140. CALENDAR RTL
+==================================================
+
+Month navigation
+
+weekday headers
+
+day cells
+
+agenda
+
+must behave correctly for Arabic locale.
+
+Follow current localization/date conventions.
+
+==================================================
+141. TEXT SCALE
+==================================================
+
+Validate specialized screens at:
+
+1.0
+
+1.3.
+
+Especially:
+
+permission rows
+
+settings descriptions
+
+calendar event chips
+
+chart labels
+
+report toolbar.
+
+==================================================
+142. ACCESSIBILITY — PERMISSION EDITOR
+==================================================
+
+Every permission control must announce:
+
+permission name
+
+enabled/disabled
+
+scope where applicable.
+
+==================================================
+143. ACCESSIBILITY — SCOPE
+==================================================
+
+Screen reader should understand:
+
+View work executions
+
+Scope: Assigned.
+
+==================================================
+144. ACCESSIBILITY — CALENDAR
+==================================================
+
+Day semantics:
+
+Tuesday, 6 October 2026
+
+2 leave events
+
+Company holiday
+
+selected/current state.
+
+==================================================
+145. ACCESSIBILITY — CHARTS
+==================================================
+
+Provide meaningful summary/text equivalent.
+
+Do not make chart the sole carrier of data.
+
+==================================================
+146. KEYBOARD — ACCESS EDITOR
+==================================================
+
+Desktop access editor must support keyboard traversal.
+
+Expand/collapse groups
+
+permission toggle
+
+scope selector
+
+save/cancel.
+
+==================================================
+147. KEYBOARD — CALENDAR
+==================================================
+
+If calendar implementation reasonably supports:
+
+arrow navigation between days
+
+Enter/Space select day.
+
+Do not undertake a massive custom focus engine if existing calendar cannot support it cleanly;
+at minimum ensure interactive day cells are focusable.
+
+==================================================
+148. KEYBOARD — REPORTS
+==================================================
+
+Filters
+
+chart controls if interactive
+
+export
+
+table
+
+all reachable.
+
+==================================================
+149. COMPANY SWITCH
+==================================================
+
+Specialized screens must safely recompute.
+
+Users & Access:
+
+no old-company users.
+
+Reports:
+
+no old-company metrics.
+
+Calendar:
+
+no old-company leave/holidays.
+
+Settings:
+
+no stale config.
+
+==================================================
+150. LIVE PERMISSION CHANGE
+==================================================
+
+Access revoked while on specialized page:
+
+safe route/page update.
+
+No stale sensitive data.
+
+==================================================
+151. MODULE ENABLEMENT
+==================================================
+
+If Services disabled:
+
+Services Settings inaccessible.
+
+If HR/Leave disabled:
+
+Leave Calendar/Reports inaccessible according to existing module model.
+
+No empty dead settings links.
+
+==================================================
+152. PERMISSION MATRIX LIVE UPDATE
+==================================================
+
+Saving grants should update actual navigation/actions/dashboard without relogin.
+
+Preserve existing behavior.
+
+==================================================
+153. SCOPE-ONLY CHANGE
+==================================================
+
+ASSIGNED → TEAM
+
+must be recognized as a real permission-state change.
+
+Do not regress PermissionSet scope equality behavior.
+
+==================================================
+154. ACCESS EDITOR SECURITY
+==================================================
+
+UI must not allow:
+
+self escalation
+
+scope escalation beyond grant authority
+
+platform permissions by unauthorized company user
+
+cross-company access.
+
+Existing authorization remains server/repository authoritative.
+
+==================================================
+155. NO ROLE CHECKS
+==================================================
+
+Product-wide search for new logic such as:
+
+if (role == ...)
+isAdmin
+isManager
+isTechnician
+
+in runtime authorization UI.
+
+Do not introduce any.
+
+==================================================
+156. REPORT SECURITY
+==================================================
+
+Reports are data access.
+
+Report counts
+
+charts
+
+tables
+
+exports
+
+must all respect scope.
+
+Do not fetch ALL then filter visualization.
+
+==================================================
+157. CALENDAR SECURITY
+==================================================
+
+Same.
+
+Event count itself can leak workforce absence data.
+
+Query at permitted scope.
+
+==================================================
+158. SETTINGS SECURITY
+==================================================
+
+Settings item visibility must reflect permissions.
+
+Direct route remains guarded.
+
+==================================================
+159. EXPORT SECURITY
+==================================================
+
+Existing export must use same scope as visible report.
+
+No broader export than screen data.
+
+==================================================
+160. NO NEW BUSINESS FEATURE
+==================================================
+
+Do NOT add:
+
+Services Reports
+
+Finance
+
+Inventory
+
+Job Order
+
+Quotation module
+
+Service SLA
+
+billing
+
+productivity scoring
+
+new HR report types
+
+new access role system
+
+new workflow approvals.
+
+==================================================
+161. SERVICE REPORTS
+==================================================
+
+Client requirements remain insufficient.
+
+Do not create Service Reports merely because HR reports are being polished.
+
+If legacy Services nav contains Service Reports:
+
+keep current established decision:
+
+not implemented/hidden until confirmed.
+
+==================================================
+162. REPORT CHART DATA
+==================================================
+
+Do not derive misleading metrics merely to populate charts.
+
+If implemented report does not provide enough data for a useful chart:
+
+omit chart.
+
+A well-designed report with summary + table is acceptable.
+
+==================================================
+163. NO FAKE ANALYTICS
+==================================================
+
+Do not add:
+
+employee performance
+
+technician efficiency
+
+average resolution time
+
+SLA compliance
+
+customer satisfaction
+
+revenue trend
+
+unless actual domain/business definitions already exist.
+
+==================================================
+164. LEAVE CALENDAR DATA
+==================================================
+
+Do not change:
+
+which Leave statuses appear
+
+holiday overlay rules
+
+scope behavior
+
+day override semantics.
+
+Presentation only.
+
+==================================================
+165. HOLIDAY BUSINESS RULES
+==================================================
+
+Do not alter:
+
+holiday type
+
+optional holiday behavior
+
+copy/import behavior
+
+attendance/leave interaction.
+
+==================================================
+166. ACCESS BUSINESS RULES
+==================================================
+
+Do not alter:
+
+GrantAuthorityResolver
+
+last admin guard
+
+Employee-link requirements
+
+module enablement
+
+scope resolver
+
+permission normalization.
+
+==================================================
+167. NO SCHEMA MIGRATION
+==================================================
+
+Schema must remain:
+
+18
+
+unless an independently discovered critical existing defect demands a separate task.
+
+UI-7 should not change database schema.
+
+==================================================
+168. PERFORMANCE — REPORTS
+==================================================
+
+Audit:
+
+no N+1
+
+no full company dataset loaded for a small summary if current read architecture supports aggregation
+
+charts reuse report snapshot/read model
+
+filter changes do not trigger unrelated queries.
+
+==================================================
+169. PERFORMANCE — ACCESS
+==================================================
+
+Do not rebuild the full permission tree excessively on every toggle.
+
+Keep local editor state efficient.
+
+==================================================
+170. PERFORMANCE — CALENDAR
+==================================================
+
+Load appropriate visible range.
+
+Do not load years of Leave records for one month if current repository supports range query.
+
+==================================================
+171. PERFORMANCE — SETTINGS
+==================================================
+
+Settings hub should not load all master records just to show navigation.
+
+==================================================
+172. PRESENTATION MODELS
+==================================================
+
+Presentation-only models may be created for:
+
+ReportMetric
+
+ChartSeries
+
+CalendarDayPresentation
+
+SettingsItemPresentation
+
+AccessPermissionRowPresentation.
+
+Do not move business meaning into platform widgets.
+
+==================================================
+173. DOMAIN OWNERSHIP
+==================================================
+
+HR owns HR report/calendar data.
+
+Access subsystem owns grants.
+
+Services owns Services configuration.
+
+UI components only present them.
+
+==================================================
+174. DESIGN-SYSTEM USAGE
+==================================================
+
+All specialized screens must use UI-1 primitives.
+
+No separate chart-card design system.
+
+No separate calendar typography system.
+
+No separate access-editor button system.
+
+==================================================
+175. SPECIALIZED COMPONENT DOCUMENTATION
+==================================================
+
+Document any new reusable specialized components.
+
+Avoid undocumented magic behavior.
+
+==================================================
+176. SETTINGS ACCEPTANCE — SERVICES
+==================================================
+
+Services Settings should feel compact and understandable.
+
+User with only:
+
+Root Cause View
+
+must see:
+
+Services Settings
+→ Root Causes
+
+and nothing unauthorized.
+
+==================================================
+177. SETTINGS ACCEPTANCE — HR
+==================================================
+
+HR configuration should be clearly separated into:
+
+Attendance
+
+Leave
+
+without cluttering primary module navigation.
+
+==================================================
+178. ACCESS ACCEPTANCE — ASSIGNED
+==================================================
+
+Example access editor state:
 
 Work Execution
 
-Dashboard.
+View records
+Enabled
+Scope: Assigned
+
+Perform work
+Enabled
+
+Edit work execution
+Disabled.
+
+The UI must make this obvious.
+
+It must NOT imply Perform gives All access.
 
 ==================================================
-84. FULL PROJECT QUALITY GATE
+179. ACCESS ACCEPTANCE — TEAM
 ==================================================
 
-Because the previously audited ZIP contained only `lib/`, now run these checks
-against the FULL PROJECT.
+Change:
+
+Assigned → Team
+
+Save.
+
+After save:
+
+actual app capability updates
+
+Dashboard/lists/actions update
+
+without relogin.
+
+==================================================
+180. ACCESS ACCEPTANCE — CONFIG MANAGE
+==================================================
+
+Priority:
+
+Manage enabled
+
+View dependency clearly represented
+
+no scope selector.
+
+==================================================
+181. ACCESS ACCEPTANCE — EMPLOYEE LINK
+==================================================
+
+A permission requiring Employee link should clearly indicate requirement if current user target is unlinked.
+
+No vague failed-save experience.
+
+==================================================
+182. COMPANY MODULE ACCEPTANCE
+==================================================
+
+Module enablement UX clearly differs from permission management.
+
+Users should understand:
+
+Module enabled for company
+≠
+User has access to module.
+
+==================================================
+183. REPORT ACCEPTANCE
+==================================================
+
+Pick the most important existing Attendance report as the report visual benchmark.
+
+It must demonstrate:
+
+filters
+
+summary
+
+chart if meaningful
+
+details
+
+responsive layout
+
+scope-safe data.
+
+==================================================
+184. LEAVE REPORT ACCEPTANCE
+==================================================
+
+Pick the most important existing Leave report.
+
+Same standards.
+
+==================================================
+185. CALENDAR ACCEPTANCE
+==================================================
+
+Leave Calendar must demonstrate:
+
+clean month navigation
+
+Today
+
+selected day
+
+holiday
+
+leave indicators
+
+overflow count
+
+selected-day agenda
+
+SELF/TEAM/ALL behavior
+
+mobile adaptation.
+
+==================================================
+186. HOLIDAY ACCEPTANCE
+==================================================
+
+Annual Holiday management should integrate with the same calendar/settings visual language.
+
+==================================================
+187. MODULE POLISH ACCEPTANCE
+==================================================
+
+After HR and Services audit:
+
+there should be no obvious "old UI" screen left among current production routes.
+
+Any intentionally excluded route must be documented.
+
+==================================================
+188. PRESENTATION DEBT REPORT
+==================================================
+
+Create an explicit remaining visual-debt list.
+
+Only include real unresolved items.
+
+Classify:
+
+BLOCKER
+
+IMPORTANT
+
+MINOR
+
+DEFERRED because business requirement missing.
+
+Do not claim zero debt if known exceptions exist.
+
+==================================================
+189. RAW STYLE REPORT
+==================================================
+
+Compare UI-1 audit with current code.
+
+Report remaining feature-level:
+
+raw typography
+
+raw colors
+
+raw spacing
+
+raw radii
+
+legacy components.
+
+Explain intentional exceptions.
+
+==================================================
+190. TEST — SETTINGS HUB
+==================================================
+
+Test:
+
+permission-filtered items
+
+empty groups hidden
+
+Root Cause-only user
+
+Charge Responsibility-only user
+
+RTL
+
+mobile.
+
+==================================================
+191. TEST — ACCESS MATRIX
+==================================================
+
+Test:
+
+View permission
+
+Manage dependency
+
+action permission
+
+scope selector
+
+Employee-link requirement
+
+dirty state
+
+save loading
+
+scope-only change
+
+self-escalation disabled/rejected state.
+
+==================================================
+192. TEST — MODULE ENABLEMENT
+==================================================
+
+Test:
+
+toggle presentation
+
+permission-gated access
+
+module disable recompute
+
+company switch.
+
+==================================================
+193. TEST — REPORTS
+==================================================
+
+Test:
+
+filter state
+
+scope-safe data
+
+summary metrics
+
+chart empty state
+
+table
+
+error
+
+loading
+
+mobile
+
+RTL.
+
+==================================================
+194. TEST — CALENDAR
+==================================================
+
+Test:
+
+month navigation
+
+Today
+
+selected day
+
+holiday overlay
+
+event overflow
+
+agenda
+
+SELF
+
+TEAM
+
+ALL
+
+RTL
+
+mobile.
+
+==================================================
+195. TEST — COMPANY SWITCH
+==================================================
+
+For:
+
+Access
+
+Reports
+
+Calendar
+
+Settings.
+
+No stale state.
+
+==================================================
+196. VIEWPORT MATRIX
+==================================================
+
+Validate representative specialized screens at:
+
+390
+
+600
+
+768
+
+1000
+
+1280
+
+1440
+
+1920
+
+LTR
+
+RTL
+
+text scale 1.0
+
+text scale 1.3.
+
+==================================================
+197. MANUAL VISUAL QA
+==================================================
+
+Manually inspect these benchmark screens:
+
+1. Users & Access editor — 1920 desktop
+
+2. Users & Access editor — 390 mobile
+
+3. Attendance Report — 1440 desktop
+
+4. Attendance Report — 390 mobile
+
+5. Leave Calendar — 1440 desktop
+
+6. Leave Calendar — 390 mobile
+
+7. Services Settings — 1280 desktop
+
+8. Arabic Users & Access
+
+9. Arabic Leave Calendar.
+
+==================================================
+198. DOCUMENTATION
+==================================================
+
+Create:
+
+docs/design_system/ui7_specialized_workspaces.md
+
+Document:
+
+settings-hub anatomy
+
+access editor
+
+permission/scope presentation
+
+module enablement UX
+
+reports
+
+charts
+
+calendar
+
+holiday management
+
+responsive strategy
+
+RTL
+
+accessibility
+
+module-polish process.
+
+==================================================
+199. UPDATE ACCESS DOCUMENTATION
+==================================================
+
+If presentation terminology changes:
+
+update docs describing:
+
+permission
+
+scope
+
+Employee link
+
+module enablement
+
+without changing authorization semantics.
+
+==================================================
+200. UPDATE DESIGN SYSTEM AUDIT
+==================================================
+
+Update the UI-1 visual-debt audit.
+
+Mark items:
+
+migrated
+
+remaining
+
+intentionally excluded.
+
+==================================================
+201. SCREEN INVENTORY
+==================================================
+
+Document all specialized screens migrated.
+
+Every production route not yet visually migrated must have:
+
+route
+
+reason
+
+future phase/owner.
+
+==================================================
+202. FILE CHANGE BOUNDARY
+==================================================
+
+Expected changes:
+
+presentation
+
+design_system specialized components
+
+l10n
+
+tests
+
+docs.
+
+Avoid:
+
+domain
+
+data
+
+repositories
+
+permissions
+
+routes
+
+schema.
+
+If any such file changes:
+
+explain exact necessity.
+
+==================================================
+203. QUALITY GATE
+==================================================
 
 Run:
 
+dart run tool/l10n/generate.dart
+
 dart format .
-
-localization generation/merge if needed
-
-build_runner if generated models changed
 
 flutter analyze
 
 flutter test
 
-flutter build web --release --dart-define=DEMO_AUTH=true
-
-AND where supported:
-
 flutter build web --release
-
-without DemoAuth define / production-equivalent configuration.
-
-==================================================
-85. DO NOT CLAIM GREEN WITHOUT RUNNING
-==================================================
-
-Report actual command results.
-
-Do not write:
-
-"should pass."
-
-Give:
-
-PASS / FAIL
-
-and actual failure summary.
+--dart-define=DEMO_AUTH=true
+--no-wasm-dry-run.
 
 ==================================================
-86. COMPLETION REPORT
+204. COMPLETION REPORT
 ==================================================
 
-Return a detailed report:
+Return:
 
-1. permission scope-escalation root cause
+1. specialized screens audited
 
-2. final action-vs-view-scope architecture
+2. specialized shared components
 
-3. permissions/dependencies changed
+3. HR Settings result
 
-4. Work Execution ASSIGNED+Perform test result
+4. Services Settings result
 
-5. Inspection TEAM+Complete test result
+5. settings grouping
 
-6. Material Request ASSIGNED+Print test result
+6. permission-filtered settings visibility
 
-7. Customer mutation permission fix
+7. Users & Access landing result
 
-8. Site mutation permission fix
+8. User Access detail result
 
-9. Team mutation permission audit
+9. permission matrix result
 
-10. Customer/Site/Team route guard fix
+10. permission grouping
 
-11. Services master route/form authorization fix
+11. permission descriptions
 
-12. Services Dashboard SQL bind bug root cause
+12. scope-selector UX
 
-13. KPI queries fixed
+13. action-vs-view-scope presentation
 
-14. dashboard error handling instead of silent zero
+14. Manage→View dependency presentation
 
-15. KPI deterministic test results
+15. Employee-link requirement UX
 
-16. HR Universal Dashboard DemoAuth gate fix
+16. dirty access editor
 
-17. production dashboard result
+17. self-escalation UX
 
-18. pagination totals fix
+18. last-admin protection UX
 
-19. Customer pagination result
+19. access history
 
-20. Site pagination result
+20. Company Modules result
 
-21. Team pagination result
+21. module enablement vs user access distinction
 
-22. Master pagination result
+22. Attendance Reports result
 
-23. Services Settings Root Cause visibility
+23. Leave Reports result
 
-24. Services Settings Charge Responsibility visibility
+24. report filters
 
-25. Leave Dashboard permission gating
+25. report summaries
 
-26. Service Team Employee validation
+26. charts used
 
-27. cross-company Team member rejection
+27. charts intentionally omitted
 
-28. CompanyTime/AppClock cleanup
+28. report detailed-record UX
 
-29. Inspection missing Visit Date behavior
+29. report drill-down result
 
-30. dead Services Dashboard code cleanup
+30. report loading/error/empty states
 
-31. Services mutation security audit
+31. Leave Calendar result
 
-32. route-security audit
+32. selected-day agenda
 
-33. company-isolation audit
+33. holiday overlay
 
-34. universal dashboard regression
+34. calendar scope behavior
 
-35. Services end-to-end regression
+35. Holiday management result
 
-36. tests added/updated
+36. annual holiday UX
 
-37. flutter analyze result
+37. profile/supporting settings polish
 
-38. flutter test total/pass/fail
+38. notification supporting UX
 
-39. demo Web release build result
+39. sync/settings polish if applicable
 
-40. production-equivalent Web build result
+40. HR full-route polish audit
 
-41. any genuine remaining issues.
+41. Services full-route polish audit
+
+42. dead presentation code removed
+
+43. remaining visual debt
+
+44. raw-style audit result
+
+45. typography consistency
+
+46. font-weight consistency
+
+47. color consistency
+
+48. spacing consistency
+
+49. radius consistency
+
+50. status consistency
+
+51. Desktop 1280
+
+52. Desktop 1440
+
+53. Desktop 1920
+
+54. tablet
+
+55. mobile 390
+
+56. Arabic/RTL
+
+57. text scale 1.3
+
+58. accessibility
+
+59. keyboard UX
+
+60. performance/N+1 review
+
+61. company switch
+
+62. live permission update
+
+63. scope-only update
+
+64. module disablement
+
+65. tests added/updated
+
+66. files modified by layer
+
+67. confirmation no new business feature
+
+68. confirmation no role-based runtime authorization
+
+69. confirmation no business logic changed
+
+70. confirmation no permission semantics changed
+
+71. schemaVersion
+
+72. flutter analyze
+
+73. flutter test count/result
+
+74. Web release build result.
 
 ==================================================
-87. RELEASE-BLOCKING CONDITIONS
+205. HARD STOP
 ==================================================
 
-DO NOT consider this hardening phase complete if ANY of these remain:
+UI-7 IS COMPLETE ONLY WHEN:
 
-- action permission upgrades ASSIGNED/TEAM to ALL
+✓ all specialized production workspaces were audited
 
-- Create permission can Edit/Deactivate unintentionally
+✓ HR Settings is polished
 
-- Customer/Site/Team mutation route can bypass required permission
+✓ Services Settings is polished
 
-- View-only Services master user sees usable editable Save form
+✓ settings use compact grouped navigation
 
-- dashboard SQL exceptions silently produce fake zero counts
+✓ unauthorized settings items are hidden
 
-- Universal Dashboard HR contribution only works in DemoAuth
+✓ Users & Access feels like business administration, not developer tooling
 
-- pagination totals equal only current page length
+✓ UserAccount vs Employee is visually clear
 
-- Root Cause/Charge Responsibility-only user loses Services Settings nav
+✓ permission names are human-readable
 
-- Leave data appears without Leave View permission
+✓ raw permission keys are not normal UI
 
-- Service Team can persist cross-company/invalid Employee membership
+✓ permissions are grouped by module/submodule
 
-- business date relies on raw device time where company time is required.
+✓ scoped View permissions clearly show scope
 
-==================================================
-88. HARD STOP
-==================================================
+✓ action permissions do NOT display fake independent ALL scope
 
-THIS PHASE IS COMPLETE ONLY WHEN:
+✓ ASSIGNED remains visually understandable
 
-✓ Action permissions do NOT alter View scope
+✓ TEAM remains visually understandable
 
-✓ ASSIGNED remains ASSIGNED after Perform/Edit/Complete grants
+✓ ALL means company-wide only
 
-✓ TEAM remains TEAM after action grants
+✓ Manage→View dependencies are represented clearly where applicable
 
-✓ ALL only exists when explicitly granted
+✓ permission editor dirty state works
 
-✓ Customer Create/Edit/Deactivate are independently authorized correctly
+✓ access Save loading works
 
-✓ Site Create/Edit/Deactivate are independently authorized correctly
+✓ self-escalation protection remains intact
 
-✓ Team mutations are correctly authorized
+✓ last-access-admin protection remains intact
 
-✓ Customer mutation routes are guarded
+✓ Employee-link-required permissions are understandable
 
-✓ Site mutation routes are guarded
+✓ access history is readable
 
-✓ Team mutation routes are guarded
+✓ Company Modules clearly differs from user access
 
-✓ repository/use-case authorization remains enforced
+✓ enabling module does not visually imply granting user permissions
 
-✓ Services master View-only users never get a mutable Save experience
+✓ HR Reports are visually polished
 
-✓ Services Dashboard queries have correct SQL binding
+✓ report filters are compact
 
-✓ KPI query errors cannot masquerade as zero
+✓ report metrics are useful, not decorative
 
-✓ real KPI deterministic tests pass
+✓ charts only use real defined metrics
 
-✓ Universal Dashboard HR contribution works outside DemoAuth
+✓ no fake analytics exist
 
-✓ pagination totals are accurate
+✓ report tables use UI-4 collection system
 
-✓ Root Cause permission can expose Services Settings appropriately
+✓ report drill-downs use UI-6 detail language
 
-✓ Charge Responsibility permission can expose Services Settings appropriately
+✓ Leave Calendar is polished
 
-✓ Leave dashboard widgets require Leave permission
+✓ calendar Month navigation is clear
 
-✓ Team Employee IDs are validated through WorkforceDirectory
+✓ Today and selected-day states are distinct
 
-✓ cross-company Team membership is impossible
+✓ leave and holiday indicators are understandable
 
-✓ CompanyTime/AppClock is used consistently for business time
+✓ selected-day agenda is useful
 
-✓ missing Assignment Visit Date does not silently become "now"
+✓ calendar respects SELF/TEAM/ALL scope
 
-✓ dead old Services Dashboard code is removed where truly unused
+✓ calendar does not leak Employee data
 
-✓ Universal Dashboard remains the only Dashboard
+✓ Holiday management is polished
 
-✓ complete Services workflow still works
+✓ existing holiday rules are unchanged
 
-✓ company isolation passes
+✓ Services Reports were NOT invented
 
-✓ live permission updates still work
+✓ Inventory was NOT invented
 
-✓ Material Received ownership remains unchanged
+✓ Job Order module was NOT invented
 
-✓ Job Order/Quotation TBDs remain uninvented
+✓ Quotation module was NOT invented
 
-✓ no unnecessary DB migration was introduced
+✓ no role-based authorization was introduced
+
+✓ HR routes have no obvious legacy visual screen left without documentation
+
+✓ Services routes have no obvious legacy visual screen left without documentation
+
+✓ residual raw feature styling is substantially reduced
+
+✓ typography hierarchy is consistent product-wide
+
+✓ font weights follow UI-1 system
+
+✓ colors remain semantic
+
+✓ radius remains centralized
+
+✓ spacing remains centralized
+
+✓ buttons remain standardized
+
+✓ status styles remain consistent
+
+✓ loading states are intentional
+
+✓ error states never masquerade as empty data
+
+✓ 1200px max width remains authoritative
+
+✓ reports do not exceed global width
+
+✓ calendar does not exceed global width
+
+✓ access editor does not exceed global width
+
+✓ mobile access editor is purpose-built
+
+✓ mobile reports are purpose-built
+
+✓ mobile calendar is purpose-built
+
+✓ Arabic/RTL works
+
+✓ text scale 1.3 works
+
+✓ accessibility is acceptable
+
+✓ keyboard access works
+
+✓ company switch clears specialized state
+
+✓ live permission changes work
+
+✓ scope-only changes update without relogin
+
+✓ module disablement works
+
+✓ no business logic changed
+
+✓ no permission semantics changed
+
+✓ no repository behavior changed
+
+✓ no schema migration was introduced
+
+✓ schema remains 18
 
 ✓ flutter analyze passes
 
 ✓ flutter test passes
 
-✓ demo Web build succeeds
-
-✓ production-equivalent Web build succeeds
+✓ Web release build succeeds
 
 THEN STOP.
 
-DO NOT START PHASE 8 UNTIL THIS HARDENING PHASE IS GREEN.
+DO NOT START ANOTHER BUSINESS MODULE.
+
+NEXT PHASE:
+
+UI-8 — MOTION, INTERACTION STATES, RESPONSIVE EDGE CASES,
+ACCESSIBILITY, RTL & PRODUCT-WIDE UX HARDENING.

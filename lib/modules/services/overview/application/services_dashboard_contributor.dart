@@ -221,6 +221,11 @@ class ServicesDashboardContributor implements DashboardContributor {
                 '${numbers.integer(item.waitingMaterialCount)} ${l.servicesDashboardWaitingMaterials}',
               if (due(item.dueAt) != null) due(item.dueAt)!,
             ].where((s) => s.trim().isNotEmpty).join(' · '),
+            categoryLabel: serviceWorkflowStageLabel(
+              servicesDashboardAttentionStage(item.kind),
+              l,
+            ),
+            priorityLabel: item.priorityName,
             icon: serviceWorkflowStageIcon(
               servicesDashboardAttentionStage(item.kind),
             ),
@@ -266,6 +271,8 @@ class ServicesDashboardContributor implements DashboardContributor {
               item.summary,
             ].where((s) => s.trim().isNotEmpty).join(' · '),
             statusLabel: _workStatus(item, l),
+            type: item.kind.name,
+            priority: _workPriority(item),
             actionText: item.action == null
                 ? ''
                 : servicesDashboardMyWorkActionLabel(item.action!, l),
@@ -312,6 +319,7 @@ class ServicesDashboardContributor implements DashboardContributor {
               event.reference,
             ].where((s) => s.trim().isNotEmpty).join(' '),
             description: serviceActivityEventLabel(event.eventType, l),
+            moduleLabel: l.navSectionServices,
             icon: Icons.history_outlined,
             occurredAt: event.occurredAt,
           ),
@@ -358,6 +366,16 @@ class ServicesDashboardContributor implements DashboardContributor {
     ServicesAttentionKind.activeWorkLine => ServicesRoutes.workExecution(
       item.entityId,
     ),
+  };
+
+  /// Presentation-only ranking so the immediate next task (an active work
+  /// execution) surfaces first. This is not a business priority: the underlying
+  /// ordering already comes from the module read projection.
+  int _workPriority(ServicesMyWorkItem item) => switch (item.kind) {
+    ServicesMyWorkKind.execution =>
+      item.action == ServicesMyWorkAction.continueWork ? 100 : 80,
+    ServicesMyWorkKind.inspection => 60,
+    ServicesMyWorkKind.assignment => 40,
   };
 
   String _workStatus(ServicesMyWorkItem item, AppLocalizations l) =>

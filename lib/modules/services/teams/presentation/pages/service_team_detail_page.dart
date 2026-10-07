@@ -71,18 +71,38 @@ class ServiceTeamDetailPage extends StatelessWidget {
             .firstOrNull;
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: team.name,
-            subtitle: team.teamCode,
-            actions: [
+            businessId: team.teamCode,
+            leading: AppRecordGlyph(icon: Icons.groups_outlined),
+            status: AppDetailStatus(
+              label: serviceStatusLabel(team.status, l),
+              status: serviceStatus(team.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.person_outline,
+                label: l.servicesTeamLead,
+                value: lead?.name ?? l.servicesTeamLeadNone,
+              ),
+              AppMetadataItem(
+                icon: Icons.people_outline,
+                label: l.servicesTeamMembers,
+                value: numbers.integer(state.members.length),
+              ),
+            ],
+            primaryAction: canManage
+                ? AppPrimaryButton(
+                    label: l.edit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () =>
+                        context.go(ServicesRoutes.teamEdit(team.id)),
+                  )
+                : null,
+            overflowActions: [
               if (canManage)
-                AppSecondaryButton(
-                  label: l.edit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () => context.go(ServicesRoutes.teamEdit(team.id)),
-                ),
-              if (canManage)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: team.status == ConfigurationStatus.active,
                   label: team.status == ConfigurationStatus.active
                       ? l.servicesTeamDeactivate
                       : l.servicesTeamActivate,
@@ -93,32 +113,6 @@ class ServiceTeamDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Row(
-                  children: [
-                    AppAvatar(name: team.name, radius: 28),
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            team.name,
-                            style: AppTypography.of(context).sectionTitle,
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          AppStatusBadge(
-                            label: serviceStatusLabel(team.status, l),
-                            status: serviceStatus(team.status),
-                            isPill: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               AppFormSection(
                 title: l.servicesTeamDetails,
                 child: AppDetailsGrid(

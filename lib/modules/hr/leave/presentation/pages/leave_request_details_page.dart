@@ -52,15 +52,13 @@ class LeaveRequestDetailsPage extends StatelessWidget {
                   perms.can(AppPermission.leaveApproveAll));
           final canCancel = isSelf && request.isPending;
           return AppPage(
-            header: AppPageHeader(
+            header: AppDetailHeader(
               title: request.typeSnapshot.name,
-              subtitle: row.employeeName.isEmpty ? null : row.employeeName,
-              actions: [
-                AppStatusBadge(
-                  label: leaveRequestStatusLabel(request.status, l),
-                  status: leaveStatusColor(request.status),
-                ),
-              ],
+              description: row.employeeName.isEmpty ? null : row.employeeName,
+              status: AppDetailStatus(
+                label: leaveRequestStatusLabel(request.status, l),
+                status: leaveStatusColor(request.status),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

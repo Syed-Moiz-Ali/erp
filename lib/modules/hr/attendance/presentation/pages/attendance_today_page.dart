@@ -104,13 +104,23 @@ class _AttendanceTodayPageState extends State<AttendanceTodayPage>
       child: BlocBuilder<AttendanceBloc, AttendanceBlocState>(
         builder: (context, s) {
           final l = context.l10n, a = s.context;
-          final header = AppPageHeader(
+          final header = AppDetailHeader(
             title: l.attendanceTodayTitle,
-            compactActionsInline: true,
-            subtitle: a == null
+            description: a == null
                 ? null
                 : '${a.employee.firstName} · ${AppDateFormatter(Localizations.localeOf(context)).fullDate(a.workday)}',
-            actions: [
+            status: s.summary == null
+                ? null
+                : AppDetailStatus(
+                    label: AttendancePresentation.state(
+                      context,
+                      s.summary!.currentState,
+                    ),
+                    status: AttendancePresentation.status(
+                      s.summary!.currentState,
+                    ),
+                  ),
+            secondaryActions: [
               AppIconButton(
                 icon: Icons.refresh,
                 tooltip: l.dashboardRefresh,

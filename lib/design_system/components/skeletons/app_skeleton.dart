@@ -44,6 +44,11 @@ class _AppSkeletonState extends State<AppSkeleton>
   @override
   Widget build(BuildContext context) {
     final disableAnimations = MediaQuery.disableAnimationsOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final base = isDark ? AppColors.darkSurfaceMuted : AppColors.surfaceSubtle;
+    final highlight = isDark
+        ? AppColors.darkSurfaceHover
+        : AppColors.borderSubtle;
     final radius =
         widget.borderRadius ?? BorderRadius.circular(AppRadius.radiusSm);
 
@@ -53,10 +58,7 @@ class _AppSkeletonState extends State<AppSkeleton>
         child: Container(
           width: widget.width,
           height: widget.height,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceSubtle,
-            borderRadius: radius,
-          ),
+          decoration: BoxDecoration(color: base, borderRadius: radius),
         ),
       );
     }
@@ -69,17 +71,81 @@ class _AppSkeletonState extends State<AppSkeleton>
           width: widget.width,
           height: widget.height,
           decoration: BoxDecoration(
-            color: Color.lerp(
-              AppColors.surfaceSubtle,
-              AppColors.borderSubtle,
-              _animation.value,
-            ),
+            color: Color.lerp(base, highlight, _animation.value),
             borderRadius: radius,
           ),
         ),
       ),
     );
   }
+}
+
+/// Geometry-aware skeleton for the shared data table: header row plus dense
+/// data rows, so loading resembles the eventual table instead of a spinner.
+class AppTableSkeleton extends StatelessWidget {
+  const AppTableSkeleton({super.key, this.rows = 6, this.columns = 4});
+
+  final int rows;
+  final int columns;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          for (var c = 0; c < columns; c++) ...[
+            if (c > 0) const SizedBox(width: AppSpacing.lg),
+            Expanded(
+              child: AppSkeleton(width: c == 0 ? 120 : null, height: 12),
+            ),
+          ],
+        ],
+      ),
+      const SizedBox(height: AppSpacing.lg),
+      for (var r = 0; r < rows; r++) ...[
+        const Divider(height: 1),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: [
+            for (var c = 0; c < columns; c++) ...[
+              if (c > 0) const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: AppSkeleton(width: c == 0 ? 140 : null, height: 14),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+      ],
+    ],
+  );
+}
+
+/// Geometry-aware skeleton for detail pages (label/value pairs + sections).
+class AppDetailSkeleton extends StatelessWidget {
+  const AppDetailSkeleton({super.key, this.sections = 3});
+
+  final int sections;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const AppSkeleton(width: 220, height: 24),
+      const SizedBox(height: AppSpacing.lg),
+      for (var s = 0; s < sections; s++) ...[
+        Row(
+          children: const [
+            Expanded(child: AppSkeleton(height: 14)),
+            SizedBox(width: AppSpacing.xxl),
+            Expanded(child: AppSkeleton(height: 14)),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+      ],
+    ],
+  );
 }
 
 class AppConfigurationSkeleton extends StatelessWidget {

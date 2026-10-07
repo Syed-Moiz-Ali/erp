@@ -141,6 +141,54 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
     }
   }
 
+  List<AppActiveFilter> _activeChips(
+    BuildContext context,
+    EmployeeListState state,
+    EmployeeListBloc bloc,
+    AppLocalizations l,
+  ) {
+    final f = state.filter;
+    final refs = state.references;
+    final chips = <AppActiveFilter>[];
+    void add(String label, EmployeeFilter next) => chips.add(
+      AppActiveFilter(
+        label: label,
+        onRemove: () => bloc.add(EmployeeFilterChanged(next)),
+      ),
+    );
+    if (f.status != null) {
+      add(
+        '${l.status}: ${f.status == EmploymentStatus.active ? l.empActive : l.empInactive}',
+        f.copyWith(status: null),
+      );
+    }
+    if (f.departmentId != null) {
+      add(
+        '${l.empDepartment}: ${referenceLabel(refs?.departments, f.departmentId, l)}',
+        f.copyWith(departmentId: null),
+      );
+    }
+    if (f.designationId != null) {
+      add(
+        '${l.empDesignation}: ${referenceLabel(refs?.designations, f.designationId, l)}',
+        f.copyWith(designationId: null),
+      );
+    }
+    if (f.managerId != null) {
+      add(
+        '${l.empManager}: ${referenceLabel(refs?.managerLabels, f.managerId, l)}',
+        f.copyWith(managerId: null),
+      );
+    }
+    if (f.employmentType != null) {
+      add(
+        '${l.empType}: ${employmentTypeLabel(f.employmentType!, l)}',
+        f.copyWith(employmentType: null),
+      );
+    }
+    return chips;
+  }
+
   List<AppMenuAction> actions(BuildContext context, Employee e) {
     final bloc = context.read<EmployeeListBloc>(),
         can = PermissionChecker(bloc.context.user.permissions).can;
@@ -199,26 +247,34 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
       final compact = AppBreakpoints.of(context) == AppSize.compact,
           can = PermissionChecker(bloc.context.user.permissions).can;
       final rows = state.data?.employees ?? <Employee>[];
+      final noData = (state.data?.total ?? 0) == 0;
       Widget body;
       if (state.loading && state.data == null) {
-        body = const AppEmployeeSkeleton();
+        body = const AppCollectionSkeleton();
       } else if (state.failure != null && state.data == null) {
         body = AppErrorState(
           message: employeeFailure(state.failure!, l),
           onRetry: () => bloc.add(const EmployeeListStarted()),
         );
       } else if (rows.isEmpty) {
-        body = AppEmptyState(
-          title: (state.data?.total ?? 0) == 0 ? l.empEmpty : l.empNoResults,
-          message: (state.data?.total ?? 0) == 0
-              ? l.empEmptyMessage
-              : l.empNoResultsMessage,
-          actionLabel:
-              (state.data?.total ?? 0) == 0 && can(AppPermission.employeeCreate)
-              ? l.empAdd
-              : null,
-          onAction: () => context.push(AppRoutes.employeeNew),
-        );
+        body = noData
+            ? AppCollectionEmptyState.noData(
+                title: l.empEmpty,
+                message: l.empEmptyMessage,
+                actionLabel: can(AppPermission.employeeCreate)
+                    ? l.empAdd
+                    : null,
+                onAction: () => context.push(AppRoutes.employeeNew),
+              )
+            : AppCollectionEmptyState.noResults(
+                title: l.empNoResults,
+                message: l.empNoResultsMessage,
+                onClearFilters: () {
+                  search.clear();
+                  bloc.add(const EmployeeSearchChanged(''));
+                  bloc.add(const EmployeeFilterChanged(EmployeeFilter()));
+                },
+              );
       } else if (compact) {
         body = Column(
           children: [
@@ -283,8 +339,7 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
         final expanded =
             AppBreakpoints.of(context) == AppSize.expanded ||
             AppBreakpoints.of(context) == AppSize.large;
-        body = AppCard(
-          padding: EdgeInsets.zero,
+        body = AppCollectionSurface(
           child: AppDataTable(
             sortColumnIndex: state.sort == EmployeeSort.code
                 ? 1
@@ -438,52 +493,43 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
               ),
           ],
         ),
-        filters: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppToolbar(
-              search: AppSearchField(
-                controller: search,
-                onChanged: (v) => bloc.add(EmployeeSearchChanged(v)),
-              ),
-              actions: [
-                AppSecondaryButton(
-                  label: l.empFilterCount(
-                    numbers.integer(state.filter.activeCount),
-                  ),
-                  icon: Icons.tune,
-                  onPressed: () => filters(context, state),
+        filters: AppCollectionToolbar(
+          search: AppSearchField(
+            controller: search,
+            hint: l.empSearch,
+            onChanged: (v) => bloc.add(EmployeeSearchChanged(v)),
+          ),
+          filterButton: AppFilterButton(
+            label: l.empFilters,
+            activeCount: state.filter.activeCount,
+            onPressed: () => filters(context, state),
+          ),
+          sort: AppSortControl<EmployeeSort>(
+            value: state.sort,
+            label: l.empSort,
+            items: [
+              for (final value in EmployeeSort.values)
+                DropdownMenuItem(
+                  value: value,
+                  child: Text(employeeSortLabel(value, l)),
                 ),
-                if (state.filter.activeCount > 0)
-                  AppTextButton(
-                    label: l.empClear,
-                    onPressed: () =>
-                        bloc.add(const EmployeeFilterChanged(EmployeeFilter())),
-                  ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: SizedBox(
-                width: compact ? double.infinity : 260,
-                child: AppDropdown<EmployeeSort>(
-                  label: l.empSort,
-                  value: state.sort,
-                  items: [
-                    for (final value in EmployeeSort.values)
-                      DropdownMenuItem(
-                        value: value,
-                        child: Text(employeeSortLabel(value, l)),
-                      ),
-                  ],
-                  onChanged: (v) {
-                    if (v != null) bloc.add(EmployeeSortChanged(v));
-                  },
-                ),
-              ),
-            ),
-          ],
+            ],
+            onChanged: (v) {
+              if (v != null) bloc.add(EmployeeSortChanged(v));
+            },
+          ),
+          resultCount: AppResultCount(
+            filtered: state.data?.filtered ?? 0,
+            total: state.data?.total,
+          ),
+          activeFilters: AppActiveFilters(
+            filters: _activeChips(context, state, bloc, l),
+            onClearAll: () {
+              search.clear();
+              bloc.add(const EmployeeSearchChanged(''));
+              bloc.add(const EmployeeFilterChanged(EmployeeFilter()));
+            },
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -498,7 +544,7 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
             body,
             const SizedBox(height: AppSpacing.lg),
             if (state.data != null)
-              AppTablePagination(
+              AppPagination(
                 page: state.page,
                 pageSize: 10,
                 total: state.data!.filtered,

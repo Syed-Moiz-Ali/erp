@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
-import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_history.dart';
@@ -81,16 +80,12 @@ class AttendanceHistoryPage extends StatelessWidget {
                   builder: (context, c) {
                     final compact =
                         AppBreakpoints.classify(c.maxWidth) == AppSize.compact;
-                    return AppFilterBar(
-                      children: [
+                    return AppCollectionToolbar(
+                      secondary: [
                         if (compact)
-                          AppSecondaryButton(
-                            label: l.historyFilterCount(
-                              AppNumberFormatter(
-                                Localizations.localeOf(context),
-                              ).integer(q.statuses.length),
-                            ),
-                            icon: Icons.filter_list,
+                          AppFilterButton(
+                            label: l.historyFilters,
+                            activeCount: q.statuses.length,
                             onPressed: () async {
                               final values =
                                   await AppBottomSheet.show<
@@ -143,21 +138,29 @@ class AttendanceHistoryPage extends StatelessWidget {
                                 bloc.add(AttendanceHistoryFilterChanged({})),
                           ),
                       ],
+                      resultCount: AppResultCount(
+                        filtered: state.data?.items.length ?? 0,
+                        total: state.data?.total,
+                      ),
                     );
                   },
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 if (state.data case final data?) ...[
                   if (data.items.isEmpty)
-                    AppEmptyState(
-                      title: data.summary.records == 0
-                          ? l.historyEmpty
-                          : l.historyFilteredEmpty,
-                      message: data.summary.records == 0
-                          ? l.historyEmptyNote
-                          : l.historyFilteredNote,
-                      icon: Icons.event_note_outlined,
-                    ),
+                    data.summary.records == 0
+                        ? AppCollectionEmptyState.noData(
+                            title: l.historyEmpty,
+                            message: l.historyEmptyNote,
+                            icon: Icons.event_note_outlined,
+                          )
+                        : AppCollectionEmptyState.noResults(
+                            title: l.historyFilteredEmpty,
+                            message: l.historyFilteredNote,
+                            icon: Icons.event_note_outlined,
+                            onClearFilters: () =>
+                                bloc.add(AttendanceHistoryFilterChanged({})),
+                          ),
                   if (data.items.isNotEmpty)
                     LayoutBuilder(
                       builder: (context, c) {
@@ -174,8 +177,7 @@ class AttendanceHistoryPage extends StatelessWidget {
                         final size = AppBreakpoints.classify(c.maxWidth);
                         return size == AppSize.compact || size == AppSize.medium
                             ? AttendanceHistoryList(data: data, onOpen: open)
-                            : AppCard(
-                                padding: EdgeInsets.zero,
+                            : AppCollectionSurface(
                                 child: AttendanceHistoryTable(
                                   data: data,
                                   onOpen: open,
@@ -183,7 +185,7 @@ class AttendanceHistoryPage extends StatelessWidget {
                               );
                       },
                     ),
-                  AppTablePagination(
+                  AppPagination(
                     page: q.page,
                     pageSize: q.pageSize,
                     total: data.total,

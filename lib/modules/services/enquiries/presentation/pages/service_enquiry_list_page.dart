@@ -66,7 +66,7 @@ class ServiceEnquiryListPage extends StatelessWidget {
             onAction: () => context.go(ServicesRoutes.enquiriesNew),
           );
         } else if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesEnquiryStorageError,
@@ -75,14 +75,18 @@ class ServiceEnquiryListPage extends StatelessWidget {
         } else if (items.isEmpty) {
           final empty =
               (page?.total ?? 0) == 0 && state.filter.activeCount == 0;
-          body = AppEmptyState(
-            title: empty ? l.servicesEnquiryEmpty : l.servicesEnquiryNoResults,
-            message: empty
-                ? l.servicesEnquiryEmptyMessage
-                : l.servicesEnquiryNoResults,
-            actionLabel: empty && canCreate ? l.servicesEnquiryAdd : null,
-            onAction: () => context.go(ServicesRoutes.enquiriesNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesEnquiryEmpty,
+                  message: l.servicesEnquiryEmptyMessage,
+                  actionLabel: canCreate ? l.servicesEnquiryAdd : null,
+                  onAction: () => context.go(ServicesRoutes.enquiriesNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesEnquiryNoResults,
+                  message: l.servicesEnquiryNoResults,
+                  onClearFilters: cubit.clearFilters,
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -120,87 +124,84 @@ class ServiceEnquiryListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesEnquiryColumnEnquiry)),
-              DataColumn(label: Text(l.servicesEnquiryColumnCustomer)),
-              DataColumn(label: Text(l.servicesEnquiryColumnSite)),
-              DataColumn(label: Text(l.servicesEnquiryColumnService)),
-              DataColumn(label: Text(l.servicesEnquiryColumnPriority)),
-              DataColumn(label: Text(l.servicesEnquiryColumnTicket)),
-              DataColumn(label: Text(l.servicesEnquiryColumnStatus)),
-              DataColumn(label: Text(l.servicesEnquiryColumnCreated)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesEnquiryColumnEnquiry)),
+                DataColumn(label: Text(l.servicesEnquiryColumnService)),
+                DataColumn(label: Text(l.servicesEnquiryColumnPriority)),
+                DataColumn(label: Text(l.servicesEnquiryColumnStatus)),
+                DataColumn(label: Text(l.servicesEnquiryColumnCreated)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.enquiry(item.id)),
-                  cells: [
-                    DataCell(
-                      Text(
-                        item.enquiryNumber,
-                        textDirection: TextDirection.ltr,
-                        style: AppTypography.of(context).label,
-                      ),
-                    ),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.customerName),
-                          if (item.customerMobile != null)
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.enquiry(item.id)),
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              item.customerMobile!,
+                              item.enquiryNumber,
                               textDirection: TextDirection.ltr,
+                              style: AppTypography.of(context).label,
+                            ),
+                            Text(
+                              item.siteName.isEmpty
+                                  ? item.customerName
+                                  : '${item.customerName} · ${item.siteName}',
                               style: AppTypography.of(context).caption,
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(Text(item.siteName)),
-                    DataCell(
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.serviceTypeName),
-                          Text(
-                            item.complaintTypeName,
-                            style: AppTypography.of(context).caption,
-                          ),
-                        ],
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.serviceTypeName),
+                            Text(
+                              item.complaintTypeName,
+                              style: AppTypography.of(context).caption,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppStatusBadge(
-                        label: item.priorityName,
-                        status: servicePriorityStatus(item.priorityRank),
-                        isPill: true,
+                      DataCell(
+                        AppStatusBadge(
+                          label: item.priorityName,
+                          status: servicePriorityStatus(item.priorityRank),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(Text(item.ticketTypeName)),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceEnquiryStatusLabel(item.status, l),
-                        status: serviceEnquiryStatus(item.status),
-                        isPill: true,
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceEnquiryStatusLabel(item.status, l),
+                          status: serviceEnquiryStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(Text(dates.date(item.createdAt))),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(Text(dates.date(item.createdAt))),
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -223,25 +224,30 @@ class ServiceEnquiryListPage extends StatelessWidget {
             ],
           ),
           filters: canView
-              ? AppToolbar(
+              ? AppCollectionToolbar(
                   search: AppSearchField(
                     hint: l.servicesEnquirySearch,
                     onChanged: cubit.search,
                   ),
-                  actions: [
-                    AppSecondaryButton(
-                      label: state.filter.activeCount == 0
-                          ? l.servicesEnquiryFilterTitle
-                          : '${l.servicesEnquiryFilterTitle} (${numbers.integer(state.filter.activeCount)})',
-                      icon: Icons.tune,
-                      onPressed: () => _openFilters(context, state),
+                  filterButton: AppFilterButton(
+                    label: l.servicesEnquiryFilterTitle,
+                    activeCount: state.filter.activeCount,
+                    onPressed: () => _openFilters(context, state),
+                  ),
+                  resultCount: AppResultCount(
+                    filtered: page?.filtered ?? 0,
+                    total: page?.total,
+                  ),
+                  activeFilters: AppActiveFilters(
+                    filters: _activeFilterChips(
+                      context,
+                      state,
+                      cubit,
+                      l,
+                      dates,
                     ),
-                    if (state.filter.activeCount > 0)
-                      AppTextButton(
-                        label: l.clear,
-                        onPressed: cubit.clearFilters,
-                      ),
-                  ],
+                    onClearAll: cubit.clearFilters,
+                  ),
                 )
               : null,
           child: Column(
@@ -260,6 +266,70 @@ class ServiceEnquiryListPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<AppActiveFilter> _activeFilterChips(
+    BuildContext context,
+    ServiceEnquiryListState state,
+    ServiceEnquiryListCubit cubit,
+    AppLocalizations l,
+    AppDateFormatter dates,
+  ) {
+    final f = state.filter;
+    String nameOf(List<ServiceMasterRecord> list, String? id) {
+      for (final m in list) {
+        if (m.id == id) return m.name;
+      }
+      return '';
+    }
+
+    void apply(ServiceEnquiryFilter next) => cubit.applyFilter(next);
+    final chips = <AppActiveFilter>[];
+    void add(String label, ServiceEnquiryFilter next) =>
+        chips.add(AppActiveFilter(label: label, onRemove: () => apply(next)));
+    if (f.status != null) {
+      add(
+        '${l.servicesEnquiryFilterStatus}: ${serviceEnquiryStatusLabel(f.status!, l)}',
+        f.copyWith(clearStatus: true),
+      );
+    }
+    if (f.serviceTypeId != null) {
+      add(
+        '${l.servicesEnquiryFilterServiceType}: ${nameOf(state.serviceTypes, f.serviceTypeId)}',
+        f.copyWith(clearServiceType: true, clearComplaintType: true),
+      );
+    }
+    if (f.complaintTypeId != null) {
+      add(
+        '${l.servicesEnquiryFilterComplaintType}: ${nameOf(state.complaintTypes, f.complaintTypeId)}',
+        f.copyWith(clearComplaintType: true),
+      );
+    }
+    if (f.priorityId != null) {
+      add(
+        '${l.servicesEnquiryFilterPriority}: ${nameOf(state.priorities, f.priorityId)}',
+        f.copyWith(clearPriority: true),
+      );
+    }
+    if (f.ticketTypeId != null) {
+      add(
+        '${l.servicesEnquiryFilterTicketType}: ${nameOf(state.ticketTypes, f.ticketTypeId)}',
+        f.copyWith(clearTicketType: true),
+      );
+    }
+    if (f.createdFrom != null) {
+      add(
+        '${l.servicesEnquiryFilterCreatedFrom}: ${dates.date(f.createdFrom!)}',
+        f.copyWith(clearCreatedFrom: true),
+      );
+    }
+    if (f.createdTo != null) {
+      add(
+        '${l.servicesEnquiryFilterCreatedTo}: ${dates.date(f.createdTo!)}',
+        f.copyWith(clearCreatedTo: true),
+      );
+    }
+    return chips;
   }
 
   Future<void> _confirmCancel(

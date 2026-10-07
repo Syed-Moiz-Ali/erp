@@ -11,6 +11,8 @@ import 'package:modular_erp/modules/services/configuration/presentation/bloc/ser
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
+const String _emDash = '\u2014';
+
 String serviceMasterTitle(AppLocalizations l, ServiceMasterKind kind) =>
     switch (kind) {
       ServiceMasterKind.serviceType => l.servicesServiceTypesTitle,
@@ -105,32 +107,45 @@ class ServiceMasterListPage extends StatelessWidget {
                 ),
             ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                width: 320,
-                child: AppSearchField(
-                  hint: l.servicesMasterSearch,
-                  onChanged: (v) =>
-                      context.read<ServiceMasterListCubit>().search(v),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              if (state.loading && state.page == null)
-                const AppConfigurationSkeleton()
-              else if (state.failure != null)
-                AppErrorState(
+          filters: AppCollectionToolbar(
+            search: AppSearchField(
+              hint: l.servicesMasterSearch,
+              onChanged: (v) =>
+                  context.read<ServiceMasterListCubit>().search(v),
+            ),
+            resultCount: AppResultCount(
+              filtered: state.page?.filtered ?? 0,
+              total: state.page?.total,
+            ),
+          ),
+          child: Builder(
+            builder: (context) {
+              final searching = state.query.trim().isNotEmpty;
+              Widget body;
+              if (state.loading && state.page == null) {
+                body = const AppCollectionSkeleton();
+              } else if (state.failure != null && state.page == null) {
+                body = AppErrorState(
                   message: l.servicesMasterStorageError,
                   onRetry: () => context.read<ServiceMasterListCubit>().start(),
-                )
-              else if (items.isEmpty)
-                AppEmptyState(
-                  title: l.servicesMasterEmpty,
-                  message: l.servicesSettingsSubtitle,
-                )
-              else if (AppBreakpoints.of(context) == AppSize.compact)
-                Column(
+                );
+              } else if (items.isEmpty) {
+                final empty = (state.page?.total ?? 0) == 0 && !searching;
+                body = empty
+                    ? AppCollectionEmptyState.noData(
+                        title: l.servicesMasterEmpty,
+                        message: l.servicesSettingsSubtitle,
+                        actionLabel: canManage ? l.servicesAddMaster : null,
+                        onAction: () => context.go(_newRoute(kind)),
+                      )
+                    : AppCollectionEmptyState.noResults(
+                        title: l.servicesMasterNoResults,
+                        message: l.servicesMasterNoResults,
+                        onClearFilters: () =>
+                            context.read<ServiceMasterListCubit>().search(''),
+                      );
+              } else if (AppBreakpoints.of(context) == AppSize.compact) {
+                body = Column(
                   children: [
                     for (final item in items)
                       Padding(
@@ -146,6 +161,10 @@ class ServiceMasterListPage extends StatelessWidget {
                           statusLabel: item.status == ConfigurationStatus.active
                               ? l.active
                               : l.inactive,
+                          metrics: [
+                            if (item.isDefault)
+                              (label: l.servicesMasterDefault, value: l.yes),
+                          ],
                           onTap: () => context.go(
                             canManage
                                 ? _editRoute(kind, item.id)
@@ -154,49 +173,97 @@ class ServiceMasterListPage extends StatelessWidget {
                         ),
                       ),
                   ],
-                )
-              else
-                AppDataTable(
-                  columns: [
-                    DataColumn(label: Text(l.servicesMasterCode)),
-                    DataColumn(label: Text(l.servicesMasterName)),
-                    DataColumn(label: Text(l.status)),
-                    DataColumn(label: Text(l.actions)),
-                  ],
-                  rows: [
-                    for (final item in items)
-                      DataRow(
-                        cells: [
-                          DataCell(Text(item.code)),
-                          DataCell(Text(item.name)),
-                          DataCell(
-                            AppStatusBadge(
-                              label: item.status == ConfigurationStatus.active
-                                  ? l.active
-                                  : l.inactive,
-                              status: item.status == ConfigurationStatus.active
-                                  ? AppStatus.success
-                                  : AppStatus.neutral,
-                              isPill: true,
-                            ),
+                );
+              } else {
+                body = AppCollectionSurface(
+                  child: AppDataTable(
+                    columns: [
+                      DataColumn(label: Text(l.servicesMasterName)),
+                      DataColumn(label: Text(l.servicesMasterCode)),
+                      DataColumn(label: Text(l.servicesMasterSortOrder)),
+                      DataColumn(label: Text(l.servicesMasterDefault)),
+                      DataColumn(label: Text(l.status)),
+                      DataColumn(
+                        label: Semantics(
+                          label: l.actions,
+                          child: const Icon(Icons.more_horiz),
+                        ),
+                      ),
+                    ],
+                    rows: [
+                      for (final item in items)
+                        DataRow(
+                          onSelectChanged: (_) => context.go(
+                            canManage
+                                ? _editRoute(kind, item.id)
+                                : _detailRoute(kind, item.id),
                           ),
-                          DataCell(
-                            AppTextButton(
-                              label: canManage
-                                  ? l.servicesEditMaster
-                                  : l.servicesViewMaster,
-                              onPressed: () => context.go(
-                                canManage
-                                    ? _editRoute(kind, item.id)
-                                    : _detailRoute(kind, item.id),
+                          cells: [
+                            DataCell(
+                              Text(
+                                item.name,
+                                style: AppTypography.of(context).label,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-            ],
+                            DataCell(
+                              Text(
+                                item.code,
+                                textDirection: TextDirection.ltr,
+                                style: AppTypography.of(context).code,
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                item.sortOrder.toString(),
+                                style: AppTypography.of(context).tableCell,
+                              ),
+                            ),
+                            DataCell(
+                              item.isDefault
+                                  ? AppStatusBadge(
+                                      label: l.servicesMasterDefault,
+                                      status: AppStatus.brand,
+                                      isPill: true,
+                                    )
+                                  : const Text(_emDash),
+                            ),
+                            DataCell(
+                              AppStatusBadge(
+                                label: item.status == ConfigurationStatus.active
+                                    ? l.active
+                                    : l.inactive,
+                                status:
+                                    item.status == ConfigurationStatus.active
+                                    ? AppStatus.success
+                                    : AppStatus.neutral,
+                                isPill: true,
+                              ),
+                            ),
+                            DataCell(
+                              AppActionMenu(
+                                tooltip: l.actions,
+                                actions: [
+                                  AppMenuAction(
+                                    label: (l) => canManage
+                                        ? l.servicesEditMaster
+                                        : l.servicesViewMaster,
+                                    onPressed: () => context.go(
+                                      canManage
+                                          ? _editRoute(kind, item.id)
+                                          : _detailRoute(kind, item.id),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                );
+              }
+              return body;
+            },
           ),
         );
       },

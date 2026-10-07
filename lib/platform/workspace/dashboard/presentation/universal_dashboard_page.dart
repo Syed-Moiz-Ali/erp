@@ -15,8 +15,9 @@ import 'package:modular_erp/platform/workspace/dashboard/presentation/bloc/unive
 ///
 /// Neutral ownership: it renders only typed contributions gathered by the
 /// [UniversalDashboardCoordinator] and owns no module business logic, DAO or
-/// Drift dependency. Sections compose by work/attention, never as stacked
-/// per-module dashboards.
+/// Drift dependency. Sections compose by work/attention (My Day, Needs
+/// Attention, KPIs, Today's Schedule, My Work, Team/Company, Recent Activity),
+/// never as stacked per-module dashboards.
 class UniversalDashboardPage extends StatelessWidget {
   const UniversalDashboardPage({super.key, required this.coordinator});
 
@@ -115,89 +116,393 @@ class _DashboardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final compact = AppBreakpoints.of(context) == AppSize.compact;
-    final myDay = _MyDaySection(snapshot: snapshot);
-    final attention = _AttentionSection(snapshot: snapshot);
-    final kpis = _KpiSection(snapshot: snapshot);
-    final schedule = _ScheduleSection(snapshot: snapshot);
-    final myWork = _MyWorkSection(snapshot: snapshot);
-    final overview = _OverviewSection(snapshot: snapshot);
-    final activity = _ActivitySection(snapshot: snapshot);
-    final quickActions = _QuickActionsSection(snapshot: snapshot);
-    final contextRow = _ContextRow(snapshot: snapshot);
 
-    final sections = <Widget>[
-      if (state.status == UniversalDashboardStatus.refreshing) ...[
+    final banners = <Widget>[
+      if (state.status == UniversalDashboardStatus.refreshing)
         Semantics(
           liveRegion: true,
           label: l.universalDashboardRefreshing,
           child: const LinearProgressIndicator(minHeight: 2),
         ),
-        const SizedBox(height: AppSpacing.lg),
-      ],
-      if (snapshot.partialFailure || state.failure != null) ...[
-        AppAlert(
+      if (snapshot.partialFailure || state.failure != null)
+        _PartialBanner(
           message: l.universalDashboardPartial,
-          status: AppStatus.warning,
-        ),
-        const SizedBox(height: AppSpacing.lg),
-      ],
-      contextRow,
-      if (!snapshot.hasAnyData) ...[
-        const SizedBox(height: AppSpacing.lg),
-        AppCard(
-          child: AppEmptyState(
-            title: l.universalDashboardEmptyTitle,
-            message: l.universalDashboardAllClear,
+          onRetry: () => context.read<UniversalDashboardBloc>().add(
+            const UniversalDashboardStarted(),
           ),
         ),
-      ],
     ];
 
-    if (compact) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ...sections,
-          myDay,
-          attention,
-          myWork,
-          schedule,
-          kpis,
-          overview,
-          activity,
-          quickActions,
-        ],
-      );
-    }
+    final sections = _buildSections(context, compact: compact);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _ContextRow(snapshot: snapshot),
+        for (final banner in banners) ...[
+          banner,
+          const SizedBox(height: AppSpacing.lg),
+        ],
         ...sections,
-        myDay,
-        kpis,
-        AppDashboardTwoColumn(
-          primary: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              attention,
-              const SizedBox(height: AppSpacing.xxl),
-              schedule,
-            ],
-          ),
-          secondary: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              myWork,
-              const SizedBox(height: AppSpacing.xxl),
-              overview,
-            ],
-          ),
-        ),
-        activity,
-        quickActions,
       ],
     );
   }
+
+  List<Widget> _buildSections(BuildContext context, {required bool compact}) {
+    if (_isFirstTime(snapshot)) {
+      return [
+        _FirstTimeEmpty(
+          canCreate: snapshot.quickActions.isNotEmpty,
+          onCreate: snapshot.quickActions.isEmpty
+              ? null
+              : () => context.go(snapshot.quickActions.first.route),
+          onLeaveRequest: null,
+        ),
+      ];
+    }
+    if (!snapshot.hasAnyData) {
+      return [
+        AppCard(
+          child: AppEmptyState(
+            title: context.l10n.universalDashboardEmptyTitle,
+            message: context.l10n.universalDashboardAllClear,
+          ),
+        ),
+      ];
+    }
+
+    final myDay = _myDay(context);
+    final attention = _attention(context);
+    final kpis = _kpis(context);
+    final schedule = _schedule(context);
+    final myWork = _myWork(context);
+    final overview = _overview(context);
+    final activity = _activity(context);
+    final quickActions = _quickActions(context);
+
+    if (compact) {
+      // Mobile priority: My Day → Needs Attention → My Work → Today's Schedule
+      // → relevant KPIs → Recent Activity → optional lower-priority overview.
+      return _stack([
+        myDay,
+        attention,
+        myWork,
+        schedule,
+        kpis,
+        activity,
+        overview,
+        quickActions,
+      ]);
+    }
+    return _stack([
+      myDay,
+      attention,
+      kpis,
+      _columns([schedule, myWork]),
+      overview,
+      activity,
+      quickActions,
+    ]);
+  }
+
+  // ── Section builders (null == section has nothing to show) ────────────────
+
+  Widget? _myDay(BuildContext context) {
+    final widgets = snapshot.myDay;
+    final highlight = snapshot.highlightedWork;
+    if (widgets.isEmpty && highlight == null) return null;
+    return AppDashboardSection(
+      title: context.l10n.universalDashboardMyDay,
+      card: false,
+      child: AppResponsiveGrid(
+        minItemWidth: 300,
+        maxColumns: 2,
+        children: [
+          ...widgets,
+          if (highlight != null) _HighlightWork(item: highlight),
+        ],
+      ),
+    );
+  }
+
+  Widget? _attention(BuildContext context) {
+    final l = context.l10n;
+    final items = snapshot.attention;
+    final viewAll = snapshot.viewAll(DashboardSection.attention);
+    if (items.isEmpty && viewAll == null) return null;
+    return AppDashboardSection(
+      title: l.universalDashboardNeedsAttention,
+      action: viewAll == null
+          ? null
+          : AppTextButton(
+              label: l.universalDashboardViewAll,
+              onPressed: () => context.go(viewAll),
+            ),
+      child: items.isEmpty
+          ? AppDashboardEmptySection(message: l.universalDashboardAllClear)
+          : AppAttentionList(
+              children: [
+                for (final item in items)
+                  AppDashboardAttentionRow(
+                    key: ValueKey('universal-attention-${item.id}'),
+                    icon: item.icon,
+                    category: item.categoryLabel,
+                    title: item.title,
+                    subtitle: item.subtitle,
+                    meta: _timeMeta(context, item.date, snapshot.today),
+                    priorityLabel: item.priorityLabel,
+                    status: dashboardStatus(item.tone),
+                    actionLabel: item.route == null
+                        ? null
+                        : (item.actionText.isEmpty
+                              ? l.universalDashboardOpen
+                              : item.actionText),
+                    onAction: item.route == null
+                        ? null
+                        : () => context.go(item.route!),
+                  ),
+              ],
+            ),
+    );
+  }
+
+  Widget? _kpis(BuildContext context) {
+    final kpis = snapshot.kpis;
+    if (kpis.isEmpty) return null;
+    return AppDashboardSection(
+      title: context.l10n.universalDashboardMetrics,
+      card: false,
+      child: AppDashboardGrid(
+        children: [
+          for (final kpi in kpis)
+            AppDashboardMetricCard(
+              key: ValueKey('universal-kpi-${kpi.id}'),
+              label: kpi.label,
+              value: kpi.value,
+              detail: kpi.detail,
+              icon: kpi.icon,
+              status: dashboardStatus(kpi.tone),
+              onTap: kpi.route == null ? null : () => context.go(kpi.route!),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget? _schedule(BuildContext context) {
+    final l = context.l10n;
+    final items = snapshot.schedule;
+    final viewAll = snapshot.viewAll(DashboardSection.schedule);
+    if (items.isEmpty && viewAll == null) return null;
+    return AppDashboardSection(
+      title: l.universalDashboardSchedule,
+      action: viewAll == null
+          ? null
+          : AppTextButton(
+              label: l.universalDashboardViewAll,
+              onPressed: () => context.go(viewAll),
+            ),
+      child: AppDashboardTimeline(
+        emptyMessage: l.universalDashboardNoSchedule,
+        entries: [
+          for (final item in items)
+            AppDashboardTimelineEntry(
+              timeLabel: _scheduleTime(context, item),
+              title: item.title,
+              subtitle: item.subtitle,
+              statusLabel: item.statusLabel,
+              status: dashboardStatus(item.tone),
+              icon: item.icon,
+              onTap: item.route == null ? null : () => context.go(item.route!),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget? _myWork(BuildContext context) {
+    final l = context.l10n;
+    final items = snapshot.myWork;
+    final viewAll = snapshot.viewAll(DashboardSection.myWork);
+    if (items.isEmpty && viewAll == null) return null;
+    return AppDashboardSection(
+      title: l.universalDashboardMyWork,
+      action: viewAll == null
+          ? null
+          : AppTextButton(
+              label: l.universalDashboardViewAll,
+              onPressed: () => context.go(viewAll),
+            ),
+      child: items.isEmpty
+          ? AppDashboardEmptySection(message: l.universalDashboardNoWork)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < items.length; i++) ...[
+                  if (i > 0) const Divider(height: 1),
+                  AppDashboardWorkRow(
+                    key: ValueKey('universal-work-${items[i].id}'),
+                    title: items[i].title,
+                    subtitle: items[i].subtitle,
+                    statusLabel: items[i].statusLabel,
+                    icon: items[i].icon,
+                    status: dashboardStatus(items[i].tone),
+                    actionLabel: items[i].route == null
+                        ? null
+                        : (items[i].actionText.isEmpty
+                              ? l.universalDashboardOpen
+                              : items[i].actionText),
+                    onAction: items[i].route == null
+                        ? null
+                        : () => context.go(items[i].route!),
+                  ),
+                ],
+              ],
+            ),
+    );
+  }
+
+  Widget? _overview(BuildContext context) {
+    final team = snapshot.team;
+    final breakdowns = snapshot.breakdowns;
+    if (team.isEmpty && breakdowns.isEmpty) return null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (team.isNotEmpty)
+          AppDashboardSection(
+            title: context.l10n.universalDashboardTeam,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < team.length; i++) ...[
+                  if (i > 0) const Divider(height: 1),
+                  AppDashboardWorkRow(
+                    title: team[i].label,
+                    subtitle: team[i].detail,
+                    icon: Icons.groups_outlined,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        if (team.isNotEmpty && breakdowns.isNotEmpty)
+          const SizedBox(height: AppSpacing.xxl),
+        for (var b = 0; b < breakdowns.length; b++) ...[
+          if (b > 0) const SizedBox(height: AppSpacing.xxl),
+          AppDashboardSection(
+            title: breakdowns[b].title,
+            child: AppDashboardStageStrip(
+              stages: [
+                for (final row in breakdowns[b].rows)
+                  AppDashboardStage(
+                    label: row.label,
+                    value: AppNumberFormatter(
+                      Localizations.localeOf(context),
+                    ).integer(row.value),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget? _activity(BuildContext context) {
+    final l = context.l10n;
+    final items = snapshot.activity;
+    final viewAll = snapshot.viewAll(DashboardSection.activity);
+    if (items.isEmpty && viewAll == null) return null;
+    final locale = Localizations.localeOf(context);
+    final dates = AppDateFormatter(locale);
+    return AppDashboardSection(
+      title: l.universalDashboardRecentActivity,
+      action: viewAll == null
+          ? null
+          : AppTextButton(
+              label: l.universalDashboardViewAll,
+              onPressed: () => context.go(viewAll),
+            ),
+      child: items.isEmpty
+          ? AppDashboardEmptySection(message: l.universalDashboardNoActivity)
+          : AppAttentionList(
+              children: [
+                for (final item in items)
+                  AppDashboardActivityRow(
+                    key: ValueKey('universal-activity-${item.id}'),
+                    icon: item.icon,
+                    title: item.title,
+                    description: item.description,
+                    moduleLabel: item.moduleLabel,
+                    status: dashboardStatus(item.tone),
+                    timestamp: dates.relative(item.occurredAt, l),
+                    onTap: item.route == null
+                        ? null
+                        : () => context.go(item.route!),
+                  ),
+              ],
+            ),
+    );
+  }
+
+  Widget? _quickActions(BuildContext context) {
+    final actions = snapshot.quickActions;
+    if (actions.isEmpty) return null;
+    return AppDashboardSection(
+      title: context.l10n.universalDashboardQuickActions,
+      card: false,
+      child: Wrap(
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.sm,
+        children: [
+          for (final action in actions)
+            AppSecondaryButton(
+              key: ValueKey('universal-action-${action.id}'),
+              label: action.label,
+              icon: action.icon,
+              onPressed: () => context.go(action.route),
+            ),
+        ],
+      ),
+    );
+  }
+
+  bool _isFirstTime(UniversalDashboardSnapshot snapshot) {
+    if (snapshot.myDay.isNotEmpty) return false;
+    if (snapshot.highlightedWork != null) return false;
+    if (snapshot.attention.isNotEmpty ||
+        snapshot.schedule.isNotEmpty ||
+        snapshot.myWork.isNotEmpty ||
+        snapshot.team.isNotEmpty ||
+        snapshot.breakdowns.isNotEmpty ||
+        snapshot.activity.isNotEmpty) {
+      return false;
+    }
+    final kpis = snapshot.kpis;
+    if (kpis.isEmpty) return false;
+    return kpis.every((kpi) => kpi.value.trim() == '0');
+  }
+}
+
+/// Reflows two sections into columns, dropping any empty side so a blank
+/// column is never left behind (§65).
+Widget? _columns(List<Widget?> sections) {
+  final present = sections.whereType<Widget>().toList();
+  if (present.isEmpty) return null;
+  if (present.length == 1) return present.first;
+  return AppDashboardTwoColumn(primary: present[0], secondary: present[1]);
+}
+
+/// Stacks non-null sections with a consistent vertical rhythm.
+List<Widget> _stack(List<Widget?> sections) {
+  final present = sections.whereType<Widget>().toList();
+  final output = <Widget>[];
+  for (var i = 0; i < present.length; i++) {
+    if (i > 0) output.add(const SizedBox(height: AppSpacing.xxl));
+    output.add(present[i]);
+  }
+  return output;
 }
 
 class _ContextRow extends StatelessWidget {
@@ -240,317 +545,126 @@ class _ContextRow extends StatelessWidget {
   }
 }
 
-class _MyDaySection extends StatelessWidget {
-  const _MyDaySection({required this.snapshot});
+class _PartialBanner extends StatelessWidget {
+  const _PartialBanner({required this.message, required this.onRetry});
 
-  final UniversalDashboardSnapshot snapshot;
+  final String message;
+  final VoidCallback onRetry;
 
   @override
-  Widget build(BuildContext context) {
-    if (snapshot.myDay.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppDashboardSection(
-          title: context.l10n.universalDashboardMyDay,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (var i = 0; i < snapshot.myDay.length; i++) ...[
-                if (i > 0) const SizedBox(height: AppSpacing.lg),
-                snapshot.myDay[i],
-              ],
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xxl),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded(
+        child: AppAlert(message: message, status: AppStatus.warning),
+      ),
+      const SizedBox(width: AppSpacing.sm),
+      AppTextButton(
+        label: context.l10n.retry,
+        size: AppButtonSize.small,
+        onPressed: onRetry,
+      ),
+    ],
+  );
 }
 
-class _AttentionSection extends StatelessWidget {
-  const _AttentionSection({required this.snapshot});
+class _FirstTimeEmpty extends StatelessWidget {
+  const _FirstTimeEmpty({
+    required this.canCreate,
+    this.onCreate,
+    this.onLeaveRequest,
+  });
 
-  final UniversalDashboardSnapshot snapshot;
+  final bool canCreate;
+  final VoidCallback? onCreate;
+  final VoidCallback? onLeaveRequest;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final items = snapshot.attention;
-    if (items.isEmpty && snapshot.viewAll(DashboardSection.attention) == null) {
-      return const SizedBox.shrink();
-    }
-    return AppDashboardSection(
-      title: l.universalDashboardNeedsAttention,
-      action: _viewAll(context, snapshot, DashboardSection.attention),
-      child: items.isEmpty
-          ? Text(
-              l.universalDashboardAllClear,
-              style: AppTypography.of(context).bodySmall,
-            )
-          : AppAttentionList(
-              children: [
-                for (final item in items)
-                  AppAttentionItem(
-                    key: ValueKey('universal-attention-${item.id}'),
-                    icon: item.icon,
-                    title: item.title,
-                    subtitle: item.subtitle,
-                    status: dashboardStatus(item.tone),
-                    onTap: item.route == null
-                        ? null
-                        : () => context.go(item.route!),
-                  ),
-              ],
-            ),
-    );
-  }
-}
-
-class _KpiSection extends StatelessWidget {
-  const _KpiSection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final kpis = snapshot.kpis;
-    if (kpis.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppDashboardSection(
-          title: context.l10n.universalDashboardMetrics,
-          card: false,
-          child: AppDashboardGrid(
-            children: [
-              for (final kpi in kpis)
-                AppMetricCard(
-                  key: ValueKey('universal-kpi-${kpi.id}'),
-                  label: kpi.label,
-                  value: kpi.value,
-                  detail: kpi.detail,
-                  icon: kpi.icon,
-                  status: dashboardStatus(kpi.tone),
-                  onTap: kpi.route == null
-                      ? null
-                      : () => context.go(kpi.route!),
-                ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xxl),
-      ],
-    );
-  }
-}
-
-class _ScheduleSection extends StatelessWidget {
-  const _ScheduleSection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final items = snapshot.schedule;
-    if (items.isEmpty && snapshot.viewAll(DashboardSection.schedule) == null) {
-      return const SizedBox.shrink();
-    }
-    return AppDashboardSection(
-      title: l.universalDashboardSchedule,
-      action: _viewAll(context, snapshot, DashboardSection.schedule),
-      child: items.isEmpty
-          ? Text(
-              l.universalDashboardNoSchedule,
-              style: AppTypography.of(
-                context,
-              ).caption.copyWith(color: AppColors.textMuted),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var i = 0; i < items.length; i++) ...[
-                  if (i > 0)
-                    const Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: AppColors.borderSubtle,
-                    ),
-                  _ScheduleRow(item: items[i]),
-                ],
-              ],
-            ),
-    );
-  }
-}
-
-class _ScheduleRow extends StatelessWidget {
-  const _ScheduleRow({required this.item});
-
-  final DashboardScheduleItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    final time = item.time;
-    final timeLabel = time == null
-        ? '—'
-        : item.dateOnly
-        ? AppDateFormatter(locale).date(time)
-        : AppTimeFormatter(locale).time(time);
-    return InkWell(
-      onTap: item.route == null ? null : () => context.go(item.route!),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 68,
-              child: Text(
-                timeLabel,
-                style: AppTypography.of(context).bodySmall.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: AppTypography.of(context).bodySmall.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  if (item.subtitle.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      item.subtitle,
-                      style: AppTypography.of(context).caption,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            if (item.statusLabel.isNotEmpty) ...[
-              const SizedBox(width: AppSpacing.sm),
-              AppStatusBadge(
-                label: item.statusLabel,
-                status: dashboardStatus(item.tone),
-                isPill: true,
-              ),
-            ],
-          ],
-        ),
+    return AppCard(
+      child: AppEmptyState(
+        title: l.universalDashboardFirstTimeTitle,
+        message: l.universalDashboardFirstTimeMessage,
+        icon: Icons.rocket_launch_outlined,
+        actionLabel: canCreate ? l.universalDashboardGetStarted : null,
+        onAction: canCreate ? onCreate : null,
       ),
     );
   }
 }
 
-class _MyWorkSection extends StatelessWidget {
-  const _MyWorkSection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final items = snapshot.myWork;
-    if (items.isEmpty && snapshot.viewAll(DashboardSection.myWork) == null) {
-      return const SizedBox.shrink();
-    }
-    return AppDashboardSection(
-      title: l.universalDashboardMyWork,
-      action: _viewAll(context, snapshot, DashboardSection.myWork),
-      child: items.isEmpty
-          ? Text(
-              l.universalDashboardNoWork,
-              style: AppTypography.of(
-                context,
-              ).caption.copyWith(color: AppColors.textMuted),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var i = 0; i < items.length; i++) ...[
-                  if (i > 0)
-                    const Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: AppColors.borderSubtle,
-                    ),
-                  _MyWorkRow(item: items[i]),
-                ],
-              ],
-            ),
-    );
-  }
-}
-
-class _MyWorkRow extends StatelessWidget {
-  const _MyWorkRow({required this.item});
+/// Compact highlight of the immediate next assigned task inside My Day.
+class _HighlightWork extends StatelessWidget {
+  const _HighlightWork({required this.item});
 
   final DashboardWorkItem item;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-      child: Row(
+    final l = context.l10n;
+    final theme = AppTypography.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return AppCard(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.title,
-                  style: AppTypography.of(context).bodySmall.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+          Row(
+            children: [
+              Icon(
+                item.icon,
+                size: 16,
+                color: isDark ? AppColors.darkBrand : AppColors.brandPrimary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  l.universalDashboardNextServiceWork,
+                  style: theme.caption.copyWith(
+                    fontWeight: AppTypography.weightSemibold,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.textSecondary,
                   ),
                 ),
-                if (item.subtitle.isNotEmpty) ...[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    item.subtitle,
-                    style: AppTypography.of(context).caption,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-                if (item.statusLabel.isNotEmpty) ...[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    item.statusLabel,
-                    style: AppTypography.of(
-                      context,
-                    ).caption.copyWith(color: AppColors.textSecondary),
-                  ),
-                ],
-              ],
+              ),
+              if (item.statusLabel.isNotEmpty)
+                AppStatusBadge(
+                  label: item.statusLabel,
+                  status: dashboardStatus(item.tone),
+                  isPill: true,
+                ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            item.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.bodyLarge.copyWith(
+              fontWeight: AppTypography.weightSemibold,
+              fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
+          if (item.subtitle.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              item.subtitle,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.caption,
+            ),
+          ],
           if (item.route != null) ...[
-            const SizedBox(width: AppSpacing.md),
-            Flexible(
-              child: AppSecondaryButton(
-                label: item.actionText.isEmpty
-                    ? context.l10n.universalDashboardOpen
-                    : item.actionText,
-                icon: item.icon,
-                size: AppButtonSize.small,
-                onPressed: () => context.go(item.route!),
-              ),
+            const SizedBox(height: AppSpacing.lg),
+            AppSecondaryButton(
+              label: item.actionText.isEmpty
+                  ? l.universalDashboardOpen
+                  : item.actionText,
+              icon: item.icon,
+              size: AppButtonSize.small,
+              onPressed: () => context.go(item.route!),
             ),
           ],
         ],
@@ -559,200 +673,27 @@ class _MyWorkRow extends StatelessWidget {
   }
 }
 
-class _OverviewSection extends StatelessWidget {
-  const _OverviewSection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final team = snapshot.team;
-    final breakdowns = snapshot.breakdowns;
-    if (team.isEmpty && breakdowns.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (team.isNotEmpty)
-          AppDashboardSection(
-            title: context.l10n.universalDashboardTeam,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var i = 0; i < team.length; i++) ...[
-                  if (i > 0) const Divider(height: AppSpacing.lg),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.sm,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          team[i].label,
-                          style: AppTypography.of(context).bodySmall.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        if (team[i].detail.isNotEmpty) ...[
-                          const SizedBox(height: AppSpacing.xxs),
-                          Text(
-                            team[i].detail,
-                            style: AppTypography.of(
-                              context,
-                            ).caption.copyWith(color: AppColors.textSecondary),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        if (team.isNotEmpty && breakdowns.isNotEmpty)
-          const SizedBox(height: AppSpacing.xxl),
-        for (var b = 0; b < breakdowns.length; b++) ...[
-          if (b > 0) const SizedBox(height: AppSpacing.xxl),
-          AppDashboardSection(
-            title: breakdowns[b].title,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var i = 0; i < breakdowns[b].rows.length; i++) ...[
-                  if (i > 0) const SizedBox(height: AppSpacing.md),
-                  _BreakdownRow(row: breakdowns[b].rows[i]),
-                ],
-              ],
-            ),
-          ),
-        ],
-      ],
-    );
-  }
+String _timeMeta(BuildContext context, DateTime? value, DateTime? today) {
+  if (value == null) return '';
+  final locale = Localizations.localeOf(context);
+  // "Today" is the company-local business date resolved by the coordinator
+  // (AppClock + CompanyTimeService); the device clock is never consulted.
+  final isToday =
+      today != null &&
+      value.year == today.year &&
+      value.month == today.month &&
+      value.day == today.day;
+  final time = AppTimeFormatter(locale).time(value);
+  return isToday ? time : '${AppDateFormatter(locale).date(value)} · $time';
 }
 
-class _BreakdownRow extends StatelessWidget {
-  const _BreakdownRow({required this.row});
-
-  final DashboardBreakdownRow row;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            row.label,
-            style: AppTypography.of(context).caption.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        Text(
-          AppNumberFormatter(
-            Localizations.localeOf(context),
-          ).integer(row.value),
-          style: AppTypography.of(context).bodySmall.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ActivitySection extends StatelessWidget {
-  const _ActivitySection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final items = snapshot.activity;
-    if (items.isEmpty && snapshot.viewAll(DashboardSection.activity) == null) {
-      return const SizedBox.shrink();
-    }
-    final locale = Localizations.localeOf(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.xxl),
-      child: AppDashboardSection(
-        title: l.universalDashboardRecentActivity,
-        action: _viewAll(context, snapshot, DashboardSection.activity),
-        child: items.isEmpty
-            ? Text(
-                l.universalDashboardNoActivity,
-                style: AppTypography.of(
-                  context,
-                ).caption.copyWith(color: AppColors.textMuted),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (final item in items)
-                    AppActivityItem(
-                      key: ValueKey('universal-activity-${item.id}'),
-                      icon: item.icon,
-                      title: item.title,
-                      description: item.description,
-                      timestamp: AppDateFormatter(
-                        locale,
-                      ).relative(item.occurredAt, l),
-                      status: dashboardStatus(item.tone),
-                    ),
-                ],
-              ),
-      ),
-    );
-  }
-}
-
-class _QuickActionsSection extends StatelessWidget {
-  const _QuickActionsSection({required this.snapshot});
-
-  final UniversalDashboardSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final actions = snapshot.quickActions;
-    if (actions.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.xxl),
-      child: AppDashboardSection(
-        title: context.l10n.universalDashboardQuickActions,
-        card: false,
-        child: Wrap(
-          spacing: AppSpacing.sm,
-          runSpacing: AppSpacing.sm,
-          children: [
-            for (final action in actions)
-              AppQuickActionCard(
-                key: ValueKey('universal-action-${action.id}'),
-                label: action.label,
-                icon: action.icon,
-                onPressed: () => context.go(action.route),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-Widget? _viewAll(
-  BuildContext context,
-  UniversalDashboardSnapshot snapshot,
-  DashboardSection section,
-) {
-  final route = snapshot.viewAll(section);
-  if (route == null) return null;
-  return AppTextButton(
-    label: context.l10n.universalDashboardViewAll,
-    onPressed: () => context.go(route),
-  );
+String _scheduleTime(BuildContext context, DashboardScheduleItem item) {
+  final time = item.time;
+  if (time == null) return '—';
+  final locale = Localizations.localeOf(context);
+  return item.dateOnly
+      ? AppDateFormatter(locale).date(time)
+      : AppTimeFormatter(locale).time(time);
 }
 
 AppStatus dashboardStatus(DashboardTone tone) => switch (tone) {

@@ -88,19 +88,46 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
         }
 
         return AppPage(
-          header: AppPageHeader(
+          header: AppDetailHeader(
             title: a.assignmentNumber,
-            subtitle: view.customerName,
-            actions: [
-              if (canEdit && a.isActive)
-                AppSecondaryButton(
-                  label: l.servicesJobAssignmentEdit,
-                  icon: Icons.edit_outlined,
-                  onPressed: () =>
-                      context.go(ServicesRoutes.assignmentEdit(a.id)),
-                ),
+            description: view.customerName,
+            leading: AppRecordGlyph(
+              icon: Icons.assignment_outlined,
+              status: serviceJobAssignmentStatus(a.status),
+            ),
+            status: AppDetailStatus(
+              label: serviceJobAssignmentStatusLabel(a.status, l),
+              status: serviceJobAssignmentStatus(a.status),
+            ),
+            metadata: [
+              AppMetadataItem(
+                icon: Icons.event_outlined,
+                label: l.servicesJobAssignmentVisitDate,
+                value: dates.date(a.scheduledVisitDate),
+              ),
+              AppMetadataItem(
+                icon: Icons.flag_outlined,
+                label: l.servicesEnquiryPriority,
+                value: view.priorityName,
+              ),
+              AppMetadataItem(
+                icon: Icons.confirmation_number_outlined,
+                label: l.servicesJobAssignmentEnquiry,
+                value: view.enquiryNumber,
+              ),
+            ],
+            primaryAction: canEdit && a.isActive
+                ? AppPrimaryButton(
+                    label: l.servicesJobAssignmentEdit,
+                    icon: Icons.edit_outlined,
+                    onPressed: () =>
+                        context.go(ServicesRoutes.assignmentEdit(a.id)),
+                  )
+                : null,
+            overflowActions: [
               if (canCancel && a.isActive)
-                AppSecondaryButton(
+                AppDetailAction(
+                  destructive: true,
                   label: l.servicesJobAssignmentCancel,
                   onPressed: cancel,
                 ),
@@ -109,32 +136,6 @@ class ServiceJobAssignmentDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppCard(
-                child: Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.sm,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: serviceJobAssignmentStatusLabel(a.status, l),
-                      status: serviceJobAssignmentStatus(a.status),
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: dates.date(a.scheduledVisitDate),
-                      icon: Icons.event_outlined,
-                      status: AppStatus.neutral,
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: view.priorityName,
-                      status: servicePriorityStatus(view.priorityRank),
-                      isPill: true,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               if (workflow != null) ...[
                 ServiceWorkflowSection(
                   repository: workflow!,

@@ -56,6 +56,93 @@ class AppFormPage extends StatelessWidget {
   );
 }
 
+/// Standard long-form action bar.
+///
+/// Rendered at the end of a long form (or inside the shell footer) so the
+/// primary/secondary hierarchy stays identical to the header actions used by
+/// short forms: secondary Cancel on the logical start, primary Save/Create on
+/// the logical end. The bar sits inside the global [AppPage] content width, has
+/// a subtle top hairline instead of a heavy surface, mirrors automatically
+/// under RTL and disables duplicate submission while [saving].
+class AppFormActions extends StatelessWidget {
+  const AppFormActions({
+    super.key,
+    required this.saveLabel,
+    this.onSave,
+    this.saving = false,
+    this.cancelLabel,
+    this.onCancel,
+    this.cancelEnabled = true,
+  });
+  final String saveLabel;
+  final VoidCallback? onSave;
+  final bool saving;
+  final String? cancelLabel;
+  final VoidCallback? onCancel;
+  final bool cancelEnabled;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsetsDirectional.only(top: AppSpacing.lg),
+    decoration: BoxDecoration(
+      border: Border(top: BorderSide(color: AppColors.borderSubtle)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (cancelLabel != null) ...[
+          AppSecondaryButton(
+            label: cancelLabel!,
+            onPressed: saving || !cancelEnabled ? null : onCancel,
+          ),
+          const SizedBox(width: AppSpacing.md),
+        ],
+        AppPrimaryButton(
+          label: saveLabel,
+          loading: saving,
+          onPressed: saving ? null : onSave,
+        ),
+      ],
+    ),
+  );
+}
+
+/// Compact validation summary for very large forms: "3 fields need attention"
+/// plus the list of offending labels. It never replaces per-field errors — it
+/// is an additional, tappable affordance that can scroll/focus the first
+/// problem. Small forms should not use it.
+class AppFormErrorSummary extends StatelessWidget {
+  const AppFormErrorSummary({
+    super.key,
+    required this.title,
+    this.details = const [],
+    this.onTap,
+  });
+  final String title;
+  final List<String> details;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final body = [
+      title,
+      if (details.isNotEmpty) details.join(' · '),
+    ].join('\n');
+    final alert = AppAlert(message: body, status: AppStatus.danger);
+    return Semantics(
+      liveRegion: true,
+      container: true,
+      child: onTap == null
+          ? alert
+          : InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(AppRadius.radiusMd),
+              child: alert,
+            ),
+    );
+  }
+}
+
 /// Neutral loading placeholder for a form with several sections.
 class AppFormSkeleton extends StatelessWidget {
   const AppFormSkeleton({super.key, this.sections = 3});
@@ -94,11 +181,13 @@ class AppBooleanSettingRow extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.description,
+    this.errorText,
     this.enabled = true,
     this.loading = false,
   });
   final String label;
   final String? description;
+  final String? errorText;
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool enabled, loading;
@@ -111,64 +200,79 @@ class AppBooleanSettingRow extends StatelessWidget {
       label,
       if (description != null) description!,
     ].join('. ');
-    return Semantics(
-      toggled: value,
-      enabled: interactive,
-      label: semanticLabel,
-      child: InkWell(
-        onTap: interactive ? () => onChanged!(!value) : null,
-        borderRadius: BorderRadius.circular(AppRadius.control),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(
-            vertical: AppSpacing.sm,
-            horizontal: AppSpacing.xs,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: typography.label.copyWith(
-                        color: enabled
-                            ? AppColors.textPrimary
-                            : AppColors.textDisabled,
-                        fontWeight: FontWeight.w600,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          toggled: value,
+          enabled: interactive,
+          label: semanticLabel,
+          child: InkWell(
+            onTap: interactive ? () => onChanged!(!value) : null,
+            borderRadius: BorderRadius.circular(AppRadius.control),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                vertical: AppSpacing.sm,
+                horizontal: AppSpacing.xs,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          label,
+                          style: typography.label.copyWith(
+                            color: enabled
+                                ? AppColors.textPrimary
+                                : AppColors.textDisabled,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        if (description != null) ...[
+                          const SizedBox(height: AppSpacing.xxs),
+                          Text(
+                            description!,
+                            style: typography.caption.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.lg),
+                  if (loading)
+                    const SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  else
+                    ExcludeSemantics(
+                      child: Switch.adaptive(
+                        value: value,
+                        onChanged: interactive ? onChanged : null,
                       ),
                     ),
-                    if (description != null) ...[
-                      const SizedBox(height: AppSpacing.xxs),
-                      Text(
-                        description!,
-                        style: typography.caption.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
+                ],
               ),
-              const SizedBox(width: AppSpacing.lg),
-              if (loading)
-                const SizedBox(
-                  width: 22,
-                  height: 22,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else
-                ExcludeSemantics(
-                  child: Switch.adaptive(
-                    value: value,
-                    onChanged: interactive ? onChanged : null,
-                  ),
-                ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (errorText != null) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: AppSpacing.xs),
+            child: Text(
+              errorText!,
+              style: typography.caption.copyWith(color: AppColors.danger),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

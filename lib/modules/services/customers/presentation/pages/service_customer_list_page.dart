@@ -85,7 +85,7 @@ class ServiceCustomerListPage extends StatelessWidget {
 
         Widget body;
         if (state.loading && page == null) {
-          body = const AppConfigurationSkeleton();
+          body = const AppCollectionSkeleton();
         } else if (state.failure != null && page == null) {
           body = AppErrorState(
             message: l.servicesCustomerStorageError,
@@ -93,16 +93,18 @@ class ServiceCustomerListPage extends StatelessWidget {
           );
         } else if (items.isEmpty) {
           final empty = (page?.total ?? 0) == 0;
-          body = AppEmptyState(
-            title: empty
-                ? l.servicesCustomerEmpty
-                : l.servicesCustomerNoResults,
-            message: empty
-                ? l.servicesCustomerEmptyMessage
-                : l.servicesCustomerNoResults,
-            actionLabel: empty && canCreate ? l.servicesCustomerAdd : null,
-            onAction: () => context.go(ServicesRoutes.customersNew),
-          );
+          body = empty
+              ? AppCollectionEmptyState.noData(
+                  title: l.servicesCustomerEmpty,
+                  message: l.servicesCustomerEmptyMessage,
+                  actionLabel: canCreate ? l.servicesCustomerAdd : null,
+                  onAction: () => context.go(ServicesRoutes.customersNew),
+                )
+              : AppCollectionEmptyState.noResults(
+                  title: l.servicesCustomerNoResults,
+                  message: l.servicesCustomerNoResults,
+                  onClearFilters: () => cubit.setStatus(null),
+                );
         } else if (compact) {
           body = Column(
             children: [
@@ -140,67 +142,81 @@ class ServiceCustomerListPage extends StatelessWidget {
             ],
           );
         } else {
-          body = AppDataTable(
-            columns: [
-              DataColumn(label: Text(l.servicesCustomerName)),
-              DataColumn(label: Text(l.servicesCustomerMobile)),
-              DataColumn(label: Text(l.servicesCustomerSites)),
-              DataColumn(label: Text(l.servicesCustomerLastUpdated)),
-              DataColumn(label: Text(l.status)),
-              DataColumn(
-                label: Semantics(
-                  label: l.actions,
-                  child: const Icon(Icons.more_horiz),
+          body = AppCollectionSurface(
+            child: AppDataTable(
+              columns: [
+                DataColumn(label: Text(l.servicesCustomerName)),
+                DataColumn(label: Text(l.servicesCustomerMobile)),
+                DataColumn(label: Text(l.servicesCustomerSites)),
+                DataColumn(label: Text(l.status)),
+                DataColumn(
+                  label: Semantics(
+                    label: l.actions,
+                    child: const Icon(Icons.more_horiz),
+                  ),
                 ),
-              ),
-            ],
-            rows: [
-              for (final item in items)
-                DataRow(
-                  onSelectChanged: (_) =>
-                      context.go(ServicesRoutes.customer(item.id)),
-                  cells: [
-                    DataCell(
-                      Row(
-                        children: [
-                          AppAvatar(name: item.name, radius: 16),
-                          const SizedBox(width: AppSpacing.md),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.name,
-                                style: AppTypography.of(context).label,
+              ],
+              rows: [
+                for (final item in items)
+                  DataRow(
+                    onSelectChanged: (_) =>
+                        context.go(ServicesRoutes.customer(item.id)),
+                    cells: [
+                      DataCell(
+                        Row(
+                          children: [
+                            AppAvatar(name: item.name, radius: 16),
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: AppTypography.of(context).label,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    item.customerCode,
+                                    textDirection: TextDirection.ltr,
+                                    style: AppTypography.of(context).caption,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                item.customerCode,
-                                textDirection: TextDirection.ltr,
-                                style: AppTypography.of(context).caption,
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      DataCell(
+                        Text(item.mobile, textDirection: TextDirection.ltr),
+                      ),
+                      DataCell(
+                        Text(
+                          numbers.integer(item.siteCount),
+                          style: AppTypography.of(context).tableCell.copyWith(
+                            fontFeatures: const [FontFeature.tabularFigures()],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      Text(item.mobile, textDirection: TextDirection.ltr),
-                    ),
-                    DataCell(Text(numbers.integer(item.siteCount))),
-                    DataCell(Text(dates.date(item.updatedAt))),
-                    DataCell(
-                      AppStatusBadge(
-                        label: serviceStatusLabel(item.status, l),
-                        status: serviceStatus(item.status),
-                        isPill: true,
+                      DataCell(
+                        AppStatusBadge(
+                          label: serviceStatusLabel(item.status, l),
+                          status: serviceStatus(item.status),
+                          isPill: true,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      AppActionMenu(tooltip: l.actions, actions: actions(item)),
-                    ),
-                  ],
-                ),
-            ],
+                      DataCell(
+                        AppActionMenu(
+                          tooltip: l.actions,
+                          actions: actions(item),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         }
 
@@ -222,12 +238,12 @@ class ServiceCustomerListPage extends StatelessWidget {
                 ),
             ],
           ),
-          filters: AppToolbar(
+          filters: AppCollectionToolbar(
             search: AppSearchField(
               hint: l.servicesCustomerSearch,
               onChanged: cubit.search,
             ),
-            filters: [
+            secondary: [
               AppFilterBar(
                 children: [
                   AppFilterChip(
@@ -250,6 +266,10 @@ class ServiceCustomerListPage extends StatelessWidget {
                 ],
               ),
             ],
+            resultCount: AppResultCount(
+              filtered: page?.filtered ?? 0,
+              total: page?.total,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

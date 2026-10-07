@@ -56,7 +56,6 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
         ? AppColors.brandHover
         : AppColors.brandPrimary;
     final button = Focus(
-      canRequestFocus: false,
       onFocusChange: (value) => setState(() => _focused = value),
       child: MouseRegion(
         cursor: isEnabled ? SystemMouseCursors.click : MouseCursor.defer,
@@ -115,7 +114,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
                   iconSize: iconSize,
                   textStyle: textStyle.copyWith(
                     color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: -0.1,
                   ),
                   loadingColor: Colors.white,
@@ -288,10 +287,10 @@ class AppTextButton extends StatelessWidget {
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark
-        ? const Color(0xFF94A3B8)
+        ? AppColors.darkTextSecondary
         : AppColors.textSecondary;
     final disabledColor = isDark
-        ? const Color(0xFF475569)
+        ? AppColors.darkTextDisabled
         : AppColors.textDisabled;
     return TextButton(
       onPressed: loading ? null : onPressed,
@@ -360,31 +359,31 @@ class AppIconButton extends StatelessWidget {
   final typo = AppTypography.of(context);
   return switch (size) {
     AppButtonSize.small => (
-      32.0,
+      AppDimensions.buttonHeightSm,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
       ),
-      16.0,
-      typo.caption.copyWith(fontWeight: FontWeight.w600),
+      AppDimensions.iconSm,
+      typo.labelSmall,
     ),
     AppButtonSize.medium => (
-      40.0,
+      AppDimensions.buttonHeightMd,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.xs,
       ),
-      18.0,
-      typo.label,
+      AppDimensions.iconInline,
+      typo.button,
     ),
     AppButtonSize.large => (
-      48.0,
+      AppDimensions.buttonHeightLg,
       const EdgeInsetsDirectional.symmetric(
         horizontal: AppSpacing.xl,
         vertical: AppSpacing.sm,
       ),
-      20.0,
-      typo.labelLarge,
+      AppDimensions.iconMd,
+      typo.button,
     ),
   };
 }
@@ -407,11 +406,35 @@ class _ButtonContent extends StatelessWidget {
   final Color loadingColor;
 
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      if (loading)
+  Widget build(BuildContext context) {
+    final content = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (icon != null) ...[
+          Icon(icon, size: iconSize),
+          const SizedBox(width: AppSpacing.sm),
+        ],
+        Flexible(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: textStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+
+    if (!loading) return content;
+
+    // Reserve the resting geometry and overlay the spinner so swapping into a
+    // loading state never changes the button's width.
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Opacity(opacity: 0, child: content),
         SizedBox(
           width: iconSize,
           height: iconSize,
@@ -419,19 +442,8 @@ class _ButtonContent extends StatelessWidget {
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation<Color>(loadingColor),
           ),
-        )
-      else if (icon != null)
-        Icon(icon, size: iconSize),
-      if (loading || icon != null) const SizedBox(width: AppSpacing.sm),
-      Flexible(
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: textStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

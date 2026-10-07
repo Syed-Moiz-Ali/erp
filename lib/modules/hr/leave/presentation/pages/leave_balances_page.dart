@@ -46,7 +46,9 @@ class _SelfBalances extends StatelessWidget {
     final l = context.l10n;
     return BlocBuilder<LeaveBalancesCubit, LeaveBalancesState>(
       builder: (c, s) {
-        if (s.loading) return const AppLoadingState();
+        if (s.loading && s.balances.isEmpty) {
+          return const AppCollectionSkeleton(mobile: true, rows: 3);
+        }
         if (s.failure != null) {
           return AppErrorState(
             message: configurationFailure(s.failure!, c.l10n),
@@ -54,7 +56,7 @@ class _SelfBalances extends StatelessWidget {
           );
         }
         if (s.balances.isEmpty) {
-          return AppEmptyState(
+          return AppCollectionEmptyState.noData(
             title: l.leaveNoBalance,
             message: l.leaveNoBalance,
           );
@@ -115,24 +117,23 @@ class _BalanceTable extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppCard(
-              child: AppFormGrid(
-                children: [
-                  AppTextField(
-                    label: l.leaveSearchEmployee,
-                    hint: l.leaveSearchEmployee,
-                    initialValue: s.search,
-                    prefixIcon: Icons.search_rounded,
-                    onChanged: (v) => bloc.add(
-                      LeaveBalanceTableFilterChanged(
-                        search: v,
-                        departmentId: s.departmentId,
-                        leaveTypeId: s.leaveTypeId,
-                        year: s.year,
-                      ),
-                    ),
+            AppCollectionToolbar(
+              search: AppSearchField(
+                label: l.leaveSearchEmployee,
+                hint: l.leaveSearchEmployee,
+                onChanged: (v) => bloc.add(
+                  LeaveBalanceTableFilterChanged(
+                    search: v,
+                    departmentId: s.departmentId,
+                    leaveTypeId: s.leaveTypeId,
+                    year: s.year,
                   ),
-                  StreamBuilder<Result<List<LeaveDepartmentOption>>>(
+                ),
+              ),
+              secondary: [
+                SizedBox(
+                  width: 200,
+                  child: StreamBuilder<Result<List<LeaveDepartmentOption>>>(
                     stream: bloc.repository.watchDepartments(bloc.context),
                     builder: (c, snapshot) {
                       final departments =
@@ -160,7 +161,10 @@ class _BalanceTable extends StatelessWidget {
                       );
                     },
                   ),
-                  StreamBuilder<Result<List<LeaveType>>>(
+                ),
+                SizedBox(
+                  width: 200,
+                  child: StreamBuilder<Result<List<LeaveType>>>(
                     stream: bloc.repository.watchLeaveTypes(bloc.context),
                     builder: (c, snapshot) {
                       final types = snapshot.data is Success<List<LeaveType>>
@@ -185,21 +189,32 @@ class _BalanceTable extends StatelessWidget {
                       );
                     },
                   ),
-                ],
+                ),
+              ],
+              resultCount: AppResultCount(
+                filtered: s.rows.length,
+                total: s.rows.length,
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            if (s.loading)
-              const AppLoadingState()
+            if (s.loading && s.rows.isEmpty)
+              const AppCollectionSkeleton()
             else if (s.failure != null)
               AppErrorState(
                 message: configurationFailure(s.failure!, c.l10n),
                 onRetry: () => bloc.add(const LeaveBalanceTableStarted()),
               )
             else if (s.rows.isEmpty)
-              AppEmptyState(
+              AppCollectionEmptyState.noResults(
                 title: l.leaveNoBalanceForFilters,
                 message: l.leaveNoBalanceForFilters,
+                onClearFilters: () => bloc.add(
+                  const LeaveBalanceTableFilterChanged(
+                    search: '',
+                    departmentId: null,
+                    leaveTypeId: null,
+                  ),
+                ),
               )
             else
               LayoutBuilder(
@@ -224,63 +239,59 @@ class _BalanceTable extends StatelessWidget {
     bool canAdjust,
   ) {
     final l = context.l10n;
-    return AppCard(
-      padding: EdgeInsets.zero,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        child: AppDataTable(
-          columns: [
-            DataColumn(label: Text(l.leaveEmployee)),
-            DataColumn(label: Text(l.leaveDepartment)),
-            DataColumn(label: Text(l.leaveType)),
-            DataColumn(label: Text(l.leaveEntitlement)),
-            DataColumn(label: Text(l.leaveUsed)),
-            DataColumn(label: Text(l.leavePendingBalance)),
-            DataColumn(label: Text(l.leaveAvailable)),
-            DataColumn(label: Text(l.cfgActions)),
-          ],
-          rows: [
-            for (final row in rows)
-              DataRow(
-                onSelectChanged: (_) =>
-                    context.push(AppRoutes.leaveEmployee(row.employeeId)),
-                cells: [
-                  DataCell(
-                    Text(
-                      row.employeeName,
-                      style: AppTypography.of(
-                        context,
-                      ).body.copyWith(fontWeight: FontWeight.w600),
-                    ),
+    return AppCollectionSurface(
+      child: AppDataTable(
+        columns: [
+          DataColumn(label: Text(l.leaveEmployee)),
+          DataColumn(label: Text(l.leaveDepartment)),
+          DataColumn(label: Text(l.leaveType)),
+          DataColumn(label: Text(l.leaveEntitlement)),
+          DataColumn(label: Text(l.leaveUsed)),
+          DataColumn(label: Text(l.leavePendingBalance)),
+          DataColumn(label: Text(l.leaveAvailable)),
+          DataColumn(label: Text(l.cfgActions)),
+        ],
+        rows: [
+          for (final row in rows)
+            DataRow(
+              onSelectChanged: (_) =>
+                  context.push(AppRoutes.leaveEmployee(row.employeeId)),
+              cells: [
+                DataCell(
+                  Text(
+                    row.employeeName,
+                    style: AppTypography.of(
+                      context,
+                    ).body.copyWith(fontWeight: FontWeight.w600),
                   ),
-                  DataCell(Text(row.department)),
-                  DataCell(Text(row.leaveTypeName)),
-                  DataCell(Text(configurationNumber(context, row.entitlement))),
-                  DataCell(Text(configurationNumber(context, row.used))),
-                  DataCell(Text(configurationNumber(context, row.pending))),
-                  DataCell(Text(configurationNumber(context, row.available))),
-                  DataCell(
-                    AppActionMenu(
-                      tooltip: l.cfgActions,
-                      actions: [
-                        AppMenuAction(
-                          label: (l) => l.leaveViewEmployeeLeave,
-                          onPressed: () => context.push(
-                            AppRoutes.leaveEmployee(row.employeeId),
-                          ),
+                ),
+                DataCell(Text(row.department)),
+                DataCell(Text(row.leaveTypeName)),
+                DataCell(Text(configurationNumber(context, row.entitlement))),
+                DataCell(Text(configurationNumber(context, row.used))),
+                DataCell(Text(configurationNumber(context, row.pending))),
+                DataCell(Text(configurationNumber(context, row.available))),
+                DataCell(
+                  AppActionMenu(
+                    tooltip: l.cfgActions,
+                    actions: [
+                      AppMenuAction(
+                        label: (l) => l.leaveViewEmployeeLeave,
+                        onPressed: () => context.push(
+                          AppRoutes.leaveEmployee(row.employeeId),
                         ),
-                        if (canAdjust)
-                          AppMenuAction(
-                            label: (l) => l.leaveAdjustBalance,
-                            onPressed: () => _adjust(context, row),
-                          ),
-                      ],
-                    ),
+                      ),
+                      if (canAdjust)
+                        AppMenuAction(
+                          label: (l) => l.leaveAdjustBalance,
+                          onPressed: () => _adjust(context, row),
+                        ),
+                    ],
                   ),
-                ],
-              ),
-          ],
-        ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
@@ -297,64 +308,39 @@ class _BalanceTable extends StatelessWidget {
         for (final row in rows)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: AppCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      AppAvatar(name: row.employeeName),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              row.employeeName,
-                              style: AppTypography.of(context).cardTitle,
-                            ),
-                            Text(
-                              leaveDepartmentType(
-                                row.department,
-                                row.leaveTypeName,
-                              ),
-                              style: AppTypography.of(
-                                context,
-                              ).caption.copyWith(color: AppColors.textMuted),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+            child: AppMobileRecordCard(
+              title: row.employeeName,
+              subtitle: leaveDepartmentType(row.department, row.leaveTypeName),
+              leading: AppAvatar(name: row.employeeName),
+              onTap: () =>
+                  context.push(AppRoutes.leaveEmployee(row.employeeId)),
+              metrics: [
+                (
+                  label: l.leaveAvailable,
+                  value: configurationNumber(context, row.available),
+                ),
+                (
+                  label: l.leaveUsed,
+                  value: configurationNumber(context, row.used),
+                ),
+                (
+                  label: l.leavePendingBalance,
+                  value: configurationNumber(context, row.pending),
+                ),
+              ],
+              trailing: AppActionMenu(
+                tooltip: l.cfgActions,
+                actions: [
+                  AppMenuAction(
+                    label: (l) => l.leaveViewEmployeeLeave,
+                    onPressed: () =>
+                        context.push(AppRoutes.leaveEmployee(row.employeeId)),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  AppInlineStats(
-                    stats: [
-                      (label: l.leaveAvailable, value: '${row.available}'),
-                      (label: l.leaveUsed, value: '${row.used}'),
-                      (label: l.leavePendingBalance, value: '${row.pending}'),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Wrap(
-                    spacing: AppSpacing.sm,
-                    alignment: WrapAlignment.end,
-                    children: [
-                      AppSecondaryButton(
-                        label: l.leaveViewEmployeeLeave,
-                        size: AppButtonSize.small,
-                        onPressed: () => context.push(
-                          AppRoutes.leaveEmployee(row.employeeId),
-                        ),
-                      ),
-                      if (canAdjust)
-                        AppSecondaryButton(
-                          label: l.leaveAdjustBalance,
-                          size: AppButtonSize.small,
-                          onPressed: () => _adjust(context, row),
-                        ),
-                    ],
-                  ),
+                  if (canAdjust)
+                    AppMenuAction(
+                      label: (l) => l.leaveAdjustBalance,
+                      onPressed: () => _adjust(context, row),
+                    ),
                 ],
               ),
             ),
@@ -440,7 +426,7 @@ class _AdjustDialogState extends State<_AdjustDialog> {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            AppSwitchField(
+            AppBooleanSettingRow(
               label: _add ? l.leaveAdjustAdd : l.leaveAdjustRemove,
               value: _add,
               onChanged: _saving ? null : (v) => setState(() => _add = v),
@@ -462,7 +448,9 @@ class _AdjustDialogState extends State<_AdjustDialog> {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 configurationFailure(_failure!, l),
-                style: TextStyle(color: AppColors.danger, fontSize: 12),
+                style: AppTypography.of(
+                  context,
+                ).caption.copyWith(color: AppColors.danger),
               ),
             ],
           ],
