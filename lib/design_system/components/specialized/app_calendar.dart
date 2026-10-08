@@ -115,7 +115,11 @@ class AppCalendarHeader extends StatelessWidget {
 }
 
 class _NavIconButton extends StatelessWidget {
-  const _NavIconButton({required this.icon, required this.onPressed, this.tooltip});
+  const _NavIconButton({
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+  });
   final IconData icon;
   final VoidCallback? onPressed;
   final String? tooltip;
@@ -176,6 +180,7 @@ class AppCalendarDayCell extends StatelessWidget {
     }
     final visible = events.take(maxEvents).toList();
     final overflow = events.length - visible.length;
+    final overflowLabel = '+$overflow';
     final surface = isDark ? AppColors.darkSurface : AppColors.surface;
     final selectedSurface = isDark
         ? AppColors.darkSurfaceSelected
@@ -252,7 +257,7 @@ class AppCalendarDayCell extends StatelessWidget {
                       _EventChip(event: event, isDark: isDark),
                     if (overflow > 0)
                       Text(
-                        '+$overflow',
+                        overflowLabel,
                         maxLines: 1,
                         style: typography.caption.copyWith(
                           fontSize: 9.5,
@@ -293,8 +298,9 @@ class _DayNumber extends StatelessWidget {
         : isToday
         ? accent
         : AppColors.textPrimary;
+    final dayLabel = day.toString();
     final text = Text(
-      '$day',
+      dayLabel,
       style: typography.caption.copyWith(
         fontWeight: isToday ? AppTypography.weightBold : FontWeight.w600,
         color: color,
@@ -454,24 +460,26 @@ class AppCalendar extends StatelessWidget {
               ),
               itemCount: (leading + daysInMonth + 6) ~/ 7 * 7,
               itemBuilder: (context, index) {
-                final day = index - leading + 1;
-                if (day < 1 || day > daysInMonth) {
-                  return const SizedBox.shrink();
-                }
-                final date = DateTime.utc(year, monthNumber, day);
+                // DateTime.utc rolls day 0/negative and day > daysInMonth into
+                // the neighbouring months, so the grid can render a truthful
+                // outside-month (muted) leading/trailing state.
+                final date = DateTime.utc(
+                  year,
+                  monthNumber,
+                  index - leading + 1,
+                );
                 final events = eventsForDay?.call(date) ?? const [];
                 final holiday = holidayForDay?.call(date);
                 return AppCalendarDayCell(
-                  dayNumber: day,
+                  dayNumber: date.day,
+                  inMonth: date.month == monthNumber,
                   isToday: today != null && _sameDay(date, today!),
                   isSelected:
                       selectedDay != null && _sameDay(date, selectedDay!),
                   holidayLabel: holiday,
                   events: events,
                   maxEvents: maxEventsPerCell,
-                  onTap: onSelectDay == null
-                      ? null
-                      : () => onSelectDay!(date),
+                  onTap: onSelectDay == null ? null : () => onSelectDay!(date),
                   daySemanticsLabel: daySemanticsLabel?.call(
                     date,
                     events.length,
@@ -479,7 +487,6 @@ class AppCalendar extends StatelessWidget {
                   ),
                   accentColor: accentColor,
                   holidayColor: holidayColor,
-                  inMonth: true,
                 );
               },
             ),

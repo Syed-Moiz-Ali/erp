@@ -5209,6 +5209,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get correctionView => 'عرض';
 
   @override
+  String get holidayCurrentYear => 'السنة الحالية';
+
+  @override
+  String get holidayPreviousYear => 'السنة السابقة';
+
+  @override
+  String get holidayNextYear => 'السنة التالية';
+
+  @override
+  String get holidayTypeLegend => 'أنواع العطل';
+
+  @override
+  String get leaveCalendarEventsLabel => 'طلبات إجازة';
+
+  @override
+  String get leaveCalendarSelected => 'محدد';
+
+  @override
   String get servicesPermModuleServices => 'الخدمات';
 
   @override

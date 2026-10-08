@@ -1054,6 +1054,12 @@
   "correctionNoResultsNote": "Try another status or clear your filters.",
   "correctionChange": "Current → requested",
   "correctionReview": "Review",
-  "correctionView": "View"
+  "correctionView": "View",
+  "holidayCurrentYear": "Current year",
+  "holidayPreviousYear": "Previous year",
+  "holidayNextYear": "Next year",
+  "holidayTypeLegend": "Holiday types",
+  "leaveCalendarEventsLabel": "leave events",
+  "leaveCalendarSelected": "selected"
 }
 

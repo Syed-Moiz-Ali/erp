@@ -61,24 +61,41 @@ class HolidayManagementPage extends StatelessWidget {
                 onYear: cubit.setYear,
               ),
               const SizedBox(height: AppSpacing.lg),
-              Wrap(
-                spacing: AppSpacing.lg,
-                runSpacing: AppSpacing.lg,
-                children: [
-                  AppMetricCard(
+              AppSummaryStrip(
+                metrics: [
+                  AppSummaryMetric(
                     label: l.activeHolidays,
                     value: '${active.length}',
-                    variant: AppMetricVariant.secondary,
+                  ),
+                  AppSummaryMetric(
+                    label: l.holidayOptional,
+                    value: '${active.where((h) => h.isOptional).length}',
+                  ),
+                  AppSummaryMetric(
+                    label: l.holidayScopeCompanyWide,
+                    value:
+                        '${active.where((h) => h.scope == HolidayScope.companyWide).length}',
                   ),
                   if (next.isNotEmpty)
-                    AppMetricCard(
+                    AppSummaryMetric(
                       label: l.nextHoliday,
                       value: next.first.name,
                       detail: configurationDate(c, next.first.date),
-                      variant: AppMetricVariant.secondary,
                     ),
                 ],
               ),
+              if (s.holidays.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.md),
+                AppLegend(
+                  items: [
+                    for (final type in HolidayType.values)
+                      AppLegendItem(
+                        holidayTypeLabel(type, l),
+                        _holidayTypeColor(type),
+                      ),
+                  ],
+                ),
+              ],
               const SizedBox(height: AppSpacing.xl),
               if (s.loading && s.holidays.isEmpty)
                 const AppCollectionSkeleton()
@@ -143,7 +160,23 @@ class HolidayManagementPage extends StatelessWidget {
                   ),
                 ),
                 DataCell(Text(_dateLabel(context, holiday))),
-                DataCell(Text(holidayTypeLabel(holiday.type, l))),
+                DataCell(
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: _holidayTypeColor(holiday.type),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(holidayTypeLabel(holiday.type, l)),
+                    ],
+                  ),
+                ),
                 DataCell(Text(_scopeLabel(holiday, l))),
                 DataCell(
                   Text(holiday.isOptional ? l.cfgActive : l.cfgInactive),
@@ -296,28 +329,31 @@ class _YearBar extends StatelessWidget {
     final current = cubit.repository.leaveYearFor(
       cubit.repository.companyToday(cubit.context),
     );
-    final years = [for (var y = current - 2; y <= current + 3; y++) y];
+    // Year navigation is deliberately distinct from the leave calendar's month
+    // navigation: prev / next / current-year only, and view-control only.
     return AppCard(
-      child: Row(
-        children: [
-          Expanded(
-            child: AppSelectField<int>(
-              label: l.holidayYearLabel,
-              value: year,
-              enabled: canManage,
-              options: [
-                for (final value in years) AppSelectOption(value, '$value'),
-              ],
-              onChanged: (value) {
-                if (value != null) onYear(value);
-              },
-            ),
-          ),
-        ],
+      child: AppCalendarHeader(
+        label: '$year',
+        previousTooltip: l.holidayPreviousYear,
+        nextTooltip: l.holidayNextYear,
+        todayLabel: l.holidayCurrentYear,
+        onPrevious: canManage ? () => onYear(year - 1) : null,
+        onNext: canManage ? () => onYear(year + 1) : null,
+        onToday: canManage ? () => onYear(current) : null,
       ),
     );
   }
 }
+
+/// Subtle, semantic holiday-type colour used by the type legend and the type
+/// cell dot. Types are never colour-only: the label is always present.
+Color _holidayTypeColor(HolidayType type) => switch (type) {
+  HolidayType.publicHoliday => AppChartColors.working,
+  HolidayType.festivalHoliday => AppColors.accentLavender,
+  HolidayType.regionalHoliday => AppColors.neutral,
+  HolidayType.companyHoliday => AppChartColors.completed,
+  HolidayType.specialClosure => AppChartColors.late,
+};
 
 class _SetUpYear extends StatelessWidget {
   const _SetUpYear({required this.canManage, required this.onCopy});

@@ -66,19 +66,18 @@ class AppSettingsHub extends StatelessWidget {
         if (group.items.isNotEmpty) group,
     ];
     if (visible.isEmpty) {
+      final emptyTitle = '';
+      final emptyBody = emptyMessage ?? '';
       return AppEmptyState(
-        title: '',
-        message: emptyMessage ?? '',
+        title: emptyTitle,
+        message: emptyBody,
         icon: Icons.tune_outlined,
       );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (intro != null) ...[
-          intro!,
-          const SizedBox(height: AppSpacing.xxl),
-        ],
+        if (intro != null) ...[intro!, const SizedBox(height: AppSpacing.xxl)],
         for (var i = 0; i < visible.length; i++) ...[
           if (i > 0) const SizedBox(height: AppSpacing.xxl),
           AppSettingsSection(

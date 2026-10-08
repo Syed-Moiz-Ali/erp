@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modular_erp/design_system/components/headers/app_headers.dart';
 import 'package:modular_erp/design_system/components/specialized/app_workspace.dart';
 import 'package:modular_erp/design_system/components/status/app_status_badge.dart';
 import 'package:modular_erp/design_system/theme/app_colors.dart';
@@ -165,28 +166,61 @@ class AppPermissionRowPresentation {
   bool get hasScope => scopeOptions.isNotEmpty;
 }
 
+/// A submodule section inside a module group (for example `Attendance` inside
+/// `Human Resources`). Purely presentational: it only controls how already
+/// resolved rows are labelled and ordered.
+class AppPermissionSubgroupPresentation {
+  const AppPermissionSubgroupPresentation({
+    required this.title,
+    this.rows = const [],
+  });
+
+  final String title;
+  final List<AppPermissionRowPresentation> rows;
+}
+
 /// A module → submodule permission group. Collapsible on demand while keeping
-/// an unsaved-changes indicator visible in the collapsed header.
+/// an unsaved-changes indicator visible in the collapsed header. Rows may be
+/// supplied flat or grouped into [subgroups].
 class AppPermissionGroupPresentation {
   const AppPermissionGroupPresentation({
     required this.id,
     required this.title,
-    required this.rows,
+    this.rows = const [],
+    this.subgroups = const [],
     this.description,
     this.initiallyExpanded = true,
     this.dirtyCount = 0,
+    this.trailing,
   });
 
   final String id;
   final String title;
   final String? description;
   final List<AppPermissionRowPresentation> rows;
+  final List<AppPermissionSubgroupPresentation> subgroups;
   final bool initiallyExpanded;
   final int dirtyCount;
+
+  /// Optional header action (for example a quick-assignment menu). It stays
+  /// presentation-only and never bypasses the supplied callbacks.
+  final Widget? trailing;
+
+  /// Every row regardless of grouping, used for search matching.
+  List<AppPermissionRowPresentation> get allRows => [
+    ...rows,
+    for (final subgroup in subgroups) ...subgroup.rows,
+  ];
+
+  bool get hasRows => allRows.isNotEmpty;
 }
 
 class AppPermissionGroup extends StatefulWidget {
-  const AppPermissionGroup({super.key, required this.group, this.dense = false});
+  const AppPermissionGroup({
+    super.key,
+    required this.group,
+    this.dense = false,
+  });
 
   final AppPermissionGroupPresentation group;
   final bool dense;
@@ -248,15 +282,17 @@ class _AppPermissionGroupState extends State<AppPermissionGroup> {
                           end: AppSpacing.sm,
                         ),
                         child: AppStatusBadge(
-                          label: '${widget.group.dirtyCount}',
+                          label: widget.group.dirtyCount.toString(),
                           status: AppStatus.warning,
                           isPill: true,
                         ),
                       ),
+                    if (widget.group.trailing != null) ...[
+                      widget.group.trailing!,
+                      const SizedBox(width: AppSpacing.xs),
+                    ],
                     Icon(
-                      _expanded
-                          ? Icons.expand_less
-                          : Icons.expand_more,
+                      _expanded ? Icons.expand_less : Icons.expand_more,
                       size: AppDimensions.iconMd,
                       color: AppColors.textTertiary,
                     ),
@@ -277,8 +313,21 @@ class _AppPermissionGroupState extends State<AppPermissionGroup> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Divider(height: 1),
-                  for (final row in widget.group.rows)
-                    _PermissionRowView(row: row, dense: widget.dense),
+                  if (widget.group.subgroups.isNotEmpty) ...[
+                    for (final subgroup in widget.group.subgroups)
+                      if (subgroup.rows.isNotEmpty) ...[
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            top: AppSpacing.sm,
+                          ),
+                          child: AppSectionHeader(title: subgroup.title),
+                        ),
+                        for (final row in subgroup.rows)
+                          _PermissionRowView(row: row, dense: widget.dense),
+                      ],
+                  ] else
+                    for (final row in widget.group.rows)
+                      _PermissionRowView(row: row, dense: widget.dense),
                 ],
               ),
             ),
@@ -298,7 +347,9 @@ class _PermissionRowView extends StatelessWidget {
     final typography = AppTypography.of(context);
     final enabled = row.canToggle && row.onToggle != null;
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: dense ? AppSpacing.xs : AppSpacing.sm),
+      padding: EdgeInsets.symmetric(
+        vertical: dense ? AppSpacing.xs : AppSpacing.sm,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -436,7 +487,7 @@ class AppPermissionMatrix extends StatelessWidget {
     final query = searchQuery.trim().toLowerCase();
     final filtered = <AppPermissionGroupPresentation>[
       for (final group in groups)
-        if (group.rows.isNotEmpty)
+        if (group.hasRows)
           if (query.isEmpty)
             group
           else if (_matchesGroup(group, query))
@@ -446,15 +497,26 @@ class AppPermissionMatrix extends StatelessWidget {
               description: group.description,
               initiallyExpanded: true,
               dirtyCount: group.dirtyCount,
+              trailing: group.trailing,
               rows: [
                 for (final row in group.rows)
                   if (_matches(row, query)) row,
+              ],
+              subgroups: [
+                for (final subgroup in group.subgroups)
+                  AppPermissionSubgroupPresentation(
+                    title: subgroup.title,
+                    rows: [
+                      for (final row in subgroup.rows)
+                        if (_matches(row, query)) row,
+                    ],
+                  ),
               ],
             ),
     ];
     final visible = [
       for (final g in filtered)
-        if (g.rows.isNotEmpty) g,
+        if (g.hasRows) g,
     ];
     if (visible.isEmpty) {
       return Padding(
@@ -482,7 +544,7 @@ class AppPermissionMatrix extends StatelessWidget {
 
   bool _matchesGroup(AppPermissionGroupPresentation group, String query) =>
       group.title.toLowerCase().contains(query) ||
-      group.rows.any((row) => _matches(row, query));
+      group.allRows.any((row) => _matches(row, query));
 }
 
 // ===========================================================================
@@ -580,10 +642,7 @@ class AppModuleToggleRow extends StatelessWidget {
             ],
             const SizedBox(width: AppSpacing.sm),
             ExcludeSemantics(
-              child: Switch.adaptive(
-                value: enabled,
-                onChanged: onChanged,
-              ),
+              child: Switch.adaptive(value: enabled, onChanged: onChanged),
             ),
           ],
         ),

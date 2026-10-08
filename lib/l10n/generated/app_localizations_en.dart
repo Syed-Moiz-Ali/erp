@@ -5284,6 +5284,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get correctionView => 'View';
 
   @override
+  String get holidayCurrentYear => 'Current year';
+
+  @override
+  String get holidayPreviousYear => 'Previous year';
+
+  @override
+  String get holidayNextYear => 'Next year';
+
+  @override
+  String get holidayTypeLegend => 'Holiday types';
+
+  @override
+  String get leaveCalendarEventsLabel => 'leave events';
+
+  @override
+  String get leaveCalendarSelected => 'selected';
+
+  @override
   String get servicesPermModuleServices => 'Services';
 
   @override

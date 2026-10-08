@@ -47,8 +47,7 @@ class ServiceSettingsPage extends StatelessWidget {
                   title: l.servicesComplaintTypesTitle,
                   description: l.servicesPermComplaintTypesViewDesc,
                   icon: Icons.report_problem_outlined,
-                  onPressed: () =>
-                      context.go(ServicesRoutes.complaintTypes),
+                  onPressed: () => context.go(ServicesRoutes.complaintTypes),
                 ),
               if (can(AppPermission.servicePriorityView))
                 AppSettingsItem(
@@ -79,8 +78,7 @@ class ServiceSettingsPage extends StatelessWidget {
               if (can(AppPermission.serviceChargeResponsibilityView))
                 AppSettingsItem(
                   title: l.servicesChargeResponsibilitiesTitle,
-                  description:
-                      l.servicesPermChargeResponsibilitiesViewDesc,
+                  description: l.servicesPermChargeResponsibilitiesViewDesc,
                   icon: Icons.gavel_outlined,
                   onPressed: () =>
                       context.go(ServicesRoutes.chargeResponsibilities),
@@ -93,8 +91,7 @@ class ServiceSettingsPage extends StatelessWidget {
               if (can(AppPermission.serviceMaterialRequestPurposeView))
                 AppSettingsItem(
                   title: l.servicesMaterialRequestPurposesTitle,
-                  description:
-                      l.servicesPermMaterialRequestPurposesViewDesc,
+                  description: l.servicesPermMaterialRequestPurposesViewDesc,
                   icon: Icons.request_quote_outlined,
                   onPressed: () =>
                       context.go(ServicesRoutes.materialRequestPurposes),

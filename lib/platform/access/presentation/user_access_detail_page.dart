@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modular_erp/core/localization/app_formatters.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
@@ -14,6 +16,11 @@ import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 /// Access Detail: a permission editor grouped Module → Submodule → Action.
+///
+/// Presentation only: [UserAccessCubit] still owns the catalog, the draft and
+/// the save/validation flow. This screen renders that resolved state through the
+/// UI-7 specialized primitives so it reads as a business access interface rather
+/// than a developer enum inspector.
 class UserAccessDetailPage extends StatelessWidget {
   const UserAccessDetailPage({
     super.key,
@@ -50,8 +57,22 @@ class UserAccessDetailPage extends StatelessWidget {
 
 enum _ModuleAction { grantView, grantFull, clear }
 
-class _UserAccessBody extends StatelessWidget {
+class _UserAccessBody extends StatefulWidget {
   const _UserAccessBody();
+
+  @override
+  State<_UserAccessBody> createState() => _UserAccessBodyState();
+}
+
+class _UserAccessBodyState extends State<_UserAccessBody> {
+  final _search = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +94,46 @@ class _UserAccessBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        final company = context.watch<AuthBloc>().state.context?.company.name;
         final user = state.user;
-        return AppPage(
+        final compact = AppBreakpoints.of(context) == AppSize.compact;
+        final scopeNote = '${l.accessScopeHint} ${l.accessActionScopeNote}';
+
+        final body = AppPage(
           header: AppDetailHeader(
             title: user?.displayName ?? l.usersAccessTitle,
             description: user == null
                 ? l.usersAccessSubtitle
-                : [
-                    if (user.employeeCode != null) user.employeeCode!,
-                    if (user.designationName != null) user.designationName!,
-                    if (user.departmentName != null) user.departmentName!,
-                  ].join(' · '),
+                : (user.hasLogin ? user.email : l.accessNoLogin),
             leading: user == null
                 ? null
                 : AppAvatar(name: user.displayName, radius: 24),
+            status: AppDetailStatus(
+              label: (user?.isEmployeeActive ?? false)
+                  ? l.accessStatusActive
+                  : l.accessStatusInactive,
+              status: (user?.isEmployeeActive ?? false)
+                  ? AppStatus.success
+                  : AppStatus.neutral,
+              showDot: true,
+            ),
+            metadata: [
+              if (company != null && company.isNotEmpty)
+                AppMetadataItem(
+                  label: l.accessCompany,
+                  value: company,
+                  icon: Icons.business_outlined,
+                ),
+              AppMetadataItem(
+                label: l.accessEmployee,
+                value: user?.employeeId == null
+                    ? l.accessNotLinked
+                    : (user?.employeeCode ?? l.accessLinkedEmployee),
+                icon: user?.employeeId == null
+                    ? Icons.link_off
+                    : Icons.badge_outlined,
+              ),
+            ],
             primaryAction: cubit.canManage
                 ? AppPrimaryButton(
                     label: l.accessSaveChanges,
@@ -107,13 +154,14 @@ class _UserAccessBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _UserHeader(state: state),
-              const SizedBox(height: AppSpacing.lg),
-              _Summary(state: state),
+              AppAccessSummary(
+                title: l.accessSummary,
+                metrics: _summaryMetrics(context, state, cubit),
+              ),
               const SizedBox(height: AppSpacing.lg),
               AppInfoCard(
                 title: l.accessScopeLabel,
-                message: l.accessScopeHint,
+                message: scopeNote,
                 icon: Icons.info_outline,
               ),
               if (!state.hasEmployeeLink) ...[
@@ -124,19 +172,188 @@ class _UserAccessBody extends StatelessWidget {
                   icon: Icons.link_off,
                 ),
               ],
+              const SizedBox(height: AppSpacing.xl),
+              AppSearchField(
+                controller: _search,
+                label: l.accessPermissionSearch,
+                hint: l.accessPermissionSearch,
+                onChanged: (value) => setState(() => _query = value),
+                onClear: () => setState(() {
+                  _query = '';
+                  _search.clear();
+                }),
+              ),
               const SizedBox(height: AppSpacing.lg),
-              for (final module in cubit.catalog.orderedModules)
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                    bottom: AppSpacing.lg,
-                  ),
-                  child: _ModuleCard(module: module),
-                ),
+              AppPermissionMatrix(
+                groups: [
+                  for (final module in cubit.catalog.orderedModules)
+                    if (module.definitions.isNotEmpty)
+                      AppPermissionGroupPresentation(
+                        id: module.id,
+                        title: l.moduleLabel(module.nameKey),
+                        dirtyCount: _dirtyCount(state, cubit, module.id),
+                        trailing: cubit.canManage
+                            ? _ModuleQuickActions(module: module)
+                            : null,
+                        subgroups: [
+                          for (final submodule in module.submodules)
+                            if (submodule.definitions.isNotEmpty)
+                              AppPermissionSubgroupPresentation(
+                                title: l.submoduleLabel(submodule.id),
+                                rows: [
+                                  for (final definition
+                                      in submodule.definitions)
+                                    _rowFor(context, state, cubit, definition),
+                                ],
+                              ),
+                        ],
+                      ),
+                ],
+                searchQuery: _query,
+                emptyMessage: l.accessNoPermissionMatch,
+                dense: compact,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
               _History(history: state.history),
             ],
           ),
         );
+
+        return PopScope(
+          canPop: !state.dirty,
+          onPopInvokedWithResult: (didPop, _) async {
+            if (didPop || !state.dirty) return;
+            final leave = await AppConfirmationDialog.show(
+              context,
+              title: (l) => l.accessUnsavedTitle,
+              message: (l) => l.accessUnsavedMessage,
+              confirmLabel: (l) => l.accessLeave,
+              cancelLabel: (l) => l.accessStay,
+              destructive: true,
+            );
+            if (leave && context.mounted) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: body,
+        );
       },
+    );
+  }
+
+  List<AppSummaryMetric> _summaryMetrics(
+    BuildContext context,
+    UserAccessState state,
+    UserAccessCubit cubit,
+  ) {
+    final l = context.l10n;
+    final activeModules = cubit.catalog.orderedModules
+        .where(
+          (module) => module.definitions.any(
+            (definition) =>
+                state.grantFor(definition.key) != null ||
+                _isIncluded(state, cubit, definition),
+          ),
+        )
+        .length;
+    return [
+      AppSummaryMetric(
+        label: l.accessGrantedPermissions,
+        value: state.draft.length.toString(),
+        icon: Icons.key_outlined,
+      ),
+      AppSummaryMetric(
+        label: l.accessModuleAccess,
+        value: activeModules.toString(),
+        icon: Icons.widgets_outlined,
+      ),
+      AppSummaryMetric(
+        label: state.hasEmployeeLink
+            ? l.accessLinkedEmployee
+            : l.accessNoLinkedEmployeeTitle,
+        value: state.hasEmployeeLink
+            ? (state.user?.employeeCode ?? l.accessLinkedEmployee)
+            : l.accessNotLinked,
+        icon: Icons.badge_outlined,
+        status: state.hasEmployeeLink ? AppStatus.success : AppStatus.warning,
+      ),
+    ];
+  }
+
+  int _dirtyCount(
+    UserAccessState state,
+    UserAccessCubit cubit,
+    String moduleId,
+  ) => state.draft.where((grant) {
+    if (cubit.catalog.byKey(grant.key)?.moduleId != moduleId) return false;
+    final saved = state.grants.where((g) => g.key == grant.key).firstOrNull;
+    return saved != grant;
+  }).length;
+
+  AppPermissionRowPresentation _rowFor(
+    BuildContext context,
+    UserAccessState state,
+    UserAccessCubit cubit,
+    PermissionDefinition definition,
+  ) {
+    final l = context.l10n;
+    final decision = cubit.canGrant(definition);
+    final current = state.grantFor(definition.key);
+    final actionOnly =
+        definition.supportedScopes.length == 1 &&
+        definition.supportedScopes.first == PermissionScope.none;
+    final scopes = [
+      for (final scope in definition.supportedScopes)
+        if (scope != PermissionScope.none) scope,
+    ];
+    final included = _isIncluded(state, cubit, definition);
+    final canToggle = cubit.canManage && decision.allowed && !included;
+    final enabled = current != null || included;
+    final linkRequired =
+        definition.requiresEmployeeLink && !state.hasEmployeeLink;
+    final defaultScope = scopes.isNotEmpty
+        ? scopes.first
+        : PermissionScope.self;
+    return AppPermissionRowPresentation(
+      label: l.permissionLabel(definition.nameKey),
+      description: l.permissionDescription(definition.descriptionKey),
+      enabled: enabled,
+      canToggle: canToggle,
+      onToggle: canToggle
+          ? (value) {
+              if (actionOnly) {
+                cubit.toggleAction(definition, value);
+              } else {
+                cubit.setScope(
+                  definition,
+                  value
+                      ? (current?.scope ?? defaultScope)
+                      : PermissionScope.none,
+                );
+              }
+            }
+          : null,
+      scopeLabel: l.accessScopeLabel,
+      scopeOptions: [
+        for (final scope in scopes)
+          AppScopeOption(value: scope.name, label: l.scopeLabel(scope.name)),
+      ],
+      scopeValue:
+          current?.scope.name ?? (scopes.isNotEmpty ? scopes.first.name : null),
+      onScopeChanged: canToggle && !actionOnly
+          ? (name) =>
+                cubit.setScope(definition, PermissionScope.values.byName(name))
+          : null,
+      badgeLabel: included ? l.accessIncluded : null,
+      badgeStatus: AppStatus.info,
+      requirementMessage:
+          linkRequired &&
+              decision.reason != AccessDecisionReason.employeeLinkRequired
+          ? l.accessEmployeeLinkRequired
+          : null,
+      deniedReason: decision.allowed || included
+          ? null
+          : _deniedReason(l, decision.reason),
     );
   }
 
@@ -151,6 +368,25 @@ class _UserAccessBody extends StatelessWidget {
   }
 }
 
+/// A View permission whose structural Manage counterpart is granted renders as
+/// "included": runtime normalization (`permissionViewDependencies`) already
+/// derives it, so the editor must not present it as an independent grant.
+bool _isIncluded(
+  UserAccessState state,
+  UserAccessCubit cubit,
+  PermissionDefinition definition,
+) {
+  for (final entry in permissionViewDependencies.entries) {
+    if (!definition.permissions.containsValue(entry.value)) continue;
+    for (final candidate in cubit.catalog.definitions) {
+      if (candidate.permissions.containsValue(entry.key)) {
+        return state.grantFor(candidate.key) != null;
+      }
+    }
+  }
+  return false;
+}
+
 String _failureMessage(AppLocalizations l, String code) => switch (code) {
   'access.selfEscalation' => l.accessSelfEscalation,
   'access.lastAdmin' => l.accessLastAdmin,
@@ -161,333 +397,51 @@ String _failureMessage(AppLocalizations l, String code) => switch (code) {
   _ => l.accessSaveFailed,
 };
 
-class _UserHeader extends StatelessWidget {
-  const _UserHeader({required this.state});
-  final UserAccessState state;
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final user = state.user;
-    return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 24,
-            child: Text(
-              (user?.displayName.isNotEmpty ?? false)
-                  ? user!.displayName.characters.first.toUpperCase()
-                  : '?',
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user?.displayName ?? l.usersAccessTitle),
-                const SizedBox(height: AppSpacing.xs),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.xs,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    AppStatusBadge(
-                      label: user?.hasLogin ?? false
-                          ? (user?.email ?? '')
-                          : l.accessNoLogin,
-                      status: (user?.hasLogin ?? false)
-                          ? AppStatus.info
-                          : AppStatus.neutral,
-                      isPill: true,
-                    ),
-                    AppStatusBadge(
-                      label: (user?.isEmployeeActive ?? false)
-                          ? l.accessStatusActive
-                          : l.accessStatusInactive,
-                      status: (user?.isEmployeeActive ?? false)
-                          ? AppStatus.success
-                          : AppStatus.neutral,
-                      isPill: true,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+String _deniedReason(AppLocalizations l, AccessDecisionReason? reason) =>
+    switch (reason) {
+      AccessDecisionReason.employeeLinkRequired => l.accessEmployeeLinkRequired,
+      AccessDecisionReason.moduleDisabled => l.accessModuleDisabled,
+      AccessDecisionReason.platformOnly ||
+      AccessDecisionReason.notDelegable => l.accessPlatformOnly,
+      _ => l.accessNotPermitted,
+    };
 
-class _Summary extends StatelessWidget {
-  const _Summary({required this.state});
-  final UserAccessState state;
+class _ModuleQuickActions extends StatelessWidget {
+  const _ModuleQuickActions({required this.module});
+  final PermissionModule module;
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final cubit = context.read<UserAccessCubit>();
-    final stats = [
-      for (final module in cubit.catalog.orderedModules)
-        (
-          module: module,
-          granted: module.definitions
-              .where((d) => state.draft.any((grant) => grant.key == d.key))
-              .length,
-          total: module.definitions.length,
+    return PopupMenuButton<_ModuleAction>(
+      icon: const Icon(Icons.tune),
+      tooltip: l.accessModuleAccess,
+      onSelected: (action) {
+        switch (action) {
+          case _ModuleAction.grantView:
+            cubit.grantModule(module.id, full: false);
+          case _ModuleAction.grantFull:
+            _confirmFull(context, cubit);
+          case _ModuleAction.clear:
+            cubit.clearModule(module.id);
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: _ModuleAction.grantView,
+          child: Text(l.accessGrantView),
         ),
-    ];
-    final activeModules = stats.where((s) => s.granted > 0).length;
-    final theme = Theme.of(context);
-    return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(l.accessSummary, style: theme.textTheme.titleMedium),
-          const SizedBox(height: AppSpacing.lg),
-          Builder(
-            builder: (context) {
-              final tiles = <Widget>[
-                _SummaryStat(
-                  icon: Icons.key_outlined,
-                  label: l.accessGrantedPermissions,
-                  value: state.draft.length,
-                ),
-                _SummaryStat(
-                  icon: Icons.widgets_outlined,
-                  label: l.accessModuleAccess,
-                  value: activeModules,
-                ),
-                _SummaryStat(
-                  icon: Icons.badge_outlined,
-                  label: state.hasEmployeeLink
-                      ? l.accessLinkedEmployee
-                      : l.accessNoLinkedEmployeeTitle,
-                  status: state.hasEmployeeLink
-                      ? AppStatus.success
-                      : AppStatus.warning,
-                ),
-              ];
-              if (AppBreakpoints.of(context) == AppSize.compact) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (final tile in tiles)
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                          bottom: AppSpacing.md,
-                        ),
-                        child: tile,
-                      ),
-                  ],
-                );
-              }
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [for (final tile in tiles) Expanded(child: tile)],
-              );
-            },
-          ),
-          if (stats.any((s) => s.granted > 0)) ...[
-            const Divider(height: AppSpacing.xxl),
-            for (final stat in stats)
-              if (stat.granted > 0)
-                _ModuleProgress(
-                  label: l.moduleLabel(stat.module.nameKey),
-                  granted: stat.granted,
-                  total: stat.total,
-                ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _SummaryStat extends StatelessWidget {
-  const _SummaryStat({
-    required this.icon,
-    required this.label,
-    this.value,
-    this.status,
-  });
-  final IconData icon;
-  final String label;
-  final int? value;
-  final AppStatus? status;
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final valueText = value == null ? null : '$value';
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: theme.colorScheme.primary),
-        const SizedBox(width: AppSpacing.sm),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (valueText != null) ...[
-                Text(label, style: theme.textTheme.bodySmall),
-                const SizedBox(height: AppSpacing.xs),
-                Text(valueText, style: theme.textTheme.titleLarge),
-              ] else
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: AlignmentDirectional.centerStart,
-                    child: AppStatusBadge(
-                      label: label,
-                      status: status ?? AppStatus.neutral,
-                      isPill: true,
-                    ),
-                  ),
-                ),
-            ],
-          ),
+        PopupMenuItem(
+          value: _ModuleAction.grantFull,
+          child: Text(l.accessGrantFull),
         ),
+        PopupMenuItem(value: _ModuleAction.clear, child: Text(l.accessClear)),
       ],
     );
   }
-}
 
-class _ModuleProgress extends StatelessWidget {
-  const _ModuleProgress({
-    required this.label,
-    required this.granted,
-    required this.total,
-  });
-  final String label;
-  final int granted, total;
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final ratio = '$granted / $total';
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Expanded(child: Text(label)),
-              Text(ratio, style: theme.textTheme.bodySmall),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          LinearProgressIndicator(
-            value: total == 0 ? 0 : granted / total,
-            minHeight: 6,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ModuleCard extends StatelessWidget {
-  const _ModuleCard({required this.module});
-  final PermissionModule module;
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final cubit = context.read<UserAccessCubit>();
-    final granted = cubit.grantedCount(module.id);
-    final hasAccess = granted > 0;
-    final statusLabel = hasAccess
-        ? l.accessHasAccess
-        : l.accessNoAccessAssigned;
-    return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Icon(
-                _moduleIcon(module.id),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(l.moduleLabel(module.nameKey)),
-                    const SizedBox(height: AppSpacing.xs),
-                    AppStatusBadge(
-                      label: statusLabel,
-                      status: hasAccess ? AppStatus.success : AppStatus.neutral,
-                      isPill: true,
-                    ),
-                  ],
-                ),
-              ),
-              if (cubit.canManage)
-                PopupMenuButton<_ModuleAction>(
-                  icon: const Icon(Icons.tune),
-                  tooltip: l.accessModuleAccess,
-                  onSelected: (action) {
-                    switch (action) {
-                      case _ModuleAction.grantView:
-                        cubit.grantModule(module.id, full: false);
-                      case _ModuleAction.grantFull:
-                        _confirmFull(context, cubit, module);
-                      case _ModuleAction.clear:
-                        cubit.clearModule(module.id);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: _ModuleAction.grantView,
-                      child: Text(l.accessGrantView),
-                    ),
-                    PopupMenuItem(
-                      value: _ModuleAction.grantFull,
-                      child: Text(l.accessGrantFull),
-                    ),
-                    PopupMenuItem(
-                      value: _ModuleAction.clear,
-                      child: Text(l.accessClear),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-          const Divider(height: AppSpacing.xl),
-          if (module.definitions.any((d) => d.requiresEmployeeLink) &&
-              !cubit.state.hasEmployeeLink)
-            Padding(
-              padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.md),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.info_outline, size: 16),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(child: Text(l.accessSelfRequiresEmployee)),
-                ],
-              ),
-            ),
-          for (final submodule in module.submodules) ...[
-            AppSectionHeader(title: l.submoduleLabel(submodule.id)),
-            for (final definition in submodule.definitions)
-              _PermissionRow(definition: definition),
-            const SizedBox(height: AppSpacing.md),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Future<void> _confirmFull(
-    BuildContext context,
-    UserAccessCubit cubit,
-    PermissionModule module,
-  ) async {
+  Future<void> _confirmFull(BuildContext context, UserAccessCubit cubit) async {
     final confirmed = await AppConfirmationDialog.show(
       context,
       title: (l) => l.accessFullConfirmTitle,
@@ -498,112 +452,10 @@ class _ModuleCard extends StatelessWidget {
   }
 }
 
-IconData _moduleIcon(String moduleId) => switch (moduleId) {
-  'hr' => Icons.groups_outlined,
-  'services' => Icons.handyman_outlined,
-  'platform' => Icons.admin_panel_settings_outlined,
-  _ => Icons.widgets_outlined,
-};
-
-class _PermissionRow extends StatelessWidget {
-  const _PermissionRow({required this.definition});
-  final PermissionDefinition definition;
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final cubit = context.read<UserAccessCubit>();
-    final decision = cubit.canGrant(definition);
-    final current = cubit.state.grantFor(definition.key);
-    final title = Text(l.permissionLabel(definition.nameKey));
-    final subtitle = Text(l.permissionDescription(definition.descriptionKey));
-    if (definition.supportedScopes.length == 1 &&
-        definition.supportedScopes.first == PermissionScope.none) {
-      return SwitchListTile.adaptive(
-        value: current != null,
-        onChanged: decision.allowed
-            ? (value) => cubit.toggleAction(definition, value)
-            : null,
-        title: title,
-        subtitle: subtitle,
-        contentPadding: EdgeInsets.zero,
-        dense: true,
-      );
-    }
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          title,
-          const SizedBox(height: AppSpacing.xs),
-          subtitle,
-          const SizedBox(height: AppSpacing.sm),
-          if (decision.allowed) ...[
-            Text(l.accessScopeLabel),
-            const SizedBox(height: AppSpacing.xs),
-            _ScopeSelector(
-              definition: definition,
-              current: current?.scope ?? PermissionScope.none,
-              onChanged: (scope) => cubit.setScope(definition, scope),
-            ),
-          ] else
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(Icons.info_outline, size: 16),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(child: Text(_deniedReason(l, decision.reason))),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ScopeSelector extends StatelessWidget {
-  const _ScopeSelector({
-    required this.definition,
-    required this.current,
-    required this.onChanged,
-  });
-  final PermissionDefinition definition;
-  final PermissionScope current;
-  final ValueChanged<PermissionScope> onChanged;
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final scopes = [
-      PermissionScope.none,
-      ...definition.supportedScopes.where((s) => s != PermissionScope.none),
-    ];
-    return Wrap(
-      spacing: AppSpacing.sm,
-      runSpacing: AppSpacing.sm,
-      children: [
-        for (final scope in scopes)
-          ChoiceChip(
-            label: Text(l.scopeLabel(scope.name)),
-            selected: scope == current,
-            onSelected: (_) => onChanged(scope),
-          ),
-      ],
-    );
-  }
-}
-
-String _deniedReason(AppLocalizations l, AccessDecisionReason? reason) =>
-    switch (reason) {
-      AccessDecisionReason.employeeLinkRequired => l.accessEmployeeLinkRequired,
-      AccessDecisionReason.moduleDisabled => l.accessModuleDisabled,
-      AccessDecisionReason.platformOnly ||
-      AccessDecisionReason.notDelegable => l.accessPlatformOnly,
-      _ => l.accessNotPermitted,
-    };
-
 class _History extends StatelessWidget {
   const _History({required this.history});
   final List history;
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -614,44 +466,59 @@ class _History extends StatelessWidget {
       );
     }
     final catalog = context.read<UserAccessCubit>().catalog;
+    final formatter = AppDateFormatter(Localizations.localeOf(context));
     return AppSettingsSection(
       title: l.accessHistory,
       children: [
-        for (final event in history.take(20))
-          Builder(
-            builder: (context) {
-              final metadata = event.metadata as Map<String, Object?>;
-              final key = metadata['permissionKey'] as String?;
-              final definition = key == null ? null : catalog.byKey(key);
-              final action = (event.eventType as String).split('.').last;
-              final label = switch (action) {
-                'added' => l.accessAdded,
-                'removed' => l.accessRemoved,
-                _ => l.accessChanged,
-              };
-              final scopeText = [
-                if (metadata['oldScope'] != null)
-                  l.scopeLabel(metadata['oldScope'] as String),
-                if (metadata['newScope'] != null)
-                  l.scopeLabel(metadata['newScope'] as String),
-              ].join(' → ');
-              return ListTile(
-                dense: true,
-                leading: AppStatusBadge(label: label, isPill: true),
-                title: Text(
-                  definition == null
-                      ? (key ?? '')
-                      : l.permissionLabel(definition.nameKey),
-                ),
-                subtitle: Text(
-                  scopeText.isEmpty
-                      ? event.occurredAt.toIso8601String()
-                      : scopeText,
-                ),
-              );
-            },
-          ),
+        AppTimeline(
+          items: [
+            for (final event in history.take(20))
+              _item(l, catalog, formatter, event),
+          ],
+        ),
       ],
+    );
+  }
+
+  AppTimelineItem _item(
+    AppLocalizations l,
+    PermissionCatalog catalog,
+    AppDateFormatter formatter,
+    dynamic event,
+  ) {
+    final metadata = event.metadata as Map<String, Object?>;
+    final key = metadata['permissionKey'] as String?;
+    final definition = key == null ? null : catalog.byKey(key);
+    final action = (event.eventType as String).split('.').last;
+    final label = switch (action) {
+      'added' => l.accessAdded,
+      'removed' => l.accessRemoved,
+      _ => l.accessChanged,
+    };
+    final scopeText = [
+      if (metadata['oldScope'] != null)
+        l.scopeLabel(metadata['oldScope'] as String),
+      if (metadata['newScope'] != null)
+        l.scopeLabel(metadata['newScope'] as String),
+    ].join(' → ');
+    return AppTimelineItem(
+      id: event.id as String,
+      title: definition == null
+          ? (key ?? label)
+          : l.permissionLabel(definition.nameKey),
+      time: formatter.relative(event.occurredAt as DateTime, l),
+      icon: switch (action) {
+        'added' => Icons.add_circle_outline,
+        'removed' => Icons.remove_circle_outline,
+        _ => Icons.edit_outlined,
+      },
+      status: switch (action) {
+        'added' => AppStatus.success,
+        'removed' => AppStatus.danger,
+        _ => AppStatus.info,
+      },
+      detail: scopeText.isEmpty ? null : scopeText,
+      trailing: AppStatusBadge(label: label, isPill: true),
     );
   }
 }

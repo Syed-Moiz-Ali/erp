@@ -77,7 +77,7 @@ class EmployeeLeavePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
-              _SectionTitle(title: l.leaveBalanceSection),
+              AppSectionHeader(title: l.leaveBalanceSection),
               const SizedBox(height: AppSpacing.md),
               if (summary.balances.isEmpty)
                 AppEmptyState(
@@ -153,7 +153,7 @@ class EmployeeLeavePage extends StatelessWidget {
                   ],
                 ),
               const SizedBox(height: AppSpacing.xl),
-              _SectionTitle(title: l.leaveUpcoming),
+              AppSectionHeader(title: l.leaveUpcoming),
               const SizedBox(height: AppSpacing.md),
               if (summary.upcoming.isEmpty)
                 AppEmptyState(
@@ -196,7 +196,7 @@ class EmployeeLeavePage extends StatelessWidget {
                     ),
                   ),
               const SizedBox(height: AppSpacing.xl),
-              _SectionTitle(title: l.leaveRecentRequests),
+              AppSectionHeader(title: l.leaveRecentRequests),
               const SizedBox(height: AppSpacing.md),
               LeaveRequestTable(rows: summary.recent, showEmployee: false),
             ],
@@ -284,12 +284,4 @@ class EmployeeLeavePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.title});
-  final String title;
-  @override
-  Widget build(BuildContext context) =>
-      Text(title, style: AppTypography.of(context).sectionTitle);
 }

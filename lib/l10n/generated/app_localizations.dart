@@ -10076,6 +10076,42 @@ abstract class AppLocalizations {
   /// **'View'**
   String get correctionView;
 
+  /// No description provided for @holidayCurrentYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Current year'**
+  String get holidayCurrentYear;
+
+  /// No description provided for @holidayPreviousYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous year'**
+  String get holidayPreviousYear;
+
+  /// No description provided for @holidayNextYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Next year'**
+  String get holidayNextYear;
+
+  /// No description provided for @holidayTypeLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday types'**
+  String get holidayTypeLegend;
+
+  /// No description provided for @leaveCalendarEventsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'leave events'**
+  String get leaveCalendarEventsLabel;
+
+  /// No description provided for @leaveCalendarSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get leaveCalendarSelected;
+
   /// No description provided for @servicesPermModuleServices.
   ///
   /// In en, this message translates to:

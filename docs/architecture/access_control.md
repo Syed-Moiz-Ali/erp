@@ -236,3 +236,24 @@ documents every consumer.
 
 Module enablement is read-only in the local demo (platform-level in a real
 backend).
+
+## Presentation layer (UI-7)
+
+The authorization semantics above are unchanged by UI-7. Only how they are
+presented changed; terminology used consistently in the UI:
+
+- **Permission** — a `(key, scope)` grant. Business labels are localized; raw
+  keys are not shown (optional technical/debug context only).
+- **Scope** — SELF / ASSIGNED / TEAM / ALL, shown only for permissions that
+  support scope. Action permissions never show an independent scope; visibility
+  always follows the View scope.
+- **Employee link** — an optional relationship between a `UserAccount` and an
+  `Employee`. Unlinked platform/admin accounts are valid; permissions that
+  require a link state the requirement explicitly.
+- **Module enablement** — a company-level switch ("Company modules"). It is
+  distinct from user access: enabling a module for the company never grants a
+  user access; that requires a permission grant in Users & Access.
+
+The editor is presentation-only: `GrantAuthorityResolver`, the last-admin guard,
+employee-link requirements, module enablement, the scope resolver and permission
+normalization all remain authoritative and unchanged.

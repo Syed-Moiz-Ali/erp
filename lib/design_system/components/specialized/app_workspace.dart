@@ -178,11 +178,7 @@ class AppReportMetric extends StatelessWidget {
     final accent = status == AppStatus.neutral
         ? null
         : (isDark ? status.darkColor : status.color);
-    final semantic = [
-      label,
-      value,
-      if (detail != null) detail!,
-    ].join(', ');
+    final semantic = [label, value, if (detail != null) detail!].join(', ');
     return Semantics(
       label: semantic,
       child: ExcludeSemantics(
@@ -193,11 +189,7 @@ class AppReportMetric extends StatelessWidget {
             Row(
               children: [
                 if (icon != null) ...[
-                  Icon(
-                    icon,
-                    size: 14,
-                    color: accent ?? AppColors.textTertiary,
-                  ),
+                  Icon(icon, size: 14, color: accent ?? AppColors.textTertiary),
                   const SizedBox(width: AppSpacing.xs),
                 ],
                 if (accent != null) ...[
