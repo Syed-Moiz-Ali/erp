@@ -70,46 +70,66 @@ class AppCalendarHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: AppTypography.of(context).sectionTitle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        if (trailing != null) ...[
-          trailing!,
-          const SizedBox(width: AppSpacing.sm),
-        ],
-        _NavIconButton(
-          icon: rtl ? Icons.chevron_right : Icons.chevron_left,
-          tooltip: previousTooltip,
-          onPressed: onPrevious,
-        ),
-        if (onToday != null) ...[
-          const SizedBox(width: AppSpacing.sm),
-          OutlinedButton(
-            onPressed: onToday,
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(0, AppDimensions.controlSm + 4),
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.button),
-              ),
+    final labelWidget = Text(
+      label,
+      style: AppTypography.of(context).sectionTitle,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+    final controls = <Widget>[
+      if (trailing != null) trailing!,
+      _NavIconButton(
+        icon: rtl ? Icons.chevron_right : Icons.chevron_left,
+        tooltip: previousTooltip,
+        onPressed: onPrevious,
+      ),
+      if (onToday != null)
+        OutlinedButton(
+          onPressed: onToday,
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(0, AppDimensions.controlSm + 4),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.button),
             ),
-            child: Text(todayLabel ?? ''),
           ),
-        ],
-        const SizedBox(width: AppSpacing.sm),
-        _NavIconButton(
-          icon: rtl ? Icons.chevron_left : Icons.chevron_right,
-          tooltip: nextTooltip,
-          onPressed: onNext,
+          child: Text(todayLabel ?? ''),
         ),
-      ],
+      _NavIconButton(
+        icon: rtl ? Icons.chevron_left : Icons.chevron_right,
+        tooltip: nextTooltip,
+        onPressed: onNext,
+      ),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Narrow widths stack the period label above Wrapping controls so a
+        // long translated label/action can never overflow horizontally.
+        if (constraints.maxWidth < 340) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labelWidget,
+              const SizedBox(height: AppSpacing.sm),
+              Wrap(
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: controls,
+              ),
+            ],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(child: labelWidget),
+            for (final control in controls) ...[
+              const SizedBox(width: AppSpacing.sm),
+              control,
+            ],
+          ],
+        );
+      },
     );
   }
 }
@@ -218,37 +238,26 @@ class AppCalendarDayCell extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        _DayNumber(
-                          day: dayNumber!,
-                          inMonth: inMonth,
-                          isToday: isToday,
-                          accent: accentColor,
-                          typography: typography,
-                        ),
-                        const Spacer(),
-                        if (holidayLabel != null)
-                          Tooltip(
-                            message: holidayLabel!,
-                            child: Icon(
-                              Icons.beach_access_outlined,
-                              size: AppDimensions.iconXs,
-                              color: holidayColor,
-                            ),
-                          ),
-                      ],
+                    _DayNumber(
+                      day: dayNumber!,
+                      inMonth: inMonth,
+                      isToday: isToday,
+                      accent: accentColor,
+                      typography: typography,
                     ),
                     if (holidayLabel != null) ...[
                       const SizedBox(height: 1),
-                      Text(
-                        holidayLabel!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: typography.caption.copyWith(
-                          fontSize: 9.5,
-                          height: 1.15,
-                          color: holidayColor,
+                      Tooltip(
+                        message: holidayLabel!,
+                        child: Text(
+                          holidayLabel!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: typography.caption.copyWith(
+                            fontSize: 9.5,
+                            height: 1.15,
+                            color: holidayColor,
+                          ),
                         ),
                       ),
                     ],
@@ -413,86 +422,74 @@ class AppCalendar extends StatelessWidget {
     final typography = AppTypography.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const spacing = 2.0;
-        final cellWidth = (constraints.maxWidth - spacing * 6) / 7;
-        final cellHeight =
-            24 +
-            (hasHoliday ? 13 : 0) +
-            maxEvents * 15 +
-            (maxEvents > 0 ? 4 : 0);
-        final aspect = (cellWidth / cellHeight).clamp(0.4, 3.0);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    const spacing = 2.0;
+    // Total cell extent: the day-number row plus the cell padding, then the
+    // optional holiday label and the visible event chips.
+    final double cellHeight =
+        40 + (hasHoliday ? 14 : 0) + maxEvents * 16 + (maxEvents > 0 ? 4 : 0);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                for (final weekday in weekdays)
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        weekday,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: typography.caption.copyWith(
-                          fontSize: 10.5,
-                          color: isDark
-                              ? AppColors.darkTextTertiary
-                              : AppColors.textTertiary,
-                          fontWeight: AppTypography.weightSemibold,
-                        ),
-                      ),
+            for (final weekday in weekdays)
+              Expanded(
+                child: Center(
+                  child: Text(
+                    weekday,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: typography.caption.copyWith(
+                      fontSize: 10.5,
+                      color: isDark
+                          ? AppColors.darkTextTertiary
+                          : AppColors.textTertiary,
+                      fontWeight: AppTypography.weightSemibold,
                     ),
                   ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
-                mainAxisSpacing: spacing,
-                crossAxisSpacing: spacing,
-                childAspectRatio: aspect,
+                ),
               ),
-              itemCount: (leading + daysInMonth + 6) ~/ 7 * 7,
-              itemBuilder: (context, index) {
-                // DateTime.utc rolls day 0/negative and day > daysInMonth into
-                // the neighbouring months, so the grid can render a truthful
-                // outside-month (muted) leading/trailing state.
-                final date = DateTime.utc(
-                  year,
-                  monthNumber,
-                  index - leading + 1,
-                );
-                final events = eventsForDay?.call(date) ?? const [];
-                final holiday = holidayForDay?.call(date);
-                return AppCalendarDayCell(
-                  dayNumber: date.day,
-                  inMonth: date.month == monthNumber,
-                  isToday: today != null && _sameDay(date, today!),
-                  isSelected:
-                      selectedDay != null && _sameDay(date, selectedDay!),
-                  holidayLabel: holiday,
-                  events: events,
-                  maxEvents: maxEventsPerCell,
-                  onTap: onSelectDay == null ? null : () => onSelectDay!(date),
-                  daySemanticsLabel: daySemanticsLabel?.call(
-                    date,
-                    events.length,
-                    holiday,
-                  ),
-                  accentColor: accentColor,
-                  holidayColor: holidayColor,
-                );
-              },
-            ),
           ],
-        );
-      },
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            mainAxisSpacing: spacing,
+            crossAxisSpacing: spacing,
+            mainAxisExtent: cellHeight,
+          ),
+          itemCount: (leading + daysInMonth + 6) ~/ 7 * 7,
+          itemBuilder: (context, index) {
+            // DateTime.utc rolls day 0/negative and day > daysInMonth into
+            // the neighbouring months, so the grid can render a truthful
+            // outside-month (muted) leading/trailing state.
+            final date = DateTime.utc(year, monthNumber, index - leading + 1);
+            final events = eventsForDay?.call(date) ?? const [];
+            final holiday = holidayForDay?.call(date);
+            return AppCalendarDayCell(
+              dayNumber: date.day,
+              inMonth: date.month == monthNumber,
+              isToday: today != null && _sameDay(date, today!),
+              isSelected: selectedDay != null && _sameDay(date, selectedDay!),
+              holidayLabel: holiday,
+              events: events,
+              maxEvents: maxEventsPerCell,
+              onTap: onSelectDay == null ? null : () => onSelectDay!(date),
+              daySemanticsLabel: daySemanticsLabel?.call(
+                date,
+                events.length,
+                holiday,
+              ),
+              accentColor: accentColor,
+              holidayColor: holidayColor,
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -56,6 +56,8 @@ extension AppPermissionLocalization on AppPermission {
     AppPermission.attendancePolicyView => l10n.permissionAttendancePolicyView,
     AppPermission.attendancePolicyManage =>
       l10n.permissionAttendancePolicyManage,
+    AppPermission.departmentView => l10n.permissionDepartmentView,
+    AppPermission.departmentManage => l10n.permissionDepartmentManage,
     AppPermission.companyManage => l10n.permissionCompanyManage,
     AppPermission.userManage => l10n.permissionUserManage,
     AppPermission.attendanceReportView => l10n.permissionAttendanceReportView,

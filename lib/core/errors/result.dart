@@ -5,6 +5,7 @@ enum FailureKind {
   invalidCredentials,
   sessionStorage,
   demoDisabled,
+  notConfigured,
   currentPassword,
   passwordPolicy,
   server,
@@ -15,6 +16,12 @@ enum FailureKind {
   sessionExpired,
   request,
   invalidData,
+  validation,
+  conflict,
+  notFound,
+  rateLimited,
+  forbidden,
+  accountInactive,
   locationDisabled,
   locationPermission,
   locationUnavailable,
@@ -31,6 +38,8 @@ sealed class Failure with _$Failure {
     required String code,
     @Default(FailureKind.unknown) FailureKind kind,
     @Default(false) bool retryable,
+    String? field,
+    String? serverMessage,
   }) = _Failure;
 }
 

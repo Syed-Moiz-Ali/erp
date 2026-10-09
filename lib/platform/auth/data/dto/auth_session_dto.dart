@@ -12,13 +12,17 @@ class AuthSessionDto {
     required this.expiresAt,
     required this.user,
     required this.company,
+    this.refreshTokenExpiresAt,
+    this.tokenType = 'Bearer',
     this.employee,
     this.settings = const {},
     this.version = 1,
   });
   final int version;
   final String accessToken, refreshToken;
+  final String tokenType;
   final DateTime expiresAt;
+  final DateTime? refreshTokenExpiresAt;
   final Map<String, dynamic> user, company;
   final Map<String, dynamic>? employee;
   final Map<String, String> settings;
@@ -80,6 +84,8 @@ abstract final class AuthSessionMapper {
       accessToken: dto.accessToken,
       refreshToken: dto.refreshToken,
       expiresAt: dto.expiresAt.toUtc(),
+      refreshTokenExpiresAt: dto.refreshTokenExpiresAt?.toUtc(),
+      tokenType: dto.tokenType,
       context: AuthContext(
         user: user,
         company: company,
@@ -98,6 +104,8 @@ abstract final class AuthSessionMapper {
       accessToken: session.accessToken,
       refreshToken: session.refreshToken,
       expiresAt: session.expiresAt,
+      refreshTokenExpiresAt: session.refreshTokenExpiresAt,
+      tokenType: session.tokenType,
       user: {
         'id': u.id,
         'displayName': u.displayName,

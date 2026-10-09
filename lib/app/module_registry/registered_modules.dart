@@ -29,6 +29,7 @@ import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/services/module/services_module_registration.dart';
 import 'package:modular_erp/modules/services/customers/domain/service_customer_repository.dart';
@@ -63,6 +64,7 @@ ModuleRegistry createErpRegistry(
   DashboardRepository? dashboardRepository,
   EmployeeRepository? employeeRepository,
   ShiftRepository? shiftRepository,
+  DepartmentRepository? departmentRepository,
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
@@ -96,7 +98,7 @@ ModuleRegistry createErpRegistry(
 }) {
   final dashboard =
       dashboardRepository ??
-      LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled);
+      LocalDashboardRepository(demoEnabled: AppConfig.demoMode);
   final servicesDashboard =
       (database != null && clock != null && companyTimeService != null)
       ? LocalServicesDashboardRepository(
@@ -130,6 +132,7 @@ ModuleRegistry createErpRegistry(
     registry: () => registry,
     employeeRepository: employeeRepository,
     shiftRepository: shiftRepository,
+    departmentRepository: departmentRepository,
     workLocationRepository: workLocationRepository,
     attendancePolicyRepository: attendancePolicyRepository,
     locationService: locationService,
@@ -165,6 +168,7 @@ ModuleRegistry createErpRegistry(
             order: 40,
             anyPermissions: {
               AppPermission.shiftView,
+              AppPermission.departmentView,
               AppPermission.workLocationView,
               AppPermission.attendancePolicyView,
               AppPermission.leaveTypeView,
@@ -186,6 +190,7 @@ ModuleRegistry createErpRegistry(
                 state,
                 ConfigurationLandingPage(
                   shiftRepository: shiftRepository,
+                  departmentRepository: departmentRepository,
                   workLocationRepository: workLocationRepository,
                   attendancePolicyRepository: attendancePolicyRepository,
                   leaveTypeRepository: leaveTypeRepository,

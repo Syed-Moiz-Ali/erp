@@ -11,6 +11,7 @@ import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
@@ -46,6 +47,7 @@ class ConfigurationLandingBloc
     this.shifts,
     this.locations,
     this.policies, {
+    this.departments,
     this.leaveTypes,
     this.leavePolicies,
     this.holidays,
@@ -84,6 +86,10 @@ class ConfigurationLandingBloc
           account.user.permissions.contains(AppPermission.shiftView)) {
         watch('shifts', shifts!.watchList(account, pageSize: 1));
       }
+      if (departments != null &&
+          account.user.permissions.contains(AppPermission.departmentView)) {
+        watch('departments', departments!.watchList(account, pageSize: 1));
+      }
       if (locations != null &&
           account.user.permissions.contains(AppPermission.workLocationView)) {
         watch('locations', locations!.watchList(account, pageSize: 1));
@@ -120,6 +126,7 @@ class ConfigurationLandingBloc
   }
   final AuthContext account;
   final ShiftRepository? shifts;
+  final DepartmentRepository? departments;
   final WorkLocationRepository? locations;
   final AttendancePolicyRepository? policies;
   final ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypes;
@@ -141,6 +148,7 @@ class ConfigurationLandingPage extends StatelessWidget {
   const ConfigurationLandingPage({
     super.key,
     this.shiftRepository,
+    this.departmentRepository,
     this.workLocationRepository,
     this.attendancePolicyRepository,
     this.leaveTypeRepository,
@@ -148,6 +156,7 @@ class ConfigurationLandingPage extends StatelessWidget {
     this.holidayRepository,
   });
   final ShiftRepository? shiftRepository;
+  final DepartmentRepository? departmentRepository;
   final WorkLocationRepository? workLocationRepository;
   final AttendancePolicyRepository? attendancePolicyRepository;
   final ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository;
@@ -169,6 +178,7 @@ class ConfigurationLandingPage extends StatelessWidget {
           shiftRepository,
           workLocationRepository,
           attendancePolicyRepository,
+          departments: departmentRepository,
           leaveTypes: leaveTypeRepository,
           leavePolicies: leavePolicyRepository,
           holidays: holidayRepository,
@@ -192,6 +202,14 @@ class ConfigurationLandingPage extends StatelessWidget {
                   icon: Icons.schedule_outlined,
                   trailing: count('shifts'),
                   onPressed: () => context.push(AppRoutes.shifts),
+                ),
+              if (permissions.can(AppPermission.departmentView))
+                AppSettingsRow(
+                  title: l.cfgDepartments,
+                  description: l.settingsDepartmentDesc,
+                  icon: Icons.account_tree_outlined,
+                  trailing: count('departments'),
+                  onPressed: () => context.push(AppRoutes.departments),
                 ),
               if (permissions.can(AppPermission.workLocationView))
                 AppSettingsRow(

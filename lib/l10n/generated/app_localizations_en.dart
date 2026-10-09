@@ -272,6 +272,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failureInvalidData => 'The response could not be read.';
 
   @override
+  String get failureValidation => 'Please correct the highlighted fields.';
+
+  @override
+  String get failureConflict => 'This change conflicts with existing data.';
+
+  @override
+  String get failureNotFound => 'The requested item was not found.';
+
+  @override
+  String get failureRateLimited =>
+      'Too many attempts. Please try again in a minute.';
+
+  @override
+  String get failureForbidden => 'You do not have permission to do this.';
+
+  @override
+  String get failureAccountInactive =>
+      'Your account is inactive. Contact your administrator.';
+
+  @override
   String get failureLocationDisabled => 'Enable location services to continue.';
 
   @override
@@ -875,6 +895,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Demo authentication is disabled in this configuration. A backend has not been connected yet.';
 
   @override
+  String get authNotConfigured =>
+      'Sign-in is not configured for this build. Contact your administrator.';
+
+  @override
   String get authDemoPassword => 'Demo password';
 
   @override
@@ -1468,6 +1492,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsPolicyDesc =>
       'Define attendance, break and correction rules.';
+
+  @override
+  String get settingsDepartmentDesc => 'Organise employees into departments.';
 
   @override
   String get settingsLanguageDesc =>
@@ -2138,6 +2165,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get permissionAttendancePolicyManage => 'Manage attendance policies';
 
   @override
+  String get permissionDepartmentView => 'View departments';
+
+  @override
+  String get permissionDepartmentManage => 'Manage departments';
+
+  @override
   String get permissionAttendanceReportView => 'View attendance reports';
 
   @override
@@ -2630,6 +2663,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Rules prepared for future attendance workflows.';
 
   @override
+  String get cfgDepartments => 'Departments';
+
+  @override
+  String get cfgDepartmentIntro =>
+      'Organisational departments used across HR records.';
+
+  @override
   String get cfgNew => 'Create record';
 
   @override
@@ -2705,6 +2745,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cfgDuplicateName =>
       'An active record with this name already exists.';
+
+  @override
+  String get cfgNameTooLong => 'Name must be 50 characters or fewer.';
+
+  @override
+  String get cfgDepartmentInUse =>
+      'This department has employees and cannot be deactivated.';
+
+  @override
+  String get cfgNotSupported => 'This action is not supported by the server.';
 
   @override
   String get cfgInvalidTime => 'Choose different valid start and end times.';
@@ -5242,6 +5292,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hrPermPoliciesManageDesc => 'Create and edit attendance policies.';
+
+  @override
+  String get hrPermDepartmentsView => 'View departments';
+
+  @override
+  String get hrPermDepartmentsViewDesc => 'See department configuration.';
+
+  @override
+  String get hrPermDepartmentsManage => 'Manage departments';
+
+  @override
+  String get hrPermDepartmentsManageDesc =>
+      'Create, rename and deactivate departments.';
 
   @override
   String get workforceFilters => 'Attendance filters';

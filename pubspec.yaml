@@ -58,6 +58,7 @@ dependencies:
   file_saver: ^0.3.1
   fl_chart: ^1.2.0
   file_selector: ^1.1.0
+  flutter_dotenv: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +88,13 @@ flutter:
   # the material Icons class.
   generate: true
   uses-material-design: true
+
+  # Environment files are bundled so flutter_dotenv can load the one selected by
+  # the build mode (debug -> .env.development; profile/release -> .env.production).
+  assets:
+    - .env.development
+    - .env.production
+
   fonts:
     - family: Manrope
       fonts:

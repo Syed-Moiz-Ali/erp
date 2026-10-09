@@ -13,7 +13,7 @@ import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_sourc
 void configureAccessDependencies(GetIt services) {
   services.registerSingleton<PermissionCatalog>(erpAccessCatalog);
   services.registerLazySingleton<AccessUserDirectory>(
-    () => AppConfig.demoAuthEnabled
+    () => AppConfig.demoMode
         ? DemoAccessUserDirectory(services<DemoAuthSource>())
         : LocalAccessUserDirectory(services()),
   );

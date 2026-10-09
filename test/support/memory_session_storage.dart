@@ -33,4 +33,23 @@ class MemorySessionStorage implements SessionStorage {
   Future<String?> readRefreshToken() async => value == null
       ? null
       : (jsonDecode(value!) as Map<String, dynamic>)['refreshToken'] as String?;
+
+  DateTime? _date(String key) {
+    final raw = value;
+    if (raw == null) return null;
+    final decoded = jsonDecode(raw) as Map<String, dynamic>;
+    final rawDate = decoded[key];
+    return rawDate is String ? DateTime.tryParse(rawDate) : null;
+  }
+
+  @override
+  Future<DateTime?> readAccessTokenExpiresAt() async => _date('expiresAt');
+
+  @override
+  Future<DateTime?> readRefreshTokenExpiresAt() async =>
+      _date('refreshTokenExpiresAt');
+
+  @override
+  Future<bool> hasRefreshToken() async =>
+      (await readRefreshToken())?.isNotEmpty ?? false;
 }

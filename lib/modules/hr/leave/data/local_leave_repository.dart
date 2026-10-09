@@ -21,16 +21,16 @@ import 'package:modular_erp/modules/hr/leave/domain/leave_services.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 
 class LocalLeaveRepository implements LeaveRepository {
-  const LocalLeaveRepository(
+  LocalLeaveRepository(
     this.db,
     this.auth,
     this.clock, {
     this.notifications,
-    this.demoEnabled = AppConfig.demoAuthEnabled,
+    bool? demoEnabled,
     this.calculator = const LeaveDayCalculator(),
     this.yearResolver = const LeaveYearResolver(),
     this.time = const FixedOffsetCompanyTimeService(),
-  });
+  }) : demoEnabled = demoEnabled ?? AppConfig.demoMode;
 
   final AppDatabase db;
   final AuthRepository auth;

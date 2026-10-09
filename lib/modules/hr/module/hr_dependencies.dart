@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:modular_erp/app/app_config.dart';
+import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/modules/hr/attendance/application/attendance_maintenance_service.dart';
 import 'package:modular_erp/modules/hr/attendance/application/execute_attendance_action.dart';
@@ -19,6 +20,10 @@ import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.
 import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/departments/data/datasources/dio_department_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/departments/data/repositories/local_department_repository.dart';
+import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
@@ -64,7 +69,7 @@ void configureHrDependencies(GetIt services) {
       services(),
       services(),
       services(),
-      authority: AppConfig.demoAuthEnabled
+      authority: AppConfig.demoMode
           ? AttendanceAuthority.demoLocal
           : AttendanceAuthority.productionPending,
     ),
@@ -91,7 +96,7 @@ void configureHrDependencies(GetIt services) {
   // HR-owned dashboard (workforce-specific repository).
   services.registerLazySingleton<DashboardRepository>(
     () => LocalDashboardRepository(
-      demoEnabled: AppConfig.demoAuthEnabled,
+      demoEnabled: AppConfig.demoMode,
       workforce: services(),
       corrections: services(),
     ),
@@ -147,6 +152,16 @@ void configureHrDependencies(GetIt services) {
   );
   services.registerLazySingleton<ShiftRepository>(
     () => LocalShiftRepository(services()),
+  );
+  services.registerLazySingleton<DepartmentRepository>(
+    () => AppConfig.authMode == AuthMode.backend
+        ? RemoteDepartmentRepository(
+            DioDepartmentRemoteDataSource(services<ApiClient>()),
+          )
+        : LocalDepartmentRepository(services()),
+    dispose: (repo) {
+      if (repo is RemoteDepartmentRepository) repo.dispose();
+    },
   );
   services.registerLazySingleton<WorkLocationRepository>(
     () => LocalWorkLocationRepository(services()),

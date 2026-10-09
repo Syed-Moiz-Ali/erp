@@ -71,6 +71,12 @@ abstract final class HrRoutes {
   static String attendancePolicyEdit(String id) =>
       '${attendancePolicy(id)}/edit';
 
+  static const departments = '$settings/departments';
+  static const departmentsNew = '$departments/new';
+  static String department(String id) =>
+      '$departments/${Uri.encodeComponent(id)}';
+  static String departmentEdit(String id) => '${department(id)}/edit';
+
   static const leaveTypes = '$settings/leave-types';
   static const leaveTypesNew = '$leaveTypes/new';
   static String leaveType(String id) =>

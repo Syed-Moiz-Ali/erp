@@ -269,6 +269,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failureInvalidData => 'تعذر قراءة الاستجابة.';
 
   @override
+  String get failureValidation => 'يرجى تصحيح الحقول المحددة.';
+
+  @override
+  String get failureConflict => 'يتعارض هذا التغيير مع بيانات موجودة.';
+
+  @override
+  String get failureNotFound => 'تعذر العثور على العنصر المطلوب.';
+
+  @override
+  String get failureRateLimited =>
+      'محاولات كثيرة جدًا. يرجى المحاولة مرة أخرى خلال دقيقة.';
+
+  @override
+  String get failureForbidden => 'ليس لديك إذن للقيام بهذا الإجراء.';
+
+  @override
+  String get failureAccountInactive => 'حسابك غير نشط. تواصل مع المسؤول.';
+
+  @override
   String get failureLocationDisabled => 'فعّل خدمات الموقع للمتابعة.';
 
   @override
@@ -868,6 +887,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
 
   @override
+  String get authNotConfigured =>
+      'تسجيل الدخول غير مهيأ في هذا الإصدار. تواصل مع المسؤول.';
+
+  @override
   String get authDemoPassword => 'كلمة المرور التجريبية';
 
   @override
@@ -1447,6 +1470,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsPolicyDesc => 'حدد قواعد الحضور والاستراحة والتصحيح.';
+
+  @override
+  String get settingsDepartmentDesc => 'نظّم الموظفين في أقسام.';
 
   @override
   String get settingsLanguageDesc => 'اختر لغة التطبيق المفضلة لديك.';
@@ -2108,6 +2134,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get permissionAttendancePolicyManage => 'إدارة سياسات الحضور';
 
   @override
+  String get permissionDepartmentView => 'عرض الأقسام';
+
+  @override
+  String get permissionDepartmentManage => 'إدارة الأقسام';
+
+  @override
   String get permissionAttendanceReportView => 'عرض تقارير الحضور';
 
   @override
@@ -2591,6 +2623,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cfgPolicyIntro => 'قواعد جاهزة لإجراءات الحضور المستقبلية.';
 
   @override
+  String get cfgDepartments => 'الأقسام';
+
+  @override
+  String get cfgDepartmentIntro =>
+      'الأقسام التنظيمية المستخدمة في سجلات الموارد البشرية.';
+
+  @override
   String get cfgNew => 'إنشاء سجل';
 
   @override
@@ -2662,6 +2701,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cfgDuplicateName => 'يوجد بالفعل سجل نشط بهذا الاسم.';
+
+  @override
+  String get cfgNameTooLong => 'يجب ألا يتجاوز الاسم 50 حرفًا.';
+
+  @override
+  String get cfgDepartmentInUse =>
+      'يحتوي هذا القسم على موظفين ولا يمكن تعطيله.';
+
+  @override
+  String get cfgNotSupported => 'هذا الإجراء غير مدعوم من الخادم.';
 
   @override
   String get cfgInvalidTime => 'اختر وقت بداية ونهاية صحيحين ومختلفين.';
@@ -5170,6 +5219,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get hrPermPoliciesManageDesc => 'إنشاء وتعديل سياسات الحضور.';
+
+  @override
+  String get hrPermDepartmentsView => 'عرض الأقسام';
+
+  @override
+  String get hrPermDepartmentsViewDesc => 'الاطلاع على إعدادات الأقسام.';
+
+  @override
+  String get hrPermDepartmentsManage => 'إدارة الأقسام';
+
+  @override
+  String get hrPermDepartmentsManageDesc =>
+      'إنشاء الأقسام وإعادة تسميتها وتعطيلها.';
 
   @override
   String get workforceFilters => 'فلاتر الحضور';
