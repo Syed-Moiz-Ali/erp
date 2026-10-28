@@ -1,4 +1,4 @@
-import 'package:modular_erp/core/errors/result.dart';
+﻿import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
@@ -8,17 +8,14 @@ import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.da
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_scope_resolver.dart';
-import 'demo_dashboard_source.dart';
 
 class LocalDashboardRepository implements DashboardRepository {
   const LocalDashboardRepository({
-    this.source = const DemoDashboardSource(),
     this.demoEnabled = true,
     this.scopeResolver = const DashboardScopeResolver(),
     this.workforce,
     this.corrections,
   });
-  final DemoDashboardSource source;
 
   /// Retained for composition compatibility only. DemoAuth now affects
   /// authentication/bootstrap/demo data seeding; it must **never** disable the
@@ -35,7 +32,11 @@ class LocalDashboardRepository implements DashboardRepository {
   }) async {
     try {
       final scope = scopeResolver.resolve(context);
-      var raw = source.read(scope, context.user.displayName);
+      var raw = DashboardSummary(
+        scope: scope,
+        asOf: DateTime.now(),
+        isDemo: false,
+      );
       if (workforce != null &&
           scope != DashboardScope.none &&
           scope != DashboardScope.self &&
@@ -182,3 +183,4 @@ class LocalDashboardRepository implements DashboardRepository {
     }
   }
 }
+
