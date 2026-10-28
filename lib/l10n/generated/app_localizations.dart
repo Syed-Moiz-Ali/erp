@@ -4814,6 +4814,60 @@ abstract class AppLocalizations {
   /// **'Add employee'**
   String get empAdd;
 
+  /// No description provided for @empBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get empBranch;
+
+  /// No description provided for @empRequiresViewPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires hr.employees.view to view employees.'**
+  String get empRequiresViewPermission;
+
+  /// No description provided for @empNationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality'**
+  String get empNationality;
+
+  /// No description provided for @empJoiningDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Joining date'**
+  String get empJoiningDate;
+
+  /// No description provided for @empBasicSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic salary'**
+  String get empBasicSalary;
+
+  /// No description provided for @empLoginId.
+  ///
+  /// In en, this message translates to:
+  /// **'Login ID'**
+  String get empLoginId;
+
+  /// No description provided for @empLoginMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Login mobile'**
+  String get empLoginMobile;
+
+  /// No description provided for @empLoginPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get empLoginPassword;
+
+  /// No description provided for @empEnableLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable login'**
+  String get empEnableLogin;
+
   /// No description provided for @empEdit.
   ///
   /// In en, this message translates to:

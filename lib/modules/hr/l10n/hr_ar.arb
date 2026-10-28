@@ -180,6 +180,15 @@
   "dashboardTimeRange": "من {start} إلى {end}",
   "@dashboardTimeRange": {"placeholders":{"start":{"type":"String"},"end":{"type":"String"}}},
   "empAdd": "إضافة موظف",
+  "empBranch": "الفرع",
+  "empRequiresViewPermission": "يتطلب hr.employees.view لعرض الموظفين.",
+  "empNationality": "الجنسية",
+  "empJoiningDate": "تاريخ الالتحاق",
+  "empBasicSalary": "الراتب الأساسي",
+  "empLoginId": "معرف الدخول",
+  "empLoginMobile": "جوال الدخول",
+  "empLoginPassword": "كلمة المرور",
+  "empEnableLogin": "تفعيل الدخول",
   "empEdit": "تعديل الموظف",
   "empDetails": "تفاصيل الموظف",
   "empPersonal": "المعلومات الشخصية",
@@ -1064,6 +1073,7 @@
   "leaveCalendarEventsLabel": "طلبات إجازة",
   "leaveCalendarSelected": "محدد"
 }
+
 
 
 

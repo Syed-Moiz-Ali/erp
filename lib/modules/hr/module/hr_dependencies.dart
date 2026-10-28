@@ -25,6 +25,9 @@ import 'package:modular_erp/modules/hr/departments/data/repositories/local_depar
 import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
+import 'package:modular_erp/modules/hr/employees/live/data/datasources/dio_live_employee_data_source.dart';
+import 'package:modular_erp/modules/hr/employees/live/data/repositories/remote_live_employee_repository.dart';
+import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
@@ -153,9 +156,16 @@ void configureHrDependencies(GetIt services) {
   services.registerLazySingleton<EmployeeRepository>(
     () => LocalEmployeeRepository(services(), services()),
   );
-  services.registerLazySingleton<BranchRepository>(
-    () => RemoteBranchRepository(DioBranchRemoteDataSource(services())),
-  );
+  if (AppConfig.realApiEnabled) {
+    services.registerLazySingleton<LiveEmployeeRepository>(
+      () => RemoteLiveEmployeeRepository(DioLiveEmployeeDataSource(services())),
+    );
+  }
+  if (AppConfig.realApiEnabled) {
+    services.registerLazySingleton<BranchRepository>(
+      () => RemoteBranchRepository(DioBranchRemoteDataSource(services())),
+    );
+  }
   services.registerLazySingleton<ShiftRepository>(
     () => AppConfig.authMode == AuthMode.backend
         ? RemoteShiftRepository(DioShiftRemoteDataSource(services<ApiClient>()))
@@ -200,6 +210,8 @@ void configureHrDependencies(GetIt services) {
     () => HrWorkforceDirectory(services<AuthRepository>(), services()),
   );
 }
+
+
 
 
 

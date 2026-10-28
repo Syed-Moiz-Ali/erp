@@ -122,6 +122,15 @@
   "dashboardTimeRange": "{start} â€“ {end}",
   "@dashboardTimeRange": {"placeholders":{"start":{"type":"String"},"end":{"type":"String"}}},
   "empAdd": "Add employee",
+  "empBranch": "Branch",
+  "empRequiresViewPermission": "Requires hr.employees.view to view employees.",
+  "empNationality": "Nationality",
+  "empJoiningDate": "Joining date",
+  "empBasicSalary": "Basic salary",
+  "empLoginId": "Login ID",
+  "empLoginMobile": "Login mobile",
+  "empLoginPassword": "Password",
+  "empEnableLogin": "Enable login",
   "empEdit": "Edit employee",
   "empDetails": "Employee details",
   "empPersonal": "Personal information",
@@ -1077,5 +1086,6 @@
   "leaveCalendarEventsLabel": "leave events",
   "leaveCalendarSelected": "selected"
 }
+
 
 

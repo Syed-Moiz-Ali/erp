@@ -2531,6 +2531,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empAdd => 'Add employee';
 
   @override
+  String get empBranch => 'Branch';
+
+  @override
+  String get empRequiresViewPermission =>
+      'Requires hr.employees.view to view employees.';
+
+  @override
+  String get empNationality => 'Nationality';
+
+  @override
+  String get empJoiningDate => 'Joining date';
+
+  @override
+  String get empBasicSalary => 'Basic salary';
+
+  @override
+  String get empLoginId => 'Login ID';
+
+  @override
+  String get empLoginMobile => 'Login mobile';
+
+  @override
+  String get empLoginPassword => 'Password';
+
+  @override
+  String get empEnableLogin => 'Enable login';
+
+  @override
   String get empEdit => 'Edit employee';
 
   @override

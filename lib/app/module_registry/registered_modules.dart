@@ -29,6 +29,9 @@ import 'package:modular_erp/modules/hr/module/hr_module_registration.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_list_cubit.dart';
 import 'package:modular_erp/modules/hr/branches/presentation/pages/branches_page.dart';
+import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
+import 'package:modular_erp/modules/hr/employees/live/presentation/bloc/live_employee_cubit.dart';
+import 'package:modular_erp/modules/hr/employees/live/presentation/pages/live_employees_page.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
@@ -82,6 +85,7 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
   BranchRepository? branchRepository,
+  LiveEmployeeRepository? liveEmployeeRepository,
   AccessRepository? accessRepository,
   PermissionMasterRepository? permissionMasterRepository,
   PermissionCatalog? accessCatalog,
@@ -233,6 +237,35 @@ ModuleRegistry createErpRegistry(
               ),
             ],
           ),
+        if (liveEmployeeRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'live-employees',
+              moduleId: AppModuleIds.employees,
+              name: (l) => l.employees,
+              icon: Icons.groups_outlined,
+              selectedIcon: Icons.groups,
+              route: AppRoutes.liveEmployees,
+              navigationGroup: NavigationGroup.people,
+              order: 10,
+              mobilePriority: 1,
+              anyPermissions: {
+                AppPermission.employeeViewAll,
+                AppPermission.employeeViewTeam,
+                AppPermission.employeeViewSelf,
+                AppPermission.employeeCreate,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.liveEmployees,
+                name: 'live-employees',
+                builder: (context, state) => LiveEmployeesPage(
+                  cubit: LiveEmployeeCubit(liveEmployeeRepository),
+                ),
+              ),
+            ],
+          ),
         if (accessRepository != null &&
             accessCatalog != null &&
             accessAuthority != null) ...[
@@ -350,6 +383,7 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
 
 
 

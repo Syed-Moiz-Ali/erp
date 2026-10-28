@@ -87,7 +87,7 @@ class _BranchesBody extends StatelessWidget {
                   resultCount: AppResultCount(
                     filtered: state.items.length,
                     total: state.totalItems,
-                    label: '${state.totalItems}',
+                    label: state.totalItems.toString(),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -449,4 +449,6 @@ class _BranchEditorState extends State<_BranchEditor> {
     );
   }
 }
+
+
 

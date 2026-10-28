@@ -4,6 +4,7 @@ import 'package:modular_erp/platform/access/domain/permission_master_repository.
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
+import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
@@ -36,6 +37,7 @@ const _liveDestinationIds = <String>{
   'departments',
   'access-users',
   'company-modules',
+  'live-employees',
 };
 
 void configureApplicationComposition(GetIt services) {
@@ -44,7 +46,12 @@ void configureApplicationComposition(GetIt services) {
       services(),
       dashboardRepository: services(),
       employeeRepository: services(),
-      branchRepository: services<BranchRepository>(),
+      branchRepository: services.isRegistered<BranchRepository>()
+          ? services<BranchRepository>()
+          : null,
+      liveEmployeeRepository: services.isRegistered<LiveEmployeeRepository>()
+          ? services<LiveEmployeeRepository>()
+          : null,
       shiftRepository: services(),
       departmentRepository: services(),
       workLocationRepository: services(),
@@ -83,6 +90,8 @@ void configureApplicationComposition(GetIt services) {
     ).retainDestinations(_liveDestinationIds),
   );
 }
+
+
 
 
 

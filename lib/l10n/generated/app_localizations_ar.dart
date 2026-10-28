@@ -2498,6 +2498,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empAdd => 'إضافة موظف';
 
   @override
+  String get empBranch => 'الفرع';
+
+  @override
+  String get empRequiresViewPermission =>
+      'يتطلب hr.employees.view لعرض الموظفين.';
+
+  @override
+  String get empNationality => 'الجنسية';
+
+  @override
+  String get empJoiningDate => 'تاريخ الالتحاق';
+
+  @override
+  String get empBasicSalary => 'الراتب الأساسي';
+
+  @override
+  String get empLoginId => 'معرف الدخول';
+
+  @override
+  String get empLoginMobile => 'جوال الدخول';
+
+  @override
+  String get empLoginPassword => 'كلمة المرور';
+
+  @override
+  String get empEnableLogin => 'تفعيل الدخول';
+
+  @override
   String get empEdit => 'تعديل الموظف';
 
   @override

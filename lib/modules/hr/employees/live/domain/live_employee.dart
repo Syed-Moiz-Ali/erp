@@ -1,0 +1,131 @@
+class LiveEmployee {
+  const LiveEmployee({
+    required this.id,
+    required this.code,
+    required this.name,
+    required this.raw,
+    this.branchId,
+    this.branchName,
+    this.departmentId,
+    this.departmentName,
+    this.nationalityId,
+    this.nationalityName,
+    this.statusId,
+    this.statusName,
+    this.designation,
+    this.joiningDate,
+    this.email,
+    this.phone,
+    this.basicSalary,
+    this.loginEnabled = false,
+    this.canLogin = false,
+    this.loginId,
+    this.loginMobile,
+    this.loginUserId,
+  });
+
+  final int id;
+  final String code, name;
+  final Map<String, dynamic> raw;
+  final int? branchId, departmentId, nationalityId, statusId;
+  final String? branchName, departmentName, nationalityName, statusName;
+  final String? designation;
+  final String? joiningDate;
+  final String? email;
+  final String? phone;
+  final double? basicSalary;
+  final bool loginEnabled, canLogin;
+  final String? loginId, loginMobile;
+  final int? loginUserId;
+
+  bool get isActive => statusId == 1;
+}
+
+class LiveEmployeeDraft {
+  const LiveEmployeeDraft({
+    this.name = '',
+    this.branchId,
+    this.departmentId,
+    this.nationalityId,
+    this.statusId = 1,
+    this.designation = '',
+    this.joiningDate,
+    this.email = '',
+    this.phone = '',
+    this.basicSalary = 0,
+    this.loginEnabled = false,
+    this.loginId = '',
+    this.loginMobile = '',
+    this.loginPassword = '',
+    this.loginBranchIds = const [],
+  });
+
+  final String name, designation, email, phone;
+  final int? branchId, departmentId, nationalityId, statusId;
+  final String? joiningDate;
+  final double basicSalary;
+  final bool loginEnabled;
+  final String loginId, loginMobile, loginPassword;
+  final List<int> loginBranchIds;
+
+  Map<String, String> validate() {
+    final errors = <String, String>{};
+    if (name.trim().isEmpty) errors['employeeName'] = 'required';
+    if (branchId == null) errors['branchId'] = 'required';
+    if (departmentId == null) errors['departmentId'] = 'required';
+    if (nationalityId == null) errors['nationalityId'] = 'required';
+    if (joiningDate == null || joiningDate!.isEmpty) {
+      errors['joiningDate'] = 'required';
+    }
+    if (loginEnabled) {
+      if (loginId.trim().isEmpty) errors['login.loginId'] = 'required';
+      if (loginMobile.trim().isEmpty) errors['login.mobileNo'] = 'required';
+      if (loginPassword.isNotEmpty && loginPassword.length < 6) {
+        errors['login.password'] = 'password';
+      }
+      if (loginBranchIds.isEmpty) errors['login.branchIds'] = 'required';
+    }
+    return Map.unmodifiable(errors);
+  }
+
+  Map<String, dynamic> toBody({Map<String, dynamic>? base}) {
+    final body = <String, dynamic>{...?base};
+    body['employeeName'] = name.trim();
+    body['branchId'] = branchId;
+    body['departmentId'] = departmentId;
+    body['nationalityId'] = nationalityId;
+    body['statusId'] = statusId;
+    body['designation'] = designation.trim().isEmpty ? null : designation.trim();
+    body['joiningDate'] = joiningDate;
+    body['email'] = email.trim().isEmpty ? null : email.trim();
+    body['uaeContactNumber'] = phone.trim().isEmpty ? null : phone.trim();
+    body['basicSalary'] = basicSalary;
+    if (loginEnabled) {
+      body['login'] = {
+        'enabled': true,
+        'loginId': loginId.trim(),
+        'mobileNo': loginMobile.trim(),
+        'userType': (base?['login'] as Map?)?['userType'] ?? 'HR',
+        'branchIds': loginBranchIds,
+        if (loginPassword.isNotEmpty) 'password': loginPassword,
+      };
+    }
+    return body;
+  }
+}
+
+class LiveEmployeeLookups {
+  const LiveEmployeeLookups({
+    required this.branches,
+    required this.departments,
+    required this.nationalities,
+    required this.statuses,
+  });
+  final List<Lookup> branches, departments, nationalities, statuses;
+}
+
+class Lookup {
+  const Lookup(this.id, this.name);
+  final int id;
+  final String name;
+}
