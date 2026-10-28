@@ -92,6 +92,7 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
   BranchRepository? branchRepository,
   LiveEmployeeRepository? liveEmployeeRepository,
+  bool includeLegacyEmployees = true,
   EmployeeShiftApi? employeeShiftApi,
   AttendanceApi? attendanceApi,
   AccessRepository? accessRepository,
@@ -160,6 +161,7 @@ ModuleRegistry createErpRegistry(
     attendanceReportRepository: attendanceReportRepository,
     attendanceReportExportService: attendanceReportExportService,
     leaveRepository: leaveRepository,
+    includeLegacyEmployees: includeLegacyEmployees,
     leaveTypeRepository: leaveTypeRepository,
     leavePolicyRepository: leavePolicyRepository,
     holidayRepository: holidayRepository,
@@ -441,6 +443,7 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
 
 
 

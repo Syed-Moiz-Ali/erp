@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
@@ -117,6 +117,7 @@ HrModules buildHrModules({
   AttendanceReportRepository? attendanceReportRepository,
   AttendanceReportExportService? attendanceReportExportService,
   LeaveRepository? leaveRepository,
+  bool includeLegacyEmployees = true,
   ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository,
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
@@ -831,7 +832,8 @@ HrModules buildHrModules({
   ];
   return HrModules(
     modules: [
-      AppModule(
+      if (includeLegacyEmployees)
+        AppModule(
         id: AppModuleIds.employees,
         destinations: [
           RegisteredDestination(
@@ -1726,3 +1728,4 @@ HrModules buildHrModules({
     settingsDestinations: settingsDestinations,
   );
 }
+
