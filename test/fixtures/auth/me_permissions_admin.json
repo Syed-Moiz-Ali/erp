@@ -1,6 +1,6 @@
 {
   "success": true,
-  "message": "OK",
+  "message": "Permissions retrieved.",
   "data": {
     "userId": 8,
     "employeeId": 1,

@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "message": "Login successful.",
+  "data": {
+    "tokenType": "Bearer",
+    "accessToken": "SANITIZED_EMPLOYEE_ACCESS_TOKEN",
+    "expiresIn": 3600,
+    "accessTokenExpiresAtUtc": "2026-10-28T13:58:22.6290852Z",
+    "refreshToken": "SANITIZED_EMPLOYEE_REFRESH_TOKEN",
+    "refreshTokenExpiresAtUtc": "2026-11-27T12:58:22.5554346Z",
+    "user": {
+      "userId": 43,
+      "loginId": "qa.employee",
+      "name": "Sanitized Employee",
+      "userType": "Sales",
+      "empId": 27,
+      "orgId": 3,
+      "branchName": "Branch 3",
+      "timeZone": "America/Chicago",
+      "orgCount": 1,
+      "transactionAccess": false,
+      "reportAccess": false,
+      "branches": [
+        {
+          "orgId": 3,
+          "branchName": "Branch 3"
+        }
+      ]
+    }
+  },
+  "errors": []
+}

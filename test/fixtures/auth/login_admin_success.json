@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "message": "Login successful.",
+  "data": {
+    "tokenType": "Bearer",
+    "accessToken": "SANITIZED_ADMIN_ACCESS_TOKEN",
+    "expiresIn": 3600,
+    "accessTokenExpiresAtUtc": "2026-10-28T13:58:21.8655929Z",
+    "refreshToken": "SANITIZED_ADMIN_REFRESH_TOKEN",
+    "refreshTokenExpiresAtUtc": "2026-11-27T12:58:21.7789445Z",
+    "user": {
+      "userId": 8,
+      "loginId": "qa.operator",
+      "name": "Sanitized Operator",
+      "userType": "Director",
+      "empId": 1,
+      "orgId": 1,
+      "branchName": "Branch 1",
+      "timeZone": "Asia/Dubai",
+      "orgCount": 9,
+      "transactionAccess": true,
+      "reportAccess": true,
+      "branches": [
+        {
+          "orgId": 2,
+          "branchName": "Branch 2"
+        },
+        {
+          "orgId": 1,
+          "branchName": "Branch 1"
+        },
+        {
+          "orgId": 3,
+          "branchName": "Branch 3"
+        },
+        {
+          "orgId": 6,
+          "branchName": "Branch 6"
+        },
+        {
+          "orgId": 4,
+          "branchName": "Branch 4"
+        },
+        {
+          "orgId": 5,
+          "branchName": "Branch 5"
+        }
+      ]
+    }
+  },
+  "errors": []
+}

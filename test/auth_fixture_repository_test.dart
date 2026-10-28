@@ -29,7 +29,7 @@ class FixtureAuthDataSource implements AuthRemoteDataSource {
   Future<Result<LoginResponseDto>> login(LoginRequestDto request) async {
     loginCalls++;
     lastLogin = request;
-    return Success(dto('login_success.json'));
+    return Success(dto('login_admin_success.json'));
   }
 
   @override
@@ -65,29 +65,29 @@ void main() {
     'login persists the fixture session with stable integer identities',
     () async {
       final result = await repository.login(
-        AuthIdentifier.parse('qa.admin')!,
+        AuthIdentifier.parse('qa.operator')!,
         'sanitized-password',
       );
       expect(result, isA<Success<AuthContext>>());
       final context = (result as Success<AuthContext>).value;
-      expect(dataSource.lastLogin!.loginId, 'qa.admin');
+      expect(dataSource.lastLogin!.loginId, 'qa.operator');
       expect(context.user.id, '8');
-      expect(context.user.loginId, 'qa.admin');
+      expect(context.user.loginId, 'qa.operator');
       expect(context.user.email, isNull);
       expect(context.company.id, '1');
       expect(context.employeeReference?.id, '1');
-      expect(context.branches, hasLength(2));
+      expect(context.branches, hasLength(6));
 
       final stored = jsonDecode(storage.value!) as Map<String, dynamic>;
-      expect(stored['accessToken'], 'SANITIZED_ACCESS_TOKEN');
-      expect(stored['refreshToken'], 'SANITIZED_REFRESH_TOKEN');
+      expect(stored['accessToken'], 'SANITIZED_ADMIN_ACCESS_TOKEN');
+      expect(stored['refreshToken'], 'SANITIZED_ADMIN_REFRESH_TOKEN');
       expect(storage.value, isNot(contains('sanitized-password')));
     },
   );
 
   test('restore keeps loginId, absent email and branches', () async {
     await repository.login(
-      AuthIdentifier.parse('qa.admin')!,
+      AuthIdentifier.parse('qa.operator')!,
       'sanitized-password',
     );
     await repository.dispose();
@@ -99,20 +99,30 @@ void main() {
     );
     final result = await repository.restoreSession();
     final context = (result as Success<AuthContext?>).value!;
-    expect(context.user.loginId, 'qa.admin');
+    expect(context.user.loginId, 'qa.operator');
     expect(context.user.email, isNull);
-    expect(context.branches.map((b) => b.name), ['Company A', 'Branch B']);
+    expect(context.branches.map((b) => b.name), [
+      'Branch 2',
+      'Branch 1',
+      'Branch 3',
+      'Branch 6',
+      'Branch 4',
+      'Branch 5',
+    ]);
   });
 
   test('refresh rotates and persists the fixture token pair', () async {
     await repository.login(
-      AuthIdentifier.parse('qa.admin')!,
+      AuthIdentifier.parse('qa.operator')!,
       'sanitized-password',
     );
     final outcome = await repository.refresh();
     expect(outcome, TokenRefreshOutcome.refreshed);
     expect(dataSource.refreshCalls, 1);
-    expect(dataSource.lastRefresh!.refreshToken, 'SANITIZED_REFRESH_TOKEN');
+    expect(
+      dataSource.lastRefresh!.refreshToken,
+      'SANITIZED_ADMIN_REFRESH_TOKEN',
+    );
 
     final stored = jsonDecode(storage.value!) as Map<String, dynamic>;
     expect(stored['accessToken'], 'SANITIZED_ROTATED_ACCESS_TOKEN');
