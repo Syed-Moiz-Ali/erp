@@ -27,7 +27,7 @@ import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.da
 /// afterwards is discarded so a late response can never restore a session that
 /// the user (or the server) already ended.
 class RemoteAuthRepository
-    implements AuthRepository, SessionPermissionSink, TokenRefresher {
+    implements AuthRepository, SessionAccessSink, TokenRefresher {
   RemoteAuthRepository({
     required AuthRemoteDataSource dataSource,
     required SessionStorage storage,
@@ -284,31 +284,43 @@ class RemoteAuthRepository
     }
   }
 
-  // --- Effective permissions (SessionPermissionSink) ------------------------
+  // --- Effective access (SessionAccessSink) ---------------------------------
 
   @override
   Future<void> applyEffectivePermissions(PermissionSet permissions) =>
-      _serial(() async {
-        final current = _session;
-        if (current == null || _disposed) return;
-        final user = current.context.user.copyWith(permissions: permissions);
-        if (user.permissions == current.context.user.permissions) return;
-        final updated = AuthSession(
-          accessToken: current.accessToken,
-          refreshToken: current.refreshToken,
-          expiresAt: current.expiresAt,
-          refreshTokenExpiresAt: current.refreshTokenExpiresAt,
-          tokenType: current.tokenType,
-          context: current.context.copyWith(user: user),
-        );
-        try {
-          await _persist(updated);
-        } catch (_) {
-          /* Session remains usable in memory for this process. */
-        }
-        _accept(updated);
-        _emit(updated.context);
-      });
+      applyEffectiveAccess(permissions);
+
+  @override
+  Future<void> applyEffectiveAccess(
+    PermissionSet permissions, {
+    Set<String>? enabledModules,
+  }) => _serial(() async {
+    final current = _session;
+    if (current == null || _disposed) return;
+    final user = current.context.user.copyWith(permissions: permissions);
+    final company = enabledModules == null
+        ? current.context.company
+        : current.context.company.copyWith(enabledModules: enabledModules);
+    if (user.permissions == current.context.user.permissions &&
+        company == current.context.company) {
+      return;
+    }
+    final updated = AuthSession(
+      accessToken: current.accessToken,
+      refreshToken: current.refreshToken,
+      expiresAt: current.expiresAt,
+      refreshTokenExpiresAt: current.refreshTokenExpiresAt,
+      tokenType: current.tokenType,
+      context: current.context.copyWith(user: user, company: company),
+    );
+    try {
+      await _persist(updated);
+    } catch (_) {
+      /* Session remains usable in memory for this process. */
+    }
+    _accept(updated);
+    _emit(updated.context);
+  });
 
   @override
   Future<void> dispose() async {

@@ -10,6 +10,17 @@ abstract interface class SessionPermissionSink {
   Future<void> applyEffectivePermissions(PermissionSet permissions);
 }
 
+/// Persists the effective permission **and** module-entitlement set.
+///
+/// Backend mode uses this because module availability is derived from the
+/// permission payload (the backend has no module endpoint yet).
+abstract interface class SessionAccessSink implements SessionPermissionSink {
+  Future<void> applyEffectiveAccess(
+    PermissionSet permissions, {
+    Set<String>? enabledModules,
+  });
+}
+
 abstract interface class AuthRepository {
   Future<Result<AuthContext?>> restoreSession();
   Future<Result<AuthContext?>> checkSession();

@@ -2,12 +2,17 @@ import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/app_lifecycle_coordinator.dart';
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
+import 'package:modular_erp/core/api/access_endpoint.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/api/token_refresh_coordinator.dart';
 import 'package:modular_erp/core/localization/locale_cubit.dart';
 import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
 import 'package:modular_erp/core/sync/sync_coordinator.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'package:modular_erp/platform/access/data/datasources/remote/access_remote_data_source.dart';
+import 'package:modular_erp/platform/access/data/datasources/remote/dio_access_remote_data_source.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_effective_access_repository.dart';
+import 'package:modular_erp/platform/access/domain/effective_access_source.dart';
 import 'package:modular_erp/platform/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:modular_erp/platform/auth/data/datasources/remote/dio_auth_remote_data_source.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
@@ -27,7 +32,15 @@ import 'package:modular_erp/platform/notifications/domain/notification_repositor
 void configurePlatformDependencies(GetIt services) {
   _registerAuthentication(services);
   services.registerLazySingleton(
-    () => AuthBloc(services(), grants: services()),
+    () => switch (AppConfig.authMode) {
+      AuthMode.backend => AuthBloc(
+        services(),
+        effectiveAccess: services(),
+        accessEndpoint: services<AccessEndpoint>(),
+      ),
+      AuthMode.demo => AuthBloc(services(), grants: services()),
+      AuthMode.disabled => AuthBloc(services()),
+    },
     dispose: (bloc) => bloc.close(),
   );
   services.registerLazySingleton(
@@ -62,6 +75,12 @@ void configurePlatformDependencies(GetIt services) {
   );
   services.registerLazySingleton(
     () => AppLifecycleCoordinator(
+      refreshPermissions: () async {
+        final auth = services<AuthBloc>();
+        if (!auth.isClosed && auth.state.isAuthenticated) {
+          auth.add(const AuthPermissionsReloadRequested());
+        }
+      },
       sync: () => services<SyncCoordinator>().synchronize(),
       reconcileReminders: () => services<AttendanceReminderService>().reconcile(
         locale: services<LocaleCubit>().state.locale,
@@ -78,6 +97,12 @@ void _registerAuthentication(GetIt services) {
     case AuthMode.backend:
       services.registerLazySingleton<AuthRemoteDataSource>(
         () => DioAuthRemoteDataSource(services<ApiClient>()),
+      );
+      services.registerLazySingleton<AccessRemoteDataSource>(
+        () => DioAccessRemoteDataSource(services<ApiClient>()),
+      );
+      services.registerLazySingleton<EffectiveAccessSource>(
+        () => RemoteEffectiveAccessRepository(services()),
       );
       services.registerLazySingleton<AuthRepository>(() {
         final repository = RemoteAuthRepository(

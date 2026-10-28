@@ -13,6 +13,7 @@ abstract final class ApiEndpoints {
   static const String root = '/api';
 
   static const AuthEndpoints auth = AuthEndpoints();
+  static const MeEndpoints me = MeEndpoints();
   static const EmployeeEndpoints employees = EmployeeEndpoints();
   static const BranchEndpoints branches = BranchEndpoints();
   static const DepartmentEndpoints departments = DepartmentEndpoints();
@@ -28,6 +29,13 @@ final class AuthEndpoints {
   String get login => '${ApiEndpoints.root}/auth/login';
   String get refresh => '${ApiEndpoints.root}/auth/refresh';
   String get logout => '${ApiEndpoints.root}/auth/logout';
+}
+
+/// Current-session endpoints: `/api/me/*`.
+final class MeEndpoints {
+  const MeEndpoints();
+
+  String get permissions => '${ApiEndpoints.root}/me/permissions';
 }
 
 /// Employees: `/api/employees/*`.

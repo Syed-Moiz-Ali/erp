@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:modular_erp/app/app_config.dart';
+import 'package:modular_erp/core/api/access_endpoint.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/api/session_endpoint.dart';
 import 'package:modular_erp/core/api/token_refresh_coordinator.dart';
@@ -32,6 +33,10 @@ void configureCoreDependencies(GetIt services) {
   );
   services.registerLazySingleton<SessionEndpoint>(
     () => SessionEndpoint(),
+    dispose: (endpoint) => endpoint.dispose(),
+  );
+  services.registerLazySingleton<AccessEndpoint>(
+    () => AccessEndpoint(),
     dispose: (endpoint) => endpoint.dispose(),
   );
   if (AppConfig.realApiEnabled) {
@@ -87,6 +92,7 @@ void registerSharedApiClient(
       storage: services(),
       refreshCoordinator: services(),
       sessionEndpoint: services(),
+      accessEndpoint: services(),
       allowInsecureHttp: allowInsecureHttp,
     ),
     dispose: (client) => client.close(),

@@ -1,6 +1,7 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:modular_erp/core/api/access_endpoint.dart';
 import 'package:modular_erp/core/api/api_base_url.dart';
 import 'package:modular_erp/core/api/api_error_codes.dart';
 import 'package:modular_erp/core/api/api_option_keys.dart';
@@ -60,13 +61,14 @@ class ApiErrorMapper {
 /// supplied `fromJson`, and never leak transport shapes into features.
 ///
 /// Interceptor order is deterministic:
-/// `RequestId → ClientPlatform → Idempotency → Authentication → AuthRetry`.
+/// `RequestId â†’ ClientPlatform â†’ Idempotency â†’ Authentication â†’ AuthRetry`.
 class ApiClient {
   ApiClient({
     required String baseUrl,
     required SessionStorage storage,
     TokenRefreshCoordinator? refreshCoordinator,
     SessionEndpoint? sessionEndpoint,
+    AccessEndpoint? accessEndpoint,
     Dio? dio,
     bool allowInsecureHttp = false,
     Duration connectTimeout = const Duration(seconds: 15),
@@ -102,7 +104,10 @@ class ApiClient {
         storage: storage,
         refreshCoordinator: _refreshCoordinator,
       ),
-      SessionGuardInterceptor(sessionEndpoint ?? SessionEndpoint()),
+      SessionGuardInterceptor(
+        sessionEndpoint ?? SessionEndpoint(),
+        accessEndpoint,
+      ),
     ]);
   }
 
@@ -123,6 +128,7 @@ class ApiClient {
     bool requiresAuth = true,
     bool idempotent = false,
     bool deduplicate = true,
+    bool skipPermissionRefresh = false,
     CancelToken? cancelToken,
     required T Function(Object? json) fromJson,
   }) => _decode(
@@ -135,6 +141,7 @@ class ApiClient {
       requiresAuth: requiresAuth,
       idempotent: idempotent,
       deduplicate: deduplicate,
+      skipPermissionRefresh: skipPermissionRefresh,
       cancelToken: cancelToken,
     ),
     fromJson,
@@ -145,6 +152,7 @@ class ApiClient {
     Map<String, dynamic>? query,
     Map<String, String>? headers,
     bool requiresAuth = true,
+    bool skipPermissionRefresh = false,
     CancelToken? cancelToken,
     required T Function(Object? json) fromJson,
   }) => request<T>(
@@ -154,6 +162,7 @@ class ApiClient {
     headers: headers,
     requiresAuth: requiresAuth,
     deduplicate: false,
+    skipPermissionRefresh: skipPermissionRefresh,
     cancelToken: cancelToken,
     fromJson: fromJson,
   );
@@ -288,6 +297,7 @@ class ApiClient {
     bool requiresAuth = true,
     bool idempotent = false,
     bool deduplicate = true,
+    bool skipPermissionRefresh = false,
     CancelToken? cancelToken,
   }) {
     final isMutation = !_isSafeMethod(method);
@@ -306,6 +316,7 @@ class ApiClient {
       headers: headers,
       requiresAuth: requiresAuth,
       idempotent: idempotent,
+      skipPermissionRefresh: skipPermissionRefresh,
       cancelToken: cancelToken,
     );
     if (key != null) {
@@ -327,6 +338,7 @@ class ApiClient {
     Map<String, String>? headers,
     bool requiresAuth = true,
     bool idempotent = false,
+    bool skipPermissionRefresh = false,
     CancelToken? cancelToken,
   }) async {
     try {
@@ -342,6 +354,8 @@ class ApiClient {
             if (!requiresAuth) ApiOptionKeys.skipAuthentication: true,
             if (!requiresAuth) ApiOptionKeys.skipTokenRefresh: true,
             if (idempotent) ApiOptionKeys.idempotent: true,
+            if (skipPermissionRefresh)
+              ApiOptionKeys.skipPermissionRefresh: true,
           },
         ),
       );
@@ -443,3 +457,5 @@ class ApiClient {
     }
   }
 }
+
+

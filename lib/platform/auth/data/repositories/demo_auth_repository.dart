@@ -1,4 +1,4 @@
-import 'package:modular_erp/platform/auth/domain/repositories/account_access_guard.dart';
+﻿import 'package:modular_erp/platform/auth/domain/repositories/account_access_guard.dart';
 import 'package:modular_erp/core/auth/password_policy.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -12,7 +12,7 @@ import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.da
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/dto/auth_session_dto.dart';
 
-class DemoAuthRepository implements AuthRepository, SessionPermissionSink {
+class DemoAuthRepository implements AuthRepository, SessionAccessSink {
   DemoAuthRepository(
     this.storage, {
     this.source,
@@ -90,22 +90,41 @@ class DemoAuthRepository implements AuthRepository, SessionPermissionSink {
   /// listeners. Idempotent: an unchanged set performs no write or emit.
   @override
   Future<void> applyEffectivePermissions(PermissionSet permissions) =>
-      _serial(() async {
-        final current = _session;
-        if (current == null || _disposed) return;
-        final user = current.context.user.copyWith(permissions: permissions);
-        if (user.permissions == current.context.user.permissions) return;
-        final updated = _withUser(current, user);
-        try {
-          await storage.saveSession(
-            jsonEncode(AuthSessionMapper.encode(updated).toJson()),
-          );
-        } catch (_) {
-          /* Session remains usable in memory for this process. */
-        }
-        _accept(updated);
-        if (!_disposed) _changes.add(updated.context);
-      });
+      applyEffectiveAccess(permissions);
+
+  @override
+  Future<void> applyEffectiveAccess(
+    PermissionSet permissions, {
+    Set<String>? enabledModules,
+  }) => _serial(() async {
+    final current = _session;
+    if (current == null || _disposed) return;
+    final user = current.context.user.copyWith(permissions: permissions);
+    final company = enabledModules == null
+        ? current.context.company
+        : current.context.company.copyWith(enabledModules: enabledModules);
+    if (user.permissions == current.context.user.permissions &&
+        company == current.context.company) {
+      return;
+    }
+    final updated = AuthSession(
+      accessToken: current.accessToken,
+      refreshToken: current.refreshToken,
+      expiresAt: current.expiresAt,
+      refreshTokenExpiresAt: current.refreshTokenExpiresAt,
+      tokenType: current.tokenType,
+      context: current.context.copyWith(user: user, company: company),
+    );
+    try {
+      await storage.saveSession(
+        jsonEncode(AuthSessionMapper.encode(updated).toJson()),
+      );
+    } catch (_) {
+      /* Session remains usable in memory for this process. */
+    }
+    _accept(updated);
+    if (!_disposed) _changes.add(updated.context);
+  });
   void _accept(AuthSession session) {
     if (_disposed) return;
     _session = session;
@@ -288,3 +307,4 @@ class DemoAuthRepository implements AuthRepository, SessionPermissionSink {
     await _changes.close();
   }
 }
+

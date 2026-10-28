@@ -13,6 +13,12 @@ abstract final class ApiOptionKeys {
   /// Marks a request that has already been retried after a refresh.
   static const authRetried = 'api.authRetried';
 
+  /// Skip the permission re-fetch signal on `403 ACCESS_DENIED`.
+  ///
+  /// Used by the permission loader itself so a denied bootstrap cannot cause a
+  /// reload loop.
+  static const skipPermissionRefresh = 'api.skipPermissionRefresh';
+
   /// Opt this request into an `Idempotency-Key` header.
   static const idempotent = 'api.idempotent';
 
