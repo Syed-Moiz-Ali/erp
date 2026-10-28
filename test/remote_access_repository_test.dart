@@ -51,6 +51,46 @@ class _FakeAccessAdmin implements AccessAdminRemoteDataSource {
   );
 
   @override
+  Future<Result<PermissionDto>> permissionById(
+    int permissionId, {
+    CancelToken? cancelToken,
+  }) async => const Failed(
+    Failure(code: 'not_found', kind: FailureKind.notFound),
+  );
+
+  @override
+  Future<Result<PermissionDto>> createPermission(
+    Map<String, dynamic> body, {
+    CancelToken? cancelToken,
+  }) async => const Failed(
+    Failure(code: 'unused', kind: FailureKind.unknown),
+  );
+
+  @override
+  Future<Result<PermissionDto>> updatePermission(
+    int permissionId,
+    Map<String, dynamic> body, {
+    CancelToken? cancelToken,
+  }) async => const Failed(
+    Failure(code: 'unused', kind: FailureKind.unknown),
+  );
+
+  @override
+  Future<Result<PermissionDto>> setPermissionActive(
+    int permissionId, {
+    required bool active,
+    CancelToken? cancelToken,
+  }) async => const Failed(
+    Failure(code: 'unused', kind: FailureKind.unknown),
+  );
+
+  @override
+  Future<Result<List<UserPermissionDto>>> assignUserPermissions(
+    int userId,
+    List<int> permissionIds, {
+    CancelToken? cancelToken,
+  }) async => const Success([]);
+  @override
   Future<Result<List<UserPermissionDto>>> replaceUserPermissions(
     int userId,
     List<int> permissionIds, {
@@ -177,6 +217,7 @@ void main() {
     expect(history, isEmpty);
   });
 }
+
 
 
 

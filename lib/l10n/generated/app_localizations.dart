@@ -1457,7 +1457,7 @@ abstract class AppLocalizations {
   /// No description provided for @arabicNativeName.
   ///
   /// In en, this message translates to:
-  /// **'العربية'**
+  /// **'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©'**
   String get arabicNativeName;
 
   /// typographySample
@@ -1517,7 +1517,7 @@ abstract class AppLocalizations {
   /// No description provided for @authLoggingIn.
   ///
   /// In en, this message translates to:
-  /// **'Signing in…'**
+  /// **'Signing inâ€¦'**
   String get authLoggingIn;
 
   /// No description provided for @authBrandStatement.
@@ -1757,7 +1757,7 @@ abstract class AppLocalizations {
   /// No description provided for @authInitializing.
   ///
   /// In en, this message translates to:
-  /// **'Preparing your workspace…'**
+  /// **'Preparing your workspaceâ€¦'**
   String get authInitializing;
 
   /// No description provided for @authDemoAccounts.
@@ -1841,7 +1841,7 @@ abstract class AppLocalizations {
   /// No description provided for @authSubmitting.
   ///
   /// In en, this message translates to:
-  /// **'Please wait…'**
+  /// **'Please waitâ€¦'**
   String get authSubmitting;
 
   /// No description provided for @authChangePassword.
@@ -3308,6 +3308,126 @@ abstract class AppLocalizations {
   /// **'Included'**
   String get accessIncluded;
 
+  /// No description provided for @accessPermissionCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission catalog'**
+  String get accessPermissionCatalog;
+
+  /// No description provided for @accessPermissionCatalogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create, edit and activate ERP permission keys.'**
+  String get accessPermissionCatalogSubtitle;
+
+  /// No description provided for @accessNewPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'New permission'**
+  String get accessNewPermission;
+
+  /// No description provided for @accessEditPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit permission'**
+  String get accessEditPermission;
+
+  /// No description provided for @accessPermissionKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission key'**
+  String get accessPermissionKey;
+
+  /// No description provided for @accessPermissionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission name'**
+  String get accessPermissionName;
+
+  /// No description provided for @accessPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get accessPermissionDescription;
+
+  /// No description provided for @accessPermissionActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get accessPermissionActive;
+
+  /// No description provided for @accessPermissionInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get accessPermissionInactive;
+
+  /// No description provided for @accessOrphanGrant.
+  ///
+  /// In en, this message translates to:
+  /// **'Orphan grant (permission #{id})'**
+  String accessOrphanGrant(String id);
+
+  /// No description provided for @accessOrphanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This grant points to a permission that no longer exists. Revoke it to clean up.'**
+  String get accessOrphanHint;
+
+  /// No description provided for @accessRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get accessRevoke;
+
+  /// No description provided for @accessAddPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Add permissions'**
+  String get accessAddPermissions;
+
+  /// No description provided for @accessAddPermissionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Additive: existing grants are kept. Save changes replaces the full set.'**
+  String get accessAddPermissionsHint;
+
+  /// No description provided for @accessReplaceAllHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes replaces the user\'s complete grant set.'**
+  String get accessReplaceAllHint;
+
+  /// No description provided for @accessKeyInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use lowercase dotted keys (for example hr.employees.view).'**
+  String get accessKeyInvalid;
+
+  /// No description provided for @accessKeyDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'This key is already used by another permission.'**
+  String get accessKeyDuplicate;
+
+  /// No description provided for @accessKeyTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Key must be 100 characters or fewer.'**
+  String get accessKeyTooLong;
+
+  /// No description provided for @accessPermissionCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission created.'**
+  String get accessPermissionCreated;
+
+  /// No description provided for @accessPermissionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission updated.'**
+  String get accessPermissionUpdated;
+
   /// No description provided for @accessPermissionSearch.
   ///
   /// In en, this message translates to:
@@ -3527,13 +3647,13 @@ abstract class AppLocalizations {
   /// No description provided for @accessUsersSummary.
   ///
   /// In en, this message translates to:
-  /// **'Showing {count} users · {withAccess} with access'**
+  /// **'Showing {count} users Â· {withAccess} with access'**
   String accessUsersSummary(Object count, Object withAccess);
 
   /// No description provided for @accessScopeHint.
   ///
   /// In en, this message translates to:
-  /// **'Scope sets which records a permission applies to: Self = the user’s own records, Team = their team, Company = all records in the company.'**
+  /// **'Scope sets which records a permission applies to: Self = the userâ€™s own records, Team = their team, Company = all records in the company.'**
   String get accessScopeHint;
 
   /// No description provided for @accessScopeLabel.
@@ -3557,7 +3677,7 @@ abstract class AppLocalizations {
   /// No description provided for @accessLinkEmployeeHint.
   ///
   /// In en, this message translates to:
-  /// **'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR → Employees → open the employee → Account access.'**
+  /// **'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR â†’ Employees â†’ open the employee â†’ Account access.'**
   String get accessLinkEmployeeHint;
 
   /// No description provided for @accessLinkedEmployee.
@@ -3605,7 +3725,7 @@ abstract class AppLocalizations {
   /// No description provided for @demoAccessPlatformAdmin.
   ///
   /// In en, this message translates to:
-  /// **'Platform administration · every module and every access'**
+  /// **'Platform administration Â· every module and every access'**
   String get demoAccessPlatformAdmin;
 
   /// No description provided for @demoAccessCompanyAdmin.

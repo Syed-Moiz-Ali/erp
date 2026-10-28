@@ -60,4 +60,20 @@ abstract interface class AccessRepository {
     required String requestId,
     required List<PermissionGrantInput> grants,
   });
+
+  /// Additive grant (POST). Existing grants are kept.
+  Future<Result<void>> assignGrants({
+    required String companyId,
+    required String actorUserId,
+    required String targetUserId,
+    required String requestId,
+    required List<PermissionGrantInput> grants,
+  });
+
+  /// Revoke one grant row, including an orphan grant.
+  Future<Result<void>> revokeGrant({
+    required String companyId,
+    required String targetUserId,
+    required String grantId,
+  });
 }

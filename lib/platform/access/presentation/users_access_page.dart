@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
@@ -84,6 +85,17 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                   header: AppPageHeader(
                     title: l.usersAccessTitle,
                     subtitle: l.usersAccessSubtitle,
+                    actions: [
+                      if (PermissionChecker(account.user.permissions).canAny([
+                        AppPermission.accessUsersView,
+                        AppPermission.accessPermissionsManage,
+                      ]))
+                        AppSecondaryButton(
+                          label: l.accessPermissionCatalog,
+                          onPressed: () =>
+                              context.go(AppRoutes.permissionMasters),
+                        ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -335,3 +347,4 @@ class _ModuleChips extends StatelessWidget {
           ],
         );
 }
+

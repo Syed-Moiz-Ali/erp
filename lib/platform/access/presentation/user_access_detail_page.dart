@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
@@ -11,11 +11,12 @@ import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/access/application/user_access_cubit.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
+import 'package:modular_erp/platform/access/domain/user_permission_grant.dart';
 import 'package:modular_erp/platform/access/presentation/access_localization.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
-/// Access Detail: a permission editor grouped Module → Submodule → Action.
+/// Access Detail: a permission editor grouped Module â†’ Submodule â†’ Action.
 ///
 /// Presentation only: [UserAccessCubit] still owns the catalog, the draft and
 /// the save/validation flow. This screen renders that resolved state through the
@@ -42,12 +43,20 @@ class UserAccessDetailPage extends StatelessWidget {
           if (account == null) return const SizedBox.shrink();
           return BlocProvider(
             key: ValueKey('access-user-$userId'),
-            create: (_) => UserAccessCubit(
+            create: (blocContext) => UserAccessCubit(
               catalog: catalog,
               repository: repository,
               authority: authority,
               actor: account,
               userId: userId,
+              onCurrentUserAccessChanged: userId == account.user.id
+                  ? () async {
+                      final auth = blocContext.read<AuthBloc>();
+                      if (!auth.isClosed) {
+                        auth.add(const AuthPermissionsReloadRequested());
+                      }
+                    }
+                  : null,
             )..start(),
             child: const _UserAccessBody(),
           );
@@ -146,6 +155,13 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
             secondaryActions: [
               if (cubit.canManage)
                 AppSecondaryButton(
+                  label: l.accessAddPermissions,
+                  onPressed: state.saving
+                      ? null
+                      : () => _addPermissions(context, cubit),
+                ),
+              if (cubit.canManage)
+                AppSecondaryButton(
                   label: l.accessResetChanges,
                   onPressed: state.dirty && !state.saving ? cubit.reset : null,
                 ),
@@ -161,9 +177,43 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
               const SizedBox(height: AppSpacing.lg),
               AppInfoCard(
                 title: l.accessScopeLabel,
-                message: scopeNote,
+                message: '$scopeNote ${l.accessReplaceAllHint}',
                 icon: Icons.info_outline,
               ),
+              if (state.orphans.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                AppCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l.accessOrphanHint,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      for (final orphan in state.orphans)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l.accessOrphanGrant(
+                                  orphan.orphanPermissionId?.toString() ??
+                                      orphan.id,
+                                ),
+                              ),
+                            ),
+                            AppTextButton(
+                              label: l.accessRevoke,
+                              onPressed: state.saving
+                                  ? null
+                                  : () => cubit.revokeOrphan(orphan),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ],
               if (!state.hasEmployeeLink) ...[
                 const SizedBox(height: AppSpacing.lg),
                 AppInfoCard(
@@ -357,6 +407,126 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
     );
   }
 
+  Future<void> _addPermissions(
+    BuildContext context,
+    UserAccessCubit cubit,
+  ) async {
+    final existing = cubit.state.draft.map((grant) => grant.key).toSet();
+    final selected = <String>{};
+    final result = await AppDialog.show<List<PermissionGrantInput>>(
+      context,
+      (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setState) {
+          final l = dialogContext.l10n;
+          PermissionScope scopeFor(PermissionDefinition definition) {
+            final scopes = definition.supportedScopes;
+            if (scopes.contains(PermissionScope.all)) return PermissionScope.all;
+            if (scopes.contains(PermissionScope.team)) {
+              return PermissionScope.team;
+            }
+            if (scopes.contains(PermissionScope.assigned)) {
+              return PermissionScope.assigned;
+            }
+            if (scopes.contains(PermissionScope.self)) return PermissionScope.self;
+            return PermissionScope.none;
+          }
+
+          return AppDialog(
+            title: l.accessAddPermissions,
+            actions: [
+              AppTextButton(
+                label: l.cancel,
+                onPressed: () => Navigator.pop(dialogContext),
+              ),
+              AppPrimaryButton(
+                label: l.accessAddPermissions,
+                onPressed: selected.isEmpty
+                    ? null
+                    : () => Navigator.pop(
+                        dialogContext,
+                        [
+                          for (final definition in cubit.catalog.definitions)
+                            if (selected.contains(definition.key))
+                              PermissionGrantInput(
+                                key: definition.key,
+                                scope: scopeFor(definition),
+                              ),
+                        ],
+                      ),
+              ),
+            ],
+            child: SizedBox(
+              width: 520,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(l.accessAddPermissionsHint),
+                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(
+                    height: 360,
+                    child: ListView(
+                      children: [
+                          for (final module in cubit.catalog.orderedModules)
+                            if (module.definitions
+                                .where(
+                                  (definition) =>
+                                      !existing.contains(definition.key) &&
+                                      cubit
+                                          .canGrant(definition)
+                                          .allowed,
+                                )
+                                .isNotEmpty) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: AppSpacing.md,
+                                  bottom: AppSpacing.xs,
+                                ),
+                                child: Text(
+                                  l.moduleLabel(module.nameKey),
+                                  style: Theme.of(dialogContext)
+                                      .textTheme
+                                      .titleSmall,
+                                ),
+                              ),
+                              for (final definition in module.definitions)
+                                if (!existing.contains(definition.key) &&
+                                    cubit.canGrant(definition).allowed)
+                                  CheckboxListTile(
+                                    value: selected.contains(definition.key),
+                                    onChanged: (value) => setState(() {
+                                      if (value == true) {
+                                        selected.add(definition.key);
+                                      } else {
+                                        selected.remove(definition.key);
+                                      }
+                                    }),
+                                    title: Text(
+                                      l.permissionLabel(definition.nameKey),
+                                    ),
+                                    subtitle: Text(
+                                      l.permissionDescription(
+                                        definition.descriptionKey,
+                                      ),
+                                    ),
+                                    dense: true,
+                                  ),
+                            ],
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+    if (result != null && result.isNotEmpty) {
+      await cubit.assignAdditive(result);
+    }
+  }
+
   Future<void> _confirmSave(BuildContext context, UserAccessCubit cubit) async {
     final confirmed = await AppConfirmationDialog.show(
       context,
@@ -500,7 +670,7 @@ class _History extends StatelessWidget {
         l.scopeLabel(metadata['oldScope'] as String),
       if (metadata['newScope'] != null)
         l.scopeLabel(metadata['newScope'] as String),
-    ].join(' → ');
+    ].join(' â†’ ');
     return AppTimelineItem(
       id: event.id as String,
       title: definition == null
@@ -522,3 +692,5 @@ class _History extends StatelessWidget {
     );
   }
 }
+
+

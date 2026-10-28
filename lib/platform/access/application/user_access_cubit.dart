@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -20,6 +20,7 @@ class UserAccessState {
     this.grants = const [],
     this.draft = const [],
     this.history = const [],
+    this.orphans = const [],
     this.saving = false,
     this.saved = false,
     this.isLastAccessAdmin = false,
@@ -29,6 +30,7 @@ class UserAccessState {
   final AccessUserListItem? user;
   final List<PermissionGrantInput> grants, draft;
   final List<BusinessActivityEvent> history;
+  final List<UserPermissionGrant> orphans;
 
   bool get dirty => !setEquals(grants.toSet(), draft.toSet());
   bool get hasEmployeeLink =>
@@ -45,6 +47,7 @@ class UserAccessState {
     List<PermissionGrantInput>? grants,
     List<PermissionGrantInput>? draft,
     List<BusinessActivityEvent>? history,
+    List<UserPermissionGrant>? orphans,
     bool? saving,
     bool? saved,
     bool? isLastAccessAdmin,
@@ -55,6 +58,7 @@ class UserAccessState {
     grants: grants ?? this.grants,
     draft: draft ?? this.draft,
     history: history ?? this.history,
+    orphans: orphans ?? this.orphans,
     saving: saving ?? this.saving,
     saved: saved ?? this.saved,
     isLastAccessAdmin: isLastAccessAdmin ?? this.isLastAccessAdmin,
@@ -70,6 +74,7 @@ class UserAccessCubit extends Cubit<UserAccessState> {
     required this.authority,
     required this.actor,
     required this.userId,
+    this.onCurrentUserAccessChanged,
     Uuid? uuid,
   }) : _uuid = uuid ?? const Uuid(),
        super(const UserAccessState());
@@ -78,6 +83,7 @@ class UserAccessCubit extends Cubit<UserAccessState> {
   final GrantAuthorityResolver authority;
   final AuthContext actor;
   final String userId;
+  final Future<void> Function()? onCurrentUserAccessChanged;
   final Uuid _uuid;
 
   StreamSubscription<List<UserPermissionGrant>>? _grantsSub;
@@ -121,8 +127,9 @@ class UserAccessCubit extends Cubit<UserAccessState> {
   }
 
   void _onGrants(List<UserPermissionGrant> grants) {
+    final active = grants.where((grant) => !grant.isOrphan);
     final inputs = [
-      for (final grant in grants)
+      for (final grant in active)
         PermissionGrantInput(key: grant.permissionKey, scope: grant.scope),
     ];
     emit(
@@ -130,6 +137,7 @@ class UserAccessCubit extends Cubit<UserAccessState> {
         loading: false,
         grants: inputs,
         draft: _initialized ? state.draft : inputs,
+        orphans: grants.where((grant) => grant.isOrphan).toList(),
       ),
     );
     _initialized = true;
@@ -249,10 +257,76 @@ class UserAccessCubit extends Cubit<UserAccessState> {
     );
     if (result is Success<void>) {
       emit(state.copyWith(saving: false, saved: true, grants: state.draft));
+      await onCurrentUserAccessChanged?.call();
       return true;
     }
-    emit(state.copyWith(saving: false, failureCode: 'accessSaveFailed'));
+    emit(
+      state.copyWith(
+        saving: false,
+        failureCode: result is Failed<void>
+            ? result.failure.code
+            : 'accessSaveFailed',
+      ),
+    );
     return false;
+  }
+
+  /// Additive assignment (POST). Keeps existing grants.
+  Future<bool> assignAdditive(List<PermissionGrantInput> grants) async {
+    if (grants.isEmpty) return false;
+    emit(state.copyWith(saving: true, clearFailure: true));
+    final result = await repository.assignGrants(
+      companyId: companyId,
+      actorUserId: actor.user.id,
+      targetUserId: userId,
+      requestId: _uuid.v4(),
+      grants: grants,
+    );
+    if (result is Success<void>) {
+      emit(state.copyWith(saving: false, saved: true));
+      await onCurrentUserAccessChanged?.call();
+      return true;
+    }
+    emit(
+      state.copyWith(
+        saving: false,
+        failureCode: result is Failed<void>
+            ? result.failure.code
+            : 'accessSaveFailed',
+      ),
+    );
+    return false;
+  }
+
+  Future<void> revokeOrphan(UserPermissionGrant grant) async {
+    if (state.saving) return;
+    emit(state.copyWith(saving: true, clearFailure: true));
+    final result = await repository.revokeGrant(
+      companyId: companyId,
+      targetUserId: userId,
+      grantId: grant.id,
+    );
+    if (result is Success<void>) {
+      emit(
+        state.copyWith(
+          saving: false,
+          saved: true,
+          orphans: state.orphans
+              .where((row) => row.id != grant.id)
+              .toList(growable: false),
+        ),
+      );
+      await onCurrentUserAccessChanged?.call();
+      return;
+    }
+    emit(
+      state.copyWith(
+        saving: false,
+        failureCode: result is Failed<void>
+            ? result.failure.code
+            : 'accessSaveFailed',
+      ),
+    );
   }
 
   @override
@@ -264,3 +338,4 @@ class UserAccessCubit extends Cubit<UserAccessState> {
     return super.close();
   }
 }
+

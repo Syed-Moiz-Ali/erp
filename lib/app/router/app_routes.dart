@@ -1,4 +1,4 @@
-import 'package:modular_erp/app/router/platform_routes.dart';
+﻿import 'package:modular_erp/app/router/platform_routes.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/services/module/services_routes.dart';
 
@@ -22,6 +22,7 @@ abstract final class AppRoutes {
       reports = HrRoutes.reports,
       settings = PlatformRoutes.settings,
       access = PlatformRoutes.access,
+      permissionMasters = PlatformRoutes.permissionMasters,
       modules = PlatformRoutes.modules,
       profile = PlatformRoutes.profile,
       changePassword = PlatformRoutes.changePassword,
@@ -123,3 +124,4 @@ abstract final class AppModuleIds {
       settings = 'settings',
       account = 'account';
 }
+

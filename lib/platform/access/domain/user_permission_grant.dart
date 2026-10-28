@@ -1,4 +1,4 @@
-import 'package:modular_erp/core/security/permission_scope.dart';
+﻿import 'package:modular_erp/core/security/permission_scope.dart';
 
 /// Persisted, company-scoped explicit permission grant.
 class UserPermissionGrant {
@@ -14,6 +14,8 @@ class UserPermissionGrant {
     required this.syncStatus,
     this.expiresAt,
     this.isActive = true,
+    this.isOrphan = false,
+    this.orphanPermissionId,
     this.requestId,
   });
   final String id, companyId, userId, permissionKey;
@@ -22,6 +24,10 @@ class UserPermissionGrant {
   final DateTime grantedAt, updatedAt;
   final DateTime? expiresAt;
   final bool isActive;
+
+  /// Grant references a permission master that no longer exists.
+  final bool isOrphan;
+  final int? orphanPermissionId;
   final String? requestId;
   final String syncStatus;
 }
@@ -41,3 +47,4 @@ class PermissionGrantInput {
   @override
   int get hashCode => Object.hash(key, scope);
 }
+

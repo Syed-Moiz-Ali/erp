@@ -48,6 +48,14 @@ final class PermissionEndpoints {
   String get list => '${ApiEndpoints.root}/permissions';
   String byId(Object id) =>
       ApiPath.resolve('${ApiEndpoints.root}/permissions/{id}', {'id': id});
+  String activate(Object id) => ApiPath.resolve(
+    '${ApiEndpoints.root}/permissions/{id}/activate',
+    {'id': id},
+  );
+  String deactivate(Object id) => ApiPath.resolve(
+    '${ApiEndpoints.root}/permissions/{id}/deactivate',
+    {'id': id},
+  );
 }
 
 /// User permission grants: `/api/user-permissions/*`.

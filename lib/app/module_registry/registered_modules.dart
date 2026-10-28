@@ -15,7 +15,9 @@ import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/access/presentation/company_modules_page.dart';
 import 'package:modular_erp/platform/access/presentation/user_access_detail_page.dart';
+import 'package:modular_erp/platform/access/presentation/permission_masters_page.dart';
 import 'package:modular_erp/platform/access/presentation/users_access_page.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
@@ -78,6 +80,7 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
   AccessRepository? accessRepository,
+  PermissionMasterRepository? permissionMasterRepository,
   PermissionCatalog? accessCatalog,
   GrantAuthorityResolver? accessAuthority,
   ServiceCustomerRepository? serviceCustomerRepository,
@@ -241,6 +244,14 @@ ModuleRegistry createErpRegistry(
                       userId: state.pathParameters['userId']!,
                     ),
                   ),
+                  if (permissionMasterRepository != null)
+                    GoRoute(
+                      path: 'permissions',
+                      name: 'access-permissions',
+                      builder: (context, state) => PermissionMastersPage(
+                        repository: permissionMasterRepository,
+                      ),
+                    ),
                 ],
               ),
             ],
@@ -312,4 +323,5 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
 

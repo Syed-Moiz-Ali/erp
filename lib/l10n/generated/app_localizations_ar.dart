@@ -472,1594 +472,1762 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noItemsLabel => 'لا توجد عناصر';
 
   @override
-  String get settings => 'الإعدادات';
+  String get settings => 'Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª';
 
   @override
-  String get profile => 'الملف الشخصي';
+  String get profile => 'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ';
 
   @override
-  String get login => 'تسجيل الدخول';
+  String get login => 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get logout => 'تسجيل الخروج';
+  String get logout => 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬';
 
   @override
-  String get forgotPassword => 'نسيت كلمة المرور';
+  String get forgotPassword => 'Ù†Ø³ÙŠØª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±';
 
   @override
-  String get changePassword => 'تغيير كلمة المرور';
+  String get changePassword => 'ØªØºÙŠÙŠØ± ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±';
 
   @override
-  String get welcomeBack => 'مرحبًا بعودتك';
+  String get welcomeBack => 'Ù…Ø±Ø­Ø¨Ù‹Ø§ Ø¨Ø¹ÙˆØ¯ØªÙƒ';
 
   @override
-  String get workspace => 'مساحة العمل';
+  String get workspace => 'Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get overview => 'نظرة عامة';
+  String get overview => 'Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø©';
 
   @override
-  String get internal => 'داخلي';
+  String get internal => 'Ø¯Ø§Ø®Ù„ÙŠ';
 
   @override
-  String get designSystem => 'نظام التصميم';
+  String get designSystem => 'Ù†Ø¸Ø§Ù… Ø§Ù„ØªØµÙ…ÙŠÙ…';
 
   @override
-  String get erpWorkspace => 'مساحة عمل ERP';
+  String get erpWorkspace => 'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ ERP';
 
   @override
-  String get foundationPhase => 'الأساس / المرحلة صفر';
+  String get foundationPhase => 'Ø§Ù„Ø£Ø³Ø§Ø³ / Ø§Ù„Ù…Ø±Ø­Ù„Ø© ØµÙØ±';
 
   @override
-  String get designPreview => 'معاينة التصميم';
+  String get designPreview => 'Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„ØªØµÙ…ÙŠÙ…';
 
   @override
-  String get designSystemSubtitle => 'اللغة البصرية الموحدة لمساحة عمل ERP.';
+  String get designSystemSubtitle =>
+      'Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¨ØµØ±ÙŠØ© Ø§Ù„Ù…ÙˆØ­Ø¯Ø© Ù„Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ ERP.';
 
   @override
-  String get internalPreview => 'معاينة داخلية';
+  String get internalPreview => 'Ù…Ø¹Ø§ÙŠÙ†Ø© Ø¯Ø§Ø®Ù„ÙŠØ©';
 
   @override
-  String get openDialog => 'فتح مربع الحوار';
+  String get openDialog => 'ÙØªØ­ Ù…Ø±Ø¨Ø¹ Ø§Ù„Ø­ÙˆØ§Ø±';
 
   @override
-  String get reviewChanges => 'مراجعة التغييرات';
+  String get reviewChanges => 'Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª';
 
   @override
-  String get confirmationPreview => 'هذه معاينة لمربع حوار التأكيد الموحد.';
+  String get confirmationPreview =>
+      'Ù‡Ø°Ù‡ Ù…Ø¹Ø§ÙŠÙ†Ø© Ù„Ù…Ø±Ø¨Ø¹ Ø­ÙˆØ§Ø± Ø§Ù„ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ù…ÙˆØ­Ø¯.';
 
   @override
-  String get looksGood => 'مناسب';
+  String get looksGood => 'Ù…Ù†Ø§Ø³Ø¨';
 
   @override
   String get consistencyNotice =>
-      'تصميم متسق. تستخدم جميع الوحدات المستقبلية هذه الأسس.';
+      'ØªØµÙ…ÙŠÙ… Ù…ØªØ³Ù‚. ØªØ³ØªØ®Ø¯Ù… Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ù…Ø³ØªÙ‚Ø¨Ù„ÙŠØ© Ù‡Ø°Ù‡ Ø§Ù„Ø£Ø³Ø³.';
 
   @override
-  String get designLanguage => 'اللغة البصرية';
+  String get designLanguage => 'Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¨ØµØ±ÙŠØ©';
 
   @override
-  String get oneSystem => 'نظام موحد';
+  String get oneSystem => 'Ù†Ø¸Ø§Ù… Ù…ÙˆØ­Ø¯';
 
   @override
-  String get sharedAcrossModules => 'مشترك بين جميع الوحدات';
+  String get sharedAcrossModules => 'Ù…Ø´ØªØ±Ùƒ Ø¨ÙŠÙ† Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙˆØ­Ø¯Ø§Øª';
 
   @override
-  String get dataStrategy => 'استراتيجية البيانات';
+  String get dataStrategy => 'Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª';
 
   @override
-  String get localFirst => 'التخزين المحلي أولًا';
+  String get localFirst => 'Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ Ø£ÙˆÙ„Ù‹Ø§';
 
   @override
-  String get repositorySourceOfTruth => 'المستودعات هي المصدر المعتمد للبيانات';
+  String get repositorySourceOfTruth =>
+      'Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹Ø§Øª Ù‡ÙŠ Ø§Ù„Ù…ØµØ¯Ø± Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ù„Ù„Ø¨ÙŠØ§Ù†Ø§Øª';
 
   @override
-  String get layout => 'التخطيط';
+  String get layout => 'Ø§Ù„ØªØ®Ø·ÙŠØ·';
 
   @override
-  String get adaptive => 'متكيف';
+  String get adaptive => 'Ù…ØªÙƒÙŠÙ';
 
   @override
-  String get adaptiveDetail => 'من الشاشات الصغيرة إلى مساحات العمل الكبيرة';
+  String get adaptiveDetail =>
+      'Ù…Ù† Ø§Ù„Ø´Ø§Ø´Ø§Øª Ø§Ù„ØµØºÙŠØ±Ø© Ø¥Ù„Ù‰ Ù…Ø³Ø§Ø­Ø§Øª Ø§Ù„Ø¹Ù…Ù„ Ø§Ù„ÙƒØ¨ÙŠØ±Ø©';
 
   @override
-  String get typography => 'الخطوط';
+  String get typography => 'Ø§Ù„Ø®Ø·ÙˆØ·';
 
   @override
-  String get typographySubtitle => 'خطوط محلية / وضوح في جميع أحجام العرض';
+  String get typographySubtitle =>
+      'Ø®Ø·ÙˆØ· Ù…Ø­Ù„ÙŠØ© / ÙˆØ¶ÙˆØ­ ÙÙŠ Ø¬Ù…ÙŠØ¹ Ø£Ø­Ø¬Ø§Ù… Ø§Ù„Ø¹Ø±Ø¶';
 
   @override
-  String get typographyDisplay => 'العرض الرئيسي';
+  String get typographyDisplay => 'Ø§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ';
 
   @override
-  String get typographyPageTitle => 'عنوان الصفحة';
+  String get typographyPageTitle => 'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ØµÙØ­Ø©';
 
   @override
-  String get typographySectionTitle => 'عنوان القسم';
+  String get typographySectionTitle => 'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù‚Ø³Ù…';
 
   @override
-  String get typographyCardTitle => 'عنوان البطاقة';
+  String get typographyCardTitle => 'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©';
 
   @override
-  String get typographyBodyLarge => 'النص الكبير';
+  String get typographyBodyLarge => 'Ø§Ù„Ù†Øµ Ø§Ù„ÙƒØ¨ÙŠØ±';
 
   @override
-  String get typographyBody => 'النص الأساسي';
+  String get typographyBody => 'Ø§Ù„Ù†Øµ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠ';
 
   @override
-  String get typographyBodySmall => 'النص الصغير';
+  String get typographyBodySmall => 'Ø§Ù„Ù†Øµ Ø§Ù„ØµØºÙŠØ±';
 
   @override
-  String get typographyLabel => 'التسمية';
+  String get typographyLabel => 'Ø§Ù„ØªØ³Ù…ÙŠØ©';
 
   @override
-  String get typographyCaption => 'النص التوضيحي';
+  String get typographyCaption => 'Ø§Ù„Ù†Øµ Ø§Ù„ØªÙˆØ¶ÙŠØ­ÙŠ';
 
   @override
-  String get semanticPalette => 'ألوان ذات دلالات واضحة';
+  String get semanticPalette => 'Ø£Ù„ÙˆØ§Ù† Ø°Ø§Øª Ø¯Ù„Ø§Ù„Ø§Øª ÙˆØ§Ø¶Ø­Ø©';
 
   @override
-  String get colorBrand => 'العلامة التجارية';
+  String get colorBrand => 'Ø§Ù„Ø¹Ù„Ø§Ù…Ø© Ø§Ù„ØªØ¬Ø§Ø±ÙŠØ©';
 
   @override
-  String get colorSurface => 'السطح';
+  String get colorSurface => 'Ø§Ù„Ø³Ø·Ø­';
 
   @override
-  String get colorBackground => 'الخلفية';
+  String get colorBackground => 'Ø§Ù„Ø®Ù„ÙÙŠØ©';
 
   @override
-  String get colorBorder => 'الحدود';
+  String get colorBorder => 'Ø§Ù„Ø­Ø¯ÙˆØ¯';
 
   @override
-  String get colorTextPrimary => 'النص الأساسي';
+  String get colorTextPrimary => 'Ø§Ù„Ù†Øµ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠ';
 
   @override
-  String get colorTextSecondary => 'النص الثانوي';
+  String get colorTextSecondary => 'Ø§Ù„Ù†Øµ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ';
 
   @override
-  String get colorTextMuted => 'النص الخافت';
+  String get colorTextMuted => 'Ø§Ù„Ù†Øµ Ø§Ù„Ø®Ø§ÙØª';
 
   @override
-  String get colorDanger => 'خطر';
+  String get colorDanger => 'Ø®Ø·Ø±';
 
   @override
-  String get colorInfo => 'معلومات';
+  String get colorInfo => 'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª';
 
   @override
-  String get formControls => 'عناصر النموذج';
+  String get formControls => 'Ø¹Ù†Ø§ØµØ± Ø§Ù„Ù†Ù…ÙˆØ°Ø¬';
 
   @override
   String get formControlsSubtitle =>
-      'تنسيق موحد للحقول والتحقق وتسميات يسهل الوصول إليها.';
+      'ØªÙ†Ø³ÙŠÙ‚ Ù…ÙˆØ­Ø¯ Ù„Ù„Ø­Ù‚ÙˆÙ„ ÙˆØ§Ù„ØªØ­Ù‚Ù‚ ÙˆØªØ³Ù…ÙŠØ§Øª ÙŠØ³Ù‡Ù„ Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„ÙŠÙ‡Ø§.';
 
   @override
   String get illustrativeRecords =>
-      'سجلات توضيحية / لا تتضمن بيانات موظفين فعلية';
+      'Ø³Ø¬Ù„Ø§Øª ØªÙˆØ¶ÙŠØ­ÙŠØ© / Ù„Ø§ ØªØªØ¶Ù…Ù† Ø¨ÙŠØ§Ù†Ø§Øª Ù…ÙˆØ¸ÙÙŠÙ† ÙØ¹Ù„ÙŠØ©';
 
   @override
-  String get activeOnly => 'النشط فقط';
+  String get activeOnly => 'Ø§Ù„Ù†Ø´Ø· ÙÙ‚Ø·';
 
   @override
-  String get clearFilters => 'مسح الفلاتر';
+  String get clearFilters => 'Ù…Ø³Ø­ Ø§Ù„ÙÙ„Ø§ØªØ±';
 
   @override
-  String get sampleAlex => 'أليكس مورغان';
+  String get sampleAlex => 'Ø£Ù„ÙŠÙƒØ³ Ù…ÙˆØ±ØºØ§Ù†';
 
   @override
-  String get sampleSam => 'سام تايلور';
+  String get sampleSam => 'Ø³Ø§Ù… ØªØ§ÙŠÙ„ÙˆØ±';
 
   @override
-  String get dialogsAndSheets => 'مربعات الحوار واللوحات';
+  String get dialogsAndSheets => 'Ù…Ø±Ø¨Ø¹Ø§Øª Ø§Ù„Ø­ÙˆØ§Ø± ÙˆØ§Ù„Ù„ÙˆØ­Ø§Øª';
 
   @override
-  String get previewDialog => 'معاينة مربع الحوار';
+  String get previewDialog => 'Ù…Ø¹Ø§ÙŠÙ†Ø© Ù…Ø±Ø¨Ø¹ Ø§Ù„Ø­ÙˆØ§Ø±';
 
   @override
-  String get sharedDialog => 'مربع حوار موحد';
+  String get sharedDialog => 'Ù…Ø±Ø¨Ø¹ Ø­ÙˆØ§Ø± Ù…ÙˆØ­Ø¯';
 
   @override
-  String get sharedDialogMessage => 'محتوى موجز يساعد على اتخاذ قرار واضح.';
+  String get sharedDialogMessage =>
+      'Ù…Ø­ØªÙˆÙ‰ Ù…ÙˆØ¬Ø² ÙŠØ³Ø§Ø¹Ø¯ Ø¹Ù„Ù‰ Ø§ØªØ®Ø§Ø° Ù‚Ø±Ø§Ø± ÙˆØ§Ø¶Ø­.';
 
   @override
-  String get previewBottomSheet => 'معاينة اللوحة السفلية';
+  String get previewBottomSheet => 'Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„Ù„ÙˆØ­Ø© Ø§Ù„Ø³ÙÙ„ÙŠØ©';
 
   @override
-  String get quickDetails => 'تفاصيل سريعة';
+  String get quickDetails => 'ØªÙØ§ØµÙŠÙ„ Ø³Ø±ÙŠØ¹Ø©';
 
   @override
-  String get quickDetailsSubtitle => 'نمط عرض موحد للأجهزة المحمولة.';
+  String get quickDetailsSubtitle =>
+      'Ù†Ù…Ø· Ø¹Ø±Ø¶ Ù…ÙˆØ­Ø¯ Ù„Ù„Ø£Ø¬Ù‡Ø²Ø© Ø§Ù„Ù…Ø­Ù…ÙˆÙ„Ø©.';
 
   @override
-  String get foundationDetails => 'تفاصيل الأساس';
+  String get foundationDetails => 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø£Ø³Ø§Ø³';
 
   @override
-  String get architecture => 'البنية';
+  String get architecture => 'Ø§Ù„Ø¨Ù†ÙŠØ©';
 
   @override
-  String get featureFirst => 'تنظيم حسب الميزات';
+  String get featureFirst => 'ØªÙ†Ø¸ÙŠÙ… Ø­Ø³Ø¨ Ø§Ù„Ù…ÙŠØ²Ø§Øª';
 
   @override
-  String get theme => 'المظهر';
+  String get theme => 'Ø§Ù„Ù…Ø¸Ù‡Ø±';
 
   @override
-  String get lightSemanticTokens => 'مظهر فاتح / رموز دلالية';
+  String get lightSemanticTokens => 'Ù…Ø¸Ù‡Ø± ÙØ§ØªØ­ / Ø±Ù…ÙˆØ² Ø¯Ù„Ø§Ù„ÙŠØ©';
 
   @override
-  String get persistence => 'التخزين الدائم';
+  String get persistence => 'Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ø¯Ø§Ø¦Ù…';
 
   @override
-  String get persistenceDetail => 'Drift وتخزين آمن للجلسة';
+  String get persistenceDetail => 'Drift ÙˆØªØ®Ø²ÙŠÙ† Ø¢Ù…Ù† Ù„Ù„Ø¬Ù„Ø³Ø©';
 
   @override
-  String get internalPreviewPhase => 'معاينة داخلية / المرحلة صفر';
+  String get internalPreviewPhase =>
+      'Ù…Ø¹Ø§ÙŠÙ†Ø© Ø¯Ø§Ø®Ù„ÙŠØ© / Ø§Ù„Ù…Ø±Ø­Ù„Ø© ØµÙØ±';
 
   @override
-  String get workspaceTitle => 'أساس لما هو قادم';
+  String get workspaceTitle => 'Ø£Ø³Ø§Ø³ Ù„Ù…Ø§ Ù‡Ùˆ Ù‚Ø§Ø¯Ù…';
 
   @override
-  String get workspaceSubtitle => 'مساحة عمل واحدة لجميع وحدات ERP.';
+  String get workspaceSubtitle =>
+      'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ ÙˆØ§Ø­Ø¯Ø© Ù„Ø¬Ù…ÙŠØ¹ ÙˆØ­Ø¯Ø§Øª ERP.';
 
   @override
-  String get workspaceInfoTitle => 'نظام ERP يبدأ هنا';
+  String get workspaceInfoTitle => 'Ù†Ø¸Ø§Ù… ERP ÙŠØ¨Ø¯Ø£ Ù‡Ù†Ø§';
 
   @override
   String get workspaceInfoMessage =>
-      'البنية التي تعتمد التخزين المحلي أولًا ونظام التصميم الموحد جاهزان. ستُضاف وحدات الأعمال في المراحل القادمة.';
+      'Ø§Ù„Ø¨Ù†ÙŠØ© Ø§Ù„ØªÙŠ ØªØ¹ØªÙ…Ø¯ Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ Ø£ÙˆÙ„Ù‹Ø§ ÙˆÙ†Ø¸Ø§Ù… Ø§Ù„ØªØµÙ…ÙŠÙ… Ø§Ù„Ù…ÙˆØ­Ø¯ Ø¬Ø§Ù‡Ø²Ø§Ù†. Ø³ØªÙØ¶Ø§Ù ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø£Ø¹Ù…Ø§Ù„ ÙÙŠ Ø§Ù„Ù…Ø±Ø§Ø­Ù„ Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©.';
 
   @override
-  String get phaseReady => 'المرحلة صفر / الأساس جاهز';
+  String get phaseReady => 'Ø§Ù„Ù…Ø±Ø­Ù„Ø© ØµÙØ± / Ø§Ù„Ø£Ø³Ø§Ø³ Ø¬Ø§Ù‡Ø²';
 
   @override
-  String get languageSubtitle => 'تتغير اللغة واتجاه العرض فورًا.';
+  String get languageSubtitle =>
+      'ØªØªØºÙŠØ± Ø§Ù„Ù„ØºØ© ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ø¹Ø±Ø¶ ÙÙˆØ±Ù‹Ø§.';
 
   @override
   String get englishNativeName => 'English';
 
   @override
-  String get arabicNativeName => 'العربية';
+  String get arabicNativeName => 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©';
 
   @override
   String typographySample(String level) {
-    return '$level / مصمم للوضوح';
+    return '$level / Ù…ØµÙ…Ù… Ù„Ù„ÙˆØ¶ÙˆØ­';
   }
 
   @override
-  String get authWelcomeBack => 'مرحبًا بعودتك';
+  String get authWelcomeBack => 'Ù…Ø±Ø­Ø¨Ù‹Ø§ Ø¨Ø¹ÙˆØ¯ØªÙƒ';
 
   @override
-  String get authSignInSubtitle => 'سجّل الدخول إلى مساحة عمل Bitlogix.';
+  String get authSignInSubtitle =>
+      'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ Bitlogix.';
 
   @override
-  String get authIdentifier => 'البريد الإلكتروني أو رقم الهاتف';
+  String get authIdentifier =>
+      'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ';
 
   @override
-  String get authIdentifierHint => 'مثال: name@company.com';
+  String get authIdentifierHint => 'Ù…Ø«Ø§Ù„: name@company.com';
 
   @override
-  String get authIdentifierRequired => 'البريد الإلكتروني أو رقم الهاتف مطلوب';
+  String get authIdentifierRequired =>
+      'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ù…Ø·Ù„ÙˆØ¨';
 
   @override
   String get authIdentifierInvalid =>
-      'أدخل بريدًا إلكترونيًا أو رقم هاتف صالحًا';
+      'Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ù‹Ø§ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠÙ‹Ø§ Ø£Ùˆ Ø±Ù‚Ù… Ù‡Ø§ØªÙ ØµØ§Ù„Ø­Ù‹Ø§';
 
   @override
-  String get authPasswordRequired => 'كلمة المرور مطلوبة';
+  String get authPasswordRequired => 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù…Ø·Ù„ÙˆØ¨Ø©';
 
   @override
   String get authInvalidCredentials =>
-      'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.';
+      'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ø£Ùˆ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.';
 
   @override
-  String get authLoggingIn => 'جارٍ تسجيل الدخول…';
+  String get authLoggingIn => 'Ø¬Ø§Ø±Ù ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„â€¦';
 
   @override
-  String get authBrandStatement => 'مساحة عمل مترابطة.\nويوم عمل أكثر وضوحًا.';
+  String get authBrandStatement =>
+      'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ Ù…ØªØ±Ø§Ø¨Ø·Ø©.\nÙˆÙŠÙˆÙ… Ø¹Ù…Ù„ Ø£ÙƒØ«Ø± ÙˆØ¶ÙˆØ­Ù‹Ø§.';
 
   @override
   String get authBrandDescription =>
-      'مكان واحد لفريقك وعملياتك والأعمال القادمة.';
+      'Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯ Ù„ÙØ±ÙŠÙ‚Ùƒ ÙˆØ¹Ù…Ù„ÙŠØ§ØªÙƒ ÙˆØ§Ù„Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©.';
 
   @override
-  String get authWorkspaceLabel => 'مساحة عمل الشركة';
+  String get authWorkspaceLabel => 'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get authSecureSession => 'تبقى جلستك آمنة على هذا الجهاز.';
+  String get authSecureSession =>
+      'ØªØ¨Ù‚Ù‰ Ø¬Ù„Ø³ØªÙƒ Ø¢Ù…Ù†Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².';
 
   @override
-  String get authSecureSessionLabel => 'جلسة آمنة';
+  String get authSecureSessionLabel => 'Ø¬Ù„Ø³Ø© Ø¢Ù…Ù†Ø©';
 
   @override
-  String get authWorkforce => 'القوى العاملة';
+  String get authWorkforce => 'Ø§Ù„Ù‚ÙˆÙ‰ Ø§Ù„Ø¹Ø§Ù…Ù„Ø©';
 
   @override
-  String get authActiveEmployees => 'موظف نشط';
+  String get authActiveEmployees => 'Ù…ÙˆØ¸Ù Ù†Ø´Ø·';
 
   @override
-  String get authWorking => 'العمل';
+  String get authWorking => 'Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get authAttendanceActive => 'الحضور نشط';
+  String get authAttendanceActive => 'Ø§Ù„Ø­Ø¶ÙˆØ± Ù†Ø´Ø·';
 
   @override
-  String get authLive => 'مباشر';
+  String get authLive => 'Ù…Ø¨Ø§Ø´Ø±';
 
   @override
-  String get authDeveloperAccess => 'دخول المطوّر';
+  String get authDeveloperAccess => 'Ø¯Ø®ÙˆÙ„ Ø§Ù„Ù…Ø·ÙˆÙ‘Ø±';
 
   @override
-  String get productEyebrow => 'مساحة عمل أعمال معيارية';
+  String get productEyebrow => 'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ Ø£Ø¹Ù…Ø§Ù„ Ù…Ø¹ÙŠØ§Ø±ÙŠØ©';
 
   @override
-  String get productHeadline => 'كل ما يديره عملك.\nمتصل في مكان واحد.';
+  String get productHeadline =>
+      'ÙƒÙ„ Ù…Ø§ ÙŠØ¯ÙŠØ±Ù‡ Ø¹Ù…Ù„Ùƒ.\nÙ…ØªØµÙ„ ÙÙŠ Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯.';
 
   @override
-  String get productWorkspaceTitle => 'مساحة عمل Bitlogix';
+  String get productWorkspaceTitle => 'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ Bitlogix';
 
   @override
-  String get productWorkspaceSubtitle => 'نظام أعمال موحّد';
+  String get productWorkspaceSubtitle => 'Ù†Ø¸Ø§Ù… Ø£Ø¹Ù…Ø§Ù„ Ù…ÙˆØ­Ù‘Ø¯';
 
   @override
-  String get productWorkspaceFooter => 'متصل عبر مساحة عمل واحدة';
+  String get productWorkspaceFooter =>
+      'Ù…ØªØµÙ„ Ø¹Ø¨Ø± Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ ÙˆØ§Ø­Ø¯Ø©';
 
   @override
-  String get modulePeople => 'الأفراد';
+  String get modulePeople => 'Ø§Ù„Ø£ÙØ±Ø§Ø¯';
 
   @override
-  String get moduleOperations => 'العمليات';
+  String get moduleOperations => 'Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª';
 
   @override
-  String get moduleOperationsDesc => 'سير العمل';
+  String get moduleOperationsDesc => 'Ø³ÙŠØ± Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get moduleCustomers => 'العملاء';
+  String get moduleCustomers => 'Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡';
 
   @override
-  String get moduleCustomersDesc => 'العلاقات';
+  String get moduleCustomersDesc => 'Ø§Ù„Ø¹Ù„Ø§Ù‚Ø§Øª';
 
   @override
-  String get moduleFinance => 'المالية';
+  String get moduleFinance => 'Ø§Ù„Ù…Ø§Ù„ÙŠØ©';
 
   @override
-  String get moduleServices => 'الخدمات';
+  String get moduleServices => 'Ø§Ù„Ø®Ø¯Ù…Ø§Øª';
 
   @override
-  String get moduleServicesDesc => 'طلبات الخدمة';
+  String get moduleServicesDesc => 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø®Ø¯Ù…Ø©';
 
   @override
-  String get moduleInventory => 'المخزون';
+  String get moduleInventory => 'Ø§Ù„Ù…Ø®Ø²ÙˆÙ†';
 
   @override
-  String get moduleInventoryDesc => 'الأصول';
+  String get moduleInventoryDesc => 'Ø§Ù„Ø£ØµÙˆÙ„';
 
   @override
-  String get moduleReports => 'التقارير';
+  String get moduleReports => 'Ø§Ù„ØªÙ‚Ø§Ø±ÙŠØ±';
 
   @override
-  String get moduleReportsDesc => 'تصدير مجدول';
+  String get moduleReportsDesc => 'ØªØµØ¯ÙŠØ± Ù…Ø¬Ø¯ÙˆÙ„';
 
   @override
-  String get moduleInsights => 'الرؤى';
+  String get moduleInsights => 'Ø§Ù„Ø±Ø¤Ù‰';
 
   @override
-  String get moduleInsightsDesc => 'نظرة عامة';
+  String get moduleInsightsDesc => 'Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø©';
 
   @override
-  String get authWorkdayTitle => 'يوم عملك،\nفي مكان واحد.';
+  String get authWorkdayTitle => 'ÙŠÙˆÙ… Ø¹Ù…Ù„ÙƒØŒ\nÙÙŠ Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯.';
 
   @override
-  String get authWorkingDay => 'يوم العمل';
+  String get authWorkingDay => 'ÙŠÙˆÙ… Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get authNow => 'الآن';
+  String get authNow => 'Ø§Ù„Ø¢Ù†';
 
   @override
-  String get authShiftGeneral => 'الدوام العام';
+  String get authShiftGeneral => 'Ø§Ù„Ø¯ÙˆØ§Ù… Ø§Ù„Ø¹Ø§Ù…';
 
   @override
-  String get authShiftToday => 'اليوم';
+  String get authShiftToday => 'Ø§Ù„ÙŠÙˆÙ…';
 
   @override
-  String get authWorkLocationMain => 'المكتب الرئيسي';
+  String get authWorkLocationMain => 'Ø§Ù„Ù…ÙƒØªØ¨ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ';
 
   @override
   String authEmployeesActiveCount(int count) {
-    return '$count موظفًا نشطًا';
+    return '$count Ù…ÙˆØ¸ÙÙ‹Ø§ Ù†Ø´Ø·Ù‹Ø§';
   }
 
   @override
-  String get authDemoUse => 'استخدام حساب تجريبي';
+  String get authDemoUse => 'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø­Ø³Ø§Ø¨ ØªØ¬Ø±ÙŠØ¨ÙŠ';
 
   @override
   String get authSessionNote =>
-      'تبقى جلستك مفتوحة على هذا الجهاز حتى تسجّل الخروج أو تنتهي صلاحيتها.';
+      'ØªØ¨Ù‚Ù‰ Ø¬Ù„Ø³ØªÙƒ Ù…ÙØªÙˆØ­Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø² Ø­ØªÙ‰ ØªØ³Ø¬Ù‘Ù„ Ø§Ù„Ø®Ø±ÙˆØ¬ Ø£Ùˆ ØªÙ†ØªÙ‡ÙŠ ØµÙ„Ø§Ø­ÙŠØªÙ‡Ø§.';
 
   @override
-  String get authInitializing => 'جارٍ تجهيز مساحة عملك…';
+  String get authInitializing => 'Ø¬Ø§Ø±Ù ØªØ¬Ù‡ÙŠØ² Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„Ùƒâ€¦';
 
   @override
-  String get authDemoAccounts => 'حسابات تجريبية';
+  String get authDemoAccounts => 'Ø­Ø³Ø§Ø¨Ø§Øª ØªØ¬Ø±ÙŠØ¨ÙŠØ©';
 
   @override
-  String get authDemoNotice => 'عرض تجريبي محلي فقط. لا يوجد اتصال بخادم.';
+  String get authDemoNotice =>
+      'Ø¹Ø±Ø¶ ØªØ¬Ø±ÙŠØ¨ÙŠ Ù…Ø­Ù„ÙŠ ÙÙ‚Ø·. Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø§ØªØµØ§Ù„ Ø¨Ø®Ø§Ø¯Ù….';
 
   @override
   String get authDemoDisabled =>
-      'المصادقة التجريبية غير مفعّلة في هذا الإعداد. لم يتم ربط خادم بعد.';
+      'Ø§Ù„Ù…ØµØ§Ø¯Ù‚Ø© Ø§Ù„ØªØ¬Ø±ÙŠØ¨ÙŠØ© ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯. Ù„Ù… ÙŠØªÙ… Ø±Ø¨Ø· Ø®Ø§Ø¯Ù… Ø¨Ø¹Ø¯.';
 
   @override
   String get authNotConfigured =>
-      'تسجيل الدخول غير مهيأ في هذا الإصدار. تواصل مع المسؤول.';
+      'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ ØºÙŠØ± Ù…Ù‡ÙŠØ£ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ø¥ØµØ¯Ø§Ø±. ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„.';
 
   @override
-  String get authDemoPassword => 'كلمة المرور التجريبية';
+  String get authDemoPassword => 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„ØªØ¬Ø±ÙŠØ¨ÙŠØ©';
 
   @override
   String get authSessionStorageError =>
-      'تعذّر الوصول إلى الجلسة الآمنة. يُرجى المحاولة مجددًا.';
+      'ØªØ¹Ø°Ù‘Ø± Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ø§Ù„Ø¬Ù„Ø³Ø© Ø§Ù„Ø¢Ù…Ù†Ø©. ÙŠÙØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø¬Ø¯Ø¯Ù‹Ø§.';
 
   @override
   String get authServerError =>
-      'خدمة تسجيل الدخول غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.';
+      'Ø®Ø¯Ù…Ø© ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ù…Ø¤Ù‚ØªÙ‹Ø§. ÙŠÙØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø¬Ø¯Ø¯Ù‹Ø§.';
 
   @override
-  String get authForgotTitle => 'إعادة تعيين كلمة المرور';
+  String get authForgotTitle => 'Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±';
 
   @override
   String get authForgotSubtitle =>
-      'أدخل البريد الإلكتروني أو رقم الهاتف المرتبط بحسابك.';
+      'Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ø§Ù„Ù…Ø±ØªØ¨Ø· Ø¨Ø­Ø³Ø§Ø¨Ùƒ.';
 
   @override
   String get authResetInformation =>
-      'إذا كان هناك حساب يطابق هذه البيانات، فسيتم إرسال تعليمات إعادة تعيين كلمة المرور.';
+      'Ø¥Ø°Ø§ ÙƒØ§Ù† Ù‡Ù†Ø§Ùƒ Ø­Ø³Ø§Ø¨ ÙŠØ·Ø§Ø¨Ù‚ Ù‡Ø°Ù‡ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§ØªØŒ ÙØ³ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØªØ¹Ù„ÙŠÙ…Ø§Øª Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±.';
 
   @override
   String get authResetDemoNote =>
-      'لا يتم إرسال بريد إلكتروني أو رسالة نصية في هذا العرض التجريبي.';
+      'Ù„Ø§ ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø¨Ø±ÙŠØ¯ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ø³Ø§Ù„Ø© Ù†ØµÙŠØ© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ø¹Ø±Ø¶ Ø§Ù„ØªØ¬Ø±ÙŠØ¨ÙŠ.';
 
   @override
-  String get authResetTitle => 'تم استلام الطلب';
+  String get authResetTitle => 'ØªÙ… Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø·Ù„Ø¨';
 
   @override
-  String get authBackToLogin => 'العودة إلى تسجيل الدخول';
+  String get authBackToLogin => 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get authSubmitting => 'يُرجى الانتظار…';
+  String get authSubmitting => 'ÙŠÙØ±Ø¬Ù‰ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±â€¦';
 
   @override
-  String get authChangePassword => 'تغيير كلمة المرور';
+  String get authChangePassword => 'ØªØºÙŠÙŠØ± ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±';
 
   @override
-  String get authChangeSubtitle => 'اختر كلمة مرور قوية لحسابك.';
+  String get authChangeSubtitle =>
+      'Ø§Ø®ØªØ± ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± Ù‚ÙˆÙŠØ© Ù„Ø­Ø³Ø§Ø¨Ùƒ.';
 
   @override
-  String get authCurrentPassword => 'كلمة المرور الحالية';
+  String get authCurrentPassword => 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø­Ø§Ù„ÙŠØ©';
 
   @override
-  String get authNewPassword => 'كلمة المرور الجديدة';
+  String get authNewPassword => 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©';
 
   @override
-  String get authConfirmPassword => 'تأكيد كلمة المرور الجديدة';
+  String get authConfirmPassword =>
+      'ØªØ£ÙƒÙŠØ¯ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©';
 
   @override
   String get authPasswordConstraints =>
-      'استخدم ٨ أحرف على الأقل، تتضمن حرفًا ورقمًا.';
+      'Ø§Ø³ØªØ®Ø¯Ù… Ù¨ Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ØŒ ØªØªØ¶Ù…Ù† Ø­Ø±ÙÙ‹Ø§ ÙˆØ±Ù‚Ù…Ù‹Ø§.';
 
   @override
-  String get authPasswordsMismatch => 'كلمتا المرور غير متطابقتين';
+  String get authPasswordsMismatch =>
+      'ÙƒÙ„Ù…ØªØ§ Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± Ù…ØªØ·Ø§Ø¨Ù‚ØªÙŠÙ†';
 
   @override
   String get authPasswordMustDiffer =>
-      'اختر كلمة مرور مختلفة عن كلمة مرورك الحالية';
+      'Ø§Ø®ØªØ± ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± Ù…Ø®ØªÙ„ÙØ© Ø¹Ù† ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ±Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ©';
 
   @override
-  String get authCurrentPasswordInvalid => 'كلمة المرور الحالية غير صحيحة.';
+  String get authCurrentPasswordInvalid =>
+      'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØºÙŠØ± ØµØ­ÙŠØ­Ø©.';
 
   @override
   String get authPasswordChanged =>
-      'تم تحديث كلمة المرور لهذه الجلسة التجريبية.';
+      'ØªÙ… ØªØ­Ø¯ÙŠØ« ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù„Ù‡Ø°Ù‡ Ø§Ù„Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ¬Ø±ÙŠØ¨ÙŠØ©.';
 
   @override
   String get authPasswordDemoNote =>
-      'تستمر تغييرات كلمة المرور التجريبية حتى إعادة تشغيل التطبيق. لا تُحفظ أي كلمة مرور على هذا الجهاز.';
+      'ØªØ³ØªÙ…Ø± ØªØºÙŠÙŠØ±Ø§Øª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„ØªØ¬Ø±ÙŠØ¨ÙŠØ© Ø­ØªÙ‰ Ø¥Ø¹Ø§Ø¯Ø© ØªØ´ØºÙŠÙ„ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚. Ù„Ø§ ØªÙØ­ÙØ¸ Ø£ÙŠ ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².';
 
   @override
-  String get authBackToWorkspace => 'العودة إلى مساحة العمل';
+  String get authBackToWorkspace => 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get authConfirmLogout => 'هل تريد تسجيل الخروج من مساحة عملك؟';
+  String get authConfirmLogout =>
+      'Ù‡Ù„ ØªØ±ÙŠØ¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬ Ù…Ù† Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„ÙƒØŸ';
 
   @override
-  String get authLogoutMessage => 'ستتم إزالة جلستك الآمنة من هذا الجهاز.';
+  String get authLogoutMessage =>
+      'Ø³ØªØªÙ… Ø¥Ø²Ø§Ù„Ø© Ø¬Ù„Ø³ØªÙƒ Ø§Ù„Ø¢Ù…Ù†Ø© Ù…Ù† Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².';
 
   @override
-  String get authHomeTitle => 'مساحة عملك جاهزة';
+  String get authHomeTitle => 'Ù…Ø³Ø§Ø­Ø© Ø¹Ù…Ù„Ùƒ Ø¬Ø§Ù‡Ø²Ø©';
 
   @override
   String get authHomeSubtitle =>
-      'لقد سجّلت الدخول. ستُضاف وحدات الأعمال في المراحل القادمة.';
+      'Ù„Ù‚Ø¯ Ø³Ø¬Ù‘Ù„Øª Ø§Ù„Ø¯Ø®ÙˆÙ„. Ø³ØªÙØ¶Ø§Ù ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø£Ø¹Ù…Ø§Ù„ ÙÙŠ Ø§Ù„Ù…Ø±Ø§Ø­Ù„ Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©.';
 
   @override
-  String get authAccount => 'الحساب';
+  String get authAccount => 'Ø§Ù„Ø­Ø³Ø§Ø¨';
 
   @override
-  String get authCompany => 'الشركة';
+  String get authCompany => 'Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get authPermissions => 'الصلاحيات';
+  String get authPermissions => 'Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
-  String get authAccountStatus => 'حالة الحساب';
+  String get authAccountStatus => 'Ø­Ø§Ù„Ø© Ø§Ù„Ø­Ø³Ø§Ø¨';
 
   @override
-  String get authStatusActive => 'نشط';
+  String get authStatusActive => 'Ù†Ø´Ø·';
 
   @override
-  String get authStatusSuspended => 'موقوف';
+  String get authStatusSuspended => 'Ù…ÙˆÙ‚ÙˆÙ';
 
   @override
-  String get authStatusInactive => 'غير نشط';
+  String get authStatusInactive => 'ØºÙŠØ± Ù†Ø´Ø·';
 
   @override
-  String get authPermissionViewer => 'الصلاحيات الممنوحة';
+  String get authPermissionViewer => 'Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©';
 
   @override
-  String get authEmployeeLinked => 'سجل الموظف المرتبط';
+  String get authEmployeeLinked => 'Ø³Ø¬Ù„ Ø§Ù„Ù…ÙˆØ¸Ù Ø§Ù„Ù…Ø±ØªØ¨Ø·';
 
   @override
-  String get authEmployeeUnlinked => 'لا يوجد سجل موظف مرتبط';
+  String get authEmployeeUnlinked => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø³Ø¬Ù„ Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø·';
 
   @override
   String authPermissionCount(String count) {
-    return 'تم منح $count صلاحية';
+    return 'ØªÙ… Ù…Ù†Ø­ $count ØµÙ„Ø§Ø­ÙŠØ©';
   }
 
   @override
   String authGreeting(String name) {
-    return 'مرحبًا، $name';
+    return 'Ù…Ø±Ø­Ø¨Ù‹Ø§ØŒ $name';
   }
 
   @override
-  String get permissionCompanyManage => 'إدارة الشركة';
+  String get permissionCompanyManage => 'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get permissionUserManage => 'إدارة حسابات المستخدمين';
+  String get permissionUserManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†';
 
   @override
-  String get shellDashboard => 'لوحة التحكم';
+  String get shellDashboard => 'Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…';
 
   @override
-  String get shellEmployees => 'الموظفون';
+  String get shellEmployees => 'Ø§Ù„Ù…ÙˆØ¸ÙÙˆÙ†';
 
   @override
-  String get shellAttendance => 'الحضور';
+  String get shellAttendance => 'Ø§Ù„Ø­Ø¶ÙˆØ±';
 
   @override
-  String get shellReports => 'التقارير';
+  String get shellReports => 'Ø§Ù„ØªÙ‚Ø§Ø±ÙŠØ±';
 
   @override
-  String get shellSettings => 'الإعدادات';
+  String get shellSettings => 'Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª';
 
   @override
-  String get shellProfile => 'الملف الشخصي';
+  String get shellProfile => 'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ';
 
   @override
-  String get shellMore => 'المزيد';
+  String get shellMore => 'Ø§Ù„Ù…Ø²ÙŠØ¯';
 
   @override
-  String get shellGeneral => 'مساحة العمل';
+  String get shellGeneral => 'Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get shellPeople => 'الأفراد';
+  String get shellPeople => 'Ø§Ù„Ø£ÙØ±Ø§Ø¯';
 
   @override
-  String get shellWorkforce => 'القوى العاملة';
+  String get shellWorkforce => 'Ø§Ù„Ù‚ÙˆÙ‰ Ø§Ù„Ø¹Ø§Ù…Ù„Ø©';
 
   @override
-  String get shellInsights => 'التحليلات';
+  String get shellInsights => 'Ø§Ù„ØªØ­Ù„ÙŠÙ„Ø§Øª';
 
   @override
-  String get shellAdministration => 'الإدارة';
+  String get shellAdministration => 'Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©';
 
   @override
-  String get shellAccount => 'الحساب';
+  String get shellAccount => 'Ø§Ù„Ø­Ø³Ø§Ø¨';
 
   @override
-  String get shellServices => 'الخدمات';
+  String get shellServices => 'Ø§Ù„Ø®Ø¯Ù…Ø§Øª';
 
   @override
-  String get shellFinance => 'الشؤون المالية';
+  String get shellFinance => 'Ø§Ù„Ø´Ø¤ÙˆÙ† Ø§Ù„Ù…Ø§Ù„ÙŠØ©';
 
   @override
-  String get shellProfileDescription => 'حسابك وتفضيلاتك وإعدادات الحضور.';
+  String get shellProfileDescription =>
+      'Ø­Ø³Ø§Ø¨Ùƒ ÙˆØªÙØ¶ÙŠÙ„Ø§ØªÙƒ ÙˆØ¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ±.';
 
   @override
-  String get shellPlaceholderTitle => 'جاهز للمرحلة القادمة';
+  String get shellPlaceholderTitle => 'Ø¬Ø§Ù‡Ø² Ù„Ù„Ù…Ø±Ø­Ù„Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©';
 
   @override
   String get shellPlaceholderMessage =>
-      'هذه المساحة مخصّصة لوحدة أعمال مستقبلية. لا تتوفر بيانات أعمال بعد.';
+      'Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø³Ø§Ø­Ø© Ù…Ø®ØµÙ‘ØµØ© Ù„ÙˆØ­Ø¯Ø© Ø£Ø¹Ù…Ø§Ù„ Ù…Ø³ØªÙ‚Ø¨Ù„ÙŠØ©. Ù„Ø§ ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª Ø£Ø¹Ù…Ø§Ù„ Ø¨Ø¹Ø¯.';
 
   @override
-  String get shellMoreDescription => 'استكشف المساحات الأخرى المتاحة لحسابك.';
+  String get shellMoreDescription =>
+      'Ø§Ø³ØªÙƒØ´Ù Ø§Ù„Ù…Ø³Ø§Ø­Ø§Øª Ø§Ù„Ø£Ø®Ø±Ù‰ Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„Ø­Ø³Ø§Ø¨Ùƒ.';
 
   @override
-  String get shellSearchTitle => 'البحث الشامل';
+  String get shellSearchTitle => 'Ø§Ù„Ø¨Ø­Ø« Ø§Ù„Ø´Ø§Ù…Ù„';
 
   @override
   String get shellSearchMessage =>
-      'سيتوفر البحث الشامل عند إضافة وحدات الأعمال.';
+      'Ø³ÙŠØªÙˆÙØ± Ø§Ù„Ø¨Ø­Ø« Ø§Ù„Ø´Ø§Ù…Ù„ Ø¹Ù†Ø¯ Ø¥Ø¶Ø§ÙØ© ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø£Ø¹Ù…Ø§Ù„.';
 
   @override
-  String get shellNotifications => 'الإشعارات';
+  String get shellNotifications => 'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get shellNoNotifications => 'لا توجد إشعارات';
+  String get shellNoNotifications => 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get shellNotificationsMessage => 'لا توجد إشعارات لعرضها.';
+  String get shellNotificationsMessage =>
+      'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ù„Ø¹Ø±Ø¶Ù‡Ø§.';
 
   @override
-  String get shellAccessRestricted => 'الوصول مقيّد';
+  String get shellAccessRestricted => 'Ø§Ù„ÙˆØµÙˆÙ„ Ù…Ù‚ÙŠÙ‘Ø¯';
 
   @override
-  String get shellAccessMessage => 'ليس لديك صلاحية للوصول إلى هذه المساحة.';
+  String get shellAccessMessage =>
+      'Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ ØµÙ„Ø§Ø­ÙŠØ© Ù„Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø³Ø§Ø­Ø©.';
 
   @override
-  String get shellModuleUnavailable => 'الوحدة غير متاحة';
+  String get shellModuleUnavailable => 'Ø§Ù„ÙˆØ­Ø¯Ø© ØºÙŠØ± Ù…ØªØ§Ø­Ø©';
 
   @override
-  String get shellModuleUnavailableMessage => 'هذه الوحدة غير مفعّلة لمؤسستك.';
+  String get shellModuleUnavailableMessage =>
+      'Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ­Ø¯Ø© ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ù„Ù…Ø¤Ø³Ø³ØªÙƒ.';
 
   @override
-  String get shellNotFound => 'الصفحة غير موجودة';
+  String get shellNotFound => 'Ø§Ù„ØµÙØ­Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø©';
 
   @override
-  String get shellNotFoundMessage => 'تعذّر العثور على الصفحة التي طلبتها.';
+  String get shellNotFoundMessage =>
+      'ØªØ¹Ø°Ù‘Ø± Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø§Ù„ØµÙØ­Ø© Ø§Ù„ØªÙŠ Ø·Ù„Ø¨ØªÙ‡Ø§.';
 
   @override
-  String get shellReturnToWorkspace => 'العودة إلى مساحة العمل';
+  String get shellReturnToWorkspace =>
+      'Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get shellGoBack => 'العودة';
+  String get shellGoBack => 'Ø§Ù„Ø¹ÙˆØ¯Ø©';
 
   @override
-  String get shellCollapseSidebar => 'طيّ القائمة الجانبية';
+  String get shellCollapseSidebar => 'Ø·ÙŠÙ‘ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø¬Ø§Ù†Ø¨ÙŠØ©';
 
   @override
-  String get shellExpandSidebar => 'توسيع القائمة الجانبية';
+  String get shellExpandSidebar => 'ØªÙˆØ³ÙŠØ¹ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø¬Ø§Ù†Ø¨ÙŠØ©';
 
   @override
-  String get shellCompanyInformation => 'معلومات الشركة';
+  String get shellCompanyInformation => 'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get shellTimezone => 'المنطقة الزمنية';
+  String get shellTimezone => 'Ø§Ù„Ù…Ù†Ø·Ù‚Ø© Ø§Ù„Ø²Ù…Ù†ÙŠØ©';
 
   @override
-  String get shellCompanyCode => 'رمز الشركة';
+  String get shellCompanyCode => 'Ø±Ù…Ø² Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get shellAccountMenu => 'فتح قائمة الحساب';
+  String get shellAccountMenu => 'ÙØªØ­ Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø­Ø³Ø§Ø¨';
 
   @override
-  String get shellBreadcrumbs => 'مسار التنقل';
+  String get shellBreadcrumbs => 'Ù…Ø³Ø§Ø± Ø§Ù„ØªÙ†Ù‚Ù„';
 
   @override
-  String get shellNoDestinations => 'لا توجد وجهات متاحة';
+  String get shellNoDestinations => 'Ù„Ø§ ØªÙˆØ¬Ø¯ ÙˆØ¬Ù‡Ø§Øª Ù…ØªØ§Ø­Ø©';
 
   @override
   String get shellNoDestinationsMessage =>
-      'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
+      'Ù„Ø§ ØªØªÙˆÙØ± Ù…Ø³Ø§Ø­Ø§Øª Ø¹Ù…Ù„ Ù„Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨. ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„.';
 
   @override
-  String get shellNoPermissionsTitle => 'لم يتم تعيين صلاحيات';
+  String get shellNoPermissionsTitle => 'Ù„Ù… ÙŠØªÙ… ØªØ¹ÙŠÙŠÙ† ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
   String get shellNoPermissionsMessage =>
-      'حسابك مسجل الدخول، لكن لم يتم تعيين أي صلاحيات ERP. اطلب من المسؤول منح الوصول ثم أعد المحاولة.';
+      'Ø­Ø³Ø§Ø¨Ùƒ Ù…Ø³Ø¬Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ØŒ Ù„ÙƒÙ† Ù„Ù… ÙŠØªÙ… ØªØ¹ÙŠÙŠÙ† Ø£ÙŠ ØµÙ„Ø§Ø­ÙŠØ§Øª ERP. Ø§Ø·Ù„Ø¨ Ù…Ù† Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ Ù…Ù†Ø­ Ø§Ù„ÙˆØµÙˆÙ„ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©.';
 
   @override
-  String get shellPermissionsUnavailable => 'تعذر تحميل الصلاحيات';
+  String get shellPermissionsUnavailable =>
+      'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
   String get shellPermissionsUnavailableMessage =>
-      'تعذر الوصول إلى خدمة الصلاحيات. يبقى الوصول محظوراً حتى تنجح المحاولة.';
+      'ØªØ¹Ø°Ø± Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ø®Ø¯Ù…Ø© Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª. ÙŠØ¨Ù‚Ù‰ Ø§Ù„ÙˆØµÙˆÙ„ Ù…Ø­Ø¸ÙˆØ±Ø§Ù‹ Ø­ØªÙ‰ ØªÙ†Ø¬Ø­ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©.';
 
   @override
-  String get syncOfflineTitle => 'أنت غير متصل';
+  String get syncOfflineTitle => 'Ø£Ù†Øª ØºÙŠØ± Ù…ØªØµÙ„';
 
   @override
-  String get syncOfflineMessage => 'ستتم المزامنة عند عودة الاتصال.';
+  String get syncOfflineMessage =>
+      'Ø³ØªØªÙ… Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø¹Ù†Ø¯ Ø¹ÙˆØ¯Ø© Ø§Ù„Ø§ØªØµØ§Ù„.';
 
   @override
-  String get syncServiceUnavailable => 'الخدمة غير متاحة مؤقتاً';
+  String get syncServiceUnavailable =>
+      'Ø§Ù„Ø®Ø¯Ù…Ø© ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ù…Ø¤Ù‚ØªØ§Ù‹';
 
   @override
-  String get syncSyncing => 'جارٍ المزامنة';
+  String get syncSyncing => 'Ø¬Ø§Ø±Ù Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncAllChangesSynced => 'تمت مزامنة كل التغييرات';
+  String get syncAllChangesSynced =>
+      'ØªÙ…Øª Ù…Ø²Ø§Ù…Ù†Ø© ÙƒÙ„ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª';
 
   @override
-  String get syncPending => 'بانتظار المزامنة';
+  String get syncPending => 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncFailed => 'فشلت المزامنة';
+  String get syncFailed => 'ÙØ´Ù„Øª Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncNeedsAttention => 'المزامنة تحتاج إلى مراجعة';
+  String get syncNeedsAttention =>
+      'Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© ØªØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ù…Ø±Ø§Ø¬Ø¹Ø©';
 
   @override
-  String get syncRetry => 'إعادة المحاولة';
+  String get syncRetry => 'Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©';
 
   @override
-  String get syncRetryNow => 'إعادة المحاولة الآن';
+  String get syncRetryNow => 'Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„Ø¢Ù†';
 
   @override
-  String get syncNow => 'المزامنة الآن';
+  String get syncNow => 'Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ø¢Ù†';
 
   @override
-  String get syncLastSync => 'آخر مزامنة';
+  String get syncLastSync => 'Ø¢Ø®Ø± Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncNever => 'لم تتم المزامنة بعد';
+  String get syncNever => 'Ù„Ù… ØªØªÙ… Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø¨Ø¹Ø¯';
 
   @override
-  String get syncChangesWaiting => 'تغييرات بانتظار المزامنة';
+  String get syncChangesWaiting =>
+      'ØªØºÙŠÙŠØ±Ø§Øª Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncDataAndSync => 'البيانات والمزامنة';
+  String get syncDataAndSync => 'Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆØ§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncNoPendingChanges => 'لا توجد تغييرات معلقة';
+  String get syncNoPendingChanges => 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªØºÙŠÙŠØ±Ø§Øª Ù…Ø¹Ù„Ù‚Ø©';
 
   @override
-  String get syncSyncSucceeded => 'اكتملت المزامنة';
+  String get syncSyncSucceeded => 'Ø§ÙƒØªÙ…Ù„Øª Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncStatusTitle => 'حالة المزامنة';
+  String get syncStatusTitle => 'Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get syncPendingOperations => 'العمليات المعلقة';
+  String get syncPendingOperations => 'Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©';
 
   @override
-  String get syncFailedOperations => 'العمليات الفاشلة';
+  String get syncFailedOperations => 'Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„ÙØ§Ø´Ù„Ø©';
 
   @override
-  String get syncSwitchAccount => 'سجّل الدخول للمزامنة';
+  String get syncSwitchAccount => 'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ù…Ø²Ø§Ù…Ù†Ø©';
 
   @override
-  String get notificationsTitle => 'الإشعارات';
+  String get notificationsTitle => 'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get notificationsNoItems => 'لا توجد إشعارات';
+  String get notificationsNoItems => 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get notificationsNoItemsMessage => 'لا يوجد جديد لديك.';
+  String get notificationsNoItemsMessage => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¬Ø¯ÙŠØ¯ Ù„Ø¯ÙŠÙƒ.';
 
   @override
-  String get notificationsMarkAllRead => 'تحديد الكل كمقروء';
+  String get notificationsMarkAllRead => 'ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ÙƒÙ„ ÙƒÙ…Ù‚Ø±ÙˆØ¡';
 
   @override
-  String get notificationsToday => 'اليوم';
+  String get notificationsToday => 'Ø§Ù„ÙŠÙˆÙ…';
 
   @override
-  String get notificationsEarlier => 'سابقاً';
+  String get notificationsEarlier => 'Ø³Ø§Ø¨Ù‚Ø§Ù‹';
 
   @override
-  String get notificationsUnread => 'غير مقروء';
+  String get notificationsUnread => 'ØºÙŠØ± Ù…Ù‚Ø±ÙˆØ¡';
 
   @override
-  String get notificationsReminders => 'الإشعارات والتذكيرات';
+  String get notificationsReminders =>
+      'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª ÙˆØ§Ù„ØªØ°ÙƒÙŠØ±Ø§Øª';
 
   @override
-  String get notificationsOpen => 'فتح الإشعارات';
+  String get notificationsOpen => 'ÙØªØ­ Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get reminderAttendanceSection => 'تذكيرات الحضور';
+  String get reminderAttendanceSection => 'ØªØ°ÙƒÙŠØ±Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ±';
 
   @override
-  String get reminderShift => 'تذكير الوردية';
+  String get reminderShift => 'ØªØ°ÙƒÙŠØ± Ø§Ù„ÙˆØ±Ø¯ÙŠØ©';
 
   @override
-  String get reminderPunchOut => 'تذكير تسجيل الانصراف';
+  String get reminderPunchOut => 'ØªØ°ÙƒÙŠØ± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø§Ù†ØµØ±Ø§Ù';
 
   @override
-  String get reminderNotifyBefore => 'التنبيه قبل الوردية';
+  String get reminderNotifyBefore => 'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡ Ù‚Ø¨Ù„ Ø§Ù„ÙˆØ±Ø¯ÙŠØ©';
 
   @override
-  String get reminderMinutesBefore => 'دقائق قبل';
+  String get reminderMinutesBefore => 'Ø¯Ù‚Ø§Ø¦Ù‚ Ù‚Ø¨Ù„';
 
   @override
-  String get reminderNotificationPermission => 'إذن الإشعارات';
+  String get reminderNotificationPermission => 'Ø¥Ø°Ù† Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get reminderPermissionRequired => 'مطلوب إذن الإشعارات';
+  String get reminderPermissionRequired =>
+      'Ù…Ø·Ù„ÙˆØ¨ Ø¥Ø°Ù† Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª';
 
   @override
-  String get reminderNotificationsDisabled => 'الإشعارات معطلة';
+  String get reminderNotificationsDisabled => 'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ù…Ø¹Ø·Ù„Ø©';
 
   @override
-  String get reminderNotificationsEnabled => 'التذكيرات مفعلة في التطبيق';
+  String get reminderNotificationsEnabled =>
+      'Ø§Ù„ØªØ°ÙƒÙŠØ±Ø§Øª Ù…ÙØ¹Ù„Ø© ÙÙŠ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚';
 
   @override
-  String get reminderOpenSettings => 'فتح الإعدادات';
+  String get reminderOpenSettings => 'ÙØªØ­ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª';
 
   @override
-  String get reminderSaved => 'تم حفظ إعدادات التذكير';
+  String get reminderSaved => 'ØªÙ… Ø­ÙØ¸ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªØ°ÙƒÙŠØ±';
 
   @override
-  String get reminderSaveFailed => 'تعذر حفظ إعدادات التذكير';
+  String get reminderSaveFailed =>
+      'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªØ°ÙƒÙŠØ±';
 
   @override
-  String get reminderPermissionHint => 'فعّل التذكيرات لتلقي تنبيهات الوردية.';
+  String get reminderPermissionHint =>
+      'ÙØ¹Ù‘Ù„ Ø§Ù„ØªØ°ÙƒÙŠØ±Ø§Øª Ù„ØªÙ„Ù‚ÙŠ ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ÙˆØ±Ø¯ÙŠØ©.';
 
   @override
-  String get notifShiftSoonTitle => 'ورديتك تبدأ قريباً';
+  String get notifShiftSoonTitle => 'ÙˆØ±Ø¯ÙŠØªÙƒ ØªØ¨Ø¯Ø£ Ù‚Ø±ÙŠØ¨Ø§Ù‹';
 
   @override
   String get notifShiftSoonBody =>
-      'ورديتك على وشك البدء. افتح الحضور لتسجيل الدخول.';
+      'ÙˆØ±Ø¯ÙŠØªÙƒ Ø¹Ù„Ù‰ ÙˆØ´Ùƒ Ø§Ù„Ø¨Ø¯Ø¡. Ø§ÙØªØ­ Ø§Ù„Ø­Ø¶ÙˆØ± Ù„ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.';
 
   @override
-  String get notifPunchOutTitle => 'تذكّر تسجيل الانصراف';
+  String get notifPunchOutTitle => 'ØªØ°ÙƒÙ‘Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø§Ù†ØµØ±Ø§Ù';
 
   @override
-  String get notifPunchOutBody => 'انتهت ورديتك. تذكّر تسجيل الانصراف.';
+  String get notifPunchOutBody =>
+      'Ø§Ù†ØªÙ‡Øª ÙˆØ±Ø¯ÙŠØªÙƒ. ØªØ°ÙƒÙ‘Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø§Ù†ØµØ±Ø§Ù.';
 
   @override
   String get notifShiftEndingOnBreakBody =>
-      'ورديتك تنتهي. راجع حضورك قبل المغادرة.';
+      'ÙˆØ±Ø¯ÙŠØªÙƒ ØªÙ†ØªÙ‡ÙŠ. Ø±Ø§Ø¬Ø¹ Ø­Ø¶ÙˆØ±Ùƒ Ù‚Ø¨Ù„ Ø§Ù„Ù…ØºØ§Ø¯Ø±Ø©.';
 
   @override
-  String get notifCorrectionApprovedTitle => 'تمت الموافقة على تصحيح الحضور';
+  String get notifCorrectionApprovedTitle =>
+      'ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ ØªØµØ­ÙŠØ­ Ø§Ù„Ø­Ø¶ÙˆØ±';
 
   @override
   String get notifCorrectionApprovedBody =>
-      'تمت الموافقة على تصحيح حضورك وتطبيقه.';
+      'ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ ØªØµØ­ÙŠØ­ Ø­Ø¶ÙˆØ±Ùƒ ÙˆØªØ·Ø¨ÙŠÙ‚Ù‡.';
 
   @override
-  String get notifCorrectionRejectedTitle => 'تم رفض تصحيح الحضور';
+  String get notifCorrectionRejectedTitle =>
+      'ØªÙ… Ø±ÙØ¶ ØªØµØ­ÙŠØ­ Ø§Ù„Ø­Ø¶ÙˆØ±';
 
   @override
   String get notifCorrectionRejectedBody =>
-      'لم تتم الموافقة على طلب تصحيح حضورك.';
+      'Ù„Ù… ØªØªÙ… Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨ ØªØµØ­ÙŠØ­ Ø­Ø¶ÙˆØ±Ùƒ.';
 
   @override
-  String get notifSyncFailedTitle => 'الحضور يحتاج إلى انتباه';
+  String get notifSyncFailedTitle =>
+      'Ø§Ù„Ø­Ø¶ÙˆØ± ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡';
 
   @override
-  String get notifSyncFailedBody => 'تعذرت مزامنة بعض تغييرات الحضور.';
+  String get notifSyncFailedBody =>
+      'ØªØ¹Ø°Ø±Øª Ù…Ø²Ø§Ù…Ù†Ø© Ø¨Ø¹Ø¶ ØªØºÙŠÙŠØ±Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ±.';
 
   @override
-  String get notifConflictTitle => 'الحضور يحتاج إلى مراجعة';
+  String get notifConflictTitle =>
+      'Ø§Ù„Ø­Ø¶ÙˆØ± ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ù…Ø±Ø§Ø¬Ø¹Ø©';
 
   @override
-  String get notifConflictBody => 'لا يطابق حضورك المحلي أحدث سجل على الخادم.';
+  String get notifConflictBody =>
+      'Ù„Ø§ ÙŠØ·Ø§Ø¨Ù‚ Ø­Ø¶ÙˆØ±Ùƒ Ø§Ù„Ù…Ø­Ù„ÙŠ Ø£Ø­Ø¯Ø« Ø³Ø¬Ù„ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….';
 
   @override
-  String get notifPendingReviewTitle => 'طلب تصحيح حضور جديد';
+  String get notifPendingReviewTitle => 'Ø·Ù„Ø¨ ØªØµØ­ÙŠØ­ Ø­Ø¶ÙˆØ± Ø¬Ø¯ÙŠØ¯';
 
   @override
-  String get notifPendingReviewBody => 'يوجد طلب تصحيح بانتظار المراجعة.';
+  String get notifPendingReviewBody =>
+      'ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø¨ ØªØµØ­ÙŠØ­ Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©.';
 
   @override
-  String get notifLeaveSubmittedTitle => 'تم إرسال طلب الإجازة';
+  String get notifLeaveSubmittedTitle =>
+      'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø©';
 
   @override
   String get notifLeaveSubmittedBody =>
-      'تم إرسال طلب الإجازة الخاص بك للموافقة.';
+      'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø© Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ Ù„Ù„Ù…ÙˆØ§ÙÙ‚Ø©.';
 
   @override
-  String get notifLeaveApprovedTitle => 'تمت الموافقة على طلب الإجازة';
+  String get notifLeaveApprovedTitle =>
+      'ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø©';
 
   @override
-  String get notifLeaveApprovedBody => 'تمت الموافقة على طلب الإجازة الخاص بك.';
+  String get notifLeaveApprovedBody =>
+      'ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø© Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ.';
 
   @override
-  String get notifLeaveRejectedTitle => 'تم رفض طلب الإجازة';
+  String get notifLeaveRejectedTitle => 'ØªÙ… Ø±ÙØ¶ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø©';
 
   @override
   String get notifLeaveRejectedBody =>
-      'لم تتم الموافقة على طلب الإجازة الخاص بك.';
+      'Ù„Ù… ØªØªÙ… Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø© Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ.';
 
   @override
-  String get notifLeaveCancelledTitle => 'تم إلغاء طلب الإجازة';
+  String get notifLeaveCancelledTitle =>
+      'ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø·Ù„Ø¨ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø©';
 
   @override
-  String get notifLeaveCancelledBody => 'تم إلغاء طلب إجازة.';
+  String get notifLeaveCancelledBody => 'ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø·Ù„Ø¨ Ø¥Ø¬Ø§Ø²Ø©.';
 
   @override
-  String get notifLeaveApprovalRequiredTitle => 'مطلوب موافقة على إجازة';
+  String get notifLeaveApprovalRequiredTitle =>
+      'Ù…Ø·Ù„ÙˆØ¨ Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø¥Ø¬Ø§Ø²Ø©';
 
   @override
   String get notifLeaveApprovalRequiredBody =>
-      'يوجد طلب إجازة لفريقك بانتظار مراجعتك.';
+      'ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø¨ Ø¥Ø¬Ø§Ø²Ø© Ù„ÙØ±ÙŠÙ‚Ùƒ Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…Ø±Ø§Ø¬Ø¹ØªÙƒ.';
 
   @override
-  String get notifUnknownTitle => 'إشعار';
+  String get notifUnknownTitle => 'Ø¥Ø´Ø¹Ø§Ø±';
 
   @override
-  String get notifUnknownBody => 'لديك إشعار جديد.';
+  String get notifUnknownBody => 'Ù„Ø¯ÙŠÙƒ Ø¥Ø´Ø¹Ø§Ø± Ø¬Ø¯ÙŠØ¯.';
 
   @override
-  String get timeJustNow => 'الآن';
+  String get timeJustNow => 'Ø§Ù„Ø¢Ù†';
 
   @override
   String timeMinutesAgo(Object count) {
-    return 'قبل $count دقيقة';
+    return 'Ù‚Ø¨Ù„ $count Ø¯Ù‚ÙŠÙ‚Ø©';
   }
 
   @override
   String timeHoursAgo(Object count) {
-    return 'قبل $count ساعة';
+    return 'Ù‚Ø¨Ù„ $count Ø³Ø§Ø¹Ø©';
   }
 
   @override
-  String get timeYesterday => 'أمس';
+  String get timeYesterday => 'Ø£Ù…Ø³';
 
   @override
-  String get profileMyProfile => 'ملفي الشخصي';
+  String get profileMyProfile => 'Ù…Ù„ÙÙŠ Ø§Ù„Ø´Ø®ØµÙŠ';
 
   @override
-  String get profileOverview => 'نظرة عامة';
+  String get profileOverview => 'Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø©';
 
   @override
-  String get profileWorkInformation => 'معلومات العمل';
+  String get profileWorkInformation => 'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get profileAccountAccess => 'الحساب والصلاحيات';
+  String get profileAccountAccess => 'Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
-  String get profileSecurity => 'الأمان';
+  String get profileSecurity => 'Ø§Ù„Ø£Ù…Ø§Ù†';
 
   @override
-  String get profilePreferences => 'التفضيلات';
+  String get profilePreferences => 'Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª';
 
   @override
-  String get profileAccess => 'الصلاحيات';
+  String get profileAccess => 'Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
-  String get profileAdministrativeAccess => 'صلاحيات إدارية';
+  String get profileAdministrativeAccess => 'ØµÙ„Ø§Ø­ÙŠØ§Øª Ø¥Ø¯Ø§Ø±ÙŠØ©';
 
   @override
-  String get profileEmploymentStatus => 'حالة التوظيف';
+  String get profileEmploymentStatus => 'Ø­Ø§Ù„Ø© Ø§Ù„ØªÙˆØ¸ÙŠÙ';
 
   @override
-  String get profileLoginEmail => 'بريد تسجيل الدخول';
+  String get profileLoginEmail => 'Ø¨Ø±ÙŠØ¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get profileWorkEmail => 'بريد العمل';
+  String get profileWorkEmail => 'Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¹Ù…Ù„';
 
   @override
-  String get profileMyAttendance => 'حضوري';
+  String get profileMyAttendance => 'Ø­Ø¶ÙˆØ±ÙŠ';
 
   @override
-  String get profileViewEmployeeRecord => 'عرض تفاصيل التوظيف';
+  String get profileViewEmployeeRecord => 'Ø¹Ø±Ø¶ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ØªÙˆØ¸ÙŠÙ';
 
   @override
-  String get profileNoEmployeeLinked => 'لا يوجد ملف موظف مرتبط بهذا الحساب.';
+  String get profileNoEmployeeLinked =>
+      'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ù„Ù Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø· Ø¨Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨.';
 
   @override
-  String get profileTeamUnavailable => 'تعذر تحديد نطاق الفريق.';
+  String get profileTeamUnavailable =>
+      'ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ¯ Ù†Ø·Ø§Ù‚ Ø§Ù„ÙØ±ÙŠÙ‚.';
 
   @override
   String get profileEmploymentUnavailable =>
-      'معلومات التوظيف غير متاحة حالياً.';
+      'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„ØªÙˆØ¸ÙŠÙ ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.';
 
   @override
-  String get profileCurrentCompany => 'الشركة الحالية';
+  String get profileCurrentCompany => 'Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©';
 
   @override
-  String get profileManage => 'إدارة';
+  String get profileManage => 'Ø¥Ø¯Ø§Ø±Ø©';
 
   @override
-  String get settingsIntro => 'إدارة مؤسستك وإعدادات الحضور والتفضيلات.';
+  String get settingsIntro =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ù…Ø¤Ø³Ø³ØªÙƒ ÙˆØ¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ± ÙˆØ§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª.';
 
   @override
-  String get settingsAttendanceCategory => 'إعدادات الحضور';
+  String get settingsAttendanceCategory => 'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ±';
 
   @override
   String get settingsAttendanceCategoryDesc =>
-      'ضبط كيفية عمل الموظفين وتسجيلهم للحضور.';
+      'Ø¶Ø¨Ø· ÙƒÙŠÙÙŠØ© Ø¹Ù…Ù„ Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ† ÙˆØªØ³Ø¬ÙŠÙ„Ù‡Ù… Ù„Ù„Ø­Ø¶ÙˆØ±.';
 
   @override
-  String get settingsPreferencesCategory => 'التفضيلات الشخصية';
+  String get settingsPreferencesCategory => 'Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª Ø§Ù„Ø´Ø®ØµÙŠØ©';
 
   @override
   String get settingsPreferencesCategoryDesc =>
-      'عدّل تفضيلات التطبيق الخاصة بك.';
+      'Ø¹Ø¯Ù‘Ù„ ØªÙØ¶ÙŠÙ„Ø§Øª Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ Ø§Ù„Ø®Ø§ØµØ© Ø¨Ùƒ.';
 
   @override
-  String get settingsSystemCategory => 'النظام';
+  String get settingsSystemCategory => 'Ø§Ù„Ù†Ø¸Ø§Ù…';
 
   @override
-  String get settingsSystemCategoryDesc => 'حالة المزامنة والتطبيق.';
+  String get settingsSystemCategoryDesc =>
+      'Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© ÙˆØ§Ù„ØªØ·Ø¨ÙŠÙ‚.';
 
   @override
   String get settingsShiftDesc =>
-      'حدد ساعات العمل وأيام العمل والاستراحات الافتراضية.';
+      'Ø­Ø¯Ø¯ Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ø¹Ù…Ù„ ÙˆØ£ÙŠØ§Ù… Ø§Ù„Ø¹Ù…Ù„ ÙˆØ§Ù„Ø§Ø³ØªØ±Ø§Ø­Ø§Øª Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ©.';
 
   @override
-  String get settingsLocationDesc => 'أدر أماكن العمل وقواعد التحقق من الموقع.';
+  String get settingsLocationDesc =>
+      'Ø£Ø¯Ø± Ø£Ù…Ø§ÙƒÙ† Ø§Ù„Ø¹Ù…Ù„ ÙˆÙ‚ÙˆØ§Ø¹Ø¯ Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹.';
 
   @override
-  String get settingsPolicyDesc => 'حدد قواعد الحضور والاستراحة والتصحيح.';
+  String get settingsPolicyDesc =>
+      'Ø­Ø¯Ø¯ Ù‚ÙˆØ§Ø¹Ø¯ Ø§Ù„Ø­Ø¶ÙˆØ± ÙˆØ§Ù„Ø§Ø³ØªØ±Ø§Ø­Ø© ÙˆØ§Ù„ØªØµØ­ÙŠØ­.';
 
   @override
-  String get settingsDepartmentDesc => 'نظّم الموظفين في أقسام.';
+  String get settingsDepartmentDesc =>
+      'Ù†Ø¸Ù‘Ù… Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ† ÙÙŠ Ø£Ù‚Ø³Ø§Ù….';
 
   @override
-  String get settingsLanguageDesc => 'اختر لغة التطبيق المفضلة لديك.';
+  String get settingsLanguageDesc =>
+      'Ø§Ø®ØªØ± Ù„ØºØ© Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ Ø§Ù„Ù…ÙØ¶Ù„Ø© Ù„Ø¯ÙŠÙƒ.';
 
   @override
-  String get settingsNotificationsDesc => 'تحكم في تذكيرات الحضور لحسابك.';
+  String get settingsNotificationsDesc =>
+      'ØªØ­ÙƒÙ… ÙÙŠ ØªØ°ÙƒÙŠØ±Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ± Ù„Ø­Ø³Ø§Ø¨Ùƒ.';
 
   @override
   String get settingsSyncDesc =>
-      'اعرض حالة المزامنة وأعد محاولة التغييرات الفاشلة.';
+      'Ø§Ø¹Ø±Ø¶ Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© ÙˆØ£Ø¹Ø¯ Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª Ø§Ù„ÙØ§Ø´Ù„Ø©.';
 
   @override
-  String get shellLeave => 'الإجازات';
+  String get shellLeave => 'Ø§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª';
 
   @override
-  String get settingsLeaveCategory => 'الإجازات والعطلات';
+  String get settingsLeaveCategory => 'Ø§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª ÙˆØ§Ù„Ø¹Ø·Ù„Ø§Øª';
 
   @override
   String get settingsLeaveCategoryDesc =>
-      'اضبط أنواع الإجازات وسياساتها والعطلات.';
+      'Ø§Ø¶Ø¨Ø· Ø£Ù†ÙˆØ§Ø¹ Ø§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª ÙˆØ³ÙŠØ§Ø³Ø§ØªÙ‡Ø§ ÙˆØ§Ù„Ø¹Ø·Ù„Ø§Øª.';
 
   @override
-  String get permissionAccessUsersView => 'عرض المستخدمين والوصول';
+  String get permissionAccessUsersView =>
+      'Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† ÙˆØ§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get permissionAccessPermissionsManage => 'إدارة وصول المستخدمين';
+  String get permissionAccessPermissionsManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© ÙˆØµÙˆÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†';
 
   @override
-  String get permissionCompanyModulesView => 'عرض وحدات الشركة';
+  String get permissionCompanyModulesView => 'Ø¹Ø±Ø¶ ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get permissionCompanyBranchView => 'عرض الشركات / الفروع';
+  String get permissionCompanyBranchView =>
+      'Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª / Ø§Ù„ÙØ±ÙˆØ¹';
 
   @override
-  String get permissionCompanyBranchViewDesc => 'عرض الشركات والفروع.';
+  String get permissionCompanyBranchViewDesc =>
+      'Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª ÙˆØ§Ù„ÙØ±ÙˆØ¹.';
 
   @override
-  String get permissionCompanyBranchManage => 'إدارة الشركات / الفروع';
+  String get permissionCompanyBranchManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø´Ø±ÙƒØ§Øª / Ø§Ù„ÙØ±ÙˆØ¹';
 
   @override
   String get permissionCompanyBranchManageDesc =>
-      'إنشاء الشركات والفروع وتعديلها وتفعيلها وتعطيلها.';
+      'Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø´Ø±ÙƒØ§Øª ÙˆØ§Ù„ÙØ±ÙˆØ¹ ÙˆØªØ¹Ø¯ÙŠÙ„Ù‡Ø§ ÙˆØªÙØ¹ÙŠÙ„Ù‡Ø§ ÙˆØªØ¹Ø·ÙŠÙ„Ù‡Ø§.';
 
   @override
-  String get permissionPlatformModulesManage => 'إدارة وحدات المنصة';
+  String get permissionPlatformModulesManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ù…Ù†ØµØ©';
 
   @override
-  String get accessModulePlatform => 'الإدارة';
+  String get accessModulePlatform => 'Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©';
 
   @override
-  String get accessSubAccess => 'الوصول والوحدات';
+  String get accessSubAccess => 'Ø§Ù„ÙˆØµÙˆÙ„ ÙˆØ§Ù„ÙˆØ­Ø¯Ø§Øª';
 
   @override
-  String get accessUsersView => 'عرض المستخدمين والوصول';
+  String get accessUsersView => 'Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† ÙˆØ§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get accessUsersViewDesc => 'فتح منطقة إدارة المستخدمين والوصول.';
+  String get accessUsersViewDesc =>
+      'ÙØªØ­ Ù…Ù†Ø·Ù‚Ø© Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† ÙˆØ§Ù„ÙˆØµÙˆÙ„.';
 
   @override
-  String get accessPermissionsManage => 'إدارة وصول المستخدمين';
+  String get accessPermissionsManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© ÙˆØµÙˆÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†';
 
   @override
   String get accessPermissionsManageDesc =>
-      'منح وإلغاء صلاحيات ونطاقات النظام.';
+      'Ù…Ù†Ø­ ÙˆØ¥Ù„ØºØ§Ø¡ ØµÙ„Ø§Ø­ÙŠØ§Øª ÙˆÙ†Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù….';
 
   @override
-  String get accessModulesView => 'عرض وحدات الشركة';
+  String get accessModulesView => 'Ø¹Ø±Ø¶ ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
   String get accessModulesViewDesc =>
-      'الاطلاع على وحدات النظام المفعّلة للشركة.';
+      'Ø§Ù„Ø§Ø·Ù„Ø§Ø¹ Ø¹Ù„Ù‰ ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ù…ÙØ¹Ù‘Ù„Ø© Ù„Ù„Ø´Ø±ÙƒØ©.';
 
   @override
-  String get accessCompanyUsersManage => 'إدارة مستخدمي الشركة';
+  String get accessCompanyUsersManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ù…Ø³ØªØ®Ø¯Ù…ÙŠ Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get accessCompanyUsersManageDesc => 'إدارة حسابات مستخدمي الشركة.';
+  String get accessCompanyUsersManageDesc =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ø­Ø³Ø§Ø¨Ø§Øª Ù…Ø³ØªØ®Ø¯Ù…ÙŠ Ø§Ù„Ø´Ø±ÙƒØ©.';
 
   @override
-  String get accessPlatformCompaniesManage => 'إدارة شركات المنصة';
+  String get accessPlatformCompaniesManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ù†ØµØ©';
 
   @override
   String get accessPlatformCompaniesManageDesc =>
-      'خاص بالمنصة: إدارة الشركات على مستوى المنصة.';
+      'Ø®Ø§Øµ Ø¨Ø§Ù„Ù…Ù†ØµØ©: Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø¹Ù„Ù‰ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ù…Ù†ØµØ©.';
 
   @override
-  String get accessPlatformModulesManage => 'إدارة وحدات المنصة';
+  String get accessPlatformModulesManage =>
+      'Ø¥Ø¯Ø§Ø±Ø© ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ù…Ù†ØµØ©';
 
   @override
   String get accessPlatformModulesManageDesc =>
-      'خاص بالمنصة: تفعيل أو تعطيل الوحدات للشركات.';
+      'Ø®Ø§Øµ Ø¨Ø§Ù„Ù…Ù†ØµØ©: ØªÙØ¹ÙŠÙ„ Ø£Ùˆ ØªØ¹Ø·ÙŠÙ„ Ø§Ù„ÙˆØ­Ø¯Ø§Øª Ù„Ù„Ø´Ø±ÙƒØ§Øª.';
 
   @override
-  String get usersAccessTitle => 'المستخدمون والوصول';
+  String get usersAccessTitle => 'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ† ÙˆØ§Ù„ÙˆØµÙˆÙ„';
 
   @override
   String get usersAccessSubtitle =>
-      'تحكم في ما يمكن لكل مستخدم الوصول إليه والسجلات التي يعمل عليها.';
+      'ØªØ­ÙƒÙ… ÙÙŠ Ù…Ø§ ÙŠÙ…ÙƒÙ† Ù„ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„ÙŠÙ‡ ÙˆØ§Ù„Ø³Ø¬Ù„Ø§Øª Ø§Ù„ØªÙŠ ÙŠØ¹Ù…Ù„ Ø¹Ù„ÙŠÙ‡Ø§.';
 
   @override
-  String get accessCompanyModules => 'وحدات الشركة';
+  String get accessCompanyModules => 'ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
   String get accessCompanyModulesSubtitle =>
-      'وحدات النظام المفعّلة لهذه الشركة.';
+      'ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ù…ÙØ¹Ù‘Ù„Ø© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ø´Ø±ÙƒØ©.';
 
   @override
-  String get accessManage => 'إدارة الوصول';
+  String get accessManage => 'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get accessNoLogin => 'لا يوجد تسجيل دخول';
+  String get accessNoLogin => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get accessNoBusinessAccess => 'لم يتم تعيين وصول وظيفي.';
+  String get accessNoBusinessAccess =>
+      'Ù„Ù… ÙŠØªÙ… ØªØ¹ÙŠÙŠÙ† ÙˆØµÙˆÙ„ ÙˆØ¸ÙŠÙÙŠ.';
 
   @override
-  String get accessModuleHr => 'الموارد البشرية';
+  String get accessModuleHr => 'Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©';
 
   @override
-  String get accessModuleServices => 'الخدمات';
+  String get accessModuleServices => 'Ø§Ù„Ø®Ø¯Ù…Ø§Øª';
 
   @override
-  String get accessScopeNone => 'لا وصول';
+  String get accessScopeNone => 'Ù„Ø§ ÙˆØµÙˆÙ„';
 
   @override
-  String get accessScopeSelf => 'ذاتي (سجلاتي)';
+  String get accessScopeSelf => 'Ø°Ø§ØªÙŠ (Ø³Ø¬Ù„Ø§ØªÙŠ)';
 
   @override
-  String get accessScopeAssigned => 'المُسند إليّ';
+  String get accessScopeAssigned => 'Ø§Ù„Ù…ÙØ³Ù†Ø¯ Ø¥Ù„ÙŠÙ‘';
 
   @override
-  String get accessScopeTeam => 'الفريق (فريقي)';
+  String get accessScopeTeam => 'Ø§Ù„ÙØ±ÙŠÙ‚ (ÙØ±ÙŠÙ‚ÙŠ)';
 
   @override
-  String get accessScopeAll => 'الشركة (الكل)';
+  String get accessScopeAll => 'Ø§Ù„Ø´Ø±ÙƒØ© (Ø§Ù„ÙƒÙ„)';
 
   @override
-  String get accessSaveChanges => 'حفظ التغييرات';
+  String get accessSaveChanges => 'Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª';
 
   @override
-  String get accessResetChanges => 'إعادة تعيين';
+  String get accessResetChanges => 'Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ†';
 
   @override
-  String get accessSaved => 'تم تحديث الوصول.';
+  String get accessSaved => 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙˆØµÙˆÙ„.';
 
   @override
-  String get accessSaveFailed => 'تعذّر تحديث الوصول.';
+  String get accessSaveFailed => 'ØªØ¹Ø°Ù‘Ø± ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙˆØµÙˆÙ„.';
 
   @override
-  String get accessConfirmTitle => 'تحديث الوصول؟';
+  String get accessConfirmTitle => 'ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙˆØµÙˆÙ„ØŸ';
 
   @override
   String get accessConfirmMessage =>
-      'هل تريد تطبيق تغييرات الوصول لهذا المستخدم؟';
+      'Ù‡Ù„ ØªØ±ÙŠØ¯ ØªØ·Ø¨ÙŠÙ‚ ØªØºÙŠÙŠØ±Ø§Øª Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ØŸ';
 
   @override
-  String get accessAdded => 'تمت الإضافة';
+  String get accessAdded => 'ØªÙ…Øª Ø§Ù„Ø¥Ø¶Ø§ÙØ©';
 
   @override
-  String get accessRemoved => 'تمت الإزالة';
+  String get accessRemoved => 'ØªÙ…Øª Ø§Ù„Ø¥Ø²Ø§Ù„Ø©';
 
   @override
-  String get accessChanged => 'تم التغيير';
+  String get accessChanged => 'ØªÙ… Ø§Ù„ØªØºÙŠÙŠØ±';
 
   @override
-  String get accessNoChanges => 'لا تغييرات';
+  String get accessNoChanges => 'Ù„Ø§ ØªØºÙŠÙŠØ±Ø§Øª';
 
   @override
-  String get accessSummary => 'ملخص الوصول';
+  String get accessSummary => 'Ù…Ù„Ø®Øµ Ø§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get accessGrantedPermissions => 'الصلاحيات الممنوحة';
+  String get accessGrantedPermissions => 'Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©';
 
   @override
-  String get accessEmployeeLinked => 'مرتبط بموظف';
+  String get accessEmployeeLinked => 'Ù…Ø±ØªØ¨Ø· Ø¨Ù…ÙˆØ¸Ù';
 
   @override
-  String get accessEmployeeNotLinked => 'لا يوجد موظف مرتبط';
+  String get accessEmployeeNotLinked => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø·';
 
   @override
   String get accessEmployeeLinkRequired =>
-      'يتطلب هذا الوصول سجل موظف نشط مرتبط.';
+      'ÙŠØªØ·Ù„Ø¨ Ù‡Ø°Ø§ Ø§Ù„ÙˆØµÙˆÙ„ Ø³Ø¬Ù„ Ù…ÙˆØ¸Ù Ù†Ø´Ø· Ù…Ø±ØªØ¨Ø·.';
 
   @override
-  String get accessSelfEscalation => 'لا يمكنك تغيير وصولك الخاص.';
+  String get accessSelfEscalation =>
+      'Ù„Ø§ ÙŠÙ…ÙƒÙ†Ùƒ ØªØºÙŠÙŠØ± ÙˆØµÙˆÙ„Ùƒ Ø§Ù„Ø®Ø§Øµ.';
 
   @override
-  String get accessLastAdmin => 'لا يمكن إزالة آخر مسؤول وصول.';
+  String get accessLastAdmin =>
+      'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ø²Ø§Ù„Ø© Ø¢Ø®Ø± Ù…Ø³Ø¤ÙˆÙ„ ÙˆØµÙˆÙ„.';
 
   @override
-  String get accessNotPermitted => 'ليس لديك صلاحية للقيام بذلك.';
+  String get accessNotPermitted =>
+      'Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ ØµÙ„Ø§Ø­ÙŠØ© Ù„Ù„Ù‚ÙŠØ§Ù… Ø¨Ø°Ù„Ùƒ.';
 
   @override
-  String get accessModuleDisabled => 'هذه الوحدة غير مفعّلة للشركة.';
+  String get accessModuleDisabled =>
+      'Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ­Ø¯Ø© ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ù„Ù„Ø´Ø±ÙƒØ©.';
 
   @override
-  String get accessPlatformOnly => 'يمكن لمسؤول المنصة فقط منح هذا.';
+  String get accessPlatformOnly =>
+      'ÙŠÙ…ÙƒÙ† Ù„Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…Ù†ØµØ© ÙÙ‚Ø· Ù…Ù†Ø­ Ù‡Ø°Ø§.';
 
   @override
-  String get accessHistory => 'سجل الوصول';
+  String get accessHistory => 'Ø³Ø¬Ù„ Ø§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get accessNoHistory => 'لا توجد تغييرات وصول بعد.';
+  String get accessNoHistory => 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªØºÙŠÙŠØ±Ø§Øª ÙˆØµÙˆÙ„ Ø¨Ø¹Ø¯.';
 
   @override
-  String get accessCompany => 'الشركة';
+  String get accessCompany => 'Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get accessIncluded => 'مضمّن';
+  String get accessIncluded => 'Ù…Ø¶Ù…Ù‘Ù†';
 
   @override
-  String get accessPermissionSearch => 'البحث في الأذونات';
+  String get accessPermissionCatalog => 'Ø¯Ù„ÙŠÙ„ Ø§Ù„Ø£Ø°ÙˆÙ†Ø§Øª';
 
   @override
-  String get accessNoPermissionMatch => 'لا توجد أذونات مطابقة لبحثك.';
+  String get accessPermissionCatalogSubtitle =>
+      'Ø¥Ù†Ø´Ø§Ø¡ ÙˆØªØ¹Ø¯ÙŠÙ„ ÙˆØªÙØ¹ÙŠÙ„ Ù…ÙØ§ØªÙŠØ­ Ø£Ø°ÙˆÙ†Ø§Øª ERP.';
 
   @override
-  String get accessActionScopeNote => 'تتبع الرؤية نطاق إذن العرض.';
+  String get accessNewPermission => 'Ø¥Ø°Ù† Ø¬Ø¯ÙŠØ¯';
 
   @override
-  String get accessUnsavedTitle => 'تغييرات غير محفوظة';
+  String get accessEditPermission => 'ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¥Ø°Ù†';
+
+  @override
+  String get accessPermissionKey => 'Ù…ÙØªØ§Ø­ Ø§Ù„Ø¥Ø°Ù†';
+
+  @override
+  String get accessPermissionName => 'Ø§Ø³Ù… Ø§Ù„Ø¥Ø°Ù†';
+
+  @override
+  String get accessPermissionDescription => 'Ø§Ù„ÙˆØµÙ';
+
+  @override
+  String get accessPermissionActive => 'Ù†Ø´Ø·';
+
+  @override
+  String get accessPermissionInactive => 'ØºÙŠØ± Ù†Ø´Ø·';
+
+  @override
+  String accessOrphanGrant(String id) {
+    return 'Ù…Ù†Ø­Ø© ÙŠØªÙŠÙ…Ø© (Ø§Ù„Ø¥Ø°Ù† #$id)';
+  }
+
+  @override
+  String get accessOrphanHint =>
+      'ØªØ´ÙŠØ± Ù‡Ø°Ù‡ Ø§Ù„Ù…Ù†Ø­Ø© Ø¥Ù„Ù‰ Ø¥Ø°Ù† Ù„Ù… ÙŠØ¹Ø¯ Ù…ÙˆØ¬ÙˆØ¯Ø§Ù‹. Ø£Ù„ØºÙÙ‡Ø§ Ù„ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.';
+
+  @override
+  String get accessRevoke => 'Ø¥Ù„ØºØ§Ø¡';
+
+  @override
+  String get accessAddPermissions => 'Ø¥Ø¶Ø§ÙØ© Ø£Ø°ÙˆÙ†Ø§Øª';
+
+  @override
+  String get accessAddPermissionsHint =>
+      'Ø¥Ø¶Ø§ÙØ©: ØªØ¨Ù‚Ù‰ Ø§Ù„Ù…Ù†Ø­ Ø§Ù„Ø­Ø§Ù„ÙŠØ©. Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª ÙŠØ³ØªØ¨Ø¯Ù„ Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø© ÙƒØ§Ù…Ù„Ø©.';
+
+  @override
+  String get accessReplaceAllHint =>
+      'Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª ÙŠØ³ØªØ¨Ø¯Ù„ Ù…Ø¬Ù…ÙˆØ¹Ø© Ø£Ø°ÙˆÙ†Ø§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙƒØ§Ù…Ù„Ø©.';
+
+  @override
+  String get accessKeyInvalid =>
+      'Ø§Ø³ØªØ®Ø¯Ù… Ù…ÙØ§ØªÙŠØ­ Ù†Ù‚Ø·ÙŠØ© Ø¨Ø­Ø±ÙˆÙ ØµØºÙŠØ±Ø© (Ù…Ø«Ù„ hr.employees.view).';
+
+  @override
+  String get accessKeyDuplicate =>
+      'Ù‡Ø°Ø§ Ø§Ù„Ù…ÙØªØ§Ø­ Ù…Ø³ØªØ®Ø¯Ù… Ù„Ø¥Ø°Ù† Ø¢Ø®Ø±.';
+
+  @override
+  String get accessKeyTooLong =>
+      'ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² Ø§Ù„Ù…ÙØªØ§Ø­ 100 Ø­Ø±Ù.';
+
+  @override
+  String get accessPermissionCreated => 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø¥Ø°Ù†.';
+
+  @override
+  String get accessPermissionUpdated => 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¥Ø°Ù†.';
+
+  @override
+  String get accessPermissionSearch => 'Ø§Ù„Ø¨Ø­Ø« ÙÙŠ Ø§Ù„Ø£Ø°ÙˆÙ†Ø§Øª';
+
+  @override
+  String get accessNoPermissionMatch =>
+      'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø°ÙˆÙ†Ø§Øª Ù…Ø·Ø§Ø¨Ù‚Ø© Ù„Ø¨Ø­Ø«Ùƒ.';
+
+  @override
+  String get accessActionScopeNote =>
+      'ØªØªØ¨Ø¹ Ø§Ù„Ø±Ø¤ÙŠØ© Ù†Ø·Ø§Ù‚ Ø¥Ø°Ù† Ø§Ù„Ø¹Ø±Ø¶.';
+
+  @override
+  String get accessUnsavedTitle => 'ØªØºÙŠÙŠØ±Ø§Øª ØºÙŠØ± Ù…Ø­ÙÙˆØ¸Ø©';
 
   @override
   String get accessUnsavedMessage =>
-      'لديك تغييرات وصول غير محفوظة لهذا المستخدم. هل تريد المغادرة دون حفظ؟';
+      'Ù„Ø¯ÙŠÙƒ ØªØºÙŠÙŠØ±Ø§Øª ÙˆØµÙˆÙ„ ØºÙŠØ± Ù…Ø­ÙÙˆØ¸Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…. Ù‡Ù„ ØªØ±ÙŠØ¯ Ø§Ù„Ù…ØºØ§Ø¯Ø±Ø© Ø¯ÙˆÙ† Ø­ÙØ¸ØŸ';
 
   @override
-  String get accessStay => 'البقاء';
+  String get accessStay => 'Ø§Ù„Ø¨Ù‚Ø§Ø¡';
 
   @override
-  String get accessLeave => 'المغادرة';
+  String get accessLeave => 'Ø§Ù„Ù…ØºØ§Ø¯Ø±Ø©';
 
   @override
-  String get accessSearchUsers => 'البحث عن مستخدمين';
+  String get accessSearchUsers => 'Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†';
 
   @override
-  String get accessFilterAll => 'الكل';
+  String get accessFilterAll => 'Ø§Ù„ÙƒÙ„';
 
   @override
-  String get accessEnabled => 'مفعّل';
+  String get accessEnabled => 'Ù…ÙØ¹Ù‘Ù„';
 
   @override
-  String get accessDisabled => 'معطّل';
+  String get accessDisabled => 'Ù…Ø¹Ø·Ù‘Ù„';
 
   @override
   String get accessModulesReadOnly =>
-      'تتم إدارة توفر الوحدات على مستوى المنصة في هذا العرض.';
+      'ØªØªÙ… Ø¥Ø¯Ø§Ø±Ø© ØªÙˆÙØ± Ø§Ù„ÙˆØ­Ø¯Ø§Øª Ø¹Ù„Ù‰ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ù…Ù†ØµØ© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ø¹Ø±Ø¶.';
 
   @override
   String get accessModuleScopeNote =>
-      'تفعيل وحدة للشركة يجعلها متاحة، لكن كل مستخدم لا يزال بحاجة إلى إذن للوصول إليها.';
+      'ØªÙØ¹ÙŠÙ„ ÙˆØ­Ø¯Ø© Ù„Ù„Ø´Ø±ÙƒØ© ÙŠØ¬Ø¹Ù„Ù‡Ø§ Ù…ØªØ§Ø­Ø©ØŒ Ù„ÙƒÙ† ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ù„Ø§ ÙŠØ²Ø§Ù„ Ø¨Ø­Ø§Ø¬Ø© Ø¥Ù„Ù‰ Ø¥Ø°Ù† Ù„Ù„ÙˆØµÙˆÙ„ Ø¥Ù„ÙŠÙ‡Ø§.';
 
   @override
   String get accessModuleHrDesc =>
-      'الموظفون والحضور والإجازات وعمليات القوى العاملة.';
+      'Ø§Ù„Ù…ÙˆØ¸ÙÙˆÙ† ÙˆØ§Ù„Ø­Ø¶ÙˆØ± ÙˆØ§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª ÙˆØ¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ù‚ÙˆÙ‰ Ø§Ù„Ø¹Ø§Ù…Ù„Ø©.';
 
   @override
   String get accessModuleServicesDesc =>
-      'الاستفسار عن الخدمة والمهام والفحوصات والمواد وتنفيذ العمل.';
+      'Ø§Ù„Ø§Ø³ØªÙØ³Ø§Ø± Ø¹Ù† Ø§Ù„Ø®Ø¯Ù…Ø© ÙˆØ§Ù„Ù…Ù‡Ø§Ù… ÙˆØ§Ù„ÙØ­ÙˆØµØ§Øª ÙˆØ§Ù„Ù…ÙˆØ§Ø¯ ÙˆØªÙ†ÙÙŠØ° Ø§Ù„Ø¹Ù…Ù„.';
 
   @override
-  String get accessStatusActive => 'نشط';
+  String get accessStatusActive => 'Ù†Ø´Ø·';
 
   @override
-  String get accessStatusInactive => 'غير نشط';
+  String get accessStatusInactive => 'ØºÙŠØ± Ù†Ø´Ø·';
 
   @override
-  String get accessLogin => 'تسجيل الدخول';
+  String get accessLogin => 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get accessEmployee => 'الموظف';
+  String get accessEmployee => 'Ø§Ù„Ù…ÙˆØ¸Ù';
 
   @override
-  String get accessDesignation => 'المسمى الوظيفي';
+  String get accessDesignation => 'Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ';
 
   @override
-  String get accessDepartment => 'القسم';
+  String get accessDepartment => 'Ø§Ù„Ù‚Ø³Ù…';
 
   @override
-  String get accessClearModule => 'مسح وصول الوحدة';
+  String get accessClearModule => 'Ù…Ø³Ø­ ÙˆØµÙˆÙ„ Ø§Ù„ÙˆØ­Ø¯Ø©';
 
   @override
-  String get accessNoAccessAssigned => 'لا وصول';
+  String get accessNoAccessAssigned => 'Ù„Ø§ ÙˆØµÙˆÙ„';
 
   @override
-  String get accessPlatformOnlyBadge => 'خاص بالمنصة';
+  String get accessPlatformOnlyBadge => 'Ø®Ø§Øµ Ø¨Ø§Ù„Ù…Ù†ØµØ©';
 
   @override
-  String get accessEmployeeRequiredBadge => 'يتطلب موظفًا';
+  String get accessEmployeeRequiredBadge => 'ÙŠØªØ·Ù„Ø¨ Ù…ÙˆØ¸ÙÙ‹Ø§';
 
   @override
-  String get accessGrantView => 'منح العرض';
+  String get accessGrantView => 'Ù…Ù†Ø­ Ø§Ù„Ø¹Ø±Ø¶';
 
   @override
-  String get accessGrantFull => 'منح الكل';
+  String get accessGrantFull => 'Ù…Ù†Ø­ Ø§Ù„ÙƒÙ„';
 
   @override
-  String get accessClear => 'مسح';
+  String get accessClear => 'Ù…Ø³Ø­';
 
   @override
-  String get accessHasAccess => 'تم ضبط الوصول';
+  String get accessHasAccess => 'ØªÙ… Ø¶Ø¨Ø· Ø§Ù„ÙˆØµÙˆÙ„';
 
   @override
-  String get accessFullConfirmTitle => 'منح وصول كامل للوحدة؟';
+  String get accessFullConfirmTitle =>
+      'Ù…Ù†Ø­ ÙˆØµÙˆÙ„ ÙƒØ§Ù…Ù„ Ù„Ù„ÙˆØ­Ø¯Ø©ØŸ';
 
   @override
   String get accessFullConfirmMessage =>
-      'يمنح هذا كل صلاحية قابلة للتفويض لهذه الوحدة. يمكنك تعديل النطاقات لاحقًا.';
+      'ÙŠÙ…Ù†Ø­ Ù‡Ø°Ø§ ÙƒÙ„ ØµÙ„Ø§Ø­ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªÙÙˆÙŠØ¶ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ­Ø¯Ø©. ÙŠÙ…ÙƒÙ†Ùƒ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù†Ø·Ø§Ù‚Ø§Øª Ù„Ø§Ø­Ù‚Ù‹Ø§.';
 
   @override
-  String get accessModuleAccess => 'وصول الوحدات';
+  String get accessModuleAccess => 'ÙˆØµÙˆÙ„ Ø§Ù„ÙˆØ­Ø¯Ø§Øª';
 
   @override
-  String get accessGranted => 'ممنوح';
+  String get accessGranted => 'Ù…Ù…Ù†ÙˆØ­';
 
   @override
-  String get accessNotGranted => 'غير ممنوح';
+  String get accessNotGranted => 'ØºÙŠØ± Ù…Ù…Ù†ÙˆØ­';
 
   @override
-  String get accessExpandAll => 'توسيع الكل';
+  String get accessExpandAll => 'ØªÙˆØ³ÙŠØ¹ Ø§Ù„ÙƒÙ„';
 
   @override
-  String get accessCollapseAll => 'طي الكل';
+  String get accessCollapseAll => 'Ø·ÙŠ Ø§Ù„ÙƒÙ„';
 
   @override
   String accessUsersSummary(Object count, Object withAccess) {
-    return 'عرض $count مستخدمًا · $withAccess لديهم وصول';
+    return 'Ø¹Ø±Ø¶ $count Ù…Ø³ØªØ®Ø¯Ù…Ù‹Ø§ Â· $withAccess Ù„Ø¯ÙŠÙ‡Ù… ÙˆØµÙˆÙ„';
   }
 
   @override
   String get accessScopeHint =>
-      'يحدد النطاق السجلات التي تنطبق عليها الصلاحية: ذاتي = سجلات المستخدم نفسه، الفريق = فريقه، الشركة = كل سجلات الشركة.';
+      'ÙŠØ­Ø¯Ø¯ Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ø³Ø¬Ù„Ø§Øª Ø§Ù„ØªÙŠ ØªÙ†Ø·Ø¨Ù‚ Ø¹Ù„ÙŠÙ‡Ø§ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ©: Ø°Ø§ØªÙŠ = Ø³Ø¬Ù„Ø§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù†ÙØ³Ù‡ØŒ Ø§Ù„ÙØ±ÙŠÙ‚ = ÙØ±ÙŠÙ‚Ù‡ØŒ Ø§Ù„Ø´Ø±ÙƒØ© = ÙƒÙ„ Ø³Ø¬Ù„Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ©.';
 
   @override
-  String get accessScopeLabel => 'النطاق';
+  String get accessScopeLabel => 'Ø§Ù„Ù†Ø·Ø§Ù‚';
 
   @override
   String get accessSelfRequiresEmployee =>
-      'تتطلب الصلاحيات الشخصية موظفًا مرتبطًا. لا يوجد موظف مرتبط بهذا المستخدم، لذا تبقى معطّلة.';
+      'ØªØªØ·Ù„Ø¨ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ø´Ø®ØµÙŠØ© Ù…ÙˆØ¸ÙÙ‹Ø§ Ù…Ø±ØªØ¨Ø·Ù‹Ø§. Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø· Ø¨Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ØŒ Ù„Ø°Ø§ ØªØ¨Ù‚Ù‰ Ù…Ø¹Ø·Ù‘Ù„Ø©.';
 
   @override
-  String get accessNoLinkedEmployeeTitle => 'لا يوجد موظف مرتبط';
+  String get accessNoLinkedEmployeeTitle => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø·';
 
   @override
   String get accessLinkEmployeeHint =>
-      'تنطبق الصلاحيات الشخصية (تسجيل الحضور، حضوري، إجازاتي) على سجل موظف. لتفعيلها، اربط هذا المستخدم بموظف من الموارد البشرية ← الموظفون ← فتح الموظف ← وصول الحساب.';
+      'ØªÙ†Ø·Ø¨Ù‚ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ø´Ø®ØµÙŠØ© (ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ±ØŒ Ø­Ø¶ÙˆØ±ÙŠØŒ Ø¥Ø¬Ø§Ø²Ø§ØªÙŠ) Ø¹Ù„Ù‰ Ø³Ø¬Ù„ Ù…ÙˆØ¸Ù. Ù„ØªÙØ¹ÙŠÙ„Ù‡Ø§ØŒ Ø§Ø±Ø¨Ø· Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø¨Ù…ÙˆØ¸Ù Ù…Ù† Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ© â† Ø§Ù„Ù…ÙˆØ¸ÙÙˆÙ† â† ÙØªØ­ Ø§Ù„Ù…ÙˆØ¸Ù â† ÙˆØµÙˆÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨.';
 
   @override
-  String get accessLinkedEmployee => 'موظف مرتبط';
+  String get accessLinkedEmployee => 'Ù…ÙˆØ¸Ù Ù…Ø±ØªØ¨Ø·';
 
   @override
-  String get accessNotLinked => 'غير مرتبط';
+  String get accessNotLinked => 'ØºÙŠØ± Ù…Ø±ØªØ¨Ø·';
 
   @override
-  String get demoPersonaPlatformAdmin => 'مدير المنصة';
+  String get demoPersonaPlatformAdmin => 'Ù…Ø¯ÙŠØ± Ø§Ù„Ù…Ù†ØµØ©';
 
   @override
-  String get demoPersonaCompanyAdmin => 'مدير الشركة';
+  String get demoPersonaCompanyAdmin => 'Ù…Ø¯ÙŠØ± Ø§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get demoPersonaHr => 'الموارد البشرية';
+  String get demoPersonaHr => 'Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©';
 
   @override
-  String get demoPersonaManager => 'المدير';
+  String get demoPersonaManager => 'Ø§Ù„Ù…Ø¯ÙŠØ±';
 
   @override
-  String get demoPersonaEmployee => 'الموظف';
+  String get demoPersonaEmployee => 'Ø§Ù„Ù…ÙˆØ¸Ù';
 
   @override
   String get demoAccessPlatformAdmin =>
-      'إدارة المنصة · كل الوحدات وكل الصلاحيات';
+      'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ù†ØµØ© Â· ÙƒÙ„ Ø§Ù„ÙˆØ­Ø¯Ø§Øª ÙˆÙƒÙ„ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
-  String get demoAccessCompanyAdmin => 'كل وحدات الشركة وصلاحياتها';
+  String get demoAccessCompanyAdmin =>
+      'ÙƒÙ„ ÙˆØ­Ø¯Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ© ÙˆØµÙ„Ø§Ø­ÙŠØ§ØªÙ‡Ø§';
 
   @override
   String get demoAccessHr =>
-      'الموارد البشرية: الموظفون والحضور والإجازات والتقارير والإعدادات';
+      'Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©: Ø§Ù„Ù…ÙˆØ¸ÙÙˆÙ† ÙˆØ§Ù„Ø­Ø¶ÙˆØ± ÙˆØ§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª ÙˆØ§Ù„ØªÙ‚Ø§Ø±ÙŠØ± ÙˆØ§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª';
 
   @override
-  String get demoAccessManager => 'حضور الفريق والموافقة على إجازات الفريق';
+  String get demoAccessManager =>
+      'Ø­Ø¶ÙˆØ± Ø§Ù„ÙØ±ÙŠÙ‚ ÙˆØ§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø¥Ø¬Ø§Ø²Ø§Øª Ø§Ù„ÙØ±ÙŠÙ‚';
 
   @override
-  String get demoAccessEmployee => 'الحضور الذاتي والإجازات الذاتية';
+  String get demoAccessEmployee =>
+      'Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø°Ø§ØªÙŠ ÙˆØ§Ù„Ø¥Ø¬Ø§Ø²Ø§Øª Ø§Ù„Ø°Ø§ØªÙŠØ©';
 
   @override
-  String get authDemoSignIn => 'تسجيل الدخول';
+  String get authDemoSignIn => 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
 
   @override
-  String get universalDashboardSubtitle => 'عملك ونشاط الشركة في لمحة واحدة';
+  String get universalDashboardSubtitle =>
+      'Ø¹Ù…Ù„Ùƒ ÙˆÙ†Ø´Ø§Ø· Ø§Ù„Ø´Ø±ÙƒØ© ÙÙŠ Ù„Ù…Ø­Ø© ÙˆØ§Ø­Ø¯Ø©';
 
   @override
-  String get universalDashboardMyDay => 'يومي';
+  String get universalDashboardMyDay => 'ÙŠÙˆÙ…ÙŠ';
 
   @override
-  String get universalDashboardNeedsAttention => 'يحتاج إلى انتباه';
+  String get universalDashboardNeedsAttention =>
+      'ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡';
 
   @override
-  String get universalDashboardMetrics => 'مؤشرات رئيسية';
+  String get universalDashboardMetrics => 'Ù…Ø¤Ø´Ø±Ø§Øª Ø±Ø¦ÙŠØ³ÙŠØ©';
 
   @override
-  String get universalDashboardSchedule => 'جدول اليوم';
+  String get universalDashboardSchedule => 'Ø¬Ø¯ÙˆÙ„ Ø§Ù„ÙŠÙˆÙ…';
 
   @override
-  String get universalDashboardMyWork => 'عملي';
+  String get universalDashboardMyWork => 'Ø¹Ù…Ù„ÙŠ';
 
   @override
-  String get universalDashboardTeam => 'الفريق والشركة';
+  String get universalDashboardTeam => 'Ø§Ù„ÙØ±ÙŠÙ‚ ÙˆØ§Ù„Ø´Ø±ÙƒØ©';
 
   @override
-  String get universalDashboardRecentActivity => 'النشاط الأخير';
+  String get universalDashboardRecentActivity => 'Ø§Ù„Ù†Ø´Ø§Ø· Ø§Ù„Ø£Ø®ÙŠØ±';
 
   @override
-  String get universalDashboardQuickActions => 'إجراءات سريعة';
+  String get universalDashboardQuickActions => 'Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª Ø³Ø±ÙŠØ¹Ø©';
 
   @override
-  String get universalDashboardAllClear => 'لا توجد مهام تتطلب انتباهك الآن.';
+  String get universalDashboardAllClear =>
+      'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù‡Ø§Ù… ØªØªØ·Ù„Ø¨ Ø§Ù†ØªØ¨Ø§Ù‡Ùƒ Ø§Ù„Ø¢Ù†.';
 
   @override
-  String get universalDashboardNoSchedule => 'لا يوجد شيء مجدول اليوم.';
+  String get universalDashboardNoSchedule =>
+      'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø´ÙŠØ¡ Ù…Ø¬Ø¯ÙˆÙ„ Ø§Ù„ÙŠÙˆÙ….';
 
   @override
-  String get universalDashboardNoWork => 'لا يوجد عمل مُسند إليك الآن.';
+  String get universalDashboardNoWork =>
+      'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¹Ù…Ù„ Ù…ÙØ³Ù†Ø¯ Ø¥Ù„ÙŠÙƒ Ø§Ù„Ø¢Ù†.';
 
   @override
-  String get universalDashboardNoActivity => 'لا يوجد نشاط حديث.';
+  String get universalDashboardNoActivity => 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù†Ø´Ø§Ø· Ø­Ø¯ÙŠØ«.';
 
   @override
-  String get universalDashboardEmptyTitle => 'لا شيء معلّق لديك';
+  String get universalDashboardEmptyTitle => 'Ù„Ø§ Ø´ÙŠØ¡ Ù…Ø¹Ù„Ù‘Ù‚ Ù„Ø¯ÙŠÙƒ';
 
   @override
   String get universalDashboardError =>
-      'تعذّر تحميل لوحة التحكم. حاول مرة أخرى.';
+      'ØªØ¹Ø°Ù‘Ø± ØªØ­Ù…ÙŠÙ„ Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
 
   @override
-  String get universalDashboardPartial => 'تعذّر تحميل بعض أقسام لوحة التحكم.';
+  String get universalDashboardPartial =>
+      'ØªØ¹Ø°Ù‘Ø± ØªØ­Ù…ÙŠÙ„ Ø¨Ø¹Ø¶ Ø£Ù‚Ø³Ø§Ù… Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ….';
 
   @override
-  String get universalDashboardRefresh => 'تحديث';
+  String get universalDashboardRefresh => 'ØªØ­Ø¯ÙŠØ«';
 
   @override
-  String get universalDashboardRefreshing => 'جارٍ تحديث لوحة التحكم';
+  String get universalDashboardRefreshing =>
+      'Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ« Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…';
 
   @override
-  String get universalDashboardViewAll => 'عرض الكل';
+  String get universalDashboardViewAll => 'Ø¹Ø±Ø¶ Ø§Ù„ÙƒÙ„';
 
   @override
-  String get universalDashboardToday => 'اليوم';
+  String get universalDashboardToday => 'Ø§Ù„ÙŠÙˆÙ…';
 
   @override
-  String get universalDashboardOpen => 'فتح';
+  String get universalDashboardOpen => 'ÙØªØ­';
 
   @override
-  String get universalDashboardFirstTimeTitle => 'لا يوجد نشاط بعد';
+  String get universalDashboardFirstTimeTitle =>
+      'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù†Ø´Ø§Ø· Ø¨Ø¹Ø¯';
 
   @override
   String get universalDashboardFirstTimeMessage =>
-      'بمجرد أن تسجّل شركتك الحضور أو أعمال الخدمة، سيظهر هنا ملخص تشغيلي مباشر.';
+      'Ø¨Ù…Ø¬Ø±Ø¯ Ø£Ù† ØªØ³Ø¬Ù‘Ù„ Ø´Ø±ÙƒØªÙƒ Ø§Ù„Ø­Ø¶ÙˆØ± Ø£Ùˆ Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ø®Ø¯Ù…Ø©ØŒ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù…Ù„Ø®Øµ ØªØ´ØºÙŠÙ„ÙŠ Ù…Ø¨Ø§Ø´Ø±.';
 
   @override
-  String get universalDashboardGetStarted => 'ابدأ الآن';
+  String get universalDashboardGetStarted => 'Ø§Ø¨Ø¯Ø£ Ø§Ù„Ø¢Ù†';
 
   @override
-  String get universalDashboardNextServiceWork => 'أعمال الخدمة التالية';
+  String get universalDashboardNextServiceWork =>
+      'Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ø®Ø¯Ù…Ø© Ø§Ù„ØªØ§Ù„ÙŠØ©';
 
   @override
-  String get designSystemThemeMode => 'وضع المظهر';
+  String get designSystemThemeMode => 'ÙˆØ¶Ø¹ Ø§Ù„Ù…Ø¸Ù‡Ø±';
 
   @override
-  String get designSystemLightMode => 'فاتح';
+  String get designSystemLightMode => 'ÙØ§ØªØ­';
 
   @override
-  String get designSystemDarkMode => 'داكن';
+  String get designSystemDarkMode => 'Ø¯Ø§ÙƒÙ†';
 
   @override
-  String get designSystemDirection => 'الاتجاه';
+  String get designSystemDirection => 'Ø§Ù„Ø§ØªØ¬Ø§Ù‡';
 
   @override
-  String get designSystemTextScale => 'مقياس النص';
+  String get designSystemTextScale => 'Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„Ù†Øµ';
 
   @override
-  String get designSystemScaleDefault => 'افتراضي';
+  String get designSystemScaleDefault => 'Ø§ÙØªØ±Ø§Ø¶ÙŠ';
 
   @override
-  String get designSystemScaleModerate => 'متوسط';
+  String get designSystemScaleModerate => 'Ù…ØªÙˆØ³Ø·';
 
   @override
-  String get designSystemScaleLarge => 'كبير';
+  String get designSystemScaleLarge => 'ÙƒØ¨ÙŠØ±';
 
   @override
-  String get designSystemFoundations => 'الأساسيات';
+  String get designSystemFoundations => 'Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ§Øª';
 
   @override
-  String get designSystemSpacingScale => 'مقياس التباعد';
+  String get designSystemSpacingScale => 'Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„ØªØ¨Ø§Ø¹Ø¯';
 
   @override
-  String get designSystemRadiusScale => 'مقياس الاستدارة';
+  String get designSystemRadiusScale => 'Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„Ø§Ø³ØªØ¯Ø§Ø±Ø©';
 
   @override
-  String get designSystemBorderScale => 'مقياس الحدود';
+  String get designSystemBorderScale => 'Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„Ø­Ø¯ÙˆØ¯';
 
   @override
-  String get designSystemElevation => 'الارتفاع';
+  String get designSystemElevation => 'Ø§Ù„Ø§Ø±ØªÙØ§Ø¹';
 
   @override
-  String get designSystemSurfaceHierarchy => 'تدرّج الأسطح';
+  String get designSystemSurfaceHierarchy => 'ØªØ¯Ø±Ù‘Ø¬ Ø§Ù„Ø£Ø³Ø·Ø­';
 
   @override
-  String get designSystemTextColors => 'ألوان النص';
+  String get designSystemTextColors => 'Ø£Ù„ÙˆØ§Ù† Ø§Ù„Ù†Øµ';
 
   @override
   String get designSystemSelectionControls =>
-      'مربعات الاختيار والأزرار والتبديلات';
+      'Ù…Ø±Ø¨Ø¹Ø§Øª Ø§Ù„Ø§Ø®ØªÙŠØ§Ø± ÙˆØ§Ù„Ø£Ø²Ø±Ø§Ø± ÙˆØ§Ù„ØªØ¨Ø¯ÙŠÙ„Ø§Øª';
 
   @override
-  String get designSystemControlStates => 'حالات العناصر';
+  String get designSystemControlStates => 'Ø­Ø§Ù„Ø§Øª Ø§Ù„Ø¹Ù†Ø§ØµØ±';
 
   @override
-  String get designSystemChips => 'الشرائح والحالة';
+  String get designSystemChips => 'Ø§Ù„Ø´Ø±Ø§Ø¦Ø­ ÙˆØ§Ù„Ø­Ø§Ù„Ø©';
 
   @override
-  String get designSystemTooltip => 'التلميحات';
+  String get designSystemTooltip => 'Ø§Ù„ØªÙ„Ù…ÙŠØ­Ø§Øª';
 
   @override
-  String get designSystemMenu => 'القوائم';
+  String get designSystemMenu => 'Ø§Ù„Ù‚ÙˆØ§Ø¦Ù…';
 
   @override
-  String get designSystemSkeletons => 'هياكل التحميل';
+  String get designSystemSkeletons => 'Ù‡ÙŠØ§ÙƒÙ„ Ø§Ù„ØªØ­Ù…ÙŠÙ„';
 
   @override
-  String get designSystemErrorStates => 'حالات الفراغ والخطأ والصلاحيات';
+  String get designSystemErrorStates =>
+      'Ø­Ø§Ù„Ø§Øª Ø§Ù„ÙØ±Ø§Øº ÙˆØ§Ù„Ø®Ø·Ø£ ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª';
 
   @override
-  String get designSystemReadOnly => 'سياق للقراءة فقط';
+  String get designSystemReadOnly => 'Ø³ÙŠØ§Ù‚ Ù„Ù„Ù‚Ø±Ø§Ø¡Ø© ÙÙ‚Ø·';
 
   @override
-  String get designSystemMenuAction => 'إجراء القائمة';
+  String get designSystemMenuAction => 'Ø¥Ø¬Ø±Ø§Ø¡ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©';
 
   @override
-  String get designSystemMenuDanger => 'حذف السجل';
+  String get designSystemMenuDanger => 'Ø­Ø°Ù Ø§Ù„Ø³Ø¬Ù„';
 
   @override
-  String get designSystemTooltipHint => 'عنصر أيقونة فقط';
+  String get designSystemTooltipHint => 'Ø¹Ù†ØµØ± Ø£ÙŠÙ‚ÙˆÙ†Ø© ÙÙ‚Ø·';
 
   @override
-  String get designSystemKeyboardFocus => 'اضغط Tab للتركيز';
+  String get designSystemKeyboardFocus => 'Ø§Ø¶ØºØ· Tab Ù„Ù„ØªØ±ÙƒÙŠØ²';
 
   @override
-  String get typographyLabelSmall => 'تسمية صغيرة';
+  String get typographyLabelSmall => 'ØªØ³Ù…ÙŠØ© ØµØºÙŠØ±Ø©';
 
   @override
-  String get typographyTableHeader => 'رأس الجدول';
+  String get typographyTableHeader => 'Ø±Ø£Ø³ Ø§Ù„Ø¬Ø¯ÙˆÙ„';
 
   @override
-  String get typographyTableCell => 'خلية الجدول';
+  String get typographyTableCell => 'Ø®Ù„ÙŠØ© Ø§Ù„Ø¬Ø¯ÙˆÙ„';
 
   @override
-  String get typographyStatus => 'الحالة';
+  String get typographyStatus => 'Ø§Ù„Ø­Ø§Ù„Ø©';
 
   @override
-  String get typographyInputValue => 'قيمة الإدخال';
+  String get typographyInputValue => 'Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„';
 
   @override
-  String get typographyFormLabel => 'تسمية النموذج';
+  String get typographyFormLabel => 'ØªØ³Ù…ÙŠØ© Ø§Ù„Ù†Ù…ÙˆØ°Ø¬';
 
   @override
-  String get colorTextTertiary => 'نص ثالثي';
+  String get colorTextTertiary => 'Ù†Øµ Ø«Ø§Ù„Ø«ÙŠ';
 
   @override
-  String get colorSuccess => 'نجاح';
+  String get colorSuccess => 'Ù†Ø¬Ø§Ø­';
 
   @override
-  String get colorWarning => 'تحذير';
+  String get colorWarning => 'ØªØ­Ø°ÙŠØ±';
 
   @override
   String get dashboard => 'لوحة المعلومات';

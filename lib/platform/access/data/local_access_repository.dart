@@ -276,4 +276,66 @@ class LocalAccessRepository implements AccessRepository {
       );
     }
   }
+
+  @override
+  Future<Result<void>> assignGrants({
+    required String companyId,
+    required String actorUserId,
+    required String targetUserId,
+    required String requestId,
+    required List<PermissionGrantInput> grants,
+  }) async {
+    final existing = await getGrants(
+      companyId: companyId,
+      userId: targetUserId,
+    );
+    if (existing is Failed<List<UserPermissionGrant>>) {
+      return Failed((existing as Failed).failure);
+    }
+    final merged = <String, PermissionGrantInput>{
+      for (final grant in (existing as Success<List<UserPermissionGrant>>).value)
+        grant.permissionKey: PermissionGrantInput(
+          key: grant.permissionKey,
+          scope: grant.scope,
+        ),
+      for (final grant in grants) grant.key: grant,
+    };
+    return replaceGrants(
+      companyId: companyId,
+      actorUserId: actorUserId,
+      targetUserId: targetUserId,
+      requestId: requestId,
+      grants: merged.values.toList(growable: false),
+    );
+  }
+
+  @override
+  Future<Result<void>> revokeGrant({
+    required String companyId,
+    required String targetUserId,
+    required String grantId,
+  }) async {
+    try {
+      final deleted =
+          await (database.delete(database.userPermissionGrants)..where(
+                (t) =>
+                    t.id.equals(grantId) &
+                    t.companyId.equals(companyId) &
+                    t.userId.equals(targetUserId),
+              ))
+              .go();
+      return deleted == 0
+          ? const Failed(
+              Failure(
+                code: 'user_permission_not_found',
+                kind: FailureKind.notFound,
+              ),
+            )
+          : const Success(null);
+    } catch (_) {
+      return const Failed(
+        Failure(code: 'accessFailure', kind: FailureKind.storageWrite),
+      );
+    }
+  }
 }

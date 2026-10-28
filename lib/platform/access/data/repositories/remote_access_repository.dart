@@ -111,18 +111,21 @@ class RemoteAccessRepository implements AccessRepository {
     String? userId,
   }) => [
     for (final row in rows)
-      if (row.isActive &&
-          row.permissionKey != null &&
-          (userId == null || row.userId.toString() == userId))
+      if (row.isActive && (userId == null || row.userId.toString() == userId))
         UserPermissionGrant(
           id: row.userPermissionId.toString(),
           companyId: companyId,
           userId: row.userId.toString(),
-          permissionKey: row.permissionKey!,
+          permissionKey:
+              row.permissionKey ?? '__orphan__${row.permissionId}',
           scope: _scopeFor(row.permissionKey),
           grantedByUserId: (row.createdBy ?? 0).toString(),
           grantedAt: row.createdOn?.toUtc() ?? _epoch,
           updatedAt: row.createdOn?.toUtc() ?? _epoch,
+          isOrphan: row.permissionKey == null,
+          orphanPermissionId: row.permissionKey == null
+              ? row.permissionId
+              : null,
           syncStatus: 'synced',
         ),
   ];
@@ -210,14 +213,10 @@ class RemoteAccessRepository implements AccessRepository {
     required String userId,
   }) => Stream.value(const []);
 
-  @override
-  Future<Result<void>> replaceGrants({
-    required String companyId,
-    required String actorUserId,
-    required String targetUserId,
-    required String requestId,
-    required List<PermissionGrantInput> grants,
-  }) async {
+  Future<Result<(int, List<int>)>> _resolveGrantIds(
+    String targetUserId,
+    List<PermissionGrantInput> grants,
+  ) async {
     final userId = int.tryParse(targetUserId);
     if (userId == null) {
       return const Failed(
@@ -225,17 +224,17 @@ class RemoteAccessRepository implements AccessRepository {
       );
     }
     final masters = await _allPermissionMasters();
-    switch (masters) {
-      case Failed<List<PermissionDto>>(:final failure):
-        return Failed(failure);
-      case Success<List<PermissionDto>>(:final value):
+    return switch (masters) {
+      Failed<List<PermissionDto>>(:final failure) => Failed(failure),
+      Success<List<PermissionDto>>(:final value) => () {
         final ids = <String, int>{
           for (final permission in value)
-            if (permission.isActive) permission.permissionKey: permission.permissionId,
+            if (permission.isActive)
+              permission.permissionKey: permission.permissionId,
         };
         final unknown = grants.where((grant) => !ids.containsKey(grant.key));
         if (unknown.isNotEmpty) {
-          return Failed(
+          return Failed<(int, List<int>)>(
             Failure(
               code: 'access.unknownPermission',
               kind: FailureKind.validation,
@@ -244,20 +243,82 @@ class RemoteAccessRepository implements AccessRepository {
             ),
           );
         }
-        final result = await _dataSource.replaceUserPermissions(
-          userId,
-          [for (final grant in grants) ids[grant.key]!],
+        return Success<(int, List<int>)>(
+          (userId, [for (final grant in grants) ids[grant.key]!]),
         );
-        switch (result) {
-          case Success<List<UserPermissionDto>>():
-            _revision.add(null);
-            return const Success(null);
-          case Failed<List<UserPermissionDto>>(:final failure):
-            return Failed(failure);
-        }
+      }(),
+    };
+  }
+
+  @override
+  Future<Result<void>> replaceGrants({
+    required String companyId,
+    required String actorUserId,
+    required String targetUserId,
+    required String requestId,
+    required List<PermissionGrantInput> grants,
+  }) async {
+    final resolved = await _resolveGrantIds(targetUserId, grants);
+    if (resolved is Failed<(int, List<int>)>) {
+      return Failed(resolved.failure);
     }
+    final (userId, ids) = (resolved as Success<(int, List<int>)>).value;
+    final result = await _dataSource.replaceUserPermissions(userId, ids);
+    return switch (result) {
+      Success<List<UserPermissionDto>>() => () {
+        _revision.add(null);
+        return const Success<void>(null);
+      }(),
+      Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
+    };
+  }
+
+  @override
+  Future<Result<void>> assignGrants({
+    required String companyId,
+    required String actorUserId,
+    required String targetUserId,
+    required String requestId,
+    required List<PermissionGrantInput> grants,
+  }) async {
+    final resolved = await _resolveGrantIds(targetUserId, grants);
+    if (resolved is Failed<(int, List<int>)>) {
+      return Failed(resolved.failure);
+    }
+    final (userId, ids) = (resolved as Success<(int, List<int>)>).value;
+    final result = await _dataSource.assignUserPermissions(userId, ids);
+    return switch (result) {
+      Success<List<UserPermissionDto>>() => () {
+        _revision.add(null);
+        return const Success<void>(null);
+      }(),
+      Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
+    };
+  }
+
+  @override
+  Future<Result<void>> revokeGrant({
+    required String companyId,
+    required String targetUserId,
+    required String grantId,
+  }) async {
+    final id = int.tryParse(grantId);
+    if (id == null) {
+      return const Failed(
+        Failure(code: 'access.invalidGrant', kind: FailureKind.validation),
+      );
+    }
+    final result = await _dataSource.removeUserPermission(id);
+    return switch (result) {
+      Success<UserPermissionDto>() => () {
+        _revision.add(null);
+        return const Success<void>(null);
+      }(),
+      Failed<UserPermissionDto>(:final failure) => Failed(failure),
+    };
   }
 
   Future<void> dispose() => _revision.close();
 }
+
 

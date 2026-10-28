@@ -1,5 +1,6 @@
-import 'package:get_it/get_it.dart';
+﻿import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
@@ -45,6 +46,9 @@ void configureApplicationComposition(GetIt services) {
       accessRepository: services(),
       accessCatalog: services(),
       accessAuthority: services(),
+      permissionMasterRepository: services.isRegistered<PermissionMasterRepository>()
+          ? services<PermissionMasterRepository>()
+          : null,
       serviceCustomerRepository: services(),
       serviceSiteRepository: services(),
       serviceTeamRepository: services(),
@@ -63,3 +67,4 @@ void configureApplicationComposition(GetIt services) {
     ),
   );
 }
+

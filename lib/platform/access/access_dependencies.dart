@@ -8,6 +8,8 @@ import 'package:modular_erp/platform/access/data/access_user_directory.dart';
 import 'package:modular_erp/platform/access/data/datasources/remote/access_remotes.dart';
 import 'package:modular_erp/platform/access/data/local_access_repository.dart';
 import 'package:modular_erp/platform/access/data/repositories/remote_access_repository.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_permission_master_repository.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
@@ -41,9 +43,15 @@ void configureAccessDependencies(GetIt services) {
       if (repository is RemoteAccessRepository) repository.dispose();
     },
   );
+  if (AppConfig.authMode == AuthMode.backend) {
+    services.registerLazySingleton<PermissionMasterRepository>(
+      () => RemotePermissionMasterRepository(services()),
+    );
+  }
   services.registerLazySingleton(() => const GrantAuthorityResolver());
   services.registerLazySingleton<UserGrantsController>(
     () => LocalUserGrantsController(services(), services(), services()),
   );
 }
+
 

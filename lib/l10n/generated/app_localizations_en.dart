@@ -723,7 +723,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get englishNativeName => 'English';
 
   @override
-  String get arabicNativeName => 'العربية';
+  String get arabicNativeName => 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©';
 
   @override
   String typographySample(String level) {
@@ -756,7 +756,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Incorrect email, phone number, or password.';
 
   @override
-  String get authLoggingIn => 'Signing in…';
+  String get authLoggingIn => 'Signing inâ€¦';
 
   @override
   String get authBrandStatement =>
@@ -881,7 +881,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session stays signed in on this device until you sign out or it expires.';
 
   @override
-  String get authInitializing => 'Preparing your workspace…';
+  String get authInitializing => 'Preparing your workspaceâ€¦';
 
   @override
   String get authDemoAccounts => 'Demo accounts';
@@ -930,7 +930,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authBackToLogin => 'Back to sign in';
 
   @override
-  String get authSubmitting => 'Please wait…';
+  String get authSubmitting => 'Please waitâ€¦';
 
   @override
   String get authChangePassword => 'Change password';
@@ -1724,6 +1724,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessIncluded => 'Included';
 
   @override
+  String get accessPermissionCatalog => 'Permission catalog';
+
+  @override
+  String get accessPermissionCatalogSubtitle =>
+      'Create, edit and activate ERP permission keys.';
+
+  @override
+  String get accessNewPermission => 'New permission';
+
+  @override
+  String get accessEditPermission => 'Edit permission';
+
+  @override
+  String get accessPermissionKey => 'Permission key';
+
+  @override
+  String get accessPermissionName => 'Permission name';
+
+  @override
+  String get accessPermissionDescription => 'Description';
+
+  @override
+  String get accessPermissionActive => 'Active';
+
+  @override
+  String get accessPermissionInactive => 'Inactive';
+
+  @override
+  String accessOrphanGrant(String id) {
+    return 'Orphan grant (permission #$id)';
+  }
+
+  @override
+  String get accessOrphanHint =>
+      'This grant points to a permission that no longer exists. Revoke it to clean up.';
+
+  @override
+  String get accessRevoke => 'Revoke';
+
+  @override
+  String get accessAddPermissions => 'Add permissions';
+
+  @override
+  String get accessAddPermissionsHint =>
+      'Additive: existing grants are kept. Save changes replaces the full set.';
+
+  @override
+  String get accessReplaceAllHint =>
+      'Save changes replaces the user\'s complete grant set.';
+
+  @override
+  String get accessKeyInvalid =>
+      'Use lowercase dotted keys (for example hr.employees.view).';
+
+  @override
+  String get accessKeyDuplicate =>
+      'This key is already used by another permission.';
+
+  @override
+  String get accessKeyTooLong => 'Key must be 100 characters or fewer.';
+
+  @override
+  String get accessPermissionCreated => 'Permission created.';
+
+  @override
+  String get accessPermissionUpdated => 'Permission updated.';
+
+  @override
   String get accessPermissionSearch => 'Search permissions';
 
   @override
@@ -1840,12 +1908,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String accessUsersSummary(Object count, Object withAccess) {
-    return 'Showing $count users · $withAccess with access';
+    return 'Showing $count users Â· $withAccess with access';
   }
 
   @override
   String get accessScopeHint =>
-      'Scope sets which records a permission applies to: Self = the user’s own records, Team = their team, Company = all records in the company.';
+      'Scope sets which records a permission applies to: Self = the userâ€™s own records, Team = their team, Company = all records in the company.';
 
   @override
   String get accessScopeLabel => 'Scope';
@@ -1859,7 +1927,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessLinkEmployeeHint =>
-      'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR → Employees → open the employee → Account access.';
+      'Personal permissions (punch in/out, my attendance, my leave) apply to an employee record. To enable them, link this user to an employee from HR â†’ Employees â†’ open the employee â†’ Account access.';
 
   @override
   String get accessLinkedEmployee => 'Linked employee';
@@ -1884,7 +1952,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoAccessPlatformAdmin =>
-      'Platform administration · every module and every access';
+      'Platform administration Â· every module and every access';
 
   @override
   String get demoAccessCompanyAdmin => 'Every company module and access';
