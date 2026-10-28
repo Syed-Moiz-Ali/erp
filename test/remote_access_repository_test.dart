@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/api/models/paged_result.dart';
 import 'package:modular_erp/core/errors/result.dart';
-import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/platform/access/data/datasources/remote/access_remotes.dart';
 import 'package:modular_erp/platform/access/data/dto/permission_dtos.dart';
@@ -178,5 +177,6 @@ void main() {
     expect(history, isEmpty);
   });
 }
+
 
 
