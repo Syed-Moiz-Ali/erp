@@ -2531,6 +2531,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empAdd => 'Add employee';
 
   @override
+  String get employeeShiftsTitle => 'Employee shifts';
+
+  @override
+  String get employeeShiftAdd => 'Assign shift';
+
+  @override
+  String get employeeShiftEmployee => 'Employee';
+
+  @override
+  String get employeeShiftShift => 'Shift';
+
+  @override
+  String get employeeShiftFrom => 'From date';
+
+  @override
+  String get employeeShiftTo => 'To date';
+
+  @override
+  String get employeeShiftTimezone => 'Time zone (optional)';
+
+  @override
+  String get employeeShiftRemove => 'Remove assignment';
+
+  @override
   String get empBranch => 'Branch';
 
   @override

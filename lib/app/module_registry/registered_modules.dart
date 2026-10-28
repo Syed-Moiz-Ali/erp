@@ -32,6 +32,12 @@ import 'package:modular_erp/modules/hr/branches/presentation/pages/branches_page
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/presentation/bloc/live_employee_cubit.dart';
 import 'package:modular_erp/modules/hr/employees/live/presentation/pages/live_employees_page.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/data/employee_shift_api.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/employee_shifts_cubit.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/employee_shifts_page.dart';
+import 'package:modular_erp/modules/hr/attendance/live/data/attendance_api.dart';
+import 'package:modular_erp/modules/hr/attendance/live/presentation/attendance_cubit.dart';
+import 'package:modular_erp/modules/hr/attendance/live/presentation/attendance_page.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
@@ -86,6 +92,8 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
   BranchRepository? branchRepository,
   LiveEmployeeRepository? liveEmployeeRepository,
+  EmployeeShiftApi? employeeShiftApi,
+  AttendanceApi? attendanceApi,
   AccessRepository? accessRepository,
   PermissionMasterRepository? permissionMasterRepository,
   PermissionCatalog? accessCatalog,
@@ -266,6 +274,56 @@ ModuleRegistry createErpRegistry(
               ),
             ],
           ),
+        if (employeeShiftApi != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'employee-shifts',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.employeeShiftsTitle,
+              icon: Icons.event_available_outlined,
+              route: AppRoutes.employeeShifts,
+              navigationGroup: NavigationGroup.workforce,
+              order: 25,
+              anyPermissions: {
+                AppPermission.shiftView,
+                AppPermission.shiftManage,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.employeeShifts,
+                name: 'employee-shifts',
+                builder: (context, state) => EmployeeShiftsPage(
+                  cubit: EmployeeShiftsCubit(employeeShiftApi),
+                ),
+              ),
+            ],
+          ),
+        if (attendanceApi != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'live-attendance',
+              moduleId: AppModuleIds.attendance,
+              name: (l) => l.attendanceTodayTitle,
+              icon: Icons.fingerprint,
+              route: AppRoutes.liveAttendance,
+              navigationGroup: NavigationGroup.workforce,
+              order: 24,
+              mobilePriority: 2,
+              anyPermissions: {
+                AppPermission.attendanceViewSelf,
+                AppPermission.attendancePunchIn,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.liveAttendance,
+                name: 'live-attendance',
+                builder: (context, state) =>
+                    LiveAttendancePage(cubit: AttendanceCubit(attendanceApi)),
+              ),
+            ],
+          ),
         if (accessRepository != null &&
             accessCatalog != null &&
             accessAuthority != null) ...[
@@ -383,6 +441,8 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
+
 
 
 

@@ -180,6 +180,14 @@
   "dashboardTimeRange": "من {start} إلى {end}",
   "@dashboardTimeRange": {"placeholders":{"start":{"type":"String"},"end":{"type":"String"}}},
   "empAdd": "إضافة موظف",
+  "employeeShiftsTitle": "مناوبات الموظفين",
+  "employeeShiftAdd": "إسناد مناوبة",
+  "employeeShiftEmployee": "الموظف",
+  "employeeShiftShift": "المناوبة",
+  "employeeShiftFrom": "من تاريخ",
+  "employeeShiftTo": "إلى تاريخ",
+  "employeeShiftTimezone": "المنطقة الزمنية (اختياري)",
+  "employeeShiftRemove": "إزالة الإسناد",
   "empBranch": "الفرع",
   "empRequiresViewPermission": "يتطلب hr.employees.view لعرض الموظفين.",
   "empNationality": "الجنسية",
@@ -1073,6 +1081,7 @@
   "leaveCalendarEventsLabel": "طلبات إجازة",
   "leaveCalendarSelected": "محدد"
 }
+
 
 
 

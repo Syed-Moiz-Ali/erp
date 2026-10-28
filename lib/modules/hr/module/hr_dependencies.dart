@@ -28,6 +28,8 @@ import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/datasources/dio_live_employee_data_source.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/repositories/remote_live_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/data/employee_shift_api.dart';
+import 'package:modular_erp/modules/hr/attendance/live/data/attendance_api.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
@@ -157,6 +159,12 @@ void configureHrDependencies(GetIt services) {
     () => LocalEmployeeRepository(services(), services()),
   );
   if (AppConfig.realApiEnabled) {
+    services.registerLazySingleton<AttendanceApi>(
+      () => AttendanceApi(services()),
+    );
+    services.registerLazySingleton<EmployeeShiftApi>(
+      () => EmployeeShiftApi(services()),
+    );
     services.registerLazySingleton<LiveEmployeeRepository>(
       () => RemoteLiveEmployeeRepository(DioLiveEmployeeDataSource(services())),
     );
@@ -210,6 +218,8 @@ void configureHrDependencies(GetIt services) {
     () => HrWorkforceDirectory(services<AuthRepository>(), services()),
   );
 }
+
+
 
 
 

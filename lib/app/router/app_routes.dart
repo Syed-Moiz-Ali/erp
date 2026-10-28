@@ -25,6 +25,8 @@ abstract final class AppRoutes {
       permissionMasters = PlatformRoutes.permissionMasters,
       branches = PlatformRoutes.branches,
       liveEmployees = '/app/hr/employees-live',
+      employeeShifts = '/app/hr/employee-shifts',
+      liveAttendance = '/app/hr/attendance-today',
       modules = PlatformRoutes.modules,
       profile = PlatformRoutes.profile,
       changePassword = PlatformRoutes.changePassword,
@@ -126,6 +128,8 @@ abstract final class AppModuleIds {
       settings = 'settings',
       account = 'account';
 }
+
+
 
 
 

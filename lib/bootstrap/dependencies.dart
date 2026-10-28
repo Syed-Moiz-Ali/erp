@@ -5,6 +5,8 @@ import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/data/employee_shift_api.dart';
+import 'package:modular_erp/modules/hr/attendance/live/data/attendance_api.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
@@ -38,6 +40,8 @@ const _liveDestinationIds = <String>{
   'access-users',
   'company-modules',
   'live-employees',
+  'employee-shifts',
+  'live-attendance',
 };
 
 void configureApplicationComposition(GetIt services) {
@@ -51,6 +55,12 @@ void configureApplicationComposition(GetIt services) {
           : null,
       liveEmployeeRepository: services.isRegistered<LiveEmployeeRepository>()
           ? services<LiveEmployeeRepository>()
+          : null,
+      employeeShiftApi: services.isRegistered<EmployeeShiftApi>()
+          ? services<EmployeeShiftApi>()
+          : null,
+      attendanceApi: services.isRegistered<AttendanceApi>()
+          ? services<AttendanceApi>()
           : null,
       shiftRepository: services(),
       departmentRepository: services(),
@@ -90,6 +100,8 @@ void configureApplicationComposition(GetIt services) {
     ).retainDestinations(_liveDestinationIds),
   );
 }
+
+
 
 
 

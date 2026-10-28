@@ -4814,6 +4814,54 @@ abstract class AppLocalizations {
   /// **'Add employee'**
   String get empAdd;
 
+  /// No description provided for @employeeShiftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee shifts'**
+  String get employeeShiftsTitle;
+
+  /// No description provided for @employeeShiftAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign shift'**
+  String get employeeShiftAdd;
+
+  /// No description provided for @employeeShiftEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get employeeShiftEmployee;
+
+  /// No description provided for @employeeShiftShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get employeeShiftShift;
+
+  /// No description provided for @employeeShiftFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From date'**
+  String get employeeShiftFrom;
+
+  /// No description provided for @employeeShiftTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To date'**
+  String get employeeShiftTo;
+
+  /// No description provided for @employeeShiftTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone (optional)'**
+  String get employeeShiftTimezone;
+
+  /// No description provided for @employeeShiftRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove assignment'**
+  String get employeeShiftRemove;
+
   /// No description provided for @empBranch.
   ///
   /// In en, this message translates to:

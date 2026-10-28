@@ -2498,6 +2498,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empAdd => 'إضافة موظف';
 
   @override
+  String get employeeShiftsTitle => 'مناوبات الموظفين';
+
+  @override
+  String get employeeShiftAdd => 'إسناد مناوبة';
+
+  @override
+  String get employeeShiftEmployee => 'الموظف';
+
+  @override
+  String get employeeShiftShift => 'المناوبة';
+
+  @override
+  String get employeeShiftFrom => 'من تاريخ';
+
+  @override
+  String get employeeShiftTo => 'إلى تاريخ';
+
+  @override
+  String get employeeShiftTimezone => 'المنطقة الزمنية (اختياري)';
+
+  @override
+  String get employeeShiftRemove => 'إزالة الإسناد';
+
+  @override
   String get empBranch => 'الفرع';
 
   @override

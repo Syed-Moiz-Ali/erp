@@ -122,6 +122,14 @@
   "dashboardTimeRange": "{start} â€“ {end}",
   "@dashboardTimeRange": {"placeholders":{"start":{"type":"String"},"end":{"type":"String"}}},
   "empAdd": "Add employee",
+  "employeeShiftsTitle": "Employee shifts",
+  "employeeShiftAdd": "Assign shift",
+  "employeeShiftEmployee": "Employee",
+  "employeeShiftShift": "Shift",
+  "employeeShiftFrom": "From date",
+  "employeeShiftTo": "To date",
+  "employeeShiftTimezone": "Time zone (optional)",
+  "employeeShiftRemove": "Remove assignment",
   "empBranch": "Branch",
   "empRequiresViewPermission": "Requires hr.employees.view to view employees.",
   "empNationality": "Nationality",
@@ -1086,6 +1094,7 @@
   "leaveCalendarEventsLabel": "leave events",
   "leaveCalendarSelected": "selected"
 }
+
 
 
 
