@@ -1,13 +1,13 @@
 import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/core/location/location_service.dart';
-import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
+import 'support/demo/demo_configuration_seed.dart';
 import 'package:modular_erp/modules/hr/shifts/data/local_shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/data/local_work_location_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
 import 'package:drift/native.dart';
 import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
+import 'support/demo/employee_seed.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
@@ -23,7 +23,7 @@ import 'package:modular_erp/modules/services/work_executions/data/local_service_
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 import 'package:modular_erp/shared/transactions/data/local_attachment_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_document_number_service.dart';
@@ -49,8 +49,8 @@ import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'support/demo/demo_auth_source.dart';
+import 'support/demo/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/platform/auth/presentation/pages/bootstrap_page.dart';
 import 'package:modular_erp/platform/auth/presentation/pages/login_page.dart';
@@ -268,7 +268,6 @@ Future<Harness> mount(
         attendanceBlocFactory: createAttendanceBloc == null
             ? null
             : () => createAttendanceBloc(repo, database!),
-        demoAccounts: source.credentials,
       ),
     ),
   );
@@ -353,29 +352,6 @@ void main() {
       await loader.load();
     }
   });
-  testWidgets('demo persona picker lists access and signs in with one tap', (
-    tester,
-  ) async {
-    final h = await mount(tester, AppLanguage.english);
-    await tester.tap(find.byKey(const ValueKey('login-demo-accounts')));
-    await pump(tester);
-    expect(find.text('Super admin'), findsOneWidget);
-    expect(find.text('Company admin'), findsOneWidget);
-    expect(find.text('HR'), findsOneWidget);
-    expect(find.text('Manager'), findsOneWidget);
-    expect(find.text('Employee'), findsOneWidget);
-    expect(find.text('Every company module and access'), findsOneWidget);
-    final managerCard = find.byKey(const ValueKey('demo-persona-manager'));
-    await tester.ensureVisible(managerCard);
-    await pump(tester);
-    await tester.tap(managerCard);
-    await pump(tester);
-    await pump(tester);
-    expect(find.text('Super admin'), findsNothing);
-    expect(h.auth.state.isAuthenticated, isTrue);
-    await unmount(tester, h);
-  });
-
   for (final language in AppLanguage.values) {
     for (final width in [
       360.0,

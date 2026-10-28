@@ -31,7 +31,7 @@ import 'attendance_test.dart' show FakeClock, MockCapture, TestSender;
 import 'employee_test.dart' show employeeContext;
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/attendance/data/attendance_sync_handler.dart';
 import 'auth_widget_test.dart' as h;
 

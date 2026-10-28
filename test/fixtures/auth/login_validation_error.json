@@ -1,0 +1,12 @@
+{
+  "success": false,
+  "message": "One or more validation errors occurred.",
+  "data": null,
+  "errors": [
+    {
+      "code": "VALIDATION_ERROR",
+      "message": "Login ID is required.",
+      "field": "loginId"
+    }
+  ]
+}

@@ -5,14 +5,14 @@ import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
-import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
+import 'support/demo/employee_seed.dart';
 import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
 import 'package:modular_erp/modules/services/overview/data/local_services_dashboard_repository.dart';
 import 'package:modular_erp/modules/services/overview/domain/services_dashboard.dart';
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'support/demo/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 
 class _FixedClock implements AppClock {
   _FixedClock(this.value);

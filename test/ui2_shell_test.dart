@@ -9,10 +9,10 @@ import 'package:modular_erp/app/shell/app_shell.dart';
 import 'package:modular_erp/core/localization/app_language.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'support/demo/demo_auth_source.dart';
+import 'support/demo/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 
 import 'auth_widget_test.dart' as harness;

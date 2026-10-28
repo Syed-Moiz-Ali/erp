@@ -389,7 +389,8 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                     AppDetailField(
                       label: l.email,
                       value: state.account?.credentialPending == false
-                          ? state.account!.user.email
+                          ? (state.account!.user.email ??
+                                state.account!.user.loginId)
                           : d.email,
                       identifier: true,
                     ),

@@ -26,14 +26,12 @@ import 'package:modular_erp/design_system/theme/app_text_scaling.dart';
 import 'package:modular_erp/design_system/components/feedback/app_feedback.dart';
 import 'router/app_router.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/platform/auth/domain/entities/demo_credential_info.dart';
 
 class ErpApp extends StatefulWidget {
   const ErpApp({
     super.key,
     required this.localeCubit,
     required this.authBloc,
-    this.demoAccounts = const [],
     this.routerOverride,
     this.moduleRegistry,
     this.shellCubit,
@@ -50,7 +48,6 @@ class ErpApp extends StatefulWidget {
   });
   final LocaleCubit localeCubit;
   final AuthBloc authBloc;
-  final List<DemoCredentialInfo> demoAccounts;
 
   /// Injection for internal Phase 0 visual QA; production always uses auth guards.
   final GoRouter? routerOverride;
@@ -112,8 +109,6 @@ class _ErpAppState extends State<ErpApp> with WidgetsBindingObserver {
         authBloc: widget.authBloc,
         authRepository: widget.authBloc.repository,
         refresh: refresh,
-        demoAccounts: widget.demoAccounts,
-        enablePreview: widget.demoAccounts.isNotEmpty,
         registry: widget.moduleRegistry,
       );
   @override

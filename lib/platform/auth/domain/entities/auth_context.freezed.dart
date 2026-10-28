@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserAccount {
 
- String get id; String get displayName; String get email; String? get phone; String? get avatarUrl; String get companyId; PermissionSet get permissions; AccountStatus get status;
+ String get id; String get displayName; String get loginId; String? get email; String? get phone; String? get avatarUrl; String get companyId; PermissionSet get permissions; AccountStatus get status;
 /// Create a copy of UserAccount
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $UserAccountCopyWith<UserAccount> get copyWith => _$UserAccountCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.permissions, permissions) || other.permissions == permissions)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.loginId, loginId) || other.loginId == loginId)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.permissions, permissions) || other.permissions == permissions)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,email,phone,avatarUrl,companyId,permissions,status);
+int get hashCode => Object.hash(runtimeType,id,displayName,loginId,email,phone,avatarUrl,companyId,permissions,status);
 
 @override
 String toString() {
-  return 'UserAccount(id: $id, displayName: $displayName, email: $email, phone: $phone, avatarUrl: $avatarUrl, companyId: $companyId, permissions: $permissions, status: $status)';
+  return 'UserAccount(id: $id, displayName: $displayName, loginId: $loginId, email: $email, phone: $phone, avatarUrl: $avatarUrl, companyId: $companyId, permissions: $permissions, status: $status)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $UserAccountCopyWith<$Res>  {
   factory $UserAccountCopyWith(UserAccount value, $Res Function(UserAccount) _then) = _$UserAccountCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName, String email, String? phone, String? avatarUrl, String companyId, PermissionSet permissions, AccountStatus status
+ String id, String displayName, String loginId, String? email, String? phone, String? avatarUrl, String companyId, PermissionSet permissions, AccountStatus status
 });
 
 
@@ -62,12 +62,13 @@ class _$UserAccountCopyWithImpl<$Res>
 
 /// Create a copy of UserAccount
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? email = null,Object? phone = freezed,Object? avatarUrl = freezed,Object? companyId = null,Object? permissions = null,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? loginId = null,Object? email = freezed,Object? phone = freezed,Object? avatarUrl = freezed,Object? companyId = null,Object? permissions = null,Object? status = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,loginId: null == loginId ? _self.loginId : loginId // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,permissions: null == permissions ? _self.permissions : permissions // ignore: cast_nullable_to_non_nullable
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  String email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  String loginId,  String? email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserAccount() when $default != null:
-return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
+return $default(_that.id,_that.displayName,_that.loginId,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarU
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  String email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  String loginId,  String? email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _UserAccount():
-return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
+return $default(_that.id,_that.displayName,_that.loginId,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarU
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  String email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  String loginId,  String? email,  String? phone,  String? avatarUrl,  String companyId,  PermissionSet permissions,  AccountStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _UserAccount() when $default != null:
-return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
+return $default(_that.id,_that.displayName,_that.loginId,_that.email,_that.phone,_that.avatarUrl,_that.companyId,_that.permissions,_that.status);case _:
   return null;
 
 }
@@ -213,12 +214,13 @@ return $default(_that.id,_that.displayName,_that.email,_that.phone,_that.avatarU
 
 
 class _UserAccount implements UserAccount {
-  const _UserAccount({required this.id, required this.displayName, required this.email, this.phone, this.avatarUrl, required this.companyId, required this.permissions, required this.status});
+  const _UserAccount({required this.id, required this.displayName, this.loginId = '', this.email, this.phone, this.avatarUrl, required this.companyId, required this.permissions, required this.status});
   
 
 @override final  String id;
 @override final  String displayName;
-@override final  String email;
+@override@JsonKey() final  String loginId;
+@override final  String? email;
 @override final  String? phone;
 @override final  String? avatarUrl;
 @override final  String companyId;
@@ -235,16 +237,16 @@ _$UserAccountCopyWith<_UserAccount> get copyWith => __$UserAccountCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.permissions, permissions) || other.permissions == permissions)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.loginId, loginId) || other.loginId == loginId)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.permissions, permissions) || other.permissions == permissions)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,email,phone,avatarUrl,companyId,permissions,status);
+int get hashCode => Object.hash(runtimeType,id,displayName,loginId,email,phone,avatarUrl,companyId,permissions,status);
 
 @override
 String toString() {
-  return 'UserAccount(id: $id, displayName: $displayName, email: $email, phone: $phone, avatarUrl: $avatarUrl, companyId: $companyId, permissions: $permissions, status: $status)';
+  return 'UserAccount(id: $id, displayName: $displayName, loginId: $loginId, email: $email, phone: $phone, avatarUrl: $avatarUrl, companyId: $companyId, permissions: $permissions, status: $status)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$UserAccountCopyWith<$Res> implements $UserAccountCopyWith
   factory _$UserAccountCopyWith(_UserAccount value, $Res Function(_UserAccount) _then) = __$UserAccountCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName, String email, String? phone, String? avatarUrl, String companyId, PermissionSet permissions, AccountStatus status
+ String id, String displayName, String loginId, String? email, String? phone, String? avatarUrl, String companyId, PermissionSet permissions, AccountStatus status
 });
 
 
@@ -272,17 +274,278 @@ class __$UserAccountCopyWithImpl<$Res>
 
 /// Create a copy of UserAccount
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? email = null,Object? phone = freezed,Object? avatarUrl = freezed,Object? companyId = null,Object? permissions = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? loginId = null,Object? email = freezed,Object? phone = freezed,Object? avatarUrl = freezed,Object? companyId = null,Object? permissions = null,Object? status = null,}) {
   return _then(_UserAccount(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,loginId: null == loginId ? _self.loginId : loginId // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,permissions: null == permissions ? _self.permissions : permissions // ignore: cast_nullable_to_non_nullable
 as PermissionSet,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AccountStatus,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$CompanyBranch {
+
+ String get id; String get name;
+/// Create a copy of CompanyBranch
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CompanyBranchCopyWith<CompanyBranch> get copyWith => _$CompanyBranchCopyWithImpl<CompanyBranch>(this as CompanyBranch, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CompanyBranch&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name);
+
+@override
+String toString() {
+  return 'CompanyBranch(id: $id, name: $name)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CompanyBranchCopyWith<$Res>  {
+  factory $CompanyBranchCopyWith(CompanyBranch value, $Res Function(CompanyBranch) _then) = _$CompanyBranchCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name
+});
+
+
+
+
+}
+/// @nodoc
+class _$CompanyBranchCopyWithImpl<$Res>
+    implements $CompanyBranchCopyWith<$Res> {
+  _$CompanyBranchCopyWithImpl(this._self, this._then);
+
+  final CompanyBranch _self;
+  final $Res Function(CompanyBranch) _then;
+
+/// Create a copy of CompanyBranch
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CompanyBranch].
+extension CompanyBranchPatterns on CompanyBranch {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CompanyBranch value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CompanyBranch() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CompanyBranch value)  $default,){
+final _that = this;
+switch (_that) {
+case _CompanyBranch():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CompanyBranch value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CompanyBranch() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CompanyBranch() when $default != null:
+return $default(_that.id,_that.name);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name)  $default,) {final _that = this;
+switch (_that) {
+case _CompanyBranch():
+return $default(_that.id,_that.name);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name)?  $default,) {final _that = this;
+switch (_that) {
+case _CompanyBranch() when $default != null:
+return $default(_that.id,_that.name);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _CompanyBranch implements CompanyBranch {
+  const _CompanyBranch({required this.id, required this.name});
+  
+
+@override final  String id;
+@override final  String name;
+
+/// Create a copy of CompanyBranch
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CompanyBranchCopyWith<_CompanyBranch> get copyWith => __$CompanyBranchCopyWithImpl<_CompanyBranch>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CompanyBranch&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name);
+
+@override
+String toString() {
+  return 'CompanyBranch(id: $id, name: $name)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CompanyBranchCopyWith<$Res> implements $CompanyBranchCopyWith<$Res> {
+  factory _$CompanyBranchCopyWith(_CompanyBranch value, $Res Function(_CompanyBranch) _then) = __$CompanyBranchCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name
+});
+
+
+
+
+}
+/// @nodoc
+class __$CompanyBranchCopyWithImpl<$Res>
+    implements _$CompanyBranchCopyWith<$Res> {
+  __$CompanyBranchCopyWithImpl(this._self, this._then);
+
+  final _CompanyBranch _self;
+  final $Res Function(_CompanyBranch) _then;
+
+/// Create a copy of CompanyBranch
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,}) {
+  return _then(_CompanyBranch(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -836,7 +1099,7 @@ as String,
 /// @nodoc
 mixin _$AuthContext {
 
- UserAccount get user; CompanyContext get company; EmployeeReference? get employeeReference; Map<String, String> get settings;
+ UserAccount get user; CompanyContext get company; EmployeeReference? get employeeReference; List<CompanyBranch> get branches; Map<String, String> get settings;
 /// Create a copy of AuthContext
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -847,16 +1110,16 @@ $AuthContextCopyWith<AuthContext> get copyWith => _$AuthContextCopyWithImpl<Auth
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthContext&&(identical(other.user, user) || other.user == user)&&(identical(other.company, company) || other.company == company)&&(identical(other.employeeReference, employeeReference) || other.employeeReference == employeeReference)&&const DeepCollectionEquality().equals(other.settings, settings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthContext&&(identical(other.user, user) || other.user == user)&&(identical(other.company, company) || other.company == company)&&(identical(other.employeeReference, employeeReference) || other.employeeReference == employeeReference)&&const DeepCollectionEquality().equals(other.branches, branches)&&const DeepCollectionEquality().equals(other.settings, settings));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,company,employeeReference,const DeepCollectionEquality().hash(settings));
+int get hashCode => Object.hash(runtimeType,user,company,employeeReference,const DeepCollectionEquality().hash(branches),const DeepCollectionEquality().hash(settings));
 
 @override
 String toString() {
-  return 'AuthContext(user: $user, company: $company, employeeReference: $employeeReference, settings: $settings)';
+  return 'AuthContext(user: $user, company: $company, employeeReference: $employeeReference, branches: $branches, settings: $settings)';
 }
 
 
@@ -867,7 +1130,7 @@ abstract mixin class $AuthContextCopyWith<$Res>  {
   factory $AuthContextCopyWith(AuthContext value, $Res Function(AuthContext) _then) = _$AuthContextCopyWithImpl;
 @useResult
 $Res call({
- UserAccount user, CompanyContext company, EmployeeReference? employeeReference, Map<String, String> settings
+ UserAccount user, CompanyContext company, EmployeeReference? employeeReference, List<CompanyBranch> branches, Map<String, String> settings
 });
 
 
@@ -884,12 +1147,13 @@ class _$AuthContextCopyWithImpl<$Res>
 
 /// Create a copy of AuthContext
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? company = null,Object? employeeReference = freezed,Object? settings = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? company = null,Object? employeeReference = freezed,Object? branches = null,Object? settings = null,}) {
   return _then(_self.copyWith(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserAccount,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as CompanyContext,employeeReference: freezed == employeeReference ? _self.employeeReference : employeeReference // ignore: cast_nullable_to_non_nullable
-as EmployeeReference?,settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
+as EmployeeReference?,branches: null == branches ? _self.branches : branches // ignore: cast_nullable_to_non_nullable
+as List<CompanyBranch>,settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,
   ));
 }
@@ -1005,10 +1269,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  Map<String, String> settings)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  List<CompanyBranch> branches,  Map<String, String> settings)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthContext() when $default != null:
-return $default(_that.user,_that.company,_that.employeeReference,_that.settings);case _:
+return $default(_that.user,_that.company,_that.employeeReference,_that.branches,_that.settings);case _:
   return orElse();
 
 }
@@ -1026,10 +1290,10 @@ return $default(_that.user,_that.company,_that.employeeReference,_that.settings)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  Map<String, String> settings)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  List<CompanyBranch> branches,  Map<String, String> settings)  $default,) {final _that = this;
 switch (_that) {
 case _AuthContext():
-return $default(_that.user,_that.company,_that.employeeReference,_that.settings);case _:
+return $default(_that.user,_that.company,_that.employeeReference,_that.branches,_that.settings);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1046,10 +1310,10 @@ return $default(_that.user,_that.company,_that.employeeReference,_that.settings)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  Map<String, String> settings)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserAccount user,  CompanyContext company,  EmployeeReference? employeeReference,  List<CompanyBranch> branches,  Map<String, String> settings)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthContext() when $default != null:
-return $default(_that.user,_that.company,_that.employeeReference,_that.settings);case _:
+return $default(_that.user,_that.company,_that.employeeReference,_that.branches,_that.settings);case _:
   return null;
 
 }
@@ -1061,12 +1325,19 @@ return $default(_that.user,_that.company,_that.employeeReference,_that.settings)
 
 
 class _AuthContext implements AuthContext {
-  const _AuthContext({required this.user, required this.company, this.employeeReference, final  Map<String, String> settings = const {}}): _settings = settings;
+  const _AuthContext({required this.user, required this.company, this.employeeReference, final  List<CompanyBranch> branches = const <CompanyBranch>[], final  Map<String, String> settings = const {}}): _branches = branches,_settings = settings;
   
 
 @override final  UserAccount user;
 @override final  CompanyContext company;
 @override final  EmployeeReference? employeeReference;
+ final  List<CompanyBranch> _branches;
+@override@JsonKey() List<CompanyBranch> get branches {
+  if (_branches is EqualUnmodifiableListView) return _branches;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_branches);
+}
+
  final  Map<String, String> _settings;
 @override@JsonKey() Map<String, String> get settings {
   if (_settings is EqualUnmodifiableMapView) return _settings;
@@ -1085,16 +1356,16 @@ _$AuthContextCopyWith<_AuthContext> get copyWith => __$AuthContextCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthContext&&(identical(other.user, user) || other.user == user)&&(identical(other.company, company) || other.company == company)&&(identical(other.employeeReference, employeeReference) || other.employeeReference == employeeReference)&&const DeepCollectionEquality().equals(other._settings, _settings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthContext&&(identical(other.user, user) || other.user == user)&&(identical(other.company, company) || other.company == company)&&(identical(other.employeeReference, employeeReference) || other.employeeReference == employeeReference)&&const DeepCollectionEquality().equals(other._branches, _branches)&&const DeepCollectionEquality().equals(other._settings, _settings));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,company,employeeReference,const DeepCollectionEquality().hash(_settings));
+int get hashCode => Object.hash(runtimeType,user,company,employeeReference,const DeepCollectionEquality().hash(_branches),const DeepCollectionEquality().hash(_settings));
 
 @override
 String toString() {
-  return 'AuthContext(user: $user, company: $company, employeeReference: $employeeReference, settings: $settings)';
+  return 'AuthContext(user: $user, company: $company, employeeReference: $employeeReference, branches: $branches, settings: $settings)';
 }
 
 
@@ -1105,7 +1376,7 @@ abstract mixin class _$AuthContextCopyWith<$Res> implements $AuthContextCopyWith
   factory _$AuthContextCopyWith(_AuthContext value, $Res Function(_AuthContext) _then) = __$AuthContextCopyWithImpl;
 @override @useResult
 $Res call({
- UserAccount user, CompanyContext company, EmployeeReference? employeeReference, Map<String, String> settings
+ UserAccount user, CompanyContext company, EmployeeReference? employeeReference, List<CompanyBranch> branches, Map<String, String> settings
 });
 
 
@@ -1122,12 +1393,13 @@ class __$AuthContextCopyWithImpl<$Res>
 
 /// Create a copy of AuthContext
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? company = null,Object? employeeReference = freezed,Object? settings = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? company = null,Object? employeeReference = freezed,Object? branches = null,Object? settings = null,}) {
   return _then(_AuthContext(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserAccount,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as CompanyContext,employeeReference: freezed == employeeReference ? _self.employeeReference : employeeReference // ignore: cast_nullable_to_non_nullable
-as EmployeeReference?,settings: null == settings ? _self._settings : settings // ignore: cast_nullable_to_non_nullable
+as EmployeeReference?,branches: null == branches ? _self._branches : branches // ignore: cast_nullable_to_non_nullable
+as List<CompanyBranch>,settings: null == settings ? _self._settings : settings // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,
   ));
 }

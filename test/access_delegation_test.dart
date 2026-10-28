@@ -6,15 +6,15 @@ import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'support/demo/demo_auth_source.dart';
+import 'support/demo/demo_auth_repository.dart';
 import 'support/memory_session_storage.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/access/domain/user_permission_grant.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 
 class _MockAccessRepository extends Mock implements AccessRepository {}
 

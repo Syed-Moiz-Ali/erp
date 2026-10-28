@@ -1456,6 +1456,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLoginEmail => 'Login email';
 
   @override
+  String get profileLoginId => 'Login ID';
+
+  @override
   String get profileWorkEmail => 'Work email';
 
   @override

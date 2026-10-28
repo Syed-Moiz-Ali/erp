@@ -387,6 +387,7 @@
   "profileAdministrativeAccess": "Administrative access",
   "profileEmploymentStatus": "Employment status",
   "profileLoginEmail": "Login email",
+  "profileLoginId": "Login ID",
   "profileWorkEmail": "Work email",
   "profileMyAttendance": "My attendance",
   "profileViewEmployeeRecord": "View employment details",

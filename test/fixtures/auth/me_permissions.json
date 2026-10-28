@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "userId": 8,
+    "employeeId": 1,
+    "permissions": [
+      "company.access.permissions.manage",
+      "company.access.users.view",
+      "company.branches.manage",
+      "company.branches.view",
+      "company.users.manage",
+      "hr.attendance.self.punch",
+      "hr.attendance.self.view",
+      "hr.attendance.shifts.manage",
+      "hr.attendance.shifts.view",
+      "hr.departments.manage",
+      "hr.departments.view",
+      "hr.employees.create",
+      "hr.employees.deactivate",
+      "hr.employees.edit"
+    ]
+  },
+  "errors": []
+}

@@ -1,27 +1,6 @@
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
-
-extension DemoScenarioLocalization on DemoScenario {
-  /// Demo persona label. Fixture copy only — never authorization.
-  String personaLabel(AppLocalizations l) => switch (this) {
-    DemoScenario.platformAdmin => l.demoPersonaPlatformAdmin,
-    DemoScenario.companyAdmin => l.demoPersonaCompanyAdmin,
-    DemoScenario.hr => l.demoPersonaHr,
-    DemoScenario.manager => l.demoPersonaManager,
-    DemoScenario.employee => l.demoPersonaEmployee,
-  };
-
-  /// Human description of what the seeded grants allow.
-  String accessSummary(AppLocalizations l) => switch (this) {
-    DemoScenario.platformAdmin => l.demoAccessPlatformAdmin,
-    DemoScenario.companyAdmin => l.demoAccessCompanyAdmin,
-    DemoScenario.hr => l.demoAccessHr,
-    DemoScenario.manager => l.demoAccessManager,
-    DemoScenario.employee => l.demoAccessEmployee,
-  };
-}
 
 extension AccountStatusLocalization on AccountStatus {
   String label(AppLocalizations l10n) => switch (this) {

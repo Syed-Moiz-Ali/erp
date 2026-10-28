@@ -325,7 +325,7 @@ class EmployeeDetailsPage extends StatelessWidget {
                 if (a != null) ...[
                   AppDetailField(
                     label: l.email,
-                    value: a.email,
+                    value: a.email ?? a.loginId,
                     identifier: true,
                   ),
                   AppDetailField(

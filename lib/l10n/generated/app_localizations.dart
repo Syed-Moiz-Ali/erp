@@ -2816,6 +2816,12 @@ abstract class AppLocalizations {
   /// **'Login email'**
   String get profileLoginEmail;
 
+  /// No description provided for @profileLoginId.
+  ///
+  /// In en, this message translates to:
+  /// **'Login ID'**
+  String get profileLoginId;
+
   /// No description provided for @profileWorkEmail.
   ///
   /// In en, this message translates to:

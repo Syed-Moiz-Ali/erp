@@ -3,8 +3,8 @@ import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'demo_auth_source.dart';
+import 'demo_scenario_grants.dart';
 
 /// Demo access seed: converts the legacy role templates into **explicit
 /// permission grants**. The persona names are test fixtures; runtime

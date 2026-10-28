@@ -39,6 +39,7 @@ class LocalAccountAccessGuard implements AccountAccessGuard {
     return UserAccount(
       id: a.id,
       displayName: a.displayName,
+      loginId: a.email,
       email: a.email,
       phone: a.phone,
       companyId: a.companyId,

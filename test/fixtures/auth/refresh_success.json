@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "message": "Token refreshed.",
+  "data": {
+    "tokenType": "Bearer",
+    "accessToken": "SANITIZED_ROTATED_ACCESS_TOKEN",
+    "expiresIn": 3600,
+    "accessTokenExpiresAtUtc": "2026-10-28T07:47:13.0480506Z",
+    "refreshToken": "SANITIZED_ROTATED_REFRESH_TOKEN",
+    "refreshTokenExpiresAtUtc": "2026-11-27T06:47:13.0449907Z",
+    "user": {
+      "userId": 8,
+      "loginId": "qa.admin",
+      "name": "Sanitized Admin",
+      "userType": "Director",
+      "empId": 1,
+      "orgId": 1,
+      "branchName": "Company A",
+      "timeZone": "Asia/Dubai",
+      "orgCount": 2,
+      "transactionAccess": true,
+      "reportAccess": true,
+      "branches": [
+        { "orgId": 1, "branchName": "Company A" },
+        { "orgId": 2, "branchName": "Branch B" }
+      ]
+    }
+  },
+  "errors": []
+}

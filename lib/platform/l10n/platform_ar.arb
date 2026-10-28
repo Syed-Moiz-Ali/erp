@@ -307,6 +307,7 @@
   "profileAdministrativeAccess": "صلاحيات إدارية",
   "profileEmploymentStatus": "حالة التوظيف",
   "profileLoginEmail": "بريد تسجيل الدخول",
+  "profileLoginId": "معرف تسجيل الدخول",
   "profileWorkEmail": "بريد العمل",
   "profileMyAttendance": "حضوري",
   "profileViewEmployeeRecord": "عرض تفاصيل التوظيف",

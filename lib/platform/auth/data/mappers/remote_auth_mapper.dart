@@ -27,9 +27,10 @@ abstract final class RemoteAuthMapper {
     final user = UserAccount(
       id: userId,
       displayName: u.name,
-      // The contract exposes a login id, not an email address; the account and
-      // profile surfaces show identity, so we surface the login id here.
-      email: u.loginId,
+      loginId: u.loginId,
+      // The MassERP login contract does not expose an email address. Keep it
+      // absent rather than silently storing the login id in an email field.
+      email: null,
       phone: null,
       avatarUrl: null,
       companyId: companyId,
@@ -53,6 +54,10 @@ abstract final class RemoteAuthMapper {
         user: user,
         company: company,
         employeeReference: employeeReference,
+        branches: [
+          for (final branch in u.branches)
+            CompanyBranch(id: branch.orgId.toString(), name: branch.branchName),
+        ],
         settings: {
           'userType': u.userType,
           if (u.branchName != null) 'branchName': u.branchName!,

@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
 
 abstract interface class AccountProvisioningRepository {
@@ -36,7 +36,18 @@ class LocalAccountProvisioningRepository
     final id = existingId ?? const Uuid().v4();
     // A provisioned account starts with the self-service baseline; an access
     // administrator refines grants in Users & Access. No role is stored.
-    final desired = demoScenarioGrants(DemoScenario.employee).values;
+    const desired = <AppPermission>{
+      AppPermission.employeeViewSelf,
+      AppPermission.attendanceViewSelf,
+      AppPermission.attendancePunchIn,
+      AppPermission.attendancePunchOut,
+      AppPermission.attendanceBreak,
+      AppPermission.attendanceRequestCorrection,
+      AppPermission.leaveViewSelf,
+      AppPermission.leaveRequest,
+      AppPermission.leaveCancelSelf,
+      AppPermission.leaveBalanceViewSelf,
+    };
     final old = await (db.select(
       db.workforceAccounts,
     )..where((t) => t.id.equals(id))).getSingleOrNull();

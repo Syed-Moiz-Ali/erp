@@ -155,7 +155,8 @@ class MyProfilePage extends StatelessWidget {
         title: l.profileOverview,
         details: {
           l.fullName: vm.displayName,
-          l.profileLoginEmail: account.user.email,
+          l.profileLoginId: account.user.loginId,
+          if (account.user.email case final email?) l.email: email,
           if (account.user.phone != null && account.user.phone!.isNotEmpty)
             l.phone: account.user.phone!,
           l.authAccountStatus: account.user.status.label(l),
@@ -284,7 +285,8 @@ class MyProfilePage extends StatelessWidget {
       AppDetailsSection(
         title: l.profileAccountAccess,
         details: {
-          l.profileLoginEmail: account.user.email,
+          l.profileLoginId: account.user.loginId,
+          if (account.user.email case final email?) l.email: email,
           l.authAccountStatus: account.user.status.label(l),
           l.profileCurrentCompany: account.company.name,
         },

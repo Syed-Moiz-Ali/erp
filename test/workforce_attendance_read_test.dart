@@ -6,11 +6,11 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_scope_resolver.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/workforce_attendance.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
-import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
-import 'package:modular_erp/modules/hr/demo/demo_attendance_seed.dart';
-import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
-import 'package:modular_erp/modules/hr/demo/demo_workforce_seed.dart';
+import 'support/demo/demo_scenario_grants.dart';
+import 'support/demo/employee_seed.dart';
+import 'support/demo/demo_attendance_seed.dart';
+import 'support/demo/demo_configuration_seed.dart';
+import 'support/demo/demo_workforce_seed.dart';
 import 'attendance_test.dart' show FakeClock, MockAuth;
 import 'employee_test.dart' show employeeContext;
 

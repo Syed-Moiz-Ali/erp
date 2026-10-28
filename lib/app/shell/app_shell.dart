@@ -143,7 +143,7 @@ class AppShell extends StatelessWidget {
                   selector: (state) => state.loggingOut,
                   builder: (context, busy) => AppUserMenu(
                     name: account.user.displayName,
-                    email: account.user.email,
+                    email: account.user.email ?? account.user.loginId,
                     roleLabel: (l) => account.company.name,
                     busy: busy,
                     onProfile: () => navigate(AppRoutes.profile),

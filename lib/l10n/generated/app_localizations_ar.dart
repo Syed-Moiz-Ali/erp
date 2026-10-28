@@ -1438,6 +1438,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileLoginEmail => 'بريد تسجيل الدخول';
 
   @override
+  String get profileLoginId => 'معرف تسجيل الدخول';
+
+  @override
   String get profileWorkEmail => 'بريد العمل';
 
   @override

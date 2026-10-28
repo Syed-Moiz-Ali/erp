@@ -9,13 +9,21 @@ abstract class UserAccount with _$UserAccount {
   const factory UserAccount({
     required String id,
     required String displayName,
-    required String email,
+    @Default('') String loginId,
+    String? email,
     String? phone,
     String? avatarUrl,
     required String companyId,
     required PermissionSet permissions,
     required AccountStatus status,
   }) = _UserAccount;
+}
+
+/// A branch the backend says the authenticated user may access.
+@freezed
+abstract class CompanyBranch with _$CompanyBranch {
+  const factory CompanyBranch({required String id, required String name}) =
+      _CompanyBranch;
 }
 
 @freezed
@@ -48,6 +56,7 @@ abstract class AuthContext with _$AuthContext {
     required UserAccount user,
     required CompanyContext company,
     EmployeeReference? employeeReference,
+    @Default(<CompanyBranch>[]) List<CompanyBranch> branches,
     @Default({}) Map<String, String> settings,
   }) = _AuthContext;
 }

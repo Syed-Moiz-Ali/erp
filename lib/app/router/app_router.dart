@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
-import 'package:modular_erp/platform/auth/domain/entities/demo_credential_info.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/platform/auth/presentation/pages/bootstrap_page.dart';
 import 'package:modular_erp/platform/auth/presentation/pages/login_page.dart';
@@ -188,7 +187,6 @@ GoRouter createAppRouter({
   required AuthRepository authRepository,
   required Listenable refresh,
   ModuleRegistry? registry,
-  List<DemoCredentialInfo> demoAccounts = const [],
   bool enablePreview = false,
   String? initialLocation,
 }) {
@@ -269,7 +267,7 @@ GoRouter createAppRouter({
       ),
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => LoginPage(demoAccounts: demoAccounts),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,

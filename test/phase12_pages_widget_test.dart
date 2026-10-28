@@ -11,7 +11,7 @@ import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
 import 'package:modular_erp/core/sync/outbox_repository.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_theme.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/notifications/data/noop_notification_repository.dart';
 import 'package:modular_erp/platform/notifications/domain/device_notification_service.dart';
 import 'package:modular_erp/platform/notifications/presentation/bloc/notifications_bloc.dart';

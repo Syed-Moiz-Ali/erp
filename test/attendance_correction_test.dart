@@ -2,8 +2,8 @@ import 'package:drift/native.dart';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:modular_erp/modules/hr/demo/demo_attendance_seed.dart';
-import 'package:modular_erp/modules/hr/demo/demo_configuration_seed.dart';
+import 'support/demo/demo_attendance_seed.dart';
+import 'support/demo/demo_configuration_seed.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/attendance/data/attendance_local_data_source.dart';
@@ -11,8 +11,8 @@ import 'package:modular_erp/modules/hr/attendance/data/local_attendance_correcti
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_models.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_history.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
-import 'package:modular_erp/modules/hr/employees/data/employee_seed.dart';
+import 'support/demo/demo_scenario_grants.dart';
+import 'support/demo/employee_seed.dart';
 import 'attendance_test.dart' show FakeClock, MockAuth;
 import 'employee_test.dart' show employeeContext;
 

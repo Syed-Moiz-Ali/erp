@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "userId": 8,
+    "employeeId": 1,
+    "permissions": [
+      "company.branches.view",
+      "legacy.unknown.key",
+      "hr.employees.view"
+    ]
+  },
+  "errors": []
+}

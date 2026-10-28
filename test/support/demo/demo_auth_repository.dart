@@ -1,4 +1,4 @@
-﻿import 'package:modular_erp/platform/auth/domain/repositories/account_access_guard.dart';
+import 'package:modular_erp/platform/auth/domain/repositories/account_access_guard.dart';
 import 'package:modular_erp/core/auth/password_policy.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -9,7 +9,7 @@ import 'package:modular_erp/core/storage/secure_session_storage.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/data/dto/auth_session_dto.dart';
 
 class DemoAuthRepository implements AuthRepository, SessionAccessSink {
@@ -307,4 +307,3 @@ class DemoAuthRepository implements AuthRepository, SessionAccessSink {
     await _changes.close();
   }
 }
-

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
+import 'demo_auth_source.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
-import 'employee_dao.dart';
+import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 
 Future<void> seedEmployees(AppDatabase db) => db.transaction(() async {
   final marker = await (db.select(
@@ -53,7 +53,7 @@ Future<void> seedEmployees(AppDatabase db) => db.transaction(() async {
             id: u.id,
             companyId: u.companyId,
             displayName: u.displayName,
-            email: u.email,
+            email: u.email ?? u.loginId,
             phone: u.phone!,
             grants: jsonEncode(
               u.permissions.values.map((p) => p.name).toList(),

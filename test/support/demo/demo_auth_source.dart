@@ -1,5 +1,4 @@
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
-import 'package:modular_erp/platform/auth/domain/entities/demo_credential_info.dart';
+import 'demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 
@@ -42,6 +41,7 @@ class DemoAuthSource {
       final user = UserAccount(
         id: 'demo-$username',
         displayName: name,
+        loginId: username,
         email: '$username@erp.demo',
         phone: '+1555000100${scenario.index + 1}',
         companyId: 'demo-company',
@@ -77,6 +77,9 @@ class DemoAuthSource {
                   userAccountId: user.id,
                   companyId: user.companyId,
                 ),
+          branches: const [
+            CompanyBranch(id: 'demo-company', name: 'Demo ERP Company'),
+          ],
         ),
         password,
       );
@@ -84,17 +87,6 @@ class DemoAuthSource {
   }
   final Map<String, DemoAccount> _accounts = {};
   List<DemoAccount> get accounts => List.unmodifiable(_accounts.values);
-  List<DemoCredentialInfo> get credentials => accounts
-      .map(
-        (a) => DemoCredentialInfo(
-          scenario: a.scenario,
-          displayName: a.context.user.displayName,
-          email: a.context.user.email,
-          phone: a.context.user.phone!,
-          password: a.password,
-        ),
-      )
-      .toList(growable: false);
   DemoAccount? findByScenario(DemoScenario scenario) {
     for (final account in _accounts.values) {
       if (account.scenario == scenario) return account;

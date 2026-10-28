@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
+import 'support/demo/demo_scenario_grants.dart';
 import 'employee_test.dart' show employeeContext;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

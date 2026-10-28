@@ -14,7 +14,7 @@ import 'package:modular_erp/modules/services/module/services_routes.dart';
 import 'package:modular_erp/modules/services/sites/data/local_service_site_repository.dart';
 import 'package:modular_erp/modules/services/teams/data/local_service_team_repository.dart';
 import 'package:modular_erp/modules/services/work_executions/data/local_service_work_execution_repository.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'support/demo/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 import 'package:modular_erp/shared/transactions/data/local_attachment_repository.dart';

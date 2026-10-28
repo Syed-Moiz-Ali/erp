@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -86,15 +88,21 @@ void registerSharedApiClient(
   required String baseUrl,
   bool allowInsecureHttp = false,
 }) {
-  services.registerLazySingleton<ApiClient>(
-    () => ApiClient(
+  services.registerLazySingleton<ApiClient>(() {
+    final dio = Dio();
+    if (kDebugMode) {
+      // Local development may point at an ngrok tunnel, whose interstitial would
+      // otherwise replace the JSON envelope with an HTML warning page.
+      dio.options.headers['ngrok-skip-browser-warning'] = 'true';
+    }
+    return ApiClient(
       baseUrl: baseUrl,
       storage: services(),
       refreshCoordinator: services(),
       sessionEndpoint: services(),
       accessEndpoint: services(),
+      dio: dio,
       allowInsecureHttp: allowInsecureHttp,
-    ),
-    dispose: (client) => client.close(),
-  );
+    );
+  }, dispose: (client) => client.close());
 }

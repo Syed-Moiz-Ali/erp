@@ -15,6 +15,7 @@ class AuthSessionDto {
     this.refreshTokenExpiresAt,
     this.tokenType = 'Bearer',
     this.employee,
+    this.branches = const [],
     this.settings = const {},
     this.version = 1,
   });
@@ -25,6 +26,7 @@ class AuthSessionDto {
   final DateTime? refreshTokenExpiresAt;
   final Map<String, dynamic> user, company;
   final Map<String, dynamic>? employee;
+  final List<Map<String, dynamic>> branches;
   final Map<String, String> settings;
   factory AuthSessionDto.fromJson(Map<String, dynamic> json) =>
       _$AuthSessionDtoFromJson(json);
@@ -53,7 +55,8 @@ abstract final class AuthSessionMapper {
     final user = UserAccount(
       id: u['id'] as String,
       displayName: u['displayName'] as String,
-      email: u['email'] as String,
+      loginId: u['loginId'] as String? ?? u['email'] as String? ?? '',
+      email: u['email'] as String?,
       phone: u['phone'] as String?,
       avatarUrl: u['avatarUrl'] as String?,
       companyId: u['companyId'] as String,
@@ -90,6 +93,13 @@ abstract final class AuthSessionMapper {
         user: user,
         company: company,
         employeeReference: employee,
+        branches: [
+          for (final branch in dto.branches)
+            CompanyBranch(
+              id: branch['id'] as String,
+              name: branch['name'] as String,
+            ),
+        ],
         settings: dto.settings,
       ),
     );
@@ -109,6 +119,7 @@ abstract final class AuthSessionMapper {
       user: {
         'id': u.id,
         'displayName': u.displayName,
+        'loginId': u.loginId,
         'email': u.email,
         'phone': u.phone,
         'avatarUrl': u.avatarUrl,
@@ -132,6 +143,10 @@ abstract final class AuthSessionMapper {
               'userAccountId': e.userAccountId,
               'companyId': e.companyId,
             },
+      branches: [
+        for (final branch in ctx.branches)
+          {'id': branch.id, 'name': branch.name},
+      ],
       settings: ctx.settings,
     );
   }

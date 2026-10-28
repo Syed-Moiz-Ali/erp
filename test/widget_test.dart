@@ -1,6 +1,6 @@
 import 'package:modular_erp/app/router/preview_router.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
+import 'support/demo/demo_auth_repository.dart';
 import 'support/memory_session_storage.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
