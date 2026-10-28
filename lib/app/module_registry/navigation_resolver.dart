@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'module_registry.dart';
@@ -58,6 +59,18 @@ class ResolvedNavigation {
 class NavigationResolver {
   const NavigationResolver(this.registry);
   final ModuleRegistry registry;
+
+  static const _treeDestinationIds = {
+    'live-employees',
+    'employee-shifts',
+    'live-attendance',
+    'branches',
+    'access-users',
+    'shifts',
+    'departments',
+  };
+
+  bool _usesTree(ErpModule item) => _treeDestinationIds.contains(item.id);
   RouteAccess access(
     ErpModule item,
     CompanyContext company,
@@ -71,11 +84,20 @@ class NavigationResolver {
             !company.enabledModules.contains(item.moduleId))) {
       return RouteAccess.moduleUnavailable;
     }
-    final checker = PermissionChecker(permissions);
-    if (!checker.canAll(item.requiredPermissions) ||
-        (item.anyPermissions.isNotEmpty &&
-            !checker.canAny(item.anyPermissions))) {
-      return RouteAccess.unauthorized;
+    final treeScreen = _usesTree(item)
+        ? accessTree.screenForPath(item.route)
+        : null;
+    if (treeScreen != null) {
+      if (!accessTree.canView(treeScreen, permissions)) {
+        return RouteAccess.unauthorized;
+      }
+    } else {
+      final checker = PermissionChecker(permissions);
+      if (!checker.canAll(item.requiredPermissions) ||
+          (item.anyPermissions.isNotEmpty &&
+              !checker.canAny(item.anyPermissions))) {
+        return RouteAccess.unauthorized;
+      }
     }
     if (item.requiredCapabilities.isNotEmpty &&
         (capabilities == null ||
@@ -106,6 +128,22 @@ class NavigationResolver {
   RouteAccess routeAccess(String path, AuthContext context) {
     final owner = registry.ownerOf(path);
     final capabilities = const UserCapabilityResolver().forAuthContext(context);
+    // The tree owns live routes. The settings hub may own a live route when
+    // its feature destination is not registered (for example in a narrow
+    // composition), so it must still honour the tree. Legacy demo
+    // destinations keep their own permission semantics until removed.
+    final treeScreen = owner == null || _usesTree(owner) || owner.id == 'settings'
+        ? accessTree.screenForPath(path)
+        : null;
+    if (treeScreen != null) {
+      if (owner != null) {
+        final moduleAccess = _moduleAccess(owner, context.company);
+        if (moduleAccess != RouteAccess.allowed) return moduleAccess;
+      }
+      return accessTree.canOpenRoute(treeScreen, path, context.user.permissions)
+          ? RouteAccess.allowed
+          : RouteAccess.unauthorized;
+    }
     final configurationManage = switch (owner?.id) {
       'shifts' => AppPermission.shiftManage,
       'work-locations' => AppPermission.workLocationManage,

@@ -1,4 +1,4 @@
-﻿import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/api/api_client.dart';
@@ -22,12 +22,14 @@ void configureAccessDependencies(GetIt services) {
   services.registerLazySingleton<AccessUserDirectory>(
     () => LocalAccessUserDirectory(services()),
   );
+  if (AppConfig.authMode == AuthMode.backend) {
+    services.registerLazySingleton<AccessAdminRemoteDataSource>(
+      () => DioAccessAdminRemoteDataSource(services<ApiClient>()),
+    );
+  }
   services.registerLazySingleton<AccessRepository>(
     () => AppConfig.authMode == AuthMode.backend
-        ? RemoteAccessRepository(
-            DioAccessAdminRemoteDataSource(services<ApiClient>()),
-            services(),
-          )
+        ? RemoteAccessRepository(services(), services())
         : LocalAccessRepository(
             services(),
             services(),
@@ -46,6 +48,3 @@ void configureAccessDependencies(GetIt services) {
   }
   services.registerLazySingleton(() => const GrantAuthorityResolver());
 }
-
-
-

@@ -6,6 +6,7 @@ import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
@@ -116,8 +117,7 @@ ModuleRegistry createErpRegistry(
   CompanyTimeService? companyTimeService,
 }) {
   final dashboard =
-      dashboardRepository ??
-      LocalDashboardRepository(demoEnabled: false);
+      dashboardRepository ?? LocalDashboardRepository(demoEnabled: false);
   final servicesDashboard =
       (database != null && clock != null && companyTimeService != null)
       ? LocalServicesDashboardRepository(
@@ -187,19 +187,17 @@ ModuleRegistry createErpRegistry(
             navigationGroup: NavigationGroup.configuration,
             order: 40,
             anyPermissions: {
-              AppPermission.shiftView,
-              AppPermission.departmentView,
+              ...accessTree.permissionsForKey('hr.departments.view'),
+              ...accessTree.permissionsForKey('hr.attendance.shifts.view'),
+              ...accessTree.permissionsForKey('company.branches.view'),
+              ...accessTree.permissionsForKey('company.access.users.view'),
               AppPermission.workLocationView,
               AppPermission.attendancePolicyView,
               AppPermission.leaveTypeView,
               AppPermission.leavePolicyView,
               AppPermission.holidayView,
               AppPermission.companyManage,
-              AppPermission.companyBranchView,
-              AppPermission.companyBranchManage,
               AppPermission.userManage,
-              AppPermission.accessUsersView,
-              AppPermission.accessPermissionsManage,
               AppPermission.companyModulesView,
             },
           ),
@@ -233,10 +231,9 @@ ModuleRegistry createErpRegistry(
               route: AppRoutes.branches,
               navigationGroup: NavigationGroup.configuration,
               order: 42,
-              anyPermissions: {
-                AppPermission.companyBranchView,
-                AppPermission.companyBranchManage,
-              },
+              requiredPermissions: accessTree.permissionsForKey(
+                'company.branches.view',
+              ),
             ),
             routes: [
               GoRoute(
@@ -244,85 +241,6 @@ ModuleRegistry createErpRegistry(
                 name: 'branches',
                 builder: (context, state) =>
                     BranchesPage(cubit: BranchListCubit(branchRepository)),
-              ),
-            ],
-          ),
-        if (liveEmployeeRepository != null)
-          RegisteredDestination(
-            navigation: ErpModule(
-              id: 'live-employees',
-              moduleId: AppModuleIds.employees,
-              name: (l) => l.employees,
-              icon: Icons.groups_outlined,
-              selectedIcon: Icons.groups,
-              route: AppRoutes.liveEmployees,
-              navigationGroup: NavigationGroup.people,
-              order: 10,
-              mobilePriority: 1,
-              anyPermissions: {
-                AppPermission.employeeViewAll,
-                AppPermission.employeeViewTeam,
-                AppPermission.employeeViewSelf,
-                AppPermission.employeeCreate,
-              },
-            ),
-            routes: [
-              GoRoute(
-                path: AppRoutes.liveEmployees,
-                name: 'live-employees',
-                builder: (context, state) => LiveEmployeesPage(
-                  cubit: LiveEmployeeCubit(liveEmployeeRepository),
-                ),
-              ),
-            ],
-          ),
-        if (employeeShiftApi != null)
-          RegisteredDestination(
-            navigation: ErpModule(
-              id: 'employee-shifts',
-              moduleId: AppModuleIds.attendance,
-              name: (l) => l.employeeShiftsTitle,
-              icon: Icons.event_available_outlined,
-              route: AppRoutes.employeeShifts,
-              navigationGroup: NavigationGroup.workforce,
-              order: 25,
-              anyPermissions: {
-                AppPermission.shiftView,
-                AppPermission.shiftManage,
-              },
-            ),
-            routes: [
-              GoRoute(
-                path: AppRoutes.employeeShifts,
-                name: 'employee-shifts',
-                builder: (context, state) => EmployeeShiftsPage(
-                  cubit: EmployeeShiftsCubit(employeeShiftApi),
-                ),
-              ),
-            ],
-          ),
-        if (attendanceApi != null)
-          RegisteredDestination(
-            navigation: ErpModule(
-              id: 'live-attendance',
-              moduleId: AppModuleIds.attendance,
-              name: (l) => l.attendanceTodayTitle,
-              icon: Icons.fingerprint,
-              route: AppRoutes.liveAttendance,
-              navigationGroup: NavigationGroup.workforce,
-              order: 24,
-              mobilePriority: 2,
-              anyPermissions: {
-                AppPermission.attendanceViewSelf,
-                AppPermission.attendancePunchIn,
-              },
-            ),
-            routes: [
-              GoRoute(
-                path: AppRoutes.liveAttendance,
-                name: 'live-attendance',
-                builder: (context, state) =>
-                    LiveAttendancePage(cubit: AttendanceCubit(attendanceApi)),
               ),
             ],
           ),
@@ -340,10 +258,9 @@ ModuleRegistry createErpRegistry(
               order: 47,
               desktopVisible: false,
               mobileVisible: false,
-              anyPermissions: {
-                AppPermission.accessUsersView,
-                AppPermission.accessPermissionsManage,
-              },
+              requiredPermissions: accessTree.permissionsForKey(
+                'company.access.users.view',
+              ),
             ),
             routes: [
               GoRoute(
@@ -402,6 +319,98 @@ ModuleRegistry createErpRegistry(
         ...hr.settingsDestinations,
       ],
     ),
+    if (liveEmployeeRepository != null)
+      AppModule(
+        id: 'live-employees',
+        alwaysAvailable: true,
+        destinations: [
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'live-employees',
+              moduleId: 'live-employees',
+              name: (l) => l.employees,
+              icon: Icons.groups_outlined,
+              selectedIcon: Icons.groups,
+              route: AppRoutes.liveEmployees,
+              navigationGroup: NavigationGroup.people,
+              order: 10,
+              mobilePriority: 1,
+              requiredPermissions: accessTree.permissionsForKey(
+                'hr.employees.view',
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.liveEmployees,
+                name: 'live-employees',
+                builder: (context, state) => LiveEmployeesPage(
+                  cubit: LiveEmployeeCubit(liveEmployeeRepository),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    if (employeeShiftApi != null)
+      AppModule(
+        id: 'employee-shifts',
+        alwaysAvailable: true,
+        destinations: [
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'employee-shifts',
+              moduleId: 'employee-shifts',
+              name: (l) => l.employeeShiftsTitle,
+              icon: Icons.event_available_outlined,
+              route: AppRoutes.employeeShifts,
+              navigationGroup: NavigationGroup.workforce,
+              order: 25,
+              requiredPermissions: accessTree.permissionsForKey(
+                'hr.attendance.shifts.view',
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.employeeShifts,
+                name: 'employee-shifts',
+                builder: (context, state) => EmployeeShiftsPage(
+                  cubit: EmployeeShiftsCubit(employeeShiftApi),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    if (attendanceApi != null)
+      AppModule(
+        id: 'live-attendance',
+        alwaysAvailable: true,
+        destinations: [
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'live-attendance',
+              moduleId: 'live-attendance',
+              name: (l) => l.attendanceTodayTitle,
+              icon: Icons.fingerprint,
+              route: AppRoutes.liveAttendance,
+              navigationGroup: NavigationGroup.workforce,
+              order: 24,
+              mobilePriority: 2,
+              requiredPermissions: accessTree.permissionsForKey(
+                'hr.attendance.self.view',
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.liveAttendance,
+                name: 'live-attendance',
+                builder: (context, state) =>
+                    LiveAttendancePage(cubit: AttendanceCubit(attendanceApi)),
+              ),
+            ],
+          ),
+        ],
+      ),
     ...buildServicesModules(
       customers: serviceCustomerRepository,
       sites: serviceSiteRepository,
@@ -443,11 +452,3 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
-
-
-
-
-
-
-
-

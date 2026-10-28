@@ -974,6 +974,24 @@ abstract class AppLocalizations {
   /// **'No items'**
   String get noItemsLabel;
 
+  /// No description provided for @dashboardNoDataSource.
+  ///
+  /// In en, this message translates to:
+  /// **'No dashboard data source yet'**
+  String get dashboardNoDataSource;
+
+  /// No description provided for @dashboardNoDataSourceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no dashboard endpoint yet. Use the links below to open what your permissions allow.'**
+  String get dashboardNoDataSourceMessage;
+
+  /// No description provided for @dashboardQuickLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick links'**
+  String get dashboardQuickLinks;
+
   /// Common/Phase 0 UI: settings.
   ///
   /// In en, this message translates to:

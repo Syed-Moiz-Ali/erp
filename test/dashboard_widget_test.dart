@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +15,7 @@ import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contribution.dart';
 import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
 import 'package:modular_erp/platform/workspace/dashboard/presentation/bloc/universal_dashboard_bloc.dart';
+import 'package:modular_erp/platform/workspace/dashboard/presentation/no_dashboard_data_page.dart';
 import 'package:modular_erp/platform/workspace/dashboard/presentation/universal_dashboard_page.dart';
 import 'auth_widget_test.dart' as ui_test;
 
@@ -201,7 +202,7 @@ void main() {
             AuthLoginRequested('${account.key}@erp.demo', account.value),
           );
           await ui_test.pump(tester);
-          expect(find.byType(UniversalDashboardView), findsOneWidget);
+          expect(find.byType(NoDashboardDataPage), findsOneWidget);
           expect(find.byType(AppShell), findsOneWidget);
           expect(
             ui_test.router(tester).routeInformationProvider.value.uri.path,
@@ -209,7 +210,7 @@ void main() {
           );
           expect(
             Directionality.of(
-              tester.element(find.byType(UniversalDashboardView)),
+              tester.element(find.byType(NoDashboardDataPage)),
             ),
             language == AppLanguage.arabic
                 ? TextDirection.rtl
@@ -232,7 +233,7 @@ void main() {
           AuthLoginRequested('${account.key}@erp.demo', account.value),
         );
         await ui_test.pump(tester);
-        expect(find.byType(UniversalDashboardView), findsOneWidget);
+        expect(find.byType(NoDashboardDataPage), findsOneWidget);
         expect(tester.takeException(), isNull);
         await ui_test.unmount(tester, h);
       });

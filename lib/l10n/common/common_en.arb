@@ -267,6 +267,9 @@
   "attachmentsLabel": "Attachments",
   "currentRecordLabel": "Current",
   "detailsLabel": "Details",
-  "noItemsLabel": "No items"
+  "noItemsLabel": "No items",
+  "dashboardNoDataSource": "No dashboard data source yet",
+  "dashboardNoDataSourceMessage": "There is no dashboard endpoint yet. Use the links below to open what your permissions allow.",
+  "dashboardQuickLinks": "Quick links"
 }
 

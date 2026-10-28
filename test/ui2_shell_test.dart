@@ -120,8 +120,20 @@ void main() {
           ),
           findsOneWidget,
         );
-        expect(find.text(ctx.l10n.navSectionHr), findsOneWidget);
-        expect(find.text(ctx.l10n.navSectionServices), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(AppSidebar),
+            matching: find.text(ctx.l10n.navSectionHr),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byType(AppSidebar),
+            matching: find.text(ctx.l10n.navSectionServices),
+          ),
+          findsOneWidget,
+        );
         // The sidebar consumes centralized width.
         expect(
           tester.getSize(find.byType(AppSidebar)).width,

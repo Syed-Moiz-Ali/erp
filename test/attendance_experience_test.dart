@@ -25,6 +25,7 @@ import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+import 'package:modular_erp/platform/workspace/dashboard/presentation/no_dashboard_data_page.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'attendance_test.dart' show FakeClock, MockCapture, TestSender;
 import 'employee_test.dart' show employeeContext;
@@ -822,27 +823,20 @@ void main() {
     },
   );
   testWidgets(
-    'dashboard preview shows real session state and opens the same attendance owner',
+    'dashboard renders no business data and links only tree screens',
     (t) async {
       final e = await mount(t, AppLanguage.english, 390);
       final l = t.element(find.byType(AttendanceTodayPage)).l10n;
       await action(t, e, l.attendancePunchIn);
       h.router(t).go('/app');
       await settle(t);
+      expect(find.byType(NoDashboardDataPage), findsOneWidget);
+      expect(find.text(l.dashboardNoDataSource), findsWidgets);
       expect(find.byKey(const ValueKey('metric-hours')), findsNothing);
       expect(find.byType(AppActivityItem), findsNothing);
-      expect(find.text(l.attendanceWorking), findsOneWidget);
-      await h.tapVisible(
-        t,
-        find.widgetWithText(AppSecondaryButton, l.attendanceOpenAttendance),
-      );
-      await settle(t);
       expect(
-        identical(
-          t.element(find.byType(AttendanceTodayPage)).read<AttendanceBloc>(),
-          e.bloc,
-        ),
-        isTrue,
+        find.byKey(const ValueKey('dashboard-quick-link-hr.attendance.self')),
+        findsOneWidget,
       );
       expect(await eventCount(t, e), 1);
       await h.unmount(t, e.harness);

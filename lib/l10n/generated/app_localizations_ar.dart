@@ -472,6 +472,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noItemsLabel => 'لا توجد عناصر';
 
   @override
+  String get dashboardNoDataSource => 'لا يوجد مصدر بيانات للوحة التحكم بعد';
+
+  @override
+  String get dashboardNoDataSourceMessage =>
+      'لا توجد واجهة برمجية للوحة التحكم بعد. استخدم الروابط أدناه لفتح ما تسمح به صلاحياتك.';
+
+  @override
+  String get dashboardQuickLinks => 'روابط سريعة';
+
+  @override
   String get settings => 'الإعدادات';
 
   @override

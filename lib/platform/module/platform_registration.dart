@@ -11,7 +11,7 @@ import 'package:modular_erp/platform/auth/presentation/pages/change_password_pag
 import 'package:modular_erp/platform/profile/application/my_profile_cubit.dart';
 import 'package:modular_erp/platform/profile/presentation/my_profile_page.dart';
 import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
-import 'package:modular_erp/platform/workspace/dashboard/presentation/universal_dashboard_page.dart';
+import 'package:modular_erp/platform/workspace/dashboard/presentation/no_dashboard_data_page.dart';
 
 /// Platform (cross-module) destination composition: the Account utilities and
 /// the neutral, universal ERP Dashboard.
@@ -48,7 +48,7 @@ List<AppModule> buildPlatformModules({
               pageBuilder: (context, state) => AppRouteTransitions.page(
                 context,
                 state,
-                UniversalDashboardPage(coordinator: dashboardCoordinator),
+                const NoDashboardDataPage(),
               ),
             ),
           ],

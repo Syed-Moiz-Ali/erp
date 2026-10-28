@@ -1,10 +1,11 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/location/location_service.dart';
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
@@ -146,7 +147,9 @@ HrModules buildHrModules({
         name: (l) => l.cfgShifts,
         icon: Icons.schedule_outlined,
         route: AppRoutes.shifts,
-        requiredPermissions: {AppPermission.shiftView},
+        requiredPermissions: accessTree.permissionsForKey(
+          'hr.attendance.shifts.view',
+        ),
         navigationGroup: NavigationGroup.configuration,
         order: 41,
         desktopVisible: false,
@@ -238,7 +241,9 @@ HrModules buildHrModules({
         name: (l) => l.cfgDepartments,
         icon: Icons.account_tree_outlined,
         route: AppRoutes.departments,
-        requiredPermissions: {AppPermission.departmentView},
+        requiredPermissions: accessTree.permissionsForKey(
+          'hr.departments.view',
+        ),
         navigationGroup: NavigationGroup.configuration,
         order: 44,
         desktopVisible: false,
@@ -834,106 +839,106 @@ HrModules buildHrModules({
     modules: [
       if (includeLegacyEmployees)
         AppModule(
-        id: AppModuleIds.employees,
-        destinations: [
-          RegisteredDestination(
-            navigation: ErpModule(
-              id: 'employees',
-              moduleId: AppModuleIds.employees,
-              name: (l) => l.shellEmployees,
-              icon: Icons.people_outline,
-              selectedIcon: Icons.people,
-              route: AppRoutes.employees,
-              navigationGroup: NavigationGroup.people,
-              order: 10,
-              mobilePriority: 1,
-              anyPermissions: {
-                AppPermission.employeeViewTeam,
-                AppPermission.employeeViewAll,
-              },
-            ),
-            routes: [
-              ShellRoute(
-                builder: (context, state, child) =>
-                    BlocSelector<AuthBloc, AuthState, AuthContext?>(
-                      selector: (s) => s.context,
-                      builder: (context, auth) {
-                        if (auth == null) return const SizedBox.shrink();
-                        if (employeeRepository == null) {
-                          return AppPage(
-                            child: AppErrorState(
-                              message: context.l10n.empStorageError,
-                            ),
-                          );
-                        }
-                        return BlocProvider(
-                          key: ValueKey(auth),
-                          create: (_) =>
-                              EmployeeListBloc(employeeRepository, auth)
-                                ..add(const EmployeeListStarted()),
-                          child: child,
-                        );
-                      },
-                    ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.employees,
-                    name: 'employees',
-                    builder: (context, state) => const EmployeeListPage(),
-                    routes: [
-                      GoRoute(
-                        path: 'new',
-                        name: 'employee-new',
-                        onExit: (context, state) => formGuard.onExit(context),
-                        builder: (context, state) => BlocProvider(
-                          key: const ValueKey('employee-new'),
-                          create: (_) => EmployeeFormBloc(
-                            employeeRepository!,
-                            context.read<EmployeeListBloc>().context,
-                          )..add(const EmployeeFormInitialized()),
-                          child: EmployeeFormPage(guard: formGuard),
-                        ),
-                      ),
-                      GoRoute(
-                        path: ':employeeId',
-                        name: 'employee-details',
-                        builder: (context, state) => BlocProvider(
-                          key: ValueKey(state.pathParameters['employeeId']),
-                          create: (_) => EmployeeDetailsBloc(
-                            employeeRepository!,
-                            context.read<EmployeeListBloc>().context,
-                            state.pathParameters['employeeId']!,
-                          )..add(const EmployeeDetailsStarted()),
-                          child: EmployeeDetailsPage(registry: registry()),
-                        ),
-                        routes: [
-                          GoRoute(
-                            path: 'edit',
-                            name: 'employee-edit',
-                            onExit: (context, state) =>
-                                formGuard.onExit(context),
-                            builder: (context, state) => BlocProvider(
-                              key: ValueKey(
-                                '${state.pathParameters['employeeId']}-edit',
-                              ),
-                              create: (_) => EmployeeFormBloc(
-                                employeeRepository!,
-                                context.read<EmployeeListBloc>().context,
-                                id: state.pathParameters['employeeId'],
-                              )..add(const EmployeeFormInitialized()),
-                              child: EmployeeFormPage(guard: formGuard),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+          id: AppModuleIds.employees,
+          destinations: [
+            RegisteredDestination(
+              navigation: ErpModule(
+                id: 'employees',
+                moduleId: AppModuleIds.employees,
+                name: (l) => l.shellEmployees,
+                icon: Icons.people_outline,
+                selectedIcon: Icons.people,
+                route: AppRoutes.employees,
+                navigationGroup: NavigationGroup.people,
+                order: 10,
+                mobilePriority: 1,
+                anyPermissions: {
+                  AppPermission.employeeViewTeam,
+                  AppPermission.employeeViewAll,
+                },
               ),
-            ],
-          ),
-        ],
-      ),
+              routes: [
+                ShellRoute(
+                  builder: (context, state, child) =>
+                      BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                        selector: (s) => s.context,
+                        builder: (context, auth) {
+                          if (auth == null) return const SizedBox.shrink();
+                          if (employeeRepository == null) {
+                            return AppPage(
+                              child: AppErrorState(
+                                message: context.l10n.empStorageError,
+                              ),
+                            );
+                          }
+                          return BlocProvider(
+                            key: ValueKey(auth),
+                            create: (_) =>
+                                EmployeeListBloc(employeeRepository, auth)
+                                  ..add(const EmployeeListStarted()),
+                            child: child,
+                          );
+                        },
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: AppRoutes.employees,
+                      name: 'employees',
+                      builder: (context, state) => const EmployeeListPage(),
+                      routes: [
+                        GoRoute(
+                          path: 'new',
+                          name: 'employee-new',
+                          onExit: (context, state) => formGuard.onExit(context),
+                          builder: (context, state) => BlocProvider(
+                            key: const ValueKey('employee-new'),
+                            create: (_) => EmployeeFormBloc(
+                              employeeRepository!,
+                              context.read<EmployeeListBloc>().context,
+                            )..add(const EmployeeFormInitialized()),
+                            child: EmployeeFormPage(guard: formGuard),
+                          ),
+                        ),
+                        GoRoute(
+                          path: ':employeeId',
+                          name: 'employee-details',
+                          builder: (context, state) => BlocProvider(
+                            key: ValueKey(state.pathParameters['employeeId']),
+                            create: (_) => EmployeeDetailsBloc(
+                              employeeRepository!,
+                              context.read<EmployeeListBloc>().context,
+                              state.pathParameters['employeeId']!,
+                            )..add(const EmployeeDetailsStarted()),
+                            child: EmployeeDetailsPage(registry: registry()),
+                          ),
+                          routes: [
+                            GoRoute(
+                              path: 'edit',
+                              name: 'employee-edit',
+                              onExit: (context, state) =>
+                                  formGuard.onExit(context),
+                              builder: (context, state) => BlocProvider(
+                                key: ValueKey(
+                                  '${state.pathParameters['employeeId']}-edit',
+                                ),
+                                create: (_) => EmployeeFormBloc(
+                                  employeeRepository!,
+                                  context.read<EmployeeListBloc>().context,
+                                  id: state.pathParameters['employeeId'],
+                                )..add(const EmployeeFormInitialized()),
+                                child: EmployeeFormPage(guard: formGuard),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       AppModule(
         id: AppModuleIds.attendance,
         destinations: [
@@ -1728,4 +1733,3 @@ HrModules buildHrModules({
     settingsDestinations: settingsDestinations,
   );
 }
-

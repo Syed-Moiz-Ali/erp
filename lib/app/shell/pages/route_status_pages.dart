@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/design_system/design_system.dart';
@@ -40,12 +40,15 @@ class RouteStatusPage extends StatelessWidget {
 }
 
 class UnauthorizedPage extends StatelessWidget {
-  const UnauthorizedPage({super.key, required this.landing});
+  const UnauthorizedPage({super.key, required this.landing, this.missingKey});
   final String landing;
+  final String? missingKey;
   @override
   Widget build(BuildContext context) => RouteStatusPage(
     title: (l) => l.shellAccessRestricted,
-    message: (l) => l.shellAccessMessage,
+    message: (l) => missingKey == null
+        ? l.shellAccessMessage
+        : '${l.shellAccessMessage}\n${missingKey!}',
     icon: Icons.lock_outline,
     landing: landing,
   );
@@ -121,4 +124,3 @@ class NoDestinationsPage extends StatelessWidget {
         },
       );
 }
-

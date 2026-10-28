@@ -1,4 +1,4 @@
-﻿import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
@@ -34,11 +34,10 @@ void configureDependencies() {
 const _liveDestinationIds = <String>{
   'dashboard',
   'profile',
-  'settings',
   'shifts',
   'departments',
+  'branches',
   'access-users',
-  'company-modules',
   'live-employees',
   'employee-shifts',
   'live-attendance',
@@ -101,11 +100,3 @@ void configureApplicationComposition(GetIt services) {
     ).retainDestinations(_liveDestinationIds),
   );
 }
-
-
-
-
-
-
-
-

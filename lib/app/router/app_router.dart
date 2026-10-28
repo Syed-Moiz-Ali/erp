@@ -21,6 +21,7 @@ import 'package:modular_erp/platform/sync/presentation/sync_settings_page.dart';
 import 'package:modular_erp/platform/sync/presentation/sync_inspector_page.dart';
 import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/sync/sync_diagnostics.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
@@ -162,10 +163,17 @@ String? _authRedirect(
         : landing;
   }
   final access = navigation.routeAccess(path, account);
+  final screen = accessTree.screenForPath(path);
+  final missingKey = screen == null
+      ? null
+      : accessTree.missingKeyForRoute(screen, path, account.user.permissions);
   return switch (access) {
     RouteAccess.unauthorized => Uri(
       path: AppRoutes.unauthorized,
-      queryParameters: {'from': uri.toString()},
+      queryParameters: {
+        'from': uri.toString(),
+        if (missingKey != null) 'key': missingKey,
+      },
     ).toString(),
     RouteAccess.moduleUnavailable => Uri(
       path: AppRoutes.unavailable,
@@ -301,8 +309,10 @@ GoRouter createAppRouter({
               ),
               GoRoute(
                 path: AppRoutes.unauthorized,
-                builder: (context, state) =>
-                    UnauthorizedPage(landing: landing()),
+                builder: (context, state) => UnauthorizedPage(
+                  landing: landing(),
+                  missingKey: state.uri.queryParameters['key'],
+                ),
               ),
               GoRoute(
                 path: AppRoutes.unavailable,

@@ -476,6 +476,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noItemsLabel => 'No items';
 
   @override
+  String get dashboardNoDataSource => 'No dashboard data source yet';
+
+  @override
+  String get dashboardNoDataSourceMessage =>
+      'There is no dashboard endpoint yet. Use the links below to open what your permissions allow.';
+
+  @override
+  String get dashboardQuickLinks => 'Quick links';
+
+  @override
   String get settings => 'Settings';
 
   @override
