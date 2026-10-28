@@ -1,4 +1,4 @@
-import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
+﻿import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
 
 class LiveEmployeeDto {
   const LiveEmployeeDto(this.json);
@@ -80,3 +80,21 @@ LiveEmployeeLookups mapLookups(Map<String, dynamic> json) {
     statuses: list('statuses'),
   );
 }
+
+Map<String, dynamic> employeeListQuery({
+  String search = '',
+  int? statusId,
+  int? departmentId,
+  int? branchId,
+  String sort = 'nameAsc',
+  int page = 1,
+  int pageSize = 25,
+}) => {
+  'page': page,
+  'pageSize': pageSize,
+  'sort': sort,
+  if (search.trim().isNotEmpty) 'search': search.trim(),
+  if (statusId != null) 'statusId': statusId,
+  if (departmentId != null) 'departmentId': departmentId,
+  if (branchId != null) 'branchId': branchId,
+};

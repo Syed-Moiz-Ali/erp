@@ -77,4 +77,40 @@ void main() {
     expect(errors['login.mobileNo'], 'required');
     expect(errors['login.branchIds'], 'required');
   });
+
+  test('unchanged loaded values are sent back identically', () {
+    final employee = LiveEmployeeDto.fromJson(raw).toDomain();
+    final body = LiveEmployeeDto.fromJson(
+      raw,
+    ).toDraft().toBody(base: employee.raw);
+    for (final key in raw.keys) {
+      expect(
+        body[key],
+        raw[key],
+        reason: 'PUT body changed loaded field $key',
+      );
+    }
+  });
+
+  test('list query maps backend parameters', () {
+    final query = employeeListQuery(
+      search: ' QA ',
+      statusId: 1,
+      departmentId: 2,
+      branchId: 3,
+      sort: 'codeAsc',
+      page: 2,
+      pageSize: 50,
+    );
+    expect(query, {
+      'page': 2,
+      'pageSize': 50,
+      'sort': 'codeAsc',
+      'search': 'QA',
+      'statusId': 1,
+      'departmentId': 2,
+      'branchId': 3,
+    });
+  });
 }
+

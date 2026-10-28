@@ -84,11 +84,44 @@ class DioLiveEmployeeDataSource {
         LiveEmployeeDto.fromJson((json as Map).cast<String, dynamic>()),
   );
 
-  Future<Result<LiveEmployeeLookups>> lookups({CancelToken? cancelToken}) =>
-      _client.get<LiveEmployeeLookups>(
-        ApiEndpoints.employees.lookups,
-        cancelToken: cancelToken,
-        fromJson: (json) => mapLookups((json as Map).cast<String, dynamic>()),
-      );
+  Future<Result<LiveEmployeeLookups>> lookups({CancelToken? cancelToken}) async {
+    final employeeLookups = await _client.get<LiveEmployeeLookups>(
+      ApiEndpoints.employees.lookups,
+      cancelToken: cancelToken,
+      fromJson: (json) => mapLookups((json as Map).cast<String, dynamic>()),
+    );
+    if (employeeLookups is Failed<LiveEmployeeLookups>) {
+      return employeeLookups;
+    }
+    final activeBranches = await _client.get<List<Lookup>>(
+      ApiEndpoints.branches.list,
+      query: const {'page': 1, 'pageSize': 100, 'status': 'Active'},
+      cancelToken: cancelToken,
+      fromJson: (json) {
+        final map = (json as Map).cast<String, dynamic>();
+        return [
+          for (final item in (map['items'] as List? ?? const []))
+            if (item is Map)
+              Lookup(
+                (item['branchId'] as num).toInt(),
+                item['branchName'] as String? ?? '',
+              ),
+        ];
+      },
+    );
+    final base = (employeeLookups as Success<LiveEmployeeLookups>).value;
+    return Success(
+      LiveEmployeeLookups(
+        branches: activeBranches is Success<List<Lookup>>
+            ? activeBranches.value
+            : base.branches,
+        departments: base.departments,
+        nationalities: base.nationalities,
+        statuses: base.statuses,
+      ),
+    );
+  }
 }
+
+
 

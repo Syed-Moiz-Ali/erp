@@ -1,4 +1,4 @@
-class LiveEmployee {
+﻿class LiveEmployee {
   const LiveEmployee({
     required this.id,
     required this.code,
@@ -101,14 +101,16 @@ class LiveEmployeeDraft {
     body['uaeContactNumber'] = phone.trim().isEmpty ? null : phone.trim();
     body['basicSalary'] = basicSalary;
     if (loginEnabled) {
-      body['login'] = {
-        'enabled': true,
-        'loginId': loginId.trim(),
-        'mobileNo': loginMobile.trim(),
-        'userType': (base?['login'] as Map?)?['userType'] ?? 'HR',
-        'branchIds': loginBranchIds,
-        if (loginPassword.isNotEmpty) 'password': loginPassword,
+      final login = <String, dynamic>{
+        ...?(base?['login'] as Map?)?.cast<String, dynamic>(),
       };
+      login['enabled'] = true;
+      login['loginId'] = loginId.trim();
+      login['mobileNo'] = loginMobile.trim();
+      if (base?['login'] == null) login['userType'] = 'HR';
+      login['branchIds'] = loginBranchIds;
+      if (loginPassword.isNotEmpty) login['password'] = loginPassword;
+      body['login'] = login;
     }
     return body;
   }
@@ -129,3 +131,5 @@ class Lookup {
   final int id;
   final String name;
 }
+
+
