@@ -9,7 +9,6 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_tables.dart';
 import 'package:modular_erp/core/sync/sync_conflicts_table.dart';
 import 'package:modular_erp/shared/transactions/data/transactions_tables.dart';
-import 'package:modular_erp/platform/access/data/access_tables.dart';
 import 'package:modular_erp/modules/services/data/services_tables.dart';
 part 'app_database.g.dart';
 
@@ -64,7 +63,6 @@ class SyncOutbox extends Table {
     DocumentSequences,
     AttachmentRecords,
     BusinessActivityEvents,
-    UserPermissionGrants,
     ServiceCustomers,
     ServiceSites,
     ServiceTeams,
@@ -105,7 +103,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 19;
+  int get schemaVersion => 20;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -141,7 +139,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 18 || to != 19) {
+      if (from < 1 || from > 19 || to != 20) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -204,10 +202,6 @@ class AppDatabase extends _$AppDatabase {
         await _ensureTable(m, documentSequences);
         await _ensureTable(m, attachmentRecords);
         await _ensureTable(m, businessActivityEvents);
-      }
-      if (from < 10) {
-        // Phase 0.5 explicit permission grants.
-        await _ensureTable(m, userPermissionGrants);
       }
       if (from < 11) {
         // Access is permission-based: remove the legacy account role column.
@@ -408,12 +402,6 @@ class AppDatabase extends _$AppDatabase {
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS activity_company_entity ON business_activity_events(company_id, entity_type, entity_id, occurred_at)',
-      );
-      await customStatement(
-        'CREATE UNIQUE INDEX IF NOT EXISTS permission_grant_unique ON user_permission_grants(company_id, user_id, permission_key)',
-      );
-      await customStatement(
-        'CREATE INDEX IF NOT EXISTS permission_grant_user ON user_permission_grants(company_id, user_id, is_active)',
       );
       await customStatement(
         'CREATE INDEX IF NOT EXISTS service_customers_company_status ON service_customers(company_id, status, name)',

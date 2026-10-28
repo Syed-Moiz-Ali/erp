@@ -3,18 +3,11 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 
-/// Optional capability: a repository that can persist the effective permission
-/// set computed from grants back into the stored session, so record-scope
-/// queries (which read the session context) reflect live grant changes.
-abstract interface class SessionPermissionSink {
-  Future<void> applyEffectivePermissions(PermissionSet permissions);
-}
-
 /// Persists the effective permission **and** module-entitlement set.
 ///
 /// Backend mode uses this because module availability is derived from the
 /// permission payload (the backend has no module endpoint yet).
-abstract interface class SessionAccessSink implements SessionPermissionSink {
+abstract interface class SessionAccessSink {
   Future<void> applyEffectiveAccess(
     PermissionSet permissions, {
     Set<String>? enabledModules,

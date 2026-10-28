@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
@@ -1147,7 +1147,6 @@ class LocalLeaveRepository implements LeaveRepository {
     )..where((t) => t.id.equals(managerId))).getSingleOrNull();
     final userId = manager?.linkedUserId;
     if (userId == null) return;
-    if (!await _canReceiveReviewNotification(actor.company.id, userId)) return;
     await repository.createLocal(
       AppNotification(
         id: const Uuid().v4(),
@@ -1163,26 +1162,9 @@ class LocalLeaveRepository implements LeaveRepository {
     );
   }
 
-  /// Only notify a reviewer who can actually act on the request (Â§54). Users
+  /// Only notify a reviewer who can actually act on the request (§54). Users
   /// with no grant rows at all (legacy/demo linkage) keep the prior behaviour.
-  Future<bool> _canReceiveReviewNotification(
-    String companyId,
-    String userId,
-  ) async {
-    final rows =
-        await (db.select(db.userPermissionGrants)..where(
-              (t) => t.companyId.equals(companyId) & t.userId.equals(userId),
-            ))
-            .get();
-    if (rows.isEmpty) return true;
-    final now = clock.now();
-    return rows.any(
-      (row) =>
-          row.isActive &&
-          row.permissionKey == 'hr.leave.requests.review' &&
-          (row.expiresAt == null || row.expiresAt!.isAfter(now)),
-    );
-  }
+
 
   // ---- review --------------------------------------------------------------
 

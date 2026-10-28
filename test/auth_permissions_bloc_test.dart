@@ -67,10 +67,6 @@ class _FakeAuthRepository implements AuthRepository, SessionAccessSink {
   Stream<AuthContext?> get sessionChanges => const Stream.empty();
 
   @override
-  Future<void> applyEffectivePermissions(PermissionSet permissions) =>
-      applyEffectiveAccess(permissions);
-
-  @override
   Future<void> applyEffectiveAccess(
     PermissionSet permissions, {
     Set<String>? enabledModules,

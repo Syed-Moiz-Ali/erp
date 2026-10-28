@@ -17,7 +17,7 @@ import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.da
 
 /// Production authentication repository backed by the MassERP API.
 ///
-/// Implements [AuthRepository], [SessionPermissionSink] (so effective
+/// Implements [AuthRepository], [SessionAccessSink] (so effective
 /// permissions persist back into the stored session) and [TokenRefresher] (so
 /// the shared networking layer can rotate tokens through the single-flight
 /// coordinator).
@@ -285,10 +285,6 @@ class RemoteAuthRepository
   }
 
   // --- Effective access (SessionAccessSink) ---------------------------------
-
-  @override
-  Future<void> applyEffectivePermissions(PermissionSet permissions) =>
-      applyEffectiveAccess(permissions);
 
   @override
   Future<void> applyEffectiveAccess(

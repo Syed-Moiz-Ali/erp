@@ -1,35 +1,44 @@
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
-import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/localization/app_language.dart';
-import 'package:modular_erp/core/utils/app_clock.dart';
-import 'package:modular_erp/platform/access/data/local_access_repository.dart';
-import 'support/demo/demo_access_user_directory.dart';
+import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
 import 'package:modular_erp/platform/access/presentation/user_access_detail_page.dart';
 import 'package:modular_erp/platform/access/presentation/users_access_page.dart';
-import 'support/demo/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
 import 'auth_widget_test.dart' as ui_test;
+import 'support/fake_access_repository.dart';
 
 void main() {
   testWidgets(
     'Users & Access list and editor render on desktop and Arabic RTL',
     (tester) async {
       ui_test.viewport(tester, 1440);
-      final db = AppDatabase(NativeDatabase.memory());
-      addTearDown(db.close);
-      final repository = LocalAccessRepository(
-        db,
-        const SystemAppClock(),
-        LocalActivityRepository(db),
-        DemoAccessUserDirectory(DemoAuthSource()),
+      final repository = FakeAccessRepository(
+        users: const [
+          AccessUserListItem(
+            userId: 'demo-admin',
+            displayName: 'Super admin',
+            email: 'admin@erp.demo',
+            hasLogin: true,
+            accountStatus: 'active',
+          ),
+          AccessUserListItem(
+            userId: 'demo-employee',
+            displayName: 'Employee',
+            email: 'employee@erp.demo',
+            hasLogin: true,
+            accountStatus: 'active',
+            employeeId: 'employee-employee',
+            employeeCode: 'EMP-EMPLOYEE',
+            isEmployeeActive: true,
+          ),
+        ],
       );
+      addTearDown(repository.dispose);
       final h = await ui_test.mount(
         tester,
         AppLanguage.english,

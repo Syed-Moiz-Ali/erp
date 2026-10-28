@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/api/access_endpoint.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
-import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/access/domain/effective_access.dart';
 import 'package:modular_erp/platform/access/domain/effective_access_source.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
@@ -40,13 +39,6 @@ final class AuthSessionExpired extends AuthEvent {
 final class AuthSessionUpdated extends AuthEvent {
   const AuthSessionUpdated(this.context);
   final AuthContext context;
-}
-
-/// Internal: the current user's grants changed and effective permissions must
-/// be refreshed without a re-login.
-final class AuthPermissionsRefreshed extends AuthEvent {
-  const AuthPermissionsRefreshed(this.permissions);
-  final PermissionSet permissions;
 }
 
 /// Reload the effective access from the backend (resume, manual retry, or a
@@ -98,7 +90,6 @@ class AuthState {
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
     this.repository, {
-    this.grants,
     this.effectiveAccess,
     this.accessEndpoint,
   }) : super(const AuthState(AuthStatus.initial)) {
@@ -120,21 +111,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
   final AuthRepository repository;
 
-  /// Demo-mode grants source. Backend mode must pass [effectiveAccess] and
-  /// never uses local grants for authorization.
-  final UserGrantsController? grants;
-
-  /// Backend effective-access loader. When present, local [grants] are ignored.
+  /// Backend effective-access loader (GET /api/me/permissions).
   final EffectiveAccessSource? effectiveAccess;
   final AccessEndpoint? accessEndpoint;
   late final StreamSubscription<AuthContext?> _subscription;
   StreamSubscription<String>? _accessSub;
-  StreamSubscription<PermissionSet>? _grantsSub;
-  String? _grantsKey;
   bool _loginQueued = false;
   bool _reloadQueued = false;
-
-  bool get _backendMode => effectiveAccess != null;
 
   Future<void> _persistAccess(
     PermissionSet permissions, {
@@ -145,10 +128,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await (repo as SessionAccessSink).applyEffectiveAccess(
         permissions,
         enabledModules: enabledModules,
-      );
-    } else if (repo is SessionPermissionSink) {
-      await (repo as SessionPermissionSink).applyEffectivePermissions(
-        permissions,
       );
     }
   }
@@ -194,24 +173,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       }
     }
-    final controller = grants;
-    if (controller == null) {
-      return (context: context, failure: null, loaded: true);
-    }
-    try {
-      final permissions = await controller.permissionsFor(context);
-      await _persistAccess(permissions);
-      return (
-        context: context.copyWith(
-          user: context.user.copyWith(permissions: permissions),
-        ),
-        failure: null,
-        loaded: true,
-      );
-    } catch (_) {
-      // Demo/local grants keep the repository-provided set on read failure.
-      return (context: context, failure: null, loaded: true);
-    }
+    return (context: context, failure: null, loaded: true);
   }
 
   AuthContext _withoutAccess(AuthContext context) => context.copyWith(
@@ -220,31 +182,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ),
     company: context.company.copyWith(enabledModules: const <String>{}),
   );
-
-  void _watchGrants(AuthContext context) {
-    if (_backendMode) return;
-    final controller = grants;
-    if (controller == null) return;
-    final key = '${context.company.id}:${context.user.id}';
-    if (_grantsKey == key) return;
-    _grantsKey = key;
-    unawaited(_grantsSub?.cancel());
-    _grantsSub = controller.watch(context).listen((permissions) {
-      final current = state.context;
-      if (current == null ||
-          current.company.id != context.company.id ||
-          current.user.id != context.user.id) {
-        return;
-      }
-      add(AuthPermissionsRefreshed(permissions));
-    });
-  }
-
-  void _stopGrants() {
-    _grantsKey = null;
-    unawaited(_grantsSub?.cancel());
-    _grantsSub = null;
-  }
 
   Future<void> _emitAuthenticated(
     Emitter<AuthState> emit,
@@ -259,7 +196,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         permissionsLoaded: resolved.loaded,
       ),
     );
-    _watchGrants(resolved.context);
   }
 
   Future<void> _reloadPermissions(Emitter<AuthState> emit) async {
@@ -276,8 +212,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           permissionsLoaded: resolved.loaded,
         ),
       );
-      _watchGrants(resolved.context);
-    } finally {
+      } finally {
       _reloadQueued = false;
     }
   }
@@ -313,7 +248,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         switch (result) {
           case Success<AuthContext?>(:final value):
             if (value == null) {
-              _stopGrants();
               emit(
                 const AuthState(
                   AuthStatus.unauthenticated,
@@ -327,7 +261,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await _emitAuthenticated(emit, value);
             }
           case Failed<AuthContext?>(:final failure):
-            _stopGrants();
             emit(AuthState(AuthStatus.unauthenticated, failure: failure));
         }
       case AuthLoginRequested(:final identifier, :final password):
@@ -368,7 +301,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         final result = await repository.logout();
-        _stopGrants();
         switch (result) {
           case Success<void>():
             emit(const AuthState(AuthStatus.unauthenticated));
@@ -382,7 +314,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             );
         }
       case AuthSessionExpired():
-        _stopGrants();
         emit(
           const AuthState(
             AuthStatus.unauthenticated,
@@ -411,19 +342,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         add(const AuthPermissionsReloadRequested());
-      case AuthPermissionsRefreshed(:final permissions):
-        final current = state.context;
-        if (current == null) return;
-        await _persistAccess(permissions);
-        emit(
-          AuthState(
-            AuthStatus.authenticated,
-            context: current.copyWith(
-              user: current.user.copyWith(permissions: permissions),
-            ),
-            permissionsLoaded: true,
-          ),
-        );
     }
   }
 
@@ -431,7 +349,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() async {
     await _subscription.cancel();
     await _accessSub?.cancel();
-    await _grantsSub?.cancel();
     await super.close();
   }
 }

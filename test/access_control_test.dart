@@ -1,25 +1,10 @@
-import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
-import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
-import 'package:modular_erp/core/utils/app_clock.dart';
-import 'package:modular_erp/platform/access/data/access_user_directory.dart';
-import 'package:modular_erp/platform/access/data/local_access_repository.dart';
-import 'package:modular_erp/platform/access/domain/access_repository.dart';
-import 'package:modular_erp/platform/access/domain/user_permission_grant.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
-import 'support/demo/demo_scenario_grants.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
-import 'package:modular_erp/shared/transactions/data/local_activity_repository.dart';
-
-class _FakeDirectory implements AccessUserDirectory {
-  @override
-  Stream<List<AccessUserListItem>> watchUsers({required String companyId}) =>
-      Stream.value(const []);
-}
+import 'support/demo/demo_scenario_grants.dart';
 
 void main() {
   group('permission catalog', () {
@@ -55,117 +40,6 @@ void main() {
     });
   });
 
-  group('access repository', () {
-    late AppDatabase db;
-    late LocalAccessRepository repository;
-    setUp(() {
-      db = AppDatabase(NativeDatabase.memory());
-      repository = LocalAccessRepository(
-        db,
-        const SystemAppClock(),
-        LocalActivityRepository(db),
-        _FakeDirectory(),
-      );
-    });
-    tearDown(() => db.close());
-
-    Future<void> replace(
-      List<PermissionGrantInput> grants, {
-      String companyId = 'c1',
-      String userId = 'u1',
-      String requestId = 'r1',
-    }) async {
-      final result = await repository.replaceGrants(
-        companyId: companyId,
-        actorUserId: 'admin',
-        targetUserId: userId,
-        requestId: requestId,
-        grants: grants,
-      );
-      expect(result, isA<Success<void>>());
-    }
-
-    test('adds, updates and removes grants with audit events', () async {
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.leave.records.view',
-          scope: PermissionScope.team,
-        ),
-      ]);
-      var grants = await repository.getGrants(companyId: 'c1', userId: 'u1');
-      expect((grants as Success).value, hasLength(1));
-
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.leave.records.view',
-          scope: PermissionScope.all,
-        ),
-        PermissionGrantInput(
-          key: 'hr.holidays.manage',
-          scope: PermissionScope.none,
-        ),
-      ]);
-      grants = await repository.getGrants(companyId: 'c1', userId: 'u1');
-      expect((grants as Success).value, hasLength(2));
-
-      final history = await repository
-          .watchHistory(companyId: 'c1', userId: 'u1')
-          .first;
-      final types = history.map((e) => e.eventType).toSet();
-      expect(types, contains('access.permission.added'));
-      expect(types, contains('access.permission.updated'));
-      final updated = history.firstWhere(
-        (e) => e.eventType == 'access.permission.updated',
-      );
-      expect(updated.metadata['oldScope'], 'team');
-      expect(updated.metadata['newScope'], 'all');
-    });
-
-    test('one effective grant per permission key', () async {
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.leave.records.view',
-          scope: PermissionScope.team,
-        ),
-      ]);
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.leave.records.view',
-          scope: PermissionScope.team,
-        ),
-      ]);
-      final rows = await db.select(db.userPermissionGrants).get();
-      expect(rows, hasLength(1));
-    });
-
-    test('grants are company scoped', () async {
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.holidays.manage',
-          scope: PermissionScope.none,
-        ),
-      ]);
-      final other = await repository.getGrants(companyId: 'c2', userId: 'u1');
-      expect((other as Success).value, isEmpty);
-    });
-
-    test('removal records an audit event', () async {
-      await replace(const [
-        PermissionGrantInput(
-          key: 'hr.holidays.manage',
-          scope: PermissionScope.none,
-        ),
-      ]);
-      await replace(const []);
-      final history = await repository
-          .watchHistory(companyId: 'c1', userId: 'u1')
-          .first;
-      expect(
-        history.map((e) => e.eventType),
-        contains('access.permission.removed'),
-      );
-    });
-  });
 
   group('role independence', () {
     CompanyContext company() => const CompanyContext(

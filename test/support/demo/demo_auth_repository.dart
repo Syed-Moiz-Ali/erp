@@ -89,10 +89,6 @@ class DemoAuthRepository implements AuthRepository, SessionAccessSink {
   /// Persists the effective permission set into the stored session and notifies
   /// listeners. Idempotent: an unchanged set performs no write or emit.
   @override
-  Future<void> applyEffectivePermissions(PermissionSet permissions) =>
-      applyEffectiveAccess(permissions);
-
-  @override
   Future<void> applyEffectiveAccess(
     PermissionSet permissions, {
     Set<String>? enabledModules,

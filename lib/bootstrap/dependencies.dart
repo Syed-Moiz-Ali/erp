@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
@@ -76,7 +77,9 @@ void configureApplicationComposition(GetIt services) {
       leaveTypeRepository: services(),
       leavePolicyRepository: services(),
       holidayRepository: services(),
-      accessRepository: services(),
+      accessRepository: services.isRegistered<AccessRepository>()
+          ? services<AccessRepository>()
+          : null,
       accessCatalog: services(),
       accessAuthority: services(),
       permissionMasterRepository: services.isRegistered<PermissionMasterRepository>()

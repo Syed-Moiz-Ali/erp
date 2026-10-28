@@ -253,11 +253,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        19,
-      );
-      expect(
-        await upgraded.select(upgraded.userPermissionGrants).get(),
-        isEmpty,
+        20,
       );
       expect(await upgraded.select(upgraded.documentSequences).get(), isEmpty);
       expect(await upgraded.select(upgraded.attachmentRecords).get(), isEmpty);

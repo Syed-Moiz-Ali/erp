@@ -46,7 +46,6 @@ import 'package:modular_erp/core/preferences/app_preferences_repository.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/design_system/design_system.dart';
-import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
 import 'support/demo/demo_auth_source.dart';
@@ -89,7 +88,6 @@ Future<Harness> mount(
   LocationService? locationService,
   AttendanceBloc Function(AuthRepository, AppDatabase)? createAttendanceBloc,
   AppClock? attendanceClock,
-  UserGrantsController? grants,
   bool withServices = false,
 }) async {
   final locale = LocaleCubit(
@@ -101,7 +99,7 @@ Future<Harness> mount(
   final source = DemoAuthSource();
   final repo =
       repository ?? DemoAuthRepository(MemorySessionStorage(), source: source);
-  final auth = AuthBloc(repo, grants: grants), key = GlobalKey();
+  final auth = AuthBloc(repo), key = GlobalKey();
   AppDatabase? database;
   ModuleRegistry? registry;
   if (registryFactory == null) {
