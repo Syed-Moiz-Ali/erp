@@ -51,6 +51,8 @@ enum AppPermission {
   accessUsersView,
   accessPermissionsManage,
   companyModulesView,
+  companyBranchView,
+  companyBranchManage,
   platformModulesManage,
   // Services Phase 1 (directory, teams, configuration).
   serviceCustomerView,
@@ -136,6 +138,7 @@ const Map<AppPermission, AppPermission> permissionViewDependencies = {
   AppPermission.workLocationManage: AppPermission.workLocationView,
   AppPermission.attendancePolicyManage: AppPermission.attendancePolicyView,
   AppPermission.departmentManage: AppPermission.departmentView,
+  AppPermission.companyBranchManage: AppPermission.companyBranchView,
   AppPermission.leaveTypeManage: AppPermission.leaveTypeView,
   AppPermission.leavePolicyManage: AppPermission.leavePolicyView,
   AppPermission.holidayManage: AppPermission.holidayView,

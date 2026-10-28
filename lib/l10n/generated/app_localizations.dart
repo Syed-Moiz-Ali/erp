@@ -2270,6 +2270,30 @@ abstract class AppLocalizations {
   /// **'No workspace areas are available for this account. Contact your administrator.'**
   String get shellNoDestinationsMessage;
 
+  /// No description provided for @shellNoPermissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No permissions assigned'**
+  String get shellNoPermissionsTitle;
+
+  /// No description provided for @shellNoPermissionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is signed in, but no ERP permissions are assigned. Ask an administrator to grant access, then retry.'**
+  String get shellNoPermissionsMessage;
+
+  /// No description provided for @shellPermissionsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load permissions'**
+  String get shellPermissionsUnavailable;
+
+  /// No description provided for @shellPermissionsUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The permission service could not be reached. Access stays blocked until it succeeds.'**
+  String get shellPermissionsUnavailableMessage;
+
   /// No description provided for @syncOfflineTitle.
   ///
   /// In en, this message translates to:
@@ -2941,6 +2965,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View company modules'**
   String get permissionCompanyModulesView;
+
+  /// No description provided for @permissionCompanyBranchView.
+  ///
+  /// In en, this message translates to:
+  /// **'View companies / branches'**
+  String get permissionCompanyBranchView;
+
+  /// No description provided for @permissionCompanyBranchViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See companies and branches.'**
+  String get permissionCompanyBranchViewDesc;
+
+  /// No description provided for @permissionCompanyBranchManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage companies / branches'**
+  String get permissionCompanyBranchManage;
+
+  /// No description provided for @permissionCompanyBranchManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create, edit, activate and deactivate companies / branches.'**
+  String get permissionCompanyBranchManageDesc;
 
   /// No description provided for @permissionPlatformModulesManage.
   ///

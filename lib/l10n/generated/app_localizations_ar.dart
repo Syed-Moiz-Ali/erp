@@ -1151,6 +1151,20 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا تتوفر مساحات عمل لهذا الحساب. تواصل مع المسؤول.';
 
   @override
+  String get shellNoPermissionsTitle => 'لم يتم تعيين صلاحيات';
+
+  @override
+  String get shellNoPermissionsMessage =>
+      'حسابك مسجل الدخول، لكن لم يتم تعيين أي صلاحيات ERP. اطلب من المسؤول منح الوصول ثم أعد المحاولة.';
+
+  @override
+  String get shellPermissionsUnavailable => 'تعذر تحميل الصلاحيات';
+
+  @override
+  String get shellPermissionsUnavailableMessage =>
+      'تعذر الوصول إلى خدمة الصلاحيات. يبقى الوصول محظوراً حتى تنجح المحاولة.';
+
+  @override
   String get syncOfflineTitle => 'أنت غير متصل';
 
   @override
@@ -1502,6 +1516,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get permissionCompanyModulesView => 'عرض وحدات الشركة';
+
+  @override
+  String get permissionCompanyBranchView => 'عرض الشركات / الفروع';
+
+  @override
+  String get permissionCompanyBranchViewDesc => 'عرض الشركات والفروع.';
+
+  @override
+  String get permissionCompanyBranchManage => 'إدارة الشركات / الفروع';
+
+  @override
+  String get permissionCompanyBranchManageDesc =>
+      'إنشاء الشركات والفروع وتعديلها وتفعيلها وتعطيلها.';
 
   @override
   String get permissionPlatformModulesManage => 'إدارة وحدات المنصة';

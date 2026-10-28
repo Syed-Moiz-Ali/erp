@@ -1,4 +1,5 @@
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/backend_access_policy.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
 
@@ -43,6 +44,15 @@ class PermissionCatalog {
 
   Iterable<PermissionDefinition> get definitions =>
       modules.expand((m) => m.definitions);
+
+  /// Definitions that the live MassERP backend can actually grant.
+  ///
+  /// Backend mode must use this view for the Access UI: client-only
+  /// (demo/local) permissions and keys with no backend counterpart are hidden.
+  Iterable<PermissionDefinition> get backendDefinitions => definitions.where(
+    (definition) =>
+        !definition.clientOnly && BackendAccessPolicy.supports(definition.key),
+  );
 
   PermissionDefinition? byKey(String key) {
     for (final definition in definitions) {

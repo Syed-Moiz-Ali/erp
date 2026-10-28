@@ -1,4 +1,4 @@
-import 'package:modular_erp/core/security/app_permission.dart';
+﻿import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
@@ -58,12 +58,33 @@ const platformPermissionModules = <PermissionModule>[
             permissions: {PermissionScope.none: AppPermission.userManage},
           ),
           PermissionDefinition(
+            key: 'company.branches.view',
+            moduleId: 'platform',
+            submoduleId: 'access',
+            nameKey: 'permissionCompanyBranchView',
+            descriptionKey: 'permissionCompanyBranchViewDesc',
+            order: 5,
+            permissions: {PermissionScope.none: AppPermission.companyBranchView},
+          ),
+          PermissionDefinition(
+            key: 'company.branches.manage',
+            moduleId: 'platform',
+            submoduleId: 'access',
+            nameKey: 'permissionCompanyBranchManage',
+            descriptionKey: 'permissionCompanyBranchManageDesc',
+            order: 6,
+            risk: PermissionRisk.elevated,
+            permissions: {
+              PermissionScope.none: AppPermission.companyBranchManage,
+            },
+          ),
+          PermissionDefinition(
             key: 'platform.companies.manage',
             moduleId: 'platform',
             submoduleId: 'access',
             nameKey: 'accessPlatformCompaniesManage',
             descriptionKey: 'accessPlatformCompaniesManageDesc',
-            order: 6,
+            order: 7,
             platformOnly: true,
             delegable: false,
             permissions: {PermissionScope.none: AppPermission.companyManage},
@@ -74,7 +95,7 @@ const platformPermissionModules = <PermissionModule>[
             submoduleId: 'access',
             nameKey: 'accessPlatformModulesManage',
             descriptionKey: 'accessPlatformModulesManageDesc',
-            order: 7,
+            order: 8,
             platformOnly: true,
             delegable: false,
             permissions: {
@@ -86,3 +107,4 @@ const platformPermissionModules = <PermissionModule>[
     ],
   ),
 ];
+

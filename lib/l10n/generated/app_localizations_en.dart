@@ -1164,6 +1164,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'No workspace areas are available for this account. Contact your administrator.';
 
   @override
+  String get shellNoPermissionsTitle => 'No permissions assigned';
+
+  @override
+  String get shellNoPermissionsMessage =>
+      'Your account is signed in, but no ERP permissions are assigned. Ask an administrator to grant access, then retry.';
+
+  @override
+  String get shellPermissionsUnavailable => 'Could not load permissions';
+
+  @override
+  String get shellPermissionsUnavailableMessage =>
+      'The permission service could not be reached. Access stays blocked until it succeeds.';
+
+  @override
   String get syncOfflineTitle => 'You\'re offline';
 
   @override
@@ -1525,6 +1539,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionCompanyModulesView => 'View company modules';
+
+  @override
+  String get permissionCompanyBranchView => 'View companies / branches';
+
+  @override
+  String get permissionCompanyBranchViewDesc => 'See companies and branches.';
+
+  @override
+  String get permissionCompanyBranchManage => 'Manage companies / branches';
+
+  @override
+  String get permissionCompanyBranchManageDesc =>
+      'Create, edit, activate and deactivate companies / branches.';
 
   @override
   String get permissionPlatformModulesManage => 'Manage platform modules';

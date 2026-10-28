@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
@@ -175,6 +175,8 @@ ModuleRegistry createErpRegistry(
               AppPermission.leavePolicyView,
               AppPermission.holidayView,
               AppPermission.companyManage,
+              AppPermission.companyBranchView,
+              AppPermission.companyBranchManage,
               AppPermission.userManage,
               AppPermission.accessUsersView,
               AppPermission.accessPermissionsManage,
@@ -310,3 +312,4 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+

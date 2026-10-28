@@ -84,6 +84,8 @@ extension AppPermissionLocalization on AppPermission {
     AppPermission.accessPermissionsManage =>
       l10n.permissionAccessPermissionsManage,
     AppPermission.companyModulesView => l10n.permissionCompanyModulesView,
+    AppPermission.companyBranchView => l10n.permissionCompanyBranchView,
+    AppPermission.companyBranchManage => l10n.permissionCompanyBranchManage,
     AppPermission.platformModulesManage => l10n.permissionPlatformModulesManage,
     AppPermission.serviceCustomerView => l10n.permissionServiceCustomerView,
     AppPermission.serviceCustomerCreate => l10n.permissionServiceCustomerCreate,
