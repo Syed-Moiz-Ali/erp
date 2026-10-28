@@ -8522,6 +8522,17 @@ class $ShiftRecordsTable extends ShiftRecords
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _earlyPunchInMinutesMeta =
+      const VerificationMeta('earlyPunchInMinutes');
+  @override
+  late final GeneratedColumn<int> earlyPunchInMinutes = GeneratedColumn<int>(
+    'early_punch_in_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(15),
+  );
   static const VerificationMeta _breakModeMeta = const VerificationMeta(
     'breakMode',
   );
@@ -8568,6 +8579,7 @@ class $ShiftRecordsTable extends ShiftRecords
     endMinutes,
     workingDayMask,
     gracePeriodMinutes,
+    earlyPunchInMinutes,
     breakMode,
     defaultBreakMinutes,
     minimumWorkMinutes,
@@ -8695,6 +8707,15 @@ class $ShiftRecordsTable extends ShiftRecords
     } else if (isInserting) {
       context.missing(_gracePeriodMinutesMeta);
     }
+    if (data.containsKey('early_punch_in_minutes')) {
+      context.handle(
+        _earlyPunchInMinutesMeta,
+        earlyPunchInMinutes.isAcceptableOrUnknown(
+          data['early_punch_in_minutes']!,
+          _earlyPunchInMinutesMeta,
+        ),
+      );
+    }
     if (data.containsKey('break_mode')) {
       context.handle(
         _breakModeMeta,
@@ -8782,6 +8803,10 @@ class $ShiftRecordsTable extends ShiftRecords
         DriftSqlType.int,
         data['${effectivePrefix}grace_period_minutes'],
       )!,
+      earlyPunchInMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}early_punch_in_minutes'],
+      )!,
       breakMode: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}break_mode'],
@@ -8817,6 +8842,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
   final int endMinutes;
   final int workingDayMask;
   final int gracePeriodMinutes;
+  final int earlyPunchInMinutes;
   final String breakMode;
   final int? defaultBreakMinutes;
   final int? minimumWorkMinutes;
@@ -8834,6 +8860,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
     required this.endMinutes,
     required this.workingDayMask,
     required this.gracePeriodMinutes,
+    required this.earlyPunchInMinutes,
     required this.breakMode,
     this.defaultBreakMinutes,
     this.minimumWorkMinutes,
@@ -8856,6 +8883,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
     map['end_minutes'] = Variable<int>(endMinutes);
     map['working_day_mask'] = Variable<int>(workingDayMask);
     map['grace_period_minutes'] = Variable<int>(gracePeriodMinutes);
+    map['early_punch_in_minutes'] = Variable<int>(earlyPunchInMinutes);
     map['break_mode'] = Variable<String>(breakMode);
     if (!nullToAbsent || defaultBreakMinutes != null) {
       map['default_break_minutes'] = Variable<int>(defaultBreakMinutes);
@@ -8881,6 +8909,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
       endMinutes: Value(endMinutes),
       workingDayMask: Value(workingDayMask),
       gracePeriodMinutes: Value(gracePeriodMinutes),
+      earlyPunchInMinutes: Value(earlyPunchInMinutes),
       breakMode: Value(breakMode),
       defaultBreakMinutes: defaultBreakMinutes == null && nullToAbsent
           ? const Value.absent()
@@ -8910,6 +8939,9 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
       endMinutes: serializer.fromJson<int>(json['endMinutes']),
       workingDayMask: serializer.fromJson<int>(json['workingDayMask']),
       gracePeriodMinutes: serializer.fromJson<int>(json['gracePeriodMinutes']),
+      earlyPunchInMinutes: serializer.fromJson<int>(
+        json['earlyPunchInMinutes'],
+      ),
       breakMode: serializer.fromJson<String>(json['breakMode']),
       defaultBreakMinutes: serializer.fromJson<int?>(
         json['defaultBreakMinutes'],
@@ -8934,6 +8966,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
       'endMinutes': serializer.toJson<int>(endMinutes),
       'workingDayMask': serializer.toJson<int>(workingDayMask),
       'gracePeriodMinutes': serializer.toJson<int>(gracePeriodMinutes),
+      'earlyPunchInMinutes': serializer.toJson<int>(earlyPunchInMinutes),
       'breakMode': serializer.toJson<String>(breakMode),
       'defaultBreakMinutes': serializer.toJson<int?>(defaultBreakMinutes),
       'minimumWorkMinutes': serializer.toJson<int?>(minimumWorkMinutes),
@@ -8954,6 +8987,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
     int? endMinutes,
     int? workingDayMask,
     int? gracePeriodMinutes,
+    int? earlyPunchInMinutes,
     String? breakMode,
     Value<int?> defaultBreakMinutes = const Value.absent(),
     Value<int?> minimumWorkMinutes = const Value.absent(),
@@ -8971,6 +9005,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
     endMinutes: endMinutes ?? this.endMinutes,
     workingDayMask: workingDayMask ?? this.workingDayMask,
     gracePeriodMinutes: gracePeriodMinutes ?? this.gracePeriodMinutes,
+    earlyPunchInMinutes: earlyPunchInMinutes ?? this.earlyPunchInMinutes,
     breakMode: breakMode ?? this.breakMode,
     defaultBreakMinutes: defaultBreakMinutes.present
         ? defaultBreakMinutes.value
@@ -9006,6 +9041,9 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
       gracePeriodMinutes: data.gracePeriodMinutes.present
           ? data.gracePeriodMinutes.value
           : this.gracePeriodMinutes,
+      earlyPunchInMinutes: data.earlyPunchInMinutes.present
+          ? data.earlyPunchInMinutes.value
+          : this.earlyPunchInMinutes,
       breakMode: data.breakMode.present ? data.breakMode.value : this.breakMode,
       defaultBreakMinutes: data.defaultBreakMinutes.present
           ? data.defaultBreakMinutes.value
@@ -9032,6 +9070,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
           ..write('endMinutes: $endMinutes, ')
           ..write('workingDayMask: $workingDayMask, ')
           ..write('gracePeriodMinutes: $gracePeriodMinutes, ')
+          ..write('earlyPunchInMinutes: $earlyPunchInMinutes, ')
           ..write('breakMode: $breakMode, ')
           ..write('defaultBreakMinutes: $defaultBreakMinutes, ')
           ..write('minimumWorkMinutes: $minimumWorkMinutes')
@@ -9054,6 +9093,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
     endMinutes,
     workingDayMask,
     gracePeriodMinutes,
+    earlyPunchInMinutes,
     breakMode,
     defaultBreakMinutes,
     minimumWorkMinutes,
@@ -9075,6 +9115,7 @@ class ShiftRecord extends DataClass implements Insertable<ShiftRecord> {
           other.endMinutes == this.endMinutes &&
           other.workingDayMask == this.workingDayMask &&
           other.gracePeriodMinutes == this.gracePeriodMinutes &&
+          other.earlyPunchInMinutes == this.earlyPunchInMinutes &&
           other.breakMode == this.breakMode &&
           other.defaultBreakMinutes == this.defaultBreakMinutes &&
           other.minimumWorkMinutes == this.minimumWorkMinutes);
@@ -9094,6 +9135,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
   final Value<int> endMinutes;
   final Value<int> workingDayMask;
   final Value<int> gracePeriodMinutes;
+  final Value<int> earlyPunchInMinutes;
   final Value<String> breakMode;
   final Value<int?> defaultBreakMinutes;
   final Value<int?> minimumWorkMinutes;
@@ -9112,6 +9154,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
     this.endMinutes = const Value.absent(),
     this.workingDayMask = const Value.absent(),
     this.gracePeriodMinutes = const Value.absent(),
+    this.earlyPunchInMinutes = const Value.absent(),
     this.breakMode = const Value.absent(),
     this.defaultBreakMinutes = const Value.absent(),
     this.minimumWorkMinutes = const Value.absent(),
@@ -9131,6 +9174,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
     required int endMinutes,
     required int workingDayMask,
     required int gracePeriodMinutes,
+    this.earlyPunchInMinutes = const Value.absent(),
     required String breakMode,
     this.defaultBreakMinutes = const Value.absent(),
     this.minimumWorkMinutes = const Value.absent(),
@@ -9162,6 +9206,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
     Expression<int>? endMinutes,
     Expression<int>? workingDayMask,
     Expression<int>? gracePeriodMinutes,
+    Expression<int>? earlyPunchInMinutes,
     Expression<String>? breakMode,
     Expression<int>? defaultBreakMinutes,
     Expression<int>? minimumWorkMinutes,
@@ -9182,6 +9227,8 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
       if (workingDayMask != null) 'working_day_mask': workingDayMask,
       if (gracePeriodMinutes != null)
         'grace_period_minutes': gracePeriodMinutes,
+      if (earlyPunchInMinutes != null)
+        'early_punch_in_minutes': earlyPunchInMinutes,
       if (breakMode != null) 'break_mode': breakMode,
       if (defaultBreakMinutes != null)
         'default_break_minutes': defaultBreakMinutes,
@@ -9205,6 +9252,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
     Value<int>? endMinutes,
     Value<int>? workingDayMask,
     Value<int>? gracePeriodMinutes,
+    Value<int>? earlyPunchInMinutes,
     Value<String>? breakMode,
     Value<int?>? defaultBreakMinutes,
     Value<int?>? minimumWorkMinutes,
@@ -9224,6 +9272,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
       endMinutes: endMinutes ?? this.endMinutes,
       workingDayMask: workingDayMask ?? this.workingDayMask,
       gracePeriodMinutes: gracePeriodMinutes ?? this.gracePeriodMinutes,
+      earlyPunchInMinutes: earlyPunchInMinutes ?? this.earlyPunchInMinutes,
       breakMode: breakMode ?? this.breakMode,
       defaultBreakMinutes: defaultBreakMinutes ?? this.defaultBreakMinutes,
       minimumWorkMinutes: minimumWorkMinutes ?? this.minimumWorkMinutes,
@@ -9273,6 +9322,9 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
     if (gracePeriodMinutes.present) {
       map['grace_period_minutes'] = Variable<int>(gracePeriodMinutes.value);
     }
+    if (earlyPunchInMinutes.present) {
+      map['early_punch_in_minutes'] = Variable<int>(earlyPunchInMinutes.value);
+    }
     if (breakMode.present) {
       map['break_mode'] = Variable<String>(breakMode.value);
     }
@@ -9304,6 +9356,7 @@ class ShiftRecordsCompanion extends UpdateCompanion<ShiftRecord> {
           ..write('endMinutes: $endMinutes, ')
           ..write('workingDayMask: $workingDayMask, ')
           ..write('gracePeriodMinutes: $gracePeriodMinutes, ')
+          ..write('earlyPunchInMinutes: $earlyPunchInMinutes, ')
           ..write('breakMode: $breakMode, ')
           ..write('defaultBreakMinutes: $defaultBreakMinutes, ')
           ..write('minimumWorkMinutes: $minimumWorkMinutes, ')
@@ -47504,6 +47557,7 @@ typedef $$ShiftRecordsTableCreateCompanionBuilder =
       required int endMinutes,
       required int workingDayMask,
       required int gracePeriodMinutes,
+      Value<int> earlyPunchInMinutes,
       required String breakMode,
       Value<int?> defaultBreakMinutes,
       Value<int?> minimumWorkMinutes,
@@ -47524,6 +47578,7 @@ typedef $$ShiftRecordsTableUpdateCompanionBuilder =
       Value<int> endMinutes,
       Value<int> workingDayMask,
       Value<int> gracePeriodMinutes,
+      Value<int> earlyPunchInMinutes,
       Value<String> breakMode,
       Value<int?> defaultBreakMinutes,
       Value<int?> minimumWorkMinutes,
@@ -47601,6 +47656,11 @@ class $$ShiftRecordsTableFilterComposer
 
   ColumnFilters<int> get gracePeriodMinutes => $composableBuilder(
     column: $table.gracePeriodMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get earlyPunchInMinutes => $composableBuilder(
+    column: $table.earlyPunchInMinutes,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -47694,6 +47754,11 @@ class $$ShiftRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get earlyPunchInMinutes => $composableBuilder(
+    column: $table.earlyPunchInMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get breakMode => $composableBuilder(
     column: $table.breakMode,
     builder: (column) => ColumnOrderings(column),
@@ -47770,6 +47835,11 @@ class $$ShiftRecordsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<int> get earlyPunchInMinutes => $composableBuilder(
+    column: $table.earlyPunchInMinutes,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get breakMode =>
       $composableBuilder(column: $table.breakMode, builder: (column) => column);
 
@@ -47828,6 +47898,7 @@ class $$ShiftRecordsTableTableManager
                 Value<int> endMinutes = const Value.absent(),
                 Value<int> workingDayMask = const Value.absent(),
                 Value<int> gracePeriodMinutes = const Value.absent(),
+                Value<int> earlyPunchInMinutes = const Value.absent(),
                 Value<String> breakMode = const Value.absent(),
                 Value<int?> defaultBreakMinutes = const Value.absent(),
                 Value<int?> minimumWorkMinutes = const Value.absent(),
@@ -47846,6 +47917,7 @@ class $$ShiftRecordsTableTableManager
                 endMinutes: endMinutes,
                 workingDayMask: workingDayMask,
                 gracePeriodMinutes: gracePeriodMinutes,
+                earlyPunchInMinutes: earlyPunchInMinutes,
                 breakMode: breakMode,
                 defaultBreakMinutes: defaultBreakMinutes,
                 minimumWorkMinutes: minimumWorkMinutes,
@@ -47866,6 +47938,7 @@ class $$ShiftRecordsTableTableManager
                 required int endMinutes,
                 required int workingDayMask,
                 required int gracePeriodMinutes,
+                Value<int> earlyPunchInMinutes = const Value.absent(),
                 required String breakMode,
                 Value<int?> defaultBreakMinutes = const Value.absent(),
                 Value<int?> minimumWorkMinutes = const Value.absent(),
@@ -47884,6 +47957,7 @@ class $$ShiftRecordsTableTableManager
                 endMinutes: endMinutes,
                 workingDayMask: workingDayMask,
                 gracePeriodMinutes: gracePeriodMinutes,
+                earlyPunchInMinutes: earlyPunchInMinutes,
                 breakMode: breakMode,
                 defaultBreakMinutes: defaultBreakMinutes,
                 minimumWorkMinutes: minimumWorkMinutes,

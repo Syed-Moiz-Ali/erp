@@ -2767,6 +2767,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Grace must be non-negative and shorter than the shift.';
 
   @override
+  String get cfgInvalidEarlyPunch =>
+      'Early punch-in must be between 0 and 120 minutes.';
+
+  @override
+  String get cfgEarlyPunch => 'Early punch-in window';
+
+  @override
   String get cfgInvalidBreak => 'Fixed break must be shorter than the shift.';
 
   @override

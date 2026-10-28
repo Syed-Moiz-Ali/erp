@@ -2723,6 +2723,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'يجب ألا تكون فترة السماح سالبة وأن تكون أقصر من الوردية.';
 
   @override
+  String get cfgInvalidEarlyPunch =>
+      'يجب أن تكون نافذة الحضور المبكر بين 0 و120 دقيقة.';
+
+  @override
+  String get cfgEarlyPunch => 'نافذة الحضور المبكر';
+
+  @override
   String get cfgInvalidBreak =>
       'يجب أن تكون الاستراحة الثابتة أقصر من الوردية.';
 

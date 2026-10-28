@@ -24,6 +24,7 @@ String configurationFailure(Failure failure, AppLocalizations l) =>
       'invalidTimeRange' => l.cfgInvalidTime,
       'workingDays' => l.cfgWorkingDaysError,
       'invalidGrace' => l.cfgInvalidGrace,
+      'invalidEarlyPunch' => l.cfgInvalidEarlyPunch,
       'invalidBreak' => l.cfgInvalidBreak,
       'invalidMinimumWork' => l.cfgInvalidMinimum,
       'invalidCoordinates' => l.cfgInvalidCoordinates,

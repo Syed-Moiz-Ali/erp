@@ -38,7 +38,9 @@ import 'package:modular_erp/modules/hr/module/workforce_directory_adapter.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/data/local_attendance_report_repository.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
+import 'package:modular_erp/modules/hr/shifts/data/datasources/dio_shift_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/shifts/data/local_shift_repository.dart';
+import 'package:modular_erp/modules/hr/shifts/data/repositories/remote_shift_repository.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/data/local_work_location_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
@@ -151,7 +153,12 @@ void configureHrDependencies(GetIt services) {
     () => LocalEmployeeRepository(services(), services()),
   );
   services.registerLazySingleton<ShiftRepository>(
-    () => LocalShiftRepository(services()),
+    () => AppConfig.authMode == AuthMode.backend
+        ? RemoteShiftRepository(DioShiftRemoteDataSource(services<ApiClient>()))
+        : LocalShiftRepository(services()),
+    dispose: (repo) {
+      if (repo is RemoteShiftRepository) repo.dispose();
+    },
   );
   services.registerLazySingleton<DepartmentRepository>(
     () => AppConfig.authMode == AuthMode.backend

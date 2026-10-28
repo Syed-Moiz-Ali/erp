@@ -12,6 +12,9 @@ import 'package:modular_erp/modules/hr/departments/data/repositories/local_depar
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
+import 'package:modular_erp/modules/hr/shifts/data/local_shift_repository.dart';
+import 'package:modular_erp/modules/hr/shifts/data/repositories/remote_shift_repository.dart';
+import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/access/access_dependencies.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
@@ -64,6 +67,7 @@ void main() {
         services<DepartmentRepository>(),
         isA<RemoteDepartmentRepository>(),
       );
+      expect(services<ShiftRepository>(), isA<RemoteShiftRepository>());
       expect(services.isRegistered<ApiClient>(), isTrue);
       expect(
         services<ApiClient>().dio.options.baseUrl,
@@ -92,6 +96,7 @@ void main() {
         services<DepartmentRepository>(),
         isA<LocalDepartmentRepository>(),
       );
+      expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
       expect(services.isRegistered<ApiClient>(), isFalse);
     },
   );
@@ -116,6 +121,7 @@ void main() {
         services<DepartmentRepository>(),
         isA<LocalDepartmentRepository>(),
       );
+      expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
       expect(services.isRegistered<ApiClient>(), isFalse);
     },
   );

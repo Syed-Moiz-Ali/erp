@@ -5258,6 +5258,18 @@ abstract class AppLocalizations {
   /// **'Grace must be non-negative and shorter than the shift.'**
   String get cfgInvalidGrace;
 
+  /// No description provided for @cfgInvalidEarlyPunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Early punch-in must be between 0 and 120 minutes.'**
+  String get cfgInvalidEarlyPunch;
+
+  /// No description provided for @cfgEarlyPunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Early punch-in window'**
+  String get cfgEarlyPunch;
+
   /// No description provided for @cfgInvalidBreak.
   ///
   /// In en, this message translates to:

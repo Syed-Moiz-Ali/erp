@@ -2,6 +2,7 @@ import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
+import 'package:modular_erp/app/router/platform_routes.dart';
 import 'package:modular_erp/app/shell/erp_shell.dart';
 import 'package:modular_erp/platform/design_system_preview/presentation/design_system_preview_page.dart';
 import 'package:modular_erp/platform/workspace/presentation/workspace_page.dart';
@@ -12,24 +13,24 @@ final moduleRegistry = ModuleRegistry([
     id: 'workspace',
     name: (l10n) => l10n.overview,
     icon: Icons.grid_view_outlined,
-    route: '/',
+    route: PlatformRoutes.root,
     order: 0,
   ),
   ErpModule(
     id: 'design-system',
     name: (l10n) => l10n.designSystem,
     icon: Icons.palette_outlined,
-    route: '/design-system',
+    route: PlatformRoutes.designSystem,
     navigationGroup: NavigationGroup.internal,
     order: 100,
   ),
 ]);
 GoRouter createPreviewRouter() => GoRouter(
-  initialLocation: '/design-system',
+  initialLocation: PlatformRoutes.designSystem,
   errorBuilder: (context, state) => Scaffold(
     body: AppErrorState(
       message: context.l10n.pageNotFound,
-      onRetry: () => context.go('/'),
+      onRetry: () => context.go(PlatformRoutes.root),
     ),
   ),
   routes: [
@@ -40,9 +41,12 @@ GoRouter createPreviewRouter() => GoRouter(
         child: child,
       ),
       routes: [
-        GoRoute(path: '/', builder: (context, state) => WorkspacePage()),
         GoRoute(
-          path: '/design-system',
+          path: PlatformRoutes.root,
+          builder: (context, state) => WorkspacePage(),
+        ),
+        GoRoute(
+          path: PlatformRoutes.designSystem,
           builder: (context, state) => DesignSystemPreviewPage(),
         ),
       ],

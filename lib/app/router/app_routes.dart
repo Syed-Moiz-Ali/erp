@@ -9,10 +9,10 @@ import 'package:modular_erp/modules/services/module/services_routes.dart';
 /// the canonical module-first values are defined in one place. New code should
 /// prefer the module route class directly.
 abstract final class AppRoutes {
-  static const root = '/',
-      bootstrap = '/bootstrap',
-      login = '/login',
-      forgotPassword = '/forgot-password',
+  static const root = PlatformRoutes.root,
+      bootstrap = PlatformRoutes.bootstrap,
+      login = PlatformRoutes.login,
+      forgotPassword = PlatformRoutes.forgotPassword,
       app = PlatformRoutes.app,
       dashboard = PlatformRoutes.dashboard,
       employees = HrRoutes.employees,
@@ -21,20 +21,20 @@ abstract final class AppRoutes {
       services = ServicesRoutes.root,
       reports = HrRoutes.reports,
       settings = PlatformRoutes.settings,
-      access = '$settings/access',
-      modules = '$settings/modules',
+      access = PlatformRoutes.access,
+      modules = PlatformRoutes.modules,
       profile = PlatformRoutes.profile,
       changePassword = PlatformRoutes.changePassword,
-      more = '/app/more',
+      more = PlatformRoutes.more,
       notifications = PlatformRoutes.notifications,
       reminderSettings = PlatformRoutes.reminderSettings,
       syncSettings = PlatformRoutes.syncSettings,
-      syncInspector = '/app/sync-inspector',
-      unauthorized = '/app/access-denied',
-      unavailable = '/app/module-unavailable',
-      notFound = '/app/not-found',
-      noDestinations = '/app/no-destinations',
-      designSystem = '/design-system';
+      syncInspector = PlatformRoutes.syncInspector,
+      unauthorized = PlatformRoutes.unauthorized,
+      unavailable = PlatformRoutes.unavailable,
+      notFound = PlatformRoutes.notFound,
+      noDestinations = PlatformRoutes.noDestinations,
+      designSystem = PlatformRoutes.designSystem;
   static const attendanceHistory = HrRoutes.attendanceHistory;
   static const attendanceCorrections = HrRoutes.attendanceCorrections;
   static const attendanceRequests = HrRoutes.attendanceRequests;

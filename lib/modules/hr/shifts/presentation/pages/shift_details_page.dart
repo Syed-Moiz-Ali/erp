@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
@@ -22,6 +23,9 @@ class ShiftDetailsPage extends StatelessWidget {
         },
         builder: (context, s) {
           final l = context.l10n, bloc = context.read<ShiftDetailsBloc>();
+          // Working days and break rules are local-only concepts; hide them in
+          // backend mode where the API does not expose them.
+          final backend = AppConfig.realApiEnabled;
           return ConfigurationDetailsLayout<Shift>(
             title: l.cfgShifts,
             state: s,
@@ -35,11 +39,12 @@ class ShiftDetailsPage extends StatelessWidget {
               title: l.cfgSchedule,
               child: AppDetailsGrid(
                 fields: [
-                  AppDetailField(
-                    label: l.cfgCode,
-                    value: record.code ?? l.noSelection,
-                    identifier: true,
-                  ),
+                  if (!backend)
+                    AppDetailField(
+                      label: l.cfgCode,
+                      value: record.code ?? l.noSelection,
+                      identifier: true,
+                    ),
                   AppDetailField(
                     label: l.cfgStart,
                     value: configurationTime(context, record.startTime),
@@ -49,9 +54,17 @@ class ShiftDetailsPage extends StatelessWidget {
                     value: configurationTime(context, record.endTime),
                   ),
                   AppDetailField(
-                    label: l.cfgDays,
-                    value: workingDaysSummary(record.workingDays, l),
+                    label: l.cfgEarlyPunch,
+                    value: configurationDuration(
+                      context,
+                      record.earlyPunchInMinutes,
+                    ),
                   ),
+                  if (!backend)
+                    AppDetailField(
+                      label: l.cfgDays,
+                      value: workingDaysSummary(record.workingDays, l),
+                    ),
                   AppDetailField(
                     label: l.cfgDuration,
                     value: configurationDuration(
@@ -59,13 +72,14 @@ class ShiftDetailsPage extends StatelessWidget {
                       record.durationMinutes,
                     ),
                   ),
-                  AppDetailField(
-                    label: l.cfgExpectedWork,
-                    value: configurationDuration(
-                      context,
-                      record.expectedWorkMinutes,
+                  if (!backend)
+                    AppDetailField(
+                      label: l.cfgExpectedWork,
+                      value: configurationDuration(
+                        context,
+                        record.expectedWorkMinutes,
+                      ),
                     ),
-                  ),
                   AppDetailField(
                     label: l.cfgGrace,
                     value: configurationDuration(
@@ -73,11 +87,12 @@ class ShiftDetailsPage extends StatelessWidget {
                       record.gracePeriodMinutes,
                     ),
                   ),
-                  AppDetailField(
-                    label: l.cfgBreakMode,
-                    value: shiftBreakLabel(record.breakMode, l),
-                  ),
-                  if (record.defaultBreakMinutes != null)
+                  if (!backend)
+                    AppDetailField(
+                      label: l.cfgBreakMode,
+                      value: shiftBreakLabel(record.breakMode, l),
+                    ),
+                  if (!backend && record.defaultBreakMinutes != null)
                     AppDetailField(
                       label: l.cfgBreakMinutes,
                       value: configurationDuration(
@@ -85,7 +100,7 @@ class ShiftDetailsPage extends StatelessWidget {
                         record.defaultBreakMinutes!,
                       ),
                     ),
-                  if (record.minimumWorkMinutes != null)
+                  if (!backend && record.minimumWorkMinutes != null)
                     AppDetailField(
                       label: l.cfgMinimumWork,
                       value: configurationDuration(

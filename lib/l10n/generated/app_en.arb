@@ -1089,6 +1089,8 @@
   "cfgInvalidTime": "Choose different valid start and end times.",
   "cfgWorkingDaysError": "Select at least one working day.",
   "cfgInvalidGrace": "Grace must be non-negative and shorter than the shift.",
+  "cfgInvalidEarlyPunch": "Early punch-in must be between 0 and 120 minutes.",
+  "cfgEarlyPunch": "Early punch-in window",
   "cfgInvalidBreak": "Fixed break must be shorter than the shift.",
   "cfgInvalidMinimum": "Minimum work must fit within expected working time.",
   "cfgInvalidCoordinates": "Enter coordinates within valid latitude and longitude ranges.",

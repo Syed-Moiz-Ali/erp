@@ -67,7 +67,82 @@ Uses Flutter's compile-time build-mode constants only — no runtime heuristics:
 
 ## 5. Flutter Web CORS requirements
 
-The browser enforces CORS between the Flutter Web origin and the ngrok/backend origin. The **backend** must return `Access-Control-Allow-Origin` for the app's origin (and allow `Authorization`, `Content-Type`, `X-Request-ID`, `X-Client-Platform` for preflight). ngrok tunnels typically pass the backend's CORS headers through; configure the backend accordingly. The app does not and must not bypass CORS. `alt=…` or proxy workarounds are intentionally not used.
+The browser enforces CORS between the Flutter Web origin and the ngrok/backend origin. The **backend** must return `Access-Control-Allow-Origin` for the app's origin (and allow `Authorization`, `Content-Type`, `X-Request-ID`, `X-Client-Platform` for preflight). ngrok tunnels pass the backend's CORS headers through; they do not add CORS themselves. The app does not and must not bypass CORS, and `Flutter` code cannot fix this — no client-side change can satisfy the browser.
+
+### Symptom
+
+```
+Access to XMLHttpRequest at 'https://<tunnel>.ngrok-free.dev/api/auth/login'
+from origin 'http://localhost:62494' has been blocked by CORS policy:
+Response to preflight request doesn't pass access control check:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+### Diagnosis (verified against the dev tunnel)
+
+`OPTIONS` reaches Kestrel but the backend answers with **401 and no CORS headers**, i.e. authentication runs on the preflight before CORS does:
+
+```
+curl -i -X OPTIONS "https://<tunnel>.ngrok-free.dev/api/auth/login" \
+  -H "Origin: http://localhost:62494" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: content-type,authorization,x-request-id,x-client-platform"
+# → HTTP/1.1 401 Unauthorized  (no Access-Control-Allow-Origin)
+```
+
+A correct preflight returns `HTTP/1.1 204 No Content` with `Access-Control-Allow-Origin`,
+`Access-Control-Allow-Methods` and `Access-Control-Allow-Headers`.
+
+### Fix (ASP.NET Core / MassERP — backend)
+
+1. Register a policy:
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FlutterWeb", policy => policy
+        .WithOrigins(
+            "http://localhost:62494",   // this run's Flutter web origin
+            "http://localhost:8080")    // recommended fixed dev origin
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
+```
+
+2. Enable it **before** authentication/authorization so the preflight short-circuits
+   (a `401` from auth is precisely what breaks the preflight):
+
+```csharp
+app.UseRouting();
+app.UseCors("FlutterWeb");        // must precede UseAuthentication/UseAuthorization
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+```
+
+For a local-only dev environment `AllowAnyOrigin()` is also acceptable (we send no
+cookies, so `Access-Control-Allow-Credentials` is not required).
+
+3. The allowed request headers must include every header the app sends:
+   `authorization`, `content-type`, `x-request-id`, `x-client-platform`
+   (`AllowAnyHeader()` covers this).
+
+### Recommendation: pin the Flutter Web dev port
+
+The dev origin changes every `flutter run -d chrome` (e.g. `:62494`). Pin it so the
+backend allowlist stays stable:
+
+```
+flutter run -d chrome --web-port=8080
+```
+
+### Dev-only alternatives (until the backend allows CORS)
+
+- Serve the Flutter Web build from the **same origin** as the API (e.g. backend serves `build/web`).
+- Put a local reverse proxy in front of the tunnel on a fixed port and point `API_BASE_URL` at that proxy (it can add the CORS headers).
+- Do **not** ship `--disable-web-security`/`--disable-features=IsolateOrigins` browser hacks; they are local debugging only and never a fix.
+
+`ngrok-skip-browser-warning` is not added by the app: the ngrok browser interstitial is a separate, documented tunnel behaviour and adding a non-contract header would not fix a preflight that receives a `401` from the backend.
 
 ---
 

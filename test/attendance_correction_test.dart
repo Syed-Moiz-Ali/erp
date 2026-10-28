@@ -253,7 +253,7 @@ void main() {
       expect(
         (await upgraded.customSelect('PRAGMA user_version').getSingle())
             .read<int>('user_version'),
-        18,
+        19,
       );
       expect(
         await upgraded.select(upgraded.userPermissionGrants).get(),

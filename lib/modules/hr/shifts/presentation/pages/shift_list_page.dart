@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
@@ -23,6 +24,9 @@ class ShiftListPage extends StatelessWidget {
     },
     builder: (c, s) {
       final bloc = c.read<ShiftListBloc>();
+      // Working days and break rules are local-only concepts the backend shift
+      // contract does not expose; hide them in backend mode.
+      final backend = AppConfig.realApiEnabled;
       return ConfigurationListLayout<Shift>(
         title: c.l10n.cfgShifts,
         subtitle: c.l10n.cfgShiftIntro,
@@ -40,28 +44,34 @@ class ShiftListPage extends StatelessWidget {
         summary: (c, record) => shiftSummary(c, record),
         summaryLabel: c.l10n.cfgSchedule,
         extraColumns: [
-          DataColumn(label: Text(c.l10n.cfgDays)),
-          DataColumn(label: Text(c.l10n.cfgExpectedWork)),
+          if (!backend) DataColumn(label: Text(c.l10n.cfgDays)),
+          if (!backend) DataColumn(label: Text(c.l10n.cfgExpectedWork)),
           DataColumn(label: Text(c.l10n.cfgGrace)),
         ],
         extraCells: (c, record) => [
-          DataCell(
-            SizedBox(
-              width: 170,
-              child: Text(
-                workingDaysSummary(record.workingDays, c.l10n),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+          if (!backend)
+            DataCell(
+              SizedBox(
+                width: 170,
+                child: Text(
+                  workingDaysSummary(record.workingDays, c.l10n),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
-          ),
-          DataCell(Text(configurationDuration(c, record.expectedWorkMinutes))),
+          if (!backend)
+            DataCell(
+              Text(configurationDuration(c, record.expectedWorkMinutes)),
+            ),
           DataCell(Text(configurationDuration(c, record.gracePeriodMinutes))),
         ],
-        mobileDetails: (c, record) => [
-          workingDaysSummary(record.workingDays, c.l10n),
-          configurationDuration(c, record.expectedWorkMinutes),
-        ].join(' · '),
+        mobileDetails: backend
+            ? null
+            : (c, record) => [
+                workingDaysSummary(record.workingDays, c.l10n),
+                configurationDuration(c, record.expectedWorkMinutes),
+              ].join(' · '),
         onActive: (id, active) => bloc.add(RecordStatusRequested(id, active)),
       );
     },
