@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 /// Authentication source selection. Kept here so the environment model owns the
 /// full configuration vocabulary.
-enum AuthMode { demo, backend, disabled }
+enum AuthMode { backend, disabled }
 
 /// A loaded, validated environment configuration.
 ///
@@ -19,22 +19,13 @@ class AppEnvironment {
 
   /// Filesystem-free default used before the loader runs and by tests.
   ///
-  /// Debug defaults to demo (existing local-first developer experience);
-  /// profile/release default to a disabled configuration so an unloaded build
-  /// can never silently authenticate through demo.
-  factory AppEnvironment.unconfigured() => kDebugMode
-      ? const AppEnvironment(
-          name: EnvironmentConfig.developmentName,
-          apiBaseUrl: '',
-          authMode: AuthMode.demo,
-          allowInsecureHttp: true,
-        )
-      : const AppEnvironment(
-          name: EnvironmentConfig.productionName,
-          apiBaseUrl: '',
-          authMode: AuthMode.disabled,
-          allowInsecureHttp: false,
-        );
+  /// Live-only: an unloaded build is disabled and can never authenticate.
+  factory AppEnvironment.unconfigured() => const AppEnvironment(
+    name: EnvironmentConfig.developmentName,
+    apiBaseUrl: '',
+    authMode: AuthMode.disabled,
+    allowInsecureHttp: false,
+  );
 
   /// `development` or `production`.
   final String name;
@@ -110,8 +101,6 @@ abstract final class EnvironmentConfig {
       switch (rawMode) {
         case 'backend':
           mode = AuthMode.backend;
-        case 'demo':
-          mode = AuthMode.demo;
         case 'disabled':
           mode = AuthMode.disabled;
         default:
@@ -121,7 +110,7 @@ abstract final class EnvironmentConfig {
 
     var apiBaseUrl = '';
     if (rawUrl.isEmpty) {
-      // Demo and disabled modes do not need a backend URL.
+      // Disabled mode does not need a backend URL.
       if (mode == AuthMode.backend) errors.add('$apiBaseUrlKey is missing');
     } else {
       final uri = Uri.tryParse(rawUrl);
@@ -145,10 +134,6 @@ abstract final class EnvironmentConfig {
           );
         }
       }
-    }
-
-    if (isProduction && mode == AuthMode.demo) {
-      errors.add('$authModeKey demo is not allowed in production');
     }
 
     if (errors.isNotEmpty) {
@@ -225,3 +210,4 @@ abstract final class EnvironmentConfig {
 }
 
 enum FlutterBuildMode { debug, profile, release }
+

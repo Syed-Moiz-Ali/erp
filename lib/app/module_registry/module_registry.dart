@@ -225,4 +225,27 @@ class ModuleRegistry {
           )
           .toList()
         ..sort((a, b) => a.order.compareTo(b.order));
+
+  /// Restricts the registry to destinations with live backend coverage.
+  ///
+  /// Used by the live-only product mode so local/demo-backed screens cannot be
+  /// opened by navigation or by typing a URL.
+  ModuleRegistry retainDestinations(Set<String> ids) {
+    final retained = <AppModule>[];
+    for (final module in modules) {
+      final destinations = module.destinations
+          .where((destination) => ids.contains(destination.navigation.id))
+          .toList(growable: false);
+      if (destinations.isEmpty) continue;
+      retained.add(
+        AppModule(
+          id: module.id,
+          destinations: destinations,
+          enabled: module.enabled,
+          alwaysAvailable: module.alwaysAvailable,
+        ),
+      );
+    }
+    return ModuleRegistry.fromModules(retained);
+  }
 }

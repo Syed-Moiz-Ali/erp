@@ -1,8 +1,7 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
@@ -27,7 +26,7 @@ class LocalAttendanceCorrectionRepository
     this.clock, {
     bool? demoEnabled,
     this.notifications,
-  }) : demoEnabled = demoEnabled ?? AppConfig.demoMode;
+  }) : demoEnabled = demoEnabled ?? false;
   final AppDatabase db;
   final AuthRepository auth;
   final AppClock clock;
@@ -617,3 +616,4 @@ class LocalAttendanceCorrectionRepository
     required String note,
   }) => _review(id, reviewerId, 'rejected', note);
 }
+

@@ -1,6 +1,5 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
@@ -101,7 +100,7 @@ ModuleRegistry createErpRegistry(
 }) {
   final dashboard =
       dashboardRepository ??
-      LocalDashboardRepository(demoEnabled: AppConfig.demoMode);
+      LocalDashboardRepository(demoEnabled: false);
   final servicesDashboard =
       (database != null && clock != null && companyTimeService != null)
       ? LocalServicesDashboardRepository(
@@ -323,5 +322,6 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
 
 

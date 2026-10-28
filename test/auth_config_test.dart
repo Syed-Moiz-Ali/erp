@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/core/errors/result.dart';
@@ -7,14 +7,9 @@ import 'package:modular_erp/platform/auth/data/repositories/disabled_auth_reposi
 
 void main() {
   group('auth mode selection', () {
-    test('tests run in demo mode with fixtures enabled', () {
-      // No API_BASE_URL and debug build: demo is the deterministic selection.
-      expect(AppConfig.authMode, AuthMode.demo);
-      expect(AppConfig.demoMode, isTrue);
-    });
-
-    test('demoMode is exactly the demo auth mode', () {
-      expect(AppConfig.demoMode, AppConfig.authMode == AuthMode.demo);
+    test('unconfigured builds are disabled (live-only)', () {
+      expect(AppConfig.authMode, AuthMode.disabled);
+      expect(AppConfig.realApiEnabled, isFalse);
     });
   });
 
@@ -55,3 +50,4 @@ void main() {
     });
   });
 }
+

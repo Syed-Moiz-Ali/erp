@@ -1,4 +1,4 @@
-# Bitlogix ERP - Phase 8
+﻿# Bitlogix ERP - Phase 8
 
 Frontend-only, local-first Flutter ERP. Phase 8 adds self-scoped Attendance History, company-month navigation, status filters, completed-only monthly aggregates, responsive rows/table, and historical day details using frozen configuration and the shared attendance timeline. The employee Dashboard can use the real monthly summary. Existing UI changes and centralized styling are preserved. See [the Phase 8 completion report](docs/phase_8_attendance_history.md), [Phase 7](docs/phase_7_attendance_experience.md), [the engine report](docs/phase_6_attendance_engine.md), [configuration](docs/phase_5_configuration.md), [employees](docs/phase_4_employees.md), [dashboard](docs/phase_3_dashboard.md), [shell](docs/phase_2_shell.md), and [authentication](docs/phase_1_authentication.md).
 
@@ -18,7 +18,7 @@ flutter run -d chrome
 flutter run -d windows
 ```
 
-Debug runs enable demo authentication by default. Release builds disable demo fixtures; use `flutter build web --dart-define=DEMO_AUTH=true` for an explicitly designated demo build. Internal `/design-system` requires authentication and demo configuration. Future remote repositories can configure `--dart-define=API_BASE_URL=https://your-api.example`; The current frontend makes no API calls.
+The app is live-only. Configure `API_BASE_URL` and `AUTH_MODE=backend` in `.env.development` (debug) or `.env.production` (profile/release); there is no demo authentication, demo seeding, or local business fixtures. An unconfigured build is disabled and cannot sign in. The current live verticals are authentication, effective permissions, access administration, departments, and shifts; local-only modules are hidden until their backend vertical is implemented.
 
 ## Structure
 
@@ -97,4 +97,5 @@ Phase 8 stops here. Today, history, historical details and truthful monthly summ
 Auth tests additionally cover five email/phone accounts, secure persistence/corruption/expiry, logout failure handling, explicit permissions, DTO mapping, disabled demo configuration, password workflows, protected deep links and all nine requested widths in both languages. Live browser verification was unavailable because no browser connection was present.
 
 
-Attendance UI demo data is seeded locally in demo mode for Employee, Manager and HR accounts. Restart the app to apply the seed. Current/previous-month history includes breaks, late arrivals and overnight shifts; Today is left open for real local punch testing with a GPS-free demo policy. Existing records and assignments are preserved. Employee login: `employee@erp.demo` / `Employee@123`. Production mode does not seed attendance fixtures.
+Attendance UI is not wired to the live API yet and is hidden in the live-only build. No attendance/demo fixtures are seeded.
+

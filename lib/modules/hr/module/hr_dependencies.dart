@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+﻿import 'package:get_it/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/core/api/api_client.dart';
@@ -71,9 +71,7 @@ void configureHrDependencies(GetIt services) {
       services(),
       services(),
       services(),
-      authority: AppConfig.demoMode
-          ? AttendanceAuthority.demoLocal
-          : AttendanceAuthority.productionPending,
+      authority: AttendanceAuthority.productionPending,
     ),
   );
   services.registerLazySingleton<AttendanceCorrectionRepository>(
@@ -98,7 +96,7 @@ void configureHrDependencies(GetIt services) {
   // HR-owned dashboard (workforce-specific repository).
   services.registerLazySingleton<DashboardRepository>(
     () => LocalDashboardRepository(
-      demoEnabled: AppConfig.demoMode,
+      demoEnabled: false,
       workforce: services(),
       corrections: services(),
     ),
@@ -196,3 +194,5 @@ void configureHrDependencies(GetIt services) {
     () => HrWorkforceDirectory(services<AuthRepository>(), services()),
   );
 }
+
+

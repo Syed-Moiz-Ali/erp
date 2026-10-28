@@ -23,6 +23,20 @@ void configureDependencies() {
   configureApplicationComposition(services);
 }
 
+/// Destinations with a real backend vertical in this build.
+///
+/// Local/demo-backed screens are intentionally absent so neither navigation nor
+/// a typed URL can reach fabricated business data.
+const _liveDestinationIds = <String>{
+  'dashboard',
+  'profile',
+  'settings',
+  'shifts',
+  'departments',
+  'access-users',
+  'company-modules',
+};
+
 void configureApplicationComposition(GetIt services) {
   services.registerLazySingleton<ModuleRegistry>(
     () => createErpRegistry(
@@ -64,7 +78,8 @@ void configureApplicationComposition(GetIt services) {
       database: services(),
       clock: services(),
       companyTimeService: services(),
-    ),
+    ).retainDestinations(_liveDestinationIds),
   );
 }
+
 

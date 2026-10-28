@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import 'package:modular_erp/core/database/app_database.dart';
@@ -8,7 +8,6 @@ import 'package:modular_erp/core/security/access_scope_resolver.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
-import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
@@ -30,7 +29,7 @@ class LocalLeaveRepository implements LeaveRepository {
     this.calculator = const LeaveDayCalculator(),
     this.yearResolver = const LeaveYearResolver(),
     this.time = const FixedOffsetCompanyTimeService(),
-  }) : demoEnabled = demoEnabled ?? AppConfig.demoMode;
+  }) : demoEnabled = demoEnabled ?? false;
 
   final AppDatabase db;
   final AuthRepository auth;
@@ -1164,7 +1163,7 @@ class LocalLeaveRepository implements LeaveRepository {
     );
   }
 
-  /// Only notify a reviewer who can actually act on the request (§54). Users
+  /// Only notify a reviewer who can actually act on the request (Â§54). Users
   /// with no grant rows at all (legacy/demo linkage) keep the prior behaviour.
   Future<bool> _canReceiveReviewNotification(
     String companyId,
@@ -2901,3 +2900,4 @@ ORDER BY e.first_name''',
         orElse: () => LeaveCompensationType.paid,
       );
 }
+

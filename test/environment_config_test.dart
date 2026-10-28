@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/app_environment.dart';
 import 'package:modular_erp/app/environment_loader.dart';
@@ -65,11 +65,10 @@ void main() {
       );
     });
 
-    test('allows explicit demo without a URL', () {
+    test('rejects demo mode (live-only)', () {
       final env = parseDev({'AUTH_MODE': 'demo'});
-      expect(env.isValid, isTrue);
-      expect(env.authMode, AuthMode.demo);
-      expect(env.apiBaseUrl, '');
+      expect(env.isValid, isFalse);
+      expect(env.authMode, AuthMode.disabled);
     });
   });
 
@@ -195,12 +194,11 @@ void main() {
       expect(AppConfig.apiBaseUrl, 'https://dev-tunnel.ngrok-free.app');
       expect(AppConfig.authMode, AuthMode.backend);
       expect(AppConfig.realApiEnabled, isTrue);
-      expect(AppConfig.demoMode, isFalse);
       expect(AppConfig.configurationValid, isTrue);
 
       AppConfig.reset();
-      // Debug default is demo so existing local-first tests keep working.
-      expect(AppConfig.authMode, AuthMode.demo);
+      // Unconfigured debug builds are disabled, never demo.
+      expect(AppConfig.authMode, AuthMode.disabled);
       expect(AppConfig.realApiEnabled, isFalse);
     });
   });
@@ -237,3 +235,4 @@ void main() {
     });
   });
 }
+

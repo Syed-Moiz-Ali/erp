@@ -1,5 +1,4 @@
-import 'package:drift/drift.dart';
-import 'package:modular_erp/app/app_config.dart';
+﻿import 'package:drift/drift.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/models/configuration_record.dart';
@@ -25,7 +24,7 @@ Future<void> seedDemoAttendance(
   AppClock clock = const SystemAppClock(),
   CompanyTimeService time = const FixedOffsetCompanyTimeService(),
 }) async {
-  if (!(enabled ?? AppConfig.demoMode)) return;
+  if (!(enabled ?? false)) return;
   await db.transaction(() async {
     final admin = DemoAuthSource()
         .findByScenario(DemoScenario.platformAdmin)!
@@ -257,3 +256,4 @@ Future<void> seedDemoAttendance(
     }
   });
 }
+

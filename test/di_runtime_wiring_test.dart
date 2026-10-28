@@ -1,4 +1,4 @@
-import 'package:drift/native.dart';
+﻿import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/app_config.dart';
@@ -17,7 +17,6 @@ import 'package:modular_erp/modules/hr/shifts/data/repositories/remote_shift_rep
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/access/access_dependencies.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/disabled_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/remote_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
@@ -74,30 +73,6 @@ void main() {
         'https://dev.example.test',
       );
       expect(services.isRegistered<ModuleRegistry>(), isTrue);
-    },
-  );
-
-  test(
-    'demo environment selects demo/local and builds no API client',
-    () async {
-      AppConfig.configure(
-        const AppEnvironment(
-          name: EnvironmentConfig.developmentName,
-          apiBaseUrl: '',
-          authMode: AuthMode.demo,
-          allowInsecureHttp: true,
-        ),
-      );
-      final services = await compose();
-      addTearDown(services.reset);
-
-      expect(services<AuthRepository>(), isA<DemoAuthRepository>());
-      expect(
-        services<DepartmentRepository>(),
-        isA<LocalDepartmentRepository>(),
-      );
-      expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
-      expect(services.isRegistered<ApiClient>(), isFalse);
     },
   );
 

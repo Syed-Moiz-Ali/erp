@@ -69,13 +69,11 @@ This document records backend decisions/fixes required by the Flutter client. No
 
 ## 7. Delegation ceiling (B-09)
 
-**Finding:** any holder of `company.access.permissions.manage` can grant that key to another ordinary user. The client cannot tell whether this is allowed.
+**Finding:** any holder of `company.access.permissions.manage` can grant that key to another ordinary user.
 
-**Client assumption:** self-assignment is blocked in the UI as a convenience; the backend is authoritative.
+**Decided policy (product owner):** this is intended. Admin means any user holding `company.access.permissions.manage`; an Admin may grant any permission key to any employee user, including module permissions. There is no delegation ceiling to enforce. Self-assignment is not blocked in the client; if the backend refuses a self-grant, the client must show the backend `403` message.
 
-**What breaks if not fixed:** privilege escalation policy is undefined; the Access UI may offer grants the backend should refuse (or hide grants the backend allows).
-
-**Required:** document delegable/platform-only/risk metadata and enforce a delegation ceiling + last-admin guard.
+**What remains required:** document this policy in the backend authorization contract and keep the last-admin/self-escalation behaviour explicit (whether allowed or refused). The client no longer treats B-09 as an open decision.
 
 ## 8. Logout without a body returns 415 (B-11)
 
@@ -113,4 +111,5 @@ These backend contracts are available but need decisions before/while wiring UI:
 - Fail-closed + retry state: implemented.
 - Access & Users administration in backend mode: implemented against `/api/permissions` and `/api/user-permissions` (users derived from grants; no history endpoint).
 - Employees, branches, employee shifts and attendance remote UI: not completed in this phase. See `docs/client-decisions.md` for the reasons and the contract decisions they depend on.
+
 

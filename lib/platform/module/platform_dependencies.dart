@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+﻿import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/app_lifecycle_coordinator.dart';
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
@@ -8,14 +8,12 @@ import 'package:modular_erp/core/api/token_refresh_coordinator.dart';
 import 'package:modular_erp/core/localization/locale_cubit.dart';
 import 'package:modular_erp/core/sync/app_sync_status_cubit.dart';
 import 'package:modular_erp/core/sync/sync_coordinator.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/access/data/datasources/remote/access_remote_data_source.dart';
 import 'package:modular_erp/platform/access/data/datasources/remote/dio_access_remote_data_source.dart';
 import 'package:modular_erp/platform/access/data/repositories/remote_effective_access_repository.dart';
 import 'package:modular_erp/platform/access/domain/effective_access_source.dart';
 import 'package:modular_erp/platform/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:modular_erp/platform/auth/data/datasources/remote/dio_auth_remote_data_source.dart';
-import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/disabled_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/remote_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
@@ -38,7 +36,6 @@ void configurePlatformDependencies(GetIt services) {
         effectiveAccess: services(),
         accessEndpoint: services<AccessEndpoint>(),
       ),
-      AuthMode.demo => AuthBloc(services(), grants: services()),
       AuthMode.disabled => AuthBloc(services()),
     },
     dispose: (bloc) => bloc.close(),
@@ -90,8 +87,8 @@ void configurePlatformDependencies(GetIt services) {
 }
 
 /// Registers exactly one [AuthRepository] according to [AppConfig.authMode]:
-/// the real backend repository, the demo repository, or an explicit disabled
-/// repository. There is no fallback between them.
+/// the real backend repository or an explicit disabled repository. There is no
+/// demo or local-auth fallback.
 void _registerAuthentication(GetIt services) {
   switch (AppConfig.authMode) {
     case AuthMode.backend:
@@ -115,19 +112,10 @@ void _registerAuthentication(GetIt services) {
         services<TokenRefreshCoordinator>().refresher = repository;
         return repository;
       }, dispose: (repo) => repo.dispose());
-    case AuthMode.demo:
-      services.registerLazySingleton(DemoAuthSource.new);
-      services.registerLazySingleton<AuthRepository>(
-        () => DemoAuthRepository(
-          services(),
-          source: services(),
-          accountGuard: services(),
-        ),
-        dispose: (repo) => repo.dispose(),
-      );
     case AuthMode.disabled:
       services.registerLazySingleton<AuthRepository>(
         () => const DisabledAuthRepository(),
       );
   }
 }
+

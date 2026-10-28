@@ -1,4 +1,4 @@
-import 'app_environment.dart';
+﻿import 'app_environment.dart';
 
 export 'app_environment.dart' show AuthMode, AppEnvironment;
 
@@ -31,8 +31,6 @@ abstract final class AppConfig {
   /// True when the selected mode is demo. Gates demo fixtures, seeds and
   /// local-authoritative behavior so a real backend build never mixes in demo
   /// records or demo-local authority.
-  static bool get demoMode => _environment.authMode == AuthMode.demo;
-
   /// True only when a backend is configured with a non-empty URL.
   static bool get realApiEnabled =>
       _environment.authMode == AuthMode.backend &&
@@ -47,3 +45,4 @@ abstract final class AppConfig {
   /// Safe, non-secret description of the configuration problem, or null.
   static String? get configurationError => _environment.configurationError;
 }
+

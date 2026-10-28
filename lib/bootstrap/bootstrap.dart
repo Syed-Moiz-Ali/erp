@@ -1,17 +1,10 @@
-import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
+﻿import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
-import 'package:modular_erp/modules/hr/demo/hr_demo_seed.dart';
-import 'package:modular_erp/app/access/erp_access_catalog.dart';
-import 'package:modular_erp/platform/access/data/access_seed.dart';
-import 'package:modular_erp/modules/services/demo/services_demo_seed.dart';
-import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.dart';
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
-import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/environment_loader.dart';
 import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,61 +41,6 @@ Future<void> bootstrap() async {
   await initializeDateFormatting();
   // Force Drift to open and run migrations before session restoration.
   await services<AppDatabase>().customSelect('SELECT 1').get();
-  if (AppConfig.demoMode) {
-    await seedHrDemoData(
-      services<AppDatabase>(),
-      clock: services<AppClock>(),
-      time: services<CompanyTimeService>(),
-    );
-    await seedAccessDemoData(
-      services<AppDatabase>(),
-      erpAccessCatalog,
-      services<DemoAuthSource>(),
-      services<AppClock>(),
-    );
-    await seedServicesDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-    await seedServiceEnquiriesDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-    await seedServiceJobAssignmentDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-    await seedServiceInspectionDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-    await seedServiceMaterialRequestDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-    await seedServiceWorkExecutionDemoData(
-      services<AppDatabase>(),
-      services<DemoAuthSource>()
-          .findByScenario(DemoScenario.platformAdmin)!
-          .context,
-      services<AppClock>(),
-    );
-  }
   final localeCubit = services<LocaleCubit>();
   await localeCubit.restore(WidgetsBinding.instance.platformDispatcher.locales);
   final shellCubit = services<AppShellCubit>();
@@ -137,10 +75,8 @@ Future<void> bootstrap() async {
       deviceNotifications: services(),
       reminderService: services(),
       syncDiagnostics: services(),
-      demoAccounts: AppConfig.demoMode
-          ? services<DemoAuthSource>().credentials
-          : const [],
     ),
   );
   authBloc.add(const AuthBootstrapRequested());
 }
+

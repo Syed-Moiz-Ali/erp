@@ -7,9 +7,9 @@ These are the assumptions made while implementing Tasks Aâ€“C. Each one is 
 
 ## D-01 â€” Backend is the only permission source in backend mode
 
-`AppConfig.authMode == AuthMode.backend` uses `GET /api/me/permissions`. `LocalUserGrantsController` is used only in demo mode. A backend session never falls back to Drift/demo grants.
+The app is live-only. `AppConfig.authMode` is `backend` when a URL is configured and `disabled` otherwise; demo mode and demo authentication have been removed. `GET /api/me/permissions` is the only permission source. No local/demo grants are used.
 
-Reason: the audit found two divergent grant stores; using local grants for a backend user could show actions the backend will deny.
+Reason: the audit found two divergent grant stores; using local grants for a backend user could show actions the backend will deny. The product owner has also decided that no demo/local fake business data may be reachable.
 
 ## D-02 â€” Scope = ALL for key-only backend grants
 
@@ -94,3 +94,12 @@ Not completed in this phase:
 
 Base URL comes from `AppConfig`/environment files. No token, password, ngrok URL, or credential is hardcoded in the client changes. The live smoke test (if any) uses environment values only and is read-only.
 
+
+
+## D-15 — Live-only runtime
+
+- `AuthMode` has only `backend` and `disabled`; `AUTH_MODE=demo` is rejected.
+- Demo authentication/credentials, demo seeding and demo account UI are removed from the runtime path.
+- Only destinations with a real backend vertical are registered: dashboard, profile, settings, shifts, departments, access-users, company-modules. Local-only Employees, Attendance, Leave, Reports, Work Locations, Policies and Services routes are removed from the live registry, so typed URLs cannot open fabricated data.
+- Local Drift remains only as an unused cache/queue foundation; it is never seeded with business data and is not a source for live screens.
+- Admin permission master CRUD and user-grant administration use the live endpoints. Admin means any holder of `company.access.permissions.manage`; granting any key (including module permissions) to any employee user is the intended policy.
