@@ -54,6 +54,32 @@ class PermissionCatalog {
         !definition.clientOnly && BackendAccessPolicy.supports(definition.key),
   );
 
+  /// Catalog view for backend mode: keeps only definitions the live API can
+  /// grant, while preserving module/submodule structure.
+  PermissionCatalog get backendView => PermissionCatalog([
+    for (final module in modules)
+      PermissionModule(
+        id: module.id,
+        nameKey: module.nameKey,
+        order: module.order,
+        submodules: [
+          for (final submodule in module.submodules)
+            PermissionSubmodule(
+              id: submodule.id,
+              nameKey: submodule.nameKey,
+              order: submodule.order,
+              definitions: submodule.definitions
+                  .where(
+                    (definition) =>
+                        !definition.clientOnly &&
+                        BackendAccessPolicy.supports(definition.key),
+                  )
+                  .toList(growable: false),
+            ),
+        ],
+      ),
+  ]);
+
   PermissionDefinition? byKey(String key) {
     for (final definition in definitions) {
       if (definition.key == key) return definition;

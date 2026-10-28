@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+﻿import 'package:get_it/get_it.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/api/api_client.dart';
@@ -14,7 +14,11 @@ import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_sourc
 
 /// Access-administration dependencies (catalog, directory, repository, guards).
 void configureAccessDependencies(GetIt services) {
-  services.registerSingleton<PermissionCatalog>(erpAccessCatalog);
+  services.registerSingleton<PermissionCatalog>(
+    AppConfig.authMode == AuthMode.backend
+        ? erpAccessCatalog.backendView
+        : erpAccessCatalog,
+  );
   services.registerLazySingleton<AccessUserDirectory>(
     () => AppConfig.demoMode
         ? DemoAccessUserDirectory(services<DemoAuthSource>())
@@ -42,3 +46,4 @@ void configureAccessDependencies(GetIt services) {
     () => LocalUserGrantsController(services(), services(), services()),
   );
 }
+

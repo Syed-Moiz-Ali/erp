@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/backend_access_policy.dart';
@@ -113,6 +113,14 @@ void main() {
       expect(backendKeys, contains('hr.attendance.self.punch'));
     });
 
+    test('backend view preserves modules but hides unsupported keys', () {
+      final view = erpAccessCatalog.backendView;
+      expect(view.byKey('hr.attendance.self.punch'), isNotNull);
+      expect(view.byKey('hr.attendance.self.break'), isNull);
+      expect(view.byKey('hr.leave.self.view'), isNull);
+      expect(view.byKey('company.branches.view'), isNotNull);
+      expect(view.orderedModules, isNotEmpty);
+    });
     test('department keys use the backend namespace', () {
       expect(erpAccessCatalog.byKey('hr.departments.view'), isNotNull);
       expect(erpAccessCatalog.byKey('hr.departments.manage'), isNotNull);
@@ -121,3 +129,4 @@ void main() {
     });
   });
 }
+
