@@ -86,11 +86,13 @@ Implemented and covered by tests:
 - Catalog key alignment, client-only filtering, branch keys.
 - Access & Users administration in backend mode, including permission master CRUD, additive assign, replace-all, single/orphan revoke.
 - Branches: live list, search, status filter, paging, detail, create, update, activate/deactivate, IANA time-zone lookups.
-- Employees: live backend-shaped model, list/search/status filter/paging, detail, create, full-replace update, activate/deactivate. PUT starts from the loaded detail map and applies form edits so no backend field is dropped. Login enablement is part of the edit form and requires `company.users.manage`.
+- Employees: live backend-shaped model, list/search/status filter/paging, detail, create, full-replace update, activate/deactivate. PUT starts from the loaded detail map and applies form edits so no backend field is dropped. Login enablement is part of the edit form and requires `company.users.manage`. Active-branch filtering and backend list-query mapping are covered.
+- Employee shifts: live list/create/remove with employee/shift selectors, date range and optional IANA time zone. Overlap/limit/timezone conflicts come from the backend and are shown as errors.
+- Attendance: live today view and punch actions from `allowedActions` (punchIn/break/resume/punchOut); server time/timezone come from the response; day-complete and prerequisite 409s are shown to the user.
 
 Not completed in this phase:
-- Employee Shifts and Attendance live screens.
-- Reason: no client feature exists for assignments and the attendance state machine remains local; both need dedicated verticals. Their routes remain unregistered, so no local/fake data is reachable.
+- Full identity/payroll form editing (all backend fields are preserved on PUT and visible in detail, but only a subset is editable).
+- Strict per-field mapping for every backend 400 error (general server message is shown for unmapped fields).
 
 ## D-14 â€” No secrets or hardcoded environment values
 
@@ -102,7 +104,8 @@ Base URL comes from `AppConfig`/environment files. No token, password, ngrok URL
 
 - `AuthMode` has only `backend` and `disabled`; `AUTH_MODE=demo` is rejected.
 - Demo authentication/credentials, demo seeding and demo account UI are removed from the runtime path.
-- Only destinations with a real backend vertical are registered: dashboard, profile, settings, shifts, departments, branches, live-employees, access-users, company-modules. Local-only Attendance, Leave, Reports, Work Locations, Policies and Services routes are removed from the live registry, so typed URLs cannot open fabricated data.
+- Only destinations with a real backend vertical are registered: dashboard, profile, settings, shifts, departments, branches, live-employees, employee-shifts, live-attendance, access-users, company-modules. Local-only Leave, Reports, Work Locations, Policies and Services routes are removed from the live registry, so typed URLs cannot open fabricated data. The dashboard has no backend endpoint; it renders the real empty summary, never demo numbers.
 - Local Drift remains only as an unused cache/queue foundation; it is never seeded with business data and is not a source for live screens.
 - Admin permission master CRUD and user-grant administration use the live endpoints. Admin means any holder of `company.access.permissions.manage`; granting any key (including module permissions) to any employee user is the intended policy.
+
 
