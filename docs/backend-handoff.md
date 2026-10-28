@@ -1,4 +1,4 @@
-# Backend hand-off — MassERP client integration
+﻿# Backend hand-off â€” MassERP client integration
 
 Audit date: 2026-10-28
 Source of findings: `audit-output/massep-2026-10-28/01..07` (read-only audit).
@@ -6,7 +6,7 @@ This document records backend decisions/fixes required by the Flutter client. No
 
 ## 1. Employee view permission is missing (B-01)
 
-**Finding:** the live permission catalog has no active `hr.employees.view`. Admin holds create/edit/deactivate but every employee read returns `403 ACCESS_DENIED`. Permission master ids 1–3 are gone while user-permission rows still reference them (`permissionKey:null`).
+**Finding:** the live permission catalog has no active `hr.employees.view`. Admin holds create/edit/deactivate but every employee read returns `403 ACCESS_DENIED`. Permission master ids 1â€“3 are gone while user-permission rows still reference them (`permissionKey:null`).
 
 **Client assumption:** a backend session receives `hr.employees.view` when an administrator grants it; `/api/me/permissions` is the authoritative source.
 
@@ -111,4 +111,6 @@ These backend contracts are available but need decisions before/while wiring UI:
 - Auth + permission bootstrap: implemented.
 - Navigation/route/action gating from backend permissions: implemented.
 - Fail-closed + retry state: implemented.
-- Employees, branches, employee shifts, attendance and access administration remote UI: see `docs/client-decisions.md` for current status; these remain dependent on the contract decisions above and on UI work not completed in this phase.
+- Access & Users administration in backend mode: implemented against `/api/permissions` and `/api/user-permissions` (users derived from grants; no history endpoint).
+- Employees, branches, employee shifts and attendance remote UI: not completed in this phase. See `docs/client-decisions.md` for the reasons and the contract decisions they depend on.
+
