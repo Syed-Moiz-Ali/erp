@@ -3524,6 +3524,144 @@ abstract class AppLocalizations {
   /// **'Key must be 100 characters or fewer.'**
   String get accessKeyTooLong;
 
+  /// No description provided for @permissionModuleHr.
+  ///
+  /// In en, this message translates to:
+  /// **'Human resources'**
+  String get permissionModuleHr;
+
+  /// No description provided for @permissionModuleCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get permissionModuleCompany;
+
+  /// No description provided for @permissionFeatureEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get permissionFeatureEmployees;
+
+  /// No description provided for @permissionFeatureDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'Departments'**
+  String get permissionFeatureDepartments;
+
+  /// No description provided for @permissionFeatureAttendanceSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Self attendance'**
+  String get permissionFeatureAttendanceSelf;
+
+  /// No description provided for @permissionFeatureAttendanceShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifts'**
+  String get permissionFeatureAttendanceShifts;
+
+  /// No description provided for @permissionFeatureBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get permissionFeatureBranches;
+
+  /// No description provided for @permissionFeatureAccessUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'User access'**
+  String get permissionFeatureAccessUsers;
+
+  /// No description provided for @permissionFeatureAccessPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission catalog'**
+  String get permissionFeatureAccessPermissions;
+
+  /// No description provided for @permissionFeatureUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Company users'**
+  String get permissionFeatureUsers;
+
+  /// No description provided for @permissionActionView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get permissionActionView;
+
+  /// No description provided for @permissionActionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get permissionActionCreate;
+
+  /// No description provided for @permissionActionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get permissionActionEdit;
+
+  /// No description provided for @permissionActionDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get permissionActionDeactivate;
+
+  /// No description provided for @permissionActionManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get permissionActionManage;
+
+  /// No description provided for @permissionActionPunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch'**
+  String get permissionActionPunch;
+
+  /// No description provided for @permissionFieldModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Module'**
+  String get permissionFieldModule;
+
+  /// No description provided for @permissionFieldFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature'**
+  String get permissionFieldFeature;
+
+  /// No description provided for @permissionFieldAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Action'**
+  String get permissionFieldAction;
+
+  /// No description provided for @permissionKeyGeneratedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated from module, feature and action.'**
+  String get permissionKeyGeneratedHelp;
+
+  /// No description provided for @permissionUnknownKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown key'**
+  String get permissionUnknownKey;
+
+  /// No description provided for @permissionUnknownKeyHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'This legacy key is not part of the access tree. It is read-only; you can still activate or deactivate it.'**
+  String get permissionUnknownKeyHelp;
+
+  /// No description provided for @permissionUnknownGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown keys'**
+  String get permissionUnknownGroup;
+
   /// No description provided for @accessPermissionCreated.
   ///
   /// In en, this message translates to:

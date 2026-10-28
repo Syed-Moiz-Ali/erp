@@ -1841,6 +1841,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessKeyTooLong => 'Key must be 100 characters or fewer.';
 
   @override
+  String get permissionModuleHr => 'Human resources';
+
+  @override
+  String get permissionModuleCompany => 'Company';
+
+  @override
+  String get permissionFeatureEmployees => 'Employees';
+
+  @override
+  String get permissionFeatureDepartments => 'Departments';
+
+  @override
+  String get permissionFeatureAttendanceSelf => 'Self attendance';
+
+  @override
+  String get permissionFeatureAttendanceShifts => 'Shifts';
+
+  @override
+  String get permissionFeatureBranches => 'Branches';
+
+  @override
+  String get permissionFeatureAccessUsers => 'User access';
+
+  @override
+  String get permissionFeatureAccessPermissions => 'Permission catalog';
+
+  @override
+  String get permissionFeatureUsers => 'Company users';
+
+  @override
+  String get permissionActionView => 'View';
+
+  @override
+  String get permissionActionCreate => 'Create';
+
+  @override
+  String get permissionActionEdit => 'Edit';
+
+  @override
+  String get permissionActionDeactivate => 'Deactivate';
+
+  @override
+  String get permissionActionManage => 'Manage';
+
+  @override
+  String get permissionActionPunch => 'Punch';
+
+  @override
+  String get permissionFieldModule => 'Module';
+
+  @override
+  String get permissionFieldFeature => 'Feature';
+
+  @override
+  String get permissionFieldAction => 'Action';
+
+  @override
+  String get permissionKeyGeneratedHelp =>
+      'Generated from module, feature and action.';
+
+  @override
+  String get permissionUnknownKey => 'Unknown key';
+
+  @override
+  String get permissionUnknownKeyHelp =>
+      'This legacy key is not part of the access tree. It is read-only; you can still activate or deactivate it.';
+
+  @override
+  String get permissionUnknownGroup => 'Unknown keys';
+
+  @override
   String get accessPermissionCreated => 'Permission created.';
 
   @override

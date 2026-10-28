@@ -1,8 +1,54 @@
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 
 /// Resolves catalog localization keys to generated ARB getters. The Access UI
 /// composes these so administrators see friendly labels, never permission keys.
 extension AccessCatalogLocalization on AppLocalizations {
+  String permissionModuleLabel(PermissionModule module) => switch (module) {
+    PermissionModule.hr => permissionModuleHr,
+    PermissionModule.company => permissionModuleCompany,
+  };
+
+  String permissionFeatureLabel(PermissionFeature feature) => switch (feature) {
+    PermissionFeature.employees => permissionFeatureEmployees,
+    PermissionFeature.departments => permissionFeatureDepartments,
+    PermissionFeature.attendanceSelf => permissionFeatureAttendanceSelf,
+    PermissionFeature.attendanceShifts => permissionFeatureAttendanceShifts,
+    PermissionFeature.branches => permissionFeatureBranches,
+    PermissionFeature.accessUsers => permissionFeatureAccessUsers,
+    PermissionFeature.accessPermissions => permissionFeatureAccessPermissions,
+    PermissionFeature.users => permissionFeatureUsers,
+  };
+
+  String permissionActionLabel(PermissionAction action) => switch (action) {
+    PermissionAction.view => permissionActionView,
+    PermissionAction.create => permissionActionCreate,
+    PermissionAction.edit => permissionActionEdit,
+    PermissionAction.deactivate => permissionActionDeactivate,
+    PermissionAction.manage => permissionActionManage,
+    PermissionAction.punch => permissionActionPunch,
+  };
+
+  String get permissionModuleFeatureColumn =>
+      '$permissionFieldModule > $permissionFieldFeature';
+
+  String permissionFeaturePathLabel(
+    PermissionModule module,
+    PermissionFeature feature,
+  ) => '${permissionModuleLabel(module)} · '
+      '${permissionFeatureLabel(feature)}';
+
+  /// Suggested editable name, for example "View employees".
+  String permissionSuggestedName(
+    PermissionFeature feature,
+    PermissionAction action,
+  ) {
+    final featureLabel = permissionFeatureLabel(feature);
+    return '${permissionActionLabel(action)} '
+        '${featureLabel.isEmpty ? featureLabel : featureLabel[0].toLowerCase()}'
+        '${featureLabel.length > 1 ? featureLabel.substring(1) : ''}';
+  }
+
   String moduleLabel(String key) => switch (key) {
     'hr' || 'hrPermModuleHr' => hrPermModuleHr,
     'services' || 'servicesPermModuleServices' => servicesPermModuleServices,

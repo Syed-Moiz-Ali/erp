@@ -3,6 +3,174 @@ import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/backend_access_policy.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 
+/// Live backend permission vocabulary.
+///
+/// The enums mirror the permission keys used by [accessTree]. Administrators
+/// never type a key: they choose a module, a feature and an action, and the key
+/// is composed. The action table below is the single source for which actions a
+/// feature supports.
+enum PermissionModule {
+  hr('hr'),
+  company('company');
+
+  const PermissionModule(this.segment);
+
+  final String segment;
+
+  static PermissionModule? fromSegment(String value) {
+    for (final module in values) {
+      if (module.segment == value) return module;
+    }
+    return null;
+  }
+}
+
+enum PermissionFeature {
+  employees(PermissionModule.hr, 'employees'),
+  departments(PermissionModule.hr, 'departments'),
+  attendanceSelf(PermissionModule.hr, 'attendance.self'),
+  attendanceShifts(PermissionModule.hr, 'attendance.shifts'),
+  branches(PermissionModule.company, 'branches'),
+  accessUsers(PermissionModule.company, 'access.users'),
+  accessPermissions(PermissionModule.company, 'access.permissions'),
+  users(PermissionModule.company, 'users');
+
+  const PermissionFeature(this.module, this.segment);
+
+  final PermissionModule module;
+  final String segment;
+
+  String get keyPrefix => '${module.segment}.$segment';
+}
+
+enum PermissionAction {
+  view('view'),
+  create('create'),
+  edit('edit'),
+  deactivate('deactivate'),
+  manage('manage'),
+  punch('punch');
+
+  const PermissionAction(this.segment);
+
+  final String segment;
+
+  static PermissionAction? fromSegment(String value) {
+    for (final action in values) {
+      if (action.segment == value) return action;
+    }
+    return null;
+  }
+}
+
+/// Which actions each feature supports. Keep this table aligned with
+/// [accessTree]; `permission_enum_test.dart` asserts both directions.
+const Map<PermissionFeature, Set<PermissionAction>> permissionFeatureActions = {
+  PermissionFeature.employees: {
+    PermissionAction.view,
+    PermissionAction.create,
+    PermissionAction.edit,
+    PermissionAction.deactivate,
+  },
+  PermissionFeature.departments: {
+    PermissionAction.view,
+    PermissionAction.manage,
+  },
+  PermissionFeature.attendanceSelf: {
+    PermissionAction.view,
+    PermissionAction.punch,
+  },
+  PermissionFeature.attendanceShifts: {
+    PermissionAction.view,
+    PermissionAction.manage,
+  },
+  PermissionFeature.branches: {
+    PermissionAction.view,
+    PermissionAction.manage,
+  },
+  PermissionFeature.accessUsers: {PermissionAction.view},
+  PermissionFeature.accessPermissions: {PermissionAction.manage},
+  PermissionFeature.users: {PermissionAction.manage},
+};
+
+List<PermissionFeature> permissionFeaturesFor(PermissionModule module) => [
+  for (final feature in PermissionFeature.values)
+    if (feature.module == module) feature,
+];
+
+List<PermissionAction> permissionActionsFor(PermissionFeature feature) {
+  final actions = permissionFeatureActions[feature];
+  if (actions == null) return const [];
+  return [
+    for (final action in PermissionAction.values)
+      if (actions.contains(action)) action,
+  ];
+}
+
+String composePermissionKey(
+  PermissionModule module,
+  PermissionFeature feature,
+  PermissionAction action,
+) {
+  if (feature.module != module) {
+    throw ArgumentError.value(
+      feature,
+      'feature',
+      'belongs to ${feature.module.segment}, not ${module.segment}',
+    );
+  }
+  if (!(permissionFeatureActions[feature]?.contains(action) ?? false)) {
+    throw ArgumentError.value(
+      action,
+      'action',
+      'is not valid for ${feature.segment}',
+    );
+  }
+  return '${module.segment}.${feature.segment}.${action.segment}';
+}
+
+class PermissionKeyParts {
+  const PermissionKeyParts({
+    required this.module,
+    required this.feature,
+    required this.action,
+  });
+
+  final PermissionModule module;
+  final PermissionFeature feature;
+  final PermissionAction action;
+
+  String get key => composePermissionKey(module, feature, action);
+}
+
+/// Returns null for legacy, orphan or otherwise unknown keys.
+PermissionKeyParts? decomposePermissionKey(String key) {
+  final segments = key.trim().toLowerCase().split('.');
+  if (segments.length < 3) return null;
+  final module = PermissionModule.fromSegment(segments.first);
+  final action = PermissionAction.fromSegment(segments.last);
+  if (module == null || action == null) return null;
+  final featureSegment = segments.sublist(1, segments.length - 1).join('.');
+  for (final feature in PermissionFeature.values) {
+    if (feature.module != module || feature.segment != featureSegment) continue;
+    if (!(permissionFeatureActions[feature]?.contains(action) ?? false)) {
+      return null;
+    }
+    return PermissionKeyParts(
+      module: module,
+      feature: feature,
+      action: action,
+    );
+  }
+  return null;
+}
+
+final Set<String> composedPermissionKeys = {
+  for (final feature in PermissionFeature.values)
+    for (final action in permissionActionsFor(feature))
+      composePermissionKey(feature.module, feature, action),
+};
+
 /// Permission-driven navigation source of truth.
 ///
 /// Every in-scope screen owns exactly one backend view key and, optionally,

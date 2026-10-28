@@ -3,15 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
 import 'package:modular_erp/l10n/l10n.dart';
 import 'package:modular_erp/platform/access/domain/permission_master.dart';
 import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
+import 'package:modular_erp/platform/access/presentation/access_localization.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
-
-final _keyPattern = RegExp(r'^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+$');
 
 class PermissionMastersPage extends StatefulWidget {
   const PermissionMastersPage({super.key, required this.repository});
@@ -81,12 +81,41 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
     auth.state.context?.user.permissions ?? PermissionSet(const []),
   ).can(AppPermission.accessPermissionsManage);
 
+  Map<PermissionModule, Map<PermissionFeature, List<PermissionMaster>>>
+  _grouped(List<PermissionMaster> items) {
+    final result =
+        <PermissionModule, Map<PermissionFeature, List<PermissionMaster>>>{};
+    for (final item in items) {
+      final parts = decomposePermissionKey(item.key);
+      if (parts == null) continue;
+      result
+          .putIfAbsent(parts.module, () => {})
+          .putIfAbsent(parts.feature, () => [])
+          .add(item);
+    }
+    for (final features in result.values) {
+      for (final group in features.values) {
+        group.sort(
+          (a, b) => a.key.toLowerCase().compareTo(b.key.toLowerCase()),
+        );
+      }
+    }
+    return result;
+  }
+
+  List<PermissionMaster> _unknown(List<PermissionMaster> items) => [
+    for (final item in items)
+      if (decomposePermissionKey(item.key) == null) item,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, auth) {
         final canManage = _canManage(context.read<AuthBloc>());
+        final grouped = _grouped(_items);
+        final unknown = _unknown(_items);
         return AppPage(
           header: AppPageHeader(
             title: l.accessPermissionCatalog,
@@ -158,69 +187,58 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
                   message: l.accessNoPermissionMatch,
                   icon: Icons.key_outlined,
                 )
-              else if (AppBreakpoints.of(context) == AppSize.compact)
-                Column(
-                  children: [
-                    for (final item in _items)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                        child: AppMobileRecordCard(
-                          title: item.name,
-                          subtitle: item.key,
-                          tertiary: item.description,
-                          status: item.isActive
-                              ? AppStatus.success
-                              : AppStatus.neutral,
-                          statusLabel: item.isActive
-                              ? l.accessPermissionActive
-                              : l.accessPermissionInactive,
-                          trailing: canManage
-                              ? _actions(context, item)
-                              : null,
-                        ),
+              else ...[
+                for (final module in PermissionModule.values)
+                  if (grouped[module]?.isNotEmpty ?? false) ...[
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        top: AppSpacing.lg,
+                        bottom: AppSpacing.sm,
                       ),
-                  ],
-                )
-              else
-                AppCollectionSurface(
-                  child: AppDataTable(
-                    columns: [
-                      DataColumn(label: Text(l.accessPermissionKey)),
-                      DataColumn(label: Text(l.accessPermissionName)),
-                      DataColumn(label: Text(l.accessPermissionDescription)),
-                      DataColumn(label: Text(l.status)),
-                      DataColumn(label: Text(l.actions)),
-                    ],
-                    rows: [
-                      for (final item in _items)
-                        DataRow(
-                          cells: [
-                            DataCell(Text(item.key)),
-                            DataCell(Text(item.name)),
-                            DataCell(
-                              Text(item.description ?? ''),
-                            ),
-                            DataCell(
-                              AppStatusBadge(
-                                label: item.isActive
-                                    ? l.accessPermissionActive
-                                    : l.accessPermissionInactive,
-                                status: item.isActive
-                                    ? AppStatus.success
-                                    : AppStatus.neutral,
-                                isPill: true,
-                              ),
-                            ),
-                            DataCell(
-                              canManage
-                                  ? _actions(context, item)
-                                  : const SizedBox.shrink(),
-                            ),
-                          ],
+                      child: Text(
+                        l.permissionModuleLabel(module),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    for (final feature in permissionFeaturesFor(module))
+                      if (grouped[module]![feature]?.isNotEmpty ?? false) ...[
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            top: AppSpacing.sm,
+                            bottom: AppSpacing.sm,
+                          ),
+                          child: Text(
+                            l.permissionFeatureLabel(feature),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
                         ),
-                    ],
+                        _records(
+                          context,
+                          grouped[module]![feature]!,
+                          canManage: canManage,
+                          editable: true,
+                        ),
+                      ],
+                  ],
+                if (unknown.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: AppSpacing.lg,
+                      bottom: AppSpacing.sm,
+                    ),
+                    child: Text(
+                      l.permissionUnknownGroup,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
-                ),
+                  _records(
+                    context,
+                    unknown,
+                    canManage: canManage,
+                    editable: false,
+                  ),
+                ],
+              ],
             ],
           ),
         );
@@ -228,17 +246,112 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
     );
   }
 
-  Widget _actions(BuildContext context, PermissionMaster item) {
+  Widget _records(
+    BuildContext context,
+    List<PermissionMaster> items, {
+    required bool canManage,
+    required bool editable,
+  }) {
+    final l = context.l10n;
+    if (AppBreakpoints.of(context) == AppSize.compact) {
+      return Column(
+        children: [
+          for (final item in items)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.md),
+              child: AppMobileRecordCard(
+                title: item.name,
+                subtitle: editable
+                    ? item.key
+                    : '${item.key} · ${l.permissionUnknownKey}',
+                tertiary: item.description,
+                status: item.isActive
+                    ? AppStatus.success
+                    : AppStatus.neutral,
+                statusLabel: item.isActive
+                    ? l.accessPermissionActive
+                    : l.accessPermissionInactive,
+                trailing: canManage
+                    ? _actions(context, item, editable: editable)
+                    : null,
+              ),
+            ),
+        ],
+      );
+    }
+    return AppCollectionSurface(
+      child: AppDataTable(
+        columns: [
+          DataColumn(label: Text(l.accessPermissionKey)),
+          DataColumn(label: Text(l.accessPermissionName)),
+          DataColumn(label: Text(l.accessPermissionDescription)),
+          DataColumn(label: Text(l.status)),
+          DataColumn(label: Text(l.actions)),
+        ],
+        rows: [
+          for (final item in items)
+            DataRow(
+              cells: [
+                DataCell(
+                  editable
+                      ? Text(item.key)
+                      : Wrap(
+                          spacing: AppSpacing.xs,
+                          runSpacing: AppSpacing.xs,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(item.key),
+                            AppStatusBadge(
+                              label: l.permissionUnknownKey,
+                              status: AppStatus.warning,
+                              isPill: true,
+                            ),
+                          ],
+                        ),
+                ),
+                DataCell(Text(item.name)),
+                DataCell(Text(item.description ?? '')),
+                DataCell(
+                  AppStatusBadge(
+                    label: item.isActive
+                        ? l.accessPermissionActive
+                        : l.accessPermissionInactive,
+                    status: item.isActive
+                        ? AppStatus.success
+                        : AppStatus.neutral,
+                    isPill: true,
+                  ),
+                ),
+                DataCell(
+                  canManage
+                      ? _actions(context, item, editable: editable)
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _actions(
+    BuildContext context,
+    PermissionMaster item, {
+    required bool editable,
+  }) {
     final l = context.l10n;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (editable)
+          AppTextButton(
+            label: l.edit,
+            onPressed: () => _edit(context, item),
+          ),
         AppTextButton(
-          label: l.edit,
-          onPressed: () => _edit(context, item),
-        ),
-        AppTextButton(
-          label: item.isActive ? l.accessPermissionInactive : l.accessPermissionActive,
+          label: item.isActive
+              ? l.accessPermissionInactive
+              : l.accessPermissionActive,
           onPressed: () => _toggle(item),
         ),
       ],
@@ -246,6 +359,7 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
   }
 
   Future<void> _edit(BuildContext context, PermissionMaster? item) async {
+    if (item != null && decomposePermissionKey(item.key) == null) return;
     final saved = await AppDialog.show<bool>(
       context,
       (dialogContext) => _PermissionEditorDialog(
@@ -297,13 +411,41 @@ class _PermissionEditorDialog extends StatefulWidget {
 }
 
 class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
-  late final _key = TextEditingController(text: widget.initial?.key ?? '');
-  late final _name = TextEditingController(text: widget.initial?.name ?? '');
-  late final _description = TextEditingController(
-    text: widget.initial?.description ?? '',
-  );
+  late final TextEditingController _key;
+  late final TextEditingController _name;
+  late final TextEditingController _description;
+  late PermissionModule _module;
+  late PermissionFeature _feature;
+  late PermissionAction _action;
   bool _saving = false;
+  bool _initialized = false;
+  bool _nameManuallyEdited = false;
   String? _keyError, _nameError, _generalError;
+
+  @override
+  void initState() {
+    super.initState();
+    final parts = widget.initial == null
+        ? null
+        : decomposePermissionKey(widget.initial!.key);
+    _module = parts?.module ?? PermissionModule.hr;
+    _feature = parts?.feature ?? permissionFeaturesFor(_module).first;
+    _action = parts?.action ?? permissionActionsFor(_feature).first;
+    _key = TextEditingController(text: _compose());
+    _name = TextEditingController(text: widget.initial?.name ?? '');
+    _description = TextEditingController(
+      text: widget.initial?.description ?? '',
+    );
+    _nameManuallyEdited = widget.initial != null;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
+    if (!_nameManuallyEdited) _applySuggestion();
+  }
 
   @override
   void dispose() {
@@ -313,29 +455,33 @@ class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
     super.dispose();
   }
 
+  String _compose() => composePermissionKey(_module, _feature, _action);
+
+  void _applySuggestion() {
+    if (_nameManuallyEdited) return;
+    _name.text = context.l10n.permissionSuggestedName(_feature, _action);
+  }
+
+  void _selectionChanged() {
+    final features = permissionFeaturesFor(_module);
+    if (!features.contains(_feature)) _feature = features.first;
+    final actions = permissionActionsFor(_feature);
+    if (!actions.contains(_action)) _action = actions.first;
+    _key.text = _compose();
+    _applySuggestion();
+  }
+
   String? _validate() {
-    final key = _key.text.trim();
     final name = _name.text.trim();
+    final key = _key.text.trim().toLowerCase();
     if (name.isEmpty) {
       _nameError = context.l10n.fieldRequired;
       return _nameError;
     }
-    if (key.isEmpty) {
-      _keyError = context.l10n.fieldRequired;
-      return _keyError;
-    }
-    if (key.length > 100) {
-      _keyError = context.l10n.accessKeyTooLong;
-      return _keyError;
-    }
-    if (!_keyPattern.hasMatch(key)) {
-      _keyError = context.l10n.accessKeyInvalid;
-      return _keyError;
-    }
     final duplicate = widget.existing.any(
       (item) =>
           item.id != widget.initial?.id &&
-          item.key.toLowerCase() == key.toLowerCase(),
+          item.key.trim().toLowerCase() == key,
     );
     if (duplicate) {
       _keyError = context.l10n.accessKeyDuplicate;
@@ -386,7 +532,8 @@ class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
           } else if (failure.code == 'PERMISSION_DUPLICATE_KEY') {
             _keyError = context.l10n.accessKeyDuplicate;
           } else {
-            _generalError = failure.serverMessage ?? context.l10n.accessSaveFailed;
+            _generalError =
+                failure.serverMessage ?? context.l10n.accessSaveFailed;
           }
         });
     }
@@ -422,19 +569,90 @@ class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
               ),
               const SizedBox(height: AppSpacing.sm),
             ],
+            AppDropdown<PermissionModule>(
+              key: const ValueKey('permission-module-field'),
+              label: l.permissionFieldModule,
+              value: _module,
+              items: [
+                for (final module in PermissionModule.values)
+                  DropdownMenuItem(
+                    value: module,
+                    child: Text(l.permissionModuleLabel(module)),
+                  ),
+              ],
+              onChanged: _saving
+                  ? null
+                  : (value) {
+                      if (value == null || value == _module) return;
+                      setState(() {
+                        _module = value;
+                        _selectionChanged();
+                      });
+                    },
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppDropdown<PermissionFeature>(
+              key: ValueKey('permission-feature-${_module.name}'),
+              label: l.permissionFieldFeature,
+              value: _feature,
+              items: [
+                for (final feature in permissionFeaturesFor(_module))
+                  DropdownMenuItem(
+                    value: feature,
+                    child: Text(l.permissionFeatureLabel(feature)),
+                  ),
+              ],
+              onChanged: _saving
+                  ? null
+                  : (value) {
+                      if (value == null || value == _feature) return;
+                      setState(() {
+                        _feature = value;
+                        _selectionChanged();
+                      });
+                    },
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppDropdown<PermissionAction>(
+              key: ValueKey('permission-action-${_feature.name}'),
+              label: l.permissionFieldAction,
+              value: _action,
+              items: [
+                for (final action in permissionActionsFor(_feature))
+                  DropdownMenuItem(
+                    value: action,
+                    child: Text(l.permissionActionLabel(action)),
+                  ),
+              ],
+              onChanged: _saving
+                  ? null
+                  : (value) {
+                      if (value == null || value == _action) return;
+                      setState(() {
+                        _action = value;
+                        _selectionChanged();
+                      });
+                    },
+            ),
+            const SizedBox(height: AppSpacing.md),
             AppTextField(
+              key: const ValueKey('permission-key-field'),
               label: l.accessPermissionKey,
               controller: _key,
               errorText: _keyError,
+              helperText: l.permissionKeyGeneratedHelp,
+              readOnly: true,
               enabled: !_saving,
               autocorrect: false,
             ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
+              key: const ValueKey('permission-name-field'),
               label: l.accessPermissionName,
               controller: _name,
               errorText: _nameError,
               enabled: !_saving,
+              onChanged: (_) => _nameManuallyEdited = true,
             ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
@@ -450,5 +668,3 @@ class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
     );
   }
 }
-
-

@@ -1814,6 +1814,77 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accessKeyTooLong => 'يجب ألا يتجاوز المفتاح 100 حرف.';
 
   @override
+  String get permissionModuleHr => 'الموارد البشرية';
+
+  @override
+  String get permissionModuleCompany => 'الشركة';
+
+  @override
+  String get permissionFeatureEmployees => 'الموظفون';
+
+  @override
+  String get permissionFeatureDepartments => 'الأقسام';
+
+  @override
+  String get permissionFeatureAttendanceSelf => 'الحضور الشخصي';
+
+  @override
+  String get permissionFeatureAttendanceShifts => 'المناوبات';
+
+  @override
+  String get permissionFeatureBranches => 'الفروع';
+
+  @override
+  String get permissionFeatureAccessUsers => 'وصول المستخدمين';
+
+  @override
+  String get permissionFeatureAccessPermissions => 'دليل الأذونات';
+
+  @override
+  String get permissionFeatureUsers => 'مستخدمو الشركة';
+
+  @override
+  String get permissionActionView => 'عرض';
+
+  @override
+  String get permissionActionCreate => 'إنشاء';
+
+  @override
+  String get permissionActionEdit => 'تعديل';
+
+  @override
+  String get permissionActionDeactivate => 'تعطيل';
+
+  @override
+  String get permissionActionManage => 'إدارة';
+
+  @override
+  String get permissionActionPunch => 'تسجيل الحضور';
+
+  @override
+  String get permissionFieldModule => 'الوحدة';
+
+  @override
+  String get permissionFieldFeature => 'الميزة';
+
+  @override
+  String get permissionFieldAction => 'الإجراء';
+
+  @override
+  String get permissionKeyGeneratedHelp =>
+      'يُولَّد من الوحدة والميزة والإجراء.';
+
+  @override
+  String get permissionUnknownKey => 'مفتاح غير معروف';
+
+  @override
+  String get permissionUnknownKeyHelp =>
+      'هذا المفتاح القديم ليس ضمن شجرة الوصول. للقراءة فقط؛ يمكنك تفعيله أو تعطيله.';
+
+  @override
+  String get permissionUnknownGroup => 'مفاتيح غير معروفة';
+
+  @override
   String get accessPermissionCreated => 'تم إنشاء الإذن.';
 
   @override

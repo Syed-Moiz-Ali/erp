@@ -2,6 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
+import 'package:modular_erp/core/security/access_tree.dart' as tree;
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/design_system/design_system.dart';
@@ -37,15 +38,22 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
     super.dispose();
   }
 
-  Set<String> _businessModules(
-    List<UserPermissionGrant> grants,
-    String userId,
-  ) => {
-    for (final grant in grants)
-      if (grant.userId == userId)
-        if (widget.catalog.byKey(grant.permissionKey) case final definition?)
-          if (definition.moduleId != 'platform') definition.moduleId,
-  };
+  List<({tree.PermissionModule module, tree.PermissionFeature feature})>
+  _featureGroups(List<UserPermissionGrant> grants, String userId) {
+    final features = <tree.PermissionFeature>{
+      for (final grant in grants)
+        if (grant.userId == userId)
+          if (tree.decomposePermissionKey(grant.permissionKey)
+              case final parts?)
+            parts.feature,
+    };
+    return [
+      for (final module in tree.PermissionModule.values)
+        for (final feature in tree.permissionFeaturesFor(module))
+          if (features.contains(feature))
+            (module: module, feature: feature),
+    ];
+  }
 
   @override
   Widget build(
@@ -78,7 +86,7 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                 final withAccess = filtered
                     .where(
                       (user) =>
-                          _businessModules(grants, user.userId).isNotEmpty,
+                          _featureGroups(grants, user.userId).isNotEmpty,
                     )
                     .length;
                 return AppPage(
@@ -156,7 +164,10 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                             for (final user in filtered)
                               _UserCard(
                                 user: user,
-                                modules: _businessModules(grants, user.userId),
+                                featureGroups: _featureGroups(
+                                  grants,
+                                  user.userId,
+                                ),
                               ),
                           ],
                         )
@@ -167,7 +178,9 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                               DataColumn(label: Text(l.accessEmployee)),
                               DataColumn(label: Text(l.empCode)),
                               DataColumn(label: Text(l.accessLogin)),
-                              DataColumn(label: Text(l.accessCompanyModules)),
+                              DataColumn(
+                                label: Text(l.permissionModuleFeatureColumn),
+                              ),
                               DataColumn(label: Text(l.status)),
                               DataColumn(label: Text(l.actions)),
                             ],
@@ -203,8 +216,8 @@ class _UsersAccessPageState extends State<UsersAccessPage> {
                                       ),
                                     ),
                                     DataCell(
-                                      _ModuleChips(
-                                        modules: _businessModules(
+                                      _FeatureChips(
+                                        groups: _featureGroups(
                                           grants,
                                           user.userId,
                                         ),
@@ -279,15 +292,23 @@ class _UserIdentity extends StatelessWidget {
 }
 
 class _UserCard extends StatelessWidget {
-  const _UserCard({required this.user, required this.modules});
+  const _UserCard({required this.user, required this.featureGroups});
   final AccessUserListItem user;
-  final Set<String> modules;
+  final List<({tree.PermissionModule module, tree.PermissionFeature feature})>
+  featureGroups;
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final modulesText = modules.isEmpty
+    final modulesText = featureGroups.isEmpty
         ? l.accessNoAccessAssigned
-        : modules.map(l.moduleLabel).join(' + ');
+        : featureGroups
+              .map(
+                (group) => l.permissionFeaturePathLabel(
+                  group.module,
+                  group.feature,
+                ),
+              )
+              .join(' + ');
     return Padding(
       padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.md),
       child: AppMobileRecordCard(
@@ -328,23 +349,30 @@ class _UserCard extends StatelessWidget {
   }
 }
 
-class _ModuleChips extends StatelessWidget {
-  const _ModuleChips({required this.modules});
-  final Set<String> modules;
+class _FeatureChips extends StatelessWidget {
+  const _FeatureChips({required this.groups});
+  final List<({tree.PermissionModule module, tree.PermissionFeature feature})>
+  groups;
   @override
-  Widget build(BuildContext context) => modules.isEmpty
-      ? Text(context.l10n.accessNoAccessAssigned)
-      : Wrap(
-          spacing: AppSpacing.xs,
-          runSpacing: AppSpacing.xs,
-          children: [
-            for (final module in modules)
-              AppStatusBadge(
-                label: context.l10n.moduleLabel(module),
-                status: AppStatus.brand,
-                isPill: true,
-              ),
-          ],
-        );
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return groups.isEmpty
+        ? Text(l.accessNoAccessAssigned)
+        : Wrap(
+            spacing: AppSpacing.xs,
+            runSpacing: AppSpacing.xs,
+            children: [
+              for (final group in groups)
+                AppStatusBadge(
+                  label: l.permissionFeaturePathLabel(
+                    group.module,
+                    group.feature,
+                  ),
+                  status: AppStatus.brand,
+                  isPill: true,
+                ),
+            ],
+          );
+  }
 }
 
