@@ -4899,6 +4899,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get holidayYearLabel => 'سنة العطلات';
 
   @override
+  String holidayYearValue(String year) {
+    return 'سنة $year';
+  }
+
+  @override
   String get addHoliday => 'إضافة عطلة';
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
@@ -333,7 +333,7 @@ class _YearBar extends StatelessWidget {
     // navigation: prev / next / current-year only, and view-control only.
     return AppCard(
       child: AppCalendarHeader(
-        label: '$year',
+        label: l.holidayYearValue(year.toString()),
         previousTooltip: l.holidayPreviousYear,
         nextTooltip: l.holidayNextYear,
         todayLabel: l.holidayCurrentYear,
@@ -962,3 +962,4 @@ class _HolidayImportPageState extends State<HolidayImportPage> {
     }
   }
 }
+

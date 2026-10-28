@@ -705,6 +705,8 @@
   "holidayCalendarTitle": "تقويم العطلات",
   "holidayCalendarSubtitle": "أدر العطلات الرسمية والمهرجانات والإقليمية وعطلات الشركة.",
   "holidayYearLabel": "سنة العطلات",
+  "holidayYearValue": "سنة {year}",
+  "@holidayYearValue": {"placeholders":{"year":{"type":"String"}}},
   "addHoliday": "إضافة عطلة",
   "editHoliday": "تعديل العطلة",
   "manageHolidays": "إدارة العطلات",

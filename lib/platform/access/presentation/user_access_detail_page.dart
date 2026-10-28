@@ -177,7 +177,7 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
               const SizedBox(height: AppSpacing.lg),
               AppInfoCard(
                 title: l.accessScopeLabel,
-                message: '$scopeNote ${l.accessReplaceAllHint}',
+                message: [scopeNote, l.accessReplaceAllHint].join(' '),
                 icon: Icons.info_outline,
               ),
               if (state.orphans.isNotEmpty) ...[

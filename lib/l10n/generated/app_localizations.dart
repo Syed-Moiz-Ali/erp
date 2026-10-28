@@ -4361,7 +4361,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardDemo.
   ///
   /// In en, this message translates to:
-  /// **'Demo preview · {date}'**
+  /// **'Demo preview Â· {date}'**
   String dashboardDemo(String date);
 
   /// No description provided for @dashboardSelfContext.
@@ -4547,13 +4547,13 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardOffice.
   ///
   /// In en, this message translates to:
-  /// **'Hyderabad office · demo'**
+  /// **'Hyderabad office Â· demo'**
   String get dashboardOffice;
 
   /// No description provided for @dashboardNotStarted.
   ///
   /// In en, this message translates to:
-  /// **'Not started · preview'**
+  /// **'Not started Â· preview'**
   String get dashboardNotStarted;
 
   /// No description provided for @dashboardAttendance.
@@ -4691,7 +4691,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardError.
   ///
   /// In en, this message translates to:
-  /// **'We couldn’t load your dashboard. Please try again.'**
+  /// **'We couldnâ€™t load your dashboard. Please try again.'**
   String get dashboardError;
 
   /// No description provided for @dashboardRefreshError.
@@ -4715,7 +4715,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardTimeRange.
   ///
   /// In en, this message translates to:
-  /// **'{start} – {end}'**
+  /// **'{start} â€“ {end}'**
   String dashboardTimeRange(String start, String end);
 
   /// No description provided for @empAdd.
@@ -4943,13 +4943,13 @@ abstract class AppLocalizations {
   /// No description provided for @empNameAsc.
   ///
   /// In en, this message translates to:
-  /// **'Name A–Z'**
+  /// **'Name Aâ€“Z'**
   String get empNameAsc;
 
   /// No description provided for @empNameDesc.
   ///
   /// In en, this message translates to:
-  /// **'Name Z–A'**
+  /// **'Name Zâ€“A'**
   String get empNameDesc;
 
   /// No description provided for @empNewest.
@@ -5087,7 +5087,7 @@ abstract class AppLocalizations {
   /// No description provided for @empInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a phone number with 7–15 digits.'**
+  /// **'Enter a phone number with 7â€“15 digits.'**
   String get empInvalidPhone;
 
   /// No description provided for @empDuplicateEmail.
@@ -5117,7 +5117,7 @@ abstract class AppLocalizations {
   /// No description provided for @empStorageError.
   ///
   /// In en, this message translates to:
-  /// **'We couldn’t complete this local operation. Please try again.'**
+  /// **'We couldnâ€™t complete this local operation. Please try again.'**
   String get empStorageError;
 
   /// No description provided for @empPending.
@@ -5711,7 +5711,7 @@ abstract class AppLocalizations {
   /// No description provided for @cfgLocating.
   ///
   /// In en, this message translates to:
-  /// **'Finding location…'**
+  /// **'Finding locationâ€¦'**
   String get cfgLocating;
 
   /// No description provided for @cfgOpenSettings.
@@ -5927,7 +5927,7 @@ abstract class AppLocalizations {
   /// No description provided for @cfgInactiveAssignment.
   ///
   /// In en, this message translates to:
-  /// **'Inactive • current assignment retained'**
+  /// **'Inactive â€¢ current assignment retained'**
   String get cfgInactiveAssignment;
 
   /// No description provided for @cfgMon.
@@ -6383,13 +6383,13 @@ abstract class AppLocalizations {
   /// No description provided for @attendancePunchingIn.
   ///
   /// In en, this message translates to:
-  /// **'Punching in…'**
+  /// **'Punching inâ€¦'**
   String get attendancePunchingIn;
 
   /// No description provided for @attendancePunchingOut.
   ///
   /// In en, this message translates to:
-  /// **'Punching out…'**
+  /// **'Punching outâ€¦'**
   String get attendancePunchingOut;
 
   /// No description provided for @attendanceTakeBreak.
@@ -6401,7 +6401,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceStartingBreak.
   ///
   /// In en, this message translates to:
-  /// **'Starting break…'**
+  /// **'Starting breakâ€¦'**
   String get attendanceStartingBreak;
 
   /// No description provided for @attendanceResumeWork.
@@ -6413,7 +6413,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceResumingWork.
   ///
   /// In en, this message translates to:
-  /// **'Resuming work…'**
+  /// **'Resuming workâ€¦'**
   String get attendanceResumingWork;
 
   /// No description provided for @attendanceWorkTime.
@@ -6479,7 +6479,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceLocationChecking.
   ///
   /// In en, this message translates to:
-  /// **'Checking your location…'**
+  /// **'Checking your locationâ€¦'**
   String get attendanceLocationChecking;
 
   /// No description provided for @attendanceLocationReady.
@@ -7019,7 +7019,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyGoToday.
   ///
   /// In en, this message translates to:
-  /// **'Open today’s attendance'**
+  /// **'Open todayâ€™s attendance'**
   String get historyGoToday;
 
   /// No description provided for @historyActiveNote.
@@ -7067,7 +7067,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyOutsideAllowed.
   ///
   /// In en, this message translates to:
-  /// **'Outside assigned area · allowed by policy'**
+  /// **'Outside assigned area Â· allowed by policy'**
   String get historyOutsideAllowed;
 
   /// No description provided for @historyVerificationIssue.
@@ -7439,7 +7439,7 @@ abstract class AppLocalizations {
   /// No description provided for @workforceNameDescending.
   ///
   /// In en, this message translates to:
-  /// **'Name (Z–A)'**
+  /// **'Name (Zâ€“A)'**
   String get workforceNameDescending;
 
   /// No description provided for @workforceCode.
@@ -9464,6 +9464,12 @@ abstract class AppLocalizations {
   /// **'Holiday year'**
   String get holidayYearLabel;
 
+  /// No description provided for @holidayYearValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{year}'**
+  String holidayYearValue(String year);
+
   /// No description provided for @addHoliday.
   ///
   /// In en, this message translates to:
@@ -9623,13 +9629,13 @@ abstract class AppLocalizations {
   /// No description provided for @holidayCopyNote.
   ///
   /// In en, this message translates to:
-  /// **'Copied entries keep their month and day — verify festival dates before confirming.'**
+  /// **'Copied entries keep their month and day â€” verify festival dates before confirming.'**
   String get holidayCopyNote;
 
   /// No description provided for @verifyFestivalDates.
   ///
   /// In en, this message translates to:
-  /// **'Copied from previous year — verify festival dates.'**
+  /// **'Copied from previous year â€” verify festival dates.'**
   String get verifyFestivalDates;
 
   /// No description provided for @holidaySelectLocations.
@@ -10355,7 +10361,7 @@ abstract class AppLocalizations {
   /// No description provided for @correctionChange.
   ///
   /// In en, this message translates to:
-  /// **'Current → requested'**
+  /// **'Current â†’ requested'**
   String get correctionChange;
 
   /// No description provided for @correctionReview.

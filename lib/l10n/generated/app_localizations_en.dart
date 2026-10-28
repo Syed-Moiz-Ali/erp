@@ -2285,7 +2285,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dashboardDemo(String date) {
-    return 'Demo preview · $date';
+    return 'Demo preview Â· $date';
   }
 
   @override
@@ -2381,10 +2381,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardLocation => 'Work location';
 
   @override
-  String get dashboardOffice => 'Hyderabad office · demo';
+  String get dashboardOffice => 'Hyderabad office Â· demo';
 
   @override
-  String get dashboardNotStarted => 'Not started · preview';
+  String get dashboardNotStarted => 'Not started Â· preview';
 
   @override
   String get dashboardAttendance => 'Attendance status';
@@ -2465,7 +2465,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardError =>
-      'We couldn’t load your dashboard. Please try again.';
+      'We couldnâ€™t load your dashboard. Please try again.';
 
   @override
   String get dashboardRefreshError =>
@@ -2479,7 +2479,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dashboardTimeRange(String start, String end) {
-    return '$start – $end';
+    return '$start â€“ $end';
   }
 
   @override
@@ -2595,10 +2595,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empSort => 'Sort';
 
   @override
-  String get empNameAsc => 'Name A–Z';
+  String get empNameAsc => 'Name Aâ€“Z';
 
   @override
-  String get empNameDesc => 'Name Z–A';
+  String get empNameDesc => 'Name Zâ€“A';
 
   @override
   String get empNewest => 'Newest joined';
@@ -2671,7 +2671,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empInvalidEmail => 'Enter a valid email address.';
 
   @override
-  String get empInvalidPhone => 'Enter a phone number with 7–15 digits.';
+  String get empInvalidPhone => 'Enter a phone number with 7â€“15 digits.';
 
   @override
   String get empDuplicateEmail =>
@@ -2691,7 +2691,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get empStorageError =>
-      'We couldn’t complete this local operation. Please try again.';
+      'We couldnâ€™t complete this local operation. Please try again.';
 
   @override
   String get empPending => 'Pending sync';
@@ -3011,7 +3011,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cfgCurrentLocation => 'Use current location';
 
   @override
-  String get cfgLocating => 'Finding location…';
+  String get cfgLocating => 'Finding locationâ€¦';
 
   @override
   String get cfgOpenSettings => 'Open settings';
@@ -3126,7 +3126,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configuration only. Attendance actions and rule evaluation will be implemented in Phase 6.';
 
   @override
-  String get cfgInactiveAssignment => 'Inactive • current assignment retained';
+  String get cfgInactiveAssignment =>
+      'Inactive â€¢ current assignment retained';
 
   @override
   String get cfgMon => 'Mon';
@@ -3380,22 +3381,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceCompleteTitle => 'Workday complete';
 
   @override
-  String get attendancePunchingIn => 'Punching in…';
+  String get attendancePunchingIn => 'Punching inâ€¦';
 
   @override
-  String get attendancePunchingOut => 'Punching out…';
+  String get attendancePunchingOut => 'Punching outâ€¦';
 
   @override
   String get attendanceTakeBreak => 'Take break';
 
   @override
-  String get attendanceStartingBreak => 'Starting break…';
+  String get attendanceStartingBreak => 'Starting breakâ€¦';
 
   @override
   String get attendanceResumeWork => 'Resume work';
 
   @override
-  String get attendanceResumingWork => 'Resuming work…';
+  String get attendanceResumingWork => 'Resuming workâ€¦';
 
   @override
   String get attendanceWorkTime => 'Current work time';
@@ -3431,7 +3432,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceWorkLocation => 'Work location';
 
   @override
-  String get attendanceLocationChecking => 'Checking your location…';
+  String get attendanceLocationChecking => 'Checking your locationâ€¦';
 
   @override
   String get attendanceLocationReady => 'Location ready';
@@ -3720,7 +3721,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'No resume recorded. This break has no final duration.';
 
   @override
-  String get historyGoToday => 'Open today’s attendance';
+  String get historyGoToday => 'Open todayâ€™s attendance';
 
   @override
   String get historyActiveNote =>
@@ -3747,7 +3748,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyOutsideAllowed =>
-      'Outside assigned area · allowed by policy';
+      'Outside assigned area Â· allowed by policy';
 
   @override
   String get historyVerificationIssue => 'Verification issue';
@@ -3936,7 +3937,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workforceName => 'Name';
 
   @override
-  String get workforceNameDescending => 'Name (Z–A)';
+  String get workforceNameDescending => 'Name (Zâ€“A)';
 
   @override
   String get workforceCode => 'Employee code';
@@ -4969,6 +4970,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get holidayYearLabel => 'Holiday year';
 
   @override
+  String holidayYearValue(String year) {
+    return '$year';
+  }
+
+  @override
   String get addHoliday => 'Add holiday';
 
   @override
@@ -5051,11 +5057,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get holidayCopyNote =>
-      'Copied entries keep their month and day — verify festival dates before confirming.';
+      'Copied entries keep their month and day â€” verify festival dates before confirming.';
 
   @override
   String get verifyFestivalDates =>
-      'Copied from previous year — verify festival dates.';
+      'Copied from previous year â€” verify festival dates.';
 
   @override
   String get holidaySelectLocations => 'Select work locations';
@@ -5440,7 +5446,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Try another status or clear your filters.';
 
   @override
-  String get correctionChange => 'Current → requested';
+  String get correctionChange => 'Current â†’ requested';
 
   @override
   String get correctionReview => 'Review';

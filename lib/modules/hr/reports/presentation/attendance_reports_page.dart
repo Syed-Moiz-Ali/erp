@@ -171,7 +171,8 @@ class AttendanceReportsPage extends StatelessWidget {
                           ),
                           const SizedBox(width: AppSpacing.sm),
                           Text(
-                            '${date.date(filter.from)} – ${date.date(filter.to)}',
+                            [date.date(filter.from), date.date(filter.to)]
+                                .join(' - '),
                           ),
                         ],
                       ),

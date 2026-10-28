@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -550,7 +550,10 @@ class _ProductEyebrow extends StatelessWidget {
   const _ProductEyebrow();
 
   @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context) => FittedBox(
+    fit: BoxFit.scaleDown,
+    alignment: AlignmentDirectional.centerStart,
+    child: Row(
     mainAxisSize: MainAxisSize.min,
     children: [
       const BitlogixMark(size: 13),
@@ -565,6 +568,7 @@ class _ProductEyebrow extends StatelessWidget {
         ),
       ),
     ],
+  ),
   );
 }
 
@@ -1252,3 +1256,4 @@ class _Hairline extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(height: 1, color: color);
 }
+

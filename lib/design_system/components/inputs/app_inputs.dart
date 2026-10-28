@@ -1,4 +1,4 @@
-import 'package:modular_erp/l10n/l10n.dart';
+﻿import 'package:modular_erp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/design_system/theme/app_colors.dart';
@@ -716,7 +716,14 @@ class AppFieldLabelGroup extends StatelessWidget {
                   style: typography.formLabel,
                 ),
               ),
-              if (trailing != null) trailing!,
+              if (trailing != null)
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: trailing!,
+                  ),
+                ),
             ],
           ),
         ),
@@ -793,3 +800,4 @@ class AppSwitchField extends StatelessWidget {
     );
   }
 }
+
