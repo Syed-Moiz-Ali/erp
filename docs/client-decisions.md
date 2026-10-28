@@ -80,15 +80,17 @@ The client must send `timeZoneId` from the branch lookups. It must not use Windo
 ## D-13 â€” Remote module status in this phase
 
 Implemented and covered by tests:
-- Auth login/refresh/logout (existing) + backend effective permissions (new).
+- Auth login/refresh/logout + backend effective permissions.
 - Permission-driven navigation/route/action gating through the existing `PermissionSet`.
 - Retryable permission failure and empty-permission states.
 - Catalog key alignment, client-only filtering, branch keys.
-- Access & Users administration in backend mode: `/api/permissions` + `/api/user-permissions` replace the local repository. Users are derived from grant rows (the contract has no standalone user directory), and history is empty (no backend endpoint).
+- Access & Users administration in backend mode, including permission master CRUD, additive assign, replace-all, single/orphan revoke.
+- Branches: live list, search, status filter, paging, detail, create, update, activate/deactivate, IANA time-zone lookups.
+- Employees: live backend-shaped model, list/search/status filter/paging, detail, create, full-replace update, activate/deactivate. PUT starts from the loaded detail map and applies form edits so no backend field is dropped. Login enablement is part of the edit form and requires `company.users.manage`.
 
 Not completed in this phase:
-- Remote Employee CRUD UI, Branches, and Employee Shifts/Attendance screens.
-- Reason: these require domain/UI changes that are materially larger than the permission-bootstrap fix (employee name/ID/FK/salary/password model, missing branch screen, missing assignment screen, local attendance state machine). Wiring incompatible local models would regress demo and risk data loss. They must be implemented as separate verticals; `docs/backend-handoff.md` records the contract decisions they depend on.
+- Employee Shifts and Attendance live screens.
+- Reason: no client feature exists for assignments and the attendance state machine remains local; both need dedicated verticals. Their routes remain unregistered, so no local/fake data is reachable.
 
 ## D-14 â€” No secrets or hardcoded environment values
 
@@ -100,6 +102,7 @@ Base URL comes from `AppConfig`/environment files. No token, password, ngrok URL
 
 - `AuthMode` has only `backend` and `disabled`; `AUTH_MODE=demo` is rejected.
 - Demo authentication/credentials, demo seeding and demo account UI are removed from the runtime path.
-- Only destinations with a real backend vertical are registered: dashboard, profile, settings, shifts, departments, access-users, company-modules. Local-only Employees, Attendance, Leave, Reports, Work Locations, Policies and Services routes are removed from the live registry, so typed URLs cannot open fabricated data.
+- Only destinations with a real backend vertical are registered: dashboard, profile, settings, shifts, departments, branches, live-employees, access-users, company-modules. Local-only Attendance, Leave, Reports, Work Locations, Policies and Services routes are removed from the live registry, so typed URLs cannot open fabricated data.
 - Local Drift remains only as an unused cache/queue foundation; it is never seeded with business data and is not a source for live screens.
 - Admin permission master CRUD and user-grant administration use the live endpoints. Admin means any holder of `company.access.permissions.manage`; granting any key (including module permissions) to any employee user is the intended policy.
+

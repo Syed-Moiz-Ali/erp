@@ -18,7 +18,7 @@ flutter run -d chrome
 flutter run -d windows
 ```
 
-The app is live-only. Configure `API_BASE_URL` and `AUTH_MODE=backend` in `.env.development` (debug) or `.env.production` (profile/release); there is no demo authentication, demo seeding, or local business fixtures. An unconfigured build is disabled and cannot sign in. The current live verticals are authentication, effective permissions, access administration, departments, and shifts; local-only modules are hidden until their backend vertical is implemented.
+The app is live-only. Configure `API_BASE_URL` and `AUTH_MODE=backend` in `.env.development` (debug) or `.env.production` (profile/release); there is no demo authentication, demo seeding, or local business fixtures. An unconfigured build is disabled and cannot sign in. The current live verticals are authentication, effective permissions, access administration, departments, shifts, branches, and employees; local-only modules are hidden until their backend vertical is implemented.
 
 ## Structure
 
@@ -98,4 +98,5 @@ Auth tests additionally cover five email/phone accounts, secure persistence/corr
 
 
 Attendance UI is not wired to the live API yet and is hidden in the live-only build. No attendance/demo fixtures are seeded.
+
 
