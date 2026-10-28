@@ -1,4 +1,4 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/api/models/paged_result.dart';
@@ -54,35 +54,28 @@ class _FakeAccessAdmin implements AccessAdminRemoteDataSource {
   Future<Result<PermissionDto>> permissionById(
     int permissionId, {
     CancelToken? cancelToken,
-  }) async => const Failed(
-    Failure(code: 'not_found', kind: FailureKind.notFound),
-  );
+  }) async =>
+      const Failed(Failure(code: 'not_found', kind: FailureKind.notFound));
 
   @override
   Future<Result<PermissionDto>> createPermission(
     Map<String, dynamic> body, {
     CancelToken? cancelToken,
-  }) async => const Failed(
-    Failure(code: 'unused', kind: FailureKind.unknown),
-  );
+  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
 
   @override
   Future<Result<PermissionDto>> updatePermission(
     int permissionId,
     Map<String, dynamic> body, {
     CancelToken? cancelToken,
-  }) async => const Failed(
-    Failure(code: 'unused', kind: FailureKind.unknown),
-  );
+  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
 
   @override
   Future<Result<PermissionDto>> setPermissionActive(
     int permissionId, {
     required bool active,
     CancelToken? cancelToken,
-  }) async => const Failed(
-    Failure(code: 'unused', kind: FailureKind.unknown),
-  );
+  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
 
   @override
   Future<Result<List<UserPermissionDto>>> assignUserPermissions(
@@ -171,12 +164,60 @@ void main() {
       'all',
     );
     expect(
-      grants.every(
-        (g) => g.companyId == '1' && g.userId == '44' && g.isActive,
-      ),
+      grants.every((g) => g.companyId == '1' && g.userId == '44' && g.isActive),
       isTrue,
     );
   });
+
+  test(
+    'keeps null-key and inactive-master grants as revocable orphans',
+    () async {
+      data.rows = [
+        _row(1, 44, 18, 'hr.employees.view'),
+        UserPermissionDto(
+          userPermissionId: 2,
+          userId: 44,
+          permissionId: 1,
+          permissionStatusId: 2,
+          loginId: 'user44',
+          userName: 'User 44',
+          permissionKey: null,
+          permissionName: null,
+          createdBy: 8,
+          createdOn: DateTime.utc(2026, 10, 28),
+        ),
+        UserPermissionDto(
+          userPermissionId: 3,
+          userId: 44,
+          permissionId: 19,
+          permissionStatusId: 2,
+          loginId: 'user44',
+          userName: 'User 44',
+          permissionKey: 'postman.test.permission',
+          permissionName: 'Postman test permission',
+          createdBy: 8,
+          createdOn: DateTime.utc(2026, 10, 28),
+        ),
+      ];
+
+      final grants = await repository
+          .watchGrants(companyId: '1', userId: '44')
+          .first;
+      expect(grants, hasLength(3));
+      final active = grants.where((grant) => !grant.isOrphan).toList();
+      final orphans = grants.where((grant) => grant.isOrphan).toList();
+      expect(active, hasLength(1));
+      expect(orphans, hasLength(2));
+      expect(
+        orphans.firstWhere((grant) => grant.id == '2').permissionKey,
+        '__orphan__1',
+      );
+      expect(
+        orphans.firstWhere((grant) => grant.id == '3').permissionKey,
+        'postman.test.permission',
+      );
+    },
+  );
 
   test('replaces grants using server permission ids', () async {
     final result = await repository.replaceGrants(
@@ -185,7 +226,10 @@ void main() {
       targetUserId: '44',
       requestId: 'request',
       grants: const [
-        PermissionGrantInput(key: 'hr.employees.view', scope: PermissionScope.all),
+        PermissionGrantInput(
+          key: 'hr.employees.view',
+          scope: PermissionScope.all,
+        ),
       ],
     );
     expect(result, isA<Success>());
@@ -217,7 +261,3 @@ void main() {
     expect(history, isEmpty);
   });
 }
-
-
-
-

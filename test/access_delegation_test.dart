@@ -57,14 +57,13 @@ void main() {
       expect(authority.canManageAccess(withPermission).allowed, isTrue);
     });
 
-    test('self-escalation is refused', () {
+    test('self-assignment is forwarded to the backend', () {
       final actor = _actor(
         id: 'admin',
         permissions: {AppPermission.accessPermissionsManage},
       );
       final decision = authority.canEditTarget(actor, 'admin');
-      expect(decision.allowed, isFalse);
-      expect(decision.reason, AccessDecisionReason.selfEscalation);
+      expect(decision.allowed, isTrue);
     });
 
     test('company administrator cannot grant platform-only permissions', () {

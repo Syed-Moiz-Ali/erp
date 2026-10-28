@@ -1,0 +1,73 @@
+{
+  "success": true,
+  "message": "Permissions retrieved.",
+  "data": {
+    "items": [
+      {
+        "permissionId": 4,
+        "permissionKey": "company.access.permissions.manage",
+        "permissionName": "Manage permissions",
+        "description": "Create and edit permissions and assign them to logins.",
+        "statusId": 1,
+        "status": "Active",
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z",
+        "modifiedBy": null,
+        "modifiedOn": null
+      },
+      {
+        "permissionId": 5,
+        "permissionKey": "company.access.users.view",
+        "permissionName": "View permissions",
+        "description": "See permissions and who has them.",
+        "statusId": 1,
+        "status": "Active",
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z",
+        "modifiedBy": null,
+        "modifiedOn": null
+      },
+      {
+        "permissionId": 6,
+        "permissionKey": "company.branches.manage",
+        "permissionName": "Manage companies",
+        "description": "Create, edit, activate and deactivate companies / branches.",
+        "statusId": 1,
+        "status": "Active",
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z",
+        "modifiedBy": null,
+        "modifiedOn": null
+      },
+      {
+        "permissionId": 7,
+        "permissionKey": "company.branches.view",
+        "permissionName": "View companies",
+        "description": "See companies / branches.",
+        "statusId": 1,
+        "status": "Active",
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z",
+        "modifiedBy": null,
+        "modifiedOn": null
+      },
+      {
+        "permissionId": 8,
+        "permissionKey": "company.users.manage",
+        "permissionName": "Manage employee logins",
+        "description": "Enable, change or disable an employee's login (employee form).",
+        "statusId": 1,
+        "status": "Active",
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z",
+        "modifiedBy": null,
+        "modifiedOn": null
+      }
+    ],
+    "page": 1,
+    "pageSize": 5,
+    "totalItems": 15,
+    "totalPages": 3
+  },
+  "errors": []
+}

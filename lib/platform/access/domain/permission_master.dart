@@ -7,7 +7,9 @@ class PermissionMaster {
     required this.statusId,
     this.description,
     this.status,
+    this.createdBy,
     this.createdOn,
+    this.modifiedBy,
     this.modifiedOn,
   });
 
@@ -17,7 +19,9 @@ class PermissionMaster {
   final int statusId;
   final String? description;
   final String? status;
+  final int? createdBy;
   final DateTime? createdOn;
+  final int? modifiedBy;
   final DateTime? modifiedOn;
 
   bool get isActive => statusId == 1;

@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Permission not found.",
+  "data": null,
+  "errors": [
+    {
+      "code": "PERMISSION_NOT_FOUND",
+      "message": "Permission not found."
+    }
+  ]
+}

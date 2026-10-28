@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "message": "Permission retrieved.",
+  "data": {
+    "permissionId": 20,
+    "permissionKey": "bad key with spaces",
+    "permissionName": "Bad key",
+    "description": null,
+    "statusId": 2,
+    "status": "InActive",
+    "createdBy": 8,
+    "createdOn": "2026-10-28T05:57:53Z",
+    "modifiedBy": 8,
+    "modifiedOn": "2026-10-28T06:01:19Z"
+  },
+  "errors": []
+}

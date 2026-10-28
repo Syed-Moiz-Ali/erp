@@ -111,7 +111,7 @@ class RemoteAccessRepository implements AccessRepository {
     String? userId,
   }) => [
     for (final row in rows)
-      if (row.isActive && (userId == null || row.userId.toString() == userId))
+      if (userId == null || row.userId.toString() == userId)
         UserPermissionGrant(
           id: row.userPermissionId.toString(),
           companyId: companyId,
@@ -122,7 +122,9 @@ class RemoteAccessRepository implements AccessRepository {
           grantedByUserId: (row.createdBy ?? 0).toString(),
           grantedAt: row.createdOn?.toUtc() ?? _epoch,
           updatedAt: row.createdOn?.toUtc() ?? _epoch,
-          isOrphan: row.permissionKey == null,
+          // A null key or an inactive master means the grant cannot be resolved
+          // to an assignable permission; keep it visible so it can be revoked.
+          isOrphan: row.permissionKey == null || !row.isActive,
           orphanPermissionId: row.permissionKey == null
               ? row.permissionId
               : null,

@@ -16,7 +16,10 @@ class RemotePermissionMasterRepository implements PermissionMasterRepository {
     statusId: dto.statusId,
     description: dto.description,
     status: dto.status,
+    createdBy: dto.createdBy,
     createdOn: dto.createdOn,
+    modifiedBy: dto.modifiedBy,
+    modifiedOn: dto.modifiedOn,
   );
 
   @override

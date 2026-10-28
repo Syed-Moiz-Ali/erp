@@ -35,8 +35,12 @@ extension AccessCatalogLocalization on AppLocalizations {
   String permissionFeaturePathLabel(
     PermissionModule module,
     PermissionFeature feature,
-  ) => '${permissionModuleLabel(module)} · '
+  ) =>
+      '${permissionModuleLabel(module)} · '
       '${permissionFeatureLabel(feature)}';
+
+  String permissionUnknownKeyLabel(String key) =>
+      '$permissionUnknownKey · $key';
 
   /// Suggested editable name, for example "View employees".
   String permissionSuggestedName(

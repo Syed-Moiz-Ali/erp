@@ -96,7 +96,8 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
         if (state.failureCode != null) {
           AppFeedback.showMessage(
             context,
-            message: (l) => _failureMessage(l, state.failureCode!),
+            message: (l) =>
+                state.failureMessage ?? _failureMessage(l, state.failureCode!),
           );
         } else if (state.saved) {
           AppFeedback.showMessage(context, message: (l) => l.accessSaved);
@@ -196,10 +197,14 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
                           children: [
                             Expanded(
                               child: Text(
-                                l.accessOrphanGrant(
-                                  orphan.orphanPermissionId?.toString() ??
-                                      orphan.id,
-                                ),
+                                orphan.permissionKey.startsWith('__orphan__')
+                                    ? l.accessOrphanGrant(
+                                        orphan.orphanPermissionId?.toString() ??
+                                            orphan.id,
+                                      )
+                                    : l.permissionUnknownKeyLabel(
+                                        orphan.permissionKey,
+                                      ),
                               ),
                             ),
                             AppTextButton(
@@ -420,14 +425,18 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
           final l = dialogContext.l10n;
           PermissionScope scopeFor(PermissionDefinition definition) {
             final scopes = definition.supportedScopes;
-            if (scopes.contains(PermissionScope.all)) return PermissionScope.all;
+            if (scopes.contains(PermissionScope.all)) {
+              return PermissionScope.all;
+            }
             if (scopes.contains(PermissionScope.team)) {
               return PermissionScope.team;
             }
             if (scopes.contains(PermissionScope.assigned)) {
               return PermissionScope.assigned;
             }
-            if (scopes.contains(PermissionScope.self)) return PermissionScope.self;
+            if (scopes.contains(PermissionScope.self)) {
+              return PermissionScope.self;
+            }
             return PermissionScope.none;
           }
 

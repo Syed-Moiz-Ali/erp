@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -16,6 +16,7 @@ class UserAccessState {
   const UserAccessState({
     this.loading = true,
     this.failureCode,
+    this.failureMessage,
     this.user,
     this.grants = const [],
     this.draft = const [],
@@ -27,6 +28,7 @@ class UserAccessState {
   });
   final bool loading, saving, saved, isLastAccessAdmin;
   final String? failureCode;
+  final String? failureMessage;
   final AccessUserListItem? user;
   final List<PermissionGrantInput> grants, draft;
   final List<BusinessActivityEvent> history;
@@ -42,6 +44,7 @@ class UserAccessState {
   UserAccessState copyWith({
     bool? loading,
     String? failureCode,
+    String? failureMessage,
     bool clearFailure = false,
     AccessUserListItem? user,
     List<PermissionGrantInput>? grants,
@@ -54,6 +57,9 @@ class UserAccessState {
   }) => UserAccessState(
     loading: loading ?? this.loading,
     failureCode: clearFailure ? null : (failureCode ?? this.failureCode),
+    failureMessage: clearFailure
+        ? null
+        : (failureMessage ?? this.failureMessage),
     user: user ?? this.user,
     grants: grants ?? this.grants,
     draft: draft ?? this.draft,
@@ -266,6 +272,9 @@ class UserAccessCubit extends Cubit<UserAccessState> {
         failureCode: result is Failed<void>
             ? result.failure.code
             : 'accessSaveFailed',
+        failureMessage: result is Failed<void>
+            ? result.failure.serverMessage
+            : null,
       ),
     );
     return false;
@@ -293,6 +302,9 @@ class UserAccessCubit extends Cubit<UserAccessState> {
         failureCode: result is Failed<void>
             ? result.failure.code
             : 'accessSaveFailed',
+        failureMessage: result is Failed<void>
+            ? result.failure.serverMessage
+            : null,
       ),
     );
     return false;
@@ -325,6 +337,9 @@ class UserAccessCubit extends Cubit<UserAccessState> {
         failureCode: result is Failed<void>
             ? result.failure.code
             : 'accessSaveFailed',
+        failureMessage: result is Failed<void>
+            ? result.failure.serverMessage
+            : null,
       ),
     );
   }
@@ -338,4 +353,3 @@ class UserAccessCubit extends Cubit<UserAccessState> {
     return super.close();
   }
 }
-

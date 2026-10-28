@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "message": "Permission retrieved.",
+  "data": {
+    "permissionId": 4,
+    "permissionKey": "company.access.permissions.manage",
+    "permissionName": "Manage permissions",
+    "description": "Create and edit permissions and assign them to logins.",
+    "statusId": 1,
+    "status": "Active",
+    "createdBy": 0,
+    "createdOn": "2026-10-27T11:16:48Z",
+    "modifiedBy": null,
+    "modifiedOn": null
+  },
+  "errors": []
+}

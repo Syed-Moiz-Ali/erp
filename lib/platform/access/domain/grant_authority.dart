@@ -51,9 +51,8 @@ class GrantAuthorityResolver {
     if (!canManageAccess(actor).allowed) {
       return AccessDecision.deny(AccessDecisionReason.notPermitted);
     }
-    if (actor.user.id == targetUserId) {
-      return AccessDecision.deny(AccessDecisionReason.selfEscalation);
-    }
+    // Self-assignment is deliberately allowed here: the backend remains the
+    // authority and returns 403 when it refuses the change.
     return AccessDecision.allow;
   }
 
