@@ -47,13 +47,17 @@ class AppShell extends StatelessWidget {
   final String route;
   @override
   Widget build(BuildContext context) => BlocListener<AuthBloc, AuthState>(
-    listenWhen: (previous, current) =>
-        current.isAuthenticated &&
-        current.failure != null &&
-        previous.failure != current.failure,
+    listenWhen: (previous, current) {
+      final failure = current.permissionsFailure ?? current.failure;
+      final previousFailure = previous.permissionsFailure ?? previous.failure;
+      return current.isAuthenticated &&
+          failure != null &&
+          previousFailure != failure;
+    },
     listener: (context, state) => AppFeedback.showMessage(
       context,
-      message: (l) => state.failure!.localizedMessage(l),
+      message: (l) =>
+          (state.permissionsFailure ?? state.failure!).localizedMessage(l),
     ),
     child: BlocListener<AppShellCubit, AppShellState>(
       listenWhen: (previous, current) =>
