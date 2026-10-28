@@ -110,6 +110,7 @@ These backend contracts are available but need decisions before/while wiring UI:
 - Navigation/route/action gating from backend permissions: implemented.
 - Fail-closed + retry state: implemented.
 - Access & Users administration in backend mode: implemented against `/api/permissions` and `/api/user-permissions` (users derived from grants; no history endpoint).
-- Employees, branches, employee shifts and attendance remote UI: not completed in this phase. See `docs/client-decisions.md` for the reasons and the contract decisions they depend on.
+- Branches, employees, employee shifts and attendance now have live verticals. Employees use the canonical `/app/hr/employees` route; the legacy local employee destination is disabled in production composition. Remaining employee limitations (inactive-selector filtering, full 400 field mapping, full payroll form editing) are recorded in `docs/client-decisions.md`.
+
 
 
