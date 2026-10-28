@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "ar",
   "settings": "الإعدادات",
   "profile": "الملف الشخصي",
@@ -393,7 +393,21 @@
   "accessCompany": "الشركة",
   "accessIncluded": "مضمّن",
   "accessPermissionSearch": "البحث في الأذونات",
-  "accessPermissionCatalog": "دليل الأذونات",
+  "branchTitle": "الشركات / الفروع",
+  "branchAdd": "شركة جديدة",
+  "branchEdit": "تعديل الشركة",
+  "branchDetails": "تفاصيل الشركة",
+  "branchCode": "رمز الشركة",
+  "branchTimeZone": "المنطقة الزمنية",
+  "branchDivision": "القسم",
+  "branchContact": "الشخص المسؤول",
+  "branchMobile": "رقم الجوال",
+  "branchLandLine": "الهاتف الأرضي",
+  "branchAddress": "العنوان",
+  "branchInventoryAlerts": "تنبيهات المخزون",
+  "branchMultiInventory": "مخزونات متعددة",
+  "branchSaved": "تم حفظ الشركة.",
+  "branchStatusFilter": "حالة الشركة",  "accessPermissionCatalog": "دليل الأذونات",
   "accessPermissionCatalogSubtitle": "إنشاء وتعديل وتفعيل مفاتيح أذونات ERP.",
   "accessNewPermission": "إذن جديد",
   "accessEditPermission": "تعديل الإذن",
@@ -530,4 +544,5 @@
   "colorSuccess": "نجاح",
   "colorWarning": "تحذير"
 }
+
 

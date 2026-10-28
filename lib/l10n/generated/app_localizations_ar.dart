@@ -1698,6 +1698,51 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accessIncluded => 'مضمّن';
 
   @override
+  String get branchTitle => 'الشركات / الفروع';
+
+  @override
+  String get branchAdd => 'شركة جديدة';
+
+  @override
+  String get branchEdit => 'تعديل الشركة';
+
+  @override
+  String get branchDetails => 'تفاصيل الشركة';
+
+  @override
+  String get branchCode => 'رمز الشركة';
+
+  @override
+  String get branchTimeZone => 'المنطقة الزمنية';
+
+  @override
+  String get branchDivision => 'القسم';
+
+  @override
+  String get branchContact => 'الشخص المسؤول';
+
+  @override
+  String get branchMobile => 'رقم الجوال';
+
+  @override
+  String get branchLandLine => 'الهاتف الأرضي';
+
+  @override
+  String get branchAddress => 'العنوان';
+
+  @override
+  String get branchInventoryAlerts => 'تنبيهات المخزون';
+
+  @override
+  String get branchMultiInventory => 'مخزونات متعددة';
+
+  @override
+  String get branchSaved => 'تم حفظ الشركة.';
+
+  @override
+  String get branchStatusFilter => 'حالة الشركة';
+
+  @override
   String get accessPermissionCatalog => 'دليل الأذونات';
 
   @override

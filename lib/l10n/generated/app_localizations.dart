@@ -3308,6 +3308,96 @@ abstract class AppLocalizations {
   /// **'Included'**
   String get accessIncluded;
 
+  /// No description provided for @branchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Companies / branches'**
+  String get branchTitle;
+
+  /// No description provided for @branchAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New company'**
+  String get branchAdd;
+
+  /// No description provided for @branchEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit company'**
+  String get branchEdit;
+
+  /// No description provided for @branchDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Company details'**
+  String get branchDetails;
+
+  /// No description provided for @branchCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Company code'**
+  String get branchCode;
+
+  /// No description provided for @branchTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get branchTimeZone;
+
+  /// No description provided for @branchDivision.
+  ///
+  /// In en, this message translates to:
+  /// **'Division'**
+  String get branchDivision;
+
+  /// No description provided for @branchContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person'**
+  String get branchContact;
+
+  /// No description provided for @branchMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get branchMobile;
+
+  /// No description provided for @branchLandLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Land line'**
+  String get branchLandLine;
+
+  /// No description provided for @branchAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get branchAddress;
+
+  /// No description provided for @branchInventoryAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory alerts'**
+  String get branchInventoryAlerts;
+
+  /// No description provided for @branchMultiInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple inventories'**
+  String get branchMultiInventory;
+
+  /// No description provided for @branchSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Company saved.'**
+  String get branchSaved;
+
+  /// No description provided for @branchStatusFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Company status'**
+  String get branchStatusFilter;
+
   /// No description provided for @accessPermissionCatalog.
   ///
   /// In en, this message translates to:

@@ -25,6 +25,7 @@ abstract final class PlatformRoutes {
   static const settings = '$app/settings';
   static const access = '$settings/access';
   static const permissionMasters = '$access/permissions';
+  static const branches = '$settings/branches';
   static const modules = '$settings/modules';
   static const notifications = '$app/notifications';
   static const reminderSettings = '$settings/notifications';
@@ -41,4 +42,5 @@ abstract final class PlatformRoutes {
   /// Internal design-system preview (authenticated + demo-gated).
   static const designSystem = '/design-system';
 }
+
 

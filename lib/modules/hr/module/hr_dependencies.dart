@@ -22,6 +22,9 @@ import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/datasources/dio_department_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/local_department_repository.dart';
+import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
@@ -150,6 +153,9 @@ void configureHrDependencies(GetIt services) {
   services.registerLazySingleton<EmployeeRepository>(
     () => LocalEmployeeRepository(services(), services()),
   );
+  services.registerLazySingleton<BranchRepository>(
+    () => RemoteBranchRepository(DioBranchRemoteDataSource(services())),
+  );
   services.registerLazySingleton<ShiftRepository>(
     () => AppConfig.authMode == AuthMode.backend
         ? RemoteShiftRepository(DioShiftRemoteDataSource(services<ApiClient>()))
@@ -194,5 +200,6 @@ void configureHrDependencies(GetIt services) {
     () => HrWorkforceDirectory(services<AuthRepository>(), services()),
   );
 }
+
 
 

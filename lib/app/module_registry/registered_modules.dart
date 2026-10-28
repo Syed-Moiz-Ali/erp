@@ -26,6 +26,9 @@ import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/hr/module/hr_module_registration.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_list_cubit.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/pages/branches_page.dart';
 import 'package:modular_erp/modules/hr/module/hr_routes.dart';
 import 'package:modular_erp/modules/hr/reports/data/attendance_report_export_service.dart';
 import 'package:modular_erp/modules/hr/reports/domain/attendance_report_repository.dart';
@@ -78,6 +81,7 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository,
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
+  BranchRepository? branchRepository,
   AccessRepository? accessRepository,
   PermissionMasterRepository? permissionMasterRepository,
   PermissionCatalog? accessCatalog,
@@ -205,6 +209,30 @@ ModuleRegistry createErpRegistry(
             ),
           ],
         ),
+        if (branchRepository != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'branches',
+              moduleId: AppModuleIds.settings,
+              name: (l) => l.branchTitle,
+              icon: Icons.business_outlined,
+              route: AppRoutes.branches,
+              navigationGroup: NavigationGroup.configuration,
+              order: 42,
+              anyPermissions: {
+                AppPermission.companyBranchView,
+                AppPermission.companyBranchManage,
+              },
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.branches,
+                name: 'branches',
+                builder: (context, state) =>
+                    BranchesPage(cubit: BranchListCubit(branchRepository)),
+              ),
+            ],
+          ),
         if (accessRepository != null &&
             accessCatalog != null &&
             accessAuthority != null) ...[
@@ -322,6 +350,7 @@ DateTime? Function(AuthContext auth)? _businessToday(
     return null;
   };
 }
+
 
 
 

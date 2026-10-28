@@ -1724,6 +1724,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessIncluded => 'Included';
 
   @override
+  String get branchTitle => 'Companies / branches';
+
+  @override
+  String get branchAdd => 'New company';
+
+  @override
+  String get branchEdit => 'Edit company';
+
+  @override
+  String get branchDetails => 'Company details';
+
+  @override
+  String get branchCode => 'Company code';
+
+  @override
+  String get branchTimeZone => 'Time zone';
+
+  @override
+  String get branchDivision => 'Division';
+
+  @override
+  String get branchContact => 'Contact person';
+
+  @override
+  String get branchMobile => 'Mobile number';
+
+  @override
+  String get branchLandLine => 'Land line';
+
+  @override
+  String get branchAddress => 'Address';
+
+  @override
+  String get branchInventoryAlerts => 'Inventory alerts';
+
+  @override
+  String get branchMultiInventory => 'Multiple inventories';
+
+  @override
+  String get branchSaved => 'Company saved.';
+
+  @override
+  String get branchStatusFilter => 'Company status';
+
+  @override
   String get accessPermissionCatalog => 'Permission catalog';
 
   @override
