@@ -23,6 +23,11 @@ import 'package:modular_erp/modules/hr/shifts/data/repositories/remote_shift_rep
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/access/access_dependencies.dart';
+import 'package:modular_erp/platform/access/data/local_access_repository.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_access_repository.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_permission_master_repository.dart';
+import 'package:modular_erp/platform/access/domain/access_repository.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/demo_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/disabled_auth_repository.dart';
 import 'package:modular_erp/platform/auth/data/repositories/remote_auth_repository.dart';
@@ -79,6 +84,11 @@ void main() {
         services<AttendanceRepository>(),
         isA<RemoteAttendanceRepository>(),
       );
+      expect(services<AccessRepository>(), isA<RemoteAccessRepository>());
+      expect(
+        services<PermissionMasterRepository>(),
+        isA<RemotePermissionMasterRepository>(),
+      );
       expect(services.isRegistered<ApiClient>(), isTrue);
       expect(
         services<ApiClient>().dio.options.baseUrl,
@@ -113,6 +123,8 @@ void main() {
         services<AttendanceRepository>(),
         isA<LocalAttendanceRepository>(),
       );
+      expect(services<AccessRepository>(), isA<LocalAccessRepository>());
+      expect(services.isRegistered<PermissionMasterRepository>(), isFalse);
       expect(services.isRegistered<ApiClient>(), isFalse);
     },
   );
@@ -143,6 +155,8 @@ void main() {
         services<AttendanceRepository>(),
         isA<LocalAttendanceRepository>(),
       );
+      expect(services<AccessRepository>(), isA<LocalAccessRepository>());
+      expect(services.isRegistered<PermissionMasterRepository>(), isFalse);
       expect(services.isRegistered<ApiClient>(), isFalse);
     },
   );

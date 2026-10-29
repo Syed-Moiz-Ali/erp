@@ -4,9 +4,13 @@ import 'package:modular_erp/app/access/erp_access_catalog.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/platform/access/application/user_grants_controller.dart';
 import 'package:modular_erp/platform/access/data/access_user_directory.dart';
+import 'package:modular_erp/platform/access/data/datasources/remote/access_remotes.dart';
 import 'package:modular_erp/platform/access/data/local_access_repository.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_access_repository.dart';
+import 'package:modular_erp/platform/access/data/repositories/remote_permission_master_repository.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 
 /// Access-administration dependencies (catalog, directory, repository, guards).
@@ -18,14 +22,29 @@ void configureAccessDependencies(GetIt services) {
         : LocalAccessUserDirectory(services()),
   );
   services.registerLazySingleton<AccessRepository>(
-    () => LocalAccessRepository(
-      services(),
-      services(),
-      services(),
-      services(),
-      outbox: services(),
-    ),
+    () => AppConfig.realApiEnabled
+        ? RemoteAccessRepository(services<AccessAdminRemoteDataSource>())
+        : LocalAccessRepository(
+            services(),
+            services(),
+            services(),
+            services(),
+            outbox: services(),
+          ),
+    dispose: (repository) {
+      if (repository is RemoteAccessRepository) repository.dispose();
+    },
   );
+  if (AppConfig.realApiEnabled) {
+    services.registerLazySingleton<AccessAdminRemoteDataSource>(
+      () => DioAccessAdminRemoteDataSource(services()),
+    );
+    services.registerLazySingleton<PermissionMasterRepository>(
+      () => RemotePermissionMasterRepository(
+        services<AccessAdminRemoteDataSource>(),
+      ),
+    );
+  }
   services.registerLazySingleton(() => const GrantAuthorityResolver());
   services.registerLazySingleton<UserGrantsController>(
     () => LocalUserGrantsController(services(), services(), services()),

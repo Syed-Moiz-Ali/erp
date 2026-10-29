@@ -257,21 +257,26 @@ DI selection is per repository, not per screen. A backend adapter must return th
 
 | Item | Value |
 |---|---|
-| Interface | `AccessRepository` (local, reads + replaceGrants) |
-| Backend data carried | `EffectiveAccess`, `EffectiveAccessSource`, `RemoteEffectiveAccessRepository`, `RemotePermissionMasterRepository`, permission DTOs (CARRIED) |
-| Endpoints | `GET /api/me/permissions`, `GET /api/permissions`, `GET /api/user-permissions`; write endpoints documented but disabled |
-| Planned bridge | `/me/permissions` feeds `BackendAccessPolicy.resolve` and `SessionPermissionSink` (session permissions only). The Users list/detail keeps local reads until a read-only remote adapter is approved. Permission catalog is NEW (not built). |
+| Interface | `AccessRepository` - `LocalAccessRepository` in demo/disabled, `RemoteAccessRepository` in backend mode |
+| Backend adapter | `RemoteAccessRepository` (NEW, selected by DI when `AppConfig.realApiEnabled`) over `AccessAdminRemoteDataSource`; `RemotePermissionMasterRepository` is registered in backend mode only. `RemoteEffectiveAccessRepository` and `/api/me/permissions` behaviour are unchanged. |
+| Endpoints | `GET /api/me/permissions`, `GET /api/permissions`, `GET /api/user-permissions`, `GET /api/user-permissions/{id}`. Data-only write mappings: `POST /api/user-permissions` (`{userId, permissionIds}`), `PUT /api/user-permissions/users/{userId}` (`{permissionIds}`), `DELETE /api/user-permissions/{id}`. No live write is performed in this phase. |
+| Read/write | `/me/permissions` feeds `BackendAccessPolicy.resolve` and `SessionPermissionSink`. Access reads come from grants and permission masters; write mappings are exercised only by tests. |
+| Users list | Grants-derived only, grouped by `userId`; only users with at least one key-bearing, non-inactive grant (`permissionKey != null`, `permissionStatusId != 2`). Orphan rows are excluded. |
+| Scope mapping | Self-service keys (`hr.attendance.self.punch`, `hr.attendance.self.view`) map to `PermissionScope.self`; every other key maps to `PermissionScope.all`. The backend stores no scopes, so this is an explicit, documented data assumption (AC3). |
+| History | `watchHistory` always returns an empty list: there is no access-history endpoint and backend mode never reads the local Drift activity log. |
 | UI impact | None to files. Chips/labels stay baseline. |
 
 | # | UI behaviour | Backend | Decision |
 |---|---|---|---|
-| AC1 | Users list built from local accounts + employees | `GET /api/user-permissions` returns grants, not a user directory | **NEEDS MY DECISION:** derive users from grants (only users with at least one grant), keep local accounts, or add a read-only grants summary to the existing local list. |
-| AC2 | Module chips on user rows | key-only grants, no scopes | **NEEDS MY DECISION:** keep module chips and derive from keys, or switch to feature-path chips (not approved as a UI change). |
-| AC3 | Scope selector (self/team/all) | no scopes | Keep SELF for self keys, ALL for other keys (documented data assumption). **NEEDS MY DECISION:** confirm. |
-| AC4 | Save/assign grants | `POST/PUT /api/user-permissions` (writes) | Out of scope. Keep disabled. |
-| AC5 | Last-admin / self-escalation warnings | backend policy is intended-allow | Keep existing local warnings; **NEEDS MY DECISION** whether they still apply in backend mode. |
-| AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Read-only display is not in baseline UI. **NEEDS MY DECISION:** ignore, or show in the existing list style later. |
-| AC7 | Permission catalog screen | `GET /api/permissions` | NEW screen; not built. |
+| AC1 | Users list built from local accounts + employees | `GET /api/user-permissions` returns grants, not a user directory | Resolved data-only: users are derived from key-bearing grants. |
+| AC2 | Module chips on user rows | key-only grants, no scopes | **NEEDS-UI-DECISION:** keep module chips and derive from keys, or switch to feature-path chips (not approved as a UI change). |
+| AC3 | Scope selector (self/team/all) | no scopes | Resolved: SELF for self-service keys, ALL for other keys. |
+| AC4 | Save/assign grants | `POST/PUT/DELETE /api/user-permissions` (writes) | Data-only mappings wired; live writes remain out of scope. |
+| AC5 | Last-admin / self-escalation warnings | backend policy is intended-allow | Kept client-side; `GrantAuthorityResolver` is never bypassed. **NEEDS-UI-DECISION** whether they still apply in backend mode. |
+| AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Data-only: excluded from users/grants. Read-only display is not in baseline UI. **NEEDS-UI-DECISION:** ignore, or show in the existing list style later. |
+| AC7 | Permission catalog screen | `GET /api/permissions` | **NEEDS-UI-DECISION:** NEW screen; not built. The repository is registered in backend mode only; no local permission-master implementation exists. |
+| AC8 | Access history / audit trail | no endpoint | **NEEDS-UI-DECISION:** history stays empty; no backend source exists. |
+| AC9 | Branch permission enum / labels | branch keys deferred | **NEEDS-UI-DECISION:** enum values and labels are deferred until the Branches module is approved. |
 
 ---
 
