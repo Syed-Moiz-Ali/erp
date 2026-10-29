@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Failure {
 
- String get code; FailureKind get kind; bool get retryable;
+ String get code; FailureKind get kind; bool get retryable; String? get field; String? get serverMessage;
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $FailureCopyWith<Failure> get copyWith => _$FailureCopyWithImpl<Failure>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Failure&&(identical(other.code, code) || other.code == code)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.retryable, retryable) || other.retryable == retryable));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Failure&&(identical(other.code, code) || other.code == code)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.retryable, retryable) || other.retryable == retryable)&&(identical(other.field, field) || other.field == field)&&(identical(other.serverMessage, serverMessage) || other.serverMessage == serverMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,kind,retryable);
+int get hashCode => Object.hash(runtimeType,code,kind,retryable,field,serverMessage);
 
 @override
 String toString() {
-  return 'Failure(code: $code, kind: $kind, retryable: $retryable)';
+  return 'Failure(code: $code, kind: $kind, retryable: $retryable, field: $field, serverMessage: $serverMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $FailureCopyWith<$Res>  {
   factory $FailureCopyWith(Failure value, $Res Function(Failure) _then) = _$FailureCopyWithImpl;
 @useResult
 $Res call({
- String code, FailureKind kind, bool retryable
+ String code, FailureKind kind, bool retryable, String? field, String? serverMessage
 });
 
 
@@ -62,12 +62,14 @@ class _$FailureCopyWithImpl<$Res>
 
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? kind = null,Object? retryable = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? kind = null,Object? retryable = null,Object? field = freezed,Object? serverMessage = freezed,}) {
   return _then(_self.copyWith(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as FailureKind,retryable: null == retryable ? _self.retryable : retryable // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,field: freezed == field ? _self.field : field // ignore: cast_nullable_to_non_nullable
+as String?,serverMessage: freezed == serverMessage ? _self.serverMessage : serverMessage // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -149,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  FailureKind kind,  bool retryable)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  FailureKind kind,  bool retryable,  String? field,  String? serverMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Failure() when $default != null:
-return $default(_that.code,_that.kind,_that.retryable);case _:
+return $default(_that.code,_that.kind,_that.retryable,_that.field,_that.serverMessage);case _:
   return orElse();
 
 }
@@ -170,10 +172,10 @@ return $default(_that.code,_that.kind,_that.retryable);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  FailureKind kind,  bool retryable)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  FailureKind kind,  bool retryable,  String? field,  String? serverMessage)  $default,) {final _that = this;
 switch (_that) {
 case _Failure():
-return $default(_that.code,_that.kind,_that.retryable);}
+return $default(_that.code,_that.kind,_that.retryable,_that.field,_that.serverMessage);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -187,10 +189,10 @@ return $default(_that.code,_that.kind,_that.retryable);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  FailureKind kind,  bool retryable)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  FailureKind kind,  bool retryable,  String? field,  String? serverMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _Failure() when $default != null:
-return $default(_that.code,_that.kind,_that.retryable);case _:
+return $default(_that.code,_that.kind,_that.retryable,_that.field,_that.serverMessage);case _:
   return null;
 
 }
@@ -202,12 +204,14 @@ return $default(_that.code,_that.kind,_that.retryable);case _:
 
 
 class _Failure implements Failure {
-  const _Failure({required this.code, this.kind = FailureKind.unknown, this.retryable = false});
+  const _Failure({required this.code, this.kind = FailureKind.unknown, this.retryable = false, this.field, this.serverMessage});
   
 
 @override final  String code;
 @override@JsonKey() final  FailureKind kind;
 @override@JsonKey() final  bool retryable;
+@override final  String? field;
+@override final  String? serverMessage;
 
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
@@ -219,16 +223,16 @@ _$FailureCopyWith<_Failure> get copyWith => __$FailureCopyWithImpl<_Failure>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Failure&&(identical(other.code, code) || other.code == code)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.retryable, retryable) || other.retryable == retryable));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Failure&&(identical(other.code, code) || other.code == code)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.retryable, retryable) || other.retryable == retryable)&&(identical(other.field, field) || other.field == field)&&(identical(other.serverMessage, serverMessage) || other.serverMessage == serverMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,kind,retryable);
+int get hashCode => Object.hash(runtimeType,code,kind,retryable,field,serverMessage);
 
 @override
 String toString() {
-  return 'Failure(code: $code, kind: $kind, retryable: $retryable)';
+  return 'Failure(code: $code, kind: $kind, retryable: $retryable, field: $field, serverMessage: $serverMessage)';
 }
 
 
@@ -239,7 +243,7 @@ abstract mixin class _$FailureCopyWith<$Res> implements $FailureCopyWith<$Res> {
   factory _$FailureCopyWith(_Failure value, $Res Function(_Failure) _then) = __$FailureCopyWithImpl;
 @override @useResult
 $Res call({
- String code, FailureKind kind, bool retryable
+ String code, FailureKind kind, bool retryable, String? field, String? serverMessage
 });
 
 
@@ -256,12 +260,14 @@ class __$FailureCopyWithImpl<$Res>
 
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? kind = null,Object? retryable = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? kind = null,Object? retryable = null,Object? field = freezed,Object? serverMessage = freezed,}) {
   return _then(_Failure(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as FailureKind,retryable: null == retryable ? _self.retryable : retryable // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,field: freezed == field ? _self.field : field // ignore: cast_nullable_to_non_nullable
+as String?,serverMessage: freezed == serverMessage ? _self.serverMessage : serverMessage // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

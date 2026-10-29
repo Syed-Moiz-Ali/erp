@@ -21,11 +21,11 @@ import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.
 /// Idempotent per employee/month and never overwrites an existing attendance day.
 Future<void> seedDemoAttendance(
   AppDatabase db, {
-  bool enabled = AppConfig.demoAuthEnabled,
+  bool? enabled,
   AppClock clock = const SystemAppClock(),
   CompanyTimeService time = const FixedOffsetCompanyTimeService(),
 }) async {
-  if (!enabled) return;
+  if (!(enabled ?? AppConfig.demoMode)) return;
   await db.transaction(() async {
     final admin = DemoAuthSource()
         .findByScenario(DemoScenario.platformAdmin)!

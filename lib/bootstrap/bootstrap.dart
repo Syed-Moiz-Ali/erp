@@ -9,6 +9,7 @@ import 'package:modular_erp/platform/auth/domain/policies/demo_scenario_grants.d
 import 'package:modular_erp/app/shell/app_shell_cubit.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/app_config.dart';
+import 'package:modular_erp/app/environment_loader.dart';
 import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
@@ -29,6 +30,10 @@ Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
 
+  // Load the build-mode environment file before anything reads AppConfig, so
+  // dependency registration, Dio and authentication bind to the right backend.
+  await loadEnvironment();
+
   configureDependencies();
   final logger = services<AppLogger>();
   Bloc.observer = AppBlocObserver(logger);
@@ -43,7 +48,7 @@ Future<void> bootstrap() async {
   await initializeDateFormatting();
   // Force Drift to open and run migrations before session restoration.
   await services<AppDatabase>().customSelect('SELECT 1').get();
-  if (AppConfig.demoAuthEnabled) {
+  if (AppConfig.demoMode) {
     await seedHrDemoData(
       services<AppDatabase>(),
       clock: services<AppClock>(),
@@ -132,7 +137,7 @@ Future<void> bootstrap() async {
       deviceNotifications: services(),
       reminderService: services(),
       syncDiagnostics: services(),
-      demoAccounts: AppConfig.demoAuthEnabled
+      demoAccounts: AppConfig.demoMode
           ? services<DemoAuthSource>().credentials
           : const [],
     ),

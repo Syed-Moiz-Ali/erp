@@ -59,9 +59,13 @@ class AuthSession {
     required this.refreshToken,
     required this.expiresAt,
     required this.context,
+    this.refreshTokenExpiresAt,
+    this.tokenType = 'Bearer',
   });
   final String accessToken, refreshToken;
   final DateTime expiresAt;
+  final DateTime? refreshTokenExpiresAt;
+  final String tokenType;
   final AuthContext context;
   @override
   String toString() => 'AuthSession([redacted])';

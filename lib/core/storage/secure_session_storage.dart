@@ -7,6 +7,12 @@ abstract interface class SessionStorage {
   Future<void> clearSession();
   Future<String?> readAccessToken();
   Future<String?> readRefreshToken();
+  Future<DateTime?> readAccessTokenExpiresAt();
+  Future<DateTime?> readRefreshTokenExpiresAt();
+
+  /// Whether a refresh token is present (used to decide if a refresh is
+  /// possible before hitting the server).
+  Future<bool> hasRefreshToken();
 }
 
 /// One secure envelope prevents partial token/metadata writes.
@@ -27,14 +33,11 @@ class SecureSessionStorage implements SessionStorage {
     await storage.delete(key: 'session.refresh');
   }
 
-  Future<String?> _token(String key) async {
+  Future<Map<String, dynamic>?> _envelope() async {
     final raw = await readSession();
     if (raw == null) return null;
     try {
-      final json = jsonDecode(raw) as Map<String, dynamic>;
-      final expires = DateTime.parse(json['expiresAt'] as String);
-      if (!expires.isAfter(DateTime.now().toUtc())) return null;
-      return json[key] as String?;
+      return jsonDecode(raw) as Map<String, dynamic>;
     } on FormatException {
       return null;
     } on TypeError {
@@ -42,8 +45,43 @@ class SecureSessionStorage implements SessionStorage {
     }
   }
 
+  static DateTime? _parseDate(dynamic value) =>
+      value is String ? DateTime.tryParse(value) : null;
+
   @override
-  Future<String?> readAccessToken() => _token('accessToken');
+  Future<String?> readAccessToken() async {
+    final json = await _envelope();
+    if (json == null) return null;
+    final expires = _parseDate(json['expiresAt']);
+    if (expires == null || !expires.isAfter(DateTime.now().toUtc())) {
+      return null;
+    }
+    return json['accessToken'] as String?;
+  }
+
+  /// The refresh token lifetime is independent of the access token; it is only
+  /// gated by its own expiry (when present). Older envelopes without a refresh
+  /// expiry are returned as-is and validated by the server on use.
   @override
-  Future<String?> readRefreshToken() => _token('refreshToken');
+  Future<String?> readRefreshToken() async {
+    final json = await _envelope();
+    if (json == null) return null;
+    final expires = _parseDate(json['refreshTokenExpiresAt']);
+    if (expires != null && !expires.isAfter(DateTime.now().toUtc())) {
+      return null;
+    }
+    return json['refreshToken'] as String?;
+  }
+
+  @override
+  Future<DateTime?> readAccessTokenExpiresAt() async =>
+      _parseDate((await _envelope())?['expiresAt']);
+
+  @override
+  Future<DateTime?> readRefreshTokenExpiresAt() async =>
+      _parseDate((await _envelope())?['refreshTokenExpiresAt']);
+
+  @override
+  Future<bool> hasRefreshToken() async =>
+      (await readRefreshToken())?.isNotEmpty ?? false;
 }

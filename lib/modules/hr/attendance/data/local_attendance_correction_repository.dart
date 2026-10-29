@@ -25,9 +25,9 @@ class LocalAttendanceCorrectionRepository
     this.db,
     this.auth,
     this.clock, {
-    this.demoEnabled = AppConfig.demoAuthEnabled,
+    bool? demoEnabled,
     this.notifications,
-  });
+  }) : demoEnabled = demoEnabled ?? AppConfig.demoMode;
   final AppDatabase db;
   final AuthRepository auth;
   final AppClock clock;

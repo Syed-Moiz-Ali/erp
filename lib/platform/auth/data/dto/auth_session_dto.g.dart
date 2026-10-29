@@ -13,6 +13,10 @@ AuthSessionDto _$AuthSessionDtoFromJson(Map<String, dynamic> json) =>
       expiresAt: DateTime.parse(json['expiresAt'] as String),
       user: json['user'] as Map<String, dynamic>,
       company: json['company'] as Map<String, dynamic>,
+      refreshTokenExpiresAt: json['refreshTokenExpiresAt'] == null
+          ? null
+          : DateTime.parse(json['refreshTokenExpiresAt'] as String),
+      tokenType: json['tokenType'] as String? ?? 'Bearer',
       employee: json['employee'] as Map<String, dynamic>?,
       settings:
           (json['settings'] as Map<String, dynamic>?)?.map(
@@ -22,14 +26,17 @@ AuthSessionDto _$AuthSessionDtoFromJson(Map<String, dynamic> json) =>
       version: (json['version'] as num?)?.toInt() ?? 1,
     );
 
-Map<String, dynamic> _$AuthSessionDtoToJson(AuthSessionDto instance) =>
-    <String, dynamic>{
-      'version': instance.version,
-      'accessToken': instance.accessToken,
-      'refreshToken': instance.refreshToken,
-      'expiresAt': instance.expiresAt.toIso8601String(),
-      'user': instance.user,
-      'company': instance.company,
-      'employee': instance.employee,
-      'settings': instance.settings,
-    };
+Map<String, dynamic> _$AuthSessionDtoToJson(
+  AuthSessionDto instance,
+) => <String, dynamic>{
+  'version': instance.version,
+  'accessToken': instance.accessToken,
+  'refreshToken': instance.refreshToken,
+  'tokenType': instance.tokenType,
+  'expiresAt': instance.expiresAt.toIso8601String(),
+  'refreshTokenExpiresAt': instance.refreshTokenExpiresAt?.toIso8601String(),
+  'user': instance.user,
+  'company': instance.company,
+  'employee': instance.employee,
+  'settings': instance.settings,
+};
