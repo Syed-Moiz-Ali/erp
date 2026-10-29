@@ -25,6 +25,8 @@ abstract interface class PermissionMasterRepository {
     int pageSize = 100,
   });
 
+  Future<Result<PermissionMaster>> getById(int id);
+
   Future<Result<PermissionMaster>> create({
     required String key,
     required String name,

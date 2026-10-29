@@ -50,6 +50,15 @@ class RemotePermissionMasterRepository implements PermissionMasterRepository {
   }
 
   @override
+  Future<Result<PermissionMaster>> getById(int id) async {
+    final result = await _dataSource.permissionById(id);
+    return switch (result) {
+      Failed(:final failure) => Failed(failure),
+      Success(:final value) => Success(_map(value)),
+    };
+  }
+
+  @override
   Future<Result<PermissionMaster>> create({
     required String key,
     required String name,

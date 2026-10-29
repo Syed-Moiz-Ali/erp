@@ -148,6 +148,22 @@ void main() {
     expect(page.items.single.isActive, isTrue);
   });
 
+  test('loads the latest permission before editing', () async {
+    data.writeResult = Success(_dto(name: 'Latest name'));
+    final result = await repository.getById(18);
+    expect(result, isA<Success>());
+    expect((result as Success).value.name, 'Latest name');
+  });
+
+  test('reports a missing permission from getById', () async {
+    data.writeResult = const Failed(
+      Failure(code: 'PERMISSION_NOT_FOUND', kind: FailureKind.notFound),
+    );
+    final result = await repository.getById(999999);
+    expect(result, isA<Failed>());
+    expect((result as Failed).failure.kind, FailureKind.notFound);
+  });
+
   test('creates with key, name and description', () async {
     data.writeResult = Success(_dto());
     final result = await repository.create(

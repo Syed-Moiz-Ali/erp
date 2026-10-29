@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -265,9 +265,7 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
                     ? item.key
                     : '${item.key} · ${l.permissionUnknownKey}',
                 tertiary: item.description,
-                status: item.isActive
-                    ? AppStatus.success
-                    : AppStatus.neutral,
+                status: item.isActive ? AppStatus.success : AppStatus.neutral,
                 statusLabel: item.isActive
                     ? l.accessPermissionActive
                     : l.accessPermissionInactive,
@@ -344,10 +342,7 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (editable)
-          AppTextButton(
-            label: l.edit,
-            onPressed: () => _edit(context, item),
-          ),
+          AppTextButton(label: l.edit, onPressed: () => _edit(context, item)),
         AppTextButton(
           label: item.isActive
               ? l.accessPermissionInactive
@@ -359,13 +354,39 @@ class _PermissionMastersPageState extends State<PermissionMastersPage> {
   }
 
   Future<void> _edit(BuildContext context, PermissionMaster? item) async {
-    if (item != null && decomposePermissionKey(item.key) == null) return;
+    var fresh = item;
+    if (item != null) {
+      final result = await widget.repository.getById(item.id);
+      switch (result) {
+        case Success(:final value):
+          fresh = value;
+        case Failed(:final failure) when failure.kind == FailureKind.notFound:
+          if (context.mounted) {
+            AppFeedback.showMessage(
+              context,
+              message: (l) => l.accessPermissionGone,
+            );
+            await _load();
+          }
+          return;
+        case Failed(:final failure):
+          if (context.mounted) {
+            AppFeedback.showMessage(
+              context,
+              message: (l) => failure.serverMessage ?? l.failureRequest,
+            );
+          }
+          return;
+      }
+    }
+    if (fresh != null && decomposePermissionKey(fresh.key) == null) return;
+    if (!context.mounted) return;
     final saved = await AppDialog.show<bool>(
       context,
       (dialogContext) => _PermissionEditorDialog(
         repository: widget.repository,
         existing: _items,
-        initial: item,
+        initial: fresh,
       ),
     );
     if (saved == true) {
@@ -407,7 +428,8 @@ class _PermissionEditorDialog extends StatefulWidget {
   final PermissionMaster? initial;
 
   @override
-  State<_PermissionEditorDialog> createState() => _PermissionEditorDialogState();
+  State<_PermissionEditorDialog> createState() =>
+      _PermissionEditorDialogState();
 }
 
 class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
@@ -480,8 +502,7 @@ class _PermissionEditorDialogState extends State<_PermissionEditorDialog> {
     }
     final duplicate = widget.existing.any(
       (item) =>
-          item.id != widget.initial?.id &&
-          item.key.trim().toLowerCase() == key,
+          item.id != widget.initial?.id && item.key.trim().toLowerCase() == key,
     );
     if (duplicate) {
       _keyError = context.l10n.accessKeyDuplicate;

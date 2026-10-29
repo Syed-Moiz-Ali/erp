@@ -4,7 +4,7 @@ Audit date: 2026-10-29
 
 Source: `postman/MassERP.postman_collection.json` (read-only; not modified).
 No endpoint was called for this matrix. The collection contains **100 requests**:
-**80 WIRED**, **7 PARTIAL**, **13 NOT WIRED**.
+**83 WIRED**, **5 PARTIAL**, **12 NOT WIRED**.
 
 Status definitions:
 
@@ -82,8 +82,8 @@ Status definitions:
 | Permissions | Create - duplicate key, other case (no write) | POST `{{baseUrl}}/api/permissions` | company.access.permissions.manage | RemotePermissionMasterRepository.create | Permission catalog -> New permission -> Save | permissions/permission_detail.json | permission_master_repository_test | WIRED |
 | Permissions | Create - key longer than 100 characters (no write) | POST `{{baseUrl}}/api/permissions` | company.access.permissions.manage | RemotePermissionMasterRepository.create | Permission catalog -> New permission -> Save | permissions/permission_detail.json | permission_master_repository_test | WIRED |
 | Permissions | Create - missing key (no write) | POST `{{baseUrl}}/api/permissions` | company.access.permissions.manage | RemotePermissionMasterRepository.create | Permission catalog -> New permission -> Save | permissions/permission_detail.json | permission_master_repository_test | WIRED |
-| Permissions | Get permission by id | GET `{{baseUrl}}/api/permissions/{{permissionId}}` | company.access.users.view | RemoteAccessAdminRemoteDataSource.permissionById | No screen caller (list row drives editor) | permissions/permission_detail*.json | permission_fixture_test, permission_master_repository_test | PARTIAL |
-| Permissions | Get permission - not found | GET `{{baseUrl}}/api/permissions/999999` | company.access.users.view | RemoteAccessAdminRemoteDataSource.permissionById | No screen caller (list row drives editor) | permissions/permission_detail*.json | permission_fixture_test, permission_master_repository_test | PARTIAL |
+| Permissions | Get permission by id | GET `{{baseUrl}}/api/permissions/{{permissionId}}` | company.access.users.view | RemotePermissionMasterRepository.getById | Permission catalog -> Edit (fresh GET before editor) | permissions/permission_detail*.json | permission_master_repository_test | WIRED |
+| Permissions | Get permission - not found | GET `{{baseUrl}}/api/permissions/999999` | company.access.users.view | RemotePermissionMasterRepository.getById | Permission catalog -> Edit -> "no longer exists" + refresh | permissions/permission_not_found.json | permission_master_repository_test | WIRED |
 | Permissions | Update permission - name / description (WRITES DATA) | PUT `{{baseUrl}}/api/permissions/{{permissionId}}` | company.access.permissions.manage | RemotePermissionMasterRepository.update | Permission catalog -> Edit -> Save | permissions/permission_detail*.json | permission_master_repository_test | WIRED |
 | Permissions | Update - correct the key (WRITES DATA) | PUT `{{baseUrl}}/api/permissions/{{permissionId}}` | company.access.permissions.manage | RemotePermissionMasterRepository.update | Permission catalog -> Edit -> Save | permissions/permission_detail*.json | permission_master_repository_test | WIRED |
 | Permissions | Update - key back (WRITES DATA) | PUT `{{baseUrl}}/api/permissions/{{permissionId}}` | company.access.permissions.manage | RemotePermissionMasterRepository.update | Permission catalog -> Edit -> Save | permissions/permission_detail*.json | permission_master_repository_test | WIRED |
@@ -96,13 +96,13 @@ Status definitions:
 | User Permissions | Assign again - already assigned is kept (no write) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | RemoteAccessRepository.assignGrants | Access -> Add permissions (idempotent) | permissions/user_permissions_assign.json | remote_access_repository_test | WIRED |
 | User Permissions | Assign - unknown permission (no write) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | RemoteAccessRepository.assignGrants (_resolveGrantIds) | Access -> Add permissions (catalog prevents unknown) | none | remote_access_repository_test | WIRED |
 | User Permissions | Assign - empty list (no write) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | UserAccessCubit.assignAdditive | Access -> Add permissions (empty selection blocked) | none | access_delegation_test | WIRED |
-| User Permissions | Assign - unknown login (no write) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | RemoteAccessRepository.assignGrants | No user directory: users are derived from existing grants | none | none | NOT WIRED |
+| User Permissions | Assign - unknown login (no write) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | RemoteAccessRepository.assignGrants | Employee detail -> Manage access covers a known userId; unknown login remains backend-only | none | employee_access_entry_test | PARTIAL |
 | User Permissions | List permissions of the login | GET `{{baseUrl}}/api/user-permissions?userId={{limitedUserId}}&page=1&pageSize=100` | company.access.users.view | RemoteAccessRepository._loadAllUserPermissions | Access users list / user editor | permissions/user_permissions_*.json | remote_access_repository_test, permission_fixture_test | WIRED |
 | User Permissions | List permissions of the employee's login | GET `{{baseUrl}}/api/user-permissions?employeeId={{limitedEmployeeId}}&page=1&pageSize=100` | company.access.users.view | AccessAdminRemoteDataSource.userPermissions(employeeId:) | No employee filter in Access UI | permissions/user_permissions_*.json | permission_fixture_test | PARTIAL |
 | User Permissions | List logins having the permission | GET `{{baseUrl}}/api/user-permissions?permissionId={{permissionId}}&page=1&pageSize=100` | company.access.users.view | AccessAdminRemoteDataSource.userPermissions(permissionId:) | No permission-to-users screen | permissions/user_permissions_*.json | none | PARTIAL |
 | User Permissions | Get assignment by id | GET `{{baseUrl}}/api/user-permissions/{{userPermissionId}}` | company.access.users.view | No repository method | No screen | none | none | NOT WIRED |
 | User Permissions | Remove assignment (WRITES DATA) | DELETE `{{baseUrl}}/api/user-permissions/{{userPermissionId}}` | company.access.permissions.manage | RemoteAccessRepository.revokeGrant | Access user -> Orphan row -> Revoke | permissions/user_permissions_user8.json | remote_access_repository_test, access_widget_test | WIRED |
-| User Permissions | Remove again - not found | DELETE `{{baseUrl}}/api/user-permissions/{{userPermissionId}}` | company.access.permissions.manage | RemoteAccessRepository.revokeGrant | Access user -> Revoke (not-found handled) | permissions/user_permissions_user8.json | remote_access_repository_test | PARTIAL |
+| User Permissions | Remove again - not found | DELETE `{{baseUrl}}/api/user-permissions/{{userPermissionId}}` | company.access.permissions.manage | RemoteAccessRepository.revokeGrant | Access user -> Revoke (idempotent success + refresh) | permissions/user_permissions_user8.json | remote_access_repository_test | WIRED |
 | User Permissions | List - without token (401) | GET `{{baseUrl}}/api/user-permissions` | -> (authenticated) | ApiClient auth guard | Any protected screen | none | api_auth_foundation_test | WIRED |
 | Me | My permissions | GET `{{baseUrl}}/api/me/permissions` | -> (authenticated) | RemoteAuthRepository / AuthBloc permissions reload | Login/bootstrap/admin screens | auth/me_permissions_*.json | auth_permissions_bloc_test, auth_test | WIRED |
 | Me | My permissions - without token (401) | GET `{{baseUrl}}/api/me/permissions` | -> (authenticated) | RemoteAuthRepository / AuthBloc permissions reload | Login/bootstrap/admin screens | auth/me_permissions_*.json | auth_permissions_bloc_test, auth_test | WIRED |
@@ -124,12 +124,12 @@ Status definitions:
 
 | Gap | Impact | Smallest change |
 |---|---|---|
-| `GET /api/permissions/{id}` and its 404 are not called by the editor; the list row supplies the edit model. | Permission detail changes made by another admin are not refreshed before edit. | Call `permissionById` when opening the edit dialog, or remove the unused data-source method. |
-| `POST /api/user-permissions` cannot target a login with no grants. | A fresh employee with no grants cannot receive a first grant from the Access UI because users are derived only from existing grant rows. | Add a backend user-directory/search endpoint, or allow first assignment by `employeeId`/`userId` with a direct add-user flow. |
-| `GET /api/user-permissions?employeeId=...` is supported by the data source but never used by the UI. | No employee-scoped grant lookup. Usually harmless because the user editor filters the full list. | Reuse the existing method once an employee picker/user directory exists. |
+
+| `POST /api/user-permissions` still has no unknown-login UI target. | The Access list derives users from grants; a grantless login is reachable only from its employee detail. | Use Employee detail -> Manage access; add a user directory only if Access must find grantless users directly. |
+| `GET /api/user-permissions?employeeId=...` is supported by the data source but the Access screen has no employee picker. | No Access-wide employee lookup; employee detail opens access by `userId` instead. | Reuse the existing method once Access has an employee directory. |
 | `GET /api/user-permissions?permissionId=...` has no screen. | No "who has this permission?" view in the permission catalog. | Add a usage drawer on the permission detail screen using the existing data-source filter. |
 | `GET /api/user-permissions/{id}` has no repository method. | No direct grant-detail refresh. | Add a data-source method if a grant detail screen is introduced; not needed for the current UI. |
-| `DELETE /api/user-permissions/{id}` "remove again" only surfaces a generic failure. | Retrying a revoke that already succeeded reports an error instead of a no-op. | Treat `USER_PERMISSION_NOT_FOUND` on revoke as success and refresh the list. |
+
 | Postman "Access check (QA Employee 27)" folder is a manual access scenario, not a product flow. | No single in-app flow runs those 13 steps end to end. | Keep it as a Postman/QA scenario; the underlying screens and calls are covered individually. |
 
 ## Write-contract risk list
