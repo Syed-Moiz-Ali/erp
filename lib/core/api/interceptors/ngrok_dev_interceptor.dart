@@ -23,10 +23,7 @@ class NgrokDevInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (enabled) {
-      options.headers.putIfAbsent(
-        'ngrok-skip-browser-warning',
-        () => 'true',
-      );
+      options.headers.putIfAbsent('ngrok-skip-browser-warning', () => 'true');
     }
     handler.next(options);
   }

@@ -16,9 +16,7 @@ import 'support/api_test_harness.dart';
 import 'support/memory_session_storage.dart';
 
 Map<String, dynamic> fixture(String name) =>
-    jsonDecode(
-          File('test/fixtures/departments/$name').readAsStringSync(),
-        )
+    jsonDecode(File('test/fixtures/departments/$name').readAsStringSync())
         as Map<String, dynamic>;
 
 AuthContext context() => AuthContext(
@@ -83,10 +81,8 @@ void main() {
   });
 
   test('filtered list keeps the fixture paging totals', () async {
-    adapter.handler = (_) => jsonResponse(
-      fixture('departments_list_filtered.json'),
-      200,
-    );
+    adapter.handler = (_) =>
+        jsonResponse(fixture('departments_list_filtered.json'), 200);
     final result = await repository
         .watchList(context(), query: 'Department', pageSize: 5)
         .first;
@@ -109,15 +105,19 @@ void main() {
     expect(item.assignedEmployees, 4);
     expect(item.record.status, ConfigurationStatus.active);
     expect(item.record.syncStatus, RecordSyncStatus.synced);
-    expect(item.record.createdAt.toUtc(), DateTime.fromMillisecondsSinceEpoch(0, isUtc: true));
-    expect(item.record.updatedAt.toUtc(), DateTime.fromMillisecondsSinceEpoch(0, isUtc: true));
+    expect(
+      item.record.createdAt.toUtc(),
+      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+    );
+    expect(
+      item.record.updatedAt.toUtc(),
+      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+    );
   });
 
   test('404 detail becomes a safe null, not an error', () async {
-    adapter.handler = (_) => jsonResponse(
-      fixture('department_not_found.json'),
-      404,
-    );
+    adapter.handler = (_) =>
+        jsonResponse(fixture('department_not_found.json'), 404);
     final result = await repository.getById(context(), '999');
     expect(result, isA<Success<Department?>>());
     expect((result as Success<Department?>).value, isNull);
@@ -211,5 +211,57 @@ void main() {
     final failure = (result as Failed<void>).failure;
     expect(failure.code, 'inUse');
     expect(failure.kind, FailureKind.conflict);
+  });
+
+  test(
+    'inactive draft on save deactivates the returned active record',
+    () async {
+      adapter.handler = (options) {
+        if (options.path.endsWith('/deactivate')) {
+          return jsonResponse(envelope(data: null), 200);
+        }
+        return jsonResponse(fixture('department_detail.json'), 201);
+      };
+      final result = await repository.save(
+        context(),
+        const DepartmentDraft(
+          name: 'Department 2',
+          status: ConfigurationStatus.inactive,
+        ),
+      );
+      expect(result, isA<Success<Department>>());
+      expect(
+        (result as Success<Department>).value.status,
+        ConfigurationStatus.inactive,
+      );
+      expect(
+        adapter.requests.any((request) => request.path.endsWith('/deactivate')),
+        isTrue,
+      );
+    },
+  );
+
+  test('active draft on save does not deactivate', () async {
+    adapter.handler = (_) =>
+        jsonResponse(fixture('department_detail.json'), 201);
+    final result = await repository.save(
+      context(),
+      const DepartmentDraft(name: 'Department 2'),
+    );
+    expect(
+      (result as Success<Department>).value.status,
+      ConfigurationStatus.active,
+    );
+    expect(
+      adapter.requests.any((request) => request.path.endsWith('/deactivate')),
+      isFalse,
+    );
+  });
+
+  test('activating a department is unsupported, not invented', () async {
+    final result = await repository.setActive(context(), '2', true);
+    expect(result, isA<Failed<void>>());
+    expect((result as Failed<void>).failure.code, 'unsupported');
+    expect(adapter.callCount, 0);
   });
 }

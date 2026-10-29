@@ -2,7 +2,7 @@
 
 **Status:** Complete. The Departments feature is integrated end-to-end (API → Dio → Freezed DTO → datasource → mapper → repository → BLoC → existing UI), with demo and backend isolation. No live backend was available, so all HTTP is verified with mocked transports only.
 **Baseline:** `ac2ec6f` + Phases 1–2. Flutter 3.35.7 / Dart 3.9.2.
-**References:** [`PHASE_0_AUDIT.md`](PHASE_0_AUDIT.md), [`PHASE_1_IMPLEMENTATION.md`](PHASE_1_IMPLEMENTATION.md), [`PHASE_2_IMPLEMENTATION.md`](PHASE_2_IMPLEMENTATION.md), `api_integration/FLUTTER_DEPARTMENT_API.md`.
+**References:** [`PHASE_0_AUDIT.md`](PHASE_0_AUDIT.md), [`PHASE_1_IMPLEMENTATION.md`](PHASE_1_IMPLEMENTATION.md), [`PHASE_2_IMPLEMENTATION.md`](PHASE_2_IMPLEMENTATION.md), `../audit-output/massep-2026-10-28/01-api-inventory.md`.
 
 ---
 

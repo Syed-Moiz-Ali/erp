@@ -4,7 +4,7 @@
 **Scope:** HR + Branches + Authentication (the modules exposed by the supplied backend). Services is out of scope.
 **Baseline commit audited:** `ac2ec6f` ("Add Shifts & Shift Assignment API documentation and UI-7 specialized workspaces")
 **Nature:** Analysis only. No production code changed, no API implemented, no schema/dependency changes.
-**Inputs:** `api_integration/ERPAPI (MassERP).postman_collection.json`, `FLUTTER_LOGIN_API.md`, `FLUTTER_DEPARTMENT_API.md`, `FLUTTER_SHIFT_API.md`, `FLUTTER_ATTENDANCE_API.md`, plus the entire existing Flutter project.
+**Inputs:** `../audit-output/massep-2026-10-28/` (API inventory, test results, permission matrix and response-contract audit), plus the entire existing Flutter project.
 
 > **Update 2026-10-09:** The supplied backend is the MassERP contract (`/api/...`, integer IDs, `{success,message,data,errors}` envelope). The earlier internal spec `docs/backend/hr_backend_api_requirements.md` (`/api/v1`, UUIDs, `meta`, outbox protocol) was **not** implemented by the backend and is treated as void for this integration.
 

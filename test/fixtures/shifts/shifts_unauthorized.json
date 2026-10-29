@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Unauthorized.",
+  "data": null,
+  "errors": [
+    {
+      "code": "AUTH_UNAUTHORIZED",
+      "message": "Unauthorized."
+    }
+  ]
+}

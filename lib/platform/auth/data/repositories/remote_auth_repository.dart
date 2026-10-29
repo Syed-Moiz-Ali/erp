@@ -344,7 +344,10 @@ class RemoteAuthRepository
       enabledModules: enabledModules,
     );
     if (_samePermissions(user.permissions, current.context.user.permissions) &&
-        _sameSet(company.enabledModules, current.context.company.enabledModules)) {
+        _sameSet(
+          company.enabledModules,
+          current.context.company.enabledModules,
+        )) {
       return;
     }
     final updated = AuthSession(

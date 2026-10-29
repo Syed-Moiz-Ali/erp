@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Shift has active assignments and cannot be deactivated.",
+  "data": null,
+  "errors": [
+    {
+      "code": "SHIFT_IN_USE",
+      "message": "Shift has active assignments and cannot be deactivated."
+    }
+  ]
+}

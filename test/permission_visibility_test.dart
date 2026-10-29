@@ -70,17 +70,16 @@ void main() {
     expect(p.contains(AppPermission.attendanceViewSelf), isTrue);
     expect(p.contains(AppPermission.attendancePunchIn), isTrue);
 
-    expect(modulesWithSettings(access), containsAll(<String>[
-      'employees',
-      'attendance',
-      'settings',
-    ]));
+    expect(
+      modulesWithSettings(access),
+      containsAll(<String>['employees', 'attendance', 'settings']),
+    );
 
     // Branch keys remain intentionally deferred; department keys are live.
-    expect(access.unknownKeys, containsAll(<String>[
-      'company.branches.view',
-      'company.branches.manage',
-    ]));
+    expect(
+      access.unknownKeys,
+      containsAll(<String>['company.branches.view', 'company.branches.manage']),
+    );
     expect(access.unknownKeys, isNot(contains('hr.departments.view')));
     expect(access.unknownKeys, isNot(contains('hr.departments.manage')));
   });
@@ -99,7 +98,10 @@ void main() {
     expect(p.contains(AppPermission.attendanceViewSelf), isTrue);
 
     final modules = modulesWithSettings(access);
-    expect(modules, containsAll(<String>['employees', 'attendance', 'settings']));
+    expect(
+      modules,
+      containsAll(<String>['employees', 'attendance', 'settings']),
+    );
     expect(modules.contains('services'), isFalse);
   });
 
@@ -117,74 +119,80 @@ void main() {
     expect(p.contains(AppPermission.attendanceViewSelf), isFalse);
   });
 
-  test('existing nav/action predicates map from the resolved permission set', () {
-    final admin = contextFor(
-      accessFor(fixtureKeys('me_permissions_admin.json')),
-    );
-    final employee = contextFor(
-      accessFor(fixtureKeys('me_permissions_employee.json')),
-    );
-    final none = contextFor(accessFor(const <String>[]), linked: false);
+  test(
+    'existing nav/action predicates map from the resolved permission set',
+    () {
+      final admin = contextFor(
+        accessFor(fixtureKeys('me_permissions_admin.json')),
+      );
+      final employee = contextFor(
+        accessFor(fixtureKeys('me_permissions_employee.json')),
+      );
+      final none = contextFor(accessFor(const <String>[]), linked: false);
 
-    bool employeesNav(AuthContext c) => PermissionChecker(c.user.permissions)
-        .canAny(<AppPermission>[
-          AppPermission.employeeViewTeam,
-          AppPermission.employeeViewAll,
+      bool employeesNav(AuthContext c) =>
+          PermissionChecker(c.user.permissions).canAny(<AppPermission>[
+            AppPermission.employeeViewTeam,
+            AppPermission.employeeViewAll,
+          ]);
+      bool addEmployee(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.employeeCreate);
+      bool editEmployee(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.employeeUpdate);
+      bool shiftsSettings(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.shiftView);
+      bool departmentsNav(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.departmentView);
+      bool addDepartment(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.departmentManage);
+      bool accessNav(AuthContext c) =>
+          PermissionChecker(c.user.permissions).canAny(<AppPermission>[
+            AppPermission.accessUsersView,
+            AppPermission.accessPermissionsManage,
+          ]);
+      bool attendanceNav(AuthContext c) {
+        final caps = const UserCapabilityResolver().forAuthContext(c);
+        return caps.hasAny(<UserCapability>[
+          UserCapability.selfAttendance,
+          UserCapability.selfAttendanceHistory,
+          UserCapability.teamAttendance,
+          UserCapability.companyAttendance,
+          UserCapability.approveAttendanceCorrections,
         ]);
-    bool addEmployee(AuthContext c) =>
-        c.user.permissions.contains(AppPermission.employeeCreate);
-    bool editEmployee(AuthContext c) =>
-        c.user.permissions.contains(AppPermission.employeeUpdate);
-    bool shiftsSettings(AuthContext c) =>
-        c.user.permissions.contains(AppPermission.shiftView);
-    bool departmentsNav(AuthContext c) =>
-        c.user.permissions.contains(AppPermission.departmentView);
-    bool addDepartment(AuthContext c) =>
-        c.user.permissions.contains(AppPermission.departmentManage);
-    bool accessNav(AuthContext c) => PermissionChecker(c.user.permissions)
-        .canAny(<AppPermission>[
-          AppPermission.accessUsersView,
-          AppPermission.accessPermissionsManage,
-        ]);
-    bool attendanceNav(AuthContext c) {
-      final caps = const UserCapabilityResolver().forAuthContext(c);
-      return caps.hasAny(<UserCapability>[
-        UserCapability.selfAttendance,
-        UserCapability.selfAttendanceHistory,
-        UserCapability.teamAttendance,
-        UserCapability.companyAttendance,
-        UserCapability.approveAttendanceCorrections,
-      ]);
-    }
+      }
 
-    expect(employeesNav(admin), isTrue);
-    expect(employeesNav(employee), isTrue);
-    expect(employeesNav(none), isFalse);
+      expect(employeesNav(admin), isTrue);
+      expect(employeesNav(employee), isTrue);
+      expect(employeesNav(none), isFalse);
 
-    expect(addEmployee(admin), isTrue);
-    expect(addEmployee(employee), isFalse);
-    expect(editEmployee(admin), isTrue);
-    expect(editEmployee(employee), isTrue);
-    expect(editEmployee(none), isFalse);
+      expect(addEmployee(admin), isTrue);
+      expect(addEmployee(employee), isFalse);
+      expect(editEmployee(admin), isTrue);
+      expect(editEmployee(employee), isTrue);
+      expect(editEmployee(none), isFalse);
 
-    expect(shiftsSettings(admin), isTrue);
-    expect(shiftsSettings(employee), isFalse);
+      expect(shiftsSettings(admin), isTrue);
+      expect(shiftsSettings(employee), isFalse);
 
-    expect(departmentsNav(admin), isTrue);
-    expect(departmentsNav(employee), isFalse);
-    expect(departmentsNav(none), isFalse);
-    expect(addDepartment(admin), isTrue);
-    expect(addDepartment(employee), isFalse);
+      expect(departmentsNav(admin), isTrue);
+      expect(departmentsNav(employee), isFalse);
+      expect(departmentsNav(none), isFalse);
+      expect(addDepartment(admin), isTrue);
+      expect(addDepartment(employee), isFalse);
 
-    expect(accessNav(admin), isTrue);
-    expect(accessNav(employee), isFalse);
-    expect(accessNav(none), isFalse);
+      expect(accessNav(admin), isTrue);
+      expect(accessNav(employee), isFalse);
+      expect(accessNav(none), isFalse);
 
-    expect(attendanceNav(admin), isTrue);
-    expect(attendanceNav(employee), isTrue);
-    expect(attendanceNav(none), isFalse);
+      expect(attendanceNav(admin), isTrue);
+      expect(attendanceNav(employee), isTrue);
+      expect(attendanceNav(none), isFalse);
 
-    // Personal/dashboard modules are always available; settings stays enabled.
-    expect(modulesWithSettings(accessFor(const <String>[])), contains('settings'));
-  });
+      // Personal/dashboard modules are always available; settings stays enabled.
+      expect(
+        modulesWithSettings(accessFor(const <String>[])),
+        contains('settings'),
+      );
+    },
+  );
 }

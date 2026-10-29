@@ -54,15 +54,10 @@ Future<void> main() async {
     firstData['pageSize'] = 100;
     firstData['totalItems'] = items.length;
     final dir = Directory('test/fixtures/permissions');
-    _write(
-      dir,
-      'user_permissions_user8.json',
-      _sanitize(first),
-    );
+    _write(dir, 'user_permissions_user8.json', _sanitize(first));
     final orphans = items.where((item) {
       if (item is! Map) return false;
-      return item['permissionKey'] == null ||
-          item['permissionStatusId'] == 2;
+      return item['permissionKey'] == null || item['permissionStatusId'] == 2;
     }).length;
     stdout.writeln(
       'Live orphan-grant capture complete. Rows: ${items.length}; '
@@ -89,10 +84,8 @@ class _Client {
   final String baseUrl;
   final _http = HttpClient();
 
-  Future<Map<String, dynamic>> get(
-    String path, {
-    required String token,
-  }) => send('GET', path, token: token);
+  Future<Map<String, dynamic>> get(String path, {required String token}) =>
+      send('GET', path, token: token);
 
   Future<Map<String, dynamic>> post(
     String path, {

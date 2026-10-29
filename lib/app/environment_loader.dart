@@ -4,7 +4,8 @@ import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/app_environment.dart';
 
 import 'env_local_stub.dart'
-    if (dart.library.io) 'env_local_io.dart' as env_local;
+    if (dart.library.io) 'env_local_io.dart'
+    as env_local;
 
 /// Loads and validates the environment file selected by Flutter's build mode:
 ///

@@ -1,0 +1,12 @@
+{
+  "success": false,
+  "message": "Start and end time must differ.",
+  "data": null,
+  "errors": [
+    {
+      "code": "VALIDATION_ERROR",
+      "message": "Start and end time must differ.",
+      "field": "endTime"
+    }
+  ]
+}

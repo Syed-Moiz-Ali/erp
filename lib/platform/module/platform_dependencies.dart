@@ -37,7 +37,9 @@ void configurePlatformDependencies(GetIt services) {
       services(),
       // Local grants are a demo-only source. Backend sessions are gated only by
       // GET /api/me/permissions (fail closed), never by local/demo grants.
-      grants: AppConfig.realApiEnabled ? null : services<UserGrantsController>(),
+      grants: AppConfig.realApiEnabled
+          ? null
+          : services<UserGrantsController>(),
     ),
     dispose: (bloc) => bloc.close(),
   );

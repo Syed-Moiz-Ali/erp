@@ -118,10 +118,7 @@ class BackendPermissionLoader {
     }
   }
 
-  Future<void> _apply(
-    PermissionSet permissions,
-    Set<String> modules,
-  ) async {
+  Future<void> _apply(PermissionSet permissions, Set<String> modules) async {
     final repository = _repository;
     if (repository is! SessionAccessSink) return;
     await (repository as SessionAccessSink).applyEffectiveAccess(

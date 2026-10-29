@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "Shift created.",
+  "data": {
+    "shiftId": 3,
+    "shiftName": "Shift 3",
+    "startTime": "19:00:00",
+    "endTime": "02:00:00",
+    "durationMinutes": 420,
+    "crossesMidnight": true,
+    "punchInOpensAt": "18:45:00",
+    "earlyPunchInMinutes": 15,
+    "lateGraceMinutes": 15,
+    "statusId": 1,
+    "status": "Active",
+    "activeAssignments": 0,
+    "createdOn": "2026-10-01T11:00:00Z",
+    "modifiedOn": null
+  },
+  "errors": []
+}

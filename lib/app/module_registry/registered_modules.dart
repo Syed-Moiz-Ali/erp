@@ -118,17 +118,17 @@ ModuleRegistry createErpRegistry(
           businessToday: _businessToday(clock, companyTimeService),
         )
       : UniversalDashboardCoordinator(
-    [
-      HrDashboardContributor(
-        repository: dashboard,
-        leaveRepository: leaveRepository,
-      ),
-      if (servicesDashboard != null)
-        ServicesDashboardContributor(repository: servicesDashboard),
-    ],
-    clock: clock,
-    businessToday: _businessToday(clock, companyTimeService),
-  );
+          [
+            HrDashboardContributor(
+              repository: dashboard,
+              leaveRepository: leaveRepository,
+            ),
+            if (servicesDashboard != null)
+              ServicesDashboardContributor(repository: servicesDashboard),
+          ],
+          clock: clock,
+          businessToday: _businessToday(clock, companyTimeService),
+        );
   late final ModuleRegistry registry;
 
   final platformModules = buildPlatformModules(

@@ -4,7 +4,7 @@
 
 Audit date: 2026-10-29
 
-Source: `postman/MassERP.postman_collection.json` (read-only; not modified).
+Source: `../audit-output/massep-2026-10-28/` (read-only; API inventory, test results and response-contract audit).
 No endpoint was called for this matrix. The collection contains **100 requests**:
 **83 WIRED**, **5 PARTIAL**, **12 NOT WIRED**.
 

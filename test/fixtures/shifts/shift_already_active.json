@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Shift is already active.",
+  "data": null,
+  "errors": [
+    {
+      "code": "SHIFT_ALREADY_ACTIVE",
+      "message": "Shift is already active."
+    }
+  ]
+}

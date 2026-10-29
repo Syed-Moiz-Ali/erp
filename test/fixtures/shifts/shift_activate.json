@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "Shift activated.",
+  "data": {
+    "shiftId": 1,
+    "shiftName": "Morning",
+    "startTime": "09:00:00",
+    "endTime": "12:00:00",
+    "durationMinutes": 180,
+    "crossesMidnight": false,
+    "punchInOpensAt": "08:45:00",
+    "earlyPunchInMinutes": 15,
+    "lateGraceMinutes": 15,
+    "statusId": 1,
+    "status": "Active",
+    "activeAssignments": 0,
+    "createdOn": "2026-10-01T09:00:00Z",
+    "modifiedOn": "2026-10-04T10:00:00Z"
+  },
+  "errors": []
+}

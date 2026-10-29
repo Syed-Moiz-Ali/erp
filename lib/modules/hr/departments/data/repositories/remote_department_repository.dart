@@ -160,10 +160,27 @@ class RemoteDepartmentRepository implements DepartmentRepository {
         : await _rename(id, request);
     switch (result) {
       case Success<DepartmentDto>(:final value):
-        _revision.add(null);
-        return Success(
-          DepartmentMapper.toDomain(value, companyId: context.company.id),
+        var domain = DepartmentMapper.toDomain(
+          value,
+          companyId: context.company.id,
         );
+        if (normalized.status == ConfigurationStatus.inactive) {
+          // Department create/rename always returns an active record and the
+          // backend has no activate endpoint. Apply the requested inactive
+          // status explicitly; the list is active-only, so this is the only
+          // truthful way to honor the draft.
+          final status = await _dataSource.deactivate(value.departmentId);
+          if (status is Failed<void>) {
+            return Failed(_mapWriteFailure(status.failure));
+          }
+          domain = domain.copyWith(status: ConfigurationStatus.inactive);
+        } else if (domain.status != ConfigurationStatus.active) {
+          // Defensive: an active draft cannot be restored without an activate
+          // endpoint. Never fabricate one.
+          return const Failed(Failure(code: 'unsupported'));
+        }
+        _revision.add(null);
+        return Success(domain);
       case Failed<DepartmentDto>(:final failure):
         return Failed(_mapWriteFailure(failure));
     }

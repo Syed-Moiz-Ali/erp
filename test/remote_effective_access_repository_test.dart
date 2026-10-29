@@ -1,4 +1,4 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
@@ -12,8 +12,9 @@ class _FakeAccessDataSource implements AccessRemoteDataSource {
   Result<MyPermissionsDto> result;
 
   @override
-  Future<Result<MyPermissionsDto>> myPermissions({CancelToken? cancelToken}) async =>
-      result;
+  Future<Result<MyPermissionsDto>> myPermissions({
+    CancelToken? cancelToken,
+  }) async => result;
 }
 
 AuthContext _context({String userId = '8'}) => AuthContext(
@@ -71,16 +72,14 @@ void main() {
 
   test('rejects a payload for a different user', () async {
     final data = _FakeAccessDataSource(
-      const Success(MyPermissionsDto(userId: 99, employeeId: 1, permissions: [])),
+      const Success(
+        MyPermissionsDto(userId: 99, employeeId: 1, permissions: []),
+      ),
     );
     final repository = RemoteEffectiveAccessRepository(data);
 
     final result = await repository.load(_context(userId: '8'));
     expect(result, isA<Failed>());
-    expect(
-      (result as Failed).failure.code,
-      'permissions_user_mismatch',
-    );
+    expect((result as Failed).failure.code, 'permissions_user_mismatch');
   });
 }
-

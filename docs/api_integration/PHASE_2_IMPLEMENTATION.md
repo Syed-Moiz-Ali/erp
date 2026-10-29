@@ -2,7 +2,7 @@
 
 **Status:** Complete. Real MassERP authentication replaces demo-only auth, with rotating refresh tokens, secure persistence, and deterministic demo/backend selection.
 **Baseline:** `ac2ec6f` + Phase 1. Flutter 3.35.7 / Dart 3.9.2.
-**References:** [`PHASE_0_AUDIT.md`](PHASE_0_AUDIT.md), [`PHASE_1_IMPLEMENTATION.md`](PHASE_1_IMPLEMENTATION.md), `api_integration/FLUTTER_LOGIN_API.md`.
+**References:** [`PHASE_0_AUDIT.md`](PHASE_0_AUDIT.md), [`PHASE_1_IMPLEMENTATION.md`](PHASE_1_IMPLEMENTATION.md), `../audit-output/massep-2026-10-28/02-api-test-results.md`.
 
 ---
 

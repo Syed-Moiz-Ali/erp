@@ -63,10 +63,8 @@ final class UserPermissionEndpoints {
   const UserPermissionEndpoints();
 
   String get list => '${ApiEndpoints.root}/user-permissions';
-  String byId(Object id) => ApiPath.resolve(
-    '${ApiEndpoints.root}/user-permissions/{id}',
-    {'id': id},
-  );
+  String byId(Object id) =>
+      ApiPath.resolve('${ApiEndpoints.root}/user-permissions/{id}', {'id': id});
   String forUser(Object userId) => ApiPath.resolve(
     '${ApiEndpoints.root}/user-permissions/users/{userId}',
     {'userId': userId},

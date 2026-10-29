@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:modular_erp/core/api/access_endpoint.dart';
@@ -460,5 +460,3 @@ class ApiClient {
     }
   }
 }
-
-

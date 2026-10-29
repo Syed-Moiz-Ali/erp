@@ -131,27 +131,15 @@ Future<void> main() async {
       _sanitize(employeePermissions),
     );
     if (_isSuccess(employeeList)) {
-      _write(
-        dir,
-        'employees_list_employee.json',
-        _sanitize(employeeList),
-      );
+      _write(dir, 'employees_list_employee.json', _sanitize(employeeList));
     } else {
-      _write(
-        dir,
-        'employees_forbidden_employee.json',
-        _sanitize(employeeList),
-      );
+      _write(dir, 'employees_forbidden_employee.json', _sanitize(employeeList));
       stdout.writeln(
         'Employee account employee list returned ${_errorCode(employeeList)}.',
       );
     }
     if (_isSuccess(employeeLookups)) {
-      _write(
-        dir,
-        'employee_lookups_employee.json',
-        _sanitize(employeeLookups),
-      );
+      _write(dir, 'employee_lookups_employee.json', _sanitize(employeeLookups));
     } else {
       _write(
         dir,
@@ -316,9 +304,7 @@ Object? _sanitize(Object? value, {String key = ''}) {
   }
   if (value is String && value.isNotEmpty) {
     final lower = key.toLowerCase();
-    if (lower == 'email' ||
-        lower.contains('email') ||
-        lower == 'loginid') {
+    if (lower == 'email' || lower.contains('email') || lower == 'loginid') {
       _rememberSensitive(value);
       return 'sanitized@example.com';
     }
@@ -380,7 +366,9 @@ Object? _sanitize(Object? value, {String key = ''}) {
 
 void _rememberSensitive(String value) {
   try {
-    final file = File('${Platform.environment['TEMP']}\\opencode\\sensitive_live.txt');
+    final file = File(
+      '${Platform.environment['TEMP']}\\opencode\\sensitive_live.txt',
+    );
     file.parent.createSync(recursive: true);
     file.writeAsStringSync('$value\n', mode: FileMode.append);
   } catch (_) {}

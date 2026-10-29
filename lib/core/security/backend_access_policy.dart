@@ -18,7 +18,9 @@ abstract final class BackendAccessPolicy {
   const BackendAccessPolicy._();
 
   static const Map<String, Set<AppPermission>> keyPermissions = {
-    'company.access.permissions.manage': {AppPermission.accessPermissionsManage},
+    'company.access.permissions.manage': {
+      AppPermission.accessPermissionsManage,
+    },
     'company.access.users.view': {AppPermission.accessUsersView},
     'hr.departments.manage': {AppPermission.departmentManage},
     'hr.departments.view': {AppPermission.departmentView},

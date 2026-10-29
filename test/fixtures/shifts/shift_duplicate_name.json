@@ -1,0 +1,12 @@
+{
+  "success": false,
+  "message": "Shift name already exists.",
+  "data": null,
+  "errors": [
+    {
+      "code": "SHIFT_DUPLICATE_NAME",
+      "message": "Shift name already exists.",
+      "field": "shiftName"
+    }
+  ]
+}

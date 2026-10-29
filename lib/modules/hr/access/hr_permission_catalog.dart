@@ -1,4 +1,4 @@
-﻿import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
@@ -447,4 +447,3 @@ const hrPermissionModules = <PermissionModule>[
     ],
   ),
 ];
-

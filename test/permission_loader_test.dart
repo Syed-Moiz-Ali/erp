@@ -136,7 +136,9 @@ class _FakeAuthRepository implements AuthRepository, SessionAccessSink {
 void main() {
   test('loads me/permissions after login and adds settings', () async {
     final source = _FakeSource(
-      Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_admin.json'))),
+      Success(
+        BackendAccessPolicy.resolve(fixtureKeys('me_permissions_admin.json')),
+      ),
     );
     final repository = _FakeAuthRepository();
     final endpoint = AccessEndpoint();
@@ -162,48 +164,56 @@ void main() {
     expect(applied.permissions.contains(AppPermission.employeeCreate), isTrue);
     expect(applied.permissions.contains(AppPermission.shiftView), isTrue);
     expect(applied.permissions.contains(AppPermission.accessUsersView), isTrue);
-    expect(applied.modules, containsAll(['employees', 'attendance', 'settings']));
+    expect(
+      applied.modules,
+      containsAll(['employees', 'attendance', 'settings']),
+    );
 
     // The repository echoes the updated session; it must not apply twice.
     await Future<void>.delayed(const Duration(milliseconds: 40));
     expect(repository.applications, hasLength(1));
   });
 
-  test('fails closed with empty permissions and only settings enabled', () async {
-    final source = _FakeSource(
-      const Failed<EffectiveAccess>(
-        Failure(code: 'offline', kind: FailureKind.offline, retryable: true),
-      ),
-    );
-    final repository = _FakeAuthRepository();
-    final endpoint = AccessEndpoint();
-    final loader = BackendPermissionLoader(
-      repository: repository,
-      source: source,
-      accessEndpoint: endpoint,
-      contexts: repository.contexts,
-      currentContext: () => repository.current,
-    );
-    addTearDown(() async {
-      await loader.dispose();
-      await endpoint.dispose();
-      await repository.close();
-    });
+  test(
+    'fails closed with empty permissions and only settings enabled',
+    () async {
+      final source = _FakeSource(
+        const Failed<EffectiveAccess>(
+          Failure(code: 'offline', kind: FailureKind.offline, retryable: true),
+        ),
+      );
+      final repository = _FakeAuthRepository();
+      final endpoint = AccessEndpoint();
+      final loader = BackendPermissionLoader(
+        repository: repository,
+        source: source,
+        accessEndpoint: endpoint,
+        contexts: repository.contexts,
+        currentContext: () => repository.current,
+      );
+      addTearDown(() async {
+        await loader.dispose();
+        await endpoint.dispose();
+        await repository.close();
+      });
 
-    await loader.start();
-    repository.emit(
-      contextFor(permissions: {AppPermission.employeeViewAll}),
-    );
-    await repository.waitForApplications(1);
+      await loader.start();
+      repository.emit(contextFor(permissions: {AppPermission.employeeViewAll}));
+      await repository.waitForApplications(1);
 
-    final applied = repository.applications.first;
-    expect(applied.permissions.values, isEmpty);
-    expect(applied.modules, {'settings'});
-  });
+      final applied = repository.applications.first;
+      expect(applied.permissions.values, isEmpty);
+      expect(applied.modules, {'settings'});
+    },
+  );
 
   test('reloads after 403 ACCESS_DENIED', () async {
     final source = _FakeSource(
-      Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_employee.json'))),
+      Success(
+        BackendAccessPolicy.resolve(
+          fixtureKeys('me_permissions_employee.json'),
+        ),
+      ),
     );
     final repository = _FakeAuthRepository();
     final endpoint = AccessEndpoint();
@@ -237,61 +247,66 @@ void main() {
     await repository.waitForApplications(2);
 
     final applied = repository.applications.last;
-    expect(
-      applied.permissions.contains(AppPermission.accessUsersView),
-      isTrue,
-    );
-    expect(
-      applied.permissions.contains(AppPermission.employeeUpdate),
-      isFalse,
-    );
+    expect(applied.permissions.contains(AppPermission.accessUsersView), isTrue);
+    expect(applied.permissions.contains(AppPermission.employeeUpdate), isFalse);
   });
 
-  test('reloads permissions when a token refresh replaces the context', () async {
-    final source = _FakeSource(
-      Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_employee.json'))),
-    );
-    final repository = _FakeAuthRepository();
-    final endpoint = AccessEndpoint();
-    final loader = BackendPermissionLoader(
-      repository: repository,
-      source: source,
-      accessEndpoint: endpoint,
-      contexts: repository.contexts,
-      currentContext: () => repository.current,
-    );
-    addTearDown(() async {
-      await loader.dispose();
-      await endpoint.dispose();
-      await repository.close();
-    });
+  test(
+    'reloads permissions when a token refresh replaces the context',
+    () async {
+      final source = _FakeSource(
+        Success(
+          BackendAccessPolicy.resolve(
+            fixtureKeys('me_permissions_employee.json'),
+          ),
+        ),
+      );
+      final repository = _FakeAuthRepository();
+      final endpoint = AccessEndpoint();
+      final loader = BackendPermissionLoader(
+        repository: repository,
+        source: source,
+        accessEndpoint: endpoint,
+        contexts: repository.contexts,
+        currentContext: () => repository.current,
+      );
+      addTearDown(() async {
+        await loader.dispose();
+        await endpoint.dispose();
+        await repository.close();
+      });
 
-    await loader.start();
-    repository.emit(contextFor());
-    await repository.waitForApplications(1);
-    expect(
-      repository.applications.first.permissions.contains(
-        AppPermission.employeeCreate,
-      ),
-      isFalse,
-    );
+      await loader.start();
+      repository.emit(contextFor());
+      await repository.waitForApplications(1);
+      expect(
+        repository.applications.first.permissions.contains(
+          AppPermission.employeeCreate,
+        ),
+        isFalse,
+      );
 
-    // A refresh response carries no permissions; the loader must reload them.
-    source.result = Success(
-      BackendAccessPolicy.resolve(fixtureKeys('me_permissions_admin.json')),
-    );
-    repository.emit(contextFor());
-    await repository.waitForApplications(2);
-    expect(
-      repository.applications.last.permissions.contains(
-        AppPermission.employeeCreate,
-      ),
-      isTrue,
-    );
-  });
+      // A refresh response carries no permissions; the loader must reload them.
+      source.result = Success(
+        BackendAccessPolicy.resolve(fixtureKeys('me_permissions_admin.json')),
+      );
+      repository.emit(contextFor());
+      await repository.waitForApplications(2);
+      expect(
+        repository.applications.last.permissions.contains(
+          AppPermission.employeeCreate,
+        ),
+        isTrue,
+      );
+    },
+  );
   test('refresh reloads effective access on app resume', () async {
     final source = _FakeSource(
-      Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_employee.json'))),
+      Success(
+        BackendAccessPolicy.resolve(
+          fixtureKeys('me_permissions_employee.json'),
+        ),
+      ),
     );
     final repository = _FakeAuthRepository();
     final endpoint = AccessEndpoint();

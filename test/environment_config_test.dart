@@ -206,8 +206,7 @@ void main() {
   });
 
   group('loadEnvironment', () {
-    Future<Map<String, String>> noOverrides() async =>
-        const <String, String>{};
+    Future<Map<String, String>> noOverrides() async => const <String, String>{};
 
     test('committed development placeholders load in demo mode', () async {
       final env = await loadEnvironment(

@@ -9,8 +9,7 @@ class AttendanceApi {
 
   Future<Result<AttendanceDay>> today() => _client.get<AttendanceDay>(
     ApiEndpoints.attendance.today,
-    fromJson: (json) =>
-        AttendanceDay((json as Map).cast<String, dynamic>()),
+    fromJson: (json) => AttendanceDay((json as Map).cast<String, dynamic>()),
   );
 
   Future<Result<AttendanceDay>> punch(
@@ -24,7 +23,6 @@ class AttendanceApi {
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
     },
-    fromJson: (json) =>
-        AttendanceDay((json as Map).cast<String, dynamic>()),
+    fromJson: (json) => AttendanceDay((json as Map).cast<String, dynamic>()),
   );
 }

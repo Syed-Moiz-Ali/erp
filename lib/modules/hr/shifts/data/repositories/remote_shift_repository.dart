@@ -151,11 +151,40 @@ class RemoteShiftRepository implements ShiftRepository {
         : await _update(id, request);
     switch (result) {
       case Success<ShiftDto>(:final value):
+        final requestedActive = normalized.status == ConfigurationStatus.active;
+        final returnedActive = value.statusId != 2;
+        if (requestedActive != returnedActive) {
+          final status = await _ensureStatus(value.shiftId, requestedActive);
+          if (status is Failed<void>) return Failed(status.failure);
+        }
         _revision.add(null);
         return Success(
-          ShiftMapper.toDomain(value, companyId: context.company.id),
+          ShiftMapper.toDomain(
+            value,
+            companyId: context.company.id,
+          ).copyWith(status: normalized.status),
         );
       case Failed<ShiftDto>(:final failure):
+        return Failed(_mapWriteFailure(failure));
+    }
+  }
+
+  /// Applies the requested status and treats an already-in-that-state response
+  /// as success (the backend makes activate/deactivate idempotent-failing).
+  Future<Result<void>> _ensureStatus(int id, bool active) async {
+    final result = active
+        ? await _dataSource.activate(id)
+        : await _dataSource.deactivate(id);
+    switch (result) {
+      case Success<void>():
+        return const Success(null);
+      case Failed<void>(:final failure):
+        if (active && failure.code == 'SHIFT_ALREADY_ACTIVE') {
+          return const Success(null);
+        }
+        if (!active && failure.code == 'SHIFT_ALREADY_INACTIVE') {
+          return const Success(null);
+        }
         return Failed(_mapWriteFailure(failure));
     }
   }
@@ -174,8 +203,7 @@ class RemoteShiftRepository implements ShiftRepository {
     if (draft.earlyPunchInMinutes < 0 || draft.earlyPunchInMinutes > 120) {
       return 'invalidEarlyPunch';
     }
-    if (draft.gracePeriodMinutes < 0 ||
-        draft.gracePeriodMinutes >= duration) {
+    if (draft.gracePeriodMinutes < 0 || draft.gracePeriodMinutes >= duration) {
       return 'invalidGrace';
     }
     return null;
@@ -197,15 +225,13 @@ class RemoteShiftRepository implements ShiftRepository {
   ) async {
     final numericId = ShiftMapper.parseId(id);
     if (numericId == null) return const Failed(Failure(code: 'notFound'));
-    final result = active
-        ? await _dataSource.activate(numericId)
-        : await _dataSource.deactivate(numericId);
+    final result = await _ensureStatus(numericId, active);
     switch (result) {
       case Success<void>():
         _revision.add(null);
         return const Success(null);
       case Failed<void>(:final failure):
-        return Failed(_mapWriteFailure(failure));
+        return Failed(failure);
     }
   }
 
@@ -235,7 +261,7 @@ class RemoteShiftRepository implements ShiftRepository {
       serverMessage: failure.serverMessage,
     ),
     'SHIFT_IN_USE' => Failure(
-      code: 'inUse',
+      code: 'shiftInUse',
       kind: FailureKind.conflict,
       serverMessage: failure.serverMessage,
     ),
