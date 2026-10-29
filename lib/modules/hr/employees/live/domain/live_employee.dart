@@ -15,23 +15,74 @@ class LiveEmployee {
     this.statusId,
     this.statusName,
     this.designation,
+    this.reportingManager,
     this.joiningDate,
+    this.resignationDate,
+    this.organization,
     this.email,
     this.phone,
+    this.additionalUaeContactNumber,
+    this.uaeAddress,
+    this.homeCountryContactNumber,
+    this.additionalHomeCountryContactNumber,
+    this.homeCountryAirport,
+    this.emergencyContactNumber,
     this.basicSalary,
     this.dateOfBirth,
     this.maritalStatus,
+    this.genderBloodGroup,
     this.employeeType,
     this.gratuity,
+    this.ticket,
     this.workingHours,
+    this.noOfWorkHours,
+    this.noOfDays,
     this.transportation,
     this.accommodation,
+    this.insurance,
+    this.others,
+    this.standard,
+    this.skill,
+    this.fuel,
+    this.hardship,
+    this.education,
+    this.site,
+    this.telephone,
     this.totalSalary,
+    this.bankName,
+    this.accountNumber,
+    this.wpsDebitCardNumber,
+    this.wpsExpiry,
+    this.labourCode,
+    this.labourCardExpiry,
+    this.personalCode,
+    this.passportNumber,
+    this.passportIssueDate,
+    this.passportExpiryDate,
+    this.emiratesId,
+    this.emiratesIdExpiryDate,
+    this.visaUidNumber,
+    this.visaExpiryDate,
+    this.workPermitNumber,
+    this.workPermitExpiry,
+    this.immigrationId,
+    this.insuranceCompanyName,
+    this.insuranceNumber,
+    this.insuranceExpiryDate,
+    this.photoPath,
+    this.emiratesIdCopyPath,
+    this.passportCopyPath,
+    this.healthInsuranceCardCopyPath,
+    this.labourCardCopyPath,
     this.loginEnabled = false,
     this.canLogin = false,
     this.loginId,
     this.loginMobile,
     this.loginUserId,
+    this.loginStatus,
+    this.loginStartDate,
+    this.loginBranchIds = const [],
+    this.loginBranchNames,
   });
 
   final int id;
@@ -39,16 +90,31 @@ class LiveEmployee {
   final Map<String, dynamic> raw;
   final int? branchId, departmentId, nationalityId, statusId;
   final String? branchName, departmentName, nationalityName, statusName;
-  final String? designation;
-  final String? joiningDate;
-  final String? email;
-  final String? phone;
+  final String? designation, reportingManager;
+  final String? joiningDate, resignationDate, organization;
+  final String? email, phone, additionalUaeContactNumber, uaeAddress;
+  final String? homeCountryContactNumber, additionalHomeCountryContactNumber;
+  final String? homeCountryAirport, emergencyContactNumber;
   final double? basicSalary;
-  final String? dateOfBirth, maritalStatus, employeeType, gratuity;
-  final double? workingHours, transportation, accommodation, totalSalary;
+  final String? dateOfBirth, maritalStatus, genderBloodGroup;
+  final String? employeeType, gratuity;
+  final double? ticket, workingHours, noOfWorkHours, noOfDays;
+  final double? transportation, accommodation, insurance, others, standard;
+  final double? skill, fuel, hardship, education, site, telephone, totalSalary;
+  final String? bankName, accountNumber, wpsDebitCardNumber, wpsExpiry;
+  final String? labourCode, labourCardExpiry, personalCode;
+  final String? passportNumber, passportIssueDate, passportExpiryDate;
+  final String? emiratesId, emiratesIdExpiryDate;
+  final String? visaUidNumber, visaExpiryDate;
+  final String? workPermitNumber, workPermitExpiry, immigrationId;
+  final String? insuranceCompanyName, insuranceNumber, insuranceExpiryDate;
+  final String? photoPath, emiratesIdCopyPath, passportCopyPath;
+  final String? healthInsuranceCardCopyPath, labourCardCopyPath;
   final bool loginEnabled, canLogin;
   final String? loginId, loginMobile;
   final int? loginUserId;
+  final String? loginStatus, loginStartDate, loginBranchNames;
+  final List<int> loginBranchIds;
 
   bool get isActive => statusId == 1;
 }
