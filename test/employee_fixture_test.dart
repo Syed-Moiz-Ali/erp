@@ -75,7 +75,6 @@ void main() {
     expect(lookup['maritalStatuses'], contains('Single'));
     expect(lookup['employeeTypes'], contains('Revenue'));
     expect(lookup['gratuityTypes'], contains('Limited Contract'));
-    expect(lookup['userTypes'], contains('HR'));
   });
 
   test('employee 404 and live 403 envelopes are explicit', () {

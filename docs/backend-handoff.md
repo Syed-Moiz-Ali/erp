@@ -95,6 +95,14 @@ This document records backend decisions/fixes required by the Flutter client. No
 
 **Required:** add an unauthenticated minimal health endpoint and document it.
 
+## 9a. Stale OpenAPI employee login contract (B-14)
+
+**Finding:** `GET /openapi/v1.json` still lists `userType` (optional) on both `EmployeeLoginRequest` and `EmployeeLogin`, although the backend removed it. `EmployeeSaveRequest.login` resolves to `EmployeeLoginRequest`, so the published write contract is stale.
+
+**Client decision:** the client never sends `login.userType` on create or update. It strips the field from a loaded login object before a full-replace PUT, tolerates it on responses, and never displays it.
+
+**Required:** regenerate the OpenAPI document so `EmployeeLoginRequest` no longer advertises `userType`.
+
 ## 10. Still required for full remote integration
 
 These backend contracts are available but need decisions before/while wiring UI:

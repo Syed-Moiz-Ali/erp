@@ -19,8 +19,7 @@
     ],
     "maritalStatuses": ["Single", "Married"],
     "employeeTypes": ["Revenue", "Non-Revenue"],
-    "gratuityTypes": ["Limited Contract", "Unlimited Contract"],
-    "userTypes": ["HR", "Accounts", "Sales"]
+    "gratuityTypes": ["Limited Contract", "Unlimited Contract"]
   },
   "errors": []
 }

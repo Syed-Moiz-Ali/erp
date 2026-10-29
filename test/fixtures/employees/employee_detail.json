@@ -33,7 +33,6 @@
       "userId": 44,
       "loginId": "qa.employee",
       "mobileNo": "SANITIZED_PHONE",
-      "userType": "HR",
       "status": "Active",
       "startDate": "2026-10-28",
       "branchIds": [2],

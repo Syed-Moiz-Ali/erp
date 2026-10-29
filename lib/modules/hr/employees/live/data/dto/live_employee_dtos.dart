@@ -88,8 +88,9 @@ LiveEmployeeLookups mapLookups(Map<String, dynamic> json) {
       else
         Lookup(0, '$item'),
   ];
-  List<String> strings(String key) =>
-      (json[key] as List? ?? const []).map((item) => '').toList();
+  List<String> strings(String key) => [
+    for (final item in (json[key] as List? ?? const [])) '$item',
+  ];
   return LiveEmployeeLookups(
     branches: list('branches'),
     departments: list('departments'),
@@ -98,7 +99,6 @@ LiveEmployeeLookups mapLookups(Map<String, dynamic> json) {
     maritalStatuses: strings('maritalStatuses'),
     employeeTypes: strings('employeeTypes'),
     gratuityTypes: strings('gratuityTypes'),
-    userTypes: strings('userTypes'),
   );
 }
 

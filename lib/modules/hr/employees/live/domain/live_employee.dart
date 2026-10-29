@@ -139,7 +139,7 @@ class LiveEmployeeDraft {
     if (loginEnabled) {
       final login = <String, dynamic>{
         ...?(base?['login'] as Map?)?.cast<String, dynamic>(),
-      };
+      }..remove('userType');
       login['enabled'] = true;
       login['loginId'] =
           (base?['login'] as Map?)?['loginId'] as String? ?? email.trim();
@@ -161,10 +161,9 @@ class LiveEmployeeLookups {
     this.maritalStatuses = const [],
     this.employeeTypes = const [],
     this.gratuityTypes = const [],
-    this.userTypes = const [],
   });
   final List<Lookup> branches, departments, nationalities, statuses;
-  final List<String> maritalStatuses, employeeTypes, gratuityTypes, userTypes;
+  final List<String> maritalStatuses, employeeTypes, gratuityTypes;
 }
 
 class Lookup {

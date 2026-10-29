@@ -77,6 +77,13 @@ Activate does not restore the linked login. The client must re-read the employee
 
 The client must send `timeZoneId` from the branch lookups. It must not use Windows zone names or offsets.
 
+## D-12a - Employee login never sends userType
+
+The backend removed `login.userType`. The client never sends it on create or
+update and strips it from a loaded detail before a full-replace PUT. Every other
+loaded login field is still sent back. Responses may include `userType`; it is
+ignored and never displayed. The OpenAPI document is stale on this field.
+
 ## D-13 â€” Remote module status in this phase
 
 Implemented and covered by tests:

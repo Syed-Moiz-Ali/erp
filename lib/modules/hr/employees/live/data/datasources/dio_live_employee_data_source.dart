@@ -138,7 +138,6 @@ class DioLiveEmployeeDataSource {
         maritalStatuses: base.maritalStatuses,
         employeeTypes: base.employeeTypes,
         gratuityTypes: base.gratuityTypes,
-        userTypes: base.userTypes,
       ),
     );
   }

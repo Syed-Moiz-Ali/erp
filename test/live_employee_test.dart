@@ -48,6 +48,18 @@ void main() {
     expect(employee.basicSalary, 1100);
   });
 
+  test('maps login with and without an ignorable userType', () {
+    final withoutType = LiveEmployeeDto.fromJson(raw).toDomain();
+    final withType = LiveEmployeeDto.fromJson({
+      ...raw,
+      'login': {...raw['login'] as Map<String, dynamic>, 'userType': 'HR'},
+    }).toDomain();
+    expect(withoutType.loginId, 'qa.audit');
+    expect(withType.loginId, 'qa.audit');
+    expect(withType.loginUserId, 44);
+    expect(withType.loginEnabled, isTrue);
+  });
+
   test('PUT body keeps every field loaded from the backend', () {
     final employee = LiveEmployeeDto.fromJson(raw).toDomain();
     final draft = LiveEmployeeDto.fromJson(raw).toDraft();
@@ -63,6 +75,31 @@ void main() {
     expect(body['basicSalary'], 1100);
     expect((body['login'] as Map)['loginId'], 'qa.audit');
   });
+
+  test(
+    'full replace strips login.userType but keeps every other loaded field',
+    () {
+      final loaded = <String, dynamic>{
+        ...raw,
+        'login': {...raw['login'] as Map<String, dynamic>, 'userType': 'HR'},
+      };
+      final employee = LiveEmployeeDto.fromJson(loaded).toDomain();
+      final body = LiveEmployeeDto.fromJson(
+        loaded,
+      ).toDraft().toBody(base: employee.raw);
+      final sentLogin = (body['login'] as Map).cast<String, dynamic>();
+      final loadedLogin = (loaded['login'] as Map).cast<String, dynamic>();
+      expect(sentLogin.containsKey('userType'), isFalse);
+      for (final entry in loadedLogin.entries) {
+        if (entry.key == 'userType') continue;
+        expect(sentLogin[entry.key], entry.value, reason: entry.key);
+      }
+      for (final entry in loaded.entries) {
+        if (entry.key == 'login') continue;
+        expect(body[entry.key], entry.value, reason: entry.key);
+      }
+    },
+  );
 
   test('draft validation requires core fields and login fields', () {
     const draft = LiveEmployeeDraft(name: 'QA', loginEnabled: true);
@@ -115,7 +152,16 @@ void main() {
     final login = body['login'] as Map<String, dynamic>;
     expect(login['loginId'], 'qa@example.com');
     expect(login['branchIds'], [1, 2]);
-    expect(login.containsKey('userType'), isFalse);
+    expect(
+      login.keys,
+      unorderedEquals([
+        'enabled',
+        'loginId',
+        'mobileNo',
+        'password',
+        'branchIds',
+      ]),
+    );
     expect(body['basicSalary'], 3000);
     expect(body['workingHours'], 8);
     expect(body['transportation'], 500);
