@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:modular_erp/core/api/models/paged_result.dart';
 import 'package:modular_erp/core/errors/result.dart';
@@ -30,12 +30,10 @@ class RemoteAccessRepository implements AccessRepository {
     void emit() {
       load().then((result) {
         if (controller.isClosed) return;
-        controller.add(
-          switch (result) {
-            Success<List<T>>(:final value) => value,
-            Failed<List<T>>() => const [],
-          },
-        );
+        controller.add(switch (result) {
+          Success<List<T>>(:final value) => value,
+          Failed<List<T>>() => const [],
+        });
       });
     }
 
@@ -116,8 +114,7 @@ class RemoteAccessRepository implements AccessRepository {
           id: row.userPermissionId.toString(),
           companyId: companyId,
           userId: row.userId.toString(),
-          permissionKey:
-              row.permissionKey ?? '__orphan__${row.permissionId}',
+          permissionKey: row.permissionKey ?? '__orphan__${row.permissionId}',
           scope: _scopeFor(row.permissionKey),
           grantedByUserId: (row.createdBy ?? 0).toString(),
           grantedAt: row.createdOn?.toUtc() ?? _epoch,
@@ -144,7 +141,8 @@ class RemoteAccessRepository implements AccessRepository {
       for (final entry in byUser.entries)
         AccessUserListItem(
           userId: entry.key,
-          displayName: entry.value.userName ??
+          displayName:
+              entry.value.userName ??
               entry.value.loginId ??
               'User ${entry.key}',
           email: entry.value.loginId ?? '',
@@ -160,16 +158,16 @@ class RemoteAccessRepository implements AccessRepository {
   }
 
   @override
-  Stream<List<AccessUserListItem>> watchUsers({
-    required String companyId,
-  }) => _watchList(() async {
-    final result = await _allPermissions();
-    return switch (result) {
-      Success<List<UserPermissionDto>>(:final value) =>
-        Success(_users(value, companyId)),
-      Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
-    };
-  });
+  Stream<List<AccessUserListItem>> watchUsers({required String companyId}) =>
+      _watchList(() async {
+        final result = await _allPermissions();
+        return switch (result) {
+          Success<List<UserPermissionDto>>(:final value) => Success(
+            _users(value, companyId),
+          ),
+          Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
+        };
+      });
 
   @override
   Stream<List<UserPermissionGrant>> watchGrants({
@@ -178,8 +176,9 @@ class RemoteAccessRepository implements AccessRepository {
   }) => _watchList(() async {
     final result = await _allPermissions();
     return switch (result) {
-      Success<List<UserPermissionDto>>(:final value) =>
-        Success(_grants(value, companyId, userId: userId)),
+      Success<List<UserPermissionDto>>(:final value) => Success(
+        _grants(value, companyId, userId: userId),
+      ),
       Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
     };
   });
@@ -190,8 +189,9 @@ class RemoteAccessRepository implements AccessRepository {
   }) => _watchList(() async {
     final result = await _allPermissions();
     return switch (result) {
-      Success<List<UserPermissionDto>>(:final value) =>
-        Success(_grants(value, companyId)),
+      Success<List<UserPermissionDto>>(:final value) => Success(
+        _grants(value, companyId),
+      ),
       Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
     };
   });
@@ -203,8 +203,9 @@ class RemoteAccessRepository implements AccessRepository {
   }) async {
     final result = await _allPermissions();
     return switch (result) {
-      Success<List<UserPermissionDto>>(:final value) =>
-        Success(_grants(value, companyId, userId: userId)),
+      Success<List<UserPermissionDto>>(:final value) => Success(
+        _grants(value, companyId, userId: userId),
+      ),
       Failed<List<UserPermissionDto>>(:final failure) => Failed(failure),
     };
   }
@@ -245,9 +246,10 @@ class RemoteAccessRepository implements AccessRepository {
             ),
           );
         }
-        return Success<(int, List<int>)>(
-          (userId, [for (final grant in grants) ids[grant.key]!]),
-        );
+        return Success<(int, List<int>)>((
+          userId,
+          [for (final grant in grants) ids[grant.key]!],
+        ));
       }(),
     };
   }
@@ -316,11 +318,17 @@ class RemoteAccessRepository implements AccessRepository {
         _revision.add(null);
         return const Success<void>(null);
       }(),
+      Failed<UserPermissionDto>(:final failure)
+          when failure.code == 'USER_PERMISSION_NOT_FOUND' ||
+              failure.code == 'user_permission_not_found' ||
+              failure.kind == FailureKind.notFound =>
+        () {
+          _revision.add(null);
+          return const Success<void>(null);
+        }(),
       Failed<UserPermissionDto>(:final failure) => Failed(failure),
     };
   }
 
   Future<void> dispose() => _revision.close();
 }
-
-

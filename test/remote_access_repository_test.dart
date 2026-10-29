@@ -266,6 +266,38 @@ void main() {
     );
   });
 
+  test('revoking an already-missing grant is an idempotent success', () async {
+    final result = await repository.revokeGrant(
+      companyId: '1',
+      targetUserId: '44',
+      grantId: '999',
+    );
+    expect(result, isA<Success>());
+  });
+
+  test('assign works when the target had no prior grants', () async {
+    data.rows = const [];
+    data.assignResponse = [_row(1, 44, 18, 'hr.employees.view')];
+    final result = await repository.assignGrants(
+      companyId: '1',
+      actorUserId: '8',
+      targetUserId: '44',
+      requestId: 'request',
+      grants: const [
+        PermissionGrantInput(
+          key: 'hr.employees.view',
+          scope: PermissionScope.all,
+        ),
+      ],
+    );
+    expect(result, isA<Success>());
+    final grants = await repository
+        .watchGrants(companyId: '1', userId: '44')
+        .first;
+    expect(grants, hasLength(1));
+    expect(grants.single.permissionKey, 'hr.employees.view');
+  });
+
   test('replaces grants using server permission ids', () async {
     final result = await repository.replaceGrants(
       companyId: '1',
