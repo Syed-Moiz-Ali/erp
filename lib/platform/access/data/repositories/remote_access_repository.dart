@@ -143,6 +143,29 @@ class RemoteAccessRepository implements AccessRepository {
     }
   }
 
+  /// Reads one grant row by its `userPermissionId` (concrete helper, not part of
+  /// [AccessRepository]). Orphan rows have no key and are reported as absent.
+  Future<Result<UserPermissionGrant?>> getPermissionGrant({
+    required String companyId,
+    required String userPermissionId,
+  }) async {
+    final id = int.tryParse(userPermissionId);
+    if (id == null) {
+      return const Failed(
+        Failure(code: 'access.invalidGrant', kind: FailureKind.invalidData),
+      );
+    }
+    final result = await _dataSource.userPermissionById(id);
+    switch (result) {
+      case Failed(:final failure):
+        return Failed(failure);
+      case Success(:final value):
+        return Success(
+          _isKeyBearing(value) ? _toGrant(value, companyId: companyId) : null,
+        );
+    }
+  }
+
   /// Revokes one grant row by its `userPermissionId` (concrete helper, not part
   /// of [AccessRepository]).
   Future<Result<void>> revokePermission({

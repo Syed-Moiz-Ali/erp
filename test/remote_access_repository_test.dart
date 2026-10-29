@@ -382,6 +382,41 @@ void main() {
       );
     });
 
+    test('get by id returns one grant and hides orphan rows', () async {
+      data.userPermissionByIdResult = Success(
+        _row(id: 145, userId: 43, key: 'hr.employees.view'),
+      );
+
+      final found = await repository.getPermissionGrant(
+        companyId: 'c9',
+        userPermissionId: '145',
+      );
+      expect(found, isA<Success<UserPermissionGrant?>>());
+      expect(
+        (found as Success<UserPermissionGrant?>).value?.permissionKey,
+        'hr.employees.view',
+      );
+      expect(data.lastUserPermissionById, 145);
+
+      data.userPermissionByIdResult = Success(
+        _row(id: 146, userId: 43, key: null, statusId: 2),
+      );
+      final orphan = await repository.getPermissionGrant(
+        companyId: 'c9',
+        userPermissionId: '146',
+      );
+      expect((orphan as Success<UserPermissionGrant?>).value, isNull);
+
+      final invalid = await repository.getPermissionGrant(
+        companyId: 'c9',
+        userPermissionId: 'x',
+      );
+      expect(
+        (invalid as Failed<UserPermissionGrant?>).failure.code,
+        'access.invalidGrant',
+      );
+    });
+
     test('revoke deletes by userPermissionId', () async {
       data.removeResult = Success(
         _row(id: 145, userId: 43, key: 'hr.employees.view'),

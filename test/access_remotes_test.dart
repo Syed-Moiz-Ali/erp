@@ -76,6 +76,15 @@ void main() {
     expect(adapter.last.path, '/api/user-permissions/145');
   });
 
+  test('get assignment by id targets GET /api/user-permissions/{id}', () async {
+    adapter.handler = (_) => jsonResponse(envelope(data: _rowJson()), 200);
+    final result = await dataSource.userPermissionById(145);
+
+    expect(result, isA<Success<UserPermissionDto>>());
+    expect(adapter.last.method, 'GET');
+    expect(adapter.last.path, '/api/user-permissions/145');
+  });
+
   test('user permission queries forward filters and paging', () async {
     adapter.handler = (_) => jsonResponse(
       envelope(

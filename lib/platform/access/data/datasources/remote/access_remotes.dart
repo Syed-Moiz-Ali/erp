@@ -47,6 +47,11 @@ abstract interface class AccessAdminRemoteDataSource {
     CancelToken? cancelToken,
   });
 
+  Future<Result<UserPermissionDto>> userPermissionById(
+    int userPermissionId, {
+    CancelToken? cancelToken,
+  });
+
   Future<Result<List<UserPermissionDto>>> assignUserPermissions(
     int userId,
     List<int> permissionIds, {
@@ -167,6 +172,17 @@ class DioAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
       (item) =>
           UserPermissionDto.fromJson((item as Map).cast<String, dynamic>()),
     ),
+  );
+
+  @override
+  Future<Result<UserPermissionDto>> userPermissionById(
+    int userPermissionId, {
+    CancelToken? cancelToken,
+  }) => _client.get<UserPermissionDto>(
+    ApiEndpoints.userPermissions.byId(userPermissionId),
+    cancelToken: cancelToken,
+    fromJson: (json) =>
+        UserPermissionDto.fromJson((json as Map).cast<String, dynamic>()),
   );
 
   @override

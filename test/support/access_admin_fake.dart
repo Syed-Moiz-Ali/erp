@@ -16,6 +16,7 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   Failure? permissionsFailure;
   Failure? permissionByIdFailure;
   Failure? userPermissionsFailure;
+  Failure? userPermissionByIdFailure;
   Failure? assignFailure;
   Failure? replaceFailure;
   Failure? removeFailure;
@@ -26,6 +27,7 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   Result<PermissionDto>? setActiveResult;
   Result<List<UserPermissionDto>>? assignResult;
   Result<List<UserPermissionDto>>? replaceResult;
+  Result<UserPermissionDto>? userPermissionByIdResult;
   Result<UserPermissionDto>? removeResult;
 
   final List<int> permissionPages = [];
@@ -42,6 +44,7 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   int? lastActiveId;
   bool? lastActive;
   int? lastUserIdFilter;
+  int? lastUserPermissionById;
   int? lastAssignUserId;
   List<int>? lastAssignPermissionIds;
   int? lastReplaceUserId;
@@ -151,6 +154,24 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
           .toList();
     }
     return Success(_page(filtered, page, pageSize));
+  }
+
+  @override
+  Future<Result<UserPermissionDto>> userPermissionById(
+    int userPermissionId, {
+    CancelToken? cancelToken,
+  }) async {
+    lastUserPermissionById = userPermissionId;
+    if (userPermissionByIdFailure != null) {
+      return Failed(userPermissionByIdFailure!);
+    }
+    if (userPermissionByIdResult != null) return userPermissionByIdResult!;
+    for (final row in grantRows) {
+      if (row.userPermissionId == userPermissionId) return Success(row);
+    }
+    return const Failed(
+      Failure(code: 'USER_PERMISSION_NOT_FOUND', kind: FailureKind.notFound),
+    );
   }
 
   @override
