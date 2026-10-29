@@ -1,5 +1,71 @@
 > **v3 applicability (2026-10-29):** Produced during the previous integration session. For API v3 the UI baseline is `ac2ec6f`; UI/UX is frozen and demo/local code stays until a separate, module-by-module removal phase. Statements about the 5df51cf UI, a live-only runtime, or removed demo paths are historical and do not describe v3.
 
+## API v3 final coverage
+
+The endpoint-by-endpoint table (repository method, DI selection, tests and fixtures) lives in
+[`integration-map.md`](integration-map.md#coverage--final-audit-api-v3). The matrix below is the
+historical Postman audit; this section records the v3 outcome.
+
+### APIS WIRED (backend repository selected by DI)
+
+* Auth: `POST /api/auth/login`, `POST /api/auth/refresh`, `POST /api/auth/logout`.
+* Me: `GET /api/me/permissions`.
+* Permissions: `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`,
+  `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`,
+  `POST /api/permissions/{id}/deactivate`.
+* User Permissions: `GET /api/user-permissions`, `GET /api/user-permissions/{id}`,
+  `POST /api/user-permissions`, `PUT /api/user-permissions/users/{userId}`,
+  `DELETE /api/user-permissions/{id}`.
+* Employees + lookups: `GET /api/employees`, `GET /api/employees/lookups`,
+  `GET /api/employees/{id}`, `POST /api/employees`, `PUT /api/employees/{id}`,
+  `POST /api/employees/{id}/activate`, `POST /api/employees/{id}/deactivate`.
+* Branches + lookups: `GET /api/branches`, `GET /api/branches/lookups`,
+  `GET /api/branches/{id}`, `POST /api/branches`, `PUT /api/branches/{id}`,
+  `POST /api/branches/{id}/activate`, `POST /api/branches/{id}/deactivate`.
+* Departments: `GET /api/departments`, `GET /api/departments/{id}`, `POST /api/departments`,
+  `PUT /api/departments/{id}`, `POST /api/departments/{id}/deactivate`.
+* Shifts: `GET /api/shifts`, `GET /api/shifts/{id}`, `POST /api/shifts`,
+  `PUT /api/shifts/{id}`, `POST /api/shifts/{id}/activate`, `POST /api/shifts/{id}/deactivate`.
+* Employee Shifts: `GET /api/employee-shifts`, `GET /api/employee-shifts/{id}`,
+  `POST /api/employee-shifts`, `PUT /api/employee-shifts/{id}`,
+  `POST /api/employee-shifts/{id}/deactivate`.
+* Attendance: `GET /api/attendance/today`, `POST /api/attendance/punch`
+  (`punchIn | break | resume | punchOut`).
+
+Writes are implemented behind the repositories and are exercised only with in-memory fakes;
+no live write was sent during verification.
+
+### APIS DATA-ONLY (no baseline screen)
+
+* Permission catalog: every `/api/permissions` route is wired in
+  `RemotePermissionMasterRepository`; there is no catalog screen, route, widget or l10n copy.
+* Employee Shifts: every `/api/employee-shifts` route is wired under
+  `lib/modules/hr/employee_shifts/`; there is no screen. Overlap, assignment limit,
+  timezone and "has punches" rules stay backend-authoritative.
+* Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`;
+  there is no screen and no branch permission enum/labels. `timeZoneId` is required.
+* Employees availability checks: no endpoint; return `Failure(code: 'unsupported')`.
+* Attendance history/corrections/requests/team/all: no endpoint; the adapter returns the
+  existing empty/unsupported results and never reads local attendance.
+* Access history: no endpoint; `watchHistory` returns an empty list and never reads local audit rows.
+
+### NEEDS-UI-DECISION
+
+* Employee create/edit form lacks required backend fields (`branchId`, `nationalityId`, DOB,
+  marital status, gratuity, working hours, salary, transport, accommodation).
+* Employee login edit controls (password and branch multi-select) are absent; login writes
+  can only toggle `enabled` with the current frozen form.
+* Employee `oldestJoined` sort is unsupported; the list falls back to `nameAsc`.
+* No backend designation lookup; employee designation stays free text.
+* Attendance history/corrections/requests/team/all have no backend endpoints (empty state is correct).
+* Permission catalog screen is not built.
+* Employee Shifts screen is not built.
+* Branches screen and branch permission enum/labels are not built.
+* Access history/audit trail has no backend endpoint.
+* Multi-shift attendance cycles cannot be represented by the local single-cycle summary.
+* Inert policy defaults are used for the remaining attendance context fields because the
+  backend payload supplies no policy/work-location configuration.
+
 # Postman coverage matrix
 
 Audit date: 2026-10-29

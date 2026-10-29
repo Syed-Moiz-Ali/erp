@@ -2,7 +2,7 @@
 
 **Branch:** `feat/api-v3` (from `ac2ec6f`)
 **UI baseline:** `ac2ec6f` (tip of `services_module`, 2026-10-08), enforced by `tool/ui_freeze_check.dart`.
-**Status:** integration map. Departments, Shifts, Employees and Attendance's today/punch paths have backend repositories selected by DI; no live write is performed and no screen is modified. Remaining decisions are listed per module.
+**Status:** integration map. Every MassERP endpoint in scope is wired behind its existing repository interface (or a data-only repository for modules with no screen). Backend repositories are selected by DI when `AppConfig.realApiEnabled`; demo/local repositories remain for demo. Writes are implemented but never executed during verification. No screen is modified. Remaining decisions are listed per module and summarised under NEEDS-UI-DECISION.
 
 Legend:
 
@@ -18,8 +18,68 @@ Rules applied:
 * API work may add data sources, DTOs, mappers, repositories, auth/session handling, permission loading, DI, field/error mapping, fixtures and tests.
 * Screens, widgets, layouts, styles, routes, route structure, page-vs-dialog patterns, nav order, l10n copy and interaction flows stay frozen, except the approved Departments and Shifts items.
 * Live implementations sit **behind the existing repository interfaces**; a screen is never rewritten to fit the API.
-* Live writes are out of scope for this phase. Every write endpoint below is documented, not called.
+* Write endpoints are implemented in the data layer but are never executed by tools or tests. App runtime writes use the documented bodies; verification uses in-memory fakes only.
 * Permission data may only change visibility predicates of existing nav entries, routes and buttons. It must not reorder or restructure navigation.
+
+---
+
+## Coverage — final audit (API v3)
+
+Every route in the API-endpoint registry is covered. `POST` uses the collection URL and `PUT` uses `/{id}` through the same `ApiEndpoints` helpers; no path is hardcoded in a datasource. All tests are network-free (in-memory fakes or a `FakeDioAdapter`); no live write is executed.
+
+| Module | Endpoint | Repository method | DI selection | Tests | Fixtures |
+|---|---|---|---|---|---|
+| Auth | `POST /api/auth/login` | `RemoteAuthRepository.login` | backend | `auth_test`, `remote_auth_repository_test` | `auth/login_*` |
+| Auth | `POST /api/auth/refresh` | `RemoteAuthRepository` refresh / `TokenRefresher` | backend | `auth_refresh_flow_test`, `auth_security_test` | `auth/refresh_success` |
+| Auth | `POST /api/auth/logout` | `RemoteAuthRepository.logout` | backend | `auth_test`, `remote_auth_repository_test` | `auth/logout_success` |
+| Me | `GET /api/me/permissions` | `RemoteEffectiveAccessRepository.load` | backend | `remote_effective_access_repository_test`, `auth_permissions_bloc_test` | `auth/me_permissions_*` |
+| Permissions | `GET /api/permissions` | `RemotePermissionMasterRepository.list`; `RemoteAccessRepository` active-master resolve | backend | `permission_master_repository_test`, `permission_remote_data_source_test`, `remote_access_repository_test` | `permissions/permissions_list*` |
+| Permissions | `GET /api/permissions/{id}` | `RemotePermissionMasterRepository.getById` | backend | `permission_master_repository_test`, `permission_remote_data_source_test` | `permissions/permission_detail*`, `permission_not_found` |
+| Permissions | `POST /api/permissions` | `RemotePermissionMasterRepository.create` | backend | `permission_master_repository_test`, `permission_remote_data_source_test` | `permissions/permission_detail` |
+| Permissions | `PUT /api/permissions/{id}` | `RemotePermissionMasterRepository.update` | backend | `permission_master_repository_test`, `permission_remote_data_source_test` | `permissions/permission_detail*` |
+| Permissions | `POST /api/permissions/{id}/activate` | `RemotePermissionMasterRepository.setActive(true)` | backend | `permission_master_repository_test`, `permission_remote_data_source_test` | `permissions/permission_detail` |
+| Permissions | `POST /api/permissions/{id}/deactivate` | `RemotePermissionMasterRepository.setActive(false)` | backend | `permission_master_repository_test`, `permission_remote_data_source_test` | `permissions/permission_detail` |
+| User Permissions | `GET /api/user-permissions` | `RemoteAccessRepository.watchUsers/watchGrants/watchCompanyGrants/getGrants` | backend | `remote_access_repository_test`, `access_remotes_test` | `permissions/user_permissions_*` |
+| User Permissions | `GET /api/user-permissions/{id}` | `RemoteAccessRepository.getPermissionGrant` (concrete helper) | backend | `remote_access_repository_test`, `access_remotes_test` | `permissions/user_permissions_user8` |
+| User Permissions | `POST /api/user-permissions` | `RemoteAccessRepository.assignPermissions` (concrete helper) | backend | `remote_access_repository_test`, `access_remotes_test` | `permissions/user_permissions_assign` |
+| User Permissions | `PUT /api/user-permissions/users/{userId}` | `RemoteAccessRepository.replaceGrants` | backend | `remote_access_repository_test`, `access_remotes_test` | `permissions/user_permissions_user*` |
+| User Permissions | `DELETE /api/user-permissions/{id}` | `RemoteAccessRepository.revokePermission` (concrete helper) | backend | `remote_access_repository_test`, `access_remotes_test` | `permissions/user_permissions_user8` |
+| Employees | `GET /api/employees` | `RemoteEmployeeRepository.watchEmployees` | backend / local in demo | `employee_remote_repository_test` | `employees/employees_list*` |
+| Employees | `GET /api/employees/lookups` | `RemoteEmployeeRepository.getReferences` | backend / local in demo | `employee_remote_repository_test` | `employees/employee_lookups*` |
+| Employees | `GET /api/employees/{id}` | `RemoteEmployeeRepository.getEmployeeById`/`getCompanyEmployee` | backend / local in demo | `employee_remote_repository_test` | `employees/employee_detail`, `employee_not_found` |
+| Employees | `POST /api/employees` | `RemoteEmployeeRepository.saveEmployee` (create) | backend / local in demo | `employee_remote_repository_test` | `employees/employee_created` |
+| Employees | `PUT /api/employees/{id}` | `RemoteEmployeeRepository.saveEmployee` (full replace) | backend / local in demo | `employee_remote_repository_test` | `employees/employee_detail` |
+| Employees | `POST /api/employees/{id}/activate` | `RemoteEmployeeRepository.setActive(true)` | backend / local in demo | `employee_remote_repository_test` | `employees/employee_detail` |
+| Employees | `POST /api/employees/{id}/deactivate` | `RemoteEmployeeRepository.setActive(false)` | backend / local in demo | `employee_remote_repository_test` | `employees/employee_detail` |
+| Branches | `GET /api/branches` | `RemoteBranchRepository.list` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branches_list*` |
+| Branches | `GET /api/branches/lookups` | `RemoteBranchRepository.lookups` | backend only | `branch_remote_repository_test`, `branch_fixture_test` | `branches/branch_lookups` |
+| Branches | `GET /api/branches/{id}` | `RemoteBranchRepository.getById` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branch_detail`, `branch_not_found` |
+| Branches | `POST /api/branches` | `RemoteBranchRepository.create` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branch_detail` |
+| Branches | `PUT /api/branches/{id}` | `RemoteBranchRepository.update` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branch_detail` |
+| Branches | `POST /api/branches/{id}/activate` | `RemoteBranchRepository.setActive(true)` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branch_detail` |
+| Branches | `POST /api/branches/{id}/deactivate` | `RemoteBranchRepository.setActive(false)` | backend only | `branch_remote_repository_test`, `branch_remote_data_source_test` | `branches/branch_detail` |
+| Departments | `GET /api/departments` | `RemoteDepartmentRepository.watchList` | backend / local in demo | `remote_department_repository_test`, `department_fixture_test` | `departments/departments_list*` |
+| Departments | `GET /api/departments/{id}` | `RemoteDepartmentRepository.getById`/`watchDetails` | backend / local in demo | `remote_department_repository_test`, `department_fixture_test` | `departments/department_detail`, `department_not_found` |
+| Departments | `POST /api/departments` | `RemoteDepartmentRepository.save` (create) | backend / local in demo | `remote_department_repository_test` | `departments/departments_list` |
+| Departments | `PUT /api/departments/{id}` | `RemoteDepartmentRepository.save` (rename) | backend / local in demo | `remote_department_repository_test` | `departments/department_detail` |
+| Departments | `POST /api/departments/{id}/deactivate` | `RemoteDepartmentRepository.setActive(false)` | backend / local in demo | `remote_department_repository_test` | `departments/department_detail` |
+| Shifts | `GET /api/shifts` | `RemoteShiftRepository.watchList` | backend / local in demo | `shift_remote_repository_test`, `shift_fixture_test` | `shifts/shifts_list*`, `shift_options` |
+| Shifts | `GET /api/shifts/{id}` | `RemoteShiftRepository.getById`/`watchDetails` | backend / local in demo | `shift_remote_repository_test`, `shift_fixture_test` | `shifts/shift_detail`, `shift_not_found` |
+| Shifts | `POST /api/shifts` | `RemoteShiftRepository.save` (create) | backend / local in demo | `shift_remote_repository_test`, `shift_fixture_test` | `shifts/shift_create_*` |
+| Shifts | `PUT /api/shifts/{id}` | `RemoteShiftRepository.save` (update) | backend / local in demo | `shift_remote_repository_test`, `shift_fixture_test` | `shifts/shift_update` |
+| Shifts | `POST /api/shifts/{id}/activate` | `RemoteShiftRepository.setActive(true)` | backend / local in demo | `shift_remote_repository_test` | `shifts/shift_activate`, `shift_already_active` |
+| Shifts | `POST /api/shifts/{id}/deactivate` | `RemoteShiftRepository.setActive(false)` | backend / local in demo | `shift_remote_repository_test` | `shifts/shift_deactivate`, `shift_already_inactive`, `shift_in_use` |
+| Employee Shifts | `GET /api/employee-shifts` | `RemoteEmployeeShiftRepository.list` | backend only | `employee_shift_repository_test`, `employee_shift_remote_data_source_test` | `employee_shifts/employee_shifts_list*` |
+| Employee Shifts | `GET /api/employee-shifts/{id}` | `RemoteEmployeeShiftRepository.getById` | backend only | `employee_shift_repository_test`, `employee_shift_remote_data_source_test` | `employee_shifts/employee_shift_detail`, `employee_shift_not_found` |
+| Employee Shifts | `POST /api/employee-shifts` | `RemoteEmployeeShiftRepository.create` | backend only | `employee_shift_repository_test`, `employee_shift_remote_data_source_test` | `employee_shifts/employee_shifts_list` |
+| Employee Shifts | `PUT /api/employee-shifts/{id}` | `RemoteEmployeeShiftRepository.update` | backend only | `employee_shift_repository_test`, `employee_shift_remote_data_source_test` | `employee_shifts/employee_shift_detail` |
+| Employee Shifts | `POST /api/employee-shifts/{id}/deactivate` | `RemoteEmployeeShiftRepository.deactivate` | backend only | `employee_shift_repository_test`, `employee_shift_remote_data_source_test` | `employee_shifts/employee_shift_detail` |
+| Attendance | `GET /api/attendance/today` | `RemoteAttendanceRepository.getCurrentAttendance`/`watchCurrentAttendance`/`getCompanyAttendanceDate` | backend / local in demo | `attendance_remote_repository_test`, `attendance_fixture_test` | `attendance/today_*` |
+| Attendance | `POST /api/attendance/punch` | `RemoteAttendanceRepository.execute` | backend / local in demo | `attendance_remote_repository_test` | `attendance/today_*`, `day_complete_error`, `no_shift_error` |
+
+**API-endpoint registry check:** `ApiEndpoints.permissions.list` backs both `GET` and `POST /api/permissions`; `permissions.byId` backs `PUT`; `branches.list` backs `POST /api/branches`; `branches.byId` backs `PUT`; `employeeShifts.list` backs `POST /api/employee-shifts`; `employeeShifts.byId` backs `PUT`. Every path is exposed through the registry, and `dio_*` data sources reference only registry constants.
+
+**UI check:** `dart run tool/ui_freeze_check.dart` reports PASS against `ac2ec6f`; the only guarded files that differ are the pre-approved Departments/Shifts files listed in `docs/ui-approved-changes.md`.
 
 ---
 
