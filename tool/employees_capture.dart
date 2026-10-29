@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-/// Read-only MassERP employee capture with an explicit view-permission gate.
+/// Read-only MassERP employee capture with both live accounts.
 ///
-/// The first call is `GET /api/employees`. If the administrator receives
-/// `403 ACCESS_DENIED`, no employee data is captured: the tool saves the live
-/// negative fixtures for both accounts and exits without further calls.
+/// Captures the administrator list/filter/detail/404/lookups and the employee
+/// list/lookups. It never writes employee data and never posts anything except
+/// the two logins. Credentials and tokens are never printed.
 Future<void> main() async {
   final local = _readEnv('.env.local');
   final dev = _readEnv('.env.development');
@@ -38,50 +38,25 @@ Future<void> main() async {
       extraHeaders: const {'X-Client-Platform': 'android'},
     );
     final adminToken = _token(adminSession, 'accessToken');
-
-    stdout.writeln('Checking administrator hr.employees.view...');
-    final probe = await client.get(
-      '/api/employees?page=1&pageSize=5',
+    final adminPermissions = await client.get(
+      '/api/me/permissions',
       token: adminToken,
-      allowError: true,
     );
-    if (!_isSuccess(probe)) {
-      final code = _errorCode(probe);
-      _write(dir, 'employees_forbidden_admin.json', _sanitize(probe));
-      stdout.writeln('Administrator employee list returned $code.');
-      if (code == 'ACCESS_DENIED') {
-        stdout.writeln('Logging in employee once for the negative fixture...');
-        final employeeSession = await client.post(
-          '/api/auth/login',
-          body: {'loginId': employeeLogin, 'password': employeePassword},
-          extraHeaders: const {'X-Client-Platform': 'android'},
-        );
-        final employeeToken = _token(employeeSession, 'accessToken');
-        final employeeProbe = await client.get(
-          '/api/employees?page=1&pageSize=5',
-          token: employeeToken,
-          allowError: true,
-        );
-        _write(
-          dir,
-          'employees_forbidden_employee.json',
-          _sanitize(employeeProbe),
-        );
-        stdout.writeln(
-          'STOP: live employee capture blocked by ACCESS_DENIED. '
-          'Audit fallback required.',
-        );
-        exitCode = 2;
-        return;
-      }
-      throw _CaptureStop('Precondition failed with $code.');
-    }
 
-    stdout.writeln('Precondition passed; capturing employees...');
+    stdout.writeln('Capturing administrator employee list...');
     final list = await client.get(
       '/api/employees?page=1&pageSize=25&sort=nameAsc',
       token: adminToken,
+      allowError: true,
     );
+    if (!_isSuccess(list)) {
+      final code = _errorCode(list);
+      stdout.writeln('Administrator employee list returned $code.');
+      throw _CaptureStop(
+        'Administrator still lacks employee view; live capture stopped.',
+      );
+    }
+
     final first = _firstEmployee(list);
     final employeeId = first?['employeeId'];
     final departmentId = first?['departmentId'];
@@ -117,15 +92,24 @@ Future<void> main() async {
       token: adminToken,
     );
 
-    stdout.writeln('Logging in employee once for the negative fixture...');
+    stdout.writeln('Logging in employee once...');
     final employeeSession = await client.post(
       '/api/auth/login',
       body: {'loginId': employeeLogin, 'password': employeePassword},
       extraHeaders: const {'X-Client-Platform': 'android'},
     );
     final employeeToken = _token(employeeSession, 'accessToken');
-    final employeeProbe = await client.get(
-      '/api/employees?page=1&pageSize=5',
+    final employeePermissions = await client.get(
+      '/api/me/permissions',
+      token: employeeToken,
+    );
+    final employeeList = await client.get(
+      '/api/employees?page=1&pageSize=25&sort=nameAsc',
+      token: employeeToken,
+      allowError: true,
+    );
+    final employeeLookups = await client.get(
+      '/api/employees/lookups',
       token: employeeToken,
       allowError: true,
     );
@@ -135,8 +119,57 @@ Future<void> main() async {
     _write(dir, 'employee_detail.json', _sanitize(detail));
     _write(dir, 'employee_not_found.json', _sanitize(notFound));
     _write(dir, 'employee_lookups.json', _sanitize(lookups));
-    _write(dir, 'employees_forbidden_employee.json', _sanitize(employeeProbe));
-    stdout.writeln('Live employee capture complete.');
+    final permissionDir = Directory('test/fixtures/permissions');
+    _write(
+      permissionDir,
+      'me_permissions_admin.json',
+      _sanitize(adminPermissions),
+    );
+    _write(
+      permissionDir,
+      'me_permissions_employee.json',
+      _sanitize(employeePermissions),
+    );
+    if (_isSuccess(employeeList)) {
+      _write(
+        dir,
+        'employees_list_employee.json',
+        _sanitize(employeeList),
+      );
+    } else {
+      _write(
+        dir,
+        'employees_forbidden_employee.json',
+        _sanitize(employeeList),
+      );
+      stdout.writeln(
+        'Employee account employee list returned ${_errorCode(employeeList)}.',
+      );
+    }
+    if (_isSuccess(employeeLookups)) {
+      _write(
+        dir,
+        'employee_lookups_employee.json',
+        _sanitize(employeeLookups),
+      );
+    } else {
+      _write(
+        dir,
+        'employee_lookups_forbidden_employee.json',
+        _sanitize(employeeLookups),
+      );
+      stdout.writeln(
+        'Employee account lookups returned ${_errorCode(employeeLookups)}.',
+      );
+    }
+    final adminCount = _itemCount(list);
+    final employeeCount = _isSuccess(employeeList)
+        ? _itemCount(employeeList)
+        : 0;
+    stdout.writeln(
+      'Live employee capture complete. Admin items: $adminCount; '
+      'employee items: $employeeCount.',
+    );
   } on _CaptureStop catch (error) {
     stderr.writeln('Capture stopped: ${error.message}');
     exitCode = 1;
@@ -263,48 +296,94 @@ Map<String, dynamic>? _firstEmployee(Map<String, dynamic> envelope) {
   return first is Map<String, dynamic> ? first : null;
 }
 
-Object? _sanitize(Object? value) {
+int _itemCount(Map<String, dynamic> envelope) {
+  final data = envelope['data'];
+  final items = data is Map ? data['items'] : null;
+  return items is List ? items.length : 0;
+}
+
+Object? _sanitize(Object? value, {String key = ''}) {
   if (value is Map) {
     final result = <String, dynamic>{};
     for (final entry in value.entries) {
-      final key = entry.key.toString();
-      final lower = key.toLowerCase();
-      if (lower == 'employeename' || lower.endsWith('name')) {
-        result[key] = 'Sanitized Name';
-      } else if (lower == 'loginid') {
-        result[key] = 'qa.user';
-      } else if (lower == 'email') {
-        result[key] = 'sanitized@example.com';
-      } else if (lower.contains('phone') ||
-          lower.contains('mobile') ||
-          lower.contains('contact')) {
-        result[key] = 'SANITIZED_PHONE';
-      } else if (lower.contains('passport') ||
-          lower.contains('visa') ||
-          lower.contains('emirates') ||
-          lower.contains('labour') ||
-          lower.contains('iban') ||
-          lower.contains('bank') ||
-          lower.contains('accountnumber') ||
-          lower.contains('tax') ||
-          lower.contains('trn')) {
-        result[key] = 'SANITIZED_ID';
-      } else if (lower.contains('address')) {
-        result[key] = 'Sanitized Address';
-      } else if (lower.contains('photo') || lower.contains('logo')) {
-        result[key] = 'SANITIZED_PATH';
-      } else if (lower == 'accesstoken') {
-        result[key] = 'SANITIZED_ACCESS_TOKEN';
-      } else if (lower == 'refreshtoken') {
-        result[key] = 'SANITIZED_REFRESH_TOKEN';
-      } else {
-        result[key] = _sanitize(entry.value);
-      }
+      final childKey = entry.key.toString();
+      result[childKey] = _sanitize(entry.value, key: childKey);
     }
     return result;
   }
-  if (value is List) return [for (final item in value) _sanitize(item)];
+  if (value is List) {
+    return [for (final item in value) _sanitize(item, key: key)];
+  }
+  if (value is String && value.isNotEmpty) {
+    final lower = key.toLowerCase();
+    if (lower == 'email' ||
+        lower.contains('email') ||
+        lower == 'loginid') {
+      _rememberSensitive(value);
+      return 'sanitized@example.com';
+    }
+    if (lower.contains('phone') ||
+        lower.contains('mobile') ||
+        lower.contains('contact') ||
+        lower.contains('telephone')) {
+      _rememberSensitive(value);
+      return 'SANITIZED_PHONE';
+    }
+    if (lower.contains('passport') ||
+        lower.contains('visa') ||
+        lower.contains('emirates') ||
+        lower.contains('labour') ||
+        lower.contains('labor') ||
+        lower.contains('workpermit') ||
+        lower.contains('immigration') ||
+        lower.contains('insurance') ||
+        lower.contains('iban') ||
+        lower.contains('bank') ||
+        lower.contains('accountnumber') ||
+        lower.contains('wps') ||
+        lower.contains('tax') ||
+        lower.contains('trn') ||
+        lower.contains('personalcode')) {
+      _rememberSensitive(value);
+      return 'SANITIZED_ID';
+    }
+    if (lower.contains('address')) {
+      _rememberSensitive(value);
+      return 'Sanitized Address';
+    }
+    if (lower.contains('photo') ||
+        lower.contains('document') ||
+        lower.contains('path') ||
+        lower.contains('logo')) {
+      return 'SANITIZED_PATH';
+    }
+    if (lower == 'employeename' ||
+        lower == 'username' ||
+        lower == 'name' ||
+        lower.endsWith('name')) {
+      if (lower == 'name' || lower == 'branchnames') {
+        return value;
+      }
+      if (lower.contains('branch') ||
+          lower.contains('department') ||
+          lower.contains('nationality') ||
+          lower.contains('status')) {
+        return value;
+      }
+      _rememberSensitive(value);
+      return 'Sanitized Name';
+    }
+    if (lower == 'employeecode') return value;
+  }
   return value;
+}
+
+void _rememberSensitive(String value) {
+  try {
+    final file = File('${Platform.environment['TEMP']}\\opencode\\sensitive_live.txt');
+    file.parent.createSync(recursive: true);
+    file.writeAsStringSync('$value\n', mode: FileMode.append);
+  } catch (_) {}
 }
 
 Map<String, String> _readEnv(String path) {

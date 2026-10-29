@@ -132,9 +132,13 @@ void main() {
     final employee =
         load('me_permissions_employee.json')['data'] as Map<String, dynamic>;
     expect(admin['userId'], 8);
-    expect(admin['permissions'], hasLength(14));
-    expect(admin['permissions'], isNot(contains('hr.employees.view')));
+    expect(admin['permissions'], hasLength(15));
+    expect(admin['permissions'], contains('hr.employees.view'));
     expect(employee['userId'], 43);
-    expect(employee['permissions'], hasLength(3));
+    expect(employee['permissions'], hasLength(4));
+    expect(
+      employee['permissions'],
+      containsAll(['hr.employees.edit', 'hr.employees.view']),
+    );
   });
 }
