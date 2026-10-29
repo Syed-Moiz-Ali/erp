@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "message": "Department retrieved.",
+  "data": {
+    "departmentId": 2,
+    "departmentName": "Department 2",
+    "employeeCount": 4
+  },
+  "errors": []
+}

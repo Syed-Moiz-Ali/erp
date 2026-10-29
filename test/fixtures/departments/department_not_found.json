@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Department not found.",
+  "data": null,
+  "errors": [
+    {
+      "code": "DEPARTMENT_NOT_FOUND",
+      "message": "Department not found."
+    }
+  ]
+}
