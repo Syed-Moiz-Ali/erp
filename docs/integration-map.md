@@ -2,7 +2,7 @@
 
 **Branch:** `feat/api-v3` (from `ac2ec6f`)
 **UI baseline:** `ac2ec6f` (tip of `services_module`, 2026-10-08), enforced by `tool/ui_freeze_check.dart`.
-**Status:** integration map. Departments, Shifts and Employees have backend repositories selected by DI; no live write is performed and no screen is modified. Remaining decisions are listed per module.
+**Status:** integration map. Departments, Shifts, Employees and Attendance's today/punch paths have backend repositories selected by DI; no live write is performed and no screen is modified. Remaining decisions are listed per module.
 
 Legend:
 
@@ -224,22 +224,33 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Item | Value |
 |---|---|
 | Interface | `AttendanceRepository` (today/current/history/day details/events/execute/retry) |
-| Backend adapter | planned read-only adapter over `AttendanceApi` (CARRIED domain `AttendanceDay`) |
-| Endpoints | `GET /api/attendance/today`, `POST /api/attendance/punch` |
-| Read/write | Only `GET /today` is in scope. Punch is a write and stays disabled. |
-| Planned bridge | `watchCurrentAttendance`/`getCurrentAttendance` map `AttendanceDay` into `AttendanceContext`; history/corrections/team/all have **no backend endpoints** and keep local data or show the existing empty/error states. |
-| UI impact | None to files. |
+| Backend adapter | `RemoteAttendanceRepository` (`lib/modules/hr/attendance/live/data/remote_attendance_repository.dart`) over the small `AttendanceApiClient` seam implemented by `AttendanceApi`; selected by DI when `AppConfig.realApiEnabled`, otherwise `LocalAttendanceRepository` stays for demo. |
+| Endpoints | `GET /api/attendance/today`, `POST /api/attendance/punch` (`action: punchIn|break|resume|punchOut`, optional `latitude`/`longitude`). |
+| Read/write | WIRED: today/current read, punch execute, company attendance date. DATA-ONLY: punch result re-mapped into the existing context. No live punch is executed in tests. |
+| Bridge | `getCurrentAttendance`/`watchCurrentAttendance` map the payload through `RemoteAttendanceMapper`. States: `noShift|waitingForShift|readyToPunchIn -> notStarted`, `working`, `onBreak`, `completed`; any other state fails closed with `invalidAttendanceState`. `allowedActions[]` is authoritative via `AttendanceContext.allowedActions`; omitted actions are disabled by the existing engine/BLoC path. Shifts/breaks/punches/minutes map into the existing timeline and context. |
+| UI impact | None to files. `AttendanceContext.allowedActions` and the engine's remote branch are data-only additions; no page/widget changed. |
+
+**WIRED (backend mode):** today state, allowed actions, shifts timeline (shiftNo, planned start/end, punch in/out, breaks, status, late/worked/break minutes, current/next shift), punch action body with location evidence, company attendance date, and punch error envelopes (`DAY_COMPLETE -> alreadyCompleted`, `ATTENDANCE_NO_SHIFT -> shiftNotAssigned`, location errors -> `locationRequired`/`invalidLocationEvidence`, auth/permission errors -> `permissionDenied`/session-expired).
+
+**EMPTY / UNSUPPORTED (correct in backend mode):** there is **no attendance history, correction, request, team or all-employees endpoint**. `getAttendanceHistory`/`watchAttendanceHistory` return an empty `AttendanceHistoryPageData`; `getAttendanceDayById`/`watchAttendanceDayById` and `getAttendanceForDate` return `Success(null)`; `watchAttendanceEvents` returns an empty list; `retryPendingOperation` returns `unsupported`. The adapter never reads or fabricates local attendance rows.
+
+**NEEDS-UI-DECISION (recorded, not invented):**
+
+* The payload supplies no `Shift`/`AttendancePolicy`/`WorkLocation` configuration. The adapter derives only the shift name/times present in `shifts[]` and uses inert policy defaults plus remote work mode so the existing context can be built and coordinates are still captured. Shift grace/expected-work and the local sync/location panels have no backend source.
+* `serverTime`, `timeZone`, `currentShiftNo`, `nextShiftNo` are mapped into the context but the frozen UI has no dedicated row for them (AT6).
+* Multiple punched shifts cannot be represented by the local single-cycle event summary. Events are built from all shifts when the summary matches the backend state, otherwise from the current/primary shift only; full multi-shift timeline display needs a UI decision.
+* Backend `allowedActions` is authoritative through the engine's remote branch; there is still no separate UI element showing why an action was omitted.
 
 | # | UI field / behaviour | Backend field | Type | Decision |
 |---|---|---|---|---|
 | AT1 | State card (not started / working / break / complete) | `state` | String | Map to the existing state enum; unknown → fail closed |
-| AT2 | Action buttons | `allowedActions[]` | List<String> | Map to existing action widgets; hide actions not listed (visibility predicate only) |
-| AT3 | Timeline shifts and punches | `shifts[]` (`shiftNo`, `plannedStart/End`, `punchIn/Out`, `breaks[]`, `status`, `lateMinutes`) | strings / ints | Map into the existing timeline model |
+| AT2 | Action buttons | `allowedActions[]` | List<String> | **WIRED:** mapped to `AttendanceEventType`; omitted actions are disabled by the engine's remote branch. |
+| AT3 | Timeline shifts and punches | `shifts[]` (`shiftNo`, `plannedStart/End`, `punchIn/Out`, `breaks[]`, `status`, `lateMinutes`) | strings / ints | **WIRED data-only:** mapped into the existing timeline/context; multi-shift cycles are a NEEDS-UI-DECISION. |
 | AT4 | Duration summary | `workedMinutes`, `workedHours`, `breakMinutes` | int / double | Map |
-| AT5 | Sync banner, workday/location/policy context | no backend field | — | **NEEDS MY DECISION:** hide in backend mode, or keep disabled. These are local-only concepts. |
-| AT6 | Server time / time zone / current & next shift | `serverTime`, `timeZone`, `currentShiftNo`, `nextShiftNo` | String/int | **NEEDS MY DECISION:** show in baseline style (extra read-only row) or hide |
-| AT7 | History, corrections, requests, team, all pages | no endpoints | — | **NEEDS MY DECISION:** keep local data in backend mode, hide entries, or block with the existing empty/error state. Freeze forbids removing routes. |
-| AT8 | Punch-in/out/break/resume | `POST /punch` | write | Out of scope this phase. |
+| AT5 | Sync banner, workday/location/policy context | no backend field | - | **NEEDS-UI-DECISION:** the adapter uses inert defaults; the frozen panels have no backend source. |
+| AT6 | Server time / time zone / current & next shift | `serverTime`, `timeZone`, `currentShiftNo`, `nextShiftNo` | String/int | **NEEDS-UI-DECISION:** mapped data-only; no dedicated baseline row. |
+| AT7 | History, corrections, requests, team, all pages | no endpoints | - | **WIRED empty:** no endpoint exists; the adapter returns the existing empty/unsupported results and never reads the local DB. |
+| AT8 | Punch-in/out/break/resume | `POST /punch` | write | **WIRED data layer:** action + latitude/longitude; tests use an in-memory fake, no live punch. |
 | AT9 | Employee id / date | `employeeId` int, `date` | int / String | Decimal string / ISO date |
 
 ### 3.8 Access & Users

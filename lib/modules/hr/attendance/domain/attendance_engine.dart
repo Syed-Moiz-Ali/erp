@@ -21,6 +21,7 @@ class AttendanceContext {
     required this.authority,
     this.day,
     required List<AttendanceEvent> events,
+    this.allowedActions,
   }) : events = List.unmodifiable(events);
   final AuthContext auth;
   final Employee employee;
@@ -30,6 +31,13 @@ class AttendanceContext {
   final AttendanceAuthority authority;
   final AttendanceDay? day;
   final List<AttendanceEvent> events;
+
+  /// Backend-authoritative action set, when the active repository is remote.
+  ///
+  /// `null` means the local engine derives availability as before. A non-null
+  /// set means only those actions may execute; the remote adapter never enables
+  /// an action the backend omitted.
+  final Set<AttendanceEventType>? allowedActions;
 }
 
 class AttendanceActionDecision {
@@ -70,6 +78,52 @@ class AttendanceEngine {
           action: decide(c, action, checkEvidence: false),
       });
 
+  /// Remote sessions carry the backend's `allowedActions[]`. Only those actions
+  /// may execute; omitted actions are blocked without a local policy guess.
+  AttendanceActionDecision _remoteDecision(
+    AttendanceContext c,
+    AttendanceEventType action, {
+    AttendanceLocationEvidence? evidence,
+    bool checkEvidence = false,
+  }) {
+    final required = const AttendanceLocationRequirementResolver()
+        .requiresLocation(c.snapshot.policy, action);
+    AttendanceActionDecision blocked(AttendanceFailureCode code) =>
+        AttendanceActionDecision(
+          failure: code,
+          requiresLocation: required,
+          locationValidation: const AttendanceLocationValidation(
+            state: AttendanceLocationState.notRequired,
+          ),
+        );
+    if (!(c.allowedActions?.contains(action) ?? false)) {
+      return blocked(AttendanceFailureCode.permissionDenied);
+    }
+    var validation = const AttendanceLocationValidation(
+      state: AttendanceLocationState.notRequired,
+    );
+    if (checkEvidence) {
+      final outcome = const AttendanceLocationValidator().validate(
+        c.snapshot,
+        action,
+        evidence,
+        c.currentTime,
+      );
+      validation = outcome.validation;
+      if (outcome.failure != null) {
+        return AttendanceActionDecision(
+          failure: outcome.failure,
+          requiresLocation: required,
+          locationValidation: validation,
+        );
+      }
+    }
+    return AttendanceActionDecision(
+      requiresLocation: required,
+      locationValidation: validation,
+    );
+  }
+
   /// A single meaningful clock boundary, independent of display ticking.
   DateTime? nextActionEvaluationAt(AttendanceContext c) {
     final summary = calculateSummary(c);
@@ -94,6 +148,14 @@ class AttendanceEngine {
     AttendanceLocationEvidence? evidence,
     bool checkEvidence = true,
   }) {
+    if (c.allowedActions != null) {
+      return _remoteDecision(
+        c,
+        action,
+        evidence: evidence,
+        checkEvidence: checkEvidence,
+      );
+    }
     final required = const AttendanceLocationRequirementResolver()
         .requiresLocation(c.snapshot.policy, action);
     var validation = const AttendanceLocationValidation(

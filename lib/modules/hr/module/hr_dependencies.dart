@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/location/location_service.dart';
+import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/modules/hr/attendance/application/attendance_maintenance_service.dart';
 import 'package:modular_erp/modules/hr/attendance/application/execute_attendance_action.dart';
 import 'package:modular_erp/modules/hr/attendance/data/attendance_local_data_source.dart';
@@ -16,6 +17,8 @@ import 'package:modular_erp/modules/hr/attendance/domain/attendance_engine.dart'
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_models.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_scope_resolver.dart';
+import 'package:modular_erp/modules/hr/attendance/live/data/attendance_api.dart';
+import 'package:modular_erp/modules/hr/attendance/live/data/remote_attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
@@ -67,16 +70,25 @@ void configureHrDependencies(GetIt services) {
     () => const UnconfiguredAttendanceRemote(),
   );
   services.registerLazySingleton<AttendanceRepository>(
-    () => LocalAttendanceRepository(
-      services(),
-      services(),
-      services(),
-      services(),
-      services(),
-      authority: AppConfig.demoAuthEnabled
-          ? AttendanceAuthority.demoLocal
-          : AttendanceAuthority.productionPending,
-    ),
+    () => AppConfig.realApiEnabled
+        ? RemoteAttendanceRepository(
+            AttendanceApi(services<ApiClient>()),
+            services<AuthRepository>(),
+            clock: services<AppClock>(),
+          )
+        : LocalAttendanceRepository(
+            services(),
+            services(),
+            services(),
+            services(),
+            services(),
+            authority: AppConfig.demoAuthEnabled
+                ? AttendanceAuthority.demoLocal
+                : AttendanceAuthority.productionPending,
+          ),
+    dispose: (repository) {
+      if (repository is RemoteAttendanceRepository) repository.dispose();
+    },
   );
   services.registerLazySingleton<AttendanceCorrectionRepository>(
     () => LocalAttendanceCorrectionRepository(
