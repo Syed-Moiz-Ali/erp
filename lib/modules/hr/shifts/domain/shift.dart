@@ -21,6 +21,7 @@ abstract class Shift with _$Shift implements ConfigurationRecord {
     required LocalTime endTime,
     required Set<WorkingDay> workingDays,
     @Default(0) int gracePeriodMinutes,
+    @Default(15) int earlyPunchInMinutes,
     @Default(ShiftBreakMode.manualBreak) ShiftBreakMode breakMode,
     int? defaultBreakMinutes,
     int? minimumWorkMinutes,
@@ -48,6 +49,7 @@ abstract class ShiftDraft with _$ShiftDraft {
     LocalTime? endTime,
     @Default(<WorkingDay>{}) Set<WorkingDay> workingDays,
     @Default(0) int gracePeriodMinutes,
+    @Default(15) int earlyPunchInMinutes,
     @Default(ShiftBreakMode.manualBreak) ShiftBreakMode breakMode,
     int? defaultBreakMinutes,
     int? minimumWorkMinutes,
@@ -78,6 +80,9 @@ abstract class ShiftDraft with _$ShiftDraft {
         duration > 0 && gracePeriodMinutes >= duration) {
       errors['gracePeriodMinutes'] = 'invalidGrace';
     }
+    if (earlyPunchInMinutes < 0 || earlyPunchInMinutes > 120) {
+      errors['earlyPunchInMinutes'] = 'invalidEarlyPunch';
+    }
     if (breakMode == ShiftBreakMode.fixedBreak &&
         (defaultBreakMinutes == null ||
             defaultBreakMinutes! < 0 ||
@@ -101,6 +106,7 @@ abstract class ShiftDraft with _$ShiftDraft {
     endTime: s.endTime,
     workingDays: s.workingDays,
     gracePeriodMinutes: s.gracePeriodMinutes,
+    earlyPunchInMinutes: s.earlyPunchInMinutes,
     breakMode: s.breakMode,
     defaultBreakMinutes: s.defaultBreakMinutes,
     minimumWorkMinutes: s.minimumWorkMinutes,

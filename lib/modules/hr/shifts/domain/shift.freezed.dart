@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Shift {
 
- String get id; String get companyId; String get name; String? get code; LocalTime get startTime; LocalTime get endTime; Set<WorkingDay> get workingDays; int get gracePeriodMinutes; ShiftBreakMode get breakMode; int? get defaultBreakMinutes; int? get minimumWorkMinutes; ConfigurationStatus get status; DateTime get createdAt; DateTime get updatedAt; RecordSyncStatus get syncStatus;
+ String get id; String get companyId; String get name; String? get code; LocalTime get startTime; LocalTime get endTime; Set<WorkingDay> get workingDays; int get gracePeriodMinutes; int get earlyPunchInMinutes; ShiftBreakMode get breakMode; int? get defaultBreakMinutes; int? get minimumWorkMinutes; ConfigurationStatus get status; DateTime get createdAt; DateTime get updatedAt; RecordSyncStatus get syncStatus;
 /// Create a copy of Shift
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ShiftCopyWith<Shift> get copyWith => _$ShiftCopyWithImpl<Shift>(this as Shift, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Shift&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other.workingDays, workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Shift&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other.workingDays, workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.earlyPunchInMinutes, earlyPunchInMinutes) || other.earlyPunchInMinutes == earlyPunchInMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,name,code,startTime,endTime,const DeepCollectionEquality().hash(workingDays),gracePeriodMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status,createdAt,updatedAt,syncStatus);
+int get hashCode => Object.hash(runtimeType,id,companyId,name,code,startTime,endTime,const DeepCollectionEquality().hash(workingDays),gracePeriodMinutes,earlyPunchInMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status,createdAt,updatedAt,syncStatus);
 
 @override
 String toString() {
-  return 'Shift(id: $id, companyId: $companyId, name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
+  return 'Shift(id: $id, companyId: $companyId, name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, earlyPunchInMinutes: $earlyPunchInMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ShiftCopyWith<$Res>  {
   factory $ShiftCopyWith(Shift value, $Res Function(Shift) _then) = _$ShiftCopyWithImpl;
 @useResult
 $Res call({
- String id, String companyId, String name, String? code, LocalTime startTime, LocalTime endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
+ String id, String companyId, String name, String? code, LocalTime startTime, LocalTime endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, int earlyPunchInMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
 });
 
 
@@ -65,7 +65,7 @@ class _$ShiftCopyWithImpl<$Res>
 
 /// Create a copy of Shift
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? code = freezed,Object? startTime = null,Object? endTime = null,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? code = freezed,Object? startTime = null,Object? endTime = null,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? earlyPunchInMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
@@ -75,6 +75,7 @@ as String?,startTime: null == startTime ? _self.startTime : startTime // ignore:
 as LocalTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as LocalTime,workingDays: null == workingDays ? _self.workingDays : workingDays // ignore: cast_nullable_to_non_nullable
 as Set<WorkingDay>,gracePeriodMinutes: null == gracePeriodMinutes ? _self.gracePeriodMinutes : gracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+as int,earlyPunchInMinutes: null == earlyPunchInMinutes ? _self.earlyPunchInMinutes : earlyPunchInMinutes // ignore: cast_nullable_to_non_nullable
 as int,breakMode: null == breakMode ? _self.breakMode : breakMode // ignore: cast_nullable_to_non_nullable
 as ShiftBreakMode,defaultBreakMinutes: freezed == defaultBreakMinutes ? _self.defaultBreakMinutes : defaultBreakMinutes // ignore: cast_nullable_to_non_nullable
 as int?,minimumWorkMinutes: freezed == minimumWorkMinutes ? _self.minimumWorkMinutes : minimumWorkMinutes // ignore: cast_nullable_to_non_nullable
@@ -185,10 +186,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Shift() when $default != null:
-return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   return orElse();
 
 }
@@ -206,10 +207,10 @@ return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)  $default,) {final _that = this;
 switch (_that) {
 case _Shift():
-return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -226,10 +227,10 @@ return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String name,  String? code,  LocalTime startTime,  LocalTime endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status,  DateTime createdAt,  DateTime updatedAt,  RecordSyncStatus syncStatus)?  $default,) {final _that = this;
 switch (_that) {
 case _Shift() when $default != null:
-return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
+return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status,_that.createdAt,_that.updatedAt,_that.syncStatus);case _:
   return null;
 
 }
@@ -241,7 +242,7 @@ return $default(_that.id,_that.companyId,_that.name,_that.code,_that.startTime,_
 
 @JsonSerializable(explicitToJson: true)
 class _Shift extends Shift {
-  const _Shift({required this.id, required this.companyId, required this.name, this.code, required this.startTime, required this.endTime, required final  Set<WorkingDay> workingDays, this.gracePeriodMinutes = 0, this.breakMode = ShiftBreakMode.manualBreak, this.defaultBreakMinutes, this.minimumWorkMinutes, this.status = ConfigurationStatus.active, required this.createdAt, required this.updatedAt, this.syncStatus = RecordSyncStatus.pending}): _workingDays = workingDays,super._();
+  const _Shift({required this.id, required this.companyId, required this.name, this.code, required this.startTime, required this.endTime, required final  Set<WorkingDay> workingDays, this.gracePeriodMinutes = 0, this.earlyPunchInMinutes = 15, this.breakMode = ShiftBreakMode.manualBreak, this.defaultBreakMinutes, this.minimumWorkMinutes, this.status = ConfigurationStatus.active, required this.createdAt, required this.updatedAt, this.syncStatus = RecordSyncStatus.pending}): _workingDays = workingDays,super._();
   factory _Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);
 
 @override final  String id;
@@ -258,6 +259,7 @@ class _Shift extends Shift {
 }
 
 @override@JsonKey() final  int gracePeriodMinutes;
+@override@JsonKey() final  int earlyPunchInMinutes;
 @override@JsonKey() final  ShiftBreakMode breakMode;
 @override final  int? defaultBreakMinutes;
 @override final  int? minimumWorkMinutes;
@@ -279,16 +281,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Shift&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other._workingDays, _workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Shift&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other._workingDays, _workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.earlyPunchInMinutes, earlyPunchInMinutes) || other.earlyPunchInMinutes == earlyPunchInMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,name,code,startTime,endTime,const DeepCollectionEquality().hash(_workingDays),gracePeriodMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status,createdAt,updatedAt,syncStatus);
+int get hashCode => Object.hash(runtimeType,id,companyId,name,code,startTime,endTime,const DeepCollectionEquality().hash(_workingDays),gracePeriodMinutes,earlyPunchInMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status,createdAt,updatedAt,syncStatus);
 
 @override
 String toString() {
-  return 'Shift(id: $id, companyId: $companyId, name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
+  return 'Shift(id: $id, companyId: $companyId, name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, earlyPunchInMinutes: $earlyPunchInMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, syncStatus: $syncStatus)';
 }
 
 
@@ -299,7 +301,7 @@ abstract mixin class _$ShiftCopyWith<$Res> implements $ShiftCopyWith<$Res> {
   factory _$ShiftCopyWith(_Shift value, $Res Function(_Shift) _then) = __$ShiftCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String companyId, String name, String? code, LocalTime startTime, LocalTime endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
+ String id, String companyId, String name, String? code, LocalTime startTime, LocalTime endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, int earlyPunchInMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status, DateTime createdAt, DateTime updatedAt, RecordSyncStatus syncStatus
 });
 
 
@@ -316,7 +318,7 @@ class __$ShiftCopyWithImpl<$Res>
 
 /// Create a copy of Shift
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? code = freezed,Object? startTime = null,Object? endTime = null,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? name = null,Object? code = freezed,Object? startTime = null,Object? endTime = null,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? earlyPunchInMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,Object? createdAt = null,Object? updatedAt = null,Object? syncStatus = null,}) {
   return _then(_Shift(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
@@ -326,6 +328,7 @@ as String?,startTime: null == startTime ? _self.startTime : startTime // ignore:
 as LocalTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as LocalTime,workingDays: null == workingDays ? _self._workingDays : workingDays // ignore: cast_nullable_to_non_nullable
 as Set<WorkingDay>,gracePeriodMinutes: null == gracePeriodMinutes ? _self.gracePeriodMinutes : gracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+as int,earlyPunchInMinutes: null == earlyPunchInMinutes ? _self.earlyPunchInMinutes : earlyPunchInMinutes // ignore: cast_nullable_to_non_nullable
 as int,breakMode: null == breakMode ? _self.breakMode : breakMode // ignore: cast_nullable_to_non_nullable
 as ShiftBreakMode,defaultBreakMinutes: freezed == defaultBreakMinutes ? _self.defaultBreakMinutes : defaultBreakMinutes // ignore: cast_nullable_to_non_nullable
 as int?,minimumWorkMinutes: freezed == minimumWorkMinutes ? _self.minimumWorkMinutes : minimumWorkMinutes // ignore: cast_nullable_to_non_nullable
@@ -361,7 +364,7 @@ $LocalTimeCopyWith<$Res> get endTime {
 /// @nodoc
 mixin _$ShiftDraft {
 
- String get name; String get code; LocalTime? get startTime; LocalTime? get endTime; Set<WorkingDay> get workingDays; int get gracePeriodMinutes; ShiftBreakMode get breakMode; int? get defaultBreakMinutes; int? get minimumWorkMinutes; ConfigurationStatus get status;
+ String get name; String get code; LocalTime? get startTime; LocalTime? get endTime; Set<WorkingDay> get workingDays; int get gracePeriodMinutes; int get earlyPunchInMinutes; ShiftBreakMode get breakMode; int? get defaultBreakMinutes; int? get minimumWorkMinutes; ConfigurationStatus get status;
 /// Create a copy of ShiftDraft
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -372,16 +375,16 @@ $ShiftDraftCopyWith<ShiftDraft> get copyWith => _$ShiftDraftCopyWithImpl<ShiftDr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other.workingDays, workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other.workingDays, workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.earlyPunchInMinutes, earlyPunchInMinutes) || other.earlyPunchInMinutes == earlyPunchInMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,code,startTime,endTime,const DeepCollectionEquality().hash(workingDays),gracePeriodMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status);
+int get hashCode => Object.hash(runtimeType,name,code,startTime,endTime,const DeepCollectionEquality().hash(workingDays),gracePeriodMinutes,earlyPunchInMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status);
 
 @override
 String toString() {
-  return 'ShiftDraft(name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status)';
+  return 'ShiftDraft(name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, earlyPunchInMinutes: $earlyPunchInMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status)';
 }
 
 
@@ -392,7 +395,7 @@ abstract mixin class $ShiftDraftCopyWith<$Res>  {
   factory $ShiftDraftCopyWith(ShiftDraft value, $Res Function(ShiftDraft) _then) = _$ShiftDraftCopyWithImpl;
 @useResult
 $Res call({
- String name, String code, LocalTime? startTime, LocalTime? endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status
+ String name, String code, LocalTime? startTime, LocalTime? endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, int earlyPunchInMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status
 });
 
 
@@ -409,7 +412,7 @@ class _$ShiftDraftCopyWithImpl<$Res>
 
 /// Create a copy of ShiftDraft
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? code = null,Object? startTime = freezed,Object? endTime = freezed,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? code = null,Object? startTime = freezed,Object? endTime = freezed,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? earlyPunchInMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
@@ -417,6 +420,7 @@ as String,startTime: freezed == startTime ? _self.startTime : startTime // ignor
 as LocalTime?,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as LocalTime?,workingDays: null == workingDays ? _self.workingDays : workingDays // ignore: cast_nullable_to_non_nullable
 as Set<WorkingDay>,gracePeriodMinutes: null == gracePeriodMinutes ? _self.gracePeriodMinutes : gracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+as int,earlyPunchInMinutes: null == earlyPunchInMinutes ? _self.earlyPunchInMinutes : earlyPunchInMinutes // ignore: cast_nullable_to_non_nullable
 as int,breakMode: null == breakMode ? _self.breakMode : breakMode // ignore: cast_nullable_to_non_nullable
 as ShiftBreakMode,defaultBreakMinutes: freezed == defaultBreakMinutes ? _self.defaultBreakMinutes : defaultBreakMinutes // ignore: cast_nullable_to_non_nullable
 as int?,minimumWorkMinutes: freezed == minimumWorkMinutes ? _self.minimumWorkMinutes : minimumWorkMinutes // ignore: cast_nullable_to_non_nullable
@@ -530,10 +534,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftDraft() when $default != null:
-return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
+return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
   return orElse();
 
 }
@@ -551,10 +555,10 @@ return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftDraft():
-return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
+return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -571,10 +575,10 @@ return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String code,  LocalTime? startTime,  LocalTime? endTime,  Set<WorkingDay> workingDays,  int gracePeriodMinutes,  int earlyPunchInMinutes,  ShiftBreakMode breakMode,  int? defaultBreakMinutes,  int? minimumWorkMinutes,  ConfigurationStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftDraft() when $default != null:
-return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
+return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workingDays,_that.gracePeriodMinutes,_that.earlyPunchInMinutes,_that.breakMode,_that.defaultBreakMinutes,_that.minimumWorkMinutes,_that.status);case _:
   return null;
 
 }
@@ -586,7 +590,7 @@ return $default(_that.name,_that.code,_that.startTime,_that.endTime,_that.workin
 
 
 class _ShiftDraft extends ShiftDraft {
-  const _ShiftDraft({this.name = '', this.code = '', this.startTime, this.endTime, final  Set<WorkingDay> workingDays = const <WorkingDay>{}, this.gracePeriodMinutes = 0, this.breakMode = ShiftBreakMode.manualBreak, this.defaultBreakMinutes, this.minimumWorkMinutes, this.status = ConfigurationStatus.active}): _workingDays = workingDays,super._();
+  const _ShiftDraft({this.name = '', this.code = '', this.startTime, this.endTime, final  Set<WorkingDay> workingDays = const <WorkingDay>{}, this.gracePeriodMinutes = 0, this.earlyPunchInMinutes = 15, this.breakMode = ShiftBreakMode.manualBreak, this.defaultBreakMinutes, this.minimumWorkMinutes, this.status = ConfigurationStatus.active}): _workingDays = workingDays,super._();
   
 
 @override@JsonKey() final  String name;
@@ -601,6 +605,7 @@ class _ShiftDraft extends ShiftDraft {
 }
 
 @override@JsonKey() final  int gracePeriodMinutes;
+@override@JsonKey() final  int earlyPunchInMinutes;
 @override@JsonKey() final  ShiftBreakMode breakMode;
 @override final  int? defaultBreakMinutes;
 @override final  int? minimumWorkMinutes;
@@ -616,16 +621,16 @@ _$ShiftDraftCopyWith<_ShiftDraft> get copyWith => __$ShiftDraftCopyWithImpl<_Shi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other._workingDays, _workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftDraft&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&const DeepCollectionEquality().equals(other._workingDays, _workingDays)&&(identical(other.gracePeriodMinutes, gracePeriodMinutes) || other.gracePeriodMinutes == gracePeriodMinutes)&&(identical(other.earlyPunchInMinutes, earlyPunchInMinutes) || other.earlyPunchInMinutes == earlyPunchInMinutes)&&(identical(other.breakMode, breakMode) || other.breakMode == breakMode)&&(identical(other.defaultBreakMinutes, defaultBreakMinutes) || other.defaultBreakMinutes == defaultBreakMinutes)&&(identical(other.minimumWorkMinutes, minimumWorkMinutes) || other.minimumWorkMinutes == minimumWorkMinutes)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,code,startTime,endTime,const DeepCollectionEquality().hash(_workingDays),gracePeriodMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status);
+int get hashCode => Object.hash(runtimeType,name,code,startTime,endTime,const DeepCollectionEquality().hash(_workingDays),gracePeriodMinutes,earlyPunchInMinutes,breakMode,defaultBreakMinutes,minimumWorkMinutes,status);
 
 @override
 String toString() {
-  return 'ShiftDraft(name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status)';
+  return 'ShiftDraft(name: $name, code: $code, startTime: $startTime, endTime: $endTime, workingDays: $workingDays, gracePeriodMinutes: $gracePeriodMinutes, earlyPunchInMinutes: $earlyPunchInMinutes, breakMode: $breakMode, defaultBreakMinutes: $defaultBreakMinutes, minimumWorkMinutes: $minimumWorkMinutes, status: $status)';
 }
 
 
@@ -636,7 +641,7 @@ abstract mixin class _$ShiftDraftCopyWith<$Res> implements $ShiftDraftCopyWith<$
   factory _$ShiftDraftCopyWith(_ShiftDraft value, $Res Function(_ShiftDraft) _then) = __$ShiftDraftCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String code, LocalTime? startTime, LocalTime? endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status
+ String name, String code, LocalTime? startTime, LocalTime? endTime, Set<WorkingDay> workingDays, int gracePeriodMinutes, int earlyPunchInMinutes, ShiftBreakMode breakMode, int? defaultBreakMinutes, int? minimumWorkMinutes, ConfigurationStatus status
 });
 
 
@@ -653,7 +658,7 @@ class __$ShiftDraftCopyWithImpl<$Res>
 
 /// Create a copy of ShiftDraft
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? code = null,Object? startTime = freezed,Object? endTime = freezed,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? code = null,Object? startTime = freezed,Object? endTime = freezed,Object? workingDays = null,Object? gracePeriodMinutes = null,Object? earlyPunchInMinutes = null,Object? breakMode = null,Object? defaultBreakMinutes = freezed,Object? minimumWorkMinutes = freezed,Object? status = null,}) {
   return _then(_ShiftDraft(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
@@ -661,6 +666,7 @@ as String,startTime: freezed == startTime ? _self.startTime : startTime // ignor
 as LocalTime?,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as LocalTime?,workingDays: null == workingDays ? _self._workingDays : workingDays // ignore: cast_nullable_to_non_nullable
 as Set<WorkingDay>,gracePeriodMinutes: null == gracePeriodMinutes ? _self.gracePeriodMinutes : gracePeriodMinutes // ignore: cast_nullable_to_non_nullable
+as int,earlyPunchInMinutes: null == earlyPunchInMinutes ? _self.earlyPunchInMinutes : earlyPunchInMinutes // ignore: cast_nullable_to_non_nullable
 as int,breakMode: null == breakMode ? _self.breakMode : breakMode // ignore: cast_nullable_to_non_nullable
 as ShiftBreakMode,defaultBreakMinutes: freezed == defaultBreakMinutes ? _self.defaultBreakMinutes : defaultBreakMinutes // ignore: cast_nullable_to_non_nullable
 as int?,minimumWorkMinutes: freezed == minimumWorkMinutes ? _self.minimumWorkMinutes : minimumWorkMinutes // ignore: cast_nullable_to_non_nullable

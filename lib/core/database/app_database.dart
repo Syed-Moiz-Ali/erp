@@ -105,7 +105,7 @@ class AppDatabase extends _$AppDatabase {
             ),
       );
   @override
-  int get schemaVersion => 18;
+  int get schemaVersion => 19;
 
   Future<bool> _tableExists(String name) async {
     final rows = await customSelect(
@@ -141,7 +141,7 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
-      if (from < 1 || from > 17 || to != 18) {
+      if (from < 1 || from > 18 || to != 19) {
         throw StateError('No migration registered from $from to $to');
       }
       if (from < 2) {
@@ -288,6 +288,11 @@ class AppDatabase extends _$AppDatabase {
         await _ensureTable(m, serviceWorkExecutionLines);
         await _ensureTable(m, serviceWorkExecutionMaterialsUsed);
         await _ensureTable(m, serviceWorkExecutionPhotoEntries);
+      }
+      if (from < 19) {
+        // HR Shifts API: the early punch-in window (backend
+        // `earlyPunchInMinutes`). Additive and idempotent.
+        await _ensureColumn(m, shiftRecords, shiftRecords.earlyPunchInMinutes);
       }
     },
     beforeOpen: (details) async {

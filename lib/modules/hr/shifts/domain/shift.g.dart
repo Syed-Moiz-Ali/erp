@@ -17,6 +17,7 @@ _Shift _$ShiftFromJson(Map<String, dynamic> json) => _Shift(
       .map((e) => $enumDecode(_$WorkingDayEnumMap, e))
       .toSet(),
   gracePeriodMinutes: (json['gracePeriodMinutes'] as num?)?.toInt() ?? 0,
+  earlyPunchInMinutes: (json['earlyPunchInMinutes'] as num?)?.toInt() ?? 15,
   breakMode:
       $enumDecodeNullable(_$ShiftBreakModeEnumMap, json['breakMode']) ??
       ShiftBreakMode.manualBreak,
@@ -43,6 +44,7 @@ Map<String, dynamic> _$ShiftToJson(_Shift instance) => <String, dynamic>{
       .map((e) => _$WorkingDayEnumMap[e]!)
       .toList(),
   'gracePeriodMinutes': instance.gracePeriodMinutes,
+  'earlyPunchInMinutes': instance.earlyPunchInMinutes,
   'breakMode': _$ShiftBreakModeEnumMap[instance.breakMode]!,
   'defaultBreakMinutes': instance.defaultBreakMinutes,
   'minimumWorkMinutes': instance.minimumWorkMinutes,

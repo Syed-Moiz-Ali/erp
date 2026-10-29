@@ -50,6 +50,7 @@ class LocalShiftRepository
         )
         .toSet(),
     gracePeriodMinutes: r.read<int>('grace_period_minutes'),
+    earlyPunchInMinutes: r.read<int>('early_punch_in_minutes'),
     breakMode: ShiftBreakMode.values.byName(r.read<String>('break_mode')),
     defaultBreakMinutes: r.readNullable<int>('default_break_minutes'),
     minimumWorkMinutes: r.readNullable<int>('minimum_work_minutes'),
@@ -74,6 +75,7 @@ class LocalShiftRepository
     endTime: d.endTime!,
     workingDays: d.workingDays,
     gracePeriodMinutes: d.gracePeriodMinutes,
+    earlyPunchInMinutes: d.earlyPunchInMinutes,
     breakMode: d.breakMode,
     defaultBreakMinutes: d.defaultBreakMinutes,
     minimumWorkMinutes: d.minimumWorkMinutes,
@@ -107,6 +109,7 @@ class LocalShiftRepository
               (mask, day) => mask | (1 << (day.isoWeekday - 1)),
             ),
             gracePeriodMinutes: e.gracePeriodMinutes,
+            earlyPunchInMinutes: Value(e.earlyPunchInMinutes),
             breakMode: e.breakMode.name,
             defaultBreakMinutes: Value(e.defaultBreakMinutes),
             minimumWorkMinutes: Value(e.minimumWorkMinutes),

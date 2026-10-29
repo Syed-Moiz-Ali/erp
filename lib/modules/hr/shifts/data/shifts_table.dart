@@ -16,6 +16,8 @@ class ShiftRecords extends Table {
   IntColumn get endMinutes => integer()();
   IntColumn get workingDayMask => integer()();
   IntColumn get gracePeriodMinutes => integer()();
+  IntColumn get earlyPunchInMinutes =>
+      integer().withDefault(const Constant(15))();
   TextColumn get breakMode => text()();
   IntColumn get defaultBreakMinutes => integer().nullable()();
   IntColumn get minimumWorkMinutes => integer().nullable()();
