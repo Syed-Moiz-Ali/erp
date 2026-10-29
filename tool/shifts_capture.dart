@@ -36,6 +36,14 @@ Future<void> main() async {
       '/api/shifts?page=1&pageSize=25&sort=startTime',
       adminToken,
     );
+    final shiftOptions = await client.get(
+      '/api/shifts?page=1&pageSize=100&statusId=1',
+      adminToken,
+    );
+    final employeeOptions = await client.get(
+      '/api/employees?page=1&pageSize=100&statusId=1',
+      adminToken,
+    );
     final filtered = await client.get(
       '/api/shifts?page=1&pageSize=5&sort=nameAsc&statusId=1',
       adminToken,
@@ -96,6 +104,7 @@ Future<void> main() async {
     final shiftsDir = Directory('test/fixtures/shifts');
     shiftsDir.createSync(recursive: true);
     _write(shiftsDir, 'shifts_list.json', _sanitize(shifts));
+    _write(shiftsDir, 'shift_options.json', _sanitize(shiftOptions));
     _write(shiftsDir, 'shifts_list_filtered.json', _sanitize(filtered));
     _write(shiftsDir, 'shift_detail.json', _sanitize(detail));
     _write(shiftsDir, 'shift_not_found.json', _sanitize(notFound));
@@ -104,6 +113,10 @@ Future<void> main() async {
       'shifts_forbidden_employee.json',
       _sanitize(shiftsForbidden),
     );
+
+    final employeesDir = Directory('test/fixtures/employees');
+    employeesDir.createSync(recursive: true);
+    _write(employeesDir, 'employee_options.json', _sanitize(employeeOptions));
 
     final assignmentsDir = Directory('test/fixtures/employee_shifts');
     assignmentsDir.createSync(recursive: true);
@@ -256,7 +269,10 @@ Object? _sanitize(Object? value) {
         result[key] = 'qa.user';
       } else if (lower == 'email') {
         result[key] = 'sanitized@example.com';
-      } else if (lower.contains('phone') || lower.contains('mobile')) {
+      } else if (lower.contains('phone') ||
+          lower.contains('mobile') ||
+          lower.contains('contact') ||
+          lower.contains('telephone')) {
         result[key] = 'SANITIZED_PHONE';
       } else if (lower == 'accesstoken') {
         result[key] = 'SANITIZED_ACCESS_TOKEN';

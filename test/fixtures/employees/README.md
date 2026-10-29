@@ -12,6 +12,8 @@ Live files:
 - `employees_list_filtered.json` - Admin list filtered by code, status,
   department and branch.
 - `employees_list_employee.json` - employee-account list, same query as Admin.
+- `employee_options.json` - live active employee selector source, pageSize 100,
+  statusId 1; 34 rows.
 - `employee_detail.json` - Admin detail for the first list employee.
 - `employee_not_found.json` - live 404 for employee 999999.
 - `employee_lookups.json` - Admin lookups.
