@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "message": "Departments retrieved.",
+  "data": {
+    "items": [
+      {
+        "departmentId": 2,
+        "departmentName": "Department 2",
+        "employeeCount": 4
+      },
+      {
+        "departmentId": 7,
+        "departmentName": "Department 7",
+        "employeeCount": 0
+      },
+      {
+        "departmentId": 3,
+        "departmentName": "Department 3",
+        "employeeCount": 0
+      },
+      {
+        "departmentId": 1,
+        "departmentName": "Department 1",
+        "employeeCount": 27
+      },
+      {
+        "departmentId": 4,
+        "departmentName": "Department 4",
+        "employeeCount": 0
+      }
+    ],
+    "page": 1,
+    "pageSize": 25,
+    "totalItems": 5,
+    "totalPages": 1
+  },
+  "errors": []
+}

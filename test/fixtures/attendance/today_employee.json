@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "message": "Attendance retrieved.",
+  "data": {
+    "employeeId": 27,
+    "date": "2026-10-29",
+    "timeZone": "America/Chicago",
+    "state": "waitingForShift",
+    "allowedActions": [],
+    "currentShiftNo": null,
+    "nextShiftNo": 2,
+    "shifts": [
+      {
+        "shiftNo": 1,
+        "employeeShiftId": 19,
+        "shiftId": 21,
+        "shiftName": "Shift27",
+        "shiftDate": "2026-10-28",
+        "timeZone": "Pacific/Guadalcanal",
+        "crossesMidnight": true,
+        "plannedStart": "23:00:00",
+        "plannedEnd": "06:00:00",
+        "punchInOpensAt": "22:30:00",
+        "status": "missed",
+        "punchIn": null,
+        "punchOut": null,
+        "punchInLocation": null,
+        "lateMinutes": 0,
+        "earlyLeaveMinutes": 0,
+        "workedMinutes": 0,
+        "breakMinutes": 0,
+        "breaks": []
+      },
+      {
+        "shiftNo": 2,
+        "employeeShiftId": 19,
+        "shiftId": 21,
+        "shiftName": "Shift27",
+        "shiftDate": "2026-10-29",
+        "timeZone": "Pacific/Guadalcanal",
+        "crossesMidnight": true,
+        "plannedStart": "23:00:00",
+        "plannedEnd": "06:00:00",
+        "punchInOpensAt": "22:30:00",
+        "status": "upcoming",
+        "punchIn": null,
+        "punchOut": null,
+        "punchInLocation": null,
+        "lateMinutes": 0,
+        "earlyLeaveMinutes": 0,
+        "workedMinutes": 0,
+        "breakMinutes": 0,
+        "breaks": []
+      }
+    ],
+    "workedMinutes": 0,
+    "workedHours": 0,
+    "breakMinutes": 0,
+    "serverTime": "2026-10-29T03:10:49-05:00"
+  },
+  "errors": []
+}

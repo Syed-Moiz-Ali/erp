@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "message": "Shift assignment retrieved.",
+  "data": {
+    "employeeShiftId": 1,
+    "employeeId": 2,
+    "employeeCode": "EMP-SANITIZED",
+    "employeeName": "Sanitized Employee",
+    "shiftId": 1,
+    "shiftName": "Shift 1",
+    "fromDate": "2026-09-01",
+    "toDate": "2026-10-31",
+    "startTime": "09:00:00",
+    "endTime": "12:00:00",
+    "earlyPunchInMinutes": 20,
+    "lateGraceMinutes": 20,
+    "statusId": 1,
+    "status": "Active",
+    "timeZoneId": "Asia/Dubai",
+    "punchInOpensAt": "08:40:00",
+    "crossesMidnight": false
+  },
+  "errors": []
+}

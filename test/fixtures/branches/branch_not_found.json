@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Company not found.",
+  "data": null,
+  "errors": [
+    {
+      "code": "BRANCH_NOT_FOUND",
+      "message": "Company not found."
+    }
+  ]
+}

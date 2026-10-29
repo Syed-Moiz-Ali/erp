@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "No shift is assigned for today.",
+  "data": null,
+  "errors": [
+    {
+      "code": "ATTENDANCE_NO_SHIFT",
+      "message": "No shift is assigned for today."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "message": "Attendance day retrieved.",
+  "data": {
+    "employeeId": 29,
+    "date": "2026-10-28",
+    "timeZone": "Asia/Dubai",
+    "state": "completed",
+    "allowedActions": [],
+    "currentShiftNo": 1,
+    "nextShiftNo": null,
+    "workedMinutes": 180,
+    "workedHours": 3.0,
+    "breakMinutes": 15,
+    "serverTime": "2026-10-28T12:10:00+05:30",
+    "shifts": [
+      {
+        "shiftNo": 1,
+        "employeeShiftId": 1,
+        "shiftId": 1,
+        "shiftName": "Shift 1",
+        "shiftDate": "2026-10-28",
+        "timeZone": "Asia/Dubai",
+        "crossesMidnight": false,
+        "plannedStart": "09:00:00",
+        "plannedEnd": "12:00:00",
+        "punchInOpensAt": "08:40:00",
+        "status": "completed",
+        "punchIn": "2026-10-28T09:07:08+05:30",
+        "punchOut": "2026-10-28T12:07:08+05:30",
+        "punchInLocation": null,
+        "lateMinutes": 7,
+        "earlyLeaveMinutes": 0,
+        "workedMinutes": 180,
+        "breakMinutes": 15,
+        "breaks": [
+          {
+            "start": "2026-10-28T10:00:00+05:30",
+            "end": "2026-10-28T10:15:00+05:30",
+            "minutes": 15
+          }
+        ]
+      }
+    ]
+  },
+  "errors": []
+}

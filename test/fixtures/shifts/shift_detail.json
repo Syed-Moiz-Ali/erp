@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "Shift retrieved.",
+  "data": {
+    "shiftId": 25,
+    "shiftName": "Shift 25",
+    "startTime": "08:00:00",
+    "endTime": "06:00:00",
+    "durationMinutes": 1320,
+    "crossesMidnight": true,
+    "punchInOpensAt": "07:45:00",
+    "earlyPunchInMinutes": 15,
+    "lateGraceMinutes": 15,
+    "statusId": 1,
+    "status": "Active",
+    "activeAssignments": 1,
+    "createdOn": "2026-10-08T11:02:49.71Z",
+    "modifiedOn": null
+  },
+  "errors": []
+}

@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Shift not found.",
+  "data": null,
+  "errors": [
+    {
+      "code": "SHIFT_NOT_FOUND",
+      "message": "Shift not found."
+    }
+  ]
+}
