@@ -182,6 +182,8 @@
   "empAdd": "إضافة موظف",
   "employeeShiftsTitle": "مناوبات الموظفين",
   "employeeShiftAdd": "إسناد مناوبة",
+  "employeeShiftEdit": "تعديل الإسناد",
+  "employeeShiftDateRange": "يجب أن يكون تاريخ الانتهاء في تاريخ البداية أو بعده.",
   "employeeShiftEmployee": "الموظف",
   "employeeShiftShift": "المناوبة",
   "employeeShiftFrom": "من تاريخ",

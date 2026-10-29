@@ -4613,7 +4613,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardDemo.
   ///
   /// In en, this message translates to:
-  /// **'Demo preview Â· {date}'**
+  /// **'Demo preview · {date}'**
   String dashboardDemo(String date);
 
   /// No description provided for @dashboardSelfContext.
@@ -4799,13 +4799,13 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardOffice.
   ///
   /// In en, this message translates to:
-  /// **'Hyderabad office Â· demo'**
+  /// **'Hyderabad office · demo'**
   String get dashboardOffice;
 
   /// No description provided for @dashboardNotStarted.
   ///
   /// In en, this message translates to:
-  /// **'Not started Â· preview'**
+  /// **'Not started · preview'**
   String get dashboardNotStarted;
 
   /// No description provided for @dashboardAttendance.
@@ -4943,7 +4943,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardError.
   ///
   /// In en, this message translates to:
-  /// **'We couldnâ€™t load your dashboard. Please try again.'**
+  /// **'We couldn’t load your dashboard. Please try again.'**
   String get dashboardError;
 
   /// No description provided for @dashboardRefreshError.
@@ -4967,7 +4967,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardTimeRange.
   ///
   /// In en, this message translates to:
-  /// **'{start} â€“ {end}'**
+  /// **'{start} – {end}'**
   String dashboardTimeRange(String start, String end);
 
   /// No description provided for @empAdd.
@@ -4987,6 +4987,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Assign shift'**
   String get employeeShiftAdd;
+
+  /// No description provided for @employeeShiftEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit assignment'**
+  String get employeeShiftEdit;
+
+  /// No description provided for @employeeShiftDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'The end date must be on or after the start date.'**
+  String get employeeShiftDateRange;
 
   /// No description provided for @employeeShiftEmployee.
   ///
@@ -5369,13 +5381,13 @@ abstract class AppLocalizations {
   /// No description provided for @empNameAsc.
   ///
   /// In en, this message translates to:
-  /// **'Name Aâ€“Z'**
+  /// **'Name A–Z'**
   String get empNameAsc;
 
   /// No description provided for @empNameDesc.
   ///
   /// In en, this message translates to:
-  /// **'Name Zâ€“A'**
+  /// **'Name Z–A'**
   String get empNameDesc;
 
   /// No description provided for @empNewest.
@@ -5513,7 +5525,7 @@ abstract class AppLocalizations {
   /// No description provided for @empInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a phone number with 7â€“15 digits.'**
+  /// **'Enter a phone number with 7–15 digits.'**
   String get empInvalidPhone;
 
   /// No description provided for @empDuplicateEmail.
@@ -5543,7 +5555,7 @@ abstract class AppLocalizations {
   /// No description provided for @empStorageError.
   ///
   /// In en, this message translates to:
-  /// **'We couldnâ€™t complete this local operation. Please try again.'**
+  /// **'We couldn’t complete this local operation. Please try again.'**
   String get empStorageError;
 
   /// No description provided for @empPending.
@@ -6137,7 +6149,7 @@ abstract class AppLocalizations {
   /// No description provided for @cfgLocating.
   ///
   /// In en, this message translates to:
-  /// **'Finding locationâ€¦'**
+  /// **'Finding location…'**
   String get cfgLocating;
 
   /// No description provided for @cfgOpenSettings.
@@ -6353,7 +6365,7 @@ abstract class AppLocalizations {
   /// No description provided for @cfgInactiveAssignment.
   ///
   /// In en, this message translates to:
-  /// **'Inactive â€¢ current assignment retained'**
+  /// **'Inactive • current assignment retained'**
   String get cfgInactiveAssignment;
 
   /// No description provided for @cfgMon.
@@ -6809,13 +6821,13 @@ abstract class AppLocalizations {
   /// No description provided for @attendancePunchingIn.
   ///
   /// In en, this message translates to:
-  /// **'Punching inâ€¦'**
+  /// **'Punching in…'**
   String get attendancePunchingIn;
 
   /// No description provided for @attendancePunchingOut.
   ///
   /// In en, this message translates to:
-  /// **'Punching outâ€¦'**
+  /// **'Punching out…'**
   String get attendancePunchingOut;
 
   /// No description provided for @attendanceTakeBreak.
@@ -6827,7 +6839,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceStartingBreak.
   ///
   /// In en, this message translates to:
-  /// **'Starting breakâ€¦'**
+  /// **'Starting break…'**
   String get attendanceStartingBreak;
 
   /// No description provided for @attendanceResumeWork.
@@ -6839,7 +6851,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceResumingWork.
   ///
   /// In en, this message translates to:
-  /// **'Resuming workâ€¦'**
+  /// **'Resuming work…'**
   String get attendanceResumingWork;
 
   /// No description provided for @attendanceWorkTime.
@@ -6905,7 +6917,7 @@ abstract class AppLocalizations {
   /// No description provided for @attendanceLocationChecking.
   ///
   /// In en, this message translates to:
-  /// **'Checking your locationâ€¦'**
+  /// **'Checking your location…'**
   String get attendanceLocationChecking;
 
   /// No description provided for @attendanceLocationReady.
@@ -7445,7 +7457,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyGoToday.
   ///
   /// In en, this message translates to:
-  /// **'Open todayâ€™s attendance'**
+  /// **'Open today’s attendance'**
   String get historyGoToday;
 
   /// No description provided for @historyActiveNote.
@@ -7493,7 +7505,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyOutsideAllowed.
   ///
   /// In en, this message translates to:
-  /// **'Outside assigned area Â· allowed by policy'**
+  /// **'Outside assigned area · allowed by policy'**
   String get historyOutsideAllowed;
 
   /// No description provided for @historyVerificationIssue.
@@ -7865,7 +7877,7 @@ abstract class AppLocalizations {
   /// No description provided for @workforceNameDescending.
   ///
   /// In en, this message translates to:
-  /// **'Name (Zâ€“A)'**
+  /// **'Name (Z–A)'**
   String get workforceNameDescending;
 
   /// No description provided for @workforceCode.
@@ -10055,13 +10067,13 @@ abstract class AppLocalizations {
   /// No description provided for @holidayCopyNote.
   ///
   /// In en, this message translates to:
-  /// **'Copied entries keep their month and day â€” verify festival dates before confirming.'**
+  /// **'Copied entries keep their month and day — verify festival dates before confirming.'**
   String get holidayCopyNote;
 
   /// No description provided for @verifyFestivalDates.
   ///
   /// In en, this message translates to:
-  /// **'Copied from previous year â€” verify festival dates.'**
+  /// **'Copied from previous year — verify festival dates.'**
   String get verifyFestivalDates;
 
   /// No description provided for @holidaySelectLocations.
@@ -10787,7 +10799,7 @@ abstract class AppLocalizations {
   /// No description provided for @correctionChange.
   ///
   /// In en, this message translates to:
-  /// **'Current â†’ requested'**
+  /// **'Current → requested'**
   String get correctionChange;
 
   /// No description provided for @correctionReview.

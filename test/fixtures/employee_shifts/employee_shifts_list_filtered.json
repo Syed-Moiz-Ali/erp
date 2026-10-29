@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "message": "Shift assignments retrieved.",
+  "data": {
+    "items": [
+      {
+        "employeeShiftId": 1,
+        "employeeId": 2,
+        "employeeCode": "EMP-SANITIZED",
+        "employeeName": "Sanitized Employee",
+        "shiftId": 1,
+        "shiftName": "Shift 1",
+        "fromDate": "2026-09-01",
+        "toDate": "2026-10-31",
+        "startTime": "09:00:00",
+        "endTime": "12:00:00",
+        "earlyPunchInMinutes": 20,
+        "lateGraceMinutes": 20,
+        "statusId": 1,
+        "status": "Active",
+        "timeZoneId": "Asia/Dubai",
+        "punchInOpensAt": "08:40:00",
+        "crossesMidnight": false
+      },
+      {
+        "employeeShiftId": 2,
+        "employeeId": 2,
+        "employeeCode": "EMP-SANITIZED",
+        "employeeName": "Sanitized Employee",
+        "shiftId": 2,
+        "shiftName": "Shift 2",
+        "fromDate": "2026-09-01",
+        "toDate": "2026-10-31",
+        "startTime": "18:45:00",
+        "endTime": "21:45:00",
+        "earlyPunchInMinutes": 20,
+        "lateGraceMinutes": 20,
+        "statusId": 1,
+        "status": "Active",
+        "timeZoneId": "Asia/Dubai",
+        "punchInOpensAt": "18:25:00",
+        "crossesMidnight": false
+      }
+    ],
+    "page": 1,
+    "pageSize": 5,
+    "totalItems": 2,
+    "totalPages": 1
+  },
+  "errors": []
+}

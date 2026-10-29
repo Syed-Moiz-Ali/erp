@@ -2,7 +2,7 @@ import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/models/configuration_record.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
-import 'local_shift_repository.dart';
+import 'package:modular_erp/modules/hr/shifts/data/local_shift_repository.dart';
 import 'package:modular_erp/core/utils/local_time.dart';
 
 Future<void> seedShifts(AppDatabase db, AuthContext context) async {

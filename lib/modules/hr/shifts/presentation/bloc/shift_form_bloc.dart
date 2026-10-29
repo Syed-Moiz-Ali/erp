@@ -1,5 +1,6 @@
 export 'package:modular_erp/shared/workflows/record_form_bloc.dart';
 import 'package:modular_erp/app/app_config.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/utils/local_time.dart';
 import 'package:modular_erp/shared/workflows/record_form_bloc.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
@@ -12,7 +13,18 @@ class ShiftFormBloc extends RecordFormBloc<Shift, ShiftDraft> {
         fromRecord: ShiftDraft.fromShift,
         normalize: (d) => d.normalized(),
         validate: (d) => d.validate(),
+        serverFieldErrors: _serverFieldErrors,
       );
+
+  static Map<String, String> _serverFieldErrors(Failure failure) {
+    final field = switch (failure.field) {
+      'shiftName' => 'name',
+      'lateGraceMinutes' => 'gracePeriodMinutes',
+      _ => failure.field,
+    };
+    if (field == null) return const {};
+    return {field: failure.code};
+  }
 }
 
 /// The backend shift contract has no working-days concept, so a new remote shift

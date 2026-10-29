@@ -1,0 +1,93 @@
+{
+  "success": true,
+  "message": "Shifts retrieved.",
+  "data": {
+    "items": [
+      {
+        "shiftId": 2,
+        "shiftName": "Shift 2",
+        "startTime": "18:45:00",
+        "endTime": "21:45:00",
+        "durationMinutes": 180,
+        "crossesMidnight": false,
+        "punchInOpensAt": "18:25:00",
+        "earlyPunchInMinutes": 20,
+        "lateGraceMinutes": 20,
+        "statusId": 1,
+        "status": "Active",
+        "activeAssignments": 1,
+        "createdOn": "2026-09-30T12:58:42.777Z",
+        "modifiedOn": null
+      },
+      {
+        "shiftId": 22,
+        "shiftName": "Shift 22",
+        "startTime": "14:00:00",
+        "endTime": "19:00:00",
+        "durationMinutes": 300,
+        "crossesMidnight": false,
+        "punchInOpensAt": "13:45:00",
+        "earlyPunchInMinutes": 15,
+        "lateGraceMinutes": 15,
+        "statusId": 1,
+        "status": "Active",
+        "activeAssignments": 1,
+        "createdOn": "2026-10-08T11:00:26.017Z",
+        "modifiedOn": null
+      },
+      {
+        "shiftId": 4,
+        "shiftName": "Shift 4",
+        "startTime": "16:40:00",
+        "endTime": "23:00:00",
+        "durationMinutes": 380,
+        "crossesMidnight": false,
+        "punchInOpensAt": "16:15:00",
+        "earlyPunchInMinutes": 25,
+        "lateGraceMinutes": 30,
+        "statusId": 1,
+        "status": "Active",
+        "activeAssignments": 0,
+        "createdOn": "2026-10-01T10:54:50.587Z",
+        "modifiedOn": null
+      },
+      {
+        "shiftId": 5,
+        "shiftName": "Shift 5",
+        "startTime": "23:10:00",
+        "endTime": "23:50:00",
+        "durationMinutes": 40,
+        "crossesMidnight": false,
+        "punchInOpensAt": "23:00:00",
+        "earlyPunchInMinutes": 10,
+        "lateGraceMinutes": 10,
+        "statusId": 1,
+        "status": "Active",
+        "activeAssignments": 0,
+        "createdOn": "2026-10-01T11:00:41.1Z",
+        "modifiedOn": null
+      },
+      {
+        "shiftId": 1,
+        "shiftName": "Shift 1",
+        "startTime": "09:00:00",
+        "endTime": "12:00:00",
+        "durationMinutes": 180,
+        "crossesMidnight": false,
+        "punchInOpensAt": "08:40:00",
+        "earlyPunchInMinutes": 20,
+        "lateGraceMinutes": 20,
+        "statusId": 1,
+        "status": "Active",
+        "activeAssignments": 4,
+        "createdOn": "2026-09-30T12:52:12.39Z",
+        "modifiedOn": null
+      }
+    ],
+    "page": 1,
+    "pageSize": 5,
+    "totalItems": 22,
+    "totalPages": 5
+  },
+  "errors": []
+}

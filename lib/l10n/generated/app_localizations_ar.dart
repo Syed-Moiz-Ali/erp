@@ -2588,6 +2588,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get employeeShiftAdd => 'إسناد مناوبة';
 
   @override
+  String get employeeShiftEdit => 'تعديل الإسناد';
+
+  @override
+  String get employeeShiftDateRange =>
+      'يجب أن يكون تاريخ الانتهاء في تاريخ البداية أو بعده.';
+
+  @override
   String get employeeShiftEmployee => 'الموظف';
 
   @override

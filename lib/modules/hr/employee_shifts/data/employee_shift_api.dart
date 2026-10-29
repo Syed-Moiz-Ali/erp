@@ -1,4 +1,4 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/api/api_endpoints.dart';
 import 'package:modular_erp/core/api/models/paged_result.dart';
@@ -25,8 +25,7 @@ class EmployeeShiftApi {
     timeZoneId: json['timeZoneId'] as String?,
     punchInOpensAt: json['punchInOpensAt'] as String?,
     crossesMidnight: json['crossesMidnight'] as bool? ?? false,
-    earlyPunchInMinutes:
-        (json['earlyPunchInMinutes'] as num?)?.toInt() ?? 15,
+    earlyPunchInMinutes: (json['earlyPunchInMinutes'] as num?)?.toInt() ?? 15,
     lateGraceMinutes: (json['lateGraceMinutes'] as num?)?.toInt() ?? 15,
     status: json['status'] as String?,
   );
@@ -120,7 +119,10 @@ class EmployeeShiftApi {
               if (item is Map)
                 ShiftOption(
                   (item['employeeId'] as num).toInt(),
-                  ' - ',
+                  [item['employeeCode'], item['employeeName']]
+                      .whereType<String>()
+                      .where((value) => value.isNotEmpty)
+                      .join(' - '),
                 ),
           ];
         },
@@ -144,6 +146,18 @@ class EmployeeShiftApi {
         },
       );
 
+  Future<Result<List<String>>> timeZones({CancelToken? cancelToken}) =>
+      _client.get<List<String>>(
+        ApiEndpoints.branches.lookups,
+        cancelToken: cancelToken,
+        fromJson: (json) {
+          final map = (json as Map).cast<String, dynamic>();
+          return [
+            for (final item in (map['timeZones'] as List? ?? const []))
+              if (item is Map) item['id'] as String? ?? '' else '',
+          ]..removeWhere((zone) => zone.isEmpty);
+        },
+      );
+
   Result<EmployeeShift> _single(Result<EmployeeShift> result) => result;
 }
-

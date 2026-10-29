@@ -1,4 +1,6 @@
-﻿class EmployeeShift {
+import 'package:modular_erp/core/errors/result.dart';
+
+class EmployeeShift {
   const EmployeeShift({
     required this.id,
     required this.employeeId,
@@ -87,4 +89,18 @@ class ShiftOption {
   const ShiftOption(this.id, this.name);
   final int id;
   final String name;
+}
+
+/// Maps assignment write failures to the editor fields.
+Map<String, String> mapEmployeeShiftError(Failure failure) {
+  if (failure.field != null && failure.field!.isNotEmpty) {
+    return {failure.field!: failure.serverMessage ?? failure.code};
+  }
+  final message = failure.serverMessage ?? failure.code;
+  return switch (failure.code) {
+    'EMPLOYEE_SHIFT_OVERLAP' || 'EMPLOYEE_SHIFT_LIMIT' => {'toDate': message},
+    'EMPLOYEE_SHIFT_TIMEZONE_MISMATCH' ||
+    'BRANCH_TIMEZONE_MISSING' => {'timeZoneId': message},
+    _ => const {},
+  };
 }

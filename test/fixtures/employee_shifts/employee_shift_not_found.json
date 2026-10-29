@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "Shift assignment not found.",
+  "data": null,
+  "errors": [
+    {
+      "code": "EMPLOYEE_SHIFT_NOT_FOUND",
+      "message": "Shift assignment not found."
+    }
+  ]
+}
