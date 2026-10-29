@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "message": "Attendance day retrieved.",
+  "data": {
+    "employeeId": 29,
+    "date": "2026-10-28",
+    "timeZone": "Asia/Dubai",
+    "state": "working",
+    "allowedActions": ["break", "punchOut"],
+    "currentShiftNo": 1,
+    "nextShiftNo": 2,
+    "workedMinutes": 120,
+    "workedHours": 2.0,
+    "breakMinutes": 15,
+    "serverTime": "2026-10-28T11:27:08+05:30",
+    "shifts": [
+      {
+        "shiftNo": 1,
+        "employeeShiftId": 1,
+        "shiftId": 1,
+        "shiftName": "Shift 1",
+        "shiftDate": "2026-10-28",
+        "timeZone": "Asia/Dubai",
+        "crossesMidnight": false,
+        "plannedStart": "09:00:00",
+        "plannedEnd": "12:00:00",
+        "punchInOpensAt": "08:40:00",
+        "status": "working",
+        "punchIn": "2026-10-28T09:07:08+05:30",
+        "punchOut": null,
+        "punchInLocation": {
+          "latitude": 25.20485,
+          "longitude": 55.27078
+        },
+        "lateMinutes": 7,
+        "earlyLeaveMinutes": 0,
+        "workedMinutes": 120,
+        "breakMinutes": 15,
+        "breaks": [
+          {
+            "start": "2026-10-28T10:00:00+05:30",
+            "end": "2026-10-28T10:15:00+05:30",
+            "minutes": 15
+          }
+        ]
+      },
+      {
+        "shiftNo": 2,
+        "employeeShiftId": 2,
+        "shiftId": 2,
+        "shiftName": "Shift 2",
+        "shiftDate": "2026-10-28",
+        "timeZone": "Asia/Dubai",
+        "crossesMidnight": false,
+        "plannedStart": "18:45:00",
+        "plannedEnd": "21:45:00",
+        "punchInOpensAt": "18:25:00",
+        "status": "scheduled",
+        "punchIn": null,
+        "punchOut": null,
+        "punchInLocation": null,
+        "lateMinutes": 0,
+        "earlyLeaveMinutes": 0,
+        "workedMinutes": 0,
+        "breakMinutes": 0,
+        "breaks": []
+      }
+    ]
+  },
+  "errors": []
+}

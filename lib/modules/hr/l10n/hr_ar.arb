@@ -478,6 +478,8 @@
   "attendanceOnBreak": "في استراحة",
   "attendanceCompleted": "مكتمل",
   "attendanceLate": "متأخر",
+  "attendanceEarlyLeave": "انصراف مبكر",
+  "attendanceCurrentNextShift": "المناوبة الحالية / التالية",
   "attendancePending": "بانتظار المزامنة",
   "attendanceSynced": "تمت المزامنة",
   "attendanceFailed": "فشلت المزامنة",

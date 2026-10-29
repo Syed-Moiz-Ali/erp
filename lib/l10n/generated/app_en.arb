@@ -1339,6 +1339,8 @@
   "attendanceOnBreak": "On break",
   "attendanceCompleted": "Completed",
   "attendanceLate": "Late",
+  "attendanceEarlyLeave": "Early leave",
+  "attendanceCurrentNextShift": "Current / next shift",
   "attendancePending": "Pending sync",
   "attendanceSynced": "Synced",
   "attendanceFailed": "Sync failed",

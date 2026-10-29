@@ -6746,6 +6746,18 @@ abstract class AppLocalizations {
   /// **'Late'**
   String get attendanceLate;
 
+  /// No description provided for @attendanceEarlyLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Early leave'**
+  String get attendanceEarlyLeave;
+
+  /// No description provided for @attendanceCurrentNextShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Current / next shift'**
+  String get attendanceCurrentNextShift;
+
   /// No description provided for @attendancePending.
   ///
   /// In en, this message translates to:

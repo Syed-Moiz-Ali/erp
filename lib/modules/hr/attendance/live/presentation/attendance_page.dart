@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/l10n/l10n.dart';
@@ -27,8 +28,15 @@ class _LiveAttendancePageState extends State<LiveAttendancePage> {
     child: BlocBuilder<AuthBloc, AuthState>(
       builder: (context, auth) {
         final permissions = auth.context?.user.permissions;
-        final canView = permissions?.contains(AppPermission.attendanceViewSelf) ?? false;
-        final canPunch = permissions?.contains(AppPermission.attendancePunchIn) ?? false;
+        final canView =
+            permissions?.contains(AppPermission.attendanceViewSelf) ?? false;
+        final canPunch =
+            permissions != null &&
+            PermissionChecker(permissions).canAny([
+              AppPermission.attendancePunchIn,
+              AppPermission.attendancePunchOut,
+              AppPermission.attendanceBreak,
+            ]);
         if (!canView && !canPunch) {
           return AppPage(
             header: AppPageHeader(title: context.l10n.attendanceTodayTitle),
@@ -53,7 +61,7 @@ class _LiveAttendancePageState extends State<LiveAttendancePage> {
                   ? const AppLoadingState()
                   : state.failure != null
                   ? AppErrorState(
-                      message: state.failure!.serverMessage ?? l.failureRequest,
+                      message: _failureMessage(l, state.failure!),
                       onRetry: widget.cubit.load,
                     )
                   : day == null
@@ -69,13 +77,36 @@ class _LiveAttendancePageState extends State<LiveAttendancePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text([day.state, day.timeZone].join(' · ')),
-                              const SizedBox(height: AppSpacing.sm),
-                              Text([l.attendanceTodayShift, day.date].join(': ')),
+                              Text(
+                                [
+                                  _stateLabel(l, day.state),
+                                  day.timeZone,
+                                ].join(' · '),
+                              ),
                               const SizedBox(height: AppSpacing.sm),
                               Text(
-                                [l.attendanceWorkedTime, day.workedMinutes, l.attendanceBreakTime, day.breakMinutes].join(' · '),
+                                [l.attendanceTodayShift, day.date].join(': '),
                               ),
+                              const SizedBox(height: AppSpacing.sm),
+                              Text(
+                                [
+                                  l.attendanceWorkedTime,
+                                  day.workedMinutes,
+                                  l.attendanceBreakTime,
+                                  day.breakMinutes,
+                                ].join(' · '),
+                              ),
+                              if (day.currentShiftNo != null ||
+                                  day.nextShiftNo != null) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                Text(
+                                  [
+                                    l.attendanceCurrentNextShift,
+                                    '${day.currentShiftNo ?? '-'} / '
+                                        '${day.nextShiftNo ?? '-'}',
+                                  ].join(': '),
+                                ),
+                              ],
                               const SizedBox(height: AppSpacing.sm),
                               Text(day.serverTime),
                             ],
@@ -100,15 +131,56 @@ class _LiveAttendancePageState extends State<LiveAttendancePage> {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
-                                      [shift.shiftNo, shift.shiftName, shift.status].join('. '),
+                                      [
+                                        shift.shiftNo,
+                                        shift.shiftName,
+                                        shift.status,
+                                      ].join('. '),
                                     ),
                                     Text(
-                                      [shift.plannedStart, shift.plannedEnd].join(' - '),
+                                      [
+                                        shift.plannedStart,
+                                        shift.plannedEnd,
+                                      ].join(' - '),
                                     ),
                                     if (shift.punchIn != null)
-                                      Text([l.attendancePunchInTime, shift.punchIn].join(': ')),
+                                      Text(
+                                        [
+                                          l.attendancePunchInTime,
+                                          shift.punchIn,
+                                        ].join(': '),
+                                      ),
                                     if (shift.punchOut != null)
-                                      Text([l.attendancePunchOutTime, shift.punchOut].join(': ')),
+                                      Text(
+                                        [
+                                          l.attendancePunchOutTime,
+                                          shift.punchOut,
+                                        ].join(': '),
+                                      ),
+                                    if (shift.timeZone.isNotEmpty)
+                                      Text(shift.timeZone),
+                                    if (shift.lateMinutes > 0)
+                                      Text(
+                                        [
+                                          l.attendanceLate,
+                                          '${shift.lateMinutes}',
+                                        ].join(' '),
+                                      ),
+                                    if (shift.earlyLeaveMinutes > 0)
+                                      Text(
+                                        [
+                                          l.attendanceEarlyLeave,
+                                          '${shift.earlyLeaveMinutes}',
+                                        ].join(' '),
+                                      ),
+                                    for (final b in shift.breaks)
+                                      Text(
+                                        [
+                                          b.start,
+                                          b.end ?? '-',
+                                          '(${b.minutes})',
+                                        ].join(' '),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -164,10 +236,29 @@ class _LiveAttendancePageState extends State<LiveAttendancePage> {
     if (failure != null && mounted) {
       AppFeedback.showMessage(
         context,
-        message: (l) => failure.serverMessage ?? l.failureRequest,
+        message: (l) => _failureMessage(l, failure),
       );
     }
   }
+
+  String _stateLabel(AppLocalizations l, String state) => switch (state) {
+    'working' => l.attendanceWorking,
+    'onBreak' => l.attendanceOnBreak,
+    'completed' => l.attendanceCompleted,
+    'readyToPunchIn' || 'waitingForShift' => l.attendanceNotStarted,
+    'noShift' => l.attendanceShiftNotAssigned,
+    _ => state,
+  };
+
+  String _failureMessage(AppLocalizations l, Failure failure) {
+    final message = failure.serverMessage;
+    return switch (failure.code) {
+      'DAY_COMPLETE' => l.attendanceAlreadyCompleted,
+      'ATTENDANCE_NO_SHIFT' => l.attendanceShiftNotAssigned,
+      'ATTENDANCE_EMPLOYEE_INACTIVE' ||
+      'ATTENDANCE_NO_EMPLOYEE' => l.attendanceEmployeeInactive,
+      'BRANCH_TIMEZONE_MISSING' => l.attendanceUnsupportedTimezone,
+      _ => message ?? l.failureRequest,
+    };
+  }
 }
-
-

@@ -3513,6 +3513,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attendanceLate => 'متأخر';
 
   @override
+  String get attendanceEarlyLeave => 'انصراف مبكر';
+
+  @override
+  String get attendanceCurrentNextShift => 'المناوبة الحالية / التالية';
+
+  @override
   String get attendancePending => 'بانتظار المزامنة';
 
   @override

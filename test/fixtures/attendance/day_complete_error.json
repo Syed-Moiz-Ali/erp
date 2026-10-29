@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "message": "The attendance day is already complete.",
+  "data": null,
+  "errors": [
+    {
+      "code": "DAY_COMPLETE",
+      "message": "The attendance day is already complete."
+    }
+  ]
+}

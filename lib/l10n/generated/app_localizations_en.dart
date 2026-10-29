@@ -3570,6 +3570,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attendanceLate => 'Late';
 
   @override
+  String get attendanceEarlyLeave => 'Early leave';
+
+  @override
+  String get attendanceCurrentNextShift => 'Current / next shift';
+
+  @override
   String get attendancePending => 'Pending sync';
 
   @override
