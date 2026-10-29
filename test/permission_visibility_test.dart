@@ -65,6 +65,8 @@ void main() {
     expect(p.contains(AppPermission.shiftManage), isTrue);
     expect(p.contains(AppPermission.accessUsersView), isTrue);
     expect(p.contains(AppPermission.accessPermissionsManage), isTrue);
+    expect(p.contains(AppPermission.departmentView), isTrue);
+    expect(p.contains(AppPermission.departmentManage), isTrue);
     expect(p.contains(AppPermission.attendanceViewSelf), isTrue);
     expect(p.contains(AppPermission.attendancePunchIn), isTrue);
 
@@ -74,13 +76,13 @@ void main() {
       'settings',
     ]));
 
-    // Department/branch keys are known but intentionally deferred.
+    // Branch keys remain intentionally deferred; department keys are live.
     expect(access.unknownKeys, containsAll(<String>[
       'company.branches.view',
       'company.branches.manage',
-      'hr.departments.view',
-      'hr.departments.manage',
     ]));
+    expect(access.unknownKeys, isNot(contains('hr.departments.view')));
+    expect(access.unknownKeys, isNot(contains('hr.departments.manage')));
   });
 
   test('employee view+edit sees employees and self attendance, not admin', () {
@@ -135,6 +137,10 @@ void main() {
         c.user.permissions.contains(AppPermission.employeeUpdate);
     bool shiftsSettings(AuthContext c) =>
         c.user.permissions.contains(AppPermission.shiftView);
+    bool departmentsNav(AuthContext c) =>
+        c.user.permissions.contains(AppPermission.departmentView);
+    bool addDepartment(AuthContext c) =>
+        c.user.permissions.contains(AppPermission.departmentManage);
     bool accessNav(AuthContext c) => PermissionChecker(c.user.permissions)
         .canAny(<AppPermission>[
           AppPermission.accessUsersView,
@@ -163,6 +169,12 @@ void main() {
 
     expect(shiftsSettings(admin), isTrue);
     expect(shiftsSettings(employee), isFalse);
+
+    expect(departmentsNav(admin), isTrue);
+    expect(departmentsNav(employee), isFalse);
+    expect(departmentsNav(none), isFalse);
+    expect(addDepartment(admin), isTrue);
+    expect(addDepartment(employee), isFalse);
 
     expect(accessNav(admin), isTrue);
     expect(accessNav(employee), isFalse);

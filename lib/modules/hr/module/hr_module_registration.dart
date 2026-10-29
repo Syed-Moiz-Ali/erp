@@ -42,6 +42,14 @@ import 'package:modular_erp/modules/hr/shifts/presentation/pages/shift_details_p
 import 'package:modular_erp/modules/hr/shifts/presentation/bloc/shift_form_bloc.dart';
 import 'package:modular_erp/modules/hr/shifts/presentation/pages/shift_form_page.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/bloc/department_list_bloc.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/pages/department_list_page.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/bloc/department_details_bloc.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/pages/department_details_page.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/bloc/department_form_bloc.dart';
+import 'package:modular_erp/modules/hr/departments/presentation/pages/department_form_page.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/bloc/work_location_list_bloc.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/pages/work_location_list_page.dart';
@@ -99,6 +107,7 @@ HrModules buildHrModules({
   required ModuleRegistry Function() registry,
   EmployeeRepository? employeeRepository,
   ShiftRepository? shiftRepository,
+  DepartmentRepository? departmentRepository,
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
@@ -207,6 +216,98 @@ HrModules buildHrModules({
                           id: s.pathParameters['id'],
                         )..add(const RecordFormInitialized<ShiftDraft>()),
                         child: ShiftFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination departmentsDestination() {
+    final guard = FormNavigationGuard();
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'departments',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgDepartments,
+        icon: Icons.account_tree_outlined,
+        route: AppRoutes.departments,
+        requiredPermissions: {AppPermission.departmentView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 44,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  if (departmentRepository == null) {
+                    return AppPage(
+                      child: AppErrorState(
+                        message: context.l10n.cfgStorageError,
+                      ),
+                    );
+                  }
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        DepartmentListBloc(departmentRepository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.departments,
+              name: 'departments',
+              builder: (c, s) => const DepartmentListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('department-new'),
+                    create: (_) => DepartmentFormBloc(
+                      departmentRepository!,
+                      c.read<DepartmentListBloc>().context,
+                      id: null,
+                    )..add(const RecordFormInitialized<DepartmentDraft>()),
+                    child: DepartmentFormPage(guard: guard),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => DepartmentDetailsBloc(
+                      departmentRepository!,
+                      c.read<DepartmentListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const DepartmentDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) => DepartmentFormBloc(
+                          departmentRepository!,
+                          c.read<DepartmentListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<DepartmentDraft>()),
+                        child: DepartmentFormPage(guard: guard),
                       ),
                     ),
                   ],
@@ -721,6 +822,7 @@ HrModules buildHrModules({
 
   final settingsDestinations = <RegisteredDestination>[
     shiftsDestination(),
+    if (departmentRepository != null) departmentsDestination(),
     workLocationsDestination(),
     attendancePoliciesDestination(),
     if (leaveTypeRepository != null) leaveTypeDestination(),

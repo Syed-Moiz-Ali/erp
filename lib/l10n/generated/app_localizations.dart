@@ -2840,6 +2840,12 @@ abstract class AppLocalizations {
   /// **'Define attendance, break and correction rules.'**
   String get settingsPolicyDesc;
 
+  /// No description provided for @settingsDepartmentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Organise employees into departments.'**
+  String get settingsDepartmentDesc;
+
   /// No description provided for @settingsLanguageDesc.
   ///
   /// In en, this message translates to:
@@ -4106,6 +4112,18 @@ abstract class AppLocalizations {
   /// **'Manage attendance policies'**
   String get permissionAttendancePolicyManage;
 
+  /// No description provided for @permissionDepartmentView.
+  ///
+  /// In en, this message translates to:
+  /// **'View departments'**
+  String get permissionDepartmentView;
+
+  /// No description provided for @permissionDepartmentManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage departments'**
+  String get permissionDepartmentManage;
+
   /// No description provided for @permissionAttendanceReportView.
   ///
   /// In en, this message translates to:
@@ -5006,6 +5024,18 @@ abstract class AppLocalizations {
   /// **'Rules prepared for future attendance workflows.'**
   String get cfgPolicyIntro;
 
+  /// No description provided for @cfgDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'Departments'**
+  String get cfgDepartments;
+
+  /// No description provided for @cfgDepartmentIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisational departments used across HR records.'**
+  String get cfgDepartmentIntro;
+
   /// No description provided for @cfgNew.
   ///
   /// In en, this message translates to:
@@ -5149,6 +5179,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An active record with this name already exists.'**
   String get cfgDuplicateName;
+
+  /// No description provided for @cfgNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be 50 characters or fewer.'**
+  String get cfgNameTooLong;
+
+  /// No description provided for @cfgDepartmentInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This department has employees and cannot be deactivated.'**
+  String get cfgDepartmentInUse;
+
+  /// No description provided for @cfgNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is not supported by the server.'**
+  String get cfgNotSupported;
 
   /// No description provided for @cfgInvalidTime.
   ///
@@ -10003,6 +10051,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create and edit attendance policies.'**
   String get hrPermPoliciesManageDesc;
+
+  /// No description provided for @hrPermDepartmentsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View departments'**
+  String get hrPermDepartmentsView;
+
+  /// No description provided for @hrPermDepartmentsViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See department configuration.'**
+  String get hrPermDepartmentsViewDesc;
+
+  /// No description provided for @hrPermDepartmentsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage departments'**
+  String get hrPermDepartmentsManage;
+
+  /// No description provided for @hrPermDepartmentsManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create, rename and deactivate departments.'**
+  String get hrPermDepartmentsManageDesc;
 
   /// No description provided for @workforceFilters.
   ///

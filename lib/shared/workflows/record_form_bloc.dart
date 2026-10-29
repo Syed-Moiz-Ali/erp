@@ -52,6 +52,7 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
     required this.fromRecord,
     required this.normalize,
     required this.validate,
+    this.serverFieldErrors,
     this.id,
   }) : super(RecordFormState(draft: emptyDraft, original: emptyDraft)) {
     on<RecordFormEvent<D>>(
@@ -65,6 +66,9 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
   final D Function(T) fromRecord;
   final D Function(D) normalize;
   final Map<String, String> Function(D) validate;
+
+  /// Maps a backend field failure to draft field names/codes.
+  final Map<String, String> Function(Failure)? serverFieldErrors;
   bool _submissionQueued = false;
   @override
   void add(RecordFormEvent<D> event) {
@@ -179,13 +183,22 @@ class RecordFormBloc<T extends ConfigurationRecord, D>
             saving: false,
             failure: result is Failed<T> ? result.failure : null,
             savedId: result is Success<T> ? result.value.id : null,
-            errors:
-                result is Failed<T> && result.failure.code == 'duplicateName'
-                ? const {'name': 'duplicateName'}
+            errors: result is Failed<T>
+                ? _fieldErrorsFor(result.failure)
                 : const {},
           ),
         );
         _submissionQueued = false;
     }
+  }
+
+  Map<String, String> _fieldErrorsFor(Failure failure) {
+    final mapped = serverFieldErrors?.call(failure);
+    if (mapped != null && mapped.isNotEmpty) return mapped;
+    if (failure.code == 'duplicateName') {
+      return const {'name': 'duplicateName'};
+    }
+    if (failure.field != null) return {failure.field!: failure.code};
+    return const {};
   }
 }

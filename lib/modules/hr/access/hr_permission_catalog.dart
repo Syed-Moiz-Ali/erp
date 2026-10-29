@@ -1,4 +1,4 @@
-import 'package:modular_erp/core/security/app_permission.dart';
+﻿import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
@@ -97,6 +97,7 @@ const hrPermissionModules = <PermissionModule>[
             descriptionKey: 'hrPermAttendanceSelfPunchOutDesc',
             order: 3,
             requiresEmployeeLink: true,
+            clientOnly: true,
             permissions: {
               PermissionScope.none: AppPermission.attendancePunchOut,
             },
@@ -109,6 +110,7 @@ const hrPermissionModules = <PermissionModule>[
             descriptionKey: 'hrPermAttendanceSelfBreakDesc',
             order: 4,
             requiresEmployeeLink: true,
+            clientOnly: true,
             permissions: {PermissionScope.none: AppPermission.attendanceBreak},
           ),
           PermissionDefinition(
@@ -119,6 +121,7 @@ const hrPermissionModules = <PermissionModule>[
             descriptionKey: 'hrPermAttendanceSelfCorrectionDesc',
             order: 5,
             requiresEmployeeLink: true,
+            clientOnly: true,
             permissions: {
               PermissionScope.none: AppPermission.attendanceRequestCorrection,
             },
@@ -419,8 +422,29 @@ const hrPermissionModules = <PermissionModule>[
               PermissionScope.none: AppPermission.attendancePolicyManage,
             },
           ),
+          PermissionDefinition(
+            key: 'hr.departments.view',
+            moduleId: 'hr',
+            submoduleId: 'configuration',
+            featureFlag: 'settings',
+            nameKey: 'hrPermDepartmentsView',
+            descriptionKey: 'hrPermDepartmentsViewDesc',
+            order: 7,
+            permissions: {PermissionScope.none: AppPermission.departmentView},
+          ),
+          PermissionDefinition(
+            key: 'hr.departments.manage',
+            moduleId: 'hr',
+            submoduleId: 'configuration',
+            featureFlag: 'settings',
+            nameKey: 'hrPermDepartmentsManage',
+            descriptionKey: 'hrPermDepartmentsManageDesc',
+            order: 8,
+            permissions: {PermissionScope.none: AppPermission.departmentManage},
+          ),
         ],
       ),
     ],
   ),
 ];
+

@@ -400,6 +400,7 @@
   "settingsShiftDesc": "Set working hours, working days and break defaults.",
   "settingsLocationDesc": "Manage workplaces and attendance location rules.",
   "settingsPolicyDesc": "Define attendance, break and correction rules.",
+  "settingsDepartmentDesc": "Organise employees into departments.",
   "settingsLanguageDesc": "Choose your preferred application language.",
   "settingsNotificationsDesc": "Control attendance reminders for your account.",
   "settingsSyncDesc": "View sync status and retry failed changes.",

@@ -20,7 +20,9 @@ abstract final class BackendAccessPolicy {
   static const Map<String, Set<AppPermission>> keyPermissions = {
     'company.access.permissions.manage': {AppPermission.accessPermissionsManage},
     'company.access.users.view': {AppPermission.accessUsersView},
-    // Branch and department keys are added when those modules are approved.
+    'hr.departments.manage': {AppPermission.departmentManage},
+    'hr.departments.view': {AppPermission.departmentView},
+    // Branch keys are added when the Branches module is approved.
     'company.users.manage': {AppPermission.userManage},
     'hr.attendance.self.punch': {
       AppPermission.attendancePunchIn,
@@ -110,6 +112,8 @@ abstract final class BackendAccessPolicy {
   static const Set<AppPermission> _settingsPermissions = {
     AppPermission.shiftView,
     AppPermission.shiftManage,
+    AppPermission.departmentView,
+    AppPermission.departmentManage,
     AppPermission.accessUsersView,
     AppPermission.accessPermissionsManage,
   };

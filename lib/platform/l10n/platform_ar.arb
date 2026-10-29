@@ -320,6 +320,7 @@
   "settingsShiftDesc": "حدد ساعات العمل وأيام العمل والاستراحات الافتراضية.",
   "settingsLocationDesc": "أدر أماكن العمل وقواعد التحقق من الموقع.",
   "settingsPolicyDesc": "حدد قواعد الحضور والاستراحة والتصحيح.",
+  "settingsDepartmentDesc": "نظّم الموظفين في أقسام.",
   "settingsLanguageDesc": "اختر لغة التطبيق المفضلة لديك.",
   "settingsNotificationsDesc": "تحكم في تذكيرات الحضور لحسابك.",
   "settingsSyncDesc": "اعرض حالة المزامنة وأعد محاولة التغييرات الفاشلة.",

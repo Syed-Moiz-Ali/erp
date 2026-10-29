@@ -95,6 +95,10 @@ abstract final class AppRoutes {
       HrRoutes.attendancePolicy(id);
   static String attendancePoliciesEdit(String id) =>
       HrRoutes.attendancePolicyEdit(id);
+  static const departments = HrRoutes.departments;
+  static const departmentsNew = HrRoutes.departmentsNew;
+  static String departmentsDetails(String id) => HrRoutes.department(id);
+  static String departmentsEdit(String id) => HrRoutes.departmentEdit(id);
   static String accessUser(String id) =>
       '$access/users/${Uri.encodeComponent(id)}';
   static const utilityPaths = {

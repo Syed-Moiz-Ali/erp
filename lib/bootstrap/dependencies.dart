@@ -29,6 +29,7 @@ void configureApplicationComposition(GetIt services) {
       dashboardRepository: services(),
       employeeRepository: services(),
       shiftRepository: services(),
+      departmentRepository: services(),
       workLocationRepository: services(),
       attendancePolicyRepository: services(),
       locationService: services(),
