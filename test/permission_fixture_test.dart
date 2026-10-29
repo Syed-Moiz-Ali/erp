@@ -108,6 +108,24 @@ void main() {
     );
   });
 
+  test('assign response is the complete list including orphan grants', () {
+    final envelope = load('user_permissions_assign.json');
+    final rows = (envelope['data'] as List)
+        .map((item) => UserPermissionDto.fromJson(item as Map<String, dynamic>))
+        .toList();
+    expect(rows, hasLength(4));
+    expect(rows.where((row) => row.permissionKey == null), hasLength(3));
+    expect(
+      rows
+          .where((row) => row.permissionKey == null)
+          .map((row) => row.permissionId),
+      [1, 2, 3],
+    );
+    expect(rows.first.permissionKey, 'hr.employees.view');
+    expect(rows.first.isActive, isTrue);
+    expect(rows.skip(1).every((row) => !row.isActive), isTrue);
+  });
+
   test('me permissions fixtures differ by account', () {
     final admin =
         load('me_permissions_admin.json')['data'] as Map<String, dynamic>;

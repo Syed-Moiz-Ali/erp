@@ -13,6 +13,7 @@ class _FakeAccessAdmin implements AccessAdminRemoteDataSource {
   List<PermissionDto> permissionRows = const [];
   List<UserPermissionDto> rows = const [];
   List<int>? replacedIds;
+  List<UserPermissionDto>? assignResponse;
 
   PagedResult<T> _page<T>(List<T> items) => PagedResult(
     items: items,
@@ -82,7 +83,12 @@ class _FakeAccessAdmin implements AccessAdminRemoteDataSource {
     int userId,
     List<int> permissionIds, {
     CancelToken? cancelToken,
-  }) async => const Success([]);
+  }) async {
+    final response = assignResponse;
+    if (response != null) rows = response;
+    return Success(response ?? const []);
+  }
+
   @override
   Future<Result<List<UserPermissionDto>>> replaceUserPermissions(
     int userId,
@@ -218,6 +224,47 @@ void main() {
       );
     },
   );
+
+  test('assign refreshes the complete grant list including orphans', () async {
+    data.assignResponse = [
+      _row(1, 44, 18, 'hr.employees.view'),
+      for (final id in [1, 2, 3])
+        UserPermissionDto(
+          userPermissionId: id + 1,
+          userId: 44,
+          permissionId: id,
+          permissionStatusId: 2,
+          loginId: 'user44',
+          userName: 'User 44',
+          permissionKey: null,
+          permissionName: null,
+          createdBy: 8,
+          createdOn: DateTime.utc(2026, 10, 28),
+        ),
+    ];
+    final result = await repository.assignGrants(
+      companyId: '1',
+      actorUserId: '8',
+      targetUserId: '44',
+      requestId: 'request',
+      grants: const [
+        PermissionGrantInput(
+          key: 'hr.employees.view',
+          scope: PermissionScope.all,
+        ),
+      ],
+    );
+    expect(result, isA<Success>());
+    final grants = await repository
+        .watchGrants(companyId: '1', userId: '44')
+        .first;
+    expect(grants, hasLength(4));
+    expect(grants.where((grant) => grant.isOrphan), hasLength(3));
+    expect(
+      grants.where((grant) => !grant.isOrphan).single.permissionKey,
+      'hr.employees.view',
+    );
+  });
 
   test('replaces grants using server permission ids', () async {
     final result = await repository.replaceGrants(

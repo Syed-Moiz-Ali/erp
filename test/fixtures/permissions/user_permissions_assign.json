@@ -1,0 +1,67 @@
+{
+  "success": true,
+  "message": "Permissions assigned.",
+  "data": [
+    {
+      "userPermissionId": 145,
+      "userId": 43,
+      "loginId": "qa.user",
+      "userName": "Sanitized User",
+      "employeeId": 27,
+      "employeeCode": "EMP-SANITIZED",
+      "employeeName": "Sanitized Employee",
+      "permissionId": 18,
+      "permissionKey": "hr.employees.view",
+      "permissionName": "View employees (QA audit)",
+      "permissionStatusId": 1,
+      "createdBy": 8,
+      "createdOn": "2026-10-28T11:16:48Z"
+    },
+    {
+      "userPermissionId": 146,
+      "userId": 43,
+      "loginId": "qa.user",
+      "userName": "Sanitized User",
+      "employeeId": 27,
+      "employeeCode": "EMP-SANITIZED",
+      "employeeName": "Sanitized Employee",
+      "permissionId": 1,
+      "permissionKey": null,
+      "permissionName": null,
+      "permissionStatusId": 2,
+      "createdBy": 8,
+      "createdOn": "2026-10-28T11:16:48Z"
+    },
+    {
+      "userPermissionId": 147,
+      "userId": 43,
+      "loginId": "qa.user",
+      "userName": "Sanitized User",
+      "employeeId": 27,
+      "employeeCode": "EMP-SANITIZED",
+      "employeeName": "Sanitized Employee",
+      "permissionId": 2,
+      "permissionKey": null,
+      "permissionName": null,
+      "permissionStatusId": 2,
+      "createdBy": 8,
+      "createdOn": "2026-10-28T11:16:48Z"
+    },
+    {
+      "userPermissionId": 148,
+      "userId": 43,
+      "loginId": "qa.user",
+      "userName": "Sanitized User",
+      "employeeId": 27,
+      "employeeCode": "EMP-SANITIZED",
+      "employeeName": "Sanitized Employee",
+      "permissionId": 3,
+      "permissionKey": null,
+      "permissionName": null,
+      "permissionStatusId": 2,
+      "createdBy": 8,
+      "createdOn": "2026-10-28T11:16:48Z"
+    }
+  ],
+  "errors": []
+}
