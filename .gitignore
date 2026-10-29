@@ -44,5 +44,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Local secrets and machine-specific overrides must never be committed
+.env.local
+.env.*.local
+
 # Generated visual QA outputs
 artifacts/
