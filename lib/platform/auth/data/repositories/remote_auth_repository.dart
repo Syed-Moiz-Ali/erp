@@ -267,8 +267,26 @@ class RemoteAuthRepository
     switch (result) {
       case Success<LoginResponseDto>(:final value):
         final rotated = RemoteAuthMapper.fromLogin(value);
+        // The refresh payload has no permission/module data. Keep the current
+        // effective access until the permission loader reloads it, so a token
+        // rotation never drops the user's navigation for a frame.
+        final withAccess = AuthSession(
+          accessToken: rotated.accessToken,
+          refreshToken: rotated.refreshToken,
+          expiresAt: rotated.expiresAt,
+          refreshTokenExpiresAt: rotated.refreshTokenExpiresAt,
+          tokenType: rotated.tokenType,
+          context: rotated.context.copyWith(
+            user: rotated.context.user.copyWith(
+              permissions: session.context.user.permissions,
+            ),
+            company: rotated.context.company.copyWith(
+              enabledModules: session.context.company.enabledModules,
+            ),
+          ),
+        );
         try {
-          await _persist(rotated);
+          await _persist(withAccess);
         } catch (_) {
           // The server already rotated the refresh token; without persisting the
           // new pair the old one is unusable, so end the session cleanly rather
@@ -276,8 +294,8 @@ class RemoteAuthRepository
           await _invalidate();
           return TokenRefreshOutcome.invalidated;
         }
-        _accept(rotated);
-        _emit(rotated.context);
+        _accept(withAccess);
+        _emit(withAccess.context);
         return TokenRefreshOutcome.refreshed;
       case Failed<LoginResponseDto>(:final failure):
         if (ApiErrorCodes.sessionEndingCodes.contains(failure.code)) {

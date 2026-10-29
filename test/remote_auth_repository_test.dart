@@ -6,6 +6,7 @@ import 'package:modular_erp/core/api/session_endpoint.dart';
 import 'package:modular_erp/core/api/token_refresher.dart';
 import 'package:modular_erp/core/auth/auth_identifier.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/platform/auth/data/dto/auth_remote_dtos.dart';
 import 'package:modular_erp/platform/auth/data/repositories/remote_auth_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
@@ -245,6 +246,33 @@ void main() {
       },
     );
 
+    test('keeps effective access while rotating tokens', () async {
+      final repo = buildRepo();
+      await repo.login(loginId(), 'secret');
+      await repo.applyEffectiveAccess(
+        PermissionSet(<AppPermission>[AppPermission.employeeViewAll]),
+        enabledModules: const <String>{'employees', 'settings'},
+      );
+
+      dataSource.onRefresh = (_) async => Success(
+        sampleLoginResponse(access: 'access-2', refresh: 'refresh-2'),
+      );
+      final outcome = await repo.refresh();
+
+      expect(outcome, TokenRefreshOutcome.refreshed);
+      final storedUser = (stored()['user'] as Map).cast<String, dynamic>();
+      final storedCompany = (stored()['company'] as Map)
+          .cast<String, dynamic>();
+      expect(
+        (storedUser['permissions'] as List).cast<String>(),
+        contains('employeeViewAll'),
+      );
+      expect(
+        (storedCompany['enabledModules'] as List).cast<String>(),
+        containsAll(<String>['employees', 'settings']),
+      );
+      await repo.dispose();
+    });
     test('keeps tokens on a transient network failure', () async {
       final repo = buildRepo();
       await repo.login(loginId(), 'secret');

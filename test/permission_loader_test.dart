@@ -247,6 +247,48 @@ void main() {
     );
   });
 
+  test('reloads permissions when a token refresh replaces the context', () async {
+    final source = _FakeSource(
+      Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_employee.json'))),
+    );
+    final repository = _FakeAuthRepository();
+    final endpoint = AccessEndpoint();
+    final loader = BackendPermissionLoader(
+      repository: repository,
+      source: source,
+      accessEndpoint: endpoint,
+      contexts: repository.contexts,
+      currentContext: () => repository.current,
+    );
+    addTearDown(() async {
+      await loader.dispose();
+      await endpoint.dispose();
+      await repository.close();
+    });
+
+    await loader.start();
+    repository.emit(contextFor());
+    await repository.waitForApplications(1);
+    expect(
+      repository.applications.first.permissions.contains(
+        AppPermission.employeeCreate,
+      ),
+      isFalse,
+    );
+
+    // A refresh response carries no permissions; the loader must reload them.
+    source.result = Success(
+      BackendAccessPolicy.resolve(fixtureKeys('me_permissions_admin.json')),
+    );
+    repository.emit(contextFor());
+    await repository.waitForApplications(2);
+    expect(
+      repository.applications.last.permissions.contains(
+        AppPermission.employeeCreate,
+      ),
+      isTrue,
+    );
+  });
   test('refresh reloads effective access on app resume', () async {
     final source = _FakeSource(
       Success(BackendAccessPolicy.resolve(fixtureKeys('me_permissions_employee.json'))),
