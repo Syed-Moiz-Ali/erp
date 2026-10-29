@@ -3,13 +3,15 @@ import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/api/api_endpoints.dart';
 import 'package:modular_erp/core/api/models/paged_result.dart';
 import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/modules/hr/employees/live/data/datasources/live_employee_data_source.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/dto/live_employee_dtos.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
 
-class DioLiveEmployeeDataSource {
+class DioLiveEmployeeDataSource implements LiveEmployeeRemoteDataSource {
   DioLiveEmployeeDataSource(this._client);
   final ApiClient _client;
 
+  @override
   Future<Result<PagedResult<LiveEmployeeDto>>> list({
     String search = '',
     int? statusId,
@@ -37,6 +39,7 @@ class DioLiveEmployeeDataSource {
     ),
   );
 
+  @override
   Future<Result<LiveEmployeeDto>> getById(int id, {CancelToken? cancelToken}) =>
       _client.get<LiveEmployeeDto>(
         ApiEndpoints.employees.byId(id),
@@ -45,6 +48,7 @@ class DioLiveEmployeeDataSource {
             LiveEmployeeDto.fromJson((json as Map).cast<String, dynamic>()),
       );
 
+  @override
   Future<Result<LiveEmployeeDto>> create(
     Map<String, dynamic> body, {
     CancelToken? cancelToken,
@@ -56,6 +60,7 @@ class DioLiveEmployeeDataSource {
         LiveEmployeeDto.fromJson((json as Map).cast<String, dynamic>()),
   );
 
+  @override
   Future<Result<LiveEmployeeDto>> update(
     int id,
     Map<String, dynamic> body, {
@@ -68,6 +73,7 @@ class DioLiveEmployeeDataSource {
         LiveEmployeeDto.fromJson((json as Map).cast<String, dynamic>()),
   );
 
+  @override
   Future<Result<LiveEmployeeDto>> setActive(
     int id, {
     required bool active,
@@ -81,6 +87,7 @@ class DioLiveEmployeeDataSource {
         LiveEmployeeDto.fromJson((json as Map).cast<String, dynamic>()),
   );
 
+  @override
   Future<Result<LiveEmployeeLookups>> lookups({
     CancelToken? cancelToken,
   }) async {

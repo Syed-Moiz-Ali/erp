@@ -2,7 +2,7 @@
 
 **Branch:** `feat/api-v3` (from `ac2ec6f`)
 **UI baseline:** `ac2ec6f` (tip of `services_module`, 2026-10-08), enforced by `tool/ui_freeze_check.dart`.
-**Status:** integration map only. No module is wired, no live write is performed, and no screen is modified.
+**Status:** integration map. Departments, Shifts and Employees have backend repositories selected by DI; no live write is performed and no screen is modified. Remaining decisions are listed per module.
 
 Legend:
 
@@ -122,11 +122,36 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Item | Value |
 |---|---|
 | Interface | `EmployeeRepository` (12 methods: list/detail/save/setActive/lookups/references/account access/availability) |
-| Backend adapter | planned `LiveEmployeeRepositoryBridge` implementing `EmployeeRepository` over `LiveEmployeeRepository` (CARRIED data layer) |
+| Backend adapter | `RemoteEmployeeRepository` (`lib/modules/hr/employees/live/data/repositories/remote_employee_repository.dart`, NEW and selected by DI) over the carried `LiveEmployeeRemoteDataSource` (Dio implementation + DTOs) |
 | Endpoints | `GET /api/employees/lookups`, `GET /api/employees`, `GET /api/employees/{id}`, `POST /api/employees`, `PUT /api/employees/{id}`, `POST /api/employees/{id}/activate|deactivate` |
-| Read/write | Reads only in this phase. Create/update/activate/deactivate are documented, **not called**. |
-| Planned bridge | Adapter maps `LiveEmployee` to `Employee` and `EmployeeDraft` to `LiveEmployeeDraft`. Write methods return a "not enabled in this phase" failure until approved. The screen stays the baseline list/detail/form. |
+| Read/write | Reads are wired end to end. Create/update/activate/deactivate are wired in the data layer with the documented bodies; no live write is executed in this phase. |
+| Planned bridge | DI selects `RemoteEmployeeRepository` when `AppConfig.realApiEnabled`, otherwise `LocalEmployeeRepository` (demo). `watchEmployees`/`watchEmployee` emit an initial fetch and re-fetch after any successful write through a broadcast revision stream. The screen stays the baseline list/detail/form. |
 | UI impact | None to files. |
+
+**Wired mapping (data-only):**
+
+* Domain id is the decimal `employeeId`; `employeeCode` stays separate. `companyId` comes from the session.
+* `employeeName` → `firstName`; middle/last stay empty. Null `email`/`phone` → empty strings.
+* `departmentId` is the decimal string (`''` when absent); `designation` is carried as `designationId` text; `reportingManager` → `managerId`.
+* `statusId == 1` → active, otherwise inactive. `joiningDate` parses ISO; missing → `DateTime.utc(1970,1,1)`. `createdAt`/`updatedAt` use the same UTC epoch sentinel and `syncStatus` is `synced`.
+* Login: `login.userId` → `linkedUserId`, `login.enabled` → `loginEnabled`; shift/work-location/attendance-policy ids stay null.
+* List query: `query` → `search` (trimmed), status → `statusId` 1/2, department → `departmentId`; `branchId` is never sent. Page 0 → server page 1.
+* Sort: `nameAscending` → `nameAsc`, `nameDescending` → `nameDesc`, `code` → `codeAsc`, `newestJoined` → `newest`. **`oldestJoined` is unsupported by the backend; it is never sent, `nameAsc` is used instead.**
+* `EmployeePageData.total` and `.filtered` both use the backend `totalItems`.
+* `getReferences` exposes backend departments as `WorkforceReference(id.toString(), name)`; designations/managers/shifts/work locations/policies are empty in backend mode.
+* `getLinkedAccount` maps `login` into `UserAccount` (id = `login.userId`, displayName = `employeeName`, email = `loginId ?? ''`, phone = `mobileNo`, permissions empty, status active while login is enabled). `credentialPending = !(loginEnabled && canLogin)`; no `login.userId` → `Success(null)`.
+* Availability checks have no endpoint and return `Failure(code: 'unsupported', kind: notConfigured)`.
+* Create sends only `employeeName`, `statusId`, `departmentId`, `designation`, `joiningDate`, `email`, `uaeContactNumber`, and `login` only when login is enabled (`enabled`, `loginId` from email, `mobileNo` from phone, `branchIds: []`); `login.userType` is never sent. Required backend fields the frozen form does not collect are deliberately omitted so a real 400 surfaces.
+* Update is a full replace: a fresh `GET` is loaded, every loaded field is copied, only the form fields (name, department, designation, joining date, email, phone, status, `login.enabled`) are overlaid, and `login.userType` is stripped. No loaded field is dropped.
+* `POST /api/employees/{id}/activate` and `/deactivate` back `setActive`; success bumps the revision.
+
+**NEEDS-UI-DECISION (recorded, not invented):**
+
+* The frozen employee create/edit form does not collect required backend fields (`branchId`, `nationalityId`, date of birth, marital status, gratuity, working hours, salary, transport, accommodation). The data layer sends only the collected fields; the backend validation error is allowed to surface.
+* The frozen form has no login password or branch multi-select controls. Create sends login from email/phone with `branchIds: []` and an empty `password` value because the form cannot collect one; update only toggles `login.enabled`. A UI decision is needed before credential writes can succeed.
+* `oldestJoined` has no backend sort; the list silently falls back to `nameAsc`.
+* The backend provides no designation lookup, so `getReferences.designations` is empty and `designation` remains free text.
+
 
 | # | UI field / behaviour | Backend field | Type / nullability | Options | Decision |
 |---|---|---|---|---|---|
@@ -289,7 +314,7 @@ These must follow the approved Departments page/route pattern (list → detail �
 
 1. Departments: add the two approved permission values + labels, local repository, approved screens/wiring; wire remote/local selection behind `DepartmentRepository`; reads only.
 2. Shifts: select `RemoteShiftRepository` in backend mode; apply the approved shift UI changes; reads only.
-3. Employees: read-only `EmployeeRepository` adapter over `LiveEmployeeRepository`; resolve E1–E18 decisions first.
+3. Employees: `RemoteEmployeeRepository` wired for reads and data-only writes; remaining E-items are recorded under NEEDS-UI-DECISION.
 4. Attendance: read-only `AttendanceRepository` adapter for today/current; resolve AT5–AT7.
 5. Access & Users: session permission loading via `RemoteEffectiveAccessRepository`; read-only grant view; resolve AC1–AC6.
 6. NEW modules: Branches, Employee Shifts, Permission catalog — last, one at a time.

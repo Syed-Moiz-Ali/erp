@@ -31,6 +31,8 @@ import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_account_access_guard.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart';
+import 'package:modular_erp/modules/hr/employees/live/data/datasources/dio_live_employee_data_source.dart';
+import 'package:modular_erp/modules/hr/employees/live/data/repositories/remote_employee_repository.dart';
 import 'package:modular_erp/modules/hr/leave/data/leave_configuration_repositories.dart';
 import 'package:modular_erp/modules/hr/leave/data/local_leave_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
@@ -150,7 +152,14 @@ void configureHrDependencies(GetIt services) {
     () => LocalAccountProvisioningRepository(services()),
   );
   services.registerLazySingleton<EmployeeRepository>(
-    () => LocalEmployeeRepository(services(), services()),
+    () => AppConfig.realApiEnabled
+        ? RemoteEmployeeRepository(
+            DioLiveEmployeeDataSource(services<ApiClient>()),
+          )
+        : LocalEmployeeRepository(services(), services()),
+    dispose: (repo) {
+      if (repo is RemoteEmployeeRepository) repo.dispose();
+    },
   );
   services.registerLazySingleton<ShiftRepository>(
     () => AppConfig.realApiEnabled
