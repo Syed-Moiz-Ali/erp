@@ -21,6 +21,7 @@ abstract interface class PermissionMasterRepository {
   Future<Result<PermissionMasterPage>> list({
     String search = '',
     int? statusId,
+    String sort = 'keyAsc',
     int page = 1,
     int pageSize = 100,
   });

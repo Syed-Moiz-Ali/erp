@@ -1,113 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:modular_erp/core/api/models/paged_result.dart';
 import 'package:modular_erp/core/errors/result.dart';
-import 'package:modular_erp/platform/access/data/datasources/remote/access_remotes.dart';
 import 'package:modular_erp/platform/access/data/dto/permission_dtos.dart';
 import 'package:modular_erp/platform/access/data/repositories/remote_permission_master_repository.dart';
 
-class _FakeAccessAdmin implements AccessAdminRemoteDataSource {
-  Result<PagedResult<PermissionDto>> listResult = const Success(
-    PagedResult(
-      items: [],
-      page: 1,
-      pageSize: 100,
-      totalItems: 0,
-      totalPages: 0,
-    ),
-  );
-  Result<PermissionDto> writeResult = const Failed(
-    Failure(code: 'unused', kind: FailureKind.unknown),
-  );
-  Map<String, dynamic>? lastBody;
-  int? lastActiveId;
-  bool? lastActive;
-
-  @override
-  Future<Result<PagedResult<PermissionDto>>> permissions({
-    int page = 1,
-    int pageSize = 100,
-    String search = '',
-    int? statusId,
-    CancelToken? cancelToken,
-  }) async => listResult;
-
-  @override
-  Future<Result<PermissionDto>> permissionById(
-    int permissionId, {
-    CancelToken? cancelToken,
-  }) async => writeResult;
-
-  @override
-  Future<Result<PermissionDto>> createPermission(
-    Map<String, dynamic> body, {
-    CancelToken? cancelToken,
-  }) async {
-    lastBody = body;
-    return writeResult;
-  }
-
-  @override
-  Future<Result<PermissionDto>> updatePermission(
-    int permissionId,
-    Map<String, dynamic> body, {
-    CancelToken? cancelToken,
-  }) async {
-    lastBody = body;
-    return writeResult;
-  }
-
-  @override
-  Future<Result<PermissionDto>> setPermissionActive(
-    int permissionId, {
-    required bool active,
-    CancelToken? cancelToken,
-  }) async {
-    lastActiveId = permissionId;
-    lastActive = active;
-    return writeResult;
-  }
-
-  @override
-  Future<Result<PagedResult<UserPermissionDto>>> userPermissions({
-    int? userId,
-    int? employeeId,
-    int? permissionId,
-    int page = 1,
-    int pageSize = 100,
-    CancelToken? cancelToken,
-  }) async => const Success(
-    PagedResult(
-      items: [],
-      page: 1,
-      pageSize: 100,
-      totalItems: 0,
-      totalPages: 0,
-    ),
-  );
-
-  @override
-  Future<Result<List<UserPermissionDto>>> assignUserPermissions(
-    int userId,
-    List<int> permissionIds, {
-    CancelToken? cancelToken,
-  }) async => const Success([]);
-
-  @override
-  Future<Result<List<UserPermissionDto>>> replaceUserPermissions(
-    int userId,
-    List<int> permissionIds, {
-    CancelToken? cancelToken,
-  }) async => const Success([]);
-
-  @override
-  Future<Result<UserPermissionDto>> removeUserPermission(
-    int userPermissionId, {
-    CancelToken? cancelToken,
-  }) async => const Failed(
-    Failure(code: 'USER_PERMISSION_NOT_FOUND', kind: FailureKind.notFound),
-  );
-}
+import 'support/access_admin_fake.dart';
 
 PermissionDto _dto({
   int id = 18,
@@ -123,87 +19,276 @@ PermissionDto _dto({
 );
 
 void main() {
-  late _FakeAccessAdmin data;
+  late FakeAccessAdminRemoteDataSource data;
   late RemotePermissionMasterRepository repository;
 
   setUp(() {
-    data = _FakeAccessAdmin();
+    data = FakeAccessAdminRemoteDataSource();
     repository = RemotePermissionMasterRepository(data);
   });
 
-  test('lists and maps permission masters', () async {
-    data.listResult = Success(
-      PagedResult(
-        items: [_dto()],
-        page: 1,
-        pageSize: 100,
-        totalItems: 1,
-        totalPages: 1,
-      ),
-    );
-    final result = await repository.list();
-    expect(result, isA<Success>());
-    final page = (result as Success).value;
-    expect(page.items.single.key, 'hr.employees.view');
-    expect(page.items.single.isActive, isTrue);
-  });
+  group('list', () {
+    test('maps permission masters', () async {
+      data.permissionsCatalog = [_dto()];
+      final result = await repository.list();
+      expect(result, isA<Success>());
+      final page = (result as Success).value;
+      expect(page.items.single.key, 'hr.employees.view');
+      expect(page.items.single.isActive, isTrue);
+      expect(page.totalItems, 1);
+    });
 
-  test('loads the latest permission before editing', () async {
-    data.writeResult = Success(_dto(name: 'Latest name'));
-    final result = await repository.getById(18);
-    expect(result, isA<Success>());
-    expect((result as Success).value.name, 'Latest name');
-  });
+    test('forwards paging, search, statusId and sort', () async {
+      data.permissionsCatalog = [_dto()];
+      await repository.list(
+        search: 'hr',
+        statusId: 1,
+        sort: 'nameAsc',
+        page: 3,
+        pageSize: 5,
+      );
+      expect(data.lastPermissionsPage, 3);
+      expect(data.lastPermissionsPageSize, 5);
+      expect(data.lastPermissionsSearch, 'hr');
+      expect(data.lastPermissionsStatusId, 1);
+      expect(data.lastPermissionsSort, 'nameAsc');
+    });
 
-  test('reports a missing permission from getById', () async {
-    data.writeResult = const Failed(
-      Failure(code: 'PERMISSION_NOT_FOUND', kind: FailureKind.notFound),
-    );
-    final result = await repository.getById(999999);
-    expect(result, isA<Failed>());
-    expect((result as Failed).failure.kind, FailureKind.notFound);
-  });
-
-  test('creates with key, name and description', () async {
-    data.writeResult = Success(_dto());
-    final result = await repository.create(
-      key: 'hr.employees.view',
-      name: 'View employees',
-      description: 'See employees.',
-    );
-    expect(result, isA<Success>());
-    expect(data.lastBody, {
-      'permissionKey': 'hr.employees.view',
-      'permissionName': 'View employees',
-      'description': 'See employees.',
+    test('defaults the backend sort to keyAsc', () async {
+      await repository.list();
+      expect(data.lastPermissionsSort, 'keyAsc');
     });
   });
 
-  test('update sends only supplied fields', () async {
-    data.writeResult = Success(_dto(name: 'Renamed'));
-    await repository.update(18, name: 'Renamed');
-    expect(data.lastBody, {'permissionName': 'Renamed'});
+  group('getById', () {
+    test('loads a permission master', () async {
+      data.permissionByIdResult = Success(_dto(name: 'Latest name'));
+      final result = await repository.getById(18);
+      expect(result, isA<Success>());
+      expect((result as Success).value.name, 'Latest name');
+    });
+
+    test('reports PERMISSION_NOT_FOUND as notFound', () async {
+      data.permissionByIdFailure = const Failure(
+        code: 'PERMISSION_NOT_FOUND',
+        kind: FailureKind.notFound,
+      );
+      final result = await repository.getById(999999);
+      expect(result, isA<Failed>());
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'PERMISSION_NOT_FOUND');
+      expect(failure.kind, FailureKind.notFound);
+    });
   });
 
-  test('activate/deactivate target the right endpoint state', () async {
-    data.writeResult = Success(_dto(statusId: 2));
-    await repository.setActive(18, false);
-    expect(data.lastActiveId, 18);
-    expect(data.lastActive, isFalse);
+  group('create', () {
+    test('sends key, name and optional description', () async {
+      data.createResult = Success(_dto());
+      final result = await repository.create(
+        key: 'hr.employees.view',
+        name: 'View employees',
+        description: 'See employees.',
+      );
+      expect(result, isA<Success>());
+      expect(data.lastCreateBody, {
+        'permissionKey': 'hr.employees.view',
+        'permissionName': 'View employees',
+        'description': 'See employees.',
+      });
+    });
+
+    test('trims values and omits an empty description', () async {
+      data.createResult = Success(_dto());
+      await repository.create(
+        key: ' hr.employees.view ',
+        name: ' View employees ',
+        description: '   ',
+      );
+      expect(data.lastCreateBody, {
+        'permissionKey': 'hr.employees.view',
+        'permissionName': 'View employees',
+      });
+    });
+
+    test('rejects a missing name without a request', () async {
+      final result = await repository.create(
+        key: 'hr.employees.view',
+        name: ' ',
+      );
+      expect(result, isA<Failed>());
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'VALIDATION_ERROR');
+      expect(failure.kind, FailureKind.validation);
+      expect(failure.field, 'permissionName');
+      expect(data.lastCreateBody, isNull);
+    });
+
+    final invalidKeys = <String>[
+      '',
+      '   ',
+      'single',
+      'hr employees view',
+      'hr..employees',
+      '.hr.employees',
+      'hr.employees.',
+      'hr.employees view',
+      'hr.employees.view!',
+      'a' * 101,
+      'hr.${'a' * 98}.view',
+    ];
+    for (final key in invalidKeys) {
+      test(
+        'rejects invalid key ${key.length > 20 ? '>100 chars' : key}',
+        () async {
+          final result = await repository.create(key: key, name: 'Name');
+          expect(result, isA<Failed>());
+          final failure = (result as Failed).failure;
+          expect(failure.code, 'VALIDATION_ERROR');
+          expect(failure.kind, FailureKind.validation);
+          expect(failure.field, 'permissionKey');
+          expect(data.lastCreateBody, isNull);
+        },
+      );
+    }
+
+    test('accepts a 100 character key', () async {
+      final key = '${'a' * 49}.${'b' * 50}';
+      expect(key.length, 100);
+      data.createResult = Success(_dto(key: key));
+      final result = await repository.create(key: key, name: 'Name');
+      expect(result, isA<Success>());
+      expect(data.lastCreateBody?['permissionKey'], key);
+    });
   });
 
-  test('maps 409 duplicate key failure', () async {
-    data.writeResult = const Failed(
-      Failure(
-        code: 'PERMISSION_DUPLICATE_KEY',
-        kind: FailureKind.conflict,
-        field: 'permissionKey',
-      ),
-    );
-    final result = await repository.create(key: 'x.y', name: 'X');
-    expect(result, isA<Failed>());
-    final failure = (result as Failed).failure;
-    expect(failure.code, 'PERMISSION_DUPLICATE_KEY');
-    expect(failure.field, 'permissionKey');
+  group('update', () {
+    test('sends only supplied fields', () async {
+      data.updateResult = Success(_dto(name: 'Renamed'));
+      await repository.update(18, name: 'Renamed');
+      expect(data.lastUpdateId, 18);
+      expect(data.lastUpdateBody, {'permissionName': 'Renamed'});
+    });
+
+    test('sends key and description when supplied', () async {
+      data.updateResult = Success(_dto());
+      await repository.update(
+        18,
+        key: 'hr.employees.edit',
+        description: ' Updated ',
+      );
+      expect(data.lastUpdateBody, {
+        'permissionKey': 'hr.employees.edit',
+        'description': 'Updated',
+      });
+    });
+
+    test('validates a supplied non-empty key without a request', () async {
+      final result = await repository.update(18, key: 'bad key');
+      expect(result, isA<Failed>());
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'VALIDATION_ERROR');
+      expect(failure.kind, FailureKind.validation);
+      expect(failure.field, 'permissionKey');
+      expect(data.lastUpdateBody, isNull);
+    });
+
+    test('rejects an over-long supplied key without a request', () async {
+      final result = await repository.update(18, key: 'a' * 101);
+      expect(result, isA<Failed>());
+      expect((result as Failed).failure.field, 'permissionKey');
+      expect(data.lastUpdateBody, isNull);
+    });
+
+    test('treats a blank key as not supplied', () async {
+      data.updateResult = Success(_dto());
+      await repository.update(18, key: '   ', name: 'Renamed');
+      expect(data.lastUpdateBody, {'permissionName': 'Renamed'});
+    });
+  });
+
+  group('activate/deactivate', () {
+    test('passes the requested state and id', () async {
+      data.setActiveResult = Success(_dto());
+      await repository.setActive(18, true);
+      expect(data.lastActiveId, 18);
+      expect(data.lastActive, isTrue);
+
+      await repository.setActive(18, false);
+      expect(data.lastActive, isFalse);
+    });
+
+    test('propagates PERMISSION_ALREADY_ACTIVE', () async {
+      data.setActiveResult = const Failed(
+        Failure(code: 'PERMISSION_ALREADY_ACTIVE', kind: FailureKind.conflict),
+      );
+      final result = await repository.setActive(18, true);
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'PERMISSION_ALREADY_ACTIVE');
+      expect(failure.kind, FailureKind.conflict);
+    });
+
+    test('propagates PERMISSION_ALREADY_INACTIVE', () async {
+      data.setActiveResult = const Failed(
+        Failure(
+          code: 'PERMISSION_ALREADY_INACTIVE',
+          kind: FailureKind.conflict,
+        ),
+      );
+      final result = await repository.setActive(18, false);
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'PERMISSION_ALREADY_INACTIVE');
+      expect(failure.kind, FailureKind.conflict);
+    });
+  });
+
+  group('error mapping', () {
+    test('duplicate key becomes a field-aware conflict', () async {
+      data.createResult = const Failed(
+        Failure(code: 'PERMISSION_DUPLICATE_KEY', kind: FailureKind.unknown),
+      );
+      final result = await repository.create(key: 'x.y', name: 'X');
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'PERMISSION_DUPLICATE_KEY');
+      expect(failure.kind, FailureKind.conflict);
+      expect(failure.field, 'permissionKey');
+    });
+
+    test('duplicate key keeps a backend-provided field', () async {
+      data.createResult = const Failed(
+        Failure(
+          code: 'PERMISSION_DUPLICATE_KEY',
+          kind: FailureKind.conflict,
+          field: 'permissionKey',
+          serverMessage: 'Key already exists.',
+        ),
+      );
+      final result = await repository.create(key: 'x.y', name: 'X');
+      final failure = (result as Failed).failure;
+      expect(failure.field, 'permissionKey');
+      expect(failure.serverMessage, 'Key already exists.');
+    });
+
+    test('VALIDATION_ERROR keeps code, kind and field', () async {
+      data.createResult = const Failed(
+        Failure(
+          code: 'VALIDATION_ERROR',
+          kind: FailureKind.validation,
+          field: 'permissionName',
+        ),
+      );
+      final result = await repository.create(key: 'x.y', name: 'X');
+      final failure = (result as Failed).failure;
+      expect(failure.code, 'VALIDATION_ERROR');
+      expect(failure.kind, FailureKind.validation);
+      expect(failure.field, 'permissionName');
+    });
+
+    test('403 ACCESS_DENIED stays forbidden', () async {
+      data.createResult = const Failed(
+        Failure(code: 'ACCESS_DENIED', kind: FailureKind.forbidden),
+      );
+      final result = await repository.create(key: 'x.y', name: 'X');
+      expect((result as Failed).failure.kind, FailureKind.forbidden);
+    });
   });
 }

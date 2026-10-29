@@ -21,6 +21,9 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   Failure? removeFailure;
 
   Result<PermissionDto>? permissionByIdResult;
+  Result<PermissionDto>? createResult;
+  Result<PermissionDto>? updateResult;
+  Result<PermissionDto>? setActiveResult;
   Result<List<UserPermissionDto>>? assignResult;
   Result<List<UserPermissionDto>>? replaceResult;
   Result<UserPermissionDto>? removeResult;
@@ -28,6 +31,16 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   final List<int> permissionPages = [];
   final List<int> userPermissionPages = [];
 
+  int? lastPermissionsPage;
+  int? lastPermissionsPageSize;
+  String? lastPermissionsSearch;
+  int? lastPermissionsStatusId;
+  String? lastPermissionsSort;
+  Map<String, dynamic>? lastCreateBody;
+  int? lastUpdateId;
+  Map<String, dynamic>? lastUpdateBody;
+  int? lastActiveId;
+  bool? lastActive;
   int? lastUserIdFilter;
   int? lastAssignUserId;
   List<int>? lastAssignPermissionIds;
@@ -41,9 +54,15 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
     int pageSize = 100,
     String search = '',
     int? statusId,
+    String sort = 'keyAsc',
     CancelToken? cancelToken,
   }) async {
     permissionPages.add(page);
+    lastPermissionsPage = page;
+    lastPermissionsPageSize = pageSize;
+    lastPermissionsSearch = search;
+    lastPermissionsStatusId = statusId;
+    lastPermissionsSort = sort;
     if (permissionsFailure != null) return Failed(permissionsFailure!);
     var filtered = permissionsCatalog;
     if (statusId != null) {
@@ -75,21 +94,35 @@ class FakeAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
   Future<Result<PermissionDto>> createPermission(
     Map<String, dynamic> body, {
     CancelToken? cancelToken,
-  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }) async {
+    lastCreateBody = body;
+    return createResult ??
+        const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }
 
   @override
   Future<Result<PermissionDto>> updatePermission(
     int permissionId,
     Map<String, dynamic> body, {
     CancelToken? cancelToken,
-  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }) async {
+    lastUpdateId = permissionId;
+    lastUpdateBody = body;
+    return updateResult ??
+        const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }
 
   @override
   Future<Result<PermissionDto>> setPermissionActive(
     int permissionId, {
     required bool active,
     CancelToken? cancelToken,
-  }) async => const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }) async {
+    lastActiveId = permissionId;
+    lastActive = active;
+    return setActiveResult ??
+        const Failed(Failure(code: 'unused', kind: FailureKind.unknown));
+  }
 
   @override
   Future<Result<PagedResult<UserPermissionDto>>> userPermissions({

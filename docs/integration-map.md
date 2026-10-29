@@ -266,6 +266,13 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | History | `watchHistory` always returns an empty list: there is no access-history endpoint and backend mode never reads the local Drift activity log. |
 | UI impact | None to files. Chips/labels stay baseline. |
 
+Permission catalog data notes:
+
+* Client-side key validation happens at the repository boundary only: non-empty, no whitespace, at most 100 characters, dot-separated (`^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+$`, e.g. `company.access.permissions.manage`). Invalid/missing keys return `VALIDATION_ERROR` (`FailureKind.validation`, `field: permissionKey`) without any request. Create also requires a non-empty name; descriptions are not validated.
+* Backend error codes are preserved: `PERMISSION_DUPLICATE_KEY` (normalized to `FailureKind.conflict` with `field: permissionKey` when the backend omits the field), `VALIDATION_ERROR`, `PERMISSION_NOT_FOUND` (`notFound`), `PERMISSION_ALREADY_ACTIVE` / `PERMISSION_ALREADY_INACTIVE` (`conflict`). 404/403 keep `notFound`/`forbidden`.
+* Activate/deactivate are **not** idempotent client-side: an already-active/inactive response propagates the documented backend code instead of being reported as success.
+* Update sends only supplied fields; a null or blank key is treated as "not supplied".
+
 | # | UI behaviour | Backend | Decision |
 |---|---|---|---|
 | AC1 | Users list built from local accounts + employees | `GET /api/user-permissions` returns grants, not a user directory | Resolved data-only: users are derived from key-bearing grants. |
@@ -274,7 +281,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | AC4 | Save/assign grants | `POST/PUT/DELETE /api/user-permissions` (writes) | Data-only mappings wired; live writes remain out of scope. |
 | AC5 | Last-admin / self-escalation warnings | backend policy is intended-allow | Kept client-side; `GrantAuthorityResolver` is never bypassed. **NEEDS-UI-DECISION** whether they still apply in backend mode. |
 | AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Data-only: excluded from users/grants. Read-only display is not in baseline UI. **NEEDS-UI-DECISION:** ignore, or show in the existing list style later. |
-| AC7 | Permission catalog screen | `GET /api/permissions` | **NEEDS-UI-DECISION:** NEW screen; not built. The repository is registered in backend mode only; no local permission-master implementation exists. |
+| AC7 | Permission catalog screen | `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`, `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`, `POST /api/permissions/{id}/deactivate` | **DATA-ONLY WIRED, no screen: NEEDS-UI-DECISION.** `RemotePermissionMasterRepository` maps list (paging, `search`, `statusId`, `sort`) / get / create / update / activate / deactivate against `AccessAdminRemoteDataSource`. Registered in backend mode only; no local permission-master implementation exists and none is registered in demo. |
 | AC8 | Access history / audit trail | no endpoint | **NEEDS-UI-DECISION:** history stays empty; no backend source exists. |
 | AC9 | Branch permission enum / labels | branch keys deferred | **NEEDS-UI-DECISION:** enum values and labels are deferred until the Branches module is approved. |
 
@@ -320,7 +327,7 @@ Rules:
 |---|---|---|---|---|---|
 | Branches (Company) | none | `/app/settings/branches` (+ list/detail/form routes in the Departments pattern) | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` (enum + labels deferred) | Last, after Departments |
 | Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/create/update/deactivate | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
-| Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
+| Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
 
 These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. They are explicitly out of scope for this phase.
 

@@ -12,6 +12,7 @@ abstract interface class AccessAdminRemoteDataSource {
     int pageSize = 100,
     String search = '',
     int? statusId,
+    String sort = 'keyAsc',
     CancelToken? cancelToken,
   });
 
@@ -75,13 +76,14 @@ class DioAccessAdminRemoteDataSource implements AccessAdminRemoteDataSource {
     int pageSize = 100,
     String search = '',
     int? statusId,
+    String sort = 'keyAsc',
     CancelToken? cancelToken,
   }) => _client.get<PagedResult<PermissionDto>>(
     ApiEndpoints.permissions.list,
     query: {
       'page': page,
       'pageSize': pageSize,
-      'sort': 'keyAsc',
+      if (sort.trim().isNotEmpty) 'sort': sort.trim(),
       if (search.trim().isNotEmpty) 'search': search.trim(),
       if (statusId != null) 'statusId': statusId,
     },
