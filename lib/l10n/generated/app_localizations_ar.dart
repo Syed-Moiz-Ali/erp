@@ -2634,6 +2634,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empLoginBranch => 'فرع الدخول';
 
   @override
+  String get empLoginBranches => 'فروع الدخول';
+
+  @override
+  String get empLoginBranchesRequired => 'اختر فرعًا واحدًا على الأقل.';
+
+  @override
+  String get empLoginIdUsesEmail => 'يستخدم معرف الدخول بريد الموظف أعلاه.';
+
+  @override
+  String empCreatedCode(String code) {
+    return 'تم إنشاء الموظف $code.';
+  }
+
+  @override
   String get dateOfBirth => 'تاريخ الميلاد';
 
   @override

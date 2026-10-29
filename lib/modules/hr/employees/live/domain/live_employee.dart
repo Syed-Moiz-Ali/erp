@@ -1,3 +1,5 @@
+import 'package:modular_erp/core/errors/result.dart';
+
 class LiveEmployee {
   const LiveEmployee({
     required this.id,
@@ -139,9 +141,9 @@ class LiveEmployeeDraft {
         ...?(base?['login'] as Map?)?.cast<String, dynamic>(),
       };
       login['enabled'] = true;
-      login['loginId'] = loginId.trim();
+      login['loginId'] =
+          (base?['login'] as Map?)?['loginId'] as String? ?? email.trim();
       login['mobileNo'] = loginMobile.trim();
-      if (base?['login'] == null) login['userType'] = 'HR';
       login['branchIds'] = loginBranchIds;
       if (loginPassword.isNotEmpty) login['password'] = loginPassword;
       body['login'] = login;
@@ -169,4 +171,20 @@ class Lookup {
   const Lookup(this.id, this.name);
   final int id;
   final String name;
+}
+
+/// Maps backend employee write failures to form field keys. Unknown failures
+/// return an empty map so the UI can show a general message.
+Map<String, String> mapEmployeeServerError(Failure failure) {
+  final field = failure.field;
+  if (field != null && field.isNotEmpty) {
+    return {field: failure.serverMessage ?? failure.code};
+  }
+  if (failure.code == 'USER_DUPLICATE_LOGINID') {
+    return {'login.loginId': failure.serverMessage ?? failure.code};
+  }
+  if (failure.code == 'USER_DUPLICATE_MOBILE') {
+    return {'login.mobileNo': failure.serverMessage ?? failure.code};
+  }
+  return const {};
 }

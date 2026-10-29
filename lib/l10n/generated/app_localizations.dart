@@ -5078,6 +5078,30 @@ abstract class AppLocalizations {
   /// **'Login branch'**
   String get empLoginBranch;
 
+  /// No description provided for @empLoginBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Login branches'**
+  String get empLoginBranches;
+
+  /// No description provided for @empLoginBranchesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one branch.'**
+  String get empLoginBranchesRequired;
+
+  /// No description provided for @empLoginIdUsesEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Login ID uses the employee email above.'**
+  String get empLoginIdUsesEmail;
+
+  /// No description provided for @empCreatedCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee {code} created.'**
+  String empCreatedCode(String code);
+
   /// No description provided for @dateOfBirth.
   ///
   /// In en, this message translates to:

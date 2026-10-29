@@ -18,6 +18,7 @@ class LiveEmployeeState {
     this.pageSize = 25,
     this.totalItems = 0,
     this.totalPages = 0,
+    this.lastSaved,
   });
   final bool loading, busy;
   final Failure? failure;
@@ -26,6 +27,7 @@ class LiveEmployeeState {
   final String search;
   final int? statusId;
   final int page, pageSize, totalItems, totalPages;
+  final LiveEmployee? lastSaved;
 
   LiveEmployeeState copyWith({
     bool? loading,
@@ -40,6 +42,8 @@ class LiveEmployeeState {
     int? page,
     int? totalItems,
     int? totalPages,
+    LiveEmployee? lastSaved,
+    bool clearLastSaved = false,
   }) => LiveEmployeeState(
     loading: loading ?? this.loading,
     busy: busy ?? this.busy,
@@ -52,6 +56,7 @@ class LiveEmployeeState {
     pageSize: pageSize,
     totalItems: totalItems ?? this.totalItems,
     totalPages: totalPages ?? this.totalPages,
+    lastSaved: clearLastSaved ? null : (lastSaved ?? this.lastSaved),
   );
 }
 
@@ -117,11 +122,8 @@ class LiveEmployeeCubit extends Cubit<LiveEmployeeState> {
     unawaited(load());
   }
 
-  Future<Failure?> save(
-    LiveEmployee? current,
-    LiveEmployeeDraft draft,
-  ) async {
-    emit(state.copyWith(busy: true, clearFailure: true));
+  Future<Failure?> save(LiveEmployee? current, LiveEmployeeDraft draft) async {
+    emit(state.copyWith(busy: true, clearFailure: true, clearLastSaved: true));
     final result = current == null
         ? await repository.create(draft)
         : await repository.update(current, draft);
@@ -129,7 +131,8 @@ class LiveEmployeeCubit extends Cubit<LiveEmployeeState> {
       emit(state.copyWith(busy: false, failure: result.failure));
       return result.failure;
     }
-    emit(state.copyWith(busy: false));
+    final saved = (result as Success<LiveEmployee>).value;
+    emit(state.copyWith(busy: false, lastSaved: saved));
     await load();
     return null;
   }

@@ -2667,6 +2667,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empLoginBranch => 'Login branch';
 
   @override
+  String get empLoginBranches => 'Login branches';
+
+  @override
+  String get empLoginBranchesRequired => 'Select at least one branch.';
+
+  @override
+  String get empLoginIdUsesEmail => 'Login ID uses the employee email above.';
+
+  @override
+  String empCreatedCode(String code) {
+    return 'Employee $code created.';
+  }
+
+  @override
   String get dateOfBirth => 'Date of birth';
 
   @override

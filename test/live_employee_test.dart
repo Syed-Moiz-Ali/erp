@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/dto/live_employee_dtos.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
 
@@ -83,6 +84,110 @@ void main() {
     for (final key in raw.keys) {
       expect(body[key], raw[key], reason: 'PUT body changed loaded field $key');
     }
+  });
+
+  test('create body copies email into login and keeps number types', () {
+    const draft = LiveEmployeeDraft(
+      name: 'QA',
+      branchId: 1,
+      departmentId: 2,
+      nationalityId: 99,
+      statusId: 1,
+      designation: 'Tech',
+      joiningDate: '2026-10-01',
+      dateOfBirth: '1995-05-20',
+      maritalStatus: 'Single',
+      employeeType: 'Revenue',
+      gratuity: 'Limited Contract',
+      email: 'qa@example.com',
+      phone: '0500000000',
+      basicSalary: 3000,
+      workingHours: 8,
+      transportation: 500,
+      accommodation: 1000,
+      loginEnabled: true,
+      loginId: 'ignored-login',
+      loginMobile: '0500000001',
+      loginPassword: 'secret1',
+      loginBranchIds: [1, 2],
+    );
+    final body = draft.toBody();
+    final login = body['login'] as Map<String, dynamic>;
+    expect(login['loginId'], 'qa@example.com');
+    expect(login['branchIds'], [1, 2]);
+    expect(login.containsKey('userType'), isFalse);
+    expect(body['basicSalary'], 3000);
+    expect(body['workingHours'], 8);
+    expect(body['transportation'], 500);
+    expect(body['accommodation'], 1000);
+    expect(body['joiningDate'], '2026-10-01');
+    expect(body['dateOfBirth'], '1995-05-20');
+  });
+
+  test('login off omits the login object entirely', () {
+    const draft = LiveEmployeeDraft(
+      name: 'QA',
+      branchId: 1,
+      departmentId: 2,
+      nationalityId: 99,
+      joiningDate: '2026-10-01',
+    );
+    expect(draft.toBody().containsKey('login'), isFalse);
+  });
+
+  test('server errors map under every form field', () {
+    const fields = [
+      'employeeName',
+      'branchId',
+      'departmentId',
+      'nationalityId',
+      'statusId',
+      'designation',
+      'joiningDate',
+      'dateOfBirth',
+      'maritalStatus',
+      'employeeType',
+      'gratuity',
+      'uaeContactNumber',
+      'email',
+      'workingHours',
+      'basicSalary',
+      'transportation',
+      'accommodation',
+      'login.loginId',
+      'login.mobileNo',
+      'login.password',
+      'login.branchIds',
+    ];
+    for (final field in fields) {
+      final mapped = mapEmployeeServerError(
+        Failure(
+          code: 'VALIDATION_ERROR',
+          kind: FailureKind.validation,
+          field: field,
+          serverMessage: 'invalid',
+        ),
+      );
+      expect(mapped, {field: 'invalid'}, reason: field);
+    }
+    expect(
+      mapEmployeeServerError(
+        const Failure(
+          code: 'USER_DUPLICATE_LOGINID',
+          kind: FailureKind.conflict,
+        ),
+      ),
+      contains('login.loginId'),
+    );
+    expect(
+      mapEmployeeServerError(
+        const Failure(
+          code: 'USER_DUPLICATE_MOBILE',
+          kind: FailureKind.conflict,
+        ),
+      ),
+      contains('login.mobileNo'),
+    );
   });
 
   test('list query maps backend parameters', () {

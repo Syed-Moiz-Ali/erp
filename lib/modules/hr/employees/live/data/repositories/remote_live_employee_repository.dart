@@ -58,7 +58,15 @@ class RemoteLiveEmployeeRepository implements LiveEmployeeRepository {
         ),
       );
     }
-    return _map(await _dataSource.create(draft.toBody()));
+    final created = await _dataSource.create(draft.toBody());
+    if (created is Failed<LiveEmployeeDto>) {
+      return Failed(created.failure);
+    }
+    final employee = (created as Success<LiveEmployeeDto>).value.toDomain();
+    // Re-read so the UI shows the real post-create login state. If the actor
+    // can create but not view, keep the 201 payload instead of failing.
+    final fresh = await getById(employee.id);
+    return fresh is Success<LiveEmployee> ? fresh : Success(employee);
   }
 
   /// Full replace: starts with every field returned by GET, then applies form
@@ -89,9 +97,8 @@ class RemoteLiveEmployeeRepository implements LiveEmployeeRepository {
   @override
   Future<Result<LiveEmployeeLookups>> lookups() => _dataSource.lookups();
 
-  Result<LiveEmployee> _map(Result<LiveEmployeeDto> result) =>
-      switch (result) {
-        Failed(:final failure) => Failed(failure),
-        Success(:final value) => Success(value.toDomain()),
-      };
+  Result<LiveEmployee> _map(Result<LiveEmployeeDto> result) => switch (result) {
+    Failed(:final failure) => Failed(failure),
+    Success(:final value) => Success(value.toDomain()),
+  };
 }
