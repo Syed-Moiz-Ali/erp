@@ -22,6 +22,7 @@ class PermissionDefinition {
     this.requiresEmployeeLink = false,
     this.delegable = true,
     this.platformOnly = false,
+    this.clientOnly = false,
     this.risk = PermissionRisk.standard,
     this.order = 0,
     this.featureFlag,
@@ -43,6 +44,10 @@ class PermissionDefinition {
   final Map<PermissionScope, AppPermission> permissions;
 
   final bool requiresEmployeeLink, delegable, platformOnly;
+
+  /// Local/demo-only permission with no matching backend key. Hidden in backend
+  /// mode; retained so demo mode and existing local workflows keep working.
+  final bool clientOnly;
   final PermissionRisk risk;
   final int order;
 

@@ -13,6 +13,10 @@ abstract final class ApiEndpoints {
   static const String root = '/api';
 
   static const AuthEndpoints auth = AuthEndpoints();
+  static const MeEndpoints me = MeEndpoints();
+  static const PermissionEndpoints permissions = PermissionEndpoints();
+  static const UserPermissionEndpoints userPermissions =
+      UserPermissionEndpoints();
   static const EmployeeEndpoints employees = EmployeeEndpoints();
   static const BranchEndpoints branches = BranchEndpoints();
   static const DepartmentEndpoints departments = DepartmentEndpoints();
@@ -28,6 +32,45 @@ final class AuthEndpoints {
   String get login => '${ApiEndpoints.root}/auth/login';
   String get refresh => '${ApiEndpoints.root}/auth/refresh';
   String get logout => '${ApiEndpoints.root}/auth/logout';
+}
+
+/// Current-session endpoints: `/api/me/*`.
+final class MeEndpoints {
+  const MeEndpoints();
+
+  String get permissions => '${ApiEndpoints.root}/me/permissions';
+}
+
+/// Permission masters: `/api/permissions/*`.
+final class PermissionEndpoints {
+  const PermissionEndpoints();
+
+  String get list => '${ApiEndpoints.root}/permissions';
+  String byId(Object id) =>
+      ApiPath.resolve('${ApiEndpoints.root}/permissions/{id}', {'id': id});
+  String activate(Object id) => ApiPath.resolve(
+    '${ApiEndpoints.root}/permissions/{id}/activate',
+    {'id': id},
+  );
+  String deactivate(Object id) => ApiPath.resolve(
+    '${ApiEndpoints.root}/permissions/{id}/deactivate',
+    {'id': id},
+  );
+}
+
+/// User permission grants: `/api/user-permissions/*`.
+final class UserPermissionEndpoints {
+  const UserPermissionEndpoints();
+
+  String get list => '${ApiEndpoints.root}/user-permissions';
+  String byId(Object id) => ApiPath.resolve(
+    '${ApiEndpoints.root}/user-permissions/{id}',
+    {'id': id},
+  );
+  String forUser(Object userId) => ApiPath.resolve(
+    '${ApiEndpoints.root}/user-permissions/users/{userId}',
+    {'userId': userId},
+  );
 }
 
 /// Employees: `/api/employees/*`.

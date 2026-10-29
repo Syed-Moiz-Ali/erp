@@ -1,4 +1,5 @@
 import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/core/security/backend_access_policy.dart';
 import 'package:modular_erp/core/security/permission_definition.dart';
 import 'package:modular_erp/core/security/permission_scope.dart';
 
@@ -43,6 +44,41 @@ class PermissionCatalog {
 
   Iterable<PermissionDefinition> get definitions =>
       modules.expand((m) => m.definitions);
+
+  /// Definitions that the live MassERP backend can actually grant.
+  ///
+  /// Backend mode must use this view for the Access UI: client-only
+  /// (demo/local) permissions and keys with no backend counterpart are hidden.
+  Iterable<PermissionDefinition> get backendDefinitions => definitions.where(
+    (definition) =>
+        !definition.clientOnly && BackendAccessPolicy.supports(definition.key),
+  );
+
+  /// Catalog view for backend mode: keeps only definitions the live API can
+  /// grant, while preserving module/submodule structure.
+  PermissionCatalog get backendView => PermissionCatalog([
+    for (final module in modules)
+      PermissionModule(
+        id: module.id,
+        nameKey: module.nameKey,
+        order: module.order,
+        submodules: [
+          for (final submodule in module.submodules)
+            PermissionSubmodule(
+              id: submodule.id,
+              nameKey: submodule.nameKey,
+              order: submodule.order,
+              definitions: submodule.definitions
+                  .where(
+                    (definition) =>
+                        !definition.clientOnly &&
+                        BackendAccessPolicy.supports(definition.key),
+                  )
+                  .toList(growable: false),
+            ),
+        ],
+      ),
+  ]);
 
   PermissionDefinition? byKey(String key) {
     for (final definition in definitions) {

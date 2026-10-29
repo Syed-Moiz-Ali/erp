@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "message": "User permissions retrieved.",
+  "data": {
+    "items": [
+      {
+        "userPermissionId": 108,
+        "userId": 43,
+        "loginId": "qa.user",
+        "userName": "Sanitized User",
+        "employeeId": 27,
+        "employeeCode": "EMP-SANITIZED",
+        "employeeName": "Sanitized Employee",
+        "permissionId": 9,
+        "permissionKey": "hr.attendance.self.punch",
+        "permissionName": "Punch in / out",
+        "permissionStatusId": 1,
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z"
+      },
+      {
+        "userPermissionId": 124,
+        "userId": 43,
+        "loginId": "qa.user",
+        "userName": "Sanitized User",
+        "employeeId": 27,
+        "employeeCode": "EMP-SANITIZED",
+        "employeeName": "Sanitized Employee",
+        "permissionId": 10,
+        "permissionKey": "hr.attendance.self.view",
+        "permissionName": "My attendance",
+        "permissionStatusId": 1,
+        "createdBy": 0,
+        "createdOn": "2026-10-27T11:16:48Z"
+      },
+      {
+        "userPermissionId": 125,
+        "userId": 43,
+        "loginId": "qa.user",
+        "userName": "Sanitized User",
+        "employeeId": 27,
+        "employeeCode": "EMP-SANITIZED",
+        "employeeName": "Sanitized Employee",
+        "permissionId": 17,
+        "permissionKey": "hr.employees.edit",
+        "permissionName": "Edit employees",
+        "permissionStatusId": 1,
+        "createdBy": 8,
+        "createdOn": "2026-10-27T12:14:34Z"
+      }
+    ],
+    "page": 1,
+    "pageSize": 100,
+    "totalItems": 3,
+    "totalPages": 1
+  },
+  "errors": []
+}

@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "message": "Permissions retrieved.",
+  "data": {
+    "userId": 43,
+    "employeeId": 27,
+    "permissions": [
+      "hr.attendance.self.punch",
+      "hr.attendance.self.view",
+      "hr.employees.edit",
+      "hr.employees.view"
+    ]
+  },
+  "errors": []
+}
