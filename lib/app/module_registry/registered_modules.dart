@@ -44,6 +44,7 @@ import 'package:modular_erp/modules/services/work_executions/domain/service_work
 import 'package:modular_erp/modules/services/workflow/domain/service_workflow_repository.dart';
 import 'package:modular_erp/shared/transactions/domain/activity_event.dart';
 import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/data/empty_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/application/hr_dashboard_contributor.dart';
@@ -96,7 +97,9 @@ ModuleRegistry createErpRegistry(
 }) {
   final dashboard =
       dashboardRepository ??
-      LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled);
+      (AppConfig.realApiEnabled
+          ? const EmptyDashboardRepository()
+          : LocalDashboardRepository(demoEnabled: AppConfig.demoAuthEnabled));
   final servicesDashboard =
       (database != null && clock != null && companyTimeService != null)
       ? LocalServicesDashboardRepository(
@@ -106,7 +109,13 @@ ModuleRegistry createErpRegistry(
           workforce: workforceDirectory,
         )
       : null;
-  final coordinator = UniversalDashboardCoordinator(
+  final coordinator = AppConfig.realApiEnabled
+      ? UniversalDashboardCoordinator(
+          const <DashboardContributor>[],
+          clock: clock,
+          businessToday: _businessToday(clock, companyTimeService),
+        )
+      : UniversalDashboardCoordinator(
     [
       HrDashboardContributor(
         repository: dashboard,
