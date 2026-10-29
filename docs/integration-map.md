@@ -299,33 +299,38 @@ Every step must keep `dart run tool/ui_freeze_check.dart` green and the full sui
 
 ---
 
-## 7. Decision register (blocking)
+## 7. Decision register
 
-| ID | Decision |
-|---|---|
-| A1 | Allow plain `loginId` input in the frozen identifier field? |
-| A2 | Accept hiding the demo-accounts button in backend mode (empty list)? |
-| A3 | Model `branches[]` now or keep single branch? |
-| A4 | Profile "Email" shows `loginId`: acceptable? |
-| D1/D2 | Dashboard in backend mode: zero/empty real data or keep demo numbers in demo mode only? |
-| E1 | One full-name field vs split into first/middle/last? |
-| E2 | Nullable email: show empty, placeholder, or require? |
-| E5 | Designation: text, selector, or hidden? |
-| E6 | Manager: read-only text or hidden? |
-| E7 | Employment type: map to backend strings, read-only, or hidden? |
-| E9 | Shift/work location/policy fields: hide or read-only? |
-| E10 | Avatar/photo: hide or read-only path? |
-| E12 | Created/updated/sync metadata: hide? |
-| E13 | Employee login section: read-only or editable (writes deferred)? |
-| E14 | Which extra payroll/identity/document fields to show read-only? |
-| DP5 | Department created/updated/sync metadata: hide or read-only? |
-| SH10 | Shift `activeAssignments`: show read-only, hide, or use in deactivate warning? |
-| AT5 | Local-only attendance context (sync/workday/location/policy): hide or disabled? |
-| AT6 | Show server time/time zone/current & next shift in baseline style? |
-| AT7 | Attendance history/corrections/requests/team/all with no endpoint: keep local, hide entries, or block? |
-| AC1 | Access users list source in backend mode: grants-derived, local account directory, or hybrid? |
-| AC2 | Keep module chips or switch to feature-path chips? (UI change if switched) |
-| AC3 | Confirm key-only grant = ALL (except self keys). |
-| AC5 | Keep last-admin/self-escalation warnings in backend mode? |
-| AC6 | Show orphan grants? |
-| NEW | Approve building Branches / Employee Shifts / Permission catalog later in the Departments pattern? |
+`BLOCKER` marks the items that block the first integration step (Auth + permission
+loading). Dashboard follows Auth because it is the post-login landing and has no
+endpoint; the remaining groups follow the integration order you gave.
+
+| ID | Module | Question (one line) | Options | Your recommended option | Why (one line) | UI impact |
+|---|---|---|---|---|---|---|
+| **A1** BLOCKER | Auth | Accept a plain `loginId` in the frozen identifier field? | (a) accept loginId; (b) keep email/phone only; (c) add a separate login-id field | (a) accept loginId | The backend authenticates by loginId and the existing parser can accept it | none |
+| A2 | Auth | Hide the demo-accounts button in backend mode via the existing empty-list conditional? | (a) hide when the list is empty; (b) always show; (c) remove the dialog | (a) hide when the list is empty | Zero widget change; demo mode keeps its accounts | none |
+| A3 | Auth | Model all `branches[]` or keep the single branch? | (a) single branch now; (b) extend the session model with the list | (a) single branch now | Least data change; the list can be added later | none |
+| A4 | Auth/Profile | Show `loginId` in the existing "Email" row? | (a) map loginId into that row; (b) add a separate read-only login row; (c) leave blank | (a) map loginId into that row | No layout change and the value is the real login identity | none |
+| A5 | Auth | Map access and refresh expiry into the session? | (a) both expiries; (b) access expiry only | (a) both expiries | Needed for correct refresh and invisible to the UI | none |
+| D1 | Dashboard | What data does the dashboard show in backend mode? | (a) zero/empty in all modes; (b) demo numbers only in demo mode, zero in backend; (c) demo numbers in backend too | (b) demo only, zero in backend | Keeps the demo experience and never shows fake live numbers | none |
+| DP5 | Departments | Show department created/updated/sync metadata? | (a) hide; (b) add read-only fields | (a) hide | The approved page has no metadata fields; hiding keeps it identical | none |
+| SH10 | Shifts | Show `activeAssignments`? | (a) hide; (b) add a read-only count; (c) use it in the deactivate warning | (a) hide | No baseline field; hiding keeps the approved detail page unchanged | none |
+| E1 | Employees | Split the name or keep three inputs? | (a) map the full name to firstName and leave middle/last blank; (b) split on spaces; (c) replace with one full-name input | (a) map to firstName | Keeps the three baseline inputs and their layout | none |
+| E2 | Employees | How to show a null email? | (a) show empty; (b) placeholder text; (c) require before save | (a) show empty | The existing input and copy stay unchanged | none |
+| E5 | Employees | Designation comes as free text? | (a) read-only text in the existing field; (b) editable free text in the same field; (c) hide | (a) read-only text | Keeps the field and position without inventing a lookup | read-only field |
+| E6 | Employees | Manager comes as free text? | (a) read-only text in the existing field; (b) hide; (c) keep an empty selector | (a) read-only text | Keeps the baseline row and field position | read-only field |
+| E7 | Employees | Employment type is a backend string? | (a) map the strings into the existing dropdown; (b) read-only; (c) hide | (a) map into the dropdown | Same control and position; no layout change | none |
+| E9 | Employees | Shift/work location/policy are absent from the payload? | (a) hide the three fields; (b) read-only context in the same fields | (b) read-only context | Preserves the form layout; hiding removes three controls | read-only field |
+| E10 | Employees | What about photo/avatar? | (a) ignore `photoPath` so the initials avatar stays; (b) read-only path text | (a) ignore `photoPath` | The baseline avatar uses initials, so there is no visual change | none |
+| E12 | Employees | Created/updated/sync metadata? | (a) hide the sync badge and metadata; (b) show read-only | (a) hide | The backend returns none; avoids empty or wrong badges | hide field |
+| E13 | Employees | Employee login section? | (a) read-only in the existing fields; (b) editable with writes deferred; (c) hide | (a) read-only | Keeps the baseline section and layout; writes are out of scope | read-only field |
+| E14 | Employees | Extra payroll/identity/document fields? | (a) hide all; (b) add read-only sections | (a) hide all | No new sections; the baseline style is unchanged | none |
+| AT5 | Attendance | Local-only sync/workday/location/policy context? | (a) hide; (b) keep but disabled; (c) keep as-is | (a) hide | The backend has no such data; hiding avoids stale local context | hide field |
+| AT6 | Attendance | Server time, time zone, current and next shift? | (a) hide; (b) add read-only values in the summary style | (a) hide | No baseline element exists; hiding keeps the screen identical | none |
+| AT7 | Attendance | History/corrections/requests/team/all have no endpoint? | (a) keep local data in backend mode; (b) hide nav entries; (c) show the existing empty/error state | (c) existing empty/error state | Keeps all routes, nav and pages; no local/live data mix | none |
+| AC1 | Access | Users list source in backend mode? | (a) grants-derived only; (b) local directory only; (c) local directory plus grants-derived rows | (c) hybrid | Same list widgets and shows every grant holder | none |
+| AC2 | Access | Module chips or feature-path chips? | (a) keep module chips, derive from keys; (b) switch to feature-path chips | (a) keep module chips | No visual change; derivation is data-only | none |
+| **AC3** BLOCKER | Access | Confirm key-only grant = ALL except self keys? | (a) confirm ALL; (b) SELF everywhere; (c) no scopes | (a) confirm ALL | Only truthful reading; unblocks the `/api/me/permissions` mapping | none |
+| AC5 | Access | Keep last-admin/self-escalation warnings? | (a) keep; (b) hide; (c) keep with backend-authoritative text | (a) keep | No layout change and the warnings stay useful | none |
+| AC6 | Access | Orphan grants? | (a) ignore for now; (b) add a read-only row in the existing list style | (a) ignore | Avoids new UI until Access is integrated | none |
+| NEW | New screens | Build Branches, Employee Shifts and Permission catalog now or last? | (a) build last, one at a time, in the Departments pattern; (b) build now; (c) skip | (a) build last | No baseline screens; protects the freeze and the first steps | new screen |
