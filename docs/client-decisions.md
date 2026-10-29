@@ -84,6 +84,18 @@ update and strips it from a loaded detail before a full-replace PUT. Every other
 loaded login field is still sent back. Responses may include `userType`; it is
 ignored and never displayed. The OpenAPI document is stale on this field.
 
+## D-12b - Live employee/login contract
+
+- Admin self-assignment of `hr.employees.view` is confirmed live (grant 145).
+  The client still relies on `/api/me/permissions` and does not hardcode grants.
+- `employeeId` and `employeeCode` are separate values; the client never derives
+  one from the other.
+- `login.branchIds` is an integer array. `login.branchNames` is a single
+  comma-separated string, not an array.
+- `login.userType` was removed by the backend and is never sent. Responses that
+  still contain it are tolerated and ignored. The OpenAPI document is stale and
+  must be regenerated.
+
 ## D-13 â€” Remote module status in this phase
 
 Implemented and covered by tests:

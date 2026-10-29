@@ -4,15 +4,17 @@ Audit date: 2026-10-28
 Source of findings: `audit-output/massep-2026-10-28/01..07` (read-only audit).
 This document records backend decisions/fixes required by the Flutter client. No backend code is in this repository.
 
-## 1. Employee view permission is missing (B-01)
+## 1. Employee view permission is a temporary QA grant (B-01)
 
-**Finding:** the live permission catalog has no active `hr.employees.view`. Admin holds create/edit/deactivate but every employee read returns `403 ACCESS_DENIED`. Permission master ids 1â€“3 are gone while user-permission rows still reference them (`permissionKey:null`).
+**Finding:** the live permission catalog originally had no active `hr.employees.view`; every employee read returned `403 ACCESS_DENIED`. Permission master ids 1-3 are gone while user-permission rows still reference them (`permissionKey:null`, `permissionStatusId:2`).
 
-**Client assumption:** a backend session receives `hr.employees.view` when an administrator grants it; `/api/me/permissions` is the authoritative source.
+**Current live state (2026-10-29):** permission id 18, "View employees (QA audit)", exists and is described as a temporary QA audit permission. Admin holds it through self-assigned grant 145, and the employee account also holds `hr.employees.view` plus `hr.employees.edit`. Both accounts now receive the employee list and lookups. The earlier Admin `403` fixture is retained as historical pre-grant evidence only.
 
-**What breaks if not fixed:** the employee list/detail/lookups screens cannot be used by any user until the seed is restored; the client shows the "no permissions" state. The Postman collection also fails its seeded-key assertion.
+**Permanent fix still required:** seed an official `hr.employees.view` permission and migrate grants off the temporary QA permission. Clean user-permission rows 1-3 (orphan grants pointing at deleted permission masters 1-3), and keep the permission seed idempotent.
 
-**Required:** restore the active key, repair grants, clean orphan rows, and make the permission seed idempotent.
+**Client assumption:** a backend session receives `hr.employees.view` from `/api/me/permissions`; a key-only grant is treated as the broadest client scope.
+
+**Open platform question:** `branches[]` versus `orgCount` in the login/session payload is still unresolved for the backend owner; the client continues to use `branches[]` for branch context.
 
 ## 2. Session permissions/scopes/modules (B-02, B-07, C-02/C-03)
 
@@ -102,6 +104,14 @@ This document records backend decisions/fixes required by the Flutter client. No
 **Client decision:** the client never sends `login.userType` on create or update. It strips the field from a loaded login object before a full-replace PUT, tolerates it on responses, and never displays it.
 
 **Required:** regenerate the OpenAPI document so `EmployeeLoginRequest` no longer advertises `userType`.
+
+## 9b. User-permission assign returns the complete grant list (B-15)
+
+**Finding:** `POST /api/user-permissions` returns the target user's complete grant list after the assign (for example 4 rows for the employee account and 18 rows for Admin), not only the newly added grants. The list can include orphan rows (`permissionKey:null`, `permissionName:null`, `permissionStatusId:2`).
+
+**Client behavior:** the client treats the response as the full list and refreshes the grant list after the write. It does not append the response to an existing list. Orphan rows remain visible as revocable rows on the Access screen.
+
+**Required:** keep the documented response as the full list and return the same shape for additive assign and replace.
 
 ## 10. Still required for full remote integration
 
