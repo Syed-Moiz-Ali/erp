@@ -1,4 +1,4 @@
-﻿import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
+import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
 
 class LiveEmployeeDto {
   const LiveEmployeeDto(this.json);
@@ -29,6 +29,14 @@ class LiveEmployeeDto {
       email: json['email'] as String?,
       phone: json['uaeContactNumber'] as String?,
       basicSalary: (json['basicSalary'] as num?)?.toDouble(),
+      dateOfBirth: json['dateOfBirth'] as String?,
+      maritalStatus: json['maritalStatus'] as String?,
+      employeeType: json['employeeType'] as String?,
+      gratuity: json['gratuity'] as String?,
+      workingHours: (json['workingHours'] as num?)?.toDouble(),
+      transportation: (json['transportation'] as num?)?.toDouble(),
+      accommodation: (json['accommodation'] as num?)?.toDouble(),
+      totalSalary: (json['totalSalary'] as num?)?.toDouble(),
       loginEnabled: login['enabled'] as bool? ?? false,
       canLogin: login['canLogin'] as bool? ?? false,
       loginId: login['loginId'] as String?,
@@ -57,6 +65,13 @@ class LiveEmployeeDto {
       email: employee.email ?? '',
       phone: employee.phone ?? '',
       basicSalary: employee.basicSalary ?? 0,
+      dateOfBirth: employee.dateOfBirth ?? '',
+      maritalStatus: employee.maritalStatus ?? '',
+      employeeType: employee.employeeType ?? '',
+      gratuity: employee.gratuity ?? '',
+      workingHours: employee.workingHours ?? 0,
+      transportation: employee.transportation ?? 0,
+      accommodation: employee.accommodation ?? 0,
       loginEnabled: employee.loginEnabled,
       loginId: employee.loginId ?? '',
       loginMobile: employee.loginMobile ?? '',
@@ -73,11 +88,17 @@ LiveEmployeeLookups mapLookups(Map<String, dynamic> json) {
       else
         Lookup(0, '$item'),
   ];
+  List<String> strings(String key) =>
+      (json[key] as List? ?? const []).map((item) => '').toList();
   return LiveEmployeeLookups(
     branches: list('branches'),
     departments: list('departments'),
     nationalities: list('nationalities'),
     statuses: list('statuses'),
+    maritalStatuses: strings('maritalStatuses'),
+    employeeTypes: strings('employeeTypes'),
+    gratuityTypes: strings('gratuityTypes'),
+    userTypes: strings('userTypes'),
   );
 }
 

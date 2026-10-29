@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "Lookups retrieved.",
+  "data": {
+    "branches": [
+      { "id": 1, "name": "Sanitized Branch 1" },
+      { "id": 2, "name": "Sanitized Branch 2" }
+    ],
+    "departments": [
+      { "id": 1, "name": "Sanitized Department 1" },
+      { "id": 2, "name": "Sanitized Department 2" }
+    ],
+    "nationalities": [
+      { "id": 99, "name": "Sanitized Nationality" }
+    ],
+    "statuses": [
+      { "id": 1, "name": "Active" },
+      { "id": 2, "name": "InActive" }
+    ],
+    "maritalStatuses": ["Single", "Married"],
+    "employeeTypes": ["Revenue", "Non-Revenue"],
+    "gratuityTypes": ["Limited Contract", "Unlimited Contract"],
+    "userTypes": ["HR", "Accounts", "Sales"]
+  },
+  "errors": []
+}

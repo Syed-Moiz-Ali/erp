@@ -87,11 +87,11 @@ void main() {
         ctx.user.permissions,
         employee: ctx.employeeReference,
       );
-      expect(full.desktop.map((d) => d.id), contains('employees'));
-      expect(limited.desktop.map((d) => d.id), isNot(contains('employees')));
+      expect(full.desktop.map((d) => d.id), contains('attendance'));
+      expect(limited.desktop.map((d) => d.id), isNot(contains('attendance')));
       // A stale selection from the prior company cannot resolve to an owner.
       final owner = limited.desktop
-          .where((m) => m.owns(AppRoutes.employees))
+          .where((m) => m.owns(AppRoutes.attendance))
           .toList();
       expect(owner, isEmpty);
     });

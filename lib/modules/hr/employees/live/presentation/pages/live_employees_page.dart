@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
@@ -15,10 +16,8 @@ class LiveEmployeesPage extends StatelessWidget {
   final LiveEmployeeCubit cubit;
 
   @override
-  Widget build(BuildContext context) => BlocProvider.value(
-    value: cubit..start(),
-    child: const _EmployeesBody(),
-  );
+  Widget build(BuildContext context) =>
+      BlocProvider.value(value: cubit..start(), child: const _EmployeesBody());
 }
 
 class _EmployeesBody extends StatelessWidget {
@@ -32,7 +31,8 @@ class _EmployeesBody extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
     builder: (context, auth) {
       final account = auth.context;
-      final canView = _can(account, AppPermission.employeeViewAll) ||
+      final canView =
+          _can(account, AppPermission.employeeViewAll) ||
           _can(account, AppPermission.employeeViewTeam) ||
           _can(account, AppPermission.employeeViewSelf);
       if (!canView) {
@@ -46,10 +46,7 @@ class _EmployeesBody extends StatelessWidget {
       final canManage =
           _can(account, AppPermission.employeeCreate) ||
           _can(account, AppPermission.employeeUpdate);
-      final canDeactivate = _can(
-        account,
-        AppPermission.employeeDeactivate,
-      );
+      final canDeactivate = _can(account, AppPermission.employeeDeactivate);
       final canManageLogin = _can(account, AppPermission.userManage);
       return BlocBuilder<LiveEmployeeCubit, LiveEmployeeState>(
         builder: (context, state) {
@@ -112,8 +109,7 @@ class _EmployeesBody extends StatelessWidget {
                   const AppLoadingState()
                 else if (state.failure != null)
                   AppErrorState(
-                    message:
-                        state.failure!.serverMessage ?? l.failureRequest,
+                    message: state.failure!.serverMessage ?? l.failureRequest,
                     onRetry: cubit.load,
                   )
                 else if (state.items.isEmpty)
@@ -127,8 +123,7 @@ class _EmployeesBody extends StatelessWidget {
                     children: [
                       for (final employee in state.items)
                         Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: AppSpacing.md),
+                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
                           child: AppMobileRecordCard(
                             title: employee.name,
                             subtitle: employee.code,
@@ -136,8 +131,9 @@ class _EmployeesBody extends StatelessWidget {
                             status: employee.isActive
                                 ? AppStatus.success
                                 : AppStatus.neutral,
-                            statusLabel:
-                                employee.isActive ? l.active : l.inactive,
+                            statusLabel: employee.isActive
+                                ? l.active
+                                : l.inactive,
                             trailing: _actions(
                               context,
                               cubit,
@@ -166,9 +162,7 @@ class _EmployeesBody extends StatelessWidget {
                             cells: [
                               DataCell(Text(employee.code)),
                               DataCell(Text(employee.name)),
-                              DataCell(
-                                Text(employee.departmentName ?? ''),
-                              ),
+                              DataCell(Text(employee.departmentName ?? '')),
                               DataCell(
                                 AppStatusBadge(
                                   label: employee.isActive
@@ -229,12 +223,8 @@ class _EmployeesBody extends StatelessWidget {
       if (canManage)
         AppMenuAction(
           label: (l) => l.empEdit,
-          onPressed: () => _edit(
-            context,
-            cubit,
-            employee,
-            canManageLogin: canManageLogin,
-          ),
+          onPressed: () =>
+              _edit(context, cubit, employee, canManageLogin: canManageLogin),
         ),
       if (canManage && !employee.loginEnabled && canManageLogin)
         AppMenuAction(
@@ -322,27 +312,21 @@ class _EmployeesBody extends StatelessWidget {
                 : [lookups.branches.first.id],
           )
         : LiveEmployeeDto(employee.raw).toDraft();
-    final draft = await AppDialog.show<LiveEmployeeDraft>(
+    final saved = await AppDialog.show<bool>(
       context,
       (dialogContext) => _EmployeeEditor(
         lookups: lookups,
-        initial: enableLogin
-            ? _withLogin(initial, employee!)
-            : initial,
+        initial: enableLogin ? _withLogin(initial, employee!) : initial,
+        raw: employee?.raw ?? const {},
         title: employee == null
             ? dialogContext.l10n.empAdd
             : dialogContext.l10n.empEdit,
         canManageLogin: canManageLogin,
+        onSave: (draft) => cubit.save(employee, draft),
       ),
     );
-    if (draft == null) return;
-    final failure = await cubit.save(employee, draft);
-    if (!context.mounted) return;
-    if (failure != null) {
-      AppFeedback.showMessage(
-        context,
-        message: (l) => failure.serverMessage ?? l.failureRequest,
-      );
+    if (saved == true && context.mounted) {
+      AppFeedback.showMessage(context, message: (l) => l.cfgSaved);
     }
   }
 
@@ -371,13 +355,17 @@ class _EmployeeEditor extends StatefulWidget {
   const _EmployeeEditor({
     required this.lookups,
     required this.initial,
+    required this.raw,
     required this.title,
     required this.canManageLogin,
+    required this.onSave,
   });
   final LiveEmployeeLookups lookups;
   final LiveEmployeeDraft initial;
+  final Map<String, dynamic> raw;
   final String title;
   final bool canManageLogin;
+  final Future<Failure?> Function(LiveEmployeeDraft) onSave;
 
   @override
   State<_EmployeeEditor> createState() => _EmployeeEditorState();
@@ -388,15 +376,27 @@ class _EmployeeEditorState extends State<_EmployeeEditor> {
   late final _name = TextEditingController(text: _draft.name);
   late final _designation = TextEditingController(text: _draft.designation);
   late final _joining = TextEditingController(text: _draft.joiningDate ?? '');
+  late final _dob = TextEditingController(text: _draft.dateOfBirth);
   late final _email = TextEditingController(text: _draft.email);
   late final _phone = TextEditingController(text: _draft.phone);
   late final _salary = TextEditingController(
     text: _draft.basicSalary == 0 ? '' : _draft.basicSalary.toString(),
   );
+  late final _workingHours = TextEditingController(
+    text: _draft.workingHours == 0 ? '' : _draft.workingHours.toString(),
+  );
+  late final _transportation = TextEditingController(
+    text: _draft.transportation == 0 ? '' : _draft.transportation.toString(),
+  );
+  late final _accommodation = TextEditingController(
+    text: _draft.accommodation == 0 ? '' : _draft.accommodation.toString(),
+  );
   late final _loginId = TextEditingController(text: _draft.loginId);
   late final _loginMobile = TextEditingController(text: _draft.loginMobile);
   late final _password = TextEditingController();
   Map<String, String> _errors = const {};
+  bool _saving = false;
+  String? _generalError;
 
   @override
   void dispose() {
@@ -404,9 +404,13 @@ class _EmployeeEditorState extends State<_EmployeeEditor> {
       _name,
       _designation,
       _joining,
+      _dob,
       _email,
       _phone,
       _salary,
+      _workingHours,
+      _transportation,
+      _accommodation,
       _loginId,
       _loginMobile,
       _password,
@@ -420,6 +424,142 @@ class _EmployeeEditorState extends State<_EmployeeEditor> {
     for (final item in values) AppSelectOption(item.id, item.name),
   ];
 
+  String? _errorText(String field) {
+    final value = _errors[field];
+    if (value == null) return null;
+    if (value == 'required') return context.l10n.fieldRequired;
+    if (value == 'password') return context.l10n.authPasswordConstraints;
+    return value;
+  }
+
+  double _number(TextEditingController controller) =>
+      double.tryParse(controller.text.trim()) ?? 0;
+
+  Future<void> _submit() async {
+    final draft = LiveEmployeeDraft(
+      name: _name.text,
+      branchId: _draft.branchId,
+      departmentId: _draft.departmentId,
+      nationalityId: _draft.nationalityId,
+      statusId: _draft.statusId,
+      designation: _designation.text,
+      joiningDate: _joining.text.trim().isEmpty ? null : _joining.text.trim(),
+      dateOfBirth: _dob.text,
+      maritalStatus: _draft.maritalStatus,
+      employeeType: _draft.employeeType,
+      gratuity: _draft.gratuity,
+      email: _email.text,
+      phone: _phone.text,
+      basicSalary: _number(_salary),
+      workingHours: _number(_workingHours),
+      transportation: _number(_transportation),
+      accommodation: _number(_accommodation),
+      loginEnabled: _draft.loginEnabled,
+      loginId: _loginId.text,
+      loginMobile: _loginMobile.text,
+      loginPassword: _password.text,
+      loginBranchIds: _draft.loginBranchIds,
+    );
+    final local = draft.validate();
+    if (local.isNotEmpty) {
+      setState(() => _errors = local);
+      return;
+    }
+    setState(() {
+      _saving = true;
+      _errors = const {};
+      _generalError = null;
+    });
+    final failure = await widget.onSave(draft);
+    if (!mounted) return;
+    if (failure == null) {
+      Navigator.pop(context, true);
+      return;
+    }
+    final field = failure.field;
+    setState(() {
+      _saving = false;
+      if (field != null) {
+        _errors = {field: failure.serverMessage ?? failure.code};
+      } else if (failure.code == 'USER_DUPLICATE_LOGINID') {
+        _errors = {'login.loginId': failure.serverMessage ?? failure.code};
+      } else if (failure.code == 'USER_DUPLICATE_MOBILE') {
+        _errors = {'login.mobileNo': failure.serverMessage ?? failure.code};
+      } else {
+        _generalError = failure.serverMessage ?? context.l10n.failureRequest;
+      }
+    });
+  }
+
+  LiveEmployeeDraft _copy({
+    int? branchId,
+    int? departmentId,
+    int? nationalityId,
+    int? statusId,
+    bool? loginEnabled,
+    String? maritalStatus,
+    String? employeeType,
+    String? gratuity,
+    List<int>? loginBranchIds,
+  }) => LiveEmployeeDraft(
+    name: _draft.name,
+    branchId: branchId ?? _draft.branchId,
+    departmentId: departmentId ?? _draft.departmentId,
+    nationalityId: nationalityId ?? _draft.nationalityId,
+    statusId: statusId ?? _draft.statusId,
+    designation: _draft.designation,
+    joiningDate: _draft.joiningDate,
+    dateOfBirth: _draft.dateOfBirth,
+    maritalStatus: maritalStatus ?? _draft.maritalStatus,
+    employeeType: employeeType ?? _draft.employeeType,
+    gratuity: gratuity ?? _draft.gratuity,
+    email: _draft.email,
+    phone: _draft.phone,
+    basicSalary: _draft.basicSalary,
+    workingHours: _draft.workingHours,
+    transportation: _draft.transportation,
+    accommodation: _draft.accommodation,
+    loginEnabled: loginEnabled ?? _draft.loginEnabled,
+    loginId: _draft.loginId,
+    loginMobile: _draft.loginMobile,
+    loginPassword: _draft.loginPassword,
+    loginBranchIds: loginBranchIds ?? _draft.loginBranchIds,
+  );
+
+  List<MapEntry<String, Object?>> get _rawExtras {
+    const known = {
+      'employeeId',
+      'employeeCode',
+      'employeeName',
+      'designation',
+      'departmentId',
+      'departmentName',
+      'branchId',
+      'branchName',
+      'nationalityId',
+      'nationalityName',
+      'statusId',
+      'statusName',
+      'joiningDate',
+      'dateOfBirth',
+      'maritalStatus',
+      'employeeType',
+      'gratuity',
+      'uaeContactNumber',
+      'email',
+      'workingHours',
+      'basicSalary',
+      'transportation',
+      'accommodation',
+      'login',
+      'photoPath',
+    };
+    return [
+      for (final entry in widget.raw.entries)
+        if (!known.contains(entry.key)) entry,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -428,138 +568,236 @@ class _EmployeeEditorState extends State<_EmployeeEditor> {
       actions: [
         AppTextButton(
           label: l.cancel,
-          onPressed: () => Navigator.pop(context),
+          onPressed: _saving ? null : () => Navigator.pop(context),
         ),
         AppPrimaryButton(
           label: l.save,
-          onPressed: () {
-            final draft = LiveEmployeeDraft(
-              name: _name.text,
-              branchId: _draft.branchId,
-              departmentId: _draft.departmentId,
-              nationalityId: _draft.nationalityId,
-              statusId: _draft.statusId,
-              designation: _designation.text,
-              joiningDate: _joining.text.trim().isEmpty
-                  ? null
-                  : _joining.text.trim(),
-              email: _email.text,
-              phone: _phone.text,
-              basicSalary: double.tryParse(_salary.text) ?? 0,
-              loginEnabled: _draft.loginEnabled,
-              loginId: _loginId.text,
-              loginMobile: _loginMobile.text,
-              loginPassword: _password.text,
-              loginBranchIds: _draft.loginBranchIds,
-            );
-            final errors = draft.validate();
-            if (errors.isNotEmpty) {
-              setState(() => _errors = errors);
-              return;
-            }
-            Navigator.pop(context, draft);
-          },
+          loading: _saving,
+          onPressed: _saving ? null : _submit,
         ),
       ],
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (_generalError != null) ...[
+              Text(
+                _generalError!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              const SizedBox(height: AppSpacing.md),
+            ],
             AppTextField(
               label: l.cfgName,
               controller: _name,
               required: true,
-              errorText: _errors['employeeName'] == null
-                  ? null
-                  : l.fieldRequired,
+              enabled: !_saving,
+              errorText: _errorText('employeeName'),
             ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<int>(
               label: l.empBranch,
               required: true,
+              enabled: !_saving,
               value: _draft.branchId,
+              errorText: _errorText('branchId'),
               options: _options(widget.lookups.branches),
-              onChanged: (value) => setState(
-                () => _draft = _copy(branchId: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(branchId: value)),
             ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<int>(
               label: l.empDepartment,
               required: true,
+              enabled: !_saving,
               value: _draft.departmentId,
+              errorText: _errorText('departmentId'),
               options: _options(widget.lookups.departments),
-              onChanged: (value) => setState(
-                () => _draft = _copy(departmentId: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(departmentId: value)),
             ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<int>(
               label: l.empNationality,
               required: true,
+              enabled: !_saving,
               value: _draft.nationalityId,
+              errorText: _errorText('nationalityId'),
               options: _options(widget.lookups.nationalities),
-              onChanged: (value) => setState(
-                () => _draft = _copy(nationalityId: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(nationalityId: value)),
             ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               label: l.empDesignation,
               controller: _designation,
+              enabled: !_saving,
+              errorText: _errorText('designation'),
             ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               label: l.empJoiningDate,
               controller: _joining,
-              // Date format is documented by the field label.
-              errorText: _errors['joiningDate'] == null
-                  ? null
-                  : l.fieldRequired,
+              enabled: !_saving,
+              errorText: _errorText('joiningDate'),
             ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.email, controller: _email),
+            AppTextField(
+              label: l.dateOfBirth,
+              controller: _dob,
+              enabled: !_saving,
+              errorText: _errorText('dateOfBirth'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.phone, controller: _phone),
+            AppSelectField<String>(
+              label: l.empMaritalStatus,
+              enabled: !_saving,
+              value: _draft.maritalStatus.isEmpty ? null : _draft.maritalStatus,
+              errorText: _errorText('maritalStatus'),
+              options: [
+                for (final value in widget.lookups.maritalStatuses)
+                  AppSelectOption(value, value),
+              ],
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(maritalStatus: value ?? '')),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppSelectField<String>(
+              label: l.empEmployeeType,
+              enabled: !_saving,
+              value: _draft.employeeType.isEmpty ? null : _draft.employeeType,
+              errorText: _errorText('employeeType'),
+              options: [
+                for (final value in widget.lookups.employeeTypes)
+                  AppSelectOption(value, value),
+              ],
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(employeeType: value ?? '')),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppSelectField<String>(
+              label: l.empGratuity,
+              enabled: !_saving,
+              value: _draft.gratuity.isEmpty ? null : _draft.gratuity,
+              errorText: _errorText('gratuity'),
+              options: [
+                for (final value in widget.lookups.gratuityTypes)
+                  AppSelectOption(value, value),
+              ],
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(gratuity: value ?? '')),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              label: l.email,
+              controller: _email,
+              enabled: !_saving,
+              errorText: _errorText('email'),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              label: l.phone,
+              controller: _phone,
+              enabled: !_saving,
+              errorText: _errorText('uaeContactNumber'),
+            ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               label: l.empBasicSalary,
               controller: _salary,
+              enabled: !_saving,
               keyboardType: TextInputType.number,
+              errorText: _errorText('basicSalary'),
             ),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              label: l.empWorkingHours,
+              controller: _workingHours,
+              enabled: !_saving,
+              keyboardType: TextInputType.number,
+              errorText: _errorText('workingHours'),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              label: l.empTransportation,
+              controller: _transportation,
+              enabled: !_saving,
+              keyboardType: TextInputType.number,
+              errorText: _errorText('transportation'),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              label: l.empAccommodation,
+              controller: _accommodation,
+              enabled: !_saving,
+              keyboardType: TextInputType.number,
+              errorText: _errorText('accommodation'),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppSelectField<int>(
+              label: l.status,
+              enabled: !_saving,
+              value: _draft.statusId,
+              errorText: _errorText('statusId'),
+              options: _options(widget.lookups.statuses),
+              onChanged: (value) =>
+                  setState(() => _draft = _copy(statusId: value)),
+            ),
+            if (_rawExtras.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              AppDetailsSection(
+                title: l.detailsLabel,
+                details: {
+                  for (final entry in _rawExtras) entry.key: '${entry.value}',
+                },
+              ),
+            ],
             if (widget.canManageLogin) ...[
               const SizedBox(height: AppSpacing.lg),
               AppBooleanSettingRow(
                 label: l.empLogin,
                 value: _draft.loginEnabled,
-                onChanged: (value) => setState(
-                  () => _draft = _copy(loginEnabled: value),
-                ),
+                onChanged: _saving
+                    ? null
+                    : (value) =>
+                          setState(() => _draft = _copy(loginEnabled: value)),
               ),
               if (_draft.loginEnabled) ...[
                 const SizedBox(height: AppSpacing.md),
                 AppTextField(
                   label: l.empLoginId,
                   controller: _loginId,
-                  errorText: _errors['login.loginId'] == null
-                      ? null
-                      : l.fieldRequired,
+                  enabled: !_saving,
+                  errorText: _errorText('login.loginId'),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 AppTextField(
                   label: l.empLoginMobile,
                   controller: _loginMobile,
-                  errorText: _errors['login.mobileNo'] == null
-                      ? null
-                      : l.fieldRequired,
+                  enabled: !_saving,
+                  errorText: _errorText('login.mobileNo'),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 AppTextField(
                   label: l.empLoginPassword,
                   controller: _password,
-                  errorText: _errors['login.password'] == null
+                  enabled: !_saving,
+                  errorText: _errorText('login.password'),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppSelectField<int>(
+                  label: l.empLoginBranch,
+                  enabled: !_saving,
+                  value: _draft.loginBranchIds.isEmpty
                       ? null
-                      : l.authPasswordConstraints,
+                      : _draft.loginBranchIds.first,
+                  errorText: _errorText('login.branchIds'),
+                  options: _options(widget.lookups.branches),
+                  onChanged: (value) => setState(
+                    () => _draft = _copy(
+                      loginBranchIds: value == null ? const [] : [value],
+                    ),
+                  ),
                 ),
               ],
             ],
@@ -568,29 +806,4 @@ class _EmployeeEditorState extends State<_EmployeeEditor> {
       ),
     );
   }
-
-  LiveEmployeeDraft _copy({
-    int? branchId,
-    int? departmentId,
-    int? nationalityId,
-    bool? loginEnabled,
-  }) => LiveEmployeeDraft(
-    name: _draft.name,
-    branchId: branchId ?? _draft.branchId,
-    departmentId: departmentId ?? _draft.departmentId,
-    nationalityId: nationalityId ?? _draft.nationalityId,
-    statusId: _draft.statusId,
-    designation: _draft.designation,
-    joiningDate: _draft.joiningDate,
-    email: _draft.email,
-    phone: _draft.phone,
-    basicSalary: _draft.basicSalary,
-    loginEnabled: loginEnabled ?? _draft.loginEnabled,
-    loginId: _draft.loginId,
-    loginMobile: _draft.loginMobile,
-    loginPassword: _draft.loginPassword,
-    loginBranchIds: _draft.loginBranchIds,
-  );
 }
-
-

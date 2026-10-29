@@ -54,7 +54,6 @@ void configureApplicationComposition(GetIt services) {
       branchRepository: services.isRegistered<BranchRepository>()
           ? services<BranchRepository>()
           : null,
-      includeLegacyEmployees: false,
       liveEmployeeRepository: services.isRegistered<LiveEmployeeRepository>()
           ? services<LiveEmployeeRepository>()
           : null,

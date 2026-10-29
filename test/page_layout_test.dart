@@ -39,40 +39,32 @@ void main() {
       await harness.pump(tester);
       expect(find.byType(AppShell), findsOneWidget);
 
-      final employeesList = await boundsFor(tester, '/app/hr/employees');
-      final employeeForm = await boundsFor(tester, '/app/hr/employees/new');
-      final enquiriesList = await boundsFor(tester, '/app/services/enquiries');
+      final baseline = await boundsFor(tester, '/app/services/enquiries');
       final newEnquiry = await boundsFor(tester, '/app/services/enquiries/new');
       final customers = await boundsFor(tester, '/app/services/customers');
       final teams = await boundsFor(tester, '/app/services/teams');
 
-      for (final bounds in [
-        employeeForm,
-        enquiriesList,
-        newEnquiry,
-        customers,
-        teams,
-      ]) {
+      for (final bounds in [newEnquiry, customers, teams]) {
         expect(
           bounds.left,
-          closeTo(employeesList.left, 0.5),
+          closeTo(baseline.left, 0.5),
           reason: 'all screens share one left page edge at $width',
         );
         expect(
           bounds.right,
-          closeTo(employeesList.right, 0.5),
+          closeTo(baseline.right, 0.5),
           reason: 'all screens share one right page edge at $width',
         );
       }
 
-      final contentWidth = employeesList.right - employeesList.left;
+      final contentWidth = baseline.right - baseline.left;
       expect(contentWidth, lessThanOrEqualTo(AppDimensions.contentMaxWidth));
 
       // Equal free space inside the main workspace (after the sidebar).
       final sidebar = tester.getSize(find.byType(AppSidebar)).width;
       expect(
-        employeesList.left - sidebar,
-        closeTo(width - employeesList.right, 1.0),
+        baseline.left - sidebar,
+        closeTo(width - baseline.right, 1.0),
         reason: 'left and right free space must be equal at $width',
       );
 
@@ -91,7 +83,7 @@ void main() {
     );
     h.auth.add(const AuthLoginRequested('hr@erp.demo', 'Hr@123'));
     await harness.pump(tester);
-    final bounds = await boundsFor(tester, '/app/hr/employees');
+    final bounds = await boundsFor(tester, '/app/services/enquiries');
     final sidebar = tester.getSize(find.byType(AppSidebar)).width;
     // Balanced, obvious whitespace on both sides.
     expect(bounds.left - sidebar, greaterThan(100));

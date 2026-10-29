@@ -214,20 +214,6 @@ void main() {
   });
 
   group('module enablement overrides grants', () {
-    test('disabled employees feature hides Employees despite grant', () {
-      final context = _context(
-        permissions: {AppPermission.employeeViewAll},
-        enabledModules: {'dashboard', 'attendance'},
-      );
-      expect(_destinations(context), isNot(contains('employees')));
-      expect(
-        NavigationResolver(
-          _registry(),
-        ).routeAccess(AppRoutes.employees, context),
-        RouteAccess.moduleUnavailable,
-      );
-    });
-
     test('enabled module with zero grants stays hidden', () {
       final context = _context(permissions: const {});
       final ids = _destinations(context);

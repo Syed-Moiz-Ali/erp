@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_route_transitions.dart';
@@ -93,7 +93,6 @@ ModuleRegistry createErpRegistry(
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
   BranchRepository? branchRepository,
   LiveEmployeeRepository? liveEmployeeRepository,
-  bool includeLegacyEmployees = true,
   EmployeeShiftApi? employeeShiftApi,
   AttendanceApi? attendanceApi,
   AccessRepository? accessRepository,
@@ -145,11 +144,9 @@ ModuleRegistry createErpRegistry(
     registry: () => registry,
     authRepository: authRepository,
     dashboardCoordinator: coordinator,
-    employeeRepository: employeeRepository,
   );
   final hr = buildHrModules(
     registry: () => registry,
-    employeeRepository: employeeRepository,
     shiftRepository: shiftRepository,
     departmentRepository: departmentRepository,
     workLocationRepository: workLocationRepository,
@@ -161,7 +158,6 @@ ModuleRegistry createErpRegistry(
     attendanceReportRepository: attendanceReportRepository,
     attendanceReportExportService: attendanceReportExportService,
     leaveRepository: leaveRepository,
-    includeLegacyEmployees: includeLegacyEmployees,
     leaveTypeRepository: leaveTypeRepository,
     leavePolicyRepository: leavePolicyRepository,
     holidayRepository: holidayRepository,

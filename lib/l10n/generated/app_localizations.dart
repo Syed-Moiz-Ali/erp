@@ -5072,6 +5072,54 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get empLoginPassword;
 
+  /// No description provided for @empLoginBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Login branch'**
+  String get empLoginBranch;
+
+  /// No description provided for @dateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get dateOfBirth;
+
+  /// No description provided for @empMaritalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Marital status'**
+  String get empMaritalStatus;
+
+  /// No description provided for @empEmployeeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee type'**
+  String get empEmployeeType;
+
+  /// No description provided for @empGratuity.
+  ///
+  /// In en, this message translates to:
+  /// **'Gratuity'**
+  String get empGratuity;
+
+  /// No description provided for @empWorkingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get empWorkingHours;
+
+  /// No description provided for @empTransportation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation'**
+  String get empTransportation;
+
+  /// No description provided for @empAccommodation.
+  ///
+  /// In en, this message translates to:
+  /// **'Accommodation'**
+  String get empAccommodation;
+
   /// No description provided for @empEnableLogin.
   ///
   /// In en, this message translates to:

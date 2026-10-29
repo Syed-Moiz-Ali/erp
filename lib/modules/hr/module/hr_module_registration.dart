@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/router/app_route_transitions.dart';
 import 'package:modular_erp/app/router/app_routes.dart';
+import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
 import 'package:modular_erp/core/location/location_service.dart';
 import 'package:modular_erp/core/security/access_tree.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
@@ -13,7 +14,6 @@ import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
-import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
@@ -67,13 +67,6 @@ import 'package:modular_erp/modules/hr/attendance_policies/presentation/pages/at
 import 'package:modular_erp/modules/hr/attendance_policies/presentation/bloc/attendance_policy_form_bloc.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/presentation/pages/attendance_policy_form_page.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy.dart';
-import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_list_bloc.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_details_bloc.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_form_bloc.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_list_page.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_details_page.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/pages/employee_form_page.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
 import 'package:modular_erp/modules/hr/leave/presentation/bloc/leave_blocs.dart';
@@ -106,7 +99,6 @@ class HrModules {
 
 HrModules buildHrModules({
   required ModuleRegistry Function() registry,
-  EmployeeRepository? employeeRepository,
   ShiftRepository? shiftRepository,
   DepartmentRepository? departmentRepository,
   WorkLocationRepository? workLocationRepository,
@@ -118,12 +110,10 @@ HrModules buildHrModules({
   AttendanceReportRepository? attendanceReportRepository,
   AttendanceReportExportService? attendanceReportExportService,
   LeaveRepository? leaveRepository,
-  bool includeLegacyEmployees = true,
   ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository,
   ConfigurationRepository<LeavePolicy, LeavePolicyDraft>? leavePolicyRepository,
   ConfigurationRepository<Holiday, HolidayDraft>? holidayRepository,
 }) {
-  final formGuard = FormNavigationGuard();
   RegisteredDestination destination(
     ErpModule navigation,
     WidgetBuilder builder,
@@ -837,108 +827,6 @@ HrModules buildHrModules({
   ];
   return HrModules(
     modules: [
-      if (includeLegacyEmployees)
-        AppModule(
-          id: AppModuleIds.employees,
-          destinations: [
-            RegisteredDestination(
-              navigation: ErpModule(
-                id: 'employees',
-                moduleId: AppModuleIds.employees,
-                name: (l) => l.shellEmployees,
-                icon: Icons.people_outline,
-                selectedIcon: Icons.people,
-                route: AppRoutes.employees,
-                navigationGroup: NavigationGroup.people,
-                order: 10,
-                mobilePriority: 1,
-                anyPermissions: {
-                  AppPermission.employeeViewTeam,
-                  AppPermission.employeeViewAll,
-                },
-              ),
-              routes: [
-                ShellRoute(
-                  builder: (context, state, child) =>
-                      BlocSelector<AuthBloc, AuthState, AuthContext?>(
-                        selector: (s) => s.context,
-                        builder: (context, auth) {
-                          if (auth == null) return const SizedBox.shrink();
-                          if (employeeRepository == null) {
-                            return AppPage(
-                              child: AppErrorState(
-                                message: context.l10n.empStorageError,
-                              ),
-                            );
-                          }
-                          return BlocProvider(
-                            key: ValueKey(auth),
-                            create: (_) =>
-                                EmployeeListBloc(employeeRepository, auth)
-                                  ..add(const EmployeeListStarted()),
-                            child: child,
-                          );
-                        },
-                      ),
-                  routes: [
-                    GoRoute(
-                      path: AppRoutes.employees,
-                      name: 'employees',
-                      builder: (context, state) => const EmployeeListPage(),
-                      routes: [
-                        GoRoute(
-                          path: 'new',
-                          name: 'employee-new',
-                          onExit: (context, state) => formGuard.onExit(context),
-                          builder: (context, state) => BlocProvider(
-                            key: const ValueKey('employee-new'),
-                            create: (_) => EmployeeFormBloc(
-                              employeeRepository!,
-                              context.read<EmployeeListBloc>().context,
-                            )..add(const EmployeeFormInitialized()),
-                            child: EmployeeFormPage(guard: formGuard),
-                          ),
-                        ),
-                        GoRoute(
-                          path: ':employeeId',
-                          name: 'employee-details',
-                          builder: (context, state) => BlocProvider(
-                            key: ValueKey(state.pathParameters['employeeId']),
-                            create: (_) => EmployeeDetailsBloc(
-                              employeeRepository!,
-                              context.read<EmployeeListBloc>().context,
-                              state.pathParameters['employeeId']!,
-                            )..add(const EmployeeDetailsStarted()),
-                            child: EmployeeDetailsPage(registry: registry()),
-                          ),
-                          routes: [
-                            GoRoute(
-                              path: 'edit',
-                              name: 'employee-edit',
-                              onExit: (context, state) =>
-                                  formGuard.onExit(context),
-                              builder: (context, state) => BlocProvider(
-                                key: ValueKey(
-                                  '${state.pathParameters['employeeId']}-edit',
-                                ),
-                                create: (_) => EmployeeFormBloc(
-                                  employeeRepository!,
-                                  context.read<EmployeeListBloc>().context,
-                                  id: state.pathParameters['employeeId'],
-                                )..add(const EmployeeFormInitialized()),
-                                child: EmployeeFormPage(guard: formGuard),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
       AppModule(
         id: AppModuleIds.attendance,
         destinations: [

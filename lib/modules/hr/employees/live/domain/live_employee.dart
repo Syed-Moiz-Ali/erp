@@ -1,4 +1,4 @@
-﻿class LiveEmployee {
+class LiveEmployee {
   const LiveEmployee({
     required this.id,
     required this.code,
@@ -17,6 +17,14 @@
     this.email,
     this.phone,
     this.basicSalary,
+    this.dateOfBirth,
+    this.maritalStatus,
+    this.employeeType,
+    this.gratuity,
+    this.workingHours,
+    this.transportation,
+    this.accommodation,
+    this.totalSalary,
     this.loginEnabled = false,
     this.canLogin = false,
     this.loginId,
@@ -34,6 +42,8 @@
   final String? email;
   final String? phone;
   final double? basicSalary;
+  final String? dateOfBirth, maritalStatus, employeeType, gratuity;
+  final double? workingHours, transportation, accommodation, totalSalary;
   final bool loginEnabled, canLogin;
   final String? loginId, loginMobile;
   final int? loginUserId;
@@ -53,6 +63,13 @@ class LiveEmployeeDraft {
     this.email = '',
     this.phone = '',
     this.basicSalary = 0,
+    this.dateOfBirth = '',
+    this.maritalStatus = '',
+    this.employeeType = '',
+    this.gratuity = '',
+    this.workingHours = 0,
+    this.transportation = 0,
+    this.accommodation = 0,
     this.loginEnabled = false,
     this.loginId = '',
     this.loginMobile = '',
@@ -64,6 +81,8 @@ class LiveEmployeeDraft {
   final int? branchId, departmentId, nationalityId, statusId;
   final String? joiningDate;
   final double basicSalary;
+  final String dateOfBirth, maritalStatus, employeeType, gratuity;
+  final double workingHours, transportation, accommodation;
   final bool loginEnabled;
   final String loginId, loginMobile, loginPassword;
   final List<int> loginBranchIds;
@@ -95,11 +114,26 @@ class LiveEmployeeDraft {
     body['departmentId'] = departmentId;
     body['nationalityId'] = nationalityId;
     body['statusId'] = statusId;
-    body['designation'] = designation.trim().isEmpty ? null : designation.trim();
+    body['designation'] = designation.trim().isEmpty
+        ? null
+        : designation.trim();
     body['joiningDate'] = joiningDate;
     body['email'] = email.trim().isEmpty ? null : email.trim();
     body['uaeContactNumber'] = phone.trim().isEmpty ? null : phone.trim();
     body['basicSalary'] = basicSalary;
+    body['dateOfBirth'] = dateOfBirth.trim().isEmpty
+        ? null
+        : dateOfBirth.trim();
+    body['maritalStatus'] = maritalStatus.trim().isEmpty
+        ? null
+        : maritalStatus.trim();
+    body['employeeType'] = employeeType.trim().isEmpty
+        ? null
+        : employeeType.trim();
+    body['gratuity'] = gratuity.trim().isEmpty ? null : gratuity.trim();
+    body['workingHours'] = workingHours;
+    body['transportation'] = transportation;
+    body['accommodation'] = accommodation;
     if (loginEnabled) {
       final login = <String, dynamic>{
         ...?(base?['login'] as Map?)?.cast<String, dynamic>(),
@@ -122,8 +156,13 @@ class LiveEmployeeLookups {
     required this.departments,
     required this.nationalities,
     required this.statuses,
+    this.maritalStatuses = const [],
+    this.employeeTypes = const [],
+    this.gratuityTypes = const [],
+    this.userTypes = const [],
   });
   final List<Lookup> branches, departments, nationalities, statuses;
+  final List<String> maritalStatuses, employeeTypes, gratuityTypes, userTypes;
 }
 
 class Lookup {
@@ -131,5 +170,3 @@ class Lookup {
   final int id;
   final String name;
 }
-
-

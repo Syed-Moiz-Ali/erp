@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "message": "Employees retrieved.",
+  "data": {
+    "items": [
+      {
+        "employeeId": 29,
+        "employeeCode": "EMP-29",
+        "employeeName": "Sanitized Employee",
+        "designation": "Sanitized Designation",
+        "departmentId": 2,
+        "departmentName": "Sanitized Department",
+        "branchId": 2,
+        "branchName": "Sanitized Branch",
+        "uaeContactNumber": "SANITIZED_PHONE",
+        "email": "sanitized@example.com",
+        "joiningDate": "2026-10-28",
+        "statusId": 1,
+        "statusName": "Active",
+        "photoPath": null,
+        "loginEnabled": true,
+        "canLogin": true
+      }
+    ],
+    "page": 1,
+    "pageSize": 5,
+    "totalItems": 1,
+    "totalPages": 1
+  },
+  "errors": []
+}

@@ -1,4 +1,4 @@
-﻿import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/dto/live_employee_dtos.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart';
 
@@ -64,10 +64,7 @@ void main() {
   });
 
   test('draft validation requires core fields and login fields', () {
-    const draft = LiveEmployeeDraft(
-      name: 'QA',
-      loginEnabled: true,
-    );
+    const draft = LiveEmployeeDraft(name: 'QA', loginEnabled: true);
     final errors = draft.validate();
     expect(errors['branchId'], 'required');
     expect(errors['departmentId'], 'required');
@@ -84,11 +81,7 @@ void main() {
       raw,
     ).toDraft().toBody(base: employee.raw);
     for (final key in raw.keys) {
-      expect(
-        body[key],
-        raw[key],
-        reason: 'PUT body changed loaded field $key',
-      );
+      expect(body[key], raw[key], reason: 'PUT body changed loaded field $key');
     }
   });
 
@@ -113,4 +106,3 @@ void main() {
     });
   });
 }
-

@@ -2631,6 +2631,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empLoginPassword => 'كلمة المرور';
 
   @override
+  String get empLoginBranch => 'فرع الدخول';
+
+  @override
+  String get dateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get empMaritalStatus => 'الحالة الاجتماعية';
+
+  @override
+  String get empEmployeeType => 'نوع الموظف';
+
+  @override
+  String get empGratuity => 'مكافأة نهاية الخدمة';
+
+  @override
+  String get empWorkingHours => 'ساعات العمل';
+
+  @override
+  String get empTransportation => 'المواصلات';
+
+  @override
+  String get empAccommodation => 'السكن';
+
+  @override
   String get empEnableLogin => 'تفعيل الدخول';
 
   @override

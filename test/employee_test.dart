@@ -17,9 +17,6 @@ import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repos
 import 'package:modular_erp/modules/hr/employees/data/local_account_access_guard.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/domain/employee.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_list_bloc.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_details_bloc.dart';
-import 'package:modular_erp/modules/hr/employees/presentation/bloc/employee_form_bloc.dart';
 import 'support/memory_session_storage.dart';
 
 AuthContext employeeContext(DemoScenario role) =>
@@ -120,88 +117,6 @@ void main() {
       }
     }
   });
-  test(
-    'list Bloc exposes failure and supports sorting and status writes',
-    () async {
-      final mock = MockEmployeeRepository();
-      when(
-        () => mock.getReferences(hr),
-      ).thenAnswer((_) async => const Failed(Failure(code: 'storage')));
-      when(
-        () => mock.watchEmployees(
-          hr,
-          query: '',
-          filter: const EmployeeFilter(),
-          sort: EmployeeSort.nameAscending,
-          page: 0,
-        ),
-      ).thenAnswer((_) => Stream.value(const Failed(Failure(code: 'storage'))));
-      final failed = EmployeeListBloc(mock, hr)
-        ..add(const EmployeeListStarted());
-      await until(() => failed.state.failure != null);
-      expect(failed.state.loading, isFalse);
-      await failed.close();
-      final b = EmployeeListBloc(repo, hr)..add(const EmployeeListStarted());
-      await until(() => !b.state.loading);
-      b.add(const EmployeeSortChanged(EmployeeSort.code));
-      await until(() => !b.state.loading && b.state.sort == EmployeeSort.code);
-      expect(b.state.data!.employees.first.employeeCode, 'EMP-0001');
-      b.add(const EmployeeStatusRequested('employee-employee', false));
-      await until(
-        () =>
-            !b.state.busy &&
-            b.state.data?.employees
-                    .where((e) => e.id == 'employee-employee')
-                    .firstOrNull
-                    ?.status ==
-                EmploymentStatus.inactive,
-      );
-      expect(
-        unwrap(await repo.getEmployeeById(hr, 'employee-employee'))!.status,
-        EmploymentStatus.inactive,
-      );
-      b.add(const EmployeeStatusRequested('employee-employee', true));
-      await until(
-        () =>
-            !b.state.busy &&
-            b.state.data?.employees
-                    .where((e) => e.id == 'employee-employee')
-                    .firstOrNull
-                    ?.status ==
-                EmploymentStatus.active,
-      );
-      await b.close();
-    },
-  );
-  test('details Bloc represents not found without storage failure', () async {
-    final b = EmployeeDetailsBloc(repo, hr, 'missing')
-      ..add(const EmployeeDetailsStarted());
-    await until(() => !b.state.loading);
-    expect(b.state.employee, isNull);
-    expect(b.state.failure, isNull);
-    await b.close();
-  });
-  test(
-    'edit form preloads role and duplicate failure retains the draft',
-    () async {
-      final b = EmployeeFormBloc(repo, hr, id: 'employee-employee')
-        ..add(const EmployeeFormInitialized());
-      await until(() => !b.state.loading);
-      expect(b.state.draft.firstName, 'Noor');
-      expect(b.state.dirty, isFalse);
-      expect(
-        b.state.references!.managers.any((m) => m.id == 'employee-employee'),
-        isFalse,
-      );
-      b.add(EmployeeDraftChanged((d) => d.copyWith(email: 'hr@erp.demo')));
-      b.add(const EmployeeSubmitted());
-      await until(() => b.state.failure != null);
-      expect(b.state.fieldErrors['email'], 'duplicateEmail');
-      expect(b.state.draft.email, 'hr@erp.demo');
-      expect(b.state.dirty, isTrue);
-      await b.close();
-    },
-  );
 
   test(
     'outbox failure rolls back employee and linked account together',
@@ -560,67 +475,6 @@ void main() {
       );
       await until(() => changes.contains('Reactive'));
       await sub.cancel();
-    },
-  );
-  test(
-    'list Bloc debounces search and resets pagination for filters',
-    () async {
-      final b = EmployeeListBloc(repo, hr);
-      b.add(const EmployeeListStarted());
-      await until(() => !b.state.loading);
-      b.add(const EmployeePageChanged(1));
-      await until(() => !b.state.loading && b.state.page == 1);
-      b.add(const EmployeeSearchChanged('No'));
-      b.add(const EmployeeSearchChanged('Noor Ali'));
-      await until(() => !b.state.loading && b.state.query == 'Noor Ali');
-      expect(b.state.page, 0);
-      expect(b.state.data!.filtered, 1);
-      b.add(
-        const EmployeeFilterChanged(
-          EmployeeFilter(status: EmploymentStatus.inactive),
-        ),
-      );
-      await until(() => !b.state.loading && b.state.filter.status != null);
-      expect(b.state.data!.filtered, 0);
-      await b.close();
-    },
-  );
-  test('details Bloc exposes scoped denial and reactive status', () async {
-    final b = EmployeeDetailsBloc(repo, manager, 'employee-hr');
-    b.add(const EmployeeDetailsStarted());
-    await until(() => !b.state.loading);
-    expect(b.state.failure!.code, 'denied');
-    await b.close();
-    final c = EmployeeDetailsBloc(repo, hr, 'employee-employee');
-    c.add(const EmployeeDetailsStarted());
-    await until(() => !c.state.loading);
-    c.add(const EmployeeDetailsStatusRequested(false));
-    await until(
-      () =>
-          c.state.employee?.status == EmploymentStatus.inactive &&
-          !c.state.busy,
-    );
-    await c.close();
-  });
-  test(
-    'form Bloc retains failed draft, tracks dirty and prevents duplicate saves',
-    () async {
-      final b = EmployeeFormBloc(repo, hr);
-      b.add(const EmployeeFormInitialized());
-      await until(() => !b.state.loading);
-      b.add(EmployeeDraftChanged((d) => d.copyWith(firstName: 'Retained')));
-      b.add(const EmployeeSubmitted());
-      await until(() => b.state.failure != null);
-      expect(b.state.dirty, isTrue);
-      expect(b.state.draft.firstName, 'Retained');
-      b.add(EmployeeDraftChanged((_) => validDraft()));
-      b.add(const EmployeeSubmitted());
-      b.add(const EmployeeSubmitted());
-      await until(() => b.state.savedId != null);
-      expect(b.state.dirty, isFalse);
-      expect((await dao.page(hr)).total, 26);
-      expect((await db.select(db.syncOutbox).get()).length, 1);
-      await b.close();
     },
   );
   test(

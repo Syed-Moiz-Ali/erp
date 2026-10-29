@@ -2664,6 +2664,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empLoginPassword => 'Password';
 
   @override
+  String get empLoginBranch => 'Login branch';
+
+  @override
+  String get dateOfBirth => 'Date of birth';
+
+  @override
+  String get empMaritalStatus => 'Marital status';
+
+  @override
+  String get empEmployeeType => 'Employee type';
+
+  @override
+  String get empGratuity => 'Gratuity';
+
+  @override
+  String get empWorkingHours => 'Working hours';
+
+  @override
+  String get empTransportation => 'Transportation';
+
+  @override
+  String get empAccommodation => 'Accommodation';
+
+  @override
   String get empEnableLogin => 'Enable login';
 
   @override
