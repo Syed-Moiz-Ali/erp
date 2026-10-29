@@ -285,6 +285,25 @@ Permission catalog data notes:
 | AC8 | Access history / audit trail | no endpoint | **NEEDS-UI-DECISION:** history stays empty; no backend source exists. |
 | AC9 | Branch permission enum / labels | branch keys deferred | **NEEDS-UI-DECISION:** enum values and labels are deferred until the Branches module is approved. |
 
+### 3.9 Employee Shifts
+
+**DATA-ONLY WIRED, no screen (NEEDS-UI-DECISION):** there is no baseline Employee Shifts screen, route, widget or l10n copy. The data layer lives under `lib/modules/hr/employee_shifts/` and is registered only in backend mode. No demo/local store exists and none is registered in demo/disabled.
+
+| Item | Value |
+|---|---|
+| Interface | `EmployeeShiftRepository` (`list`, `getById`, `create`, `update`, `deactivate`) |
+| Backend adapter | `RemoteEmployeeShiftRepository` over `DioEmployeeShiftRemoteDataSource`; registered by DI only when `AppConfig.realApiEnabled`. |
+| Endpoints | `GET /api/employee-shifts` (list), `GET /api/employee-shifts/{id}`, `POST /api/employee-shifts`, `PUT /api/employee-shifts/{id}`, `POST /api/employee-shifts/{id}/deactivate`. |
+| List query | `employeeId`, `shiftId`, `fromDate`, `toDate`, `includeInactive`, `page`, `pageSize`; empty filters are omitted and the returned paging values are kept. |
+| Create body | `{employeeId, shiftId, fromDate, toDate, optional IANA timeZoneId}`. |
+| Update body | `{shiftId, fromDate, toDate, optional timeZoneId}`. `employeeId` is immutable and is never sent. |
+| Deactivate | `POST /api/employee-shifts/{id}/deactivate` with no body. |
+| Dates | `fromDate`/`toDate` stay ISO date strings exactly as sent by the backend; no time-zone conversion or invented day shift is applied. `timeZoneId` is an IANA id and is omitted when null/blank. |
+| Client validation | Before any request: create requires `employeeId` and `shiftId`; create and update require both dates and `fromDate <= toDate` (`FailureKind.validation`), otherwise nothing is sent. |
+| Error mapping | `EMPLOYEE_SHIFT_NOT_FOUND` -> `FailureKind.notFound`. `EMPLOYEE_SHIFT_OVERLAP`, `EMPLOYEE_SHIFT_LIMIT`, `EMPLOYEE_SHIFT_HAS_PUNCHES`, `EMPLOYEE_SHIFT_ALREADY_REMOVED` -> `FailureKind.conflict`. `EMPLOYEE_SHIFT_TIMEZONE_MISMATCH`, `EMPLOYEE_SHIFT_BRANCH_TIMEZONE_MISSING` -> `FailureKind.validation`. The backend code and safe server message are preserved. |
+| Timezone / overlap rules | Overlap detection, the per-employee assignment limit, timezone-vs-branch matching and "has punches" are **backend-authoritative**; the client never computes or bypasses them. Deactivate does **not** treat `EMPLOYEE_SHIFT_ALREADY_REMOVED` as success. |
+| UI impact | None. No screen, route, widget, layout or l10n change. Building the list/detail/form UI remains a **NEEDS-UI-DECISION** (Departments page/route pattern) for a later approved session. |
+
 ---
 
 ## 4. Permission mapping (data only)
@@ -326,7 +345,7 @@ Rules:
 | Module | Baseline screen | Proposed route(s) | Endpoints | Permission | Build order |
 |---|---|---|---|---|---|
 | Branches (Company) | none | `/app/settings/branches` (+ list/detail/form routes in the Departments pattern) | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` (enum + labels deferred) | Last, after Departments |
-| Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/create/update/deactivate | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
+| Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/get/create/update/deactivate - **data layer wired, no screen (NEEDS-UI-DECISION)** | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
 | Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
 
 These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. They are explicitly out of scope for this phase.

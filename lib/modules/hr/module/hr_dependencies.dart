@@ -36,6 +36,9 @@ import 'package:modular_erp/modules/hr/employees/data/local_employee_repository.
 import 'package:modular_erp/modules/hr/employees/domain/employee_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/datasources/dio_live_employee_data_source.dart';
 import 'package:modular_erp/modules/hr/employees/live/data/repositories/remote_employee_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/data/datasources/dio_employee_shift_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/data/repositories/remote_employee_shift_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift_repository.dart';
 import 'package:modular_erp/modules/hr/leave/data/leave_configuration_repositories.dart';
 import 'package:modular_erp/modules/hr/leave/data/local_leave_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_repository.dart';
@@ -181,6 +184,13 @@ void configureHrDependencies(GetIt services) {
       if (repo is RemoteShiftRepository) repo.dispose();
     },
   );
+  if (AppConfig.realApiEnabled) {
+    services.registerLazySingleton<EmployeeShiftRepository>(
+      () => RemoteEmployeeShiftRepository(
+        DioEmployeeShiftRemoteDataSource(services<ApiClient>()),
+      ),
+    );
+  }
   services.registerLazySingleton<DepartmentRepository>(
     () => AppConfig.realApiEnabled
         ? RemoteDepartmentRepository(
