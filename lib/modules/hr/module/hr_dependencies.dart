@@ -29,6 +29,10 @@ import 'package:modular_erp/modules/hr/departments/data/repositories/remote_depa
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/data/local_attendance_policy_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy_repository.dart';
+import 'package:modular_erp/modules/hr/branches/data/datasources/branch_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/account_provisioning_repository.dart';
 import 'package:modular_erp/modules/hr/employees/data/employee_dao.dart';
 import 'package:modular_erp/modules/hr/employees/data/local_account_access_guard.dart';
@@ -189,6 +193,12 @@ void configureHrDependencies(GetIt services) {
       () => RemoteEmployeeShiftRepository(
         DioEmployeeShiftRemoteDataSource(services<ApiClient>()),
       ),
+    );
+    services.registerLazySingleton<BranchRemoteDataSource>(
+      () => DioBranchRemoteDataSource(services<ApiClient>()),
+    );
+    services.registerLazySingleton<BranchRepository>(
+      () => RemoteBranchRepository(services<BranchRemoteDataSource>()),
     );
   }
   services.registerLazySingleton<DepartmentRepository>(

@@ -8,6 +8,10 @@ import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/bootstrap/dependencies.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/modules/hr/branches/data/datasources/branch_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
+import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/live/data/remote_attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/data/local_attendance_repository.dart';
@@ -85,6 +89,11 @@ void main() {
         services<EmployeeShiftRepository>(),
         isA<RemoteEmployeeShiftRepository>(),
       );
+      expect(services<BranchRepository>(), isA<RemoteBranchRepository>());
+      expect(
+        services<BranchRemoteDataSource>(),
+        isA<DioBranchRemoteDataSource>(),
+      );
       expect(services<EmployeeRepository>(), isA<RemoteEmployeeRepository>());
       expect(
         services<AttendanceRepository>(),
@@ -125,6 +134,8 @@ void main() {
       );
       expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
       expect(services.isRegistered<EmployeeShiftRepository>(), isFalse);
+      expect(services.isRegistered<BranchRepository>(), isFalse);
+      expect(services.isRegistered<BranchRemoteDataSource>(), isFalse);
       expect(services<EmployeeRepository>(), isA<LocalEmployeeRepository>());
       expect(
         services<AttendanceRepository>(),
@@ -158,6 +169,8 @@ void main() {
       );
       expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
       expect(services.isRegistered<EmployeeShiftRepository>(), isFalse);
+      expect(services.isRegistered<BranchRepository>(), isFalse);
+      expect(services.isRegistered<BranchRemoteDataSource>(), isFalse);
       expect(services<EmployeeRepository>(), isA<LocalEmployeeRepository>());
       expect(
         services<AttendanceRepository>(),

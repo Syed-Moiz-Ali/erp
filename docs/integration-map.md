@@ -344,11 +344,19 @@ Rules:
 
 | Module | Baseline screen | Proposed route(s) | Endpoints | Permission | Build order |
 |---|---|---|---|---|---|
-| Branches (Company) | none | `/app/settings/branches` (+ list/detail/form routes in the Departments pattern) | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` (enum + labels deferred) | Last, after Departments |
+| Branches (Company) | none | `/app/settings/branches` (proposed; **data layer wired, no screen (NEEDS-UI-DECISION)**) | `/api/branches/lookups`, list, get, create, update, activate, deactivate — **DATA-ONLY wired, no screen** | `companyBranchView` / `companyBranchManage` (enum + labels deferred) | Last, after Departments |
 | Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/get/create/update/deactivate - **data layer wired, no screen (NEEDS-UI-DECISION)** | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
 | Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
 
 These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. They are explicitly out of scope for this phase.
+
+### Branches data-only notes
+
+* `/api/branches` is wired behind `BranchRepository` in backend mode only; demo/disabled modes register no branch repository because no local branch source exists.
+* No screen, route, widget or l10n source is added. The proposed `/app/settings/branches` UI is **NEEDS-UI-DECISION**.
+* Branch permission enum values and labels (`companyBranchView` / `companyBranchManage`) remain deferred.
+* The list `status` filter sends the backend strings `Active` / `InActive` (not a `statusId`); no other filters are invented.
+* `timeZoneId` is required on create/update and must be an IANA value from `/api/branches/lookups`; no default time zone is invented.
 
 ---
 
