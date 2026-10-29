@@ -1,0 +1,713 @@
+{
+  "success": true,
+  "message": "Lookups retrieved.",
+  "data": {
+    "divisions": [
+      {
+        "id": 1,
+        "name": "Sanitized Name"
+      }
+    ],
+    "statuses": [
+      "Active",
+      "InActive"
+    ],
+    "yesNo": [
+      "Yes",
+      "No"
+    ],
+    "timeZones": [
+      {
+        "id": "Etc/GMT+12",
+        "name": "Sanitized Name",
+        "utcOffset": "-12:00"
+      },
+      {
+        "id": "Etc/GMT+11",
+        "name": "Sanitized Name",
+        "utcOffset": "-11:00"
+      },
+      {
+        "id": "Pacific/Honolulu",
+        "name": "Sanitized Name",
+        "utcOffset": "-10:00"
+      },
+      {
+        "id": "Pacific/Marquesas",
+        "name": "Sanitized Name",
+        "utcOffset": "-09:30"
+      },
+      {
+        "id": "Etc/GMT+9",
+        "name": "Sanitized Name",
+        "utcOffset": "-09:00"
+      },
+      {
+        "id": "America/Adak",
+        "name": "Sanitized Name",
+        "utcOffset": "-09:00"
+      },
+      {
+        "id": "Etc/GMT+8",
+        "name": "Sanitized Name",
+        "utcOffset": "-08:00"
+      },
+      {
+        "id": "America/Anchorage",
+        "name": "Sanitized Name",
+        "utcOffset": "-08:00"
+      },
+      {
+        "id": "America/Phoenix",
+        "name": "Sanitized Name",
+        "utcOffset": "-07:00"
+      },
+      {
+        "id": "America/Chihuahua",
+        "name": "Sanitized Name",
+        "utcOffset": "-07:00"
+      },
+      {
+        "id": "America/Whitehorse",
+        "name": "Sanitized Name",
+        "utcOffset": "-07:00"
+      },
+      {
+        "id": "America/Tijuana",
+        "name": "Sanitized Name",
+        "utcOffset": "-07:00"
+      },
+      {
+        "id": "America/Los_Angeles",
+        "name": "Sanitized Name",
+        "utcOffset": "-07:00"
+      },
+      {
+        "id": "America/Guatemala",
+        "name": "Sanitized Name",
+        "utcOffset": "-06:00"
+      },
+      {
+        "id": "America/Mexico_City",
+        "name": "Sanitized Name",
+        "utcOffset": "-06:00"
+      },
+      {
+        "id": "America/Regina",
+        "name": "Sanitized Name",
+        "utcOffset": "-06:00"
+      },
+      {
+        "id": "America/Denver",
+        "name": "Sanitized Name",
+        "utcOffset": "-06:00"
+      },
+      {
+        "id": "America/Bogota",
+        "name": "Sanitized Name",
+        "utcOffset": "-05:00"
+      },
+      {
+        "id": "America/Cancun",
+        "name": "Sanitized Name",
+        "utcOffset": "-05:00"
+      },
+      {
+        "id": "America/Chicago",
+        "name": "Sanitized Name",
+        "utcOffset": "-05:00"
+      },
+      {
+        "id": "Pacific/Easter",
+        "name": "Sanitized Name",
+        "utcOffset": "-05:00"
+      },
+      {
+        "id": "America/Caracas",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Cuiaba",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/La_Paz",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/New_York",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Port-au-Prince",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Havana",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Indiana/Indianapolis",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Grand_Turk",
+        "name": "Sanitized Name",
+        "utcOffset": "-04:00"
+      },
+      {
+        "id": "America/Araguaina",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Asuncion",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Sao_Paulo",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Cayenne",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Argentina/Buenos_Aires",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Montevideo",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Punta_Arenas",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Bahia",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Halifax",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/Santiago",
+        "name": "Sanitized Name",
+        "utcOffset": "-03:00"
+      },
+      {
+        "id": "America/St_Johns",
+        "name": "Sanitized Name",
+        "utcOffset": "-02:30"
+      },
+      {
+        "id": "Etc/GMT+2",
+        "name": "Sanitized Name",
+        "utcOffset": "-02:00"
+      },
+      {
+        "id": "America/Nuuk",
+        "name": "Sanitized Name",
+        "utcOffset": "-02:00"
+      },
+      {
+        "id": "America/Miquelon",
+        "name": "Sanitized Name",
+        "utcOffset": "-02:00"
+      },
+      {
+        "id": "Atlantic/Azores",
+        "name": "Sanitized Name",
+        "utcOffset": "-01:00"
+      },
+      {
+        "id": "Atlantic/Cape_Verde",
+        "name": "Sanitized Name",
+        "utcOffset": "-01:00"
+      },
+      {
+        "id": "UTC",
+        "name": "Sanitized Name",
+        "utcOffset": "+00:00"
+      },
+      {
+        "id": "Europe/London",
+        "name": "Sanitized Name",
+        "utcOffset": "+00:00"
+      },
+      {
+        "id": "Atlantic/Reykjavik",
+        "name": "Sanitized Name",
+        "utcOffset": "+00:00"
+      },
+      {
+        "id": "Africa/Sao_Tome",
+        "name": "Sanitized Name",
+        "utcOffset": "+00:00"
+      },
+      {
+        "id": "Europe/Berlin",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Europe/Budapest",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Europe/Paris",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Africa/Casablanca",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Europe/Warsaw",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Africa/Lagos",
+        "name": "Sanitized Name",
+        "utcOffset": "+01:00"
+      },
+      {
+        "id": "Europe/Bucharest",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Asia/Beirut",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Europe/Chisinau",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Asia/Hebron",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Africa/Johannesburg",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Europe/Kiev",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Asia/Jerusalem",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Europe/Kaliningrad",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Africa/Khartoum",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Africa/Tripoli",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Africa/Windhoek",
+        "name": "Sanitized Name",
+        "utcOffset": "+02:00"
+      },
+      {
+        "id": "Africa/Cairo",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Asia/Amman",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Asia/Baghdad",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Asia/Damascus",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Europe/Istanbul",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Asia/Riyadh",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Europe/Minsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Europe/Moscow",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Africa/Nairobi",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Europe/Volgograd",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:00"
+      },
+      {
+        "id": "Asia/Tehran",
+        "name": "Sanitized Name",
+        "utcOffset": "+03:30"
+      },
+      {
+        "id": "Asia/Dubai",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Europe/Astrakhan",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Asia/Baku",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Europe/Samara",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Indian/Mauritius",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Europe/Saratov",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Asia/Tbilisi",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Asia/Yerevan",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:00"
+      },
+      {
+        "id": "Asia/Kabul",
+        "name": "Sanitized Name",
+        "utcOffset": "+04:30"
+      },
+      {
+        "id": "Asia/Tashkent",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:00"
+      },
+      {
+        "id": "Asia/Qyzylorda",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:00"
+      },
+      {
+        "id": "Asia/Yekaterinburg",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:00"
+      },
+      {
+        "id": "Asia/Karachi",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:00"
+      },
+      {
+        "id": "Asia/Kolkata",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:30"
+      },
+      {
+        "id": "Asia/Colombo",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:30"
+      },
+      {
+        "id": "Asia/Kathmandu",
+        "name": "Sanitized Name",
+        "utcOffset": "+05:45"
+      },
+      {
+        "id": "Asia/Almaty",
+        "name": "Sanitized Name",
+        "utcOffset": "+06:00"
+      },
+      {
+        "id": "Asia/Dhaka",
+        "name": "Sanitized Name",
+        "utcOffset": "+06:00"
+      },
+      {
+        "id": "Asia/Omsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+06:00"
+      },
+      {
+        "id": "Asia/Yangon",
+        "name": "Sanitized Name",
+        "utcOffset": "+06:30"
+      },
+      {
+        "id": "Asia/Bangkok",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Barnaul",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Hovd",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Krasnoyarsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Novosibirsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Tomsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+07:00"
+      },
+      {
+        "id": "Asia/Shanghai",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Asia/Irkutsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Asia/Singapore",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Australia/Perth",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Asia/Taipei",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Asia/Ulaanbaatar",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:00"
+      },
+      {
+        "id": "Australia/Eucla",
+        "name": "Sanitized Name",
+        "utcOffset": "+08:45"
+      },
+      {
+        "id": "Asia/Chita",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:00"
+      },
+      {
+        "id": "Asia/Tokyo",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:00"
+      },
+      {
+        "id": "Asia/Pyongyang",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:00"
+      },
+      {
+        "id": "Asia/Seoul",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:00"
+      },
+      {
+        "id": "Asia/Yakutsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:00"
+      },
+      {
+        "id": "Australia/Darwin",
+        "name": "Sanitized Name",
+        "utcOffset": "+09:30"
+      },
+      {
+        "id": "Australia/Brisbane",
+        "name": "Sanitized Name",
+        "utcOffset": "+10:00"
+      },
+      {
+        "id": "Pacific/Port_Moresby",
+        "name": "Sanitized Name",
+        "utcOffset": "+10:00"
+      },
+      {
+        "id": "Asia/Vladivostok",
+        "name": "Sanitized Name",
+        "utcOffset": "+10:00"
+      },
+      {
+        "id": "Australia/Adelaide",
+        "name": "Sanitized Name",
+        "utcOffset": "+10:30"
+      },
+      {
+        "id": "Australia/Sydney",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Australia/Hobart",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Australia/Lord_Howe",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Pacific/Bougainville",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Asia/Srednekolymsk",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Asia/Magadan",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Asia/Sakhalin",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Pacific/Guadalcanal",
+        "name": "Sanitized Name",
+        "utcOffset": "+11:00"
+      },
+      {
+        "id": "Pacific/Norfolk",
+        "name": "Sanitized Name",
+        "utcOffset": "+12:00"
+      },
+      {
+        "id": "Asia/Kamchatka",
+        "name": "Sanitized Name",
+        "utcOffset": "+12:00"
+      },
+      {
+        "id": "Etc/GMT-12",
+        "name": "Sanitized Name",
+        "utcOffset": "+12:00"
+      },
+      {
+        "id": "Pacific/Fiji",
+        "name": "Sanitized Name",
+        "utcOffset": "+12:00"
+      },
+      {
+        "id": "Pacific/Auckland",
+        "name": "Sanitized Name",
+        "utcOffset": "+13:00"
+      },
+      {
+        "id": "Etc/GMT-13",
+        "name": "Sanitized Name",
+        "utcOffset": "+13:00"
+      },
+      {
+        "id": "Pacific/Tongatapu",
+        "name": "Sanitized Name",
+        "utcOffset": "+13:00"
+      },
+      {
+        "id": "Pacific/Apia",
+        "name": "Sanitized Name",
+        "utcOffset": "+13:00"
+      },
+      {
+        "id": "Pacific/Chatham",
+        "name": "Sanitized Name",
+        "utcOffset": "+13:45"
+      },
+      {
+        "id": "Pacific/Kiritimati",
+        "name": "Sanitized Name",
+        "utcOffset": "+14:00"
+      }
+    ]
+  },
+  "errors": []
+}

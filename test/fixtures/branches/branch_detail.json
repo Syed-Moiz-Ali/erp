@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "message": "Company retrieved.",
+  "data": {
+    "branchId": 2,
+    "branchName": "Branch 2",
+    "branchCode": "BT",
+    "contactPerson": "Sanitized Name",
+    "mobileNo": "SANITIZED_MOBILE",
+    "landLine": "SANITIZED_MOBILE",
+    "address": "Sanitized Address",
+    "email": "sanitized@example.com",
+    "inventoryAlerts": "Yes",
+    "multiInventory": "Yes",
+    "divisionId": 1,
+    "divisionName": "Mass Technologies",
+    "status": "Active",
+    "timeZoneId": "Asia/Kolkata",
+    "trn": null,
+    "logoPath": null,
+    "arabicLogoPath": null,
+    "labourCode": null,
+    "tradeLicense": null,
+    "createdBy": 8,
+    "createdOn": "2026-09-28T13:26:29.017Z",
+    "updatedBy": 8,
+    "updatedOn": "2026-10-08T10:55:50.66Z"
+  },
+  "errors": []
+}

@@ -21,6 +21,15 @@ class BranchDto {
     divisionId: (json['divisionId'] as num?)?.toInt(),
     divisionName: json['divisionName'] as String?,
     timeZoneId: json['timeZoneId'] as String?,
+    trn: json['trn'] as String?,
+    logoPath: json['logoPath'] as String?,
+    arabicLogoPath: json['arabicLogoPath'] as String?,
+    labourCode: json['labourCode'] as String?,
+    tradeLicense: json['tradeLicense'] as String?,
+    createdBy: (json['createdBy'] as num?)?.toInt(),
+    createdOn: _date(json['createdOn']),
+    updatedBy: (json['updatedBy'] as num?)?.toInt(),
+    updatedOn: _date(json['updatedOn']),
   );
 }
 
@@ -39,4 +48,8 @@ Map<String, dynamic> branchBody(BranchDraft draft) => {
   'timeZoneId': draft.timeZoneId,
 };
 
-String? _emptyToNull(String value) => value.trim().isEmpty ? null : value.trim();
+String? _emptyToNull(String value) =>
+    value.trim().isEmpty ? null : value.trim();
+
+DateTime? _date(Object? value) =>
+    value is String ? DateTime.tryParse(value) : null;

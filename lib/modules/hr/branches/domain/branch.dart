@@ -14,6 +14,15 @@ class Branch {
     this.divisionId,
     this.divisionName,
     this.timeZoneId,
+    this.trn,
+    this.logoPath,
+    this.arabicLogoPath,
+    this.labourCode,
+    this.tradeLicense,
+    this.createdBy,
+    this.createdOn,
+    this.updatedBy,
+    this.updatedOn,
   });
 
   final int id;
@@ -30,6 +39,9 @@ class Branch {
   final int? divisionId;
   final String? divisionName;
   final String? timeZoneId;
+  final String? trn, logoPath, arabicLogoPath, labourCode, tradeLicense;
+  final int? createdBy, updatedBy;
+  final DateTime? createdOn, updatedOn;
 
   bool get isActive => status.toLowerCase() == 'active';
 }

@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
 import 'package:modular_erp/design_system/theme/app_breakpoints.dart';
@@ -14,10 +15,8 @@ class BranchesPage extends StatelessWidget {
   final BranchListCubit cubit;
 
   @override
-  Widget build(BuildContext context) => BlocProvider.value(
-    value: cubit..start(),
-    child: const _BranchesBody(),
-  );
+  Widget build(BuildContext context) =>
+      BlocProvider.value(value: cubit..start(), child: const _BranchesBody());
 }
 
 class _BranchesBody extends StatelessWidget {
@@ -32,7 +31,8 @@ class _BranchesBody extends StatelessWidget {
     builder: (context, auth) {
       final account = auth.context;
       final canManage = _can(account, AppPermission.companyBranchManage);
-      final canView = _can(account, AppPermission.companyBranchView) || canManage;
+      final canView =
+          _can(account, AppPermission.companyBranchView) || canManage;
       if (!canView) {
         return AppPage(
           header: AppPageHeader(title: context.l10n.branchTitle),
@@ -75,9 +75,7 @@ class _BranchesBody extends StatelessWidget {
                         ),
                         for (final status in ['Active', 'InActive'])
                           AppFilterChip(
-                            label: status == 'Active'
-                                ? l.active
-                                : l.inactive,
+                            label: status == 'Active' ? l.active : l.inactive,
                             selected: state.status == status,
                             onSelected: (_) => cubit.statusChanged(status),
                           ),
@@ -95,8 +93,7 @@ class _BranchesBody extends StatelessWidget {
                   const AppLoadingState()
                 else if (state.failure != null)
                   AppErrorState(
-                    message:
-                        state.failure!.serverMessage ?? l.failureRequest,
+                    message: state.failure!.serverMessage ?? l.failureRequest,
                     onRetry: cubit.load,
                   )
                 else if (state.items.isEmpty)
@@ -110,8 +107,7 @@ class _BranchesBody extends StatelessWidget {
                     children: [
                       for (final branch in state.items)
                         Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: AppSpacing.md),
+                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
                           child: AppMobileRecordCard(
                             title: branch.name,
                             subtitle: branch.code ?? branch.timeZoneId ?? '',
@@ -119,8 +115,9 @@ class _BranchesBody extends StatelessWidget {
                             status: branch.isActive
                                 ? AppStatus.success
                                 : AppStatus.neutral,
-                            statusLabel:
-                                branch.isActive ? l.active : l.inactive,
+                            statusLabel: branch.isActive
+                                ? l.active
+                                : l.inactive,
                             trailing: _actions(
                               context,
                               cubit,
@@ -209,8 +206,7 @@ class _BranchesBody extends StatelessWidget {
             if (failure != null && context.mounted) {
               AppFeedback.showMessage(
                 context,
-                message: (l) =>
-                    failure.serverMessage ?? l.failureRequest,
+                message: (l) => failure.serverMessage ?? l.failureRequest,
               );
             }
           },
@@ -254,7 +250,7 @@ class _BranchesBody extends StatelessWidget {
   ) async {
     final lookups = cubit.state.lookups;
     if (lookups == null) return;
-    final draft = await AppDialog.show<BranchDraft>(
+    final saved = await AppDialog.show<bool>(
       context,
       (dialogContext) => _BranchEditor(
         lookups: lookups,
@@ -284,22 +280,11 @@ class _BranchesBody extends StatelessWidget {
         title: branch == null
             ? dialogContext.l10n.branchAdd
             : dialogContext.l10n.branchEdit,
+        onSave: (draft) => cubit.save(branch?.id, draft),
       ),
     );
-    if (draft == null) return;
-    final failure = await cubit.save(branch?.id, draft);
-    if (context.mounted) {
-      if (failure == null) {
-        AppFeedback.showMessage(
-          context,
-          message: (l) => l.branchSaved,
-        );
-      } else {
-        AppFeedback.showMessage(
-          context,
-          message: (l) => failure.serverMessage ?? l.failureRequest,
-        );
-      }
+    if (saved == true && context.mounted) {
+      AppFeedback.showMessage(context, message: (l) => l.branchSaved);
     }
   }
 }
@@ -309,10 +294,12 @@ class _BranchEditor extends StatefulWidget {
     required this.lookups,
     required this.initial,
     required this.title,
+    required this.onSave,
   });
   final BranchLookups lookups;
   final BranchDraft initial;
   final String title;
+  final Future<Failure?> Function(BranchDraft) onSave;
 
   @override
   State<_BranchEditor> createState() => _BranchEditorState();
@@ -328,6 +315,8 @@ class _BranchEditorState extends State<_BranchEditor> {
   late final _address = TextEditingController(text: _draft.address);
   late final _email = TextEditingController(text: _draft.email);
   Map<String, String> _errors = const {};
+  bool _saving = false;
+  String? _generalError;
 
   @override
   void dispose() {
@@ -341,6 +330,56 @@ class _BranchEditorState extends State<_BranchEditor> {
     super.dispose();
   }
 
+  String? _errorText(String field) {
+    final value = _errors[field];
+    if (value == null) return null;
+    if (value == 'required' || value == 'tooLong') {
+      return context.l10n.fieldRequired;
+    }
+    return value;
+  }
+
+  Future<void> _submit() async {
+    final draft = _draft.copyWith(
+      name: _name.text,
+      code: _code.text,
+      contactPerson: _contact.text,
+      mobileNo: _mobile.text,
+      landLine: _landLine.text,
+      address: _address.text,
+      email: _email.text,
+    );
+    final local = draft.validate();
+    if (local.isNotEmpty) {
+      setState(() => _errors = local);
+      return;
+    }
+    setState(() {
+      _saving = true;
+      _errors = const {};
+      _generalError = null;
+    });
+    final failure = await widget.onSave(draft);
+    if (!mounted) return;
+    if (failure == null) {
+      Navigator.pop(context, true);
+      return;
+    }
+    final field = failure.field;
+    setState(() {
+      _saving = false;
+      if (field != null) {
+        _errors = {field: failure.serverMessage ?? failure.code};
+      } else if (failure.code == 'BRANCH_DUPLICATE_NAME') {
+        _errors = {
+          field ?? 'branchName': failure.serverMessage ?? failure.code,
+        };
+      } else {
+        _generalError = failure.serverMessage ?? context.l10n.failureRequest;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -349,56 +388,79 @@ class _BranchEditorState extends State<_BranchEditor> {
       actions: [
         AppTextButton(
           label: l.cancel,
-          onPressed: () => Navigator.pop(context),
+          onPressed: _saving ? null : () => Navigator.pop(context),
         ),
         AppPrimaryButton(
           label: l.save,
-          onPressed: () {
-            final draft = _draft.copyWith(
-              name: _name.text,
-              code: _code.text,
-              contactPerson: _contact.text,
-              mobileNo: _mobile.text,
-              landLine: _landLine.text,
-              address: _address.text,
-              email: _email.text,
-            );
-            final errors = draft.validate();
-            if (errors.isNotEmpty) {
-              setState(() => _errors = errors);
-              return;
-            }
-            Navigator.pop(context, draft);
-          },
+          loading: _saving,
+          onPressed: _saving ? null : _submit,
         ),
       ],
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (_generalError != null) ...[
+              Text(
+                _generalError!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              const SizedBox(height: AppSpacing.md),
+            ],
             AppTextField(
               label: l.cfgName,
               controller: _name,
               required: true,
-              errorText: _errors['branchName'] == null
-                  ? null
-                  : l.fieldRequired,
+              enabled: !_saving,
+              errorText: _errorText('branchName'),
             ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.branchCode, controller: _code),
+            AppTextField(
+              label: l.branchCode,
+              controller: _code,
+              enabled: !_saving,
+              errorText: _errorText('branchCode'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.branchContact, controller: _contact),
+            AppTextField(
+              label: l.branchContact,
+              controller: _contact,
+              enabled: !_saving,
+              errorText: _errorText('contactPerson'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.branchMobile, controller: _mobile),
+            AppTextField(
+              label: l.branchMobile,
+              controller: _mobile,
+              enabled: !_saving,
+              errorText: _errorText('mobileNo'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.branchLandLine, controller: _landLine),
+            AppTextField(
+              label: l.branchLandLine,
+              controller: _landLine,
+              enabled: !_saving,
+              errorText: _errorText('landLine'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.email, controller: _email),
+            AppTextField(
+              label: l.email,
+              controller: _email,
+              enabled: !_saving,
+              errorText: _errorText('email'),
+            ),
             const SizedBox(height: AppSpacing.md),
-            AppTextField(label: l.branchAddress, controller: _address),
+            AppTextField(
+              label: l.branchAddress,
+              controller: _address,
+              enabled: !_saving,
+              errorText: _errorText('address'),
+            ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<int>(
               label: l.branchDivision,
+              enabled: !_saving,
+              errorText: _errorText('divisionId'),
               value: _draft.divisionId,
               options: [
                 for (final division in widget.lookups.divisions)
@@ -407,41 +469,35 @@ class _BranchEditorState extends State<_BranchEditor> {
                     division.name,
                   ),
               ],
-              onChanged: (value) => setState(
-                () => _draft = _draft.copyWith(divisionId: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _draft.copyWith(divisionId: value)),
             ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<String>(
               label: l.branchTimeZone,
               required: true,
+              enabled: !_saving,
               value: _draft.timeZoneId,
-              errorText: _errors['timeZoneId'] == null
-                  ? null
-                  : l.fieldRequired,
+              errorText: _errorText('timeZoneId'),
               options: [
                 for (final zone in widget.lookups.timeZones)
-                  AppSelectOption(
-                    zone.id,
-                    zone.name,
-                    subtitle: zone.utcOffset,
-                  ),
+                  AppSelectOption(zone.id, zone.name, subtitle: zone.utcOffset),
               ],
-              onChanged: (value) => setState(
-                () => _draft = _draft.copyWith(timeZoneId: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _draft.copyWith(timeZoneId: value)),
             ),
             const SizedBox(height: AppSpacing.md),
             AppSelectField<String>(
               label: l.status,
+              enabled: !_saving,
+              errorText: _errorText('status'),
               value: _draft.status,
               options: [
                 for (final status in widget.lookups.statuses)
                   AppSelectOption(status, status),
               ],
-              onChanged: (value) => setState(
-                () => _draft = _draft.copyWith(status: value),
-              ),
+              onChanged: (value) =>
+                  setState(() => _draft = _draft.copyWith(status: value)),
             ),
           ],
         ),
@@ -449,6 +505,3 @@ class _BranchEditorState extends State<_BranchEditor> {
     );
   }
 }
-
-
-
