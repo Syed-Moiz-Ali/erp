@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/localization/app_formatters.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
@@ -181,6 +181,31 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
                 message: [scopeNote, l.accessReplaceAllHint].join(' '),
                 icon: Icons.info_outline,
               ),
+              if (!state.loading &&
+                  state.grants.isEmpty &&
+                  state.draft.isEmpty &&
+                  state.orphans.isEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                AppCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l.accessNoPermissionsAssigned,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      if (cubit.canManage)
+                        AppPrimaryButton(
+                          label: l.accessAddPermissions,
+                          onPressed: state.saving
+                              ? null
+                              : () => _addPermissions(context, cubit),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
               if (state.orphans.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.lg),
                 AppCard(
@@ -451,17 +476,14 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
                 label: l.accessAddPermissions,
                 onPressed: selected.isEmpty
                     ? null
-                    : () => Navigator.pop(
-                        dialogContext,
-                        [
-                          for (final definition in cubit.catalog.definitions)
-                            if (selected.contains(definition.key))
-                              PermissionGrantInput(
-                                key: definition.key,
-                                scope: scopeFor(definition),
-                              ),
-                        ],
-                      ),
+                    : () => Navigator.pop(dialogContext, [
+                        for (final definition in cubit.catalog.definitions)
+                          if (selected.contains(definition.key))
+                            PermissionGrantInput(
+                              key: definition.key,
+                              scope: scopeFor(definition),
+                            ),
+                      ]),
               ),
             ],
             child: SizedBox(
@@ -476,54 +498,52 @@ class _UserAccessBodyState extends State<_UserAccessBody> {
                     height: 360,
                     child: ListView(
                       children: [
-                          for (final module in cubit.catalog.orderedModules)
-                            if (module.definitions
-                                .where(
-                                  (definition) =>
-                                      !existing.contains(definition.key) &&
-                                      cubit
-                                          .canGrant(definition)
-                                          .allowed,
-                                )
-                                .isNotEmpty) ...[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: AppSpacing.md,
-                                  bottom: AppSpacing.xs,
-                                ),
-                                child: Text(
-                                  l.moduleLabel(module.nameKey),
-                                  style: Theme.of(dialogContext)
-                                      .textTheme
-                                      .titleSmall,
-                                ),
+                        for (final module in cubit.catalog.orderedModules)
+                          if (module.definitions
+                              .where(
+                                (definition) =>
+                                    !existing.contains(definition.key) &&
+                                    cubit.canGrant(definition).allowed,
+                              )
+                              .isNotEmpty) ...[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: AppSpacing.md,
+                                bottom: AppSpacing.xs,
                               ),
-                              for (final definition in module.definitions)
-                                if (!existing.contains(definition.key) &&
-                                    cubit.canGrant(definition).allowed)
-                                  CheckboxListTile(
-                                    value: selected.contains(definition.key),
-                                    onChanged: (value) => setState(() {
-                                      if (value == true) {
-                                        selected.add(definition.key);
-                                      } else {
-                                        selected.remove(definition.key);
-                                      }
-                                    }),
-                                    title: Text(
-                                      l.permissionLabel(definition.nameKey),
-                                    ),
-                                    subtitle: Text(
-                                      l.permissionDescription(
-                                        definition.descriptionKey,
-                                      ),
-                                    ),
-                                    dense: true,
+                              child: Text(
+                                l.moduleLabel(module.nameKey),
+                                style: Theme.of(
+                                  dialogContext,
+                                ).textTheme.titleSmall,
+                              ),
+                            ),
+                            for (final definition in module.definitions)
+                              if (!existing.contains(definition.key) &&
+                                  cubit.canGrant(definition).allowed)
+                                CheckboxListTile(
+                                  value: selected.contains(definition.key),
+                                  onChanged: (value) => setState(() {
+                                    if (value == true) {
+                                      selected.add(definition.key);
+                                    } else {
+                                      selected.remove(definition.key);
+                                    }
+                                  }),
+                                  title: Text(
+                                    l.permissionLabel(definition.nameKey),
                                   ),
-                            ],
-                        ],
-                      ),
+                                  subtitle: Text(
+                                    l.permissionDescription(
+                                      definition.descriptionKey,
+                                    ),
+                                  ),
+                                  dense: true,
+                                ),
+                          ],
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
@@ -701,5 +721,3 @@ class _History extends StatelessWidget {
     );
   }
 }
-
-

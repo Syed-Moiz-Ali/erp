@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modular_erp/app/router/app_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
@@ -10,6 +12,13 @@ import 'package:modular_erp/modules/hr/employees/live/domain/live_employee.dart'
 import 'package:modular_erp/modules/hr/employees/live/presentation/bloc/live_employee_cubit.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
+
+bool canManageEmployeeAccess(AuthContext? account, LiveEmployee employee) =>
+    employee.loginUserId != null &&
+    account != null &&
+    PermissionChecker(
+      account.user.permissions,
+    ).can(AppPermission.accessPermissionsManage);
 
 class LiveEmployeesPage extends StatelessWidget {
   const LiveEmployeesPage({super.key, required this.cubit});
@@ -48,6 +57,10 @@ class _EmployeesBody extends StatelessWidget {
           _can(account, AppPermission.employeeUpdate);
       final canDeactivate = _can(account, AppPermission.employeeDeactivate);
       final canManageLogin = _can(account, AppPermission.userManage);
+      final canManageAccess = _can(
+        account,
+        AppPermission.accessPermissionsManage,
+      );
       return BlocBuilder<LiveEmployeeCubit, LiveEmployeeState>(
         builder: (context, state) {
           final l = context.l10n;
@@ -141,6 +154,7 @@ class _EmployeesBody extends StatelessWidget {
                               canManage: canManage,
                               canDeactivate: canDeactivate,
                               canManageLogin: canManageLogin,
+                              canManageAccess: canManageAccess,
                             ),
                           ),
                         ),
@@ -182,6 +196,7 @@ class _EmployeesBody extends StatelessWidget {
                                   canManage: canManage,
                                   canDeactivate: canDeactivate,
                                   canManageLogin: canManageLogin,
+                                  canManageAccess: canManageAccess,
                                 ),
                               ),
                             ],
@@ -213,6 +228,7 @@ class _EmployeesBody extends StatelessWidget {
     required bool canManage,
     required bool canDeactivate,
     required bool canManageLogin,
+    required bool canManageAccess,
   }) => AppActionMenu(
     tooltip: context.l10n.actions,
     actions: [
@@ -220,6 +236,11 @@ class _EmployeesBody extends StatelessWidget {
         label: (l) => l.empDetails,
         onPressed: () => _details(context, employee),
       ),
+      if (canManageAccess && employee.loginUserId != null)
+        AppMenuAction(
+          label: (l) => l.accessManageAccess,
+          onPressed: () => _manageAccess(context, employee),
+        ),
       if (canManage)
         AppMenuAction(
           label: (l) => l.empEdit,
@@ -255,11 +276,21 @@ class _EmployeesBody extends StatelessWidget {
 
   void _details(BuildContext context, LiveEmployee employee) {
     final l = context.l10n;
+    final account = context.read<AuthBloc>().state.context;
+    final canManageAccess = canManageEmployeeAccess(account, employee);
     AppDialog.show<void>(
       context,
       (dialogContext) => AppDialog(
         title: l.empDetails,
         actions: [
+          if (canManageAccess)
+            AppTextButton(
+              label: l.accessManageAccess,
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                _manageAccess(context, employee);
+              },
+            ),
           AppTextButton(
             label: l.close,
             onPressed: () => Navigator.pop(dialogContext),
@@ -283,6 +314,12 @@ class _EmployeesBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _manageAccess(BuildContext context, LiveEmployee employee) {
+    final userId = employee.loginUserId;
+    if (userId == null) return;
+    context.go(AppRoutes.accessUser('$userId'));
   }
 
   Future<void> _edit(

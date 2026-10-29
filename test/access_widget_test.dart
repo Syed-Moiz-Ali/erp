@@ -97,6 +97,13 @@ void main() {
       expect(find.text('Revoke'), findsNWidgets(3));
       expect(tester.takeException(), isNull);
 
+      // A user with no grants opens directly from the employee access entry.
+      r.go(AppRoutes.accessUser('fresh-user'));
+      await ui_test.pump(tester);
+      expect(find.text('No permissions assigned'), findsOneWidget);
+      expect(find.text('Add permissions'), findsWidgets);
+      expect(tester.takeException(), isNull);
+
       // HR is enabled for the demo company (feature flags employees/attendance/
       // leave/reports/settings), so at least one module shows as enabled.
       r.go(AppRoutes.modules);

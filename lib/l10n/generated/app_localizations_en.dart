@@ -1670,6 +1670,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessSaved => 'Access updated.';
 
   @override
+  String get accessManageAccess => 'Manage access';
+
+  @override
+  String get accessNoPermissionsAssigned => 'No permissions assigned';
+
+  @override
+  String get accessPermissionGone => 'This permission no longer exists.';
+
+  @override
   String get accessSaveFailed => 'Could not update access.';
 
   @override

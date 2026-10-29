@@ -3206,6 +3206,24 @@ abstract class AppLocalizations {
   /// **'Access updated.'**
   String get accessSaved;
 
+  /// No description provided for @accessManageAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage access'**
+  String get accessManageAccess;
+
+  /// No description provided for @accessNoPermissionsAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No permissions assigned'**
+  String get accessNoPermissionsAssigned;
+
+  /// No description provided for @accessPermissionGone.
+  ///
+  /// In en, this message translates to:
+  /// **'This permission no longer exists.'**
+  String get accessPermissionGone;
+
   /// No description provided for @accessSaveFailed.
   ///
   /// In en, this message translates to:

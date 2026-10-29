@@ -1646,6 +1646,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accessSaved => 'تم تحديث الوصول.';
 
   @override
+  String get accessManageAccess => 'إدارة الوصول';
+
+  @override
+  String get accessNoPermissionsAssigned => 'لم يتم تعيين أي أذونات';
+
+  @override
+  String get accessPermissionGone => 'هذا الإذن لم يعد موجوداً.';
+
+  @override
   String get accessSaveFailed => 'تعذّر تحديث الوصول.';
 
   @override

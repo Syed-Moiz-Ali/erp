@@ -77,10 +77,10 @@ backend owner asks for cleanup.
 3. Enter `/app/hr/employees` directly. Expected: access-denied state.
 4. Enter `/app/hr/attendance-today` directly. Expected: access-denied state.
 5. Confirm the app does not crash and does not fetch employee/attendance data.
-6. Note: the Admin Access screen cannot list this login because users are derived
-   from existing grant rows. To grant the first key, use the backend/Postman
-   `PUT /api/user-permissions/users/{userId}` with `{permissionIds:[18]}` (or the
-   official view permission once seeded).
+6. As Admin, open **Employees → Details → Manage access** for this fresh QA
+   employee. The existing user-access editor opens for `login.userId` even
+   though the account has no grants. Expected: **No permissions assigned** with
+   **Add permissions**. Add `hr.employees.view` once and save.
 7. Sign in again as the fresh employee after the grant is applied. Expected:
    Employees appears only if `hr.employees.view` is present; Edit appears only
    if `hr.employees.edit` is present.
