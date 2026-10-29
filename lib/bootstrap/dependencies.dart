@@ -4,6 +4,7 @@ import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
+import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/employees/live/domain/live_employee_repository.dart';
 import 'package:modular_erp/modules/hr/employee_shifts/data/employee_shift_api.dart';
@@ -64,7 +65,9 @@ void configureApplicationComposition(GetIt services) {
           ? services<AttendanceApi>()
           : null,
       shiftRepository: services(),
-      departmentRepository: services(),
+      departmentRepository: services.isRegistered<DepartmentRepository>()
+          ? services<DepartmentRepository>()
+          : null,
       workLocationRepository: services(),
       attendancePolicyRepository: services(),
       locationService: services(),
@@ -82,7 +85,8 @@ void configureApplicationComposition(GetIt services) {
           : null,
       accessCatalog: services(),
       accessAuthority: services(),
-      permissionMasterRepository: services.isRegistered<PermissionMasterRepository>()
+      permissionMasterRepository:
+          services.isRegistered<PermissionMasterRepository>()
           ? services<PermissionMasterRepository>()
           : null,
       serviceCustomerRepository: services(),

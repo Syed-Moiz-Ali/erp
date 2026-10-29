@@ -1,4 +1,4 @@
-﻿import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/core/api/api_client.dart';
@@ -21,7 +21,6 @@ import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_b
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/datasources/dio_department_remote_data_source.dart';
-import 'package:modular_erp/modules/hr/departments/data/repositories/local_department_repository.dart';
 import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
@@ -182,16 +181,16 @@ void configureHrDependencies(GetIt services) {
       if (repo is RemoteShiftRepository) repo.dispose();
     },
   );
-  services.registerLazySingleton<DepartmentRepository>(
-    () => AppConfig.authMode == AuthMode.backend
-        ? RemoteDepartmentRepository(
-            DioDepartmentRemoteDataSource(services<ApiClient>()),
-          )
-        : LocalDepartmentRepository(services()),
-    dispose: (repo) {
-      if (repo is RemoteDepartmentRepository) repo.dispose();
-    },
-  );
+  if (AppConfig.authMode == AuthMode.backend) {
+    services.registerLazySingleton<DepartmentRepository>(
+      () => RemoteDepartmentRepository(
+        DioDepartmentRemoteDataSource(services<ApiClient>()),
+      ),
+      dispose: (repo) {
+        if (repo is RemoteDepartmentRepository) repo.dispose();
+      },
+    );
+  }
   services.registerLazySingleton<WorkLocationRepository>(
     () => LocalWorkLocationRepository(services()),
   );
@@ -218,10 +217,3 @@ void configureHrDependencies(GetIt services) {
     () => HrWorkforceDirectory(services<AuthRepository>(), services()),
   );
 }
-
-
-
-
-
-
-

@@ -1,9 +1,6 @@
-import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:modular_erp/core/database/app_database.dart';
 import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/models/configuration_record.dart';
-import 'package:modular_erp/modules/hr/departments/data/repositories/local_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department.dart';
 
@@ -144,110 +141,6 @@ void main() {
         (await repository.assignedEmployeeCount(context, '9') as Success).value,
         7,
       );
-    });
-  });
-
-  group('LocalDepartmentRepository', () {
-    late AppDatabase db;
-    late LocalDepartmentRepository repository;
-    final context = departmentAuthContext();
-
-    setUp(() async {
-      db = AppDatabase(NativeDatabase.memory());
-      repository = LocalDepartmentRepository(db);
-      await db
-          .into(db.workforceDepartments)
-          .insert(
-            WorkforceDepartmentsCompanion.insert(
-              id: 'dept-0',
-              companyId: '3',
-              name: 'Sales',
-            ),
-          );
-    });
-
-    tearDown(() => db.close());
-
-    test('list returns seeded departments scoped to the company', () async {
-      final result = await repository.watchList(context).first;
-      final page = (result as Success).value;
-      expect(page.items.single.record.id, 'dept-0');
-      expect(page.items.single.record.name, 'Sales');
-      expect(page.total, 1);
-    });
-
-    test('create adds a department and rejects an active duplicate', () async {
-      final created = await repository.save(
-        context,
-        const DepartmentDraft(name: 'Finance'),
-      );
-      expect(created, isA<Success<Department>>());
-
-      final duplicate = await repository.save(
-        context,
-        const DepartmentDraft(name: 'sales'),
-      );
-      expect((duplicate as Failed).failure.code, 'duplicateName');
-    });
-
-    test('deactivate is refused while employees are assigned', () async {
-      await db
-          .into(db.workforceDesignations)
-          .insert(
-            WorkforceDesignationsCompanion.insert(
-              id: 'desig-0',
-              companyId: '3',
-              name: 'Technician',
-            ),
-          );
-      await db
-          .into(db.workforceEmployees)
-          .insert(
-            WorkforceEmployeesCompanion.insert(
-              id: 'emp-0',
-              companyId: '3',
-              employeeCode: 'EMP-0',
-              firstName: 'A',
-              email: 'a@x.com',
-              phone: '123',
-              departmentId: 'dept-0',
-              designationId: 'desig-0',
-              joiningDate: DateTime.utc(2026),
-              employmentType: 'Revenue',
-              status: 'active',
-              createdAt: DateTime.utc(2026),
-              updatedAt: DateTime.utc(2026),
-              syncStatus: 'synced',
-            ),
-          );
-
-      final blocked = await repository.setActive(context, 'dept-0', false);
-      expect((blocked as Failed).failure.code, 'inUse');
-
-      expect(
-        (await repository.assignedEmployeeCount(context, 'dept-0') as Success)
-            .value,
-        1,
-      );
-    });
-
-    test('deactivate succeeds when no employees are assigned', () async {
-      expect(
-        await repository.setActive(context, 'dept-0', false),
-        isA<Success<void>>(),
-      );
-      final result = await repository.watchList(context).first;
-      expect(
-        (result as Success).value.items.single.record.status,
-        ConfigurationStatus.inactive,
-      );
-    });
-
-    test('access is denied without the view permission', () async {
-      final denied = await repository
-          .watchList(departmentAuthContext(permissions: const {}))
-          .first;
-      expect((denied as Failed).failure.code, 'denied');
     });
   });
 }

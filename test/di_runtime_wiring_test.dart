@@ -8,7 +8,6 @@ import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/bootstrap/dependencies.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/database/app_database.dart';
-import 'package:modular_erp/modules/hr/departments/data/repositories/local_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/repositories/remote_department_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
@@ -92,10 +91,7 @@ void main() {
       addTearDown(services.reset);
 
       expect(services<AuthRepository>(), isA<DisabledAuthRepository>());
-      expect(
-        services<DepartmentRepository>(),
-        isA<LocalDepartmentRepository>(),
-      );
+      expect(services.isRegistered<DepartmentRepository>(), isFalse);
       expect(services<ShiftRepository>(), isA<LocalShiftRepository>());
       expect(services.isRegistered<ApiClient>(), isFalse);
     },
