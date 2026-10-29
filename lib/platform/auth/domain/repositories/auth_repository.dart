@@ -10,6 +10,18 @@ abstract interface class SessionPermissionSink {
   Future<void> applyEffectivePermissions(PermissionSet permissions);
 }
 
+/// Optional capability: persists both the effective permissions and the
+/// backend-derived module entitlement into the stored session.
+///
+/// Used only for backend sessions; demo/local sessions keep their existing
+/// grants source and are never overwritten by backend permission loading.
+abstract interface class SessionAccessSink {
+  Future<void> applyEffectiveAccess(
+    PermissionSet permissions, {
+    Set<String> enabledModules = const <String>{},
+  });
+}
+
 abstract interface class AuthRepository {
   Future<Result<AuthContext?>> restoreSession();
   Future<Result<AuthContext?>> checkSession();

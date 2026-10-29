@@ -6,6 +6,7 @@ import 'dart:async';
 class AppLifecycleCoordinator {
   AppLifecycleCoordinator({
     this.refreshAttendance,
+    this.refreshPermissions,
     this.sync,
     this.reconcileReminders,
     this.refreshNotifications,
@@ -13,6 +14,7 @@ class AppLifecycleCoordinator {
   });
 
   final Future<void> Function()? refreshAttendance;
+  final Future<void> Function()? refreshPermissions;
   final Future<void> Function()? sync;
   final Future<void> Function()? reconcileReminders;
   final Future<void> Function()? refreshNotifications;
@@ -25,6 +27,7 @@ class AppLifecycleCoordinator {
 
   Future<void> _run() async {
     await _safe(refreshAttendance);
+    await _safe(refreshPermissions);
     await _safe(sync);
     await _safe(reconcileReminders);
     await _safe(refreshNotifications);

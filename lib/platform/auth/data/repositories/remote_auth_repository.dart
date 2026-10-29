@@ -27,7 +27,11 @@ import 'package:modular_erp/platform/auth/domain/repositories/auth_repository.da
 /// afterwards is discarded so a late response can never restore a session that
 /// the user (or the server) already ended.
 class RemoteAuthRepository
-    implements AuthRepository, SessionPermissionSink, TokenRefresher {
+    implements
+        AuthRepository,
+        SessionPermissionSink,
+        SessionAccessSink,
+        TokenRefresher {
   RemoteAuthRepository({
     required AuthRemoteDataSource dataSource,
     required SessionStorage storage,
@@ -309,6 +313,55 @@ class RemoteAuthRepository
         _accept(updated);
         _emit(updated.context);
       });
+
+  @override
+  Future<void> applyEffectiveAccess(
+    PermissionSet permissions, {
+    Set<String> enabledModules = const <String>{},
+  }) => _serial(() async {
+    final current = _session;
+    if (current == null || _disposed) return;
+    final user = current.context.user.copyWith(permissions: permissions);
+    final company = current.context.company.copyWith(
+      enabledModules: enabledModules,
+    );
+    if (_samePermissions(user.permissions, current.context.user.permissions) &&
+        _sameSet(company.enabledModules, current.context.company.enabledModules)) {
+      return;
+    }
+    final updated = AuthSession(
+      accessToken: current.accessToken,
+      refreshToken: current.refreshToken,
+      expiresAt: current.expiresAt,
+      refreshTokenExpiresAt: current.refreshTokenExpiresAt,
+      tokenType: current.tokenType,
+      context: current.context.copyWith(user: user, company: company),
+    );
+    try {
+      await _persist(updated);
+    } catch (_) {
+      /* Session remains usable in memory for this process. */
+    }
+    _accept(updated);
+    _emit(updated.context);
+  });
+
+  static bool _sameSet(Set<String> left, Set<String> right) =>
+      left.length == right.length && left.every(right.contains);
+
+  static bool _samePermissions(PermissionSet left, PermissionSet right) {
+    if (!_sameSet(
+      left.values.map((value) => value.name).toSet(),
+      right.values.map((value) => value.name).toSet(),
+    )) {
+      return false;
+    }
+    if (left.scopes.length != right.scopes.length) return false;
+    for (final entry in left.scopes.entries) {
+      if (right.scopes[entry.key] != entry.value) return false;
+    }
+    return true;
+  }
 
   @override
   Future<void> dispose() async {

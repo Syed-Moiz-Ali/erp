@@ -11,6 +11,7 @@ import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/environment_loader.dart';
 import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/platform/auth/application/permission_loader.dart';
 import 'package:modular_erp/platform/auth/data/datasources/local/demo_auth_source.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,9 @@ Future<void> bootstrap() async {
   final shellCubit = services<AppShellCubit>();
   await shellCubit.restore();
   final authBloc = services<AuthBloc>();
+  if (AppConfig.realApiEnabled) {
+    await services<BackendPermissionLoader>().start();
+  }
   final syncStatus = services<AppSyncStatusCubit>();
   syncStatus.onSyncNow = () async {
     await services<OutboxLocalDataSource>().recoverStaleProcessing(

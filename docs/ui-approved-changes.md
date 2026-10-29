@@ -58,3 +58,8 @@ field is added.
   `lib/design_system/components/specialized/app_calendar.dart`.
 - Any new l10n failure copy in `lib/l10n/common/*.arb` (API error mapping must
   reuse existing messages until separately approved).
+## Approved: backend session visibility (Step 1)
+
+Reason: the Settings hub must stay reachable for every signed-in backend user; its rows remain individually permission-gated. Demo navigation is unchanged.
+
+- `lib/app/module_registry/registered_modules.dart` - backend-only Settings hub visibility predicate; no layout or nav-order change (Step 1)

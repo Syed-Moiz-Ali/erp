@@ -163,19 +163,24 @@ ModuleRegistry createErpRegistry(
             routeAliases: {HrRoutes.settings},
             navigationGroup: NavigationGroup.configuration,
             order: 40,
-            anyPermissions: {
-              AppPermission.shiftView,
-              AppPermission.workLocationView,
-              AppPermission.attendancePolicyView,
-              AppPermission.leaveTypeView,
-              AppPermission.leavePolicyView,
-              AppPermission.holidayView,
-              AppPermission.companyManage,
-              AppPermission.userManage,
-              AppPermission.accessUsersView,
-              AppPermission.accessPermissionsManage,
-              AppPermission.companyModulesView,
-            },
+            // The Settings hub stays reachable for every backend session; its
+            // rows remain individually permission-gated. Demo mode keeps the
+            // existing configuration-permission gate unchanged.
+            anyPermissions: AppConfig.realApiEnabled
+                ? const <AppPermission>{}
+                : {
+                    AppPermission.shiftView,
+                    AppPermission.workLocationView,
+                    AppPermission.attendancePolicyView,
+                    AppPermission.leaveTypeView,
+                    AppPermission.leavePolicyView,
+                    AppPermission.holidayView,
+                    AppPermission.companyManage,
+                    AppPermission.userManage,
+                    AppPermission.accessUsersView,
+                    AppPermission.accessPermissionsManage,
+                    AppPermission.companyModulesView,
+                  },
           ),
           routes: [
             GoRoute(
