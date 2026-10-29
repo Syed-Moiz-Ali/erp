@@ -53,7 +53,9 @@ void configurePlatformDependencies(GetIt services) {
         repository: services(),
         source: services(),
         accessEndpoint: services<AccessEndpoint>(),
-        contexts: authBloc.stream.map((state) => state.context),
+        contexts: authBloc.stream
+            .where((state) => !state.loggingOut)
+            .map((state) => state.context),
         currentContext: () => authBloc.state.context,
       );
     }, dispose: (loader) => loader.dispose());
