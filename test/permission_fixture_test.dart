@@ -108,6 +108,21 @@ void main() {
     );
   });
 
+  test('Admin grant list contains the three live orphan rows', () {
+    final data =
+        load('user_permissions_user8.json')['data'] as Map<String, dynamic>;
+    expect(data['totalItems'], 18);
+    final rows = items(
+      'user_permissions_user8.json',
+    ).map(UserPermissionDto.fromJson).toList();
+    final orphans = rows.where((row) => row.permissionKey == null).toList();
+    expect(orphans, hasLength(3));
+    expect(orphans.map((row) => row.permissionId), [1, 2, 3]);
+    expect(orphans.every((row) => row.permissionStatusId == 2), isTrue);
+    expect(orphans.every((row) => row.permissionName == null), isTrue);
+    expect(rows.where((row) => row.isActive), hasLength(15));
+  });
+
   test('assign response is the complete list including orphan grants', () {
     final envelope = load('user_permissions_assign.json');
     final rows = (envelope['data'] as List)
