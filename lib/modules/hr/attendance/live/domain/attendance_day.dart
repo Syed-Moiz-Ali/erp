@@ -31,6 +31,7 @@ class AttendanceShift {
   String get shiftDate => raw['shiftDate'] as String? ?? '';
   String get plannedStart => raw['plannedStart'] as String? ?? '';
   String get plannedEnd => raw['plannedEnd'] as String? ?? '';
+  String get punchInOpensAt => raw['punchInOpensAt'] as String? ?? '';
   String get timeZone => raw['timeZone'] as String? ?? '';
   String get status => raw['status'] as String? ?? '';
   int get lateMinutes => (raw['lateMinutes'] as num?)?.toInt() ?? 0;

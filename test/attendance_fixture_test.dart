@@ -44,6 +44,25 @@ void main() {
     expect(today.shifts.single.punchOut, contains('+05:30'));
   });
 
+  test('live waitingForShift employee response keeps next shift detail', () {
+    final today = day('today_employee.json');
+    expect(today.employeeId, 27);
+    expect(today.date, '2026-10-29');
+    expect(today.timeZone, 'America/Chicago');
+    expect(today.state, 'waitingForShift');
+    expect(today.allowedActions, isEmpty);
+    expect(today.currentShiftNo, isNull);
+    expect(today.nextShiftNo, 2);
+    expect(today.shifts, hasLength(2));
+    final next = today.shifts.last;
+    expect(next.status, 'upcoming');
+    expect(next.shiftDate, '2026-10-29');
+    expect(next.timeZone, 'Pacific/Guadalcanal');
+    expect(next.crossesMidnight, isTrue);
+    expect(next.plannedStart, '23:00:00');
+    expect(next.punchInOpensAt, '22:30:00');
+  });
+
   test('no-shift day is a valid state, not an exception', () {
     final today = day('today_no_shift.json');
     expect(today.state, 'noShift');

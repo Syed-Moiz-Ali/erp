@@ -1,19 +1,19 @@
 {
   "success": true,
-  "message": "Attendance day retrieved.",
+  "message": "Attendance retrieved.",
   "data": {
-    "employeeId": 29,
-    "date": "2026-10-28",
+    "employeeId": 1,
+    "date": "2026-10-29",
     "timeZone": "Asia/Dubai",
     "state": "noShift",
     "allowedActions": [],
     "currentShiftNo": null,
     "nextShiftNo": null,
+    "shifts": [],
     "workedMinutes": 0,
-    "workedHours": 0.0,
+    "workedHours": 0,
     "breakMinutes": 0,
-    "serverTime": "2026-10-28T11:27:08+05:30",
-    "shifts": []
+    "serverTime": "2026-10-29T12:10:48+04:00"
   },
   "errors": []
 }
