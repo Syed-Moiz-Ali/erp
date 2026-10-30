@@ -24,6 +24,11 @@ class EmployeeFormPage extends StatefulWidget {
   State<EmployeeFormPage> createState() => _EmployeeFormPageState();
 }
 
+double? _finite(AppNumericInput input) {
+  final value = input.optional;
+  return value != null && value.isFinite ? value : null;
+}
+
 class _EmployeeFormPageState extends State<EmployeeFormPage> {
   final first = TextEditingController(),
       middle = TextEditingController(),
@@ -307,6 +312,96 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                 ],
               ),
             ),
+            if (refs != null && refs.hasBackendProfileLookups) ...[
+              const SizedBox(height: AppSpacing.xxl),
+              AppFormSection(
+                title: l.empBackendProfile,
+                child: AppFormGrid(
+                  children: [
+                    AppSelectField<String>(
+                      label: l.empBranch,
+                      errorText: fieldError("branchId"),
+                      value: d.branchId,
+                      enabled: !state.saving,
+                      options: [
+                        for (final r in refs.branches)
+                          AppSelectOption(r.id, r.name),
+                      ],
+                      onChanged: (v) => change((d) => d.copyWith(branchId: v)),
+                    ),
+                    AppSelectField<String>(
+                      label: l.empNationality,
+                      errorText: fieldError("nationalityId"),
+                      value: d.nationalityId,
+                      enabled: !state.saving,
+                      options: [
+                        for (final r in refs.nationalities)
+                          AppSelectOption(r.id, r.name),
+                      ],
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(nationalityId: v)),
+                    ),
+                    AppDateField(
+                      label: l.empDateOfBirth,
+                      value: d.dateOfBirth,
+                      lastDate: DateTime.now(),
+                      enabled: !state.saving,
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(dateOfBirth: v)),
+                    ),
+                    AppSelectField<String>(
+                      label: l.empMaritalStatus,
+                      value: d.maritalStatus,
+                      enabled: !state.saving,
+                      options: [
+                        for (final value in refs.maritalStatuses)
+                          AppSelectOption(value, value),
+                      ],
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(maritalStatus: v)),
+                    ),
+                    AppSelectField<String>(
+                      label: l.empGratuity,
+                      value: d.gratuity,
+                      enabled: !state.saving,
+                      options: [
+                        for (final value in refs.gratuityTypes)
+                          AppSelectOption(value, value),
+                      ],
+                      onChanged: (v) => change((d) => d.copyWith(gratuity: v)),
+                    ),
+                    AppNumberField(
+                      label: l.empWorkingHours,
+                      initialValue: d.workingHours,
+                      enabled: !state.saving,
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(workingHours: _finite(v))),
+                    ),
+                    AppNumberField(
+                      label: l.empBasicSalary,
+                      initialValue: d.basicSalary,
+                      enabled: !state.saving,
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(basicSalary: _finite(v))),
+                    ),
+                    AppNumberField(
+                      label: l.empTransportation,
+                      initialValue: d.transportation,
+                      enabled: !state.saving,
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(transportation: _finite(v))),
+                    ),
+                    AppNumberField(
+                      label: l.empAccommodation,
+                      initialValue: d.accommodation,
+                      enabled: !state.saving,
+                      onChanged: (v) =>
+                          change((d) => d.copyWith(accommodation: _finite(v))),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: AppSpacing.xxl),
             AppFormSection(
               title: l.empAttendanceConfig,

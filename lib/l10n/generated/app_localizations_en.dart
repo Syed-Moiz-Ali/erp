@@ -2432,6 +2432,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empEmployment => 'Employment information';
 
   @override
+  String get empBackendProfile => 'Backend employment details';
+
+  @override
+  String get empBranch => 'Branch';
+
+  @override
+  String get empNationality => 'Nationality';
+
+  @override
+  String get empDateOfBirth => 'Date of birth';
+
+  @override
+  String get empMaritalStatus => 'Marital status';
+
+  @override
+  String get empGratuity => 'Gratuity';
+
+  @override
+  String get empWorkingHours => 'Working hours';
+
+  @override
+  String get empBasicSalary => 'Basic salary';
+
+  @override
+  String get empTransportation => 'Transportation';
+
+  @override
+  String get empAccommodation => 'Accommodation';
+
+  @override
   String get empAttendanceConfig => 'Attendance configuration';
 
   @override

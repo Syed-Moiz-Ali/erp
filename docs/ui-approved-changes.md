@@ -124,6 +124,22 @@ Reason: the Settings hub must stay reachable for every signed-in backend user; i
 
 - `lib/app/module_registry/registered_modules.dart` - backend-only Settings hub visibility predicate; no layout or nav-order change (Step 1)
 
+## Approved: Employee backend employment fields (user explicitly approved)
+
+Reason: the backend employee contract requires employment fields the baseline
+form did not collect. In backend mode the form now adds them; demo mode keeps
+the original form shape because the lookups are absent.
+
+- `lib/modules/hr/employees/presentation/pages/employee_form_page.dart` - backend employment fields section
+- `lib/modules/hr/employees/presentation/bloc/employee_form_bloc.dart` - preload and conditional validation for backend employment fields
+- `lib/modules/hr/l10n/hr_en.arb` - employee backend field strings
+- `lib/modules/hr/l10n/hr_ar.arb` - employee backend field strings
+- `lib/l10n/generated/app_en.arb` - generated employee backend field strings
+- `lib/l10n/generated/app_ar.arb` - generated employee backend field strings
+- `lib/l10n/generated/app_localizations.dart` - generated employee backend field strings
+- `lib/l10n/generated/app_localizations_en.dart` - generated employee backend field strings
+- `lib/l10n/generated/app_localizations_ar.dart` - generated employee backend field strings
+
 ## Approved: Permission catalog (user explicitly approved building the missing screens)
 
 Reason: the Permission catalog had no baseline screen. The user approved

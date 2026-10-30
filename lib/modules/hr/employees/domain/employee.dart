@@ -45,6 +45,15 @@ abstract class Employee with _$Employee {
     String? attendancePolicyId,
     String? linkedUserId,
     @Default(false) bool loginEnabled,
+    String? branchId,
+    String? nationalityId,
+    DateTime? dateOfBirth,
+    String? maritalStatus,
+    String? gratuity,
+    double? workingHours,
+    double? basicSalary,
+    double? transportation,
+    double? accommodation,
     required DateTime createdAt,
     required DateTime updatedAt,
     @Default(EmployeeSyncStatus.pending) EmployeeSyncStatus syncStatus,
@@ -73,6 +82,15 @@ abstract class EmployeeDraft with _$EmployeeDraft {
     @Default(EmploymentType.fullTime) EmploymentType employmentType,
     @Default(EmploymentStatus.active) EmploymentStatus status,
     @Default(false) bool loginEnabled,
+    String? branchId,
+    String? nationalityId,
+    DateTime? dateOfBirth,
+    String? maritalStatus,
+    String? gratuity,
+    double? workingHours,
+    double? basicSalary,
+    double? transportation,
+    double? accommodation,
   }) = _EmployeeDraft;
 }
 
@@ -109,20 +127,38 @@ class EmployeeReferences {
     List<Shift> shifts = const [],
     List<WorkLocation> workLocations = const [],
     List<AttendancePolicy> attendancePolicies = const [],
+    List<WorkforceReference> branches = const [],
+    List<WorkforceReference> nationalities = const [],
+    List<String> maritalStatuses = const [],
+    List<String> employeeTypes = const [],
+    List<String> gratuityTypes = const [],
   }) : shifts = List.unmodifiable(shifts),
        workLocations = List.unmodifiable(workLocations),
        attendancePolicies = List.unmodifiable(attendancePolicies),
        departments = List.unmodifiable(departments),
        designations = List.unmodifiable(designations),
        managers = List.unmodifiable(managers),
-       managerLabels = List.unmodifiable([...managers, ...managerLabels]);
+       managerLabels = List.unmodifiable([...managers, ...managerLabels]),
+       branches = List.unmodifiable(branches),
+       nationalities = List.unmodifiable(nationalities),
+       maritalStatuses = List.unmodifiable(maritalStatuses),
+       employeeTypes = List.unmodifiable(employeeTypes),
+       gratuityTypes = List.unmodifiable(gratuityTypes);
   final List<Shift> shifts;
   final List<WorkLocation> workLocations;
   final List<AttendancePolicy> attendancePolicies;
   final List<WorkforceReference> departments,
       designations,
       managers,
-      managerLabels;
+      managerLabels,
+      branches,
+      nationalities;
+  final List<String> maritalStatuses, employeeTypes, gratuityTypes;
+
+  /// The backend supplies branch/nationality/scratch-pad values the local demo
+  /// store does not model; demo mode therefore keeps the original form shape.
+  bool get hasBackendProfileLookups =>
+      branches.isNotEmpty || nationalities.isNotEmpty;
 }
 
 class EmployeePageData {

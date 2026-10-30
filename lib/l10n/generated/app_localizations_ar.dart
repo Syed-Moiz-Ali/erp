@@ -2399,6 +2399,36 @@ class AppLocalizationsAr extends AppLocalizations {
   String get empEmployment => 'معلومات التوظيف';
 
   @override
+  String get empBackendProfile => 'بيانات التوظيف في النظام';
+
+  @override
+  String get empBranch => 'الفرع';
+
+  @override
+  String get empNationality => 'الجنسية';
+
+  @override
+  String get empDateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get empMaritalStatus => 'الحالة الاجتماعية';
+
+  @override
+  String get empGratuity => 'مكافأة نهاية الخدمة';
+
+  @override
+  String get empWorkingHours => 'ساعات العمل';
+
+  @override
+  String get empBasicSalary => 'الراتب الأساسي';
+
+  @override
+  String get empTransportation => 'بدل النقل';
+
+  @override
+  String get empAccommodation => 'بدل السكن';
+
+  @override
   String get empAttendanceConfig => 'إعدادات الحضور';
 
   @override

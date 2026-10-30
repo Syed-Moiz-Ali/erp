@@ -201,13 +201,13 @@ DI selection is per repository, not per screen. A backend adapter must return th
 * `getReferences` exposes backend departments as `WorkforceReference(id.toString(), name)`; designations/managers/shifts/work locations/policies are empty in backend mode.
 * `getLinkedAccount` maps `login` into `UserAccount` (id = `login.userId`, displayName = `employeeName`, email = `loginId ?? ''`, phone = `mobileNo`, permissions empty, status active while login is enabled). `credentialPending = !(loginEnabled && canLogin)`; no `login.userId` → `Success(null)`.
 * Availability checks have no endpoint and return `Failure(code: 'unsupported', kind: notConfigured)`.
-* Create sends only `employeeName`, `statusId`, `departmentId`, `designation`, `joiningDate`, `email`, `uaeContactNumber`, and `login` only when login is enabled (`enabled`, `loginId` from email, `mobileNo` from phone, `branchIds: []`); `login.userType` is never sent. Required backend fields the frozen form does not collect are deliberately omitted so a real 400 surfaces.
+* Create sends `employeeName`, `statusId`, `branchId`, `nationalityId`, `departmentId`, `designation`, `joiningDate`, `dateOfBirth`, `maritalStatus`, `gratuity`, `workingHours`, `basicSalary`, `transportation`, `accommodation`, `email`, `uaeContactNumber`, and `login` only when login is enabled (`enabled`, `loginId` from email, `mobileNo` from phone, `branchIds: []`); `login.userType` is never sent. The backend employment fields are collected by the form in backend mode.
 * Update is a full replace: a fresh `GET` is loaded, every loaded field is copied, only the form fields (name, department, designation, joining date, email, phone, status, `login.enabled`) are overlaid, and `login.userType` is stripped. No loaded field is dropped.
 * `POST /api/employees/{id}/activate` and `/deactivate` back `setActive`; success bumps the revision.
 
 **NEEDS-UI-DECISION (recorded, not invented):**
 
-* The frozen employee create/edit form does not collect required backend fields (`branchId`, `nationalityId`, date of birth, marital status, gratuity, working hours, salary, transport, accommodation). The data layer sends only the collected fields; the backend validation error is allowed to surface.
+* Resolved: the employee create/edit form now collects `branchId`, `nationalityId`, date of birth, marital status, gratuity, working hours, basic salary, transport and accommodation from `/api/employees/lookups`. These inputs appear only when the backend profile lookups are present, so demo mode keeps its original form shape.
 * The frozen form has no login password or branch multi-select controls. Create sends login from email/phone with `branchIds: []` and an empty `password` value because the form cannot collect one; update only toggles `login.enabled`. A UI decision is needed before credential writes can succeed.
 * `oldestJoined` has no backend sort; the list silently falls back to `nameAsc`.
 * The backend provides no designation lookup, so `getReferences.designations` is empty and `designation` remains free text.

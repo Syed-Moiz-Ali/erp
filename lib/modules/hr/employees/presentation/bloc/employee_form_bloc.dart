@@ -51,6 +51,10 @@ class EmployeeFormState {
     if (digits.length < 7 || digits.length > 15) errors['phone'] = 'phone';
     if (draft.departmentId == null) errors['departmentId'] = 'required';
     if (draft.designationId == null) errors['designationId'] = 'required';
+    if (references?.hasBackendProfileLookups ?? false) {
+      if (draft.branchId == null) errors['branchId'] = 'required';
+      if (draft.nationalityId == null) errors['nationalityId'] = 'required';
+    }
     if (draft.joiningDate == null ||
         draft.joiningDate!.isAfter(DateTime.now())) {
       errors['joiningDate'] = 'required';
@@ -131,6 +135,15 @@ class EmployeeFormBloc extends Bloc<EmployeeFormEvent, EmployeeFormState> {
             employmentType: e.employmentType,
             status: e.status,
             loginEnabled: e.loginEnabled,
+            branchId: e.branchId,
+            nationalityId: e.nationalityId,
+            dateOfBirth: e.dateOfBirth,
+            maritalStatus: e.maritalStatus,
+            gratuity: e.gratuity,
+            workingHours: e.workingHours,
+            basicSalary: e.basicSalary,
+            transportation: e.transportation,
+            accommodation: e.accommodation,
           );
         }
         emit(

@@ -51,8 +51,9 @@ no live write was sent during verification.
 
 ### NEEDS-UI-DECISION
 
-* Employee create/edit form lacks required backend fields (`branchId`, `nationalityId`, DOB,
-  marital status, gratuity, working hours, salary, transport, accommodation).
+* Employee backend employment fields are now collected by the create/edit form in backend mode
+  (`branchId`, `nationalityId`, DOB, marital status, gratuity, working hours, salary, transport,
+  accommodation); demo mode keeps the original form shape.
 * Employee login edit controls (password and branch multi-select) are absent; login writes
   can only toggle `enabled` with the current frozen form.
 * Employee `oldestJoined` sort is unsupported; the list falls back to `nameAsc`.

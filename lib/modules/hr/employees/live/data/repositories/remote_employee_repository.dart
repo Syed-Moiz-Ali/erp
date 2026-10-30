@@ -300,6 +300,17 @@ class RemoteEmployeeRepository implements EmployeeRepository {
             ],
             designations: const [],
             managers: const [],
+            branches: [
+              for (final branch in value.branches)
+                WorkforceReference(branch.id.toString(), branch.name),
+            ],
+            nationalities: [
+              for (final nationality in value.nationalities)
+                WorkforceReference(nationality.id.toString(), nationality.name),
+            ],
+            maritalStatuses: value.maritalStatuses,
+            employeeTypes: value.employeeTypes,
+            gratuityTypes: value.gratuityTypes,
           ),
         );
     }
@@ -324,6 +335,15 @@ class RemoteEmployeeRepository implements EmployeeRepository {
     attendancePolicyId: null,
     linkedUserId: employee.loginUserId?.toString(),
     loginEnabled: employee.loginEnabled,
+    branchId: employee.branchId?.toString(),
+    nationalityId: employee.nationalityId?.toString(),
+    dateOfBirth: _parseOptionalDate(employee.dateOfBirth),
+    maritalStatus: employee.maritalStatus,
+    gratuity: employee.gratuity,
+    workingHours: employee.workingHours,
+    basicSalary: employee.basicSalary,
+    transportation: employee.transportation,
+    accommodation: employee.accommodation,
     createdAt: _epoch,
     updatedAt: _epoch,
     syncStatus: EmployeeSyncStatus.synced,
@@ -334,14 +354,26 @@ class RemoteEmployeeRepository implements EmployeeRepository {
     final email = draft.email.trim();
     final phone = draft.phone.trim();
     final departmentId = _parseId(draft.departmentId);
+    final branchId = _parseId(draft.branchId);
+    final nationalityId = _parseId(draft.nationalityId);
     final joiningDate = draft.joiningDate;
+    final dateOfBirth = draft.dateOfBirth;
     final designation = draft.designationId?.trim() ?? '';
     return {
       'employeeName': name,
       'statusId': draft.status == EmploymentStatus.active ? 1 : 2,
+      if (branchId != null) 'branchId': branchId,
+      if (nationalityId != null) 'nationalityId': nationalityId,
       if (departmentId != null) 'departmentId': departmentId,
       'designation': designation.isEmpty ? null : designation,
       if (joiningDate != null) 'joiningDate': _isoDate(joiningDate),
+      if (dateOfBirth != null) 'dateOfBirth': _isoDate(dateOfBirth),
+      'maritalStatus': _trimOrNull(draft.maritalStatus),
+      'gratuity': _trimOrNull(draft.gratuity),
+      if (draft.workingHours != null) 'workingHours': draft.workingHours,
+      if (draft.basicSalary != null) 'basicSalary': draft.basicSalary,
+      if (draft.transportation != null) 'transportation': draft.transportation,
+      if (draft.accommodation != null) 'accommodation': draft.accommodation,
       'email': email.isEmpty ? null : email,
       'uaeContactNumber': phone.isEmpty ? null : phone,
       if (draft.loginEnabled)
@@ -364,14 +396,27 @@ class RemoteEmployeeRepository implements EmployeeRepository {
     final email = draft.email.trim();
     final phone = draft.phone.trim();
     final departmentId = _parseId(draft.departmentId);
+    final branchId = _parseId(draft.branchId);
+    final nationalityId = _parseId(draft.nationalityId);
     final joiningDate = draft.joiningDate;
+    final dateOfBirth = draft.dateOfBirth;
     final designation = draft.designationId?.trim() ?? '';
     final body = <String, dynamic>{
       ...loaded,
       'employeeName': _employeeName(draft),
+      if (branchId != null) 'branchId': branchId,
+      if (nationalityId != null) 'nationalityId': nationalityId,
       if (departmentId != null) 'departmentId': departmentId,
       'designation': designation.isEmpty ? null : designation,
       if (joiningDate != null) 'joiningDate': _isoDate(joiningDate),
+      if (dateOfBirth != null) 'dateOfBirth': _isoDate(dateOfBirth),
+      if (draft.maritalStatus != null)
+        'maritalStatus': _trimOrNull(draft.maritalStatus),
+      if (draft.gratuity != null) 'gratuity': _trimOrNull(draft.gratuity),
+      if (draft.workingHours != null) 'workingHours': draft.workingHours,
+      if (draft.basicSalary != null) 'basicSalary': draft.basicSalary,
+      if (draft.transportation != null) 'transportation': draft.transportation,
+      if (draft.accommodation != null) 'accommodation': draft.accommodation,
       'email': email.isEmpty ? null : email,
       'uaeContactNumber': phone.isEmpty ? null : phone,
       'statusId': draft.status == EmploymentStatus.active ? 1 : 2,
@@ -415,6 +460,16 @@ class RemoteEmployeeRepository implements EmployeeRepository {
   static DateTime _parseDate(String? value) {
     if (value == null || value.trim().isEmpty) return _epoch;
     return DateTime.tryParse(value) ?? _epoch;
+  }
+
+  static DateTime? _parseOptionalDate(String? value) {
+    if (value == null || value.trim().isEmpty) return null;
+    return DateTime.tryParse(value);
+  }
+
+  static String? _trimOrNull(String? value) {
+    final trimmed = value?.trim();
+    return trimmed == null || trimmed.isEmpty ? null : trimmed;
   }
 
   static String _isoDate(DateTime value) =>

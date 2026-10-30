@@ -104,6 +104,15 @@ void main() {
     expect(employee.email, 'sanitized@example.com');
     expect(employee.phone, 'SANITIZED_PHONE');
     expect(employee.joiningDate, DateTime(2026, 9, 1));
+    expect(employee.branchId, '1');
+    expect(employee.nationalityId, '99');
+    expect(employee.dateOfBirth, DateTime(1995, 5, 20));
+    expect(employee.maritalStatus, 'Single');
+    expect(employee.gratuity, 'Limited Contract');
+    expect(employee.workingHours, 8);
+    expect(employee.basicSalary, 3000);
+    expect(employee.transportation, 500);
+    expect(employee.accommodation, 1000);
   });
 
   test('maps the created fixture without deriving id or code', () async {
@@ -181,58 +190,75 @@ void main() {
     expect(dataSource.lastBranchId, isNull);
   });
 
-  test('create body sends only collected fields and no userType', () async {
-    final created = employeeFixture('employee_created.json');
-    dataSource.onCreate = (_) async => Success(employeeDto(created));
-    dataSource.onGet = (_) async => Success(employeeDto(created));
+  test(
+    'create body sends the backend employment fields and no userType',
+    () async {
+      final created = employeeFixture('employee_created.json');
+      dataSource.onCreate = (_) async => Success(employeeDto(created));
+      dataSource.onGet = (_) async => Success(employeeDto(created));
 
-    final result = await repository.saveEmployee(
-      context,
-      EmployeeDraft(
-        firstName: ' QA ',
-        middleName: ' Audit ',
-        lastName: ' User ',
-        email: ' qa@example.com ',
-        phone: ' 0500000000 ',
-        departmentId: '2',
-        designationId: ' Engineer ',
-        joiningDate: DateTime(2026, 10, 1),
-        status: EmploymentStatus.active,
-        loginEnabled: true,
-      ),
-    );
-    expect(result, isA<Success<Employee>>());
+      final result = await repository.saveEmployee(
+        context,
+        EmployeeDraft(
+          firstName: ' QA ',
+          middleName: ' Audit ',
+          lastName: ' User ',
+          email: ' qa@example.com ',
+          phone: ' 0500000000 ',
+          departmentId: '2',
+          designationId: ' Engineer ',
+          joiningDate: DateTime(2026, 10, 1),
+          status: EmploymentStatus.active,
+          loginEnabled: true,
+          branchId: '1',
+          nationalityId: '99',
+          dateOfBirth: DateTime(1995, 5, 20),
+          maritalStatus: 'Single',
+          gratuity: 'Limited Contract',
+          workingHours: 8,
+          basicSalary: 3000,
+          transportation: 500,
+          accommodation: 1000,
+        ),
+      );
+      expect(result, isA<Success<Employee>>());
 
-    final body = dataSource.lastCreateBody!;
-    expect(body['employeeName'], 'QA Audit User');
-    expect(body['statusId'], 1);
-    expect(body['departmentId'], 2);
-    expect(body['designation'], 'Engineer');
-    expect(body['joiningDate'], '2026-10-01');
-    expect(body['email'], 'qa@example.com');
-    expect(body['uaeContactNumber'], '0500000000');
-    expect(body.containsKey('branchId'), isFalse);
-    expect(body.containsKey('nationalityId'), isFalse);
-    expect(body.containsKey('basicSalary'), isFalse);
-    expect(body.containsKey('dateOfBirth'), isFalse);
+      final body = dataSource.lastCreateBody!;
+      expect(body['employeeName'], 'QA Audit User');
+      expect(body['statusId'], 1);
+      expect(body['departmentId'], 2);
+      expect(body['designation'], 'Engineer');
+      expect(body['joiningDate'], '2026-10-01');
+      expect(body['email'], 'qa@example.com');
+      expect(body['uaeContactNumber'], '0500000000');
+      expect(body['branchId'], 1);
+      expect(body['nationalityId'], 99);
+      expect(body['dateOfBirth'], '1995-05-20');
+      expect(body['maritalStatus'], 'Single');
+      expect(body['gratuity'], 'Limited Contract');
+      expect(body['workingHours'], 8);
+      expect(body['basicSalary'], 3000);
+      expect(body['transportation'], 500);
+      expect(body['accommodation'], 1000);
 
-    final login = (body['login'] as Map).cast<String, dynamic>();
-    expect(login.keys.toSet(), {
-      'enabled',
-      'loginId',
-      'mobileNo',
-      'password',
-      'branchIds',
-    });
-    expect(login['enabled'], isTrue);
-    expect(login['loginId'], 'qa@example.com');
-    expect(login['mobileNo'], '0500000000');
-    expect(login['branchIds'], isEmpty);
-    expect(login.containsKey('userType'), isFalse);
+      final login = (body['login'] as Map).cast<String, dynamic>();
+      expect(login.keys.toSet(), {
+        'enabled',
+        'loginId',
+        'mobileNo',
+        'password',
+        'branchIds',
+      });
+      expect(login['enabled'], isTrue);
+      expect(login['loginId'], 'qa@example.com');
+      expect(login['mobileNo'], '0500000000');
+      expect(login['branchIds'], isEmpty);
+      expect(login.containsKey('userType'), isFalse);
 
-    expect(dataSource.createCalls, 1);
-    expect(dataSource.getCalls, 1);
-  });
+      expect(dataSource.createCalls, 1);
+      expect(dataSource.getCalls, 1);
+    },
+  );
 
   test(
     'create with empty contacts sends null and omits disabled login',
@@ -376,23 +402,76 @@ void main() {
     },
   );
 
-  test('references expose backend departments and no other lookups', () async {
-    final lookups = mapLookups(employeeFixture('employee_lookups.json'));
-    dataSource.onLookups = () async => Success(lookups);
+  test(
+    'references expose backend departments, branches and nationalities',
+    () async {
+      final lookups = mapLookups(employeeFixture('employee_lookups.json'));
+      dataSource.onLookups = () async => Success(lookups);
 
-    final result = await repository.getReferences(context);
-    final references = (result as Success<EmployeeReferences>).value;
-    expect(references.departments.first.id, '2');
-    expect(references.departments.first.name, 'accounts');
-    expect(
-      references.departments.map((d) => d.id),
-      containsAll(['2', '7', '3', '1', '4']),
+      final result = await repository.getReferences(context);
+      final references = (result as Success<EmployeeReferences>).value;
+      expect(references.departments.first.id, '2');
+      expect(references.departments.first.name, 'accounts');
+      expect(
+        references.departments.map((d) => d.id),
+        containsAll(['2', '7', '3', '1', '4']),
+      );
+      expect(references.branches.first.id, '2');
+      expect(references.branches.first.name, 'Bitlogix');
+      expect(references.branches, isNotEmpty);
+      expect(references.nationalities, isNotEmpty);
+      expect(references.nationalities.first.id, '240');
+      expect(references.maritalStatuses, containsAll(['Single', 'Married']));
+      expect(references.gratuityTypes, contains('Limited Contract'));
+      expect(references.hasBackendProfileLookups, isTrue);
+      expect(references.designations, isEmpty);
+      expect(references.managers, isEmpty);
+      expect(references.shifts, isEmpty);
+      expect(references.workLocations, isEmpty);
+      expect(references.attendancePolicies, isEmpty);
+    },
+  );
+
+  test('update overlays the backend employment fields', () async {
+    final detail = employeeFixture('employee_detail.json');
+    dataSource.onGet = (_) async => Success(employeeDto(detail));
+    dataSource.onUpdate = (id, body) async =>
+        Success(employeeDto({...body, 'employeeId': id}));
+
+    final result = await repository.saveEmployee(
+      context,
+      EmployeeDraft(
+        firstName: 'Edited Name',
+        email: 'edited@example.com',
+        phone: '',
+        departmentId: '2',
+        designationId: 'Lead',
+        joiningDate: DateTime(2026, 10, 1),
+        status: EmploymentStatus.active,
+        branchId: '2',
+        nationalityId: '1',
+        dateOfBirth: DateTime(1990, 1, 2),
+        maritalStatus: 'Married',
+        gratuity: 'Unlimited Contract',
+        workingHours: 9,
+        basicSalary: 4000,
+        transportation: 600,
+        accommodation: 1100,
+      ),
+      id: '15',
     );
-    expect(references.designations, isEmpty);
-    expect(references.managers, isEmpty);
-    expect(references.shifts, isEmpty);
-    expect(references.workLocations, isEmpty);
-    expect(references.attendancePolicies, isEmpty);
+    expect(result, isA<Success<Employee>>());
+
+    final body = dataSource.lastUpdateBody!;
+    expect(body['branchId'], 2);
+    expect(body['nationalityId'], 1);
+    expect(body['dateOfBirth'], '1990-01-02');
+    expect(body['maritalStatus'], 'Married');
+    expect(body['gratuity'], 'Unlimited Contract');
+    expect(body['workingHours'], 9);
+    expect(body['basicSalary'], 4000);
+    expect(body['transportation'], 600);
+    expect(body['accommodation'], 1100);
   });
 
   test('linked account maps login and credential readiness', () async {

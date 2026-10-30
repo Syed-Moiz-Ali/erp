@@ -4628,6 +4628,66 @@ abstract class AppLocalizations {
   /// **'Employment information'**
   String get empEmployment;
 
+  /// No description provided for @empBackendProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Backend employment details'**
+  String get empBackendProfile;
+
+  /// No description provided for @empBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get empBranch;
+
+  /// No description provided for @empNationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality'**
+  String get empNationality;
+
+  /// No description provided for @empDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get empDateOfBirth;
+
+  /// No description provided for @empMaritalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Marital status'**
+  String get empMaritalStatus;
+
+  /// No description provided for @empGratuity.
+  ///
+  /// In en, this message translates to:
+  /// **'Gratuity'**
+  String get empGratuity;
+
+  /// No description provided for @empWorkingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get empWorkingHours;
+
+  /// No description provided for @empBasicSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic salary'**
+  String get empBasicSalary;
+
+  /// No description provided for @empTransportation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation'**
+  String get empTransportation;
+
+  /// No description provided for @empAccommodation.
+  ///
+  /// In en, this message translates to:
+  /// **'Accommodation'**
+  String get empAccommodation;
+
   /// No description provided for @empAttendanceConfig.
   ///
   /// In en, this message translates to:
