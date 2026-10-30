@@ -343,7 +343,7 @@ Permission catalog data notes:
 | AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Data-only: excluded from users/grants. Read-only display is not in baseline UI. **NEEDS-UI-DECISION:** ignore, or show in the existing list style later. |
 | AC7 | Permission catalog screen | `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`, `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`, `POST /api/permissions/{id}/deactivate` | **DATA-ONLY WIRED, no screen: NEEDS-UI-DECISION.** `RemotePermissionMasterRepository` maps list (paging, `search`, `statusId`, `sort`) / get / create / update / activate / deactivate against `AccessAdminRemoteDataSource`. Registered in backend mode only; no local permission-master implementation exists and none is registered in demo. |
 | AC8 | Access history / audit trail | no endpoint | **NEEDS-UI-DECISION:** history stays empty; no backend source exists. |
-| AC9 | Branch permission enum / labels | branch keys deferred | **NEEDS-UI-DECISION:** enum values and labels are deferred until the Branches module is approved. |
+| AC9 | Branch permission enum / labels | `company.branches.view` / `company.branches.manage` | Resolved: `companyBranchView` / `companyBranchManage` runtime permissions, backend key mapping, catalog definitions and English/Arabic labels are live. |
 
 ### 3.9 Employee Shifts
 
@@ -383,13 +383,10 @@ Source: `lib/core/security/backend_access_policy.dart` (CARRIED, temporary reduc
 | `company.access.users.view` | `accessUsersView` | settings | Access & Users entry |
 | `company.access.permissions.manage` | `accessPermissionsManage` | settings | Grant editing / permission catalog actions |
 | `company.users.manage` | `userManage` | employees | Account-management actions |
+| `company.branches.view` / `manage` | `companyBranchView` / `companyBranchManage` | settings | Branches settings row/destination; add/edit/activate actions |
+| `hr.departments.view` / `manage` | `departmentView` / `departmentManage` | settings | Departments settings row/destination; add/edit/deactivate actions |
 
-Deferred until their modules are approved (documented in the policy comment):
-
-| Backend key | AppPermission | Module |
-|---|---|---|
-| `company.branches.view` / `manage` | `companyBranchView` / `Manage` | Branches (NEW) |
-| `hr.departments.view` / `manage` | `departmentView` / `Manage` | Departments (approved UI, next phase) |
+Deferred: none for Branches or Departments; both now have approved screens.
 
 Rules:
 
@@ -404,19 +401,21 @@ Rules:
 
 | Module | Baseline screen | Proposed route(s) | Endpoints | Permission | Build order |
 |---|---|---|---|---|---|
-| Branches (Company) | none | `/app/settings/branches` (proposed; **data layer wired, no screen (NEEDS-UI-DECISION)**) | `/api/branches/lookups`, list, get, create, update, activate, deactivate — **DATA-ONLY wired, no screen** | `companyBranchView` / `companyBranchManage` (enum + labels deferred) | Last, after Departments |
+| Branches (Company) | `/app/hr/settings/branches` list/detail/form (approved) | `/app/hr/settings/branches`, `/new`, `/:id`, `/:id/edit` | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` | Built in the Departments pattern |
 | Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/get/create/update/deactivate - **data layer wired, no screen (NEEDS-UI-DECISION)** | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
 | Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
 
 These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. They are explicitly out of scope for this phase.
 
-### Branches data-only notes
+### Branches screen notes
 
-* `/api/branches` is wired behind `BranchRepository` in backend mode only; demo/disabled modes register no branch repository because no local branch source exists.
-* No screen, route, widget or l10n source is added. The proposed `/app/settings/branches` UI is **NEEDS-UI-DECISION**.
-* Branch permission enum values and labels (`companyBranchView` / `companyBranchManage`) remain deferred.
-* The list `status` filter sends the backend strings `Active` / `InActive` (not a `statusId`); no other filters are invented.
-* `timeZoneId` is required on create/update and must be an IANA value from `/api/branches/lookups`; no default time zone is invented.
+* `/api/branches` is wired behind `BranchRepository` in backend mode only; demo/disabled modes register no branch repository because no local branch source exists, so the Branches settings row/destination is hidden.
+* The approved screen lives under `lib/modules/hr/branches/presentation/`: `BranchListPage`, `BranchDetailsPage`, `BranchFormPage`, their blocs, and `BranchConfigurationRepository` (a `ConfigurationRepository` adapter over `BranchRepository`).
+* Routes: `/app/hr/settings/branches`, `/new`, `/:id`, `/:id/edit`, registered only when a `BranchRepository` is supplied.
+* Permissions: `company.branches.view` / `company.branches.manage` map to `companyBranchView` / `companyBranchManage`; manage implies view.
+* Tests: `branch_configuration_repository_test` (adapter mapping/status/save/revision), `branch_widget_test` (list/detail/form, validation, 390/1440 fit), plus the existing `branch_*` data tests.
+* The list `status` filter sends the backend strings `Active` / `InActive`; the form loads `/api/branches/lookups` and offers only the returned divisions and IANA time zones.
+* `timeZoneId` is required on create/update and must be an IANA value from the lookups; no default time zone is invented.
 
 ---
 

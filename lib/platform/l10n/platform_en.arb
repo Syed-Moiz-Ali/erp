@@ -256,6 +256,8 @@
   "authGreeting": "Welcome, {name}",
   "@authGreeting": {"placeholders":{"name":{"type":"String"}}},
   "permissionCompanyManage": "Manage company",
+  "permissionCompanyBranchView": "View branches",
+  "permissionCompanyBranchManage": "Manage branches",
   "permissionUserManage": "Manage user accounts",
   "shellDashboard": "Dashboard",
   "shellEmployees": "Employees",

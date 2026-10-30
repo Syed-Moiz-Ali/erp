@@ -11,6 +11,7 @@ import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy_repository.dart';
@@ -149,6 +150,7 @@ class ConfigurationLandingPage extends StatelessWidget {
     super.key,
     this.shiftRepository,
     this.departmentRepository,
+    this.branchRepository,
     this.workLocationRepository,
     this.attendancePolicyRepository,
     this.leaveTypeRepository,
@@ -157,6 +159,7 @@ class ConfigurationLandingPage extends StatelessWidget {
   });
   final ShiftRepository? shiftRepository;
   final DepartmentRepository? departmentRepository;
+  final BranchRepository? branchRepository;
   final WorkLocationRepository? workLocationRepository;
   final AttendancePolicyRepository? attendancePolicyRepository;
   final ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository;
@@ -255,6 +258,14 @@ class ConfigurationLandingPage extends StatelessWidget {
                 ),
             ];
             final accessRows = <Widget>[
+              if (branchRepository != null &&
+                  permissions.can(AppPermission.companyBranchView))
+                AppSettingsRow(
+                  title: l.cfgBranches,
+                  description: l.settingsBranchDesc,
+                  icon: Icons.business_outlined,
+                  onPressed: () => context.push(AppRoutes.branches),
+                ),
               if (permissions.can(AppPermission.accessUsersView) ||
                   permissions.can(AppPermission.accessPermissionsManage))
                 AppSettingsRow(

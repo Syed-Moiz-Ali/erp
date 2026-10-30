@@ -176,6 +176,8 @@
   "authGreeting": "مرحبًا، {name}",
   "@authGreeting": {"placeholders":{"name":{"type":"String"}}},
   "permissionCompanyManage": "إدارة الشركة",
+  "permissionCompanyBranchView": "عرض الفروع",
+  "permissionCompanyBranchManage": "إدارة الفروع",
   "permissionUserManage": "إدارة حسابات المستخدمين",
   "shellDashboard": "لوحة التحكم",
   "shellEmployees": "الموظفون",

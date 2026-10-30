@@ -102,6 +102,74 @@ class BranchDraft {
     status: status,
     timeZoneId: timeZoneId?.trim(),
   );
+
+  BranchDraft copyWith({
+    String? branchName,
+    String? branchCode,
+    String? contactPerson,
+    String? mobileNo,
+    String? landLine,
+    String? address,
+    String? email,
+    String? inventoryAlerts,
+    String? multiInventory,
+    int? divisionId,
+    BranchStatus? status,
+    String? timeZoneId,
+    bool clearDivisionId = false,
+    bool clearTimeZoneId = false,
+  }) => BranchDraft(
+    branchName: branchName ?? this.branchName,
+    branchCode: branchCode ?? this.branchCode,
+    contactPerson: contactPerson ?? this.contactPerson,
+    mobileNo: mobileNo ?? this.mobileNo,
+    landLine: landLine ?? this.landLine,
+    address: address ?? this.address,
+    email: email ?? this.email,
+    inventoryAlerts: inventoryAlerts ?? this.inventoryAlerts,
+    multiInventory: multiInventory ?? this.multiInventory,
+    divisionId: clearDivisionId ? null : divisionId ?? this.divisionId,
+    status: status ?? this.status,
+    timeZoneId: clearTimeZoneId ? null : timeZoneId ?? this.timeZoneId,
+  );
+
+  static final _ianaTimeZone = RegExp(
+    r'^[A-Za-z][A-Za-z0-9_+\-]*(/[A-Za-z0-9_+\-]+)*$',
+  );
+
+  /// Backend rule: `branchName` is required, max 100 characters, and
+  /// `timeZoneId` is a required IANA identifier.
+  Map<String, String> validate() {
+    final errors = <String, String>{};
+    final name = branchName.trim();
+    if (name.isEmpty) {
+      errors['branchName'] = 'required';
+    } else if (name.length > 100) {
+      errors['branchName'] = 'tooLong';
+    }
+    final zone = timeZoneId?.trim() ?? '';
+    if (zone.isEmpty) {
+      errors['timeZoneId'] = 'required';
+    } else if (!_ianaTimeZone.hasMatch(zone)) {
+      errors['timeZoneId'] = 'invalidTimeZone';
+    }
+    return Map.unmodifiable(errors);
+  }
+
+  factory BranchDraft.fromBranch(Branch branch) => BranchDraft(
+    branchName: branch.branchName,
+    branchCode: branch.branchCode,
+    contactPerson: branch.contactPerson,
+    mobileNo: branch.mobileNo,
+    landLine: branch.landLine,
+    address: branch.address,
+    email: branch.email,
+    inventoryAlerts: branch.inventoryAlerts,
+    multiInventory: branch.multiInventory,
+    divisionId: branch.divisionId,
+    status: branch.branchStatus,
+    timeZoneId: branch.timeZoneId,
+  );
 }
 
 class BranchPage {

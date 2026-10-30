@@ -42,8 +42,10 @@ no live write was sent during verification.
 * Employee Shifts: every `/api/employee-shifts` route is wired under
   `lib/modules/hr/employee_shifts/`; there is no screen. Overlap, assignment limit,
   timezone and "has punches" rules stay backend-authoritative.
-* Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`;
-  there is no screen and no branch permission enum/labels. `timeZoneId` is required.
+* Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`
+  and now has an approved list/detail/form screen at `/app/hr/settings/branches`.
+  Branch permission enum/labels (`companyBranchView` / `companyBranchManage`) are
+  live. `timeZoneId` is required.
 * Employees availability checks: no endpoint; return `Failure(code: 'unsupported')`.
 * Attendance history/corrections/requests/team/all: no endpoint; the adapter returns the
   existing empty/unsupported results and never reads local attendance.
@@ -60,7 +62,6 @@ no live write was sent during verification.
 * Attendance history/corrections/requests/team/all have no backend endpoints (empty state is correct).
 * Permission catalog screen is not built.
 * Employee Shifts screen is not built.
-* Branches screen and branch permission enum/labels are not built.
 * Access history/audit trail has no backend endpoint.
 * Multi-shift attendance cycles cannot be represented by the local single-cycle summary.
 * Inert policy defaults are used for the remaining attendance context fields because the
@@ -106,14 +107,14 @@ Status definitions:
 | Employees | Create - validation error (no write) | POST `{{baseUrl}}/api/employees` | hr.employees.create | RemoteLiveEmployeeRepository.create | Employees -> Add employee -> Save | employees/employee_created.json | employee_created_fixture_test, live_employee_test, employee_test | WIRED |
 | Employees | Get employee - not found | GET `{{baseUrl}}/api/employees/999999` | hr.employees.view | RemoteLiveEmployeeRepository.getById | Employees detail 404 | employees/employee_not_found.json | employee_fixture_test | WIRED |
 | Employees | List - without token (401) | GET `{{baseUrl}}/api/employees` | -> (authenticated) | ApiClient auth guard | Any protected screen; session ends on 401 | none | api_auth_foundation_test | WIRED |
-| Branches (Company) | Lookups (divisions, statuses, yes/no) | GET `{{baseUrl}}/api/branches/lookups` | company.branches.view | RemoteBranchRepository.lookups | Branches form lookups | branches/branch_lookups.json | branch_fixture_test, branch_test | WIRED |
-| Branches (Company) | List companies | GET `{{baseUrl}}/api/branches?page=1&pageSize=25&sort=nameAsc` | company.branches.view | RemoteBranchRepository.list | /app/settings/branches | branches/branches_list*.json | branch_fixture_test, branch_test | WIRED |
-| Branches (Company) | Get company by id | GET `{{baseUrl}}/api/branches/{{branchId}}` | company.branches.view | RemoteBranchRepository.getById | Branches row -> detail | branches/branch_detail.json | branch_fixture_test, branch_test | WIRED |
-| Branches (Company) | Create company (WRITES DATA) | POST `{{baseUrl}}/api/branches` | company.branches.manage | RemoteBranchRepository.create | Branches -> Add -> Save | branches/branches_list.json | branch_test | WIRED |
-| Branches (Company) | Update company (WRITES DATA) | PUT `{{baseUrl}}/api/branches/{{branchId}}` | company.branches.manage | RemoteBranchRepository.update | Branches -> Edit -> Save | branches/branch_detail.json | branch_test | WIRED |
-| Branches (Company) | Deactivate company (WRITES DATA) | POST `{{baseUrl}}/api/branches/{{branchId}}/deactivate` | company.branches.manage | RemoteBranchRepository.setActive(false) | Branches action -> Deactivate | branches/branch_detail.json | branch_test | WIRED |
-| Branches (Company) | Activate company (WRITES DATA) | POST `{{baseUrl}}/api/branches/{{branchId}}/activate` | company.branches.manage | RemoteBranchRepository.setActive(true) | Branches action -> Activate | branches/branch_detail.json | branch_test | WIRED |
-| Branches (Company) | Create - duplicate name (no write) | POST `{{baseUrl}}/api/branches` | company.branches.manage | RemoteBranchRepository.create | Branches -> Add -> Save | branches/branches_list.json | branch_test | WIRED |
+| Branches (Company) | Lookups (divisions, statuses, yes/no) | GET `{{baseUrl}}/api/branches/lookups` | company.branches.view | RemoteBranchRepository.lookups via BranchConfigurationRepository | Branches form lookups | branches/branch_lookups.json | branch_fixture_test, branch_configuration_repository_test, branch_widget_test | WIRED |
+| Branches (Company) | List companies | GET `{{baseUrl}}/api/branches?page=1&pageSize=25&sort=nameAsc` | company.branches.view | RemoteBranchRepository.list via BranchConfigurationRepository.watchList | /app/hr/settings/branches | branches/branches_list*.json | branch_fixture_test, branch_configuration_repository_test, branch_widget_test | WIRED |
+| Branches (Company) | Get company by id | GET `{{baseUrl}}/api/branches/{{branchId}}` | company.branches.view | RemoteBranchRepository.getById via BranchConfigurationRepository.watchDetails | Branches row -> detail | branches/branch_detail.json | branch_fixture_test, branch_configuration_repository_test, branch_widget_test | WIRED |
+| Branches (Company) | Create company (WRITES DATA) | POST `{{baseUrl}}/api/branches` | company.branches.manage | RemoteBranchRepository.create via BranchConfigurationRepository.save | Branches -> Add -> Save | branches/branches_list.json | branch_test, branch_configuration_repository_test, branch_widget_test | WIRED |
+| Branches (Company) | Update company (WRITES DATA) | PUT `{{baseUrl}}/api/branches/{{branchId}}` | company.branches.manage | RemoteBranchRepository.update via BranchConfigurationRepository.save(id) | Branches -> Edit -> Save | branches/branch_detail.json | branch_test, branch_configuration_repository_test, branch_widget_test | WIRED |
+| Branches (Company) | Deactivate company (WRITES DATA) | POST `{{baseUrl}}/api/branches/{{branchId}}/deactivate` | company.branches.manage | RemoteBranchRepository.setActive(false) via BranchConfigurationRepository | Branches action -> Deactivate | branches/branch_detail.json | branch_test, branch_configuration_repository_test | WIRED |
+| Branches (Company) | Activate company (WRITES DATA) | POST `{{baseUrl}}/api/branches/{{branchId}}/activate` | company.branches.manage | RemoteBranchRepository.setActive(true) via BranchConfigurationRepository | Branches action -> Activate | branches/branch_detail.json | branch_test, branch_configuration_repository_test | WIRED |
+| Branches (Company) | Create - duplicate name (no write) | POST `{{baseUrl}}/api/branches` | company.branches.manage | RemoteBranchRepository.create via BranchConfigurationRepository.save | Branches -> Add -> Save | branches/branches_list.json | branch_test, branch_configuration_repository_test | WIRED |
 | Departments | List departments | GET `{{baseUrl}}/api/departments?page=1&pageSize=25&sort=nameAsc` | hr.departments.view | RemoteDepartmentRepository.watchList | /app/hr/settings/departments | departments/departments_list*.json | department_fixture_test, department_bloc_test | WIRED |
 | Departments | Get department by id | GET `{{baseUrl}}/api/departments/{{departmentId}}` | hr.departments.view | RemoteDepartmentRepository.getById/watchDetails | Department row -> detail | departments/department_detail.json | department_fixture_test, department_repository_test | WIRED |
 | Departments | Create department (WRITES DATA) | POST `{{baseUrl}}/api/departments` | hr.departments.manage | RemoteDepartmentRepository.save | Departments -> Add -> Save | departments/departments_list.json | department_repository_test, department_dto_test | WIRED |
@@ -183,7 +184,7 @@ Status definitions:
 | Access check (QA Employee 27) | 7. Create employee - refused (403) | POST `{{baseUrl}}/api/employees` | hr.employees.create | RemoteLiveEmployeeRepository.create | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
 | Access check (QA Employee 27) | 8. Update employee - refused (403) | PUT `{{baseUrl}}/api/employees/{{limitedEmployeeId}}` | hr.employees.edit | RemoteLiveEmployeeRepository.update | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
 | Access check (QA Employee 27) | 9. Deactivate employee - refused (403) | POST `{{baseUrl}}/api/employees/{{limitedEmployeeId}}/deactivate` | hr.employees.deactivate | RemoteLiveEmployeeRepository.setActive | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
-| Access check (QA Employee 27) | 10. Branches - refused (403) | GET `{{baseUrl}}/api/branches` | company.branches.view | RemoteBranchRepository.list | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
+| Access check (QA Employee 27) | 10. Branches - refused (403) | GET `{{baseUrl}}/api/branches` | company.branches.view | RemoteBranchRepository.list via BranchConfigurationRepository | Branches list (forbidden state; typed URL) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
 | Access check (QA Employee 27) | 11. Attendance today - refused (403, key removed in step 1) | GET `{{baseUrl}}/api/attendance/today` | hr.attendance.self.view | AttendanceApi.today | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
 | Access check (QA Employee 27) | 12. Assign permissions to myself - refused (403) | POST `{{baseUrl}}/api/user-permissions` | company.access.permissions.manage | RemoteAccessRepository.assignGrants | No product screen (manual access-check) | auth/me_permissions_employee.json, employees/* | none | NOT WIRED |
 | Access check (QA Employee 27) | 13. [Admin] Give the attendance keys back (WRITES DATA) | PUT `{{baseUrl}}/api/user-permissions/users/{{limitedUserId}}` | company.access.permissions.manage | RemoteAccessRepository.replaceGrants | Postman-only access-check scenario (client replace screen exists) | auth/me_permissions_employee.json, employees/* | none | PARTIAL |

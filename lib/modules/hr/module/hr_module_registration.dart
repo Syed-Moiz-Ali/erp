@@ -50,6 +50,15 @@ import 'package:modular_erp/modules/hr/departments/presentation/bloc/department_
 import 'package:modular_erp/modules/hr/departments/presentation/pages/department_details_page.dart';
 import 'package:modular_erp/modules/hr/departments/presentation/bloc/department_form_bloc.dart';
 import 'package:modular_erp/modules/hr/departments/presentation/pages/department_form_page.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/branch_configuration_repository.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_list_bloc.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/pages/branch_list_page.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_details_bloc.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/pages/branch_details_page.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_form_bloc.dart';
+import 'package:modular_erp/modules/hr/branches/presentation/pages/branch_form_page.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/bloc/work_location_list_bloc.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/pages/work_location_list_page.dart';
@@ -108,6 +117,7 @@ HrModules buildHrModules({
   EmployeeRepository? employeeRepository,
   ShiftRepository? shiftRepository,
   DepartmentRepository? departmentRepository,
+  BranchRepository? branchRepository,
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
@@ -308,6 +318,98 @@ HrModules buildHrModules({
                           id: s.pathParameters['id'],
                         )..add(const RecordFormInitialized<DepartmentDraft>()),
                         child: DepartmentFormPage(guard: guard),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination branchesDestination() {
+    final guard = FormNavigationGuard();
+    final repository = BranchConfigurationRepository(branchRepository!);
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'branches',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgBranches,
+        icon: Icons.business_outlined,
+        route: AppRoutes.branches,
+        requiredPermissions: {AppPermission.companyBranchView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 49,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        BranchListBloc(repository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.branches,
+              name: 'branches',
+              builder: (c, s) => const BranchListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('branch-new'),
+                    create: (_) => BranchFormBloc(
+                      repository,
+                      c.read<BranchListBloc>().context,
+                      id: null,
+                    )..add(const RecordFormInitialized<BranchDraft>()),
+                    child: BranchFormPage(
+                      guard: guard,
+                      branchRepository: branchRepository,
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => BranchDetailsBloc(
+                      repository,
+                      c.read<BranchListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const BranchDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) => BranchFormBloc(
+                          repository,
+                          c.read<BranchListBloc>().context,
+                          id: s.pathParameters['id'],
+                        )..add(const RecordFormInitialized<BranchDraft>()),
+                        child: BranchFormPage(
+                          guard: guard,
+                          branchRepository: branchRepository,
+                        ),
                       ),
                     ),
                   ],
@@ -823,6 +925,7 @@ HrModules buildHrModules({
   final settingsDestinations = <RegisteredDestination>[
     shiftsDestination(),
     if (departmentRepository != null) departmentsDestination(),
+    if (branchRepository != null) branchesDestination(),
     workLocationsDestination(),
     attendancePoliciesDestination(),
     if (leaveTypeRepository != null) leaveTypeDestination(),

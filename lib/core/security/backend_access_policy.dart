@@ -24,7 +24,8 @@ abstract final class BackendAccessPolicy {
     'company.access.users.view': {AppPermission.accessUsersView},
     'hr.departments.manage': {AppPermission.departmentManage},
     'hr.departments.view': {AppPermission.departmentView},
-    // Branch keys are added when the Branches module is approved.
+    'company.branches.manage': {AppPermission.companyBranchManage},
+    'company.branches.view': {AppPermission.companyBranchView},
     'company.users.manage': {AppPermission.userManage},
     'hr.attendance.self.punch': {
       AppPermission.attendancePunchIn,
@@ -116,6 +117,8 @@ abstract final class BackendAccessPolicy {
     AppPermission.shiftManage,
     AppPermission.departmentView,
     AppPermission.departmentManage,
+    AppPermission.companyBranchView,
+    AppPermission.companyBranchManage,
     AppPermission.accessUsersView,
     AppPermission.accessPermissionsManage,
   };

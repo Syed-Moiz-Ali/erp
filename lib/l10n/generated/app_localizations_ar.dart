@@ -999,6 +999,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get permissionCompanyManage => 'إدارة الشركة';
 
   @override
+  String get permissionCompanyBranchView => 'عرض الفروع';
+
+  @override
+  String get permissionCompanyBranchManage => 'إدارة الفروع';
+
+  @override
   String get permissionUserManage => 'إدارة حسابات المستخدمين';
 
   @override
@@ -2605,6 +2611,55 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get cfgDepartmentIntro =>
       'الأقسام التنظيمية المستخدمة في سجلات الموارد البشرية.';
+
+  @override
+  String get cfgBranches => 'الفروع';
+
+  @override
+  String get cfgBranchIntro => 'إدارة فروع الشركة وبيانات الاتصال الخاصة بها.';
+
+  @override
+  String get cfgBranchCode => 'رمز الفرع';
+
+  @override
+  String get cfgBranchTimeZone => 'المنطقة الزمنية';
+
+  @override
+  String get cfgBranchDivision => 'القسم';
+
+  @override
+  String get cfgBranchContactPerson => 'مسؤول الاتصال';
+
+  @override
+  String get cfgBranchMobile => 'رقم الجوال';
+
+  @override
+  String get cfgBranchLandLine => 'الهاتف الثابت';
+
+  @override
+  String get cfgBranchEmail => 'البريد الإلكتروني';
+
+  @override
+  String get cfgBranchContactSection => 'بيانات الاتصال';
+
+  @override
+  String get cfgBranchLocationSection => 'الموقع والتصنيف';
+
+  @override
+  String get cfgBranchInventorySection => 'إعدادات المخزون';
+
+  @override
+  String get cfgBranchInventoryAlerts => 'تنبيهات المخزون';
+
+  @override
+  String get cfgBranchMultiInventory => 'مخزون متعدد';
+
+  @override
+  String get cfgInvalidTimeZone => 'أدخل منطقة زمنية صالحة (IANA).';
+
+  @override
+  String get settingsBranchDesc =>
+      'إدارة فروع الشركة وبيانات الاتصال الخاصة بها.';
 
   @override
   String get cfgNew => 'إنشاء سجل';
@@ -5219,6 +5274,19 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get hrPermDepartmentsManageDesc =>
       'إنشاء الأقسام وإعادة تسميتها وتعطيلها.';
+
+  @override
+  String get hrPermBranchesView => 'عرض الفروع';
+
+  @override
+  String get hrPermBranchesViewDesc => 'الاطلاع على إعدادات فروع الشركة.';
+
+  @override
+  String get hrPermBranchesManage => 'إدارة الفروع';
+
+  @override
+  String get hrPermBranchesManageDesc =>
+      'إنشاء الفروع وتعديلها وتفعيلها أو تعطيلها.';
 
   @override
   String get workforceFilters => 'فلاتر الحضور';

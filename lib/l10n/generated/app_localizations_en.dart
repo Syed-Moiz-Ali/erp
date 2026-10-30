@@ -1005,6 +1005,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get permissionCompanyManage => 'Manage company';
 
   @override
+  String get permissionCompanyBranchView => 'View branches';
+
+  @override
+  String get permissionCompanyBranchManage => 'Manage branches';
+
+  @override
   String get permissionUserManage => 'Manage user accounts';
 
   @override
@@ -2644,6 +2650,56 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cfgDepartmentIntro =>
       'Organisational departments used across HR records.';
+
+  @override
+  String get cfgBranches => 'Branches';
+
+  @override
+  String get cfgBranchIntro =>
+      'Manage company branches and their contact details.';
+
+  @override
+  String get cfgBranchCode => 'Branch code';
+
+  @override
+  String get cfgBranchTimeZone => 'Time zone';
+
+  @override
+  String get cfgBranchDivision => 'Division';
+
+  @override
+  String get cfgBranchContactPerson => 'Contact person';
+
+  @override
+  String get cfgBranchMobile => 'Mobile number';
+
+  @override
+  String get cfgBranchLandLine => 'Landline';
+
+  @override
+  String get cfgBranchEmail => 'Email';
+
+  @override
+  String get cfgBranchContactSection => 'Contact details';
+
+  @override
+  String get cfgBranchLocationSection => 'Location and classification';
+
+  @override
+  String get cfgBranchInventorySection => 'Inventory settings';
+
+  @override
+  String get cfgBranchInventoryAlerts => 'Inventory alerts';
+
+  @override
+  String get cfgBranchMultiInventory => 'Multiple inventory';
+
+  @override
+  String get cfgInvalidTimeZone => 'Enter a valid IANA time zone.';
+
+  @override
+  String get settingsBranchDesc =>
+      'Manage company branches and their contact details.';
 
   @override
   String get cfgNew => 'Create record';
@@ -5292,6 +5348,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hrPermDepartmentsManageDesc =>
       'Create, rename and deactivate departments.';
+
+  @override
+  String get hrPermBranchesView => 'View branches';
+
+  @override
+  String get hrPermBranchesViewDesc => 'See company branch configuration.';
+
+  @override
+  String get hrPermBranchesManage => 'Manage branches';
+
+  @override
+  String get hrPermBranchesManageDesc =>
+      'Create, edit and activate or deactivate branches.';
 
   @override
   String get workforceFilters => 'Attendance filters';

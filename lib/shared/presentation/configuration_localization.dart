@@ -19,6 +19,7 @@ String configurationFailure(Failure failure, AppLocalizations l) =>
       'validation' => l.cfgValidation,
       'duplicateName' => l.cfgDuplicateName,
       'tooLong' => l.cfgNameTooLong,
+      'invalidTimeZone' => l.cfgInvalidTimeZone,
       'inUse' => l.cfgDepartmentInUse,
       'unsupported' => l.cfgNotSupported,
       'invalidTimeRange' => l.cfgInvalidTime,

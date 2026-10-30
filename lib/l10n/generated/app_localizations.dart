@@ -1976,6 +1976,18 @@ abstract class AppLocalizations {
   /// **'Manage company'**
   String get permissionCompanyManage;
 
+  /// No description provided for @permissionCompanyBranchView.
+  ///
+  /// In en, this message translates to:
+  /// **'View branches'**
+  String get permissionCompanyBranchView;
+
+  /// No description provided for @permissionCompanyBranchManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage branches'**
+  String get permissionCompanyBranchManage;
+
   /// No description provided for @permissionUserManage.
   ///
   /// In en, this message translates to:
@@ -5035,6 +5047,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Organisational departments used across HR records.'**
   String get cfgDepartmentIntro;
+
+  /// No description provided for @cfgBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get cfgBranches;
+
+  /// No description provided for @cfgBranchIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company branches and their contact details.'**
+  String get cfgBranchIntro;
+
+  /// No description provided for @cfgBranchCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch code'**
+  String get cfgBranchCode;
+
+  /// No description provided for @cfgBranchTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get cfgBranchTimeZone;
+
+  /// No description provided for @cfgBranchDivision.
+  ///
+  /// In en, this message translates to:
+  /// **'Division'**
+  String get cfgBranchDivision;
+
+  /// No description provided for @cfgBranchContactPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person'**
+  String get cfgBranchContactPerson;
+
+  /// No description provided for @cfgBranchMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get cfgBranchMobile;
+
+  /// No description provided for @cfgBranchLandLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Landline'**
+  String get cfgBranchLandLine;
+
+  /// No description provided for @cfgBranchEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get cfgBranchEmail;
+
+  /// No description provided for @cfgBranchContactSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details'**
+  String get cfgBranchContactSection;
+
+  /// No description provided for @cfgBranchLocationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Location and classification'**
+  String get cfgBranchLocationSection;
+
+  /// No description provided for @cfgBranchInventorySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory settings'**
+  String get cfgBranchInventorySection;
+
+  /// No description provided for @cfgBranchInventoryAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory alerts'**
+  String get cfgBranchInventoryAlerts;
+
+  /// No description provided for @cfgBranchMultiInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple inventory'**
+  String get cfgBranchMultiInventory;
+
+  /// No description provided for @cfgInvalidTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid IANA time zone.'**
+  String get cfgInvalidTimeZone;
+
+  /// No description provided for @settingsBranchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company branches and their contact details.'**
+  String get settingsBranchDesc;
 
   /// No description provided for @cfgNew.
   ///
@@ -10093,6 +10201,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create, rename and deactivate departments.'**
   String get hrPermDepartmentsManageDesc;
+
+  /// No description provided for @hrPermBranchesView.
+  ///
+  /// In en, this message translates to:
+  /// **'View branches'**
+  String get hrPermBranchesView;
+
+  /// No description provided for @hrPermBranchesViewDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See company branch configuration.'**
+  String get hrPermBranchesViewDesc;
+
+  /// No description provided for @hrPermBranchesManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage branches'**
+  String get hrPermBranchesManage;
+
+  /// No description provided for @hrPermBranchesManageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create, edit and activate or deactivate branches.'**
+  String get hrPermBranchesManageDesc;
 
   /// No description provided for @workforceFilters.
   ///

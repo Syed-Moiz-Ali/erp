@@ -67,6 +67,8 @@ void main() {
     expect(p.contains(AppPermission.accessPermissionsManage), isTrue);
     expect(p.contains(AppPermission.departmentView), isTrue);
     expect(p.contains(AppPermission.departmentManage), isTrue);
+    expect(p.contains(AppPermission.companyBranchView), isTrue);
+    expect(p.contains(AppPermission.companyBranchManage), isTrue);
     expect(p.contains(AppPermission.attendanceViewSelf), isTrue);
     expect(p.contains(AppPermission.attendancePunchIn), isTrue);
 
@@ -75,11 +77,9 @@ void main() {
       containsAll(<String>['employees', 'attendance', 'settings']),
     );
 
-    // Branch keys remain intentionally deferred; department keys are live.
-    expect(
-      access.unknownKeys,
-      containsAll(<String>['company.branches.view', 'company.branches.manage']),
-    );
+    // Branch and department keys are live backend mappings.
+    expect(access.unknownKeys, isNot(contains('company.branches.view')));
+    expect(access.unknownKeys, isNot(contains('company.branches.manage')));
     expect(access.unknownKeys, isNot(contains('hr.departments.view')));
     expect(access.unknownKeys, isNot(contains('hr.departments.manage')));
   });
@@ -145,6 +145,10 @@ void main() {
           c.user.permissions.contains(AppPermission.departmentView);
       bool addDepartment(AuthContext c) =>
           c.user.permissions.contains(AppPermission.departmentManage);
+      bool branchesNav(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.companyBranchView);
+      bool manageBranch(AuthContext c) =>
+          c.user.permissions.contains(AppPermission.companyBranchManage);
       bool accessNav(AuthContext c) =>
           PermissionChecker(c.user.permissions).canAny(<AppPermission>[
             AppPermission.accessUsersView,
@@ -179,6 +183,12 @@ void main() {
       expect(departmentsNav(none), isFalse);
       expect(addDepartment(admin), isTrue);
       expect(addDepartment(employee), isFalse);
+
+      expect(branchesNav(admin), isTrue);
+      expect(branchesNav(employee), isFalse);
+      expect(branchesNav(none), isFalse);
+      expect(manageBranch(admin), isTrue);
+      expect(manageBranch(employee), isFalse);
 
       expect(accessNav(admin), isTrue);
       expect(accessNav(employee), isFalse);

@@ -77,6 +77,11 @@ abstract final class HrRoutes {
       '$departments/${Uri.encodeComponent(id)}';
   static String departmentEdit(String id) => '${department(id)}/edit';
 
+  static const branches = '$settings/branches';
+  static const branchesNew = '$branches/new';
+  static String branch(String id) => '$branches/${Uri.encodeComponent(id)}';
+  static String branchEdit(String id) => '${branch(id)}/edit';
+
   static const leaveTypes = '$settings/leave-types';
   static const leaveTypesNew = '$leaveTypes/new';
   static String leaveType(String id) =>

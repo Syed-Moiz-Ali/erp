@@ -99,6 +99,10 @@ abstract final class AppRoutes {
   static const departmentsNew = HrRoutes.departmentsNew;
   static String departmentsDetails(String id) => HrRoutes.department(id);
   static String departmentsEdit(String id) => HrRoutes.departmentEdit(id);
+  static const branches = HrRoutes.branches;
+  static const branchesNew = HrRoutes.branchesNew;
+  static String branchesDetails(String id) => HrRoutes.branch(id);
+  static String branchesEdit(String id) => HrRoutes.branchEdit(id);
   static String accessUser(String id) =>
       '$access/users/${Uri.encodeComponent(id)}';
   static const utilityPaths = {

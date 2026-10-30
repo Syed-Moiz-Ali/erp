@@ -4,6 +4,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/modules/hr/branches/data/datasources/branch_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/branches/data/dto/branch_dtos.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch.dart';
+import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 
 BranchDto branchDto({
   int branchId = 1,
@@ -179,5 +180,193 @@ class FakeBranchRemoteDataSource implements BranchRemoteDataSource {
     deactivateCalls++;
     lastDeactivateId = id;
     return (onDeactivate ?? (id) async => const Success(null))(id);
+  }
+}
+
+/// In-memory [BranchRepository] for presentation/adapter tests. No network and
+/// no live writes; every call is recorded so tests can assert what was sent.
+class InMemoryBranchRepository implements BranchRepository {
+  InMemoryBranchRepository({List<Branch>? branches, BranchLookups? lookups})
+    : branches = [...?branches],
+      lookupsValue =
+          lookups ??
+          const BranchLookups(
+            divisions: [
+              BranchLookupOption(id: 1, name: 'Division 1'),
+              BranchLookupOption(id: 2, name: 'Division 2'),
+            ],
+            statuses: ['Active', 'InActive'],
+            yesNo: ['Yes', 'No'],
+            timeZones: [
+              BranchTimeZoneLookup(
+                id: 'Asia/Dubai',
+                name: 'Dubai',
+                utcOffset: '+04:00',
+              ),
+              BranchTimeZoneLookup(
+                id: 'Asia/Kolkata',
+                name: 'Kolkata',
+                utcOffset: '+05:30',
+              ),
+            ],
+          );
+
+  final List<Branch> branches;
+  final BranchLookups lookupsValue;
+  int listCalls = 0, lookupsCalls = 0, getCalls = 0, createCalls = 0;
+  int updateCalls = 0, activateCalls = 0, deactivateCalls = 0;
+  String? lastSearch;
+  BranchStatus? lastStatus;
+  int? lastPage, lastPageSize;
+  BranchDraft? lastCreate, lastUpdate;
+  int? lastUpdateId, lastActiveId;
+  bool? lastActive;
+
+  @override
+  Future<Result<BranchPage>> list({
+    String? search,
+    BranchStatus? status,
+    int? divisionId,
+    String? sort,
+    int page = 1,
+    int pageSize = 25,
+  }) async {
+    listCalls++;
+    lastSearch = search;
+    lastStatus = status;
+    lastPage = page;
+    lastPageSize = pageSize;
+    final filtered = branches
+        .where((branch) {
+          if (search != null &&
+              search.isNotEmpty &&
+              !branch.branchName.toLowerCase().contains(search.toLowerCase())) {
+            return false;
+          }
+          if (status != null && branch.branchStatus != status) return false;
+          if (divisionId != null && branch.divisionId != divisionId) {
+            return false;
+          }
+          return true;
+        })
+        .toList(growable: false);
+    return Success(
+      BranchPage(
+        items: filtered,
+        page: page,
+        pageSize: pageSize,
+        totalItems: filtered.length,
+        totalPages: filtered.isEmpty
+            ? 0
+            : ((filtered.length - 1) ~/ pageSize) + 1,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<BranchLookups>> lookups() async {
+    lookupsCalls++;
+    return Success(lookupsValue);
+  }
+
+  @override
+  Future<Result<Branch>> getById(int id) async {
+    getCalls++;
+    for (final branch in branches) {
+      if (branch.branchId == id) return Success(branch);
+    }
+    return const Failed(
+      Failure(code: 'BRANCH_NOT_FOUND', kind: FailureKind.notFound),
+    );
+  }
+
+  @override
+  Future<Result<Branch>> create(BranchDraft draft) async {
+    createCalls++;
+    lastCreate = draft;
+    final branch = _fromDraft(draft, _nextId(), existing: null);
+    branches.add(branch);
+    return Success(branch);
+  }
+
+  @override
+  Future<Result<Branch>> update(int id, BranchDraft draft) async {
+    updateCalls++;
+    lastUpdateId = id;
+    lastUpdate = draft;
+    final index = branches.indexWhere((branch) => branch.branchId == id);
+    if (index < 0) {
+      return const Failed(
+        Failure(code: 'BRANCH_NOT_FOUND', kind: FailureKind.notFound),
+      );
+    }
+    final branch = _fromDraft(draft, id, existing: branches[index]);
+    branches[index] = branch;
+    return Success(branch);
+  }
+
+  @override
+  Future<Result<void>> setActive(int id, bool active) async {
+    if (active) {
+      activateCalls++;
+    } else {
+      deactivateCalls++;
+    }
+    lastActiveId = id;
+    lastActive = active;
+    final index = branches.indexWhere((branch) => branch.branchId == id);
+    if (index < 0) {
+      return const Failed(
+        Failure(code: 'BRANCH_NOT_FOUND', kind: FailureKind.notFound),
+      );
+    }
+    final current = branches[index];
+    branches[index] = Branch(
+      branchId: current.branchId,
+      branchName: current.branchName,
+      branchCode: current.branchCode,
+      contactPerson: current.contactPerson,
+      mobileNo: current.mobileNo,
+      landLine: current.landLine,
+      address: current.address,
+      email: current.email,
+      inventoryAlerts: current.inventoryAlerts,
+      multiInventory: current.multiInventory,
+      divisionId: current.divisionId,
+      divisionName: current.divisionName,
+      statusId: active ? 1 : 2,
+      status: active ? BranchStatus.active.wire : BranchStatus.inactive.wire,
+      timeZoneId: current.timeZoneId,
+    );
+    return const Success(null);
+  }
+
+  int _nextId() => branches.isEmpty
+      ? 1
+      : branches
+                .map((branch) => branch.branchId)
+                .reduce((a, b) => a > b ? a : b) +
+            1;
+
+  Branch _fromDraft(BranchDraft draft, int id, {Branch? existing}) {
+    final status =
+        draft.status ?? existing?.branchStatus ?? BranchStatus.active;
+    return Branch(
+      branchId: id,
+      branchName: draft.branchName.trim(),
+      branchCode: draft.branchCode,
+      contactPerson: draft.contactPerson,
+      mobileNo: draft.mobileNo,
+      landLine: draft.landLine,
+      address: draft.address,
+      email: draft.email,
+      inventoryAlerts: draft.inventoryAlerts,
+      multiInventory: draft.multiInventory,
+      divisionId: draft.divisionId,
+      divisionName: existing?.divisionName,
+      statusId: status == BranchStatus.inactive ? 2 : 1,
+      status: status.wire,
+      timeZoneId: draft.timeZoneId ?? existing?.timeZoneId ?? '',
+    );
   }
 }
