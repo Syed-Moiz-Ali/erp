@@ -7,6 +7,7 @@ import 'package:modular_erp/core/errors/result.dart';
 import 'package:modular_erp/core/models/configuration_record.dart';
 import 'package:modular_erp/core/security/app_permission.dart';
 import 'package:modular_erp/design_system/design_system.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/platform/auth/domain/policies/user_capability.dart';
 import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
@@ -158,10 +159,12 @@ class ConfigurationLandingPage extends StatelessWidget {
     this.leaveTypeRepository,
     this.leavePolicyRepository,
     this.holidayRepository,
+    this.permissionMasterRepository,
   });
   final ShiftRepository? shiftRepository;
   final DepartmentRepository? departmentRepository;
   final BranchRepository? branchRepository;
+  final PermissionMasterRepository? permissionMasterRepository;
   final EmployeeShiftRepository? employeeShiftRepository;
   final WorkLocationRepository? workLocationRepository;
   final AttendancePolicyRepository? attendancePolicyRepository;
@@ -284,6 +287,15 @@ class ConfigurationLandingPage extends StatelessWidget {
                   description: l.usersAccessSubtitle,
                   icon: Icons.manage_accounts_outlined,
                   onPressed: () => context.push(AppRoutes.access),
+                ),
+              if (permissionMasterRepository != null &&
+                  (permissions.can(AppPermission.accessUsersView) ||
+                      permissions.can(AppPermission.accessPermissionsManage)))
+                AppSettingsRow(
+                  title: l.permissionCatalogTitle,
+                  description: l.permissionCatalogSettingsDesc,
+                  icon: Icons.key_outlined,
+                  onPressed: () => context.push(AppRoutes.permissionCatalog),
                 ),
               if (permissions.can(AppPermission.companyModulesView))
                 AppSettingsRow(

@@ -3026,6 +3026,84 @@ abstract class AppLocalizations {
   /// **'Which ERP modules are enabled for this company.'**
   String get accessCompanyModulesSubtitle;
 
+  /// No description provided for @permissionCatalogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission catalog'**
+  String get permissionCatalogTitle;
+
+  /// No description provided for @permissionCatalogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the permission keys used across ERP access control.'**
+  String get permissionCatalogSubtitle;
+
+  /// No description provided for @permissionCatalogSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and maintain the ERP permission keys.'**
+  String get permissionCatalogSettingsDesc;
+
+  /// No description provided for @permissionCatalogKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission key'**
+  String get permissionCatalogKey;
+
+  /// No description provided for @permissionCatalogKeyHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Dot-separated, for example company.access.permissions.manage.'**
+  String get permissionCatalogKeyHelper;
+
+  /// No description provided for @permissionCatalogKeyInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use dot-separated letters, digits and underscores, for example company.access.permissions.manage.'**
+  String get permissionCatalogKeyInvalid;
+
+  /// No description provided for @permissionCatalogKeyTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission key must be 100 characters or fewer.'**
+  String get permissionCatalogKeyTooLong;
+
+  /// No description provided for @permissionCatalogDuplicateKey.
+  ///
+  /// In en, this message translates to:
+  /// **'This permission key is already in use.'**
+  String get permissionCatalogDuplicateKey;
+
+  /// No description provided for @permissionCatalogAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This permission is already active.'**
+  String get permissionCatalogAlreadyActive;
+
+  /// No description provided for @permissionCatalogAlreadyInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'This permission is already inactive.'**
+  String get permissionCatalogAlreadyInactive;
+
+  /// No description provided for @permissionCatalogMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Record metadata'**
+  String get permissionCatalogMetadata;
+
+  /// No description provided for @permissionCatalogCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get permissionCatalogCreated;
+
+  /// No description provided for @permissionCatalogModified.
+  ///
+  /// In en, this message translates to:
+  /// **'Last modified'**
+  String get permissionCatalogModified;
+
   /// No description provided for @accessManage.
   ///
   /// In en, this message translates to:

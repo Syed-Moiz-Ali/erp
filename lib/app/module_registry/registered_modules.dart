@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modular_erp/app/app_config.dart';
 import 'package:modular_erp/app/module_registry/module_registry.dart';
@@ -13,9 +14,18 @@ import 'package:modular_erp/core/security/permission_catalog.dart';
 import 'package:modular_erp/core/utils/app_clock.dart';
 import 'package:modular_erp/platform/access/domain/access_repository.dart';
 import 'package:modular_erp/platform/access/domain/grant_authority.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
+import 'package:modular_erp/platform/access/presentation/bloc/permission_catalog_details_bloc.dart';
+import 'package:modular_erp/platform/access/presentation/bloc/permission_catalog_form_bloc.dart';
+import 'package:modular_erp/platform/access/presentation/bloc/permission_catalog_list_bloc.dart';
 import 'package:modular_erp/platform/access/presentation/company_modules_page.dart';
+import 'package:modular_erp/platform/access/presentation/pages/permission_catalog_details_page.dart';
+import 'package:modular_erp/platform/access/presentation/pages/permission_catalog_form_page.dart';
+import 'package:modular_erp/platform/access/presentation/pages/permission_catalog_list_page.dart';
+import 'package:modular_erp/platform/access/presentation/permission_master_configuration_repository.dart';
 import 'package:modular_erp/platform/access/presentation/user_access_detail_page.dart';
 import 'package:modular_erp/platform/access/presentation/users_access_page.dart';
+import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/attendance/data/workforce_attendance_read_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_correction_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/attendance_repository.dart';
@@ -56,6 +66,7 @@ import 'package:modular_erp/modules/services/overview/application/services_dashb
 import 'package:modular_erp/platform/workspace/dashboard/domain/dashboard_contributor.dart';
 import 'package:modular_erp/platform/module/platform_registration.dart';
 import 'package:modular_erp/shared/domain/configuration_repository.dart';
+import 'package:modular_erp/shared/navigation/form_navigation_guard.dart';
 import 'package:modular_erp/shared/presentation/configuration_landing_page.dart';
 
 /// Composition root for the ERP navigation registry.
@@ -85,6 +96,7 @@ ModuleRegistry createErpRegistry(
   AccessRepository? accessRepository,
   PermissionCatalog? accessCatalog,
   GrantAuthorityResolver? accessAuthority,
+  PermissionMasterRepository? permissionMasterRepository,
   ServiceCustomerRepository? serviceCustomerRepository,
   ServiceSiteRepository? serviceSiteRepository,
   ServiceTeamRepository? serviceTeamRepository,
@@ -134,6 +146,93 @@ ModuleRegistry createErpRegistry(
           businessToday: _businessToday(clock, companyTimeService),
         );
   late final ModuleRegistry registry;
+
+  final permissionCatalog = permissionMasterRepository == null
+      ? null
+      : PermissionMasterConfigurationRepository(permissionMasterRepository);
+  final hasAccessAdmin =
+      accessRepository != null &&
+      accessCatalog != null &&
+      accessAuthority != null;
+
+  Widget authenticated(Widget Function(AuthContext) build) =>
+      BlocSelector<AuthBloc, AuthState, AuthContext?>(
+        selector: (state) => state.context,
+        builder: (context, auth) =>
+            auth == null ? const SizedBox.shrink() : build(auth),
+      );
+
+  List<RouteBase> permissionCatalogRoutes({required String path}) {
+    final repository = permissionCatalog;
+    if (repository == null) return const [];
+    final guard = FormNavigationGuard();
+    return [
+      GoRoute(
+        path: path,
+        name: 'permission-catalog',
+        builder: (c, s) => authenticated(
+          (auth) => BlocProvider(
+            key: ValueKey(auth),
+            create: (_) =>
+                PermissionCatalogListBloc(repository, auth)
+                  ..add(const RecordListStarted()),
+            child: const PermissionCatalogListPage(),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: 'new',
+            name: 'permission-catalog-new',
+            onExit: (c, s) => guard.onExit(c),
+            builder: (c, s) => authenticated(
+              (auth) => BlocProvider(
+                key: const ValueKey('permission-catalog-new'),
+                create: (_) => PermissionCatalogFormBloc(repository, auth)
+                  ..add(const RecordFormInitialized<PermissionMasterDraft>()),
+                child: PermissionCatalogFormPage(guard: guard),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'permission-catalog-details',
+            builder: (c, s) => authenticated(
+              (auth) => BlocProvider(
+                key: ValueKey('permission-${s.pathParameters['id']}'),
+                create: (_) => PermissionCatalogDetailsBloc(
+                  repository,
+                  auth,
+                  s.pathParameters['id']!,
+                )..add(const RecordDetailsStarted()),
+                child: const PermissionCatalogDetailsPage(),
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'permission-catalog-edit',
+                onExit: (c, s) => guard.onExit(c),
+                builder: (c, s) => authenticated(
+                  (auth) => BlocProvider(
+                    key: ValueKey('permission-${s.pathParameters['id']}-edit'),
+                    create: (_) =>
+                        PermissionCatalogFormBloc(
+                          repository,
+                          auth,
+                          id: s.pathParameters['id'],
+                        )..add(
+                          const RecordFormInitialized<PermissionMasterDraft>(),
+                        ),
+                    child: PermissionCatalogFormPage(guard: guard),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ];
+  }
 
   final platformModules = buildPlatformModules(
     registry: () => registry,
@@ -218,14 +317,13 @@ ModuleRegistry createErpRegistry(
                   leaveTypeRepository: leaveTypeRepository,
                   leavePolicyRepository: leavePolicyRepository,
                   holidayRepository: holidayRepository,
+                  permissionMasterRepository: permissionMasterRepository,
                 ),
               ),
             ),
           ],
         ),
-        if (accessRepository != null &&
-            accessCatalog != null &&
-            accessAuthority != null) ...[
+        if (hasAccessAdmin) ...[
           RegisteredDestination(
             navigation: ErpModule(
               id: 'access-users',
@@ -261,6 +359,7 @@ ModuleRegistry createErpRegistry(
                       userId: state.pathParameters['userId']!,
                     ),
                   ),
+                  ...permissionCatalogRoutes(path: 'permissions'),
                 ],
               ),
             ],
@@ -288,6 +387,25 @@ ModuleRegistry createErpRegistry(
             ],
           ),
         ],
+        if (!hasAccessAdmin && permissionCatalog != null)
+          RegisteredDestination(
+            navigation: ErpModule(
+              id: 'permission-catalog',
+              moduleId: AppModuleIds.settings,
+              name: (l) => l.permissionCatalogTitle,
+              icon: Icons.key_outlined,
+              route: AppRoutes.permissionCatalog,
+              navigationGroup: NavigationGroup.configuration,
+              order: 48,
+              desktopVisible: false,
+              mobileVisible: false,
+              anyPermissions: {
+                AppPermission.accessUsersView,
+                AppPermission.accessPermissionsManage,
+              },
+            ),
+            routes: permissionCatalogRoutes(path: AppRoutes.permissionCatalog),
+          ),
         ...hr.settingsDestinations,
       ],
     ),

@@ -8,6 +8,7 @@ import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
 import 'package:modular_erp/platform/access/access_dependencies.dart';
+import 'package:modular_erp/platform/access/domain/permission_master_repository.dart';
 import 'package:modular_erp/shared/transactions/transactions_dependencies.dart';
 
 final services = GetIt.instance;
@@ -53,6 +54,10 @@ void configureApplicationComposition(GetIt services) {
       accessRepository: services(),
       accessCatalog: services(),
       accessAuthority: services(),
+      permissionMasterRepository:
+          services.isRegistered<PermissionMasterRepository>()
+          ? services<PermissionMasterRepository>()
+          : null,
       serviceCustomerRepository: services(),
       serviceSiteRepository: services(),
       serviceTeamRepository: services(),

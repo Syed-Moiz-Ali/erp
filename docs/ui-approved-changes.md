@@ -123,3 +123,29 @@ defaults preserve every existing screen.
 Reason: the Settings hub must stay reachable for every signed-in backend user; its rows remain individually permission-gated. Demo navigation is unchanged.
 
 - `lib/app/module_registry/registered_modules.dart` - backend-only Settings hub visibility predicate; no layout or nav-order change (Step 1)
+
+## Approved: Permission catalog (user explicitly approved building the missing screens)
+
+Reason: the Permission catalog had no baseline screen. The user approved
+building its list/detail/form screens in the existing Departments/Branches
+configuration pattern, wired to the already-implemented
+`RemotePermissionMasterRepository` (backend mode only).
+
+- `lib/platform/access/presentation/permission_master_configuration_repository.dart` - approved Permission catalog adapter (`PermissionMasterRecord`, `PermissionMasterDraft`, `PermissionMasterConfigurationRepository`)
+- `lib/platform/access/presentation/bloc/permission_catalog_list_bloc.dart` - approved Permission catalog screen
+- `lib/platform/access/presentation/bloc/permission_catalog_details_bloc.dart` - approved Permission catalog screen
+- `lib/platform/access/presentation/bloc/permission_catalog_form_bloc.dart` - approved Permission catalog screen
+- `lib/platform/access/presentation/pages/permission_catalog_list_page.dart` - approved Permission catalog screen
+- `lib/platform/access/presentation/pages/permission_catalog_details_page.dart` - approved Permission catalog screen
+- `lib/platform/access/presentation/pages/permission_catalog_form_page.dart` - approved Permission catalog screen
+- `lib/app/router/app_routes.dart` - Permission catalog route aliases only
+- `lib/app/module_registry/registered_modules.dart` - Permission catalog repository/route/settings wiring only
+- `lib/shared/presentation/configuration_landing_page.dart` - Permission catalog settings row only
+- `lib/shared/presentation/configuration_localization.dart` - Permission catalog field-error and status-conflict copy mapping only
+- `lib/platform/l10n/platform_en.arb` - Permission catalog strings
+- `lib/platform/l10n/platform_ar.arb` - Permission catalog strings
+- `lib/l10n/generated/app_en.arb` - generated Permission catalog strings
+- `lib/l10n/generated/app_ar.arb` - generated Permission catalog strings
+- `lib/l10n/generated/app_localizations.dart` - generated Permission catalog strings
+- `lib/l10n/generated/app_localizations_en.dart` - generated Permission catalog strings
+- `lib/l10n/generated/app_localizations_ar.dart` - generated Permission catalog strings

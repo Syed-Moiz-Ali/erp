@@ -12,7 +12,8 @@ historical Postman audit; this section records the v3 outcome.
 * Me: `GET /api/me/permissions`.
 * Permissions: `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`,
   `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`,
-  `POST /api/permissions/{id}/deactivate`.
+  `POST /api/permissions/{id}/deactivate`. The approved list/detail/form screens
+  live at `/app/settings/access/permissions`.
 * User Permissions: `GET /api/user-permissions`, `GET /api/user-permissions/{id}`,
   `POST /api/user-permissions`, `PUT /api/user-permissions/users/{userId}`,
   `DELETE /api/user-permissions/{id}`.
@@ -39,8 +40,6 @@ no live write was sent during verification.
 
 ### APIS DATA-ONLY (no baseline screen)
 
-* Permission catalog: every `/api/permissions` route is wired in
-  `RemotePermissionMasterRepository`; there is no catalog screen, route, widget or l10n copy.
 * Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`
   and now has an approved list/detail/form screen at `/app/hr/settings/branches`.
   Branch permission enum/labels (`companyBranchView` / `companyBranchManage`) are
@@ -59,7 +58,6 @@ no live write was sent during verification.
 * Employee `oldestJoined` sort is unsupported; the list falls back to `nameAsc`.
 * No backend designation lookup; employee designation stays free text.
 * Attendance history/corrections/requests/team/all have no backend endpoints (empty state is correct).
-* Permission catalog screen is not built.
 * Access history/audit trail has no backend endpoint.
 * Multi-shift attendance cycles cannot be represented by the local single-cycle summary.
 * Inert policy defaults are used for the remaining attendance context fields because the

@@ -22,6 +22,8 @@ abstract final class AppRoutes {
       reports = HrRoutes.reports,
       settings = PlatformRoutes.settings,
       access = '$settings/access',
+      permissionCatalog = '$access/permissions',
+      permissionCatalogNew = '$permissionCatalog/new',
       modules = '$settings/modules',
       profile = PlatformRoutes.profile,
       changePassword = PlatformRoutes.changePassword,
@@ -109,6 +111,10 @@ abstract final class AppRoutes {
   static String employeeShiftsEdit(String id) => HrRoutes.employeeShiftEdit(id);
   static String accessUser(String id) =>
       '$access/users/${Uri.encodeComponent(id)}';
+  static String permissionCatalogDetails(String id) =>
+      '$permissionCatalog/${Uri.encodeComponent(id)}';
+  static String permissionCatalogEdit(String id) =>
+      '${permissionCatalogDetails(id)}/edit';
   static const utilityPaths = {
     more,
     notifications,

@@ -324,9 +324,9 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Users list | Grants-derived only, grouped by `userId`; only users with at least one key-bearing, non-inactive grant (`permissionKey != null`, `permissionStatusId != 2`). Orphan rows are excluded. |
 | Scope mapping | Self-service keys (`hr.attendance.self.punch`, `hr.attendance.self.view`) map to `PermissionScope.self`; every other key maps to `PermissionScope.all`. The backend stores no scopes, so this is an explicit, documented data assumption (AC3). |
 | History | `watchHistory` always returns an empty list: there is no access-history endpoint and backend mode never reads the local Drift activity log. |
-| UI impact | None to files. Chips/labels stay baseline. |
+| UI impact | Access chips/labels stay baseline. The Permission catalog list/detail/form are now built under the Access destination. |
 
-Permission catalog data notes:
+Permission catalog notes (**BUILT**, backend only):
 
 * Client-side key validation happens at the repository boundary only: non-empty, no whitespace, at most 100 characters, dot-separated (`^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+$`, e.g. `company.access.permissions.manage`). Invalid/missing keys return `VALIDATION_ERROR` (`FailureKind.validation`, `field: permissionKey`) without any request. Create also requires a non-empty name; descriptions are not validated.
 * Backend error codes are preserved: `PERMISSION_DUPLICATE_KEY` (normalized to `FailureKind.conflict` with `field: permissionKey` when the backend omits the field), `VALIDATION_ERROR`, `PERMISSION_NOT_FOUND` (`notFound`), `PERMISSION_ALREADY_ACTIVE` / `PERMISSION_ALREADY_INACTIVE` (`conflict`). 404/403 keep `notFound`/`forbidden`.
@@ -341,7 +341,7 @@ Permission catalog data notes:
 | AC4 | Save/assign grants | `POST/PUT/DELETE /api/user-permissions` (writes) | Data-only mappings wired; live writes remain out of scope. |
 | AC5 | Last-admin / self-escalation warnings | backend policy is intended-allow | Kept client-side; `GrantAuthorityResolver` is never bypassed. **NEEDS-UI-DECISION** whether they still apply in backend mode. |
 | AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Data-only: excluded from users/grants. Read-only display is not in baseline UI. **NEEDS-UI-DECISION:** ignore, or show in the existing list style later. |
-| AC7 | Permission catalog screen | `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`, `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`, `POST /api/permissions/{id}/deactivate` | **DATA-ONLY WIRED, no screen: NEEDS-UI-DECISION.** `RemotePermissionMasterRepository` maps list (paging, `search`, `statusId`, `sort`) / get / create / update / activate / deactivate against `AccessAdminRemoteDataSource`. Registered in backend mode only; no local permission-master implementation exists and none is registered in demo. |
+| AC7 | Permission catalog screen | `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`, `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`, `POST /api/permissions/{id}/deactivate` | **BUILT (backend only):** list/detail/form at `/app/settings/access/permissions`, wired through `PermissionMasterConfigurationRepository`. `RemotePermissionMasterRepository` maps list (paging, `search`, `statusId`, `sort`) / get / create / update / activate / deactivate against `AccessAdminRemoteDataSource`. Registered in backend mode only; no local permission-master implementation exists and none is registered in demo. |
 | AC8 | Access history / audit trail | no endpoint | **NEEDS-UI-DECISION:** history stays empty; no backend source exists. |
 | AC9 | Branch permission enum / labels | `company.branches.view` / `company.branches.manage` | Resolved: `companyBranchView` / `companyBranchManage` runtime permissions, backend key mapping, catalog definitions and English/Arabic labels are live. |
 
@@ -403,9 +403,9 @@ Rules:
 |---|---|---|---|---|---|
 | Branches (Company) | `/app/hr/settings/branches` list/detail/form (approved) | `/app/hr/settings/branches`, `/new`, `/:id`, `/:id/edit` | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` | Built in the Departments pattern |
 | Employee Shifts | `/app/hr/settings/employee-shifts` list/detail/form (approved) | `/app/hr/settings/employee-shifts`, `/new`, `/:id`, `/:id/edit` | `/api/employee-shifts` list/get/create/update/deactivate | `hr.attendance.shifts.view` / `manage` | Built in the Departments/Branches pattern |
-| Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
+| Permission catalog | `/app/settings/access/permissions` list/detail/form (approved) | `/app/settings/access/permissions`, `/new`, `/:id`, `/:id/edit` | `/api/permissions` list/get/create/update/activate/deactivate | `company.access.users.view` / `company.access.permissions.manage` | Built in the Departments/Branches pattern |
 
-These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. The Permission catalog remains out of scope for this phase.
+These follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs). The Permission catalog is now a built screen; its routes live under the existing Access destination when access administration is registered, with a guarded standalone fallback.
 
 ### Branches screen notes
 
@@ -425,6 +425,14 @@ These must follow the approved Departments page/route pattern (list → detail �
 * The list `status` filter sends the backend strings `Active` / `InActive`; the form loads `/api/branches/lookups` and offers only the returned divisions and IANA time zones.
 * `timeZoneId` is required on create/update and must be an IANA value from the lookups; no default time zone is invented.
 
+### Permission catalog screen notes
+
+* `/api/permissions` is wired behind `PermissionMasterRepository` in backend mode only; the settings row/destination appears only when that repository is supplied and the user has `accessUsersView` or `accessPermissionsManage`.
+* The approved screen lives under `lib/platform/access/presentation/`: `PermissionCatalogListPage`, `PermissionCatalogDetailsPage`, `PermissionCatalogFormPage`, their blocs, and `PermissionMasterConfigurationRepository` (a `ConfigurationRepository` adapter over `PermissionMasterRepository`).
+* Routes: `/app/settings/access/permissions`, `/new`, `/:id`, `/:id/edit`, registered as subroutes of the existing Access destination. A guarded standalone destination is registered when the catalog repository exists but the access repository/catalog/authority are absent.
+* The list hides the Assigned column; the form validates the dot-separated permission key locally (`^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+$`, max 100) and maps `PERMISSION_DUPLICATE_KEY` and `PERMISSION_ALREADY_ACTIVE` / `PERMISSION_ALREADY_INACTIVE` to field/status conflicts.
+* Tests: `permission_master_configuration_repository_test` (list filters/paging, create/update bodies, key validation, setActive and conflicts) and `permission_catalog_widget_test` (list/detail/form rendering, validation, 390/1440 fit).
+
 ---
 
 ## 6. Planned order after the decisions
@@ -434,7 +442,7 @@ These must follow the approved Departments page/route pattern (list → detail �
 3. Employees: `RemoteEmployeeRepository` wired for reads and data-only writes; remaining E-items are recorded under NEEDS-UI-DECISION.
 4. Attendance: read-only `AttendanceRepository` adapter for today/current; resolve AT5–AT7.
 5. Access & Users: session permission loading via `RemoteEffectiveAccessRepository`; read-only grant view; resolve AC1–AC6.
-6. NEW modules: Branches and Employee Shifts are built; the Permission catalog — last, one at a time.
+6. NEW modules: Branches, Employee Shifts and the Permission catalog are built.
 7. Demo/local removal: separate, module-by-module, after live verticals are accepted.
 
 Every step must keep `dart run tool/ui_freeze_check.dart` green and the full suite at the known baseline failure (`localization_test` source scan).

@@ -1550,6 +1550,51 @@ class AppLocalizationsAr extends AppLocalizations {
       'وحدات النظام المفعّلة لهذه الشركة.';
 
   @override
+  String get permissionCatalogTitle => 'دليل الصلاحيات';
+
+  @override
+  String get permissionCatalogSubtitle =>
+      'إدارة مفاتيح الصلاحيات المستخدمة في التحكم بالوصول إلى ERP.';
+
+  @override
+  String get permissionCatalogSettingsDesc =>
+      'مراجعة مفاتيح صلاحيات ERP وصيانتها.';
+
+  @override
+  String get permissionCatalogKey => 'مفتاح الصلاحية';
+
+  @override
+  String get permissionCatalogKeyHelper =>
+      'مفصول بنقاط، مثل company.access.permissions.manage.';
+
+  @override
+  String get permissionCatalogKeyInvalid =>
+      'استخدم حروفًا وأرقامًا وشرطات سفلية مفصولة بنقاط، مثل company.access.permissions.manage.';
+
+  @override
+  String get permissionCatalogKeyTooLong =>
+      'يجب ألا يتجاوز مفتاح الصلاحية 100 حرف.';
+
+  @override
+  String get permissionCatalogDuplicateKey =>
+      'مفتاح الصلاحية هذا مستخدم بالفعل.';
+
+  @override
+  String get permissionCatalogAlreadyActive => 'هذه الصلاحية مفعّلة بالفعل.';
+
+  @override
+  String get permissionCatalogAlreadyInactive => 'هذه الصلاحية معطّلة بالفعل.';
+
+  @override
+  String get permissionCatalogMetadata => 'بيانات السجل';
+
+  @override
+  String get permissionCatalogCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get permissionCatalogModified => 'آخر تعديل';
+
+  @override
   String get accessManage => 'إدارة الوصول';
 
   @override

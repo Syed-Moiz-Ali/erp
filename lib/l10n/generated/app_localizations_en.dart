@@ -1573,6 +1573,53 @@ class AppLocalizationsEn extends AppLocalizations {
       'Which ERP modules are enabled for this company.';
 
   @override
+  String get permissionCatalogTitle => 'Permission catalog';
+
+  @override
+  String get permissionCatalogSubtitle =>
+      'Manage the permission keys used across ERP access control.';
+
+  @override
+  String get permissionCatalogSettingsDesc =>
+      'Review and maintain the ERP permission keys.';
+
+  @override
+  String get permissionCatalogKey => 'Permission key';
+
+  @override
+  String get permissionCatalogKeyHelper =>
+      'Dot-separated, for example company.access.permissions.manage.';
+
+  @override
+  String get permissionCatalogKeyInvalid =>
+      'Use dot-separated letters, digits and underscores, for example company.access.permissions.manage.';
+
+  @override
+  String get permissionCatalogKeyTooLong =>
+      'Permission key must be 100 characters or fewer.';
+
+  @override
+  String get permissionCatalogDuplicateKey =>
+      'This permission key is already in use.';
+
+  @override
+  String get permissionCatalogAlreadyActive =>
+      'This permission is already active.';
+
+  @override
+  String get permissionCatalogAlreadyInactive =>
+      'This permission is already inactive.';
+
+  @override
+  String get permissionCatalogMetadata => 'Record metadata';
+
+  @override
+  String get permissionCatalogCreated => 'Created';
+
+  @override
+  String get permissionCatalogModified => 'Last modified';
+
+  @override
   String get accessManage => 'Manage access';
 
   @override
