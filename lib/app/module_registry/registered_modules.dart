@@ -31,6 +31,7 @@ import 'package:modular_erp/modules/hr/reports/domain/attendance_report_reposito
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/services/module/services_module_registration.dart';
 import 'package:modular_erp/modules/services/customers/domain/service_customer_repository.dart';
@@ -68,6 +69,7 @@ ModuleRegistry createErpRegistry(
   ShiftRepository? shiftRepository,
   DepartmentRepository? departmentRepository,
   BranchRepository? branchRepository,
+  EmployeeShiftRepository? employeeShiftRepository,
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
@@ -145,6 +147,7 @@ ModuleRegistry createErpRegistry(
     shiftRepository: shiftRepository,
     departmentRepository: departmentRepository,
     branchRepository: branchRepository,
+    employeeShiftRepository: employeeShiftRepository,
     workLocationRepository: workLocationRepository,
     attendancePolicyRepository: attendancePolicyRepository,
     locationService: locationService,
@@ -209,6 +212,7 @@ ModuleRegistry createErpRegistry(
                   shiftRepository: shiftRepository,
                   departmentRepository: departmentRepository,
                   branchRepository: branchRepository,
+                  employeeShiftRepository: employeeShiftRepository,
                   workLocationRepository: workLocationRepository,
                   attendancePolicyRepository: attendancePolicyRepository,
                   leaveTypeRepository: leaveTypeRepository,

@@ -2658,6 +2658,78 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cfgInvalidTimeZone => 'أدخل منطقة زمنية صالحة (IANA).';
 
   @override
+  String get cfgEmployeeShifts => 'ورديات الموظفين';
+
+  @override
+  String get cfgEmployeeShiftsIntro =>
+      'إسنادات ورديات الموظفين وتواريخ سريانها.';
+
+  @override
+  String get settingsEmployeeShiftDesc =>
+      'إدارة إسنادات ورديات الموظفين ونطاقات التواريخ.';
+
+  @override
+  String get cfgEmployeeShiftAssignment => 'إسناد الوردية';
+
+  @override
+  String get cfgEmployeeShiftEmployee => 'الموظف';
+
+  @override
+  String get cfgEmployeeShiftShift => 'الوردية';
+
+  @override
+  String get cfgEmployeeShiftDateRange => 'نطاق التاريخ';
+
+  @override
+  String get cfgEmployeeShiftFrom => 'من تاريخ';
+
+  @override
+  String get cfgEmployeeShiftTo => 'إلى تاريخ';
+
+  @override
+  String get cfgEmployeeShiftLateGrace => 'سماح التأخير';
+
+  @override
+  String get cfgEmployeeShiftPunchInOpensAt => 'يفتح تسجيل الحضور عند';
+
+  @override
+  String get cfgEmployeeShiftCrossesMidnight => 'يمتد بعد منتصف الليل';
+
+  @override
+  String get cfgEmployeeShiftImmutableEmployee =>
+      'لا يمكن تغيير الموظف بعد إنشاء الإسناد.';
+
+  @override
+  String get cfgEmployeeShiftTimeZoneHelp =>
+      'منطقة زمنية IANA اختيارية. اتركها فارغة لاستخدام المنطقة الزمنية للفرع.';
+
+  @override
+  String get cfgEmployeeShiftInvalidDate => 'أدخل تاريخًا صحيحًا (yyyy-MM-dd).';
+
+  @override
+  String get cfgEmployeeShiftOverlap =>
+      'يتداخل هذا الإسناد مع وردية موجودة للموظف.';
+
+  @override
+  String get cfgEmployeeShiftLimit =>
+      'وصل الموظف إلى الحد الأقصى لعدد إسنادات الورديات.';
+
+  @override
+  String get cfgEmployeeShiftHasPunches =>
+      'يحتوي هذا الإسناد على بصمات حضور ولا يمكن إزالته.';
+
+  @override
+  String get cfgEmployeeShiftAlreadyRemoved => 'تمت إزالة هذا الإسناد بالفعل.';
+
+  @override
+  String get cfgEmployeeShiftTimeZoneMismatch =>
+      'المنطقة الزمنية لا تطابق المنطقة الزمنية للفرع.';
+
+  @override
+  String get cfgEmployeeShiftBranchTimeZoneMissing =>
+      'لا توجد منطقة زمنية مهيأة للفرع.';
+
+  @override
   String get settingsBranchDesc =>
       'إدارة فروع الشركة وبيانات الاتصال الخاصة بها.';
 

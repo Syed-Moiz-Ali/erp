@@ -88,6 +88,36 @@ wired to the already-implemented `BranchRepository`.
 - `lib/l10n/generated/app_localizations_en.dart` - generated Branches strings
 - `lib/l10n/generated/app_localizations_ar.dart` - generated Branches strings
 
+## Approved: Employee Shifts (user explicitly approved building the missing screens)
+
+Reason: the Employee Shifts module had no baseline screen. The user approved
+building its list/detail/form screens in the existing Departments/Branches
+configuration pattern, wired to the already-implemented
+`EmployeeShiftRepository`. The shared layout only gains opt-out flags whose
+defaults preserve every existing screen.
+
+- `lib/modules/hr/employee_shifts/presentation/employee_shift_configuration_repository.dart` - approved Employee Shifts adapter (`EmployeeShiftRecord` + `EmployeeShiftConfigurationRepository`)
+- `lib/modules/hr/employee_shifts/presentation/bloc/employee_shift_list_bloc.dart` - approved Employee Shifts screen
+- `lib/modules/hr/employee_shifts/presentation/bloc/employee_shift_details_bloc.dart` - approved Employee Shifts screen
+- `lib/modules/hr/employee_shifts/presentation/bloc/employee_shift_form_bloc.dart` - approved Employee Shifts screen
+- `lib/modules/hr/employee_shifts/presentation/pages/employee_shift_list_page.dart` - approved Employee Shifts screen
+- `lib/modules/hr/employee_shifts/presentation/pages/employee_shift_details_page.dart` - approved Employee Shifts screen
+- `lib/modules/hr/employee_shifts/presentation/pages/employee_shift_form_page.dart` - approved Employee Shifts screen
+- `lib/modules/hr/module/hr_routes.dart` - Employee Shifts route constants only
+- `lib/modules/hr/module/hr_module_registration.dart` - Employee Shifts destination/route registration only
+- `lib/app/router/app_routes.dart` - Employee Shifts route aliases only
+- `lib/app/module_registry/registered_modules.dart` - Employee Shifts repository/settings wiring only
+- `lib/shared/presentation/configuration_landing_page.dart` - Employee Shifts settings row only
+- `lib/shared/presentation/configuration_layouts.dart` - optional `showAssigned`/`allowActivate` flags (defaults unchanged)
+- `lib/shared/presentation/configuration_localization.dart` - Employee Shifts failure-copy mapping only
+- `lib/modules/hr/l10n/hr_en.arb` - Employee Shifts strings
+- `lib/modules/hr/l10n/hr_ar.arb` - Employee Shifts strings
+- `lib/l10n/generated/app_en.arb` - generated Employee Shifts strings
+- `lib/l10n/generated/app_ar.arb` - generated Employee Shifts strings
+- `lib/l10n/generated/app_localizations.dart` - generated Employee Shifts strings
+- `lib/l10n/generated/app_localizations_en.dart` - generated Employee Shifts strings
+- `lib/l10n/generated/app_localizations_ar.dart` - generated Employee Shifts strings
+
 ## Approved: backend session visibility (Step 1)
 
 Reason: the Settings hub must stay reachable for every signed-in backend user; its rows remain individually permission-gated. Demo navigation is unchanged.

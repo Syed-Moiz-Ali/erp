@@ -54,6 +54,8 @@ class EmployeeShiftDraft {
     this.fromDate,
     this.toDate,
     this.timeZoneId,
+    this.employeeName,
+    this.employeeCode,
   });
 
   final int? employeeId;
@@ -61,6 +63,85 @@ class EmployeeShiftDraft {
   final String? fromDate;
   final String? toDate;
   final String? timeZoneId;
+
+  /// Display-only context carried from the loaded assignment so the edit form
+  /// can show the immutable employee without re-querying.
+  final String? employeeName;
+  final String? employeeCode;
+
+  EmployeeShiftDraft copyWith({
+    int? employeeId,
+    int? shiftId,
+    String? fromDate,
+    String? toDate,
+    String? timeZoneId,
+    String? employeeName,
+    String? employeeCode,
+    bool clearEmployeeId = false,
+    bool clearTimeZoneId = false,
+  }) => EmployeeShiftDraft(
+    employeeId: clearEmployeeId ? null : employeeId ?? this.employeeId,
+    shiftId: shiftId ?? this.shiftId,
+    fromDate: fromDate ?? this.fromDate,
+    toDate: toDate ?? this.toDate,
+    timeZoneId: clearTimeZoneId ? null : timeZoneId ?? this.timeZoneId,
+    employeeName: employeeName ?? this.employeeName,
+    employeeCode: employeeCode ?? this.employeeCode,
+  );
+
+  EmployeeShiftDraft normalized() => EmployeeShiftDraft(
+    employeeId: employeeId,
+    shiftId: shiftId,
+    fromDate: _clean(fromDate),
+    toDate: _clean(toDate),
+    timeZoneId: _clean(timeZoneId),
+    employeeName: employeeName,
+    employeeCode: employeeCode,
+  );
+
+  Map<String, String> validate({bool requireEmployee = true}) {
+    final errors = <String, String>{};
+    if (requireEmployee && employeeId == null) {
+      errors['employeeId'] = 'required';
+    }
+    if (shiftId == null) errors['shiftId'] = 'required';
+    final from = fromDate?.trim() ?? '';
+    if (from.isEmpty) {
+      errors['fromDate'] = 'required';
+    } else if (!_isIsoDate(from)) {
+      errors['fromDate'] = 'invalidDate';
+    }
+    final to = toDate?.trim() ?? '';
+    if (to.isEmpty) {
+      errors['toDate'] = 'required';
+    } else if (!_isIsoDate(to)) {
+      errors['toDate'] = 'invalidDate';
+    }
+    if (from.isNotEmpty && to.isNotEmpty && from.compareTo(to) > 0) {
+      errors['toDate'] = 'invalidDateRange';
+    }
+    return Map.unmodifiable(errors);
+  }
+
+  factory EmployeeShiftDraft.fromShift(EmployeeShift shift) =>
+      EmployeeShiftDraft(
+        employeeId: shift.employeeId,
+        shiftId: shift.shiftId,
+        fromDate: shift.fromDate,
+        toDate: shift.toDate,
+        timeZoneId: shift.timeZoneId,
+        employeeName: shift.employeeName,
+        employeeCode: shift.employeeCode,
+      );
+
+  static String? _clean(String? value) {
+    final trimmed = value?.trim();
+    return trimmed == null || trimmed.isEmpty ? null : trimmed;
+  }
+
+  static bool _isIsoDate(String value) =>
+      RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value) &&
+      DateTime.tryParse(value) != null;
 }
 
 class EmployeeShiftPage {

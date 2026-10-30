@@ -20,14 +20,14 @@ Widget configurationBadge(BuildContext c, ConfigurationStatus status) =>
 Future<bool> confirmConfigurationStatus(
   BuildContext c,
   bool active,
-  int count,
-) => AppConfirmationDialog.show(
+  int count, {
+  bool showAssigned = true,
+}) => AppConfirmationDialog.show(
   c,
   title: (l) => active ? l.cfgActivate : l.cfgDeactivate,
   message: (l) => [
     active ? l.cfgActivateMessage : l.cfgDeactivateMessage,
-    l.cfgAssigned,
-    configurationNumber(c, count),
+    if (showAssigned) ...[l.cfgAssigned, configurationNumber(c, count)],
   ].join(' '),
   confirmLabel: (l) => active ? l.cfgActivate : l.cfgDeactivate,
 );
@@ -55,8 +55,11 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
     this.extraColumns = const [],
     this.extraCells,
     this.mobileDetails,
+    this.showAssigned = true,
+    this.allowActivate = true,
   });
 
+  final bool showAssigned, allowActivate;
   final String title, subtitle;
   final String? summaryLabel;
   final double summaryWidth;
@@ -90,7 +93,8 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
             label: (l) => l.cfgEdit,
             onPressed: () => c.push(editRoute(item.record.id)),
           ),
-        if (manage)
+        if (manage &&
+            (allowActivate || item.record.status == ConfigurationStatus.active))
           AppMenuAction(
             label: (l) => item.record.status == ConfigurationStatus.active
                 ? l.cfgDeactivate
@@ -101,6 +105,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                     c,
                     active,
                     item.assignedEmployees,
+                    showAssigned: showAssigned,
                   ) &&
                   c.mounted) {
                 onActive(item.record.id, active);
@@ -213,7 +218,7 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                       DataColumn(label: Text(summaryLabel ?? l.cfgDescription)),
                       ...extraColumns,
                       DataColumn(label: Text(l.cfgStatus)),
-                      DataColumn(label: Text(l.cfgAssigned)),
+                      if (showAssigned) DataColumn(label: Text(l.cfgAssigned)),
                       DataColumn(label: Text(l.cfgActions)),
                     ],
                     rows: [
@@ -246,14 +251,20 @@ class ConfigurationListLayout<T extends ConfigurationRecord>
                             ),
                             ...?(extraCells?.call(c, item.record)),
                             DataCell(configurationBadge(c, item.record.status)),
-                            DataCell(
-                              Text(
-                                configurationNumber(c, item.assignedEmployees),
-                                style: const TextStyle(
-                                  fontFeatures: [FontFeature.tabularFigures()],
+                            if (showAssigned)
+                              DataCell(
+                                Text(
+                                  configurationNumber(
+                                    c,
+                                    item.assignedEmployees,
+                                  ),
+                                  style: const TextStyle(
+                                    fontFeatures: [
+                                      FontFeature.tabularFigures(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
                             DataCell(actions(item)),
                           ],
                         ),
@@ -289,10 +300,12 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
     required this.onEdit,
     required this.onActive,
     required this.content,
+    this.showAssigned = true,
+    this.allowActivate = true,
   });
   final String title;
   final RecordDetailsState<T> state;
-  final bool manage;
+  final bool manage, showAssigned, allowActivate;
   final VoidCallback onRetry, onEdit;
   final ValueChanged<bool> onActive;
   final Widget Function(T) content;
@@ -323,7 +336,9 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
               )
             : null,
         secondaryActions: [
-          if (manage)
+          if (manage &&
+              (allowActivate ||
+                  item.record.status == ConfigurationStatus.active))
             AppSecondaryButton(
               label: item.record.status == ConfigurationStatus.active
                   ? l.cfgDeactivate
@@ -337,6 +352,7 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
                             c,
                             active,
                             item.assignedEmployees,
+                            showAssigned: showAssigned,
                           ) &&
                           c.mounted) {
                         onActive(active);
@@ -353,20 +369,26 @@ class ConfigurationDetailsLayout<T extends ConfigurationRecord>
               message: configurationFailure(state.failure!, l),
               onRetry: onRetry,
             ),
-          Wrap(
-            spacing: AppSpacing.lg,
-            runSpacing: AppSpacing.md,
-            children: [
-              Text(
-                [
-                  l.cfgAssigned,
-                  configurationNumber(c, item.assignedEmployees),
-                ].join(': '),
-              ),
-              if (item.record.syncStatus == RecordSyncStatus.pending)
-                AppStatusBadge(label: l.cfgPending, status: AppStatus.warning),
-            ],
-          ),
+          if (showAssigned ||
+              item.record.syncStatus == RecordSyncStatus.pending)
+            Wrap(
+              spacing: AppSpacing.lg,
+              runSpacing: AppSpacing.md,
+              children: [
+                if (showAssigned)
+                  Text(
+                    [
+                      l.cfgAssigned,
+                      configurationNumber(c, item.assignedEmployees),
+                    ].join(': '),
+                  ),
+                if (item.record.syncStatus == RecordSyncStatus.pending)
+                  AppStatusBadge(
+                    label: l.cfgPending,
+                    status: AppStatus.warning,
+                  ),
+              ],
+            ),
           const SizedBox(height: AppSpacing.xxl),
           content(item.record),
           const SizedBox(height: AppSpacing.xxl),

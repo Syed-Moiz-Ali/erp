@@ -13,6 +13,7 @@ import 'package:modular_erp/platform/auth/presentation/bloc/auth_bloc.dart';
 import 'package:modular_erp/modules/hr/shifts/domain/shift_repository.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
 import 'package:modular_erp/modules/hr/departments/domain/department_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/attendance_policies/domain/attendance_policy_repository.dart';
 import 'package:modular_erp/modules/hr/leave/domain/leave_models.dart';
@@ -151,6 +152,7 @@ class ConfigurationLandingPage extends StatelessWidget {
     this.shiftRepository,
     this.departmentRepository,
     this.branchRepository,
+    this.employeeShiftRepository,
     this.workLocationRepository,
     this.attendancePolicyRepository,
     this.leaveTypeRepository,
@@ -160,6 +162,7 @@ class ConfigurationLandingPage extends StatelessWidget {
   final ShiftRepository? shiftRepository;
   final DepartmentRepository? departmentRepository;
   final BranchRepository? branchRepository;
+  final EmployeeShiftRepository? employeeShiftRepository;
   final WorkLocationRepository? workLocationRepository;
   final AttendancePolicyRepository? attendancePolicyRepository;
   final ConfigurationRepository<LeaveType, LeaveTypeDraft>? leaveTypeRepository;
@@ -205,6 +208,14 @@ class ConfigurationLandingPage extends StatelessWidget {
                   icon: Icons.schedule_outlined,
                   trailing: count('shifts'),
                   onPressed: () => context.push(AppRoutes.shifts),
+                ),
+              if (employeeShiftRepository != null &&
+                  permissions.can(AppPermission.shiftView))
+                AppSettingsRow(
+                  title: l.cfgEmployeeShifts,
+                  description: l.settingsEmployeeShiftDesc,
+                  icon: Icons.assignment_ind_outlined,
+                  onPressed: () => context.push(AppRoutes.employeeShifts),
                 ),
               if (permissions.can(AppPermission.departmentView))
                 AppSettingsRow(

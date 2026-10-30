@@ -5138,6 +5138,132 @@ abstract class AppLocalizations {
   /// **'Enter a valid IANA time zone.'**
   String get cfgInvalidTimeZone;
 
+  /// No description provided for @cfgEmployeeShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee shifts'**
+  String get cfgEmployeeShifts;
+
+  /// No description provided for @cfgEmployeeShiftsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee shift assignments and their effective dates.'**
+  String get cfgEmployeeShiftsIntro;
+
+  /// No description provided for @settingsEmployeeShiftDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage employee shift assignments and date ranges.'**
+  String get settingsEmployeeShiftDesc;
+
+  /// No description provided for @cfgEmployeeShiftAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift assignment'**
+  String get cfgEmployeeShiftAssignment;
+
+  /// No description provided for @cfgEmployeeShiftEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get cfgEmployeeShiftEmployee;
+
+  /// No description provided for @cfgEmployeeShiftShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get cfgEmployeeShiftShift;
+
+  /// No description provided for @cfgEmployeeShiftDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date range'**
+  String get cfgEmployeeShiftDateRange;
+
+  /// No description provided for @cfgEmployeeShiftFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From date'**
+  String get cfgEmployeeShiftFrom;
+
+  /// No description provided for @cfgEmployeeShiftTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To date'**
+  String get cfgEmployeeShiftTo;
+
+  /// No description provided for @cfgEmployeeShiftLateGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Late grace'**
+  String get cfgEmployeeShiftLateGrace;
+
+  /// No description provided for @cfgEmployeeShiftPunchInOpensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Punch-in opens at'**
+  String get cfgEmployeeShiftPunchInOpensAt;
+
+  /// No description provided for @cfgEmployeeShiftCrossesMidnight.
+  ///
+  /// In en, this message translates to:
+  /// **'Crosses midnight'**
+  String get cfgEmployeeShiftCrossesMidnight;
+
+  /// No description provided for @cfgEmployeeShiftImmutableEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'The employee cannot be changed after the assignment is created.'**
+  String get cfgEmployeeShiftImmutableEmployee;
+
+  /// No description provided for @cfgEmployeeShiftTimeZoneHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional IANA time zone. Leave blank to use the branch time zone.'**
+  String get cfgEmployeeShiftTimeZoneHelp;
+
+  /// No description provided for @cfgEmployeeShiftInvalidDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid date (yyyy-MM-dd).'**
+  String get cfgEmployeeShiftInvalidDate;
+
+  /// No description provided for @cfgEmployeeShiftOverlap.
+  ///
+  /// In en, this message translates to:
+  /// **'This assignment overlaps an existing shift for the employee.'**
+  String get cfgEmployeeShiftOverlap;
+
+  /// No description provided for @cfgEmployeeShiftLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'The employee has reached the maximum number of shift assignments.'**
+  String get cfgEmployeeShiftLimit;
+
+  /// No description provided for @cfgEmployeeShiftHasPunches.
+  ///
+  /// In en, this message translates to:
+  /// **'This assignment has attendance punches and cannot be removed.'**
+  String get cfgEmployeeShiftHasPunches;
+
+  /// No description provided for @cfgEmployeeShiftAlreadyRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'This assignment has already been removed.'**
+  String get cfgEmployeeShiftAlreadyRemoved;
+
+  /// No description provided for @cfgEmployeeShiftTimeZoneMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The time zone does not match the branch time zone.'**
+  String get cfgEmployeeShiftTimeZoneMismatch;
+
+  /// No description provided for @cfgEmployeeShiftBranchTimeZoneMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'The branch has no time zone configured.'**
+  String get cfgEmployeeShiftBranchTimeZoneMissing;
+
   /// No description provided for @settingsBranchDesc.
   ///
   /// In en, this message translates to:

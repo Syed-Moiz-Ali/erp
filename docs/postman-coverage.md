@@ -28,7 +28,9 @@ historical Postman audit; this section records the v3 outcome.
   `PUT /api/shifts/{id}`, `POST /api/shifts/{id}/activate`, `POST /api/shifts/{id}/deactivate`.
 * Employee Shifts: `GET /api/employee-shifts`, `GET /api/employee-shifts/{id}`,
   `POST /api/employee-shifts`, `PUT /api/employee-shifts/{id}`,
-  `POST /api/employee-shifts/{id}/deactivate`.
+  `POST /api/employee-shifts/{id}/deactivate`. The approved list/detail/form
+  screens live at `/app/hr/settings/employee-shifts`; deactivate is the only
+  status action exposed by the UI.
 * Attendance: `GET /api/attendance/today`, `POST /api/attendance/punch`
   (`punchIn | break | resume | punchOut`).
 
@@ -39,9 +41,6 @@ no live write was sent during verification.
 
 * Permission catalog: every `/api/permissions` route is wired in
   `RemotePermissionMasterRepository`; there is no catalog screen, route, widget or l10n copy.
-* Employee Shifts: every `/api/employee-shifts` route is wired under
-  `lib/modules/hr/employee_shifts/`; there is no screen. Overlap, assignment limit,
-  timezone and "has punches" rules stay backend-authoritative.
 * Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`
   and now has an approved list/detail/form screen at `/app/hr/settings/branches`.
   Branch permission enum/labels (`companyBranchView` / `companyBranchManage`) are
@@ -61,7 +60,6 @@ no live write was sent during verification.
 * No backend designation lookup; employee designation stays free text.
 * Attendance history/corrections/requests/team/all have no backend endpoints (empty state is correct).
 * Permission catalog screen is not built.
-* Employee Shifts screen is not built.
 * Access history/audit trail has no backend endpoint.
 * Multi-shift attendance cycles cannot be represented by the local single-cycle summary.
 * Inert policy defaults are used for the remaining attendance context fields because the
@@ -133,7 +131,7 @@ Status definitions:
 | Employee Shifts | Assign Morning (WRITES DATA) | POST `{{baseUrl}}/api/employee-shifts` | hr.attendance.shifts.manage | EmployeeShiftApi.create | Employee Shifts -> Add assignment -> Save | employee_shifts/employee_shifts_list.json | employee_shift_fixture_test, employee_shift_test | WIRED |
 | Employee Shifts | Assign Evening (WRITES DATA) | POST `{{baseUrl}}/api/employee-shifts` | hr.attendance.shifts.manage | EmployeeShiftApi.create | Employee Shifts -> Add assignment -> Save | employee_shifts/employee_shifts_list.json | employee_shift_fixture_test, employee_shift_test | WIRED |
 | Employee Shifts | Assign Morning again - overlap 409 (no write) | POST `{{baseUrl}}/api/employee-shifts` | hr.attendance.shifts.manage | EmployeeShiftApi.create | Employee Shifts -> Add assignment -> Save | employee_shifts/employee_shifts_list.json | employee_shift_fixture_test, employee_shift_test | WIRED |
-| Employee Shifts | List assignments of the employee | GET `{{baseUrl}}/api/employee-shifts?employeeId={{shiftEmployeeId}}&fromDate={{shiftFromDate}}&toDate={{shiftToDate}}` | hr.attendance.shifts.view | EmployeeShiftApi.list | /app/hr/employee-shifts | employee_shifts/employee_shifts_list*.json | employee_shift_fixture_test, employee_shift_test | WIRED |
+| Employee Shifts | List assignments of the employee | GET `{{baseUrl}}/api/employee-shifts?employeeId={{shiftEmployeeId}}&fromDate={{shiftFromDate}}&toDate={{shiftToDate}}` | hr.attendance.shifts.view | EmployeeShiftApi.list | /app/hr/settings/employee-shifts | employee_shifts/employee_shifts_list*.json | employee_shift_fixture_test, employee_shift_test | WIRED |
 | Employee Shifts | Change dates (WRITES DATA) | PUT `{{baseUrl}}/api/employee-shifts/{{employeeShiftId}}` | hr.attendance.shifts.manage | EmployeeShiftApi.update | Assignment -> Edit -> Save | employee_shifts/employee_shift_detail.json | employee_shift_fixture_test, employee_shift_test | WIRED |
 | Employee Shifts | Assign - toDate before fromDate (no write) | POST `{{baseUrl}}/api/employee-shifts` | hr.attendance.shifts.manage | EmployeeShiftApi.create | Employee Shifts -> Add assignment -> Save | employee_shifts/employee_shifts_list.json | employee_shift_fixture_test, employee_shift_test | WIRED |
 | Employee Shifts | Remove assignment (WRITES DATA) | POST `{{baseUrl}}/api/employee-shifts/{{employeeShiftId}}/deactivate` | hr.attendance.shifts.manage | EmployeeShiftApi.deactivate | Assignment action -> Remove | employee_shifts/employee_shift_detail.json | employee_shift_test | WIRED |

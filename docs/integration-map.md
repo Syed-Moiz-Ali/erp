@@ -79,7 +79,7 @@ Every route in the API-endpoint registry is covered. `POST` uses the collection 
 
 **API-endpoint registry check:** `ApiEndpoints.permissions.list` backs both `GET` and `POST /api/permissions`; `permissions.byId` backs `PUT`; `branches.list` backs `POST /api/branches`; `branches.byId` backs `PUT`; `employeeShifts.list` backs `POST /api/employee-shifts`; `employeeShifts.byId` backs `PUT`. Every path is exposed through the registry, and `dio_*` data sources reference only registry constants.
 
-**UI check:** `dart run tool/ui_freeze_check.dart` reports PASS against `ac2ec6f`; the only guarded files that differ are the pre-approved Departments/Shifts files listed in `docs/ui-approved-changes.md`.
+**UI check:** `dart run tool/ui_freeze_check.dart` reports PASS against `ac2ec6f`; the only guarded files that differ are the pre-approved Departments/Shifts/Branches/Employee Shifts files listed in `docs/ui-approved-changes.md`.
 
 ---
 
@@ -347,7 +347,7 @@ Permission catalog data notes:
 
 ### 3.9 Employee Shifts
 
-**DATA-ONLY WIRED, no screen (NEEDS-UI-DECISION):** there is no baseline Employee Shifts screen, route, widget or l10n copy. The data layer lives under `lib/modules/hr/employee_shifts/` and is registered only in backend mode. No demo/local store exists and none is registered in demo/disabled.
+**BUILT (backend only):** the Employee Shifts list/detail/form screens live under `lib/modules/hr/employee_shifts/presentation/` and follow the Departments/Branches configuration pattern. They are wired to the already-implemented `EmployeeShiftRepository` through `EmployeeShiftConfigurationRepository`. The data layer is registered only in backend mode; no demo/local store exists, so the route and settings row are hidden when the repository is absent.
 
 | Item | Value |
 |---|---|
@@ -362,7 +362,7 @@ Permission catalog data notes:
 | Client validation | Before any request: create requires `employeeId` and `shiftId`; create and update require both dates and `fromDate <= toDate` (`FailureKind.validation`), otherwise nothing is sent. |
 | Error mapping | `EMPLOYEE_SHIFT_NOT_FOUND` -> `FailureKind.notFound`. `EMPLOYEE_SHIFT_OVERLAP`, `EMPLOYEE_SHIFT_LIMIT`, `EMPLOYEE_SHIFT_HAS_PUNCHES`, `EMPLOYEE_SHIFT_ALREADY_REMOVED` -> `FailureKind.conflict`. `EMPLOYEE_SHIFT_TIMEZONE_MISMATCH`, `EMPLOYEE_SHIFT_BRANCH_TIMEZONE_MISSING` -> `FailureKind.validation`. The backend code and safe server message are preserved. |
 | Timezone / overlap rules | Overlap detection, the per-employee assignment limit, timezone-vs-branch matching and "has punches" are **backend-authoritative**; the client never computes or bypasses them. Deactivate does **not** treat `EMPLOYEE_SHIFT_ALREADY_REMOVED` as success. |
-| UI impact | None. No screen, route, widget, layout or l10n change. Building the list/detail/form UI remains a **NEEDS-UI-DECISION** (Departments page/route pattern) for a later approved session. |
+| UI impact | Approved Employee Shifts list/detail/form screens at `/app/hr/settings/employee-shifts`, `/new`, `/:id`, `/:id/edit` using the Departments/Branches pattern. List columns show the employee (name/code), shift, date range and status; the Assigned column and Activate action are hidden because the API supports deactivate only. Edit keeps the employee immutable. |
 
 ---
 
@@ -397,15 +397,15 @@ Rules:
 
 ---
 
-## 5. NEW modules (listed, **not built**)
+## 5. NEW modules
 
 | Module | Baseline screen | Proposed route(s) | Endpoints | Permission | Build order |
 |---|---|---|---|---|---|
 | Branches (Company) | `/app/hr/settings/branches` list/detail/form (approved) | `/app/hr/settings/branches`, `/new`, `/:id`, `/:id/edit` | `/api/branches/lookups`, list, get, create, update, activate, deactivate | `companyBranchView` / `companyBranchManage` | Built in the Departments pattern |
-| Employee Shifts | none | `/app/hr/employee-shifts` (+ list/detail/form routes in the Departments pattern) | `/api/employee-shifts` list/get/create/update/deactivate - **data layer wired, no screen (NEEDS-UI-DECISION)** | `hr.attendance.shifts.view` / `manage` | Last, after Shifts |
+| Employee Shifts | `/app/hr/settings/employee-shifts` list/detail/form (approved) | `/app/hr/settings/employee-shifts`, `/new`, `/:id`, `/:id/edit` | `/api/employee-shifts` list/get/create/update/deactivate | `hr.attendance.shifts.view` / `manage` | Built in the Departments/Branches pattern |
 | Permission catalog | none | `/app/settings/access/permissions` (+ list/detail/form routes in the Departments pattern) | `/api/permissions` list/get/create/update/activate/deactivate — **data layer wired, no screen (NEEDS-UI-DECISION)** | `company.access.users.view` / `company.access.permissions.manage` | Last, after Access |
 
-These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. They are explicitly out of scope for this phase.
+These must follow the approved Departments page/route pattern (list → detail → form as routes, not dialogs) when they are built. The Permission catalog remains out of scope for this phase.
 
 ### Branches screen notes
 
@@ -413,6 +413,14 @@ These must follow the approved Departments page/route pattern (list → detail �
 * The approved screen lives under `lib/modules/hr/branches/presentation/`: `BranchListPage`, `BranchDetailsPage`, `BranchFormPage`, their blocs, and `BranchConfigurationRepository` (a `ConfigurationRepository` adapter over `BranchRepository`).
 * Routes: `/app/hr/settings/branches`, `/new`, `/:id`, `/:id/edit`, registered only when a `BranchRepository` is supplied.
 * Permissions: `company.branches.view` / `company.branches.manage` map to `companyBranchView` / `companyBranchManage`; manage implies view.
+
+### Employee Shifts screen notes
+
+* `/api/employee-shifts` is wired behind `EmployeeShiftRepository` in backend mode only; demo/disabled modes register no employee-shift repository, so the Employee Shifts settings row/destination is hidden.
+* The approved screen lives under `lib/modules/hr/employee_shifts/presentation/`: `EmployeeShiftListPage`, `EmployeeShiftDetailsPage`, `EmployeeShiftFormPage`, their blocs, and `EmployeeShiftConfigurationRepository` (a `ConfigurationRepository` adapter over `EmployeeShiftRepository`).
+* Routes: `/app/hr/settings/employee-shifts`, `/new`, `/:id`, `/:id/edit`, registered only when an `EmployeeShiftRepository` is supplied. The settings row is gated by `shiftView`.
+* Create requires employee, shift and both dates (`fromDate <= toDate`). Edit keeps the employee immutable and never sends `employeeId`. The API supports deactivate only, so the assigned count and Activate action are hidden; Deactivate remains available for active assignments.
+* Overlap, assignment-limit, timezone-vs-branch and "has punches" rules stay backend-authoritative.
 * Tests: `branch_configuration_repository_test` (adapter mapping/status/save/revision), `branch_widget_test` (list/detail/form, validation, 390/1440 fit), plus the existing `branch_*` data tests.
 * The list `status` filter sends the backend strings `Active` / `InActive`; the form loads `/api/branches/lookups` and offers only the returned divisions and IANA time zones.
 * `timeZoneId` is required on create/update and must be an IANA value from the lookups; no default time zone is invented.
@@ -426,7 +434,7 @@ These must follow the approved Departments page/route pattern (list → detail �
 3. Employees: `RemoteEmployeeRepository` wired for reads and data-only writes; remaining E-items are recorded under NEEDS-UI-DECISION.
 4. Attendance: read-only `AttendanceRepository` adapter for today/current; resolve AT5–AT7.
 5. Access & Users: session permission loading via `RemoteEffectiveAccessRepository`; read-only grant view; resolve AC1–AC6.
-6. NEW modules: Branches, Employee Shifts, Permission catalog — last, one at a time.
+6. NEW modules: Branches and Employee Shifts are built; the Permission catalog — last, one at a time.
 7. Demo/local removal: separate, module-by-module, after live verticals are accepted.
 
 Every step must keep `dart run tool/ui_freeze_check.dart` green and the full suite at the known baseline failure (`localization_test` source scan).

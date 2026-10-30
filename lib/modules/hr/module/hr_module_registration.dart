@@ -59,6 +59,15 @@ import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_details
 import 'package:modular_erp/modules/hr/branches/presentation/pages/branch_details_page.dart';
 import 'package:modular_erp/modules/hr/branches/presentation/bloc/branch_form_bloc.dart';
 import 'package:modular_erp/modules/hr/branches/presentation/pages/branch_form_page.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/employee_shift_configuration_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/bloc/employee_shift_list_bloc.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/pages/employee_shift_list_page.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/bloc/employee_shift_details_bloc.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/pages/employee_shift_details_page.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/bloc/employee_shift_form_bloc.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/presentation/pages/employee_shift_form_page.dart';
 import 'package:modular_erp/modules/hr/work_locations/domain/work_location_repository.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/bloc/work_location_list_bloc.dart';
 import 'package:modular_erp/modules/hr/work_locations/presentation/pages/work_location_list_page.dart';
@@ -118,6 +127,7 @@ HrModules buildHrModules({
   ShiftRepository? shiftRepository,
   DepartmentRepository? departmentRepository,
   BranchRepository? branchRepository,
+  EmployeeShiftRepository? employeeShiftRepository,
   WorkLocationRepository? workLocationRepository,
   AttendancePolicyRepository? attendancePolicyRepository,
   LocationService? locationService,
@@ -409,6 +419,105 @@ HrModules buildHrModules({
                         child: BranchFormPage(
                           guard: guard,
                           branchRepository: branchRepository,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  RegisteredDestination employeeShiftsDestination() {
+    final guard = FormNavigationGuard();
+    final repository = EmployeeShiftConfigurationRepository(
+      employeeShiftRepository!,
+    );
+    return RegisteredDestination(
+      navigation: ErpModule(
+        id: 'employee-shifts',
+        moduleId: AppModuleIds.settings,
+        name: (l) => l.cfgEmployeeShifts,
+        icon: Icons.assignment_ind_outlined,
+        route: AppRoutes.employeeShifts,
+        requiredPermissions: {AppPermission.shiftView},
+        navigationGroup: NavigationGroup.configuration,
+        order: 50,
+        desktopVisible: false,
+        mobileVisible: false,
+      ),
+      routes: [
+        ShellRoute(
+          builder: (context, state, child) =>
+              BlocSelector<AuthBloc, AuthState, AuthContext?>(
+                selector: (s) => s.context,
+                builder: (context, auth) {
+                  if (auth == null) return const SizedBox.shrink();
+                  return BlocProvider(
+                    key: ValueKey(auth),
+                    create: (_) =>
+                        EmployeeShiftListBloc(repository, auth)
+                          ..add(const RecordListStarted()),
+                    child: child,
+                  );
+                },
+              ),
+          routes: [
+            GoRoute(
+              path: AppRoutes.employeeShifts,
+              name: 'employee-shifts',
+              builder: (c, s) => const EmployeeShiftListPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  onExit: (c, s) => guard.onExit(c),
+                  builder: (c, s) => BlocProvider(
+                    key: const ValueKey('employee-shift-new'),
+                    create: (_) => EmployeeShiftFormBloc(
+                      repository,
+                      c.read<EmployeeShiftListBloc>().context,
+                      id: null,
+                    )..add(const RecordFormInitialized<EmployeeShiftDraft>()),
+                    child: EmployeeShiftFormPage(
+                      guard: guard,
+                      employeeRepository: employeeRepository,
+                      shiftRepository: shiftRepository,
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (c, s) => BlocProvider(
+                    key: ValueKey(s.pathParameters['id']),
+                    create: (_) => EmployeeShiftDetailsBloc(
+                      repository,
+                      c.read<EmployeeShiftListBloc>().context,
+                      s.pathParameters['id']!,
+                    )..add(const RecordDetailsStarted()),
+                    child: const EmployeeShiftDetailsPage(),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      onExit: (c, s) => guard.onExit(c),
+                      builder: (c, s) => BlocProvider(
+                        key: ValueKey('${s.pathParameters['id']}-edit'),
+                        create: (_) =>
+                            EmployeeShiftFormBloc(
+                              repository,
+                              c.read<EmployeeShiftListBloc>().context,
+                              id: s.pathParameters['id'],
+                            )..add(
+                              const RecordFormInitialized<EmployeeShiftDraft>(),
+                            ),
+                        child: EmployeeShiftFormPage(
+                          guard: guard,
+                          employeeRepository: employeeRepository,
+                          shiftRepository: shiftRepository,
                         ),
                       ),
                     ),
@@ -926,6 +1035,7 @@ HrModules buildHrModules({
     shiftsDestination(),
     if (departmentRepository != null) departmentsDestination(),
     if (branchRepository != null) branchesDestination(),
+    if (employeeShiftRepository != null) employeeShiftsDestination(),
     workLocationsDestination(),
     attendancePoliciesDestination(),
     if (leaveTypeRepository != null) leaveTypeDestination(),

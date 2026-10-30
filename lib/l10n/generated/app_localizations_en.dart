@@ -2698,6 +2698,79 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cfgInvalidTimeZone => 'Enter a valid IANA time zone.';
 
   @override
+  String get cfgEmployeeShifts => 'Employee shifts';
+
+  @override
+  String get cfgEmployeeShiftsIntro =>
+      'Employee shift assignments and their effective dates.';
+
+  @override
+  String get settingsEmployeeShiftDesc =>
+      'Manage employee shift assignments and date ranges.';
+
+  @override
+  String get cfgEmployeeShiftAssignment => 'Shift assignment';
+
+  @override
+  String get cfgEmployeeShiftEmployee => 'Employee';
+
+  @override
+  String get cfgEmployeeShiftShift => 'Shift';
+
+  @override
+  String get cfgEmployeeShiftDateRange => 'Date range';
+
+  @override
+  String get cfgEmployeeShiftFrom => 'From date';
+
+  @override
+  String get cfgEmployeeShiftTo => 'To date';
+
+  @override
+  String get cfgEmployeeShiftLateGrace => 'Late grace';
+
+  @override
+  String get cfgEmployeeShiftPunchInOpensAt => 'Punch-in opens at';
+
+  @override
+  String get cfgEmployeeShiftCrossesMidnight => 'Crosses midnight';
+
+  @override
+  String get cfgEmployeeShiftImmutableEmployee =>
+      'The employee cannot be changed after the assignment is created.';
+
+  @override
+  String get cfgEmployeeShiftTimeZoneHelp =>
+      'Optional IANA time zone. Leave blank to use the branch time zone.';
+
+  @override
+  String get cfgEmployeeShiftInvalidDate => 'Enter a valid date (yyyy-MM-dd).';
+
+  @override
+  String get cfgEmployeeShiftOverlap =>
+      'This assignment overlaps an existing shift for the employee.';
+
+  @override
+  String get cfgEmployeeShiftLimit =>
+      'The employee has reached the maximum number of shift assignments.';
+
+  @override
+  String get cfgEmployeeShiftHasPunches =>
+      'This assignment has attendance punches and cannot be removed.';
+
+  @override
+  String get cfgEmployeeShiftAlreadyRemoved =>
+      'This assignment has already been removed.';
+
+  @override
+  String get cfgEmployeeShiftTimeZoneMismatch =>
+      'The time zone does not match the branch time zone.';
+
+  @override
+  String get cfgEmployeeShiftBranchTimeZoneMissing =>
+      'The branch has no time zone configured.';
+
+  @override
   String get settingsBranchDesc =>
       'Manage company branches and their contact details.';
 

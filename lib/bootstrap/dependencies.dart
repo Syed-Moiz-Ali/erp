@@ -3,6 +3,7 @@ import 'package:modular_erp/app/module_registry/module_registry.dart';
 import 'package:modular_erp/app/module_registry/registered_modules.dart';
 import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/modules/hr/branches/domain/branch_repository.dart';
+import 'package:modular_erp/modules/hr/employee_shifts/domain/employee_shift_repository.dart';
 import 'package:modular_erp/modules/hr/module/hr_dependencies.dart';
 import 'package:modular_erp/modules/services/module/services_dependencies.dart';
 import 'package:modular_erp/platform/module/platform_dependencies.dart';
@@ -33,6 +34,9 @@ void configureApplicationComposition(GetIt services) {
       departmentRepository: services(),
       branchRepository: services.isRegistered<BranchRepository>()
           ? services<BranchRepository>()
+          : null,
+      employeeShiftRepository: services.isRegistered<EmployeeShiftRepository>()
+          ? services<EmployeeShiftRepository>()
           : null,
       workLocationRepository: services(),
       attendancePolicyRepository: services(),
