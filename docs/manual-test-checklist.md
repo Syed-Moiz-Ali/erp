@@ -52,6 +52,29 @@ responses, never hardcoded. Envelopes must contain
 `success`/`message`/`data`/`errors`; paged payloads must contain
 `items`/`page`/`pageSize`/`totalItems`/`totalPages` with a 1-based `page`.
 
+## Reversible status-write QA (2026-10-30)
+
+This is the only allowed live-write check. It is Admin-only, reversible, and
+must restore every original status. Never use it for creates, updates, employee
+activate/deactivate, employee-shift deactivate, department deactivate or
+attendance punch. The temporary tool is untracked and deleted after the run;
+never commit `.env.local` or the tool.
+
+Run once with `--confirm-writes`; the tool reads each target, toggles, reads
+back, restores and reads back again, and stops on the first unexpected result.
+
+| Target | Original | Actions | Restore | Result |
+|---|---|---|---|---|
+| Permission 19 | InActive | activate, verify, deactivate, verify | InActive | PASS |
+| Permission 20 | Active | deactivate, verify, activate, verify | Active | PASS |
+| User 43 + permission 19 | grant absent | activate master, POST grant, verify, DELETE grant, verify absent | grant absent; master InActive | PASS |
+| Branch 6 | InActive | activate, verify, deactivate, verify | InActive | PASS |
+| Shift 26 | InActive | activate, verify, deactivate, verify | InActive | PASS |
+| Shift 27 | InActive | activate, verify, deactivate, verify | InActive | PASS |
+
+**Result: 56 PASS, 0 FAIL, 0 SKIP.** All four pre-existing grants for user 43
+were unchanged. The read-only matrix was re-run afterwards (20 PASS).
+
 ## Accounts
 
 - **Admin**: current administrator account.

@@ -35,8 +35,10 @@ historical Postman audit; this section records the v3 outcome.
 * Attendance: `GET /api/attendance/today`, `POST /api/attendance/punch`
   (`punchIn | break | resume | punchOut`).
 
-Writes are implemented behind the repositories and are exercised only with in-memory fakes;
-no live write was sent during verification.
+Writes are implemented behind the repositories. The reversible status matrix
+(permission, branch and shift activate/deactivate plus user-permission assign/revoke)
+was live-verified on 2026-10-30 and restored; all other writes are exercised only
+with in-memory fakes.
 
 ### APIS DATA-ONLY (true gaps only)
 
@@ -208,15 +210,15 @@ backend in this integration; it does not mean every validation branch was tested
 |---|---|---|---|
 | `POST /api/permissions` | `{permissionKey, permissionName, description?}` | Code + audit/Postman | UNVERIFIED |
 | `PUT /api/permissions/{id}` | Optional `{permissionKey, permissionName, description}` (omitted fields are not sent) | Code + audit/Postman | UNVERIFIED |
-| `POST /api/permissions/{id}/activate` | No body | Postman | UNVERIFIED |
-| `POST /api/permissions/{id}/deactivate` | No body | Postman | UNVERIFIED |
-| `POST /api/user-permissions` (assign) | `{userId, permissionIds}` | Postman/audit; grant 145 self-assign and employee grants succeeded live | LIVE-VERIFIED |
+| `POST /api/permissions/{id}/activate` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
+| `POST /api/permissions/{id}/deactivate` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
+| `POST /api/user-permissions` (assign) | `{userId, permissionIds}` | Postman/audit; grant 145 self-assign and employee grants succeeded live; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
 | `PUT /api/user-permissions/users/{userId}` (replace) | `{permissionIds}` | Postman/audit | UNVERIFIED |
-| `DELETE /api/user-permissions/{id}` | No body | Postman | UNVERIFIED |
+| `DELETE /api/user-permissions/{id}` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
 | `POST /api/branches` | Full branch body: `branchName, branchCode, contactPerson, mobileNo, landLine, address, email, inventoryAlerts, multiInventory, divisionId, status, timeZoneId` | Code + audit/Postman | UNVERIFIED |
 | `PUT /api/branches/{id}` | Same full branch body | Code + audit/Postman | UNVERIFIED |
-| `POST /api/branches/{id}/activate` | No body | Postman | UNVERIFIED |
-| `POST /api/branches/{id}/deactivate` | No body | Postman | UNVERIFIED |
+| `POST /api/branches/{id}/activate` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
+| `POST /api/branches/{id}/deactivate` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
 | `POST /api/departments` | `{departmentName}` | Code + audit/Postman | UNVERIFIED |
 | `PUT /api/departments/{id}` | `{departmentName}` | Code + audit/Postman | UNVERIFIED |
 | `POST /api/departments/{id}/deactivate` | No body | Postman | UNVERIFIED |
@@ -226,8 +228,8 @@ backend in this integration; it does not mean every validation branch was tested
 | `POST /api/employees/{id}/deactivate` | No body | Postman | UNVERIFIED |
 | `POST /api/shifts` | `{shiftName, startTime, endTime, earlyPunchInMinutes, lateGraceMinutes}` | Code + audit/Postman | UNVERIFIED |
 | `PUT /api/shifts/{id}` | Same five-field body | Code + audit/Postman | UNVERIFIED |
-| `POST /api/shifts/{id}/activate` | No body (UI path exists; no Postman request) | Code + audit | UNVERIFIED |
-| `POST /api/shifts/{id}/deactivate` | No body | Postman | UNVERIFIED |
+| `POST /api/shifts/{id}/activate` | No body (UI path exists; no Postman request) | Code + audit; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
+| `POST /api/shifts/{id}/deactivate` | No body | Postman; reversible QA matrix 2026-10-30 | LIVE-VERIFIED |
 | `POST /api/employee-shifts` | `{employeeId, shiftId, fromDate, toDate, timeZoneId?}` | Code + audit/Postman | UNVERIFIED |
 | `PUT /api/employee-shifts/{id}` | `{shiftId, fromDate, toDate, timeZoneId?}` (employee omitted) | Code + audit/Postman | UNVERIFIED |
 | `POST /api/employee-shifts/{id}/deactivate` | No body | Postman | UNVERIFIED |

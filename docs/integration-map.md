@@ -2,7 +2,7 @@
 
 **Branch:** `feat/api-v3` (from `ac2ec6f`)
 **UI baseline:** `ac2ec6f` (tip of `services_module`, 2026-10-08), enforced by `tool/ui_freeze_check.dart`.
-**Status:** integration map. Every MassERP endpoint in scope is wired behind its existing repository interface (or a data-only repository for modules with no screen). Backend repositories are selected by DI when `AppConfig.realApiEnabled`; demo/local repositories remain for demo. Writes are implemented but never executed during verification. No screen is modified. A read-only live smoke test against the development backend passed on 2026-10-30 (see below). Remaining decisions are listed per module and summarised under NEEDS-UI-DECISION.
+**Status:** integration map. Every MassERP endpoint in scope is wired behind its existing repository interface (or a data-only repository for modules with no screen). Backend repositories are selected by DI when `AppConfig.realApiEnabled`; demo/local repositories remain for demo. Reversible status writes were live-verified on 2026-10-30; create/update, employee status, employee-shift deactivate and attendance punch remain fake-tested only. No screen is modified. The read-only live smoke test and the reversible status-write matrix against the development backend passed on 2026-10-30 (see below). Remaining decisions are listed per module and summarised under NEEDS-UI-DECISION.
 
 Legend:
 
@@ -18,14 +18,14 @@ Rules applied:
 * API work may add data sources, DTOs, mappers, repositories, auth/session handling, permission loading, DI, field/error mapping, fixtures and tests.
 * Screens, widgets, layouts, styles, routes, route structure, page-vs-dialog patterns, nav order, l10n copy and interaction flows stay frozen, except the approved Departments and Shifts items.
 * Live implementations sit **behind the existing repository interfaces**; a screen is never rewritten to fit the API.
-* Write endpoints are implemented in the data layer but are never executed by tools or tests. App runtime writes use the documented bodies; verification uses in-memory fakes only.
+* Write endpoints are implemented in the data layer. Only the reversible status matrix was executed live on 2026-10-30 (see below); all other verification uses in-memory fakes only.
 * Permission data may only change visibility predicates of existing nav entries, routes and buttons. It must not reorder or restructure navigation.
 
 ---
 
 ## Coverage — final audit (API v3)
 
-Every route in the API-endpoint registry is covered. `POST` uses the collection URL and `PUT` uses `/{id}` through the same `ApiEndpoints` helpers; no path is hardcoded in a datasource. All tests are network-free (in-memory fakes or a `FakeDioAdapter`); no live write is executed.
+Every route in the API-endpoint registry is covered. `POST` uses the collection URL and `PUT` uses `/{id}` through the same `ApiEndpoints` helpers; no path is hardcoded in a datasource. All tests are network-free (in-memory fakes or a `FakeDioAdapter`); the only live writes are the reversible status matrix documented above.
 
 | Module | Endpoint | Repository method | DI selection | Tests | Fixtures |
 |---|---|---|---|---|---|
@@ -92,6 +92,25 @@ Every route in the API-endpoint registry is covered. `POST` uses the collection 
 * Every envelope had `success`/`message`/`data`/`errors`; every paged payload had `items`/`page`/`pageSize`/`totalItems`/`totalPages` with a 1-based `page`. All success payloads parsed through the existing DTOs/mappers (`LiveEmployeeDto`, `BranchDto`, `BranchLookupsDto`, `DepartmentDto`, `ShiftDto`, `EmployeeShiftDto`, `PermissionDto`, `UserPermissionDto`, `MyPermissionsDto`, `AttendanceDay`).
 * No live mapping defect was found, so no data-layer fix or new NEEDS-UI-DECISION was required. The 429 wait-once retry path exists but was not triggered.
 * Dashboard: backend mode now resolves `EmptyDashboardRepository` (empty, `isDemo == false`); demo mode still resolves `LocalDashboardRepository`.
+
+### Live reversible status-write verification (2026-10-30)
+
+`tool/qa_status_write_smoke.dart` (temporary, untracked, deleted after the run) was executed against the development backend with `--confirm-writes`. It logged in once as Admin, mutated only the reversible QA matrix below, read every change back, and restored every original status.
+
+**Result: 56 PASS, 0 FAIL, 0 SKIP. Read-only smoke re-run afterwards: 20 PASS.**
+
+| Target | Original | Actions | Restored |
+|---|---|---|---|
+| Permission 19 (`postman.test.permission`) | InActive | activate, verify, deactivate, verify | InActive |
+| Permission 20 | Active | deactivate, verify, activate, verify | Active |
+| User 43 + permission 19 | grant absent | activate master, POST grant, verify grant, DELETE grant, verify absent, restore master | grant absent; permission 19 InActive |
+| Branch 6 | InActive | activate, verify, deactivate, verify | InActive |
+| Shift 26 | InActive | activate, verify, deactivate, verify | InActive |
+| Shift 27 | InActive | activate, verify, deactivate, verify | InActive |
+
+All four existing grants for user 43 were unchanged. No UI or guarded file changed.
+
+Live-verified writes are limited to `POST /api/permissions/{id}/activate|deactivate`, `POST /api/user-permissions`, `DELETE /api/user-permissions/{id}`, `POST /api/branches/{id}/activate|deactivate` and `POST /api/shifts/{id}/activate|deactivate`. Create/update, employee activate/deactivate, employee-shift deactivate and attendance punch remain fake-tested only.
 
 ---
 
@@ -196,7 +215,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Interface | `EmployeeRepository` (12 methods: list/detail/save/setActive/lookups/references/account access/availability) |
 | Backend adapter | `RemoteEmployeeRepository` (`lib/modules/hr/employees/live/data/repositories/remote_employee_repository.dart`, NEW and selected by DI) over the carried `LiveEmployeeRemoteDataSource` (Dio implementation + DTOs) |
 | Endpoints | `GET /api/employees/lookups`, `GET /api/employees`, `GET /api/employees/{id}`, `POST /api/employees`, `PUT /api/employees/{id}`, `POST /api/employees/{id}/activate|deactivate` |
-| Read/write | Reads are wired end to end. Create/update/activate/deactivate are wired in the data layer with the documented bodies; no live write is executed in this phase. |
+| Read/write | Reads are wired end to end. Create/update/activate/deactivate are wired in the data layer with the documented bodies and remain fake-tested only; employee status was not live-verified. |
 | Planned bridge | DI selects `RemoteEmployeeRepository` when `AppConfig.realApiEnabled`, otherwise `LocalEmployeeRepository` (demo). `watchEmployees`/`watchEmployee` emit an initial fetch and re-fetch after any successful write through a broadcast revision stream. The screen stays the baseline list/detail/form. |
 | UI impact | None to files. |
 
@@ -254,7 +273,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Baseline screen | none at `ac2ec6f`; the approved list/detail/form screens are built under `lib/modules/hr/departments/presentation/`. |
 | Routes | `/app/hr/settings/departments`, `/new`, `/:id`, `/:id/edit` |
 | Endpoints | `GET /api/departments`, `GET /api/departments/{id}`, `POST /api/departments`, `PUT /api/departments/{id}`, `POST /api/departments/{id}/deactivate` |
-| Read/write | Reads live-verified on 2026-10-30. Writes are wired in the data layer only; no live write was sent. |
+| Read/write | Reads live-verified on 2026-10-30. Department deactivate is wired in the data layer only and remains fake-tested (it has no restore endpoint). |
 | Bridge | DI selects `RemoteDepartmentRepository` in backend mode and `LocalDepartmentRepository` in demo mode. The `AppPermission.department*` values and labels are live. |
 | UI impact | The 6 approved files + registration/settings wiring only. |
 
@@ -274,7 +293,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Interface | `ShiftRepository extends ConfigurationRepository<Shift, ShiftDraft>` |
 | Backend adapter | `RemoteShiftRepository`, selected by DI when `AppConfig.realApiEnabled` |
 | Endpoints | `GET /api/shifts`, `GET /api/shifts/{id}`, `POST /api/shifts`, `PUT /api/shifts/{id}`, `POST /api/shifts/{id}/activate`, `POST /api/shifts/{id}/deactivate` |
-| Read/write | Reads live-verified on 2026-10-30. Writes are wired in the data layer only; no live write was sent. |
+| Read/write | Reads live-verified on 2026-10-30. Activate/deactivate were live-verified on 2026-10-30; create/update remain fake-tested only. |
 | Bridge | DI selects the remote repository in backend mode and the local repository in demo mode. The approved Shifts UI changes define which controls are hidden. |
 | UI impact | Only the 4 approved shift files (+ approved Early punch l10n). No route change. |
 
@@ -331,8 +350,8 @@ DI selection is per repository, not per screen. A backend adapter must return th
 |---|---|
 | Interface | `AccessRepository` - `LocalAccessRepository` in demo/disabled, `RemoteAccessRepository` in backend mode |
 | Backend adapter | `RemoteAccessRepository` (NEW, selected by DI when `AppConfig.realApiEnabled`) over `AccessAdminRemoteDataSource`; `RemotePermissionMasterRepository` is registered in backend mode only. `RemoteEffectiveAccessRepository` and `/api/me/permissions` behaviour are unchanged. |
-| Endpoints | `GET /api/me/permissions`, `GET /api/permissions`, `GET /api/user-permissions`, `GET /api/user-permissions/{id}`. Data-only write mappings: `POST /api/user-permissions` (`{userId, permissionIds}`), `PUT /api/user-permissions/users/{userId}` (`{permissionIds}`), `DELETE /api/user-permissions/{id}`. No live write is performed in this phase. |
-| Read/write | `/me/permissions` feeds `BackendAccessPolicy.resolve` and `SessionPermissionSink`. Access reads come from grants and permission masters; write mappings are exercised only by tests. |
+| Endpoints | `GET /api/me/permissions`, `GET /api/permissions`, `GET /api/user-permissions`, `GET /api/user-permissions/{id}`. Data-only write mappings: `POST /api/user-permissions` (`{userId, permissionIds}`), `PUT /api/user-permissions/users/{userId}` (`{permissionIds}`), `DELETE /api/user-permissions/{id}`. Grant assign/revoke were live-verified on 2026-10-30; the replace endpoint remains fake-tested only. |
+| Read/write | `/me/permissions` feeds `BackendAccessPolicy.resolve` and `SessionPermissionSink`. Access reads come from grants and permission masters; grant assign/revoke were live-verified on 2026-10-30, other write mappings are exercised only by tests. |
 | Users list | Grants-derived only, grouped by `userId`; only users with at least one key-bearing, non-inactive grant (`permissionKey != null`, `permissionStatusId != 2`). Orphan rows are excluded. |
 | Scope mapping | Self-service keys (`hr.attendance.self.punch`, `hr.attendance.self.view`) map to `PermissionScope.self`; every other key maps to `PermissionScope.all`. The backend stores no scopes, so this is an explicit, documented data assumption (AC3). |
 | History | `watchHistory` always returns an empty list: there is no access-history endpoint and backend mode never reads the local Drift activity log. |
@@ -350,7 +369,7 @@ Permission catalog notes (**BUILT**, backend only):
 | AC1 | Users list built from local accounts + employees | `GET /api/user-permissions` returns grants, not a user directory | Resolved data-only: users are derived from key-bearing grants. |
 | AC2 | Module chips on user rows | key-only grants, no scopes | **NEEDS-UI-DECISION:** keep module chips and derive from keys, or switch to feature-path chips (not approved as a UI change). |
 | AC3 | Scope selector (self/team/all) | no scopes | Resolved: SELF for self-service keys, ALL for other keys. |
-| AC4 | Save/assign grants | `POST/PUT/DELETE /api/user-permissions` (writes) | Data-only mappings wired; live writes remain out of scope. |
+| AC4 | Save/assign grants | `POST/PUT/DELETE /api/user-permissions` (writes) | Data-only mappings wired; grant assign/revoke live-verified on 2026-10-30, replace remains fake-tested only. |
 | AC5 | Last-admin / self-escalation warnings | backend policy is intended-allow | Kept client-side; `GrantAuthorityResolver` is never bypassed. **NEEDS-UI-DECISION** whether they still apply in backend mode. |
 | AC6 | Orphan grants (permission master deleted) | `permissionKey: null`, `permissionStatusId: 2` | Data-only: excluded from users/grants. Read-only display is not in baseline UI. **NEEDS-UI-DECISION:** ignore, or show in the existing list style later. |
 | AC7 | Permission catalog screen | `GET /api/permissions`, `GET /api/permissions/{id}`, `POST /api/permissions`, `PUT /api/permissions/{id}`, `POST /api/permissions/{id}/activate`, `POST /api/permissions/{id}/deactivate` | **BUILT (backend only):** list/detail/form at `/app/settings/access/permissions`, wired through `PermissionMasterConfigurationRepository`. `RemotePermissionMasterRepository` maps list (paging, `search`, `statusId`, `sort`) / get / create / update / activate / deactivate against `AccessAdminRemoteDataSource`. Registered in backend mode only; no local permission-master implementation exists and none is registered in demo. |
@@ -369,7 +388,7 @@ Permission catalog notes (**BUILT**, backend only):
 | List query | `employeeId`, `shiftId`, `fromDate`, `toDate`, `includeInactive`, `page`, `pageSize`; empty filters are omitted and the returned paging values are kept. |
 | Create body | `{employeeId, shiftId, fromDate, toDate, optional IANA timeZoneId}`. |
 | Update body | `{shiftId, fromDate, toDate, optional timeZoneId}`. `employeeId` is immutable and is never sent. |
-| Deactivate | `POST /api/employee-shifts/{id}/deactivate` with no body. |
+| Deactivate | `POST /api/employee-shifts/{id}/deactivate` with no body. Fake-tested only; not live-verified (no activate endpoint). |
 | Dates | `fromDate`/`toDate` stay ISO date strings exactly as sent by the backend; no time-zone conversion or invented day shift is applied. `timeZoneId` is an IANA id and is omitted when null/blank. |
 | Client validation | Before any request: create requires `employeeId` and `shiftId`; create and update require both dates and `fromDate <= toDate` (`FailureKind.validation`), otherwise nothing is sent. |
 | Error mapping | `EMPLOYEE_SHIFT_NOT_FOUND` -> `FailureKind.notFound`. `EMPLOYEE_SHIFT_OVERLAP`, `EMPLOYEE_SHIFT_LIMIT`, `EMPLOYEE_SHIFT_HAS_PUNCHES`, `EMPLOYEE_SHIFT_ALREADY_REMOVED` -> `FailureKind.conflict`. `EMPLOYEE_SHIFT_TIMEZONE_MISMATCH`, `EMPLOYEE_SHIFT_BRANCH_TIMEZONE_MISSING` -> `FailureKind.validation`. The backend code and safe server message are preserved. |
