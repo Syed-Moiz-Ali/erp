@@ -21,6 +21,7 @@ import 'package:modular_erp/modules/hr/attendance/live/data/attendance_api.dart'
 import 'package:modular_erp/modules/hr/attendance/live/data/remote_attendance_repository.dart';
 import 'package:modular_erp/modules/hr/attendance/domain/shift_workday_resolver.dart';
 import 'package:modular_erp/modules/hr/attendance/presentation/bloc/attendance_bloc.dart';
+import 'package:modular_erp/modules/hr/dashboard/data/empty_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
 import 'package:modular_erp/modules/hr/departments/data/datasources/dio_department_remote_data_source.dart';
@@ -118,11 +119,13 @@ void configureHrDependencies(GetIt services) {
   );
   // HR-owned dashboard (workforce-specific repository).
   services.registerLazySingleton<DashboardRepository>(
-    () => LocalDashboardRepository(
-      demoEnabled: AppConfig.demoAuthEnabled,
-      workforce: services(),
-      corrections: services(),
-    ),
+    () => AppConfig.realApiEnabled
+        ? const EmptyDashboardRepository()
+        : LocalDashboardRepository(
+            demoEnabled: AppConfig.demoAuthEnabled,
+            workforce: services(),
+            corrections: services(),
+          ),
   );
   services.registerLazySingleton<AttendanceReportRepository>(
     () => LocalAttendanceReportRepository(

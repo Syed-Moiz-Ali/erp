@@ -8,6 +8,13 @@ import 'package:modular_erp/bootstrap/core_dependencies.dart';
 import 'package:modular_erp/bootstrap/dependencies.dart';
 import 'package:modular_erp/core/api/api_client.dart';
 import 'package:modular_erp/core/database/app_database.dart';
+import 'package:modular_erp/core/errors/result.dart';
+import 'package:modular_erp/core/security/app_permission.dart';
+import 'package:modular_erp/modules/hr/dashboard/data/empty_dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/data/local_dashboard_repository.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_models.dart';
+import 'package:modular_erp/modules/hr/dashboard/domain/dashboard_repository.dart';
+import 'package:modular_erp/platform/auth/domain/entities/auth_context.dart';
 import 'package:modular_erp/modules/hr/branches/data/datasources/branch_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/branches/data/datasources/dio_branch_remote_data_source.dart';
 import 'package:modular_erp/modules/hr/branches/data/repositories/remote_branch_repository.dart';
@@ -45,6 +52,27 @@ import 'package:modular_erp/shared/transactions/transactions_dependencies.dart';
 /// repositories that match the injected [AppConfig] environment, with no
 /// duplicates, and that the configured URL is injected into Dio. No dart-defines
 /// are involved.
+AuthContext _dashboardContext() => AuthContext(
+  user: UserAccount(
+    id: '8',
+    displayName: 'Admin',
+    email: 'admin',
+    companyId: '1',
+    permissions: PermissionSet(const <AppPermission>[
+      AppPermission.employeeViewAll,
+    ]),
+    status: AccountStatus.active,
+  ),
+  company: const CompanyContext(
+    id: '1',
+    name: 'Company',
+    code: 'ORG-1',
+    timezone: 'Asia/Dubai',
+    defaultLocale: 'en',
+    enabledModules: {'employees', 'settings'},
+  ),
+);
+
 void main() {
   Future<GetIt> compose() async {
     final services = GetIt.asNewInstance();
@@ -110,6 +138,14 @@ void main() {
         'https://dev.example.test',
       );
       expect(services.isRegistered<ModuleRegistry>(), isTrue);
+      expect(services<DashboardRepository>(), isA<EmptyDashboardRepository>());
+      final dashboard = await services<DashboardRepository>().load(
+        _dashboardContext(),
+      );
+      expect(dashboard, isA<Success<DashboardSummary>>());
+      final summary = (dashboard as Success<DashboardSummary>).value;
+      expect(summary.isEmpty, isTrue);
+      expect(summary.isDemo, isFalse);
     },
   );
 
@@ -144,6 +180,7 @@ void main() {
       expect(services<AccessRepository>(), isA<LocalAccessRepository>());
       expect(services.isRegistered<PermissionMasterRepository>(), isFalse);
       expect(services.isRegistered<ApiClient>(), isFalse);
+      expect(services<DashboardRepository>(), isA<LocalDashboardRepository>());
     },
   );
 
