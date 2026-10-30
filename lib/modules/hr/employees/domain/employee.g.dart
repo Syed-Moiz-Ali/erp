@@ -31,6 +31,11 @@ _Employee _$EmployeeFromJson(Map<String, dynamic> json) => _Employee(
   attendancePolicyId: json['attendancePolicyId'] as String?,
   linkedUserId: json['linkedUserId'] as String?,
   loginEnabled: json['loginEnabled'] as bool? ?? false,
+  loginBranchIds:
+      (json['loginBranchIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const <String>[],
   branchId: json['branchId'] as String?,
   nationalityId: json['nationalityId'] as String?,
   dateOfBirth: json['dateOfBirth'] == null
@@ -70,6 +75,7 @@ Map<String, dynamic> _$EmployeeToJson(_Employee instance) => <String, dynamic>{
   'attendancePolicyId': instance.attendancePolicyId,
   'linkedUserId': instance.linkedUserId,
   'loginEnabled': instance.loginEnabled,
+  'loginBranchIds': instance.loginBranchIds,
   'branchId': instance.branchId,
   'nationalityId': instance.nationalityId,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),

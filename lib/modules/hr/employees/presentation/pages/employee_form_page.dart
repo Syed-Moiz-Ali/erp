@@ -469,7 +469,9 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
             const SizedBox(height: AppSpacing.xxl),
             AppFormSection(
               title: l.empAccountAccess,
-              subtitle: l.empLoginNotice,
+              subtitle: refs.hasBackendProfileLookups
+                  ? l.empLoginNoticeBackend
+                  : l.empLoginNotice,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -481,20 +483,98 @@ class _EmployeeFormPageState extends State<EmployeeFormPage> {
                         : (v) => change((d) => d.copyWith(loginEnabled: v)),
                   ),
                   if (d.loginEnabled) ...[
-                    AppDetailField(
-                      label: l.email,
-                      value: state.account?.credentialPending == false
-                          ? state.account!.user.email
-                          : d.email,
-                      identifier: true,
-                    ),
-                    AppDetailField(
-                      label: l.phone,
-                      value: state.account?.credentialPending == false
-                          ? state.account!.user.phone ?? l.empUnassigned
-                          : d.phone,
-                      identifier: true,
-                    ),
+                    if (refs.hasBackendProfileLookups) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      AppFormGrid(
+                        children: [
+                          AppTextField(
+                            label: l.empLoginId,
+                            initialValue: d.loginId,
+                            errorText: fieldError("login.loginId"),
+                            enabled: !state.saving,
+                            autocorrect: false,
+                            textInputAction: TextInputAction.next,
+                            onChanged: (v) =>
+                                change((d) => d.copyWith(loginId: v)),
+                          ),
+                          AppTextField(
+                            label: l.empLoginMobile,
+                            initialValue: d.loginMobile,
+                            errorText: fieldError("login.mobileNo"),
+                            enabled: !state.saving,
+                            autocorrect: false,
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            onChanged: (v) =>
+                                change((d) => d.copyWith(loginMobile: v)),
+                          ),
+                          AppTextField(
+                            label: l.empLoginPassword,
+                            initialValue: d.loginPassword,
+                            helperText: l.empLoginPasswordHint,
+                            errorText: fieldError("login.password"),
+                            enabled: !state.saving,
+                            autocorrect: false,
+                            obscureText: true,
+                            onChanged: (v) =>
+                                change((d) => d.copyWith(loginPassword: v)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        l.empLoginBranches,
+                        style: AppTypography.of(context).label,
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Wrap(
+                        spacing: AppSpacing.sm,
+                        runSpacing: AppSpacing.xs,
+                        children: [
+                          for (final branch in refs.branches)
+                            AppSelectionChip(
+                              label: branch.name,
+                              selected: d.loginBranchIds.contains(branch.id),
+                              enabled: !state.saving,
+                              onSelected: (selected) => change((d) {
+                                final ids = [...d.loginBranchIds];
+                                if (selected) {
+                                  if (!ids.contains(branch.id)) {
+                                    ids.add(branch.id);
+                                  }
+                                } else {
+                                  ids.remove(branch.id);
+                                }
+                                return d.copyWith(loginBranchIds: ids);
+                              }),
+                            ),
+                        ],
+                      ),
+                      if (fieldError("login.branchIds") case final error?) ...[
+                        const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          error,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ],
+                    ] else ...[
+                      AppDetailField(
+                        label: l.email,
+                        value: state.account?.credentialPending == false
+                            ? state.account!.user.email
+                            : d.email,
+                        identifier: true,
+                      ),
+                      AppDetailField(
+                        label: l.phone,
+                        value: state.account?.credentialPending == false
+                            ? state.account!.user.phone ?? l.empUnassigned
+                            : d.phone,
+                        identifier: true,
+                      ),
+                    ],
                   ],
                 ],
               ),

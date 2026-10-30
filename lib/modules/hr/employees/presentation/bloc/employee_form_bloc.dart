@@ -54,6 +54,20 @@ class EmployeeFormState {
     if (references?.hasBackendProfileLookups ?? false) {
       if (draft.branchId == null) errors['branchId'] = 'required';
       if (draft.nationalityId == null) errors['nationalityId'] = 'required';
+      if (draft.loginEnabled) {
+        if (draft.loginId.trim().isEmpty) {
+          errors['login.loginId'] = 'required';
+        }
+        if (draft.loginMobile.trim().isEmpty) {
+          errors['login.mobileNo'] = 'required';
+        }
+        if (draft.loginPassword.isNotEmpty && draft.loginPassword.length < 6) {
+          errors['login.password'] = 'password';
+        }
+        if (draft.loginBranchIds.isEmpty) {
+          errors['login.branchIds'] = 'required';
+        }
+      }
     }
     if (draft.joiningDate == null ||
         draft.joiningDate!.isAfter(DateTime.now())) {
@@ -135,6 +149,9 @@ class EmployeeFormBloc extends Bloc<EmployeeFormEvent, EmployeeFormState> {
             employmentType: e.employmentType,
             status: e.status,
             loginEnabled: e.loginEnabled,
+            loginId: linkedAccount?.user.email ?? '',
+            loginMobile: linkedAccount?.user.phone ?? '',
+            loginBranchIds: e.loginBranchIds,
             branchId: e.branchId,
             nationalityId: e.nationalityId,
             dateOfBirth: e.dateOfBirth,

@@ -2511,6 +2511,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'Local account configuration. New credentials and invitations are not issued in this phase.';
 
   @override
+  String get empLoginNoticeBackend =>
+      'Login credentials are sent to the backend. Leave the password blank to keep the existing one.';
+
+  @override
+  String get empLoginId => 'Login ID';
+
+  @override
+  String get empLoginMobile => 'Login mobile';
+
+  @override
+  String get empLoginPassword => 'Password';
+
+  @override
+  String get empLoginPasswordHint => 'Leave blank to keep the current password';
+
+  @override
+  String get empLoginBranches => 'Login branches';
+
+  @override
+  String get empInvalidPassword => 'Use at least 6 characters.';
+
+  @override
   String get empCredentialPending => 'Credential setup pending';
 
   @override

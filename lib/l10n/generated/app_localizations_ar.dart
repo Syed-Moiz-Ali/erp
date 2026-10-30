@@ -2478,6 +2478,29 @@ class AppLocalizationsAr extends AppLocalizations {
       'إعداد محلي للحساب. لا تُصدر بيانات دخول جديدة أو دعوات في هذه المرحلة.';
 
   @override
+  String get empLoginNoticeBackend =>
+      'تُرسل بيانات الدخول إلى الخادم. اترك كلمة المرور فارغة للاحتفاظ بالحالية.';
+
+  @override
+  String get empLoginId => 'معرّف الدخول';
+
+  @override
+  String get empLoginMobile => 'جوال الدخول';
+
+  @override
+  String get empLoginPassword => 'كلمة المرور';
+
+  @override
+  String get empLoginPasswordHint =>
+      'اتركه فارغًا للاحتفاظ بكلمة المرور الحالية';
+
+  @override
+  String get empLoginBranches => 'فروع الدخول';
+
+  @override
+  String get empInvalidPassword => 'استخدم 6 أحرف على الأقل.';
+
+  @override
   String get empCredentialPending => 'إعداد بيانات الدخول معلّق';
 
   @override

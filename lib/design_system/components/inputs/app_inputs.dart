@@ -28,6 +28,7 @@ class AppTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.enabled = true,
     this.autocorrect = true,
+    this.obscureText = false,
     this.maxLines = 1,
     this.minLines,
     this.required = false,
@@ -51,7 +52,7 @@ class AppTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
   final ValueChanged<String>? onFieldSubmitted;
-  final bool enabled, autocorrect, required;
+  final bool enabled, autocorrect, obscureText, required;
   final int? maxLines, minLines;
 
   /// Renders a persistent label above the field instead of a floating label.
@@ -75,8 +76,9 @@ class AppTextField extends StatelessWidget {
           autofillHints: autofillHints,
           onFieldSubmitted: onFieldSubmitted,
           enabled: enabled,
-          autocorrect: autocorrect,
-          enableSuggestions: autocorrect,
+          autocorrect: obscureText ? false : autocorrect,
+          enableSuggestions: !obscureText && autocorrect,
+          obscureText: obscureText,
           validator: validator,
           onChanged: onChanged,
           keyboardType: keyboardType,
@@ -120,8 +122,9 @@ class AppTextField extends StatelessWidget {
             autofillHints: autofillHints,
             onFieldSubmitted: onFieldSubmitted,
             enabled: enabled,
-            autocorrect: autocorrect,
-            enableSuggestions: autocorrect,
+            autocorrect: obscureText ? false : autocorrect,
+            enableSuggestions: !obscureText && autocorrect,
+            obscureText: obscureText,
             validator: validator,
             onChanged: onChanged,
             keyboardType: keyboardType,

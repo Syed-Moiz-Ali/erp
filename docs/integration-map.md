@@ -208,7 +208,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 **NEEDS-UI-DECISION (recorded, not invented):**
 
 * Resolved: the employee create/edit form now collects `branchId`, `nationalityId`, date of birth, marital status, gratuity, working hours, basic salary, transport and accommodation from `/api/employees/lookups`. These inputs appear only when the backend profile lookups are present, so demo mode keeps its original form shape.
-* The frozen form has no login password or branch multi-select controls. Create sends login from email/phone with `branchIds: []` and an empty `password` value because the form cannot collect one; update only toggles `login.enabled`. A UI decision is needed before credential writes can succeed.
+* Resolved: the backend-mode employee form now collects login id, login mobile, an optional password (blank keeps the current one) and login branches. Create/update send the documented `login` keys (`enabled`, `loginId`, `mobileNo`, `password?`, `branchIds`) and never `userType`. Demo mode keeps its read-only account summary.
 * `oldestJoined` has no backend sort; the list silently falls back to `nameAsc`.
 * The backend provides no designation lookup, so `getReferences.designations` is empty and `designation` remains free text.
 

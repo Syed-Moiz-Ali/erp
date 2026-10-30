@@ -4784,6 +4784,48 @@ abstract class AppLocalizations {
   /// **'Local account configuration. New credentials and invitations are not issued in this phase.'**
   String get empLoginNotice;
 
+  /// No description provided for @empLoginNoticeBackend.
+  ///
+  /// In en, this message translates to:
+  /// **'Login credentials are sent to the backend. Leave the password blank to keep the existing one.'**
+  String get empLoginNoticeBackend;
+
+  /// No description provided for @empLoginId.
+  ///
+  /// In en, this message translates to:
+  /// **'Login ID'**
+  String get empLoginId;
+
+  /// No description provided for @empLoginMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Login mobile'**
+  String get empLoginMobile;
+
+  /// No description provided for @empLoginPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get empLoginPassword;
+
+  /// No description provided for @empLoginPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave blank to keep the current password'**
+  String get empLoginPasswordHint;
+
+  /// No description provided for @empLoginBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Login branches'**
+  String get empLoginBranches;
+
+  /// No description provided for @empInvalidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 6 characters.'**
+  String get empInvalidPassword;
+
   /// No description provided for @empCredentialPending.
   ///
   /// In en, this message translates to:

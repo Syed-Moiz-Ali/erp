@@ -33,6 +33,32 @@ void main() {
     expect(state.fieldErrors['nationalityId'], 'required');
   });
 
+  test('backend login requires id, mobile, password policy and branches', () {
+    final state = EmployeeFormState(
+      draft: EmployeeDraft(
+        firstName: 'QA',
+        email: 'qa@example.com',
+        phone: '0500000000',
+        departmentId: '2',
+        designationId: 'tech',
+        joiningDate: DateTime(2026, 10, 1),
+        branchId: '1',
+        nationalityId: '99',
+        loginEnabled: true,
+        loginPassword: '123',
+      ),
+      original: const EmployeeDraft(),
+      references: _references(backend: true),
+      loading: false,
+      validationRequested: true,
+    );
+
+    expect(state.fieldErrors['login.loginId'], 'required');
+    expect(state.fieldErrors['login.mobileNo'], 'required');
+    expect(state.fieldErrors['login.password'], 'password');
+    expect(state.fieldErrors['login.branchIds'], 'required');
+  });
+
   test('demo references keep the original form requirements', () {
     final state = EmployeeFormState(
       draft: EmployeeDraft(

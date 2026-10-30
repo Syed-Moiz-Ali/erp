@@ -26,6 +26,7 @@ String employeeFailure(Failure failure, AppLocalizations l) =>
       'duplicateEmail' => l.empDuplicateEmail,
       'duplicatePhone' => l.empDuplicatePhone,
       'manager' => l.empInvalidManager,
+      'password' => l.empInvalidPassword,
       'reference' => l.empInvalidReference,
       'assignment' => l.cfgAssignmentError,
       'denied' => l.shellAccessMessage,

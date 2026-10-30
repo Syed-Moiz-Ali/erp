@@ -132,6 +132,8 @@ the original form shape because the lookups are absent.
 
 - `lib/modules/hr/employees/presentation/pages/employee_form_page.dart` - backend employment fields section
 - `lib/modules/hr/employees/presentation/bloc/employee_form_bloc.dart` - preload and conditional validation for backend employment fields
+- `lib/design_system/components/inputs/app_inputs.dart` - optional `obscureText` for the login password field (default unchanged)
+- `lib/modules/hr/employees/presentation/employee_localization.dart` - password validation copy mapping only
 - `lib/modules/hr/l10n/hr_en.arb` - employee backend field strings
 - `lib/modules/hr/l10n/hr_ar.arb` - employee backend field strings
 - `lib/l10n/generated/app_en.arb` - generated employee backend field strings

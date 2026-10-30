@@ -335,6 +335,7 @@ class RemoteEmployeeRepository implements EmployeeRepository {
     attendancePolicyId: null,
     linkedUserId: employee.loginUserId?.toString(),
     loginEnabled: employee.loginEnabled,
+    loginBranchIds: [for (final id in employee.loginBranchIds) id.toString()],
     branchId: employee.branchId?.toString(),
     nationalityId: employee.nationalityId?.toString(),
     dateOfBirth: _parseOptionalDate(employee.dateOfBirth),
@@ -379,12 +380,10 @@ class RemoteEmployeeRepository implements EmployeeRepository {
       if (draft.loginEnabled)
         'login': {
           'enabled': true,
-          'loginId': email,
-          'mobileNo': phone,
-          // The frozen form has no password control; the backend validation
-          // response is allowed to surface instead of inventing credentials.
-          'password': '',
-          'branchIds': <int>[],
+          'loginId': _loginId(draft, email),
+          'mobileNo': _loginMobile(draft, phone),
+          if (draft.loginPassword.isNotEmpty) 'password': draft.loginPassword,
+          'branchIds': _loginBranchIds(draft),
         },
     };
   }
@@ -423,12 +422,38 @@ class RemoteEmployeeRepository implements EmployeeRepository {
     };
     final login = loaded['login'];
     if (login is Map) {
-      body['login'] = <String, dynamic>{...login.cast<String, dynamic>()}
+      final next = <String, dynamic>{...login.cast<String, dynamic>()}
         ..remove('userType')
         ..['enabled'] = draft.loginEnabled;
+      if (draft.loginEnabled) {
+        final loginId = _loginId(draft, email);
+        final loginMobile = _loginMobile(draft, phone);
+        if (loginId.isNotEmpty) next['loginId'] = loginId;
+        if (loginMobile.isNotEmpty) next['mobileNo'] = loginMobile;
+        if (draft.loginPassword.isNotEmpty) {
+          next['password'] = draft.loginPassword;
+        }
+        next['branchIds'] = _loginBranchIds(draft);
+      }
+      body['login'] = next;
     }
     return body;
   }
+
+  static String _loginId(EmployeeDraft draft, String email) {
+    final value = draft.loginId.trim();
+    return value.isEmpty ? email : value;
+  }
+
+  static String _loginMobile(EmployeeDraft draft, String phone) {
+    final value = draft.loginMobile.trim();
+    return value.isEmpty ? phone : value;
+  }
+
+  static List<int> _loginBranchIds(EmployeeDraft draft) => [
+    for (final id in draft.loginBranchIds)
+      if (_parseId(id) != null) _parseId(id)!,
+  ];
 
   static String _employeeName(EmployeeDraft draft) => [
     draft.firstName,

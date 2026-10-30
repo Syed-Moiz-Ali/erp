@@ -54,8 +54,8 @@ no live write was sent during verification.
 * Employee backend employment fields are now collected by the create/edit form in backend mode
   (`branchId`, `nationalityId`, DOB, marital status, gratuity, working hours, salary, transport,
   accommodation); demo mode keeps the original form shape.
-* Employee login edit controls (password and branch multi-select) are absent; login writes
-  can only toggle `enabled` with the current frozen form.
+* Employee login controls are now present in backend mode (login id, mobile, optional password,
+  branch multi-select); demo mode keeps the read-only account summary.
 * Employee `oldestJoined` sort is unsupported; the list falls back to `nameAsc`.
 * No backend designation lookup; employee designation stays free text.
 * Attendance history/corrections/requests/team/all have no backend endpoints (empty state is correct).

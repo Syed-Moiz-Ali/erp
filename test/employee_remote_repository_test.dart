@@ -101,6 +101,7 @@ void main() {
     expect(employee.id, '15');
     expect(employee.linkedUserId, '31');
     expect(employee.loginEnabled, isTrue);
+    expect(employee.loginBranchIds, ['1']);
     expect(employee.email, 'sanitized@example.com');
     expect(employee.phone, 'SANITIZED_PHONE');
     expect(employee.joiningDate, DateTime(2026, 9, 1));
@@ -210,6 +211,10 @@ void main() {
           joiningDate: DateTime(2026, 10, 1),
           status: EmploymentStatus.active,
           loginEnabled: true,
+          loginId: ' qa.audit ',
+          loginMobile: ' 0500000001 ',
+          loginPassword: 'secret1',
+          loginBranchIds: const ['1', '2'],
           branchId: '1',
           nationalityId: '99',
           dateOfBirth: DateTime(1995, 5, 20),
@@ -250,9 +255,10 @@ void main() {
         'branchIds',
       });
       expect(login['enabled'], isTrue);
-      expect(login['loginId'], 'qa@example.com');
-      expect(login['mobileNo'], '0500000000');
-      expect(login['branchIds'], isEmpty);
+      expect(login['loginId'], 'qa.audit');
+      expect(login['mobileNo'], '0500000001');
+      expect(login['password'], 'secret1');
+      expect(login['branchIds'], [1, 2]);
       expect(login.containsKey('userType'), isFalse);
 
       expect(dataSource.createCalls, 1);
@@ -472,6 +478,42 @@ void main() {
     expect(body['basicSalary'], 4000);
     expect(body['transportation'], 600);
     expect(body['accommodation'], 1100);
+  });
+
+  test('update overlays login credentials without userType', () async {
+    final detail = employeeFixture('employee_detail.json');
+    dataSource.onGet = (_) async => Success(employeeDto(detail));
+    dataSource.onUpdate = (id, body) async =>
+        Success(employeeDto({...body, 'employeeId': id}));
+
+    await repository.saveEmployee(
+      context,
+      EmployeeDraft(
+        firstName: 'Edited Name',
+        email: 'edited@example.com',
+        phone: '',
+        departmentId: '2',
+        designationId: 'Lead',
+        joiningDate: DateTime(2026, 10, 1),
+        status: EmploymentStatus.active,
+        loginEnabled: true,
+        loginId: 'edited.login',
+        loginMobile: '0500000009',
+        loginPassword: 'secret2',
+        loginBranchIds: const ['2', '3'],
+      ),
+      id: '15',
+    );
+
+    final login = (dataSource.lastUpdateBody!['login'] as Map)
+        .cast<String, dynamic>();
+    expect(login['enabled'], isTrue);
+    expect(login['loginId'], 'edited.login');
+    expect(login['mobileNo'], '0500000009');
+    expect(login['password'], 'secret2');
+    expect(login['branchIds'], [2, 3]);
+    expect(login.containsKey('userType'), isFalse);
+    expect(login['userId'], 31);
   });
 
   test('linked account maps login and credential readiness', () async {
