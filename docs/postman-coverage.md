@@ -38,12 +38,12 @@ historical Postman audit; this section records the v3 outcome.
 Writes are implemented behind the repositories and are exercised only with in-memory fakes;
 no live write was sent during verification.
 
-### APIS DATA-ONLY (no baseline screen)
+### APIS DATA-ONLY (true gaps only)
 
-* Branches: every `/api/branches` route is wired under `lib/modules/hr/branches/`
-  and now has an approved list/detail/form screen at `/app/hr/settings/branches`.
-  Branch permission enum/labels (`companyBranchView` / `companyBranchManage`) are
-  live. `timeZoneId` is required.
+Branches, Employee Shifts and the Permission catalog are **not** data-only: each
+has approved list/detail/form screens and is listed under APIS WIRED above.
+What remains genuinely data-only is:
+
 * Employees availability checks: no endpoint; return `Failure(code: 'unsupported')`.
 * Attendance history/corrections/requests/team/all: no endpoint; the adapter returns the
   existing empty/unsupported results and never reads local attendance.

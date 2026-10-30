@@ -6,6 +6,52 @@ Run once against the shared database. Use QA-named records only. Do not loop,
 stress, or bulk-create. Do not revoke the three live orphan grants unless the
 backend owner asks for cleanup.
 
+## Read-only live matrix (run first)
+
+> **NO WRITES:** automated live verification must not create, update, activate,
+> deactivate, punch, assign or revoke anything. The only allowed POSTs are the
+> two auth logins. Use `.env.local` for `AUTH_MODE=backend`, `API_BASE_URL` and
+> credentials; never commit `.env.local`.
+
+Run:
+
+```
+dart run tool/live_readonly_smoke.dart
+```
+
+Expected: 20 PASS, 0 FAIL, 0 SKIP (or a documented limit). It logs in once as
+Admin and once as Employee, adds `ngrok-skip-browser-warning: true`, waits ~61 s
+and retries once on HTTP 429, and never prints credentials, tokens, bodies or
+PII.
+
+| Account | Method + path | Expected |
+|---|---|---|
+| Admin | `POST /api/auth/login` | 200, token present |
+| Admin | `GET /api/me/permissions` | 200, `userId` + `permissions[]` |
+| Admin | `GET /api/employees?page=1&pageSize=5&sort=nameAsc` | 200, paged |
+| Admin | `GET /api/employees/lookups` | 200 |
+| Admin | `GET /api/employees/{firstEmployeeId}` | 200 |
+| Admin | `GET /api/branches?page=1&pageSize=5&status=Active` | 200, paged |
+| Admin | `GET /api/branches/lookups` | 200 |
+| Admin | `GET /api/branches/{firstBranchId}` | 200 |
+| Admin | `GET /api/departments?page=1&pageSize=5&sort=nameAsc` | 200, paged |
+| Admin | `GET /api/departments/{firstDepartmentId}` | 200 |
+| Admin | `GET /api/shifts?page=1&pageSize=5&sort=startTime` | 200, paged |
+| Admin | `GET /api/shifts/{firstShiftId}` | 200 |
+| Admin | `GET /api/employee-shifts?employeeId={firstEmployeeId}&fromDate=...&toDate=...` | 200/empty or documented 400 |
+| Admin | `GET /api/permissions?page=1&pageSize=10&sort=keyAsc` | 200, paged |
+| Admin | `GET /api/user-permissions?userId={adminUserId}&page=1&pageSize=10` | 200, paged |
+| Admin | `GET /api/user-permissions/{firstUserPermissionId}` | 200 |
+| Employee | `POST /api/auth/login` | 200, token present |
+| Employee | `GET /api/me/permissions` | 200 |
+| Employee | `GET /api/attendance/today` | 200 |
+| Employee | `GET /api/employees?page=1&pageSize=5&sort=nameAsc` | 200 or 403 (record which) |
+
+The 7-day employee-shift window is today ±3 days; ids are derived from the list
+responses, never hardcoded. Envelopes must contain
+`success`/`message`/`data`/`errors`; paged payloads must contain
+`items`/`page`/`pageSize`/`totalItems`/`totalPages` with a 1-based `page`.
+
 ## Accounts
 
 - **Admin**: current administrator account.

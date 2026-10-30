@@ -2,7 +2,7 @@
 
 **Branch:** `feat/api-v3` (from `ac2ec6f`)
 **UI baseline:** `ac2ec6f` (tip of `services_module`, 2026-10-08), enforced by `tool/ui_freeze_check.dart`.
-**Status:** integration map. Every MassERP endpoint in scope is wired behind its existing repository interface (or a data-only repository for modules with no screen). Backend repositories are selected by DI when `AppConfig.realApiEnabled`; demo/local repositories remain for demo. Writes are implemented but never executed during verification. No screen is modified. Remaining decisions are listed per module and summarised under NEEDS-UI-DECISION.
+**Status:** integration map. Every MassERP endpoint in scope is wired behind its existing repository interface (or a data-only repository for modules with no screen). Backend repositories are selected by DI when `AppConfig.realApiEnabled`; demo/local repositories remain for demo. Writes are implemented but never executed during verification. No screen is modified. A read-only live smoke test against the development backend passed on 2026-10-30 (see below). Remaining decisions are listed per module and summarised under NEEDS-UI-DECISION.
 
 Legend:
 
@@ -81,6 +81,18 @@ Every route in the API-endpoint registry is covered. `POST` uses the collection 
 
 **UI check:** `dart run tool/ui_freeze_check.dart` reports PASS against `ac2ec6f`; the only guarded files that differ are the pre-approved Departments/Shifts/Branches/Employee Shifts files listed in `docs/ui-approved-changes.md`.
 
+### Live read-only verification (2026-10-30)
+
+`dart run tool/live_readonly_smoke.dart` was run against the development backend. It logged in once as Admin and once as Employee, then issued GET requests only. It never printed credentials, tokens, bodies or PII, and it wrote no fixtures or files.
+
+**Result: 20 PASS, 0 FAIL, 0 SKIP.**
+
+* Admin: `POST /api/auth/login`, `GET /api/me/permissions`, `GET /api/employees` (paged), `GET /api/employees/lookups`, `GET /api/employees/{id}`, `GET /api/branches?status=Active` (paged), `GET /api/branches/lookups`, `GET /api/branches/{id}`, `GET /api/departments` (paged), `GET /api/departments/{id}`, `GET /api/shifts?sort=startTime` (paged), `GET /api/shifts/{id}`, `GET /api/employee-shifts` (7-day window; paged), `GET /api/permissions` (paged), `GET /api/user-permissions?userId=...` (paged), `GET /api/user-permissions/{id}`.
+* Employee: `POST /api/auth/login`, `GET /api/me/permissions`, `GET /api/attendance/today`, `GET /api/employees` (returned 200; the matrix accepts 200 or 403).
+* Every envelope had `success`/`message`/`data`/`errors`; every paged payload had `items`/`page`/`pageSize`/`totalItems`/`totalPages` with a 1-based `page`. All success payloads parsed through the existing DTOs/mappers (`LiveEmployeeDto`, `BranchDto`, `BranchLookupsDto`, `DepartmentDto`, `ShiftDto`, `EmployeeShiftDto`, `PermissionDto`, `UserPermissionDto`, `MyPermissionsDto`, `AttendanceDay`).
+* No live mapping defect was found, so no data-layer fix or new NEEDS-UI-DECISION was required. The 429 wait-once retry path exists but was not triggered.
+* Dashboard: backend mode now resolves `EmptyDashboardRepository` (empty, `isDemo == false`); demo mode still resolves `LocalDashboardRepository`.
+
 ---
 
 ## 1. Baseline inventory (at `ac2ec6f`)
@@ -134,7 +146,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Session storage | `SecureSessionStorage` with access/refresh expiry + `hasRefreshToken` (CARRIED) |
 | Endpoints | `POST /api/auth/login`, `POST /api/auth/refresh`, `POST /api/auth/logout`, `GET /api/me/permissions` |
 | Read/write | Login/refresh/logout are writes to the session; no business data write. `/me/permissions` is a read. |
-| Planned bridge | Register `RemoteAuthRepository` when `AuthMode.backend`; keep `DemoAuthRepository` for demo and `DisabledAuthRepository` for disabled. Wired in `platform_dependencies.dart`; PENDING verification against the live backend. |
+| Bridge | Register `RemoteAuthRepository` when `AuthMode.backend`; keep `DemoAuthRepository` for demo and `DisabledAuthRepository` for disabled. Live Admin/Employee login and `/api/me/permissions` were verified on 2026-10-30. |
 | UI impact | None to files. The demo-accounts button is hidden when bootstrap passes an empty list (existing behaviour); permission load happens after login. |
 
 | # | UI field / behaviour (frozen) | Backend field | Type / nullability | Decision |
@@ -150,14 +162,14 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | Item | Value |
 |---|---|
 | Interface | `DashboardRepository.load` (returns `DashboardSummary` / contributions) |
-| Backend adapter | none — there is **no dashboard endpoint** |
+| Backend adapter | `EmptyDashboardRepository` — there is **no dashboard endpoint** |
 | Endpoints | none |
-| Planned bridge | In backend mode, return an empty real summary through the existing repository; in demo mode keep the local demo repository. No screen change. |
+| Bridge | Resolved: `AppConfig.realApiEnabled` selects `EmptyDashboardRepository` (empty real summary); otherwise `LocalDashboardRepository` keeps the demo summary. No screen change. |
 | UI impact | None to files. |
 
 | # | UI behaviour | Backend | Decision |
 |---|---|---|---|
-| D1 | Summary cards, quick actions, contributor sections render numbers | no endpoint | **NEEDS MY DECISION:** show empty/zero real data (skeleton stays, numbers zero) or keep demo numbers in demo mode only and zero in backend. No new empty-state screen is allowed by the freeze. |
+| D1 | Summary cards, quick actions, contributor sections render numbers | no endpoint | Resolved: backend mode returns an empty real summary (`isDemo == false`); demo mode keeps its demo numbers. No new empty-state screen. |
 | D2 | Service/HR contributors | no endpoint | Same as D1. |
 
 ### 3.3 Settings & Profile
@@ -166,7 +178,7 @@ DI selection is per repository, not per screen. A backend adapter must return th
 |---|---|
 | Screens | `configuration_landing_page.dart`, `my_profile_page.dart` |
 | Repositories | configuration repositories (`ShiftRepository`, `DepartmentRepository`, work-location/policy/leave) |
-| Backend adapters | `RemoteShiftRepository`, `RemoteDepartmentRepository` (CARRIED); DI selection pending |
+| Backend adapters | `RemoteShiftRepository`, `RemoteDepartmentRepository`, selected by DI when `AppConfig.realApiEnabled` |
 | Endpoints | `GET /api/shifts`, `GET /api/departments` for counts; profile data comes from the session |
 | Planned bridge | Counts use `watchList(pageSize: 1).total`; profile maps `AuthContext`. No widget changes. |
 
@@ -234,16 +246,16 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | E17 | Employee list search/status filter | `page, pageSize, sort, search, statusId, departmentId, branchId` | — | Map to existing filter controls | Map |
 | E18 | Full-replace PUT | `PUT` clears omitted fields | — | Adapter must send the complete object from a fresh detail read | Map (write phase only) |
 
-### 3.5 Departments (approved UI, not built yet)
+### 3.5 Departments (built)
 
 | Item | Value |
 |---|---|
-| Interface | `DepartmentRepository` (CARRIED; remote implementation CARRIED) |
-| Baseline screen | none. Approved screens from `19a0b24` (list/detail/form), same configuration pattern. |
-| Routes | `/app/hr/settings/departments`, `/new`, `/:id`, `/:id/edit` (approved) |
+| Interface | `DepartmentRepository` |
+| Baseline screen | none at `ac2ec6f`; the approved list/detail/form screens are built under `lib/modules/hr/departments/presentation/`. |
+| Routes | `/app/hr/settings/departments`, `/new`, `/:id`, `/:id/edit` |
 | Endpoints | `GET /api/departments`, `GET /api/departments/{id}`, `POST /api/departments`, `PUT /api/departments/{id}`, `POST /api/departments/{id}/deactivate` |
-| Read/write | Reads only now. |
-| Planned bridge | Select `RemoteDepartmentRepository` in backend mode and `LocalDepartmentRepository` in demo mode. Requires the two approved `AppPermission.department*` values and their labels (deferred to the Departments commit). |
+| Read/write | Reads live-verified on 2026-10-30. Writes are wired in the data layer only; no live write was sent. |
+| Bridge | DI selects `RemoteDepartmentRepository` in backend mode and `LocalDepartmentRepository` in demo mode. The `AppPermission.department*` values and labels are live. |
 | UI impact | The 6 approved files + registration/settings wiring only. |
 
 | # | UI field | Backend field | Type / nullability | Decision |
@@ -255,15 +267,15 @@ DI selection is per repository, not per screen. A backend adapter must return th
 | DP5 | `createdAt`/`updatedAt`/`syncStatus` | not returned | — | **NEEDS MY DECISION:** hide or show read-only |
 | DP6 | Duplicate-name / in-use errors | `VALIDATION_ERROR`, `DEPARTMENT_IN_USE` (409) | — | Map to the approved field-error copy |
 
-### 3.6 Shifts (approved backend-mode adaptation, not wired)
+### 3.6 Shifts (built)
 
 | Item | Value |
 |---|---|
 | Interface | `ShiftRepository extends ConfigurationRepository<Shift, ShiftDraft>` |
-| Backend adapter | `RemoteShiftRepository` (CARRIED) |
-| Endpoints | `GET /api/shifts`, `GET /api/shifts/{id}`, `POST /api/shifts`, `PUT /api/shifts/{id}`, `POST /api/shifts/{id}/deactivate` |
-| Read/write | Reads only now. |
-| Planned bridge | Select remote repository in backend mode. Approved Shifts UI change already defines which controls are hidden. |
+| Backend adapter | `RemoteShiftRepository`, selected by DI when `AppConfig.realApiEnabled` |
+| Endpoints | `GET /api/shifts`, `GET /api/shifts/{id}`, `POST /api/shifts`, `PUT /api/shifts/{id}`, `POST /api/shifts/{id}/activate`, `POST /api/shifts/{id}/deactivate` |
+| Read/write | Reads live-verified on 2026-10-30. Writes are wired in the data layer only; no live write was sent. |
+| Bridge | DI selects the remote repository in backend mode and the local repository in demo mode. The approved Shifts UI changes define which controls are hidden. |
 | UI impact | Only the 4 approved shift files (+ approved Early punch l10n). No route change. |
 
 | # | UI field | Backend field | Type | Decision |
@@ -435,17 +447,20 @@ These follow the approved Departments page/route pattern (list → detail → fo
 
 ---
 
-## 6. Planned order after the decisions
+## 6. Build status (complete for this phase)
 
-1. Departments: add the two approved permission values + labels, local repository, approved screens/wiring; wire remote/local selection behind `DepartmentRepository`; reads only.
-2. Shifts: select `RemoteShiftRepository` in backend mode; apply the approved shift UI changes; reads only.
-3. Employees: `RemoteEmployeeRepository` wired for reads and data-only writes; remaining E-items are recorded under NEEDS-UI-DECISION.
-4. Attendance: read-only `AttendanceRepository` adapter for today/current; resolve AT5–AT7.
-5. Access & Users: session permission loading via `RemoteEffectiveAccessRepository`; read-only grant view; resolve AC1–AC6.
-6. NEW modules: Branches, Employee Shifts and the Permission catalog are built.
-7. Demo/local removal: separate, module-by-module, after live verticals are accepted.
+All in-scope modules are built and wired behind their existing interfaces:
 
-Every step must keep `dart run tool/ui_freeze_check.dart` green and the full suite at the known baseline failure (`localization_test` source scan).
+1. Departments: permission values/labels, local repository, approved list/detail/form screens, remote/local DI selection.
+2. Shifts: remote DI selection and the approved shift UI changes (including activate and deactivate).
+3. Employees: `RemoteEmployeeRepository` for reads and data-only writes; remaining E-items are recorded under NEEDS-UI-DECISION.
+4. Attendance: `RemoteAttendanceRepository` for today/current/punch; history/corrections/requests/team/all stay empty/unsupported (AT7).
+5. Access & Users: session permission loading, grant view and the Permission catalog screens.
+6. Branches, Employee Shifts and the Permission catalog: built.
+7. Dashboard: `EmptyDashboardRepository` in backend mode, `LocalDashboardRepository` in demo mode.
+8. Remaining work: demo/local removal, separate and module-by-module, after live verticals are accepted.
+
+The read-only live matrix passed on 2026-10-30. Every change must keep `dart run tool/ui_freeze_check.dart` green and the full suite at the known baseline failure (`localization_test` source scan).
 
 ---
 
